@@ -1,0 +1,10 @@
+n,rep,ret,wall_ms,per_tile_ms,output_ok
+3,1,0,1.64,0.55,True
+3,2,0,1.63,0.54,True
+4,1,0,0.12,0.03,True
+4,2,0,1.64,0.41,True
+8,1,0,1.66,0.21,True
+8,2,0,0.48,0.06,True
+
+Each n was the first submission after reboot plus the ANE bring-up ladder.
+The process ran one selected n per boot.
