@@ -19,9 +19,10 @@ full story, including the mistakes, is written up at
 - **A whole transformer block with no CPU arithmetic** (`ane-block.py`):
   projections, scores, scale, softmax, weighted sum, FFN. The CPU moves fp16
   buffers and computes nothing.
-- **A resource-safe runtime** (`ane-runtime.py`): owns the DRM fd and every
-  BO, submits a real gemm, waits for output DMA, frees each BO, and passes
-  `runtime_gemm max_err=0.0000 output_ok=True` on real hardware.
+- **A resource-safe runtime** (`ane-runtime.py`): owns the DRM fd and its
+  persistent BO workspace, submits real gemm work, waits for output DMA, frees
+  every BO at close, and passes `runtime_gemm max_err=0.0000 output_ok=True` on
+  real hardware.
 - **Real Qwen model weights** (`ane-weights.py`, `ane-real-tile.py`):
   dequantizes `blk.0.attn_qkv.weight` from the selected Qwen3.8-2B Q4_K_M
   GGUF, converts its first 512x256 tile to the ANE fp16 layout, and matches

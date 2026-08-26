@@ -20,6 +20,8 @@ import os
 
 import numpy as np
 
+_F32_REFERENCE = False
+
 
 def load(name):
     path = os.path.join(os.path.dirname(__file__), name)
@@ -31,38 +33,45 @@ def load(name):
     return module
 
 
+def _compute_dtype(value):
+    return value.astype(np.float32) if _F32_REFERENCE else value.astype(np.float16)
+
+
 def sigmoid(x):
     x = np.clip(x.astype(np.float32), -80.0, 80.0)
-    return (1.0 / (1.0 + np.exp(-x))).astype(np.float16)
+    return _compute_dtype(1.0 / (1.0 + np.exp(-x)))
 
 
 def silu(x):
     x = x.astype(np.float32)
-    return (x / (1.0 + np.exp(-np.clip(x, -80.0, 80.0)))).astype(np.float16)
+    return _compute_dtype(x / (1.0 + np.exp(-np.clip(x, -80.0, 80.0))))
 
 
 def rms_norm(x, weight, eps=1e-6):
     x32 = x.astype(np.float32)
     scale = 1.0 / np.sqrt(np.mean(x32 * x32) + eps)
-    return (x32 * scale * weight.astype(np.float32)).astype(np.float16)
+    return _compute_dtype(x32 * scale * weight.astype(np.float32))
 
 
 def l2_norm(x, eps=1e-6):
     x32 = x.astype(np.float32)
-    return (x32 / np.sqrt(np.sum(x32 * x32, axis=-1, keepdims=True) + eps)).astype(np.float16)
+    return _compute_dtype(x32 / np.sqrt(np.sum(x32 * x32, axis=-1, keepdims=True) + eps))
 
 
-def rope(x, position, rotary_dim=64, theta=10_000_000.0):
+def rope(x, position, rotary_dim=64, theta=10_000_000.0, sections=(11, 11, 10)):
     out = x.astype(np.float32).copy()
     inv = theta ** (-np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim)
-    angles = position * inv
-    cos, sin = np.cos(angles), np.sin(angles)
+    freqs = position * inv
+    for offset, section in zip((1, 2), sections[1:]):
+        indexes = np.arange(offset, section * 3, 3)
+        freqs[indexes] = position * inv[:indexes.size]
+    cos, sin = np.cos(freqs), np.sin(freqs)
     rotated = out[:, :rotary_dim].copy()
     half = rotary_dim // 2
     left, right = rotated[:, :half], rotated[:, half:]
     out[:, :half] = left * cos - right * sin
     out[:, half:rotary_dim] = right * cos + left * sin
-    return out.astype(np.float16)
+    return _compute_dtype(out)
 
 class NumpyDevice:
     """Reference backend using the same canonical matrices on the CPU."""
@@ -90,8 +99,7 @@ def causal_attention(q, keys, values):
     score = np.einsum("hd,htd->ht", q32, key32) / np.sqrt(256.0)
     score -= score.max(axis=1, keepdims=True)
     prob = np.exp(score)
-    prob /= prob.sum(axis=1, keepdims=True)
-    return np.einsum("ht,htd->hd", prob, value32).astype(np.float16)
+    return _compute_dtype(np.einsum("ht,htd->hd", prob, value32))
 
 
 class QwenModel:
@@ -158,6 +166,8 @@ class QwenModel:
         return self.weights.row("token_embd.weight", token_id)
 
     def projection(self, matrix, activation):
+        if self.cpu_reference:
+            return matrix.astype(np.float32) @ activation.astype(np.float32)
         result = np.zeros(matrix.shape[0], dtype=np.float32)
         for row0 in range(0, matrix.shape[0], 512):
             acc = np.zeros(512, dtype=np.float32)
@@ -178,22 +188,22 @@ class QwenModel:
         up = self.projection(layer["ffn_up"], x)
         act = silu(gate) * up
         down = self.projection(layer["ffn_down"], act)
-        return (hidden.astype(np.float32) + down).astype(np.float16)
+        return _compute_dtype(hidden.astype(np.float32) + down)
 
     def linear_layer(self, layer, hidden):
         x = rms_norm(hidden, layer["input_norm"])
-        mixed = self.projection(layer["qkv"], x).astype(np.float16)
-        z = self.projection(layer["z"], x).astype(np.float16)
+        mixed = _compute_dtype(self.projection(layer["qkv"], x))
+        z = _compute_dtype(self.projection(layer["z"], x))
         beta = sigmoid(self.projection(layer["beta"], x))
         alpha = self.projection(layer["alpha"], x).astype(np.float32)
 
         window = np.concatenate((layer["conv_state"], mixed[:, None]), axis=1)
         layer["conv_state"] = window[:, 1:]
         mixed = np.sum(window.astype(np.float32) * layer["conv"].astype(np.float32), axis=1)
-        mixed = silu(mixed.astype(np.float16))
+        mixed = silu(_compute_dtype(mixed))
         query, key, value = np.split(mixed, 3)
         query = l2_norm(query.reshape(16, 128))
-        query = (query.astype(np.float32) / np.sqrt(128.0)).astype(np.float16)
+        query = _compute_dtype(query.astype(np.float32) / np.sqrt(128.0))
         key = l2_norm(key.reshape(16, 128))
         value = value.reshape(16, 128).astype(np.float32)
         decay = layer["a_log"].astype(np.float32) * np.log1p(
@@ -208,10 +218,10 @@ class QwenModel:
             delta = (vh - state[head].T @ kh) * float(beta[head])
             state[head] += np.outer(kh, delta)
             output[head] = state[head].T @ query[head].astype(np.float32)
-        norm = rms_norm(output.astype(np.float16), layer["ssm_norm"])
+        norm = rms_norm(_compute_dtype(output), layer["ssm_norm"])
         norm = norm * silu(z.reshape(16, 128))
         mixed_out = self.projection(layer["out"], norm.reshape(-1))
-        return self.mlp(layer, (hidden.astype(np.float32) + mixed_out).astype(np.float16))
+        return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
 
     def full_layer(self, layer, hidden, position):
         x = rms_norm(hidden, layer["input_norm"])
@@ -229,8 +239,8 @@ class QwenModel:
         values = np.stack(layer["values"], axis=1)
         attended = causal_attention(q_heads, keys, values)
         gated = attended.reshape(-1) * (1.0 / (1.0 + np.exp(-gate.astype(np.float32))))
-        mixed_out = self.projection(layer["o"], gated.astype(np.float16))
-        return self.mlp(layer, (hidden.astype(np.float32) + mixed_out).astype(np.float16))
+        mixed_out = self.projection(layer["o"], _compute_dtype(gated))
+        return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
 
     def step(self, hidden, position):
         for layer in self.layers:
@@ -255,6 +265,8 @@ def main():
     parser.add_argument("--backend", choices=("ane", "cpu"), default="ane")
     parser.add_argument("--generate", type=int, default=0)
     args = parser.parse_args()
+    global _F32_REFERENCE
+    _F32_REFERENCE = args.backend == "cpu"
 
     tokenizer_module = load("ane-tokenizer.py")
     weights_module = load("ane-weights.py")
