@@ -281,6 +281,7 @@ def main():
         print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
         print(f"top10={[(int(i), float(logits[i])) for i in top_ids]}")
         print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
+        print(f"hidden_head={hidden[:16].tolist()}")
         print(f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}")
         print("ANE_QWEN_FULL_TOKEN_STEP_OK")
     finally:
