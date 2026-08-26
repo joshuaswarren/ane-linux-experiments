@@ -98,6 +98,7 @@ class QwenModel:
     """Qwen3.5 hybrid model with ANE-backed linear projections."""
 
     def __init__(self, model_path, gguf_py, runtime, weights, descriptor, qid):
+        self.cpu_reference = runtime.Device is NumpyDevice
         self.weights = weights
         self.runtime = runtime
         self.descriptor = descriptor
@@ -146,9 +147,15 @@ class QwenModel:
 
     def has(self, name):
         return name in self.weights.names()
-
     def tensor(self, name):
+        if self.cpu_reference:
+            return self.weights.tensor32(name)
         return self.weights.tensor(name)
+
+    def embedding_row(self, token_id):
+        if self.cpu_reference:
+            return self.weights.row32("token_embd.weight", token_id)
+        return self.weights.row("token_embd.weight", token_id)
 
     def projection(self, matrix, activation):
         result = np.zeros(matrix.shape[0], dtype=np.float32)
@@ -264,7 +271,7 @@ def main():
     try:
         hidden = np.zeros(2048, dtype=np.float16)
         for position, token_id in enumerate(token_ids):
-            hidden = model.step(weights.row("token_embd.weight", token_id), position)
+            hidden = model.step(model.embedding_row(token_id), position)
         generated_ids = []
         generated_pieces = []
         token_field = weights.reader.get_field("tokenizer.ggml.tokens")
@@ -275,7 +282,7 @@ def main():
                 break
             generated_ids.append(next_id)
             generated_pieces.append(token_field.contents(next_id) if token_field else str(next_id))
-            hidden = model.step(weights.row("token_embd.weight", next_id), len(token_ids) + offset)
+            hidden = model.step(model.embedding_row(next_id), len(token_ids) + offset)
         top_ids = np.argsort(logits)[-10:][::-1]
         print(f"prompt_tokens={token_ids}")
         print(f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}")

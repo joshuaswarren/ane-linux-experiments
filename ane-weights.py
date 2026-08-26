@@ -45,14 +45,27 @@ class GGUFWeights:
     def names(self):
         return tuple(t.name for t in self.reader.tensors)
 
+    def tensor32(self, name):
+        """Return one named tensor in dequantized float32 form."""
+        tensor = self._tensor_record(name)
+        return self.dequantize(tensor.data, tensor.tensor_type).astype(np.float32, copy=False)
+
     def tensor(self, name):
-        """Return one named tensor in its dequantized output-by-input layout."""
+        """Return one named tensor in dequantized output-by-input fp16 layout."""
         tensor = self._tensor_record(name)
         value = self.dequantize(tensor.data, tensor.tensor_type)
         return value.astype(np.float16, copy=False)
 
+    def row32(self, name, index):
+        """Dequantize one row as float32 without expanding the tensor."""
+        tensor = self._tensor_record(name)
+        if tensor.data.ndim != 2 or not 0 <= index < tensor.data.shape[0]:
+            raise ValueError(f"{name} is not row-addressable at {index}")
+        value = self.dequantize(tensor.data[index:index + 1], tensor.tensor_type)
+        return value.reshape(-1).astype(np.float32, copy=False)
+
     def row(self, name, index):
-        """Dequantize one row without expanding the whole tensor."""
+        """Dequantize one row as fp16 without expanding the tensor."""
         tensor = self._tensor_record(name)
         if tensor.data.ndim != 2 or not 0 <= index < tensor.data.shape[0]:
             raise ValueError(f"{name} is not row-addressable at {index}")
