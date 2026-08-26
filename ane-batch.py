@@ -43,8 +43,11 @@ import time
 import numpy as np
 
 _only = None
+_qid = None
 if "--only" in sys.argv:
     _only = int(sys.argv[sys.argv.index("--only") + 1])
+if "--qid" in sys.argv:
+    _qid = int(sys.argv[sys.argv.index("--qid") + 1])
 
 GEMM = os.path.expanduser("~/src/apple-ane/examples/gemm.py")
 src = open(GEMM).read()
@@ -68,6 +71,16 @@ WEIGHT_BYTES = 0x80000          # 512 KB per weight blob
 OUT_BYTES = 0x8000
 WAIT_S = 0.2
 
+
+def submit_qid(fd, tsk_size, td_count, td_size, handles, btsp_handle):
+    """Submit on an explicit queue after the qid-enabled KMD is loaded."""
+    request = ns["drm_ane_submit"](
+        tsk_size=tsk_size, td_count=td_count, td_size=td_size,
+        btsp_handle=btsp_handle, pad=0 if _qid is None else 0x80 | _qid,
+    )
+    for i in range(ns["ANE_TILE_COUNT"]):
+        request.handles[i] = handles[i] if i < len(handles) else 0
+    return ns["ioctl"](fd, ns["DRM_IOCTL_ANE_SUBMIT"], request)
 
 def weights_blob(fill):
     return np.full(WEIGHT_BYTES // 2, fill, dtype=np.float16).tobytes()
@@ -141,7 +154,7 @@ def run(n, tds, cmd_buf, out_bytes):
         handles = [cmd_handle, 0, 0, 0, out_handle, src_handle, 0] + [0] * 25
 
         t0 = time.perf_counter()
-        ret = submit_task(fd, tsk_size, n, TD_SIZE, handles, btsp_handle)
+        ret = submit_qid(fd, tsk_size, n, TD_SIZE, handles, btsp_handle)
         # mmap slice, not a numpy view: keeps the buffer unexported
         while out_map[:2] == sentinel and time.perf_counter() - t0 < WAIT_S:
             pass

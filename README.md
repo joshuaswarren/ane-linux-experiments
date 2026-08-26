@@ -19,6 +19,9 @@ full story, including the mistakes, is written up at
 - **A whole transformer block with no CPU arithmetic** (`ane-block.py`):
   projections, scores, scale, softmax, weighted sum, FFN. The CPU moves fp16
   buffers and computes nothing.
+- **A resource-safe runtime** (`ane-runtime.py`): owns the DRM fd and every
+  BO, submits a real gemm, waits for output DMA, frees each BO, and passes
+  `runtime_gemm max_err=0.0000 output_ok=True` on real hardware.
 - **Arbitrary-size matmul by tiling** (`ane-tiled.py`): any `W @ x` in
   512x256 tiles, verified to (2048, 1024), with the cross-tile reduction
   optionally on the engine too. A single tile costs about 1.7ms in the
@@ -44,14 +47,13 @@ carries `td_count` and the driver passes it to the task manager.
 - Earlier failures were contaminated. A first run tried n=1,2,4,8 in one
   process. n=4 hung. Every later submission inherited the queue wedge. That
   did not prove a hardware limit, so no descriptor ceiling is claimed.
-
-Use `--only N` to test one count as the first submission of a boot.
-
 ## What is not proven
 
 No LLM runs on this. Every result uses random Gaussian weights: no tokenizer,
-no KV cache, no model file. The largest gap is a submission path fast enough
-to matter, which needs the batching question above settled first.
+no KV cache, no model file. The next runtime work is to load real model
+weights, convert them to the ANE fp16 tile layout, and carry a KV cache across
+tokens. Tokenization can stay on the CPU first. Vulkan is the GPU path, not an
+ANE API; a GPU tokenizer is possible later but does not replace this runtime.
 
 ## Warning
 
@@ -84,6 +86,8 @@ Do not run any of this on a machine you care about keeping up.
 | `ane-softmax.py` | Softmax from composed primitives, vs numpy |
 | `ane-attention.py` | Full attention, both matmuls on-engine, vs numpy |
 | `ane-block.py` | Whole transformer block, no CPU arithmetic, vs numpy |
+| `ane-runtime.py` | Resource-safe fd/BO ownership and gemm submission |
+| `ane-driver-qid.py` | Patch KMD to select qid through submit.pad |
 | `ane-tiled.py` | Arbitrary-size tiled matmul, cost measurement, projection |
 | `ane-transformer.py` | Earlier block variant (CPU softmax path kept for comparison) |
 | `ane-driver-bostage.py` | Stage-gates the BO_INIT mapping path for bisection |

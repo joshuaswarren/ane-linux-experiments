@@ -1,0 +1,10 @@
+qid,n,rep,ret,wall_ms,per_tile_ms,output_ok
+0,8,1,0,1.68,0.21,True
+1,8,1,0,0.12,0.02,True
+0,16,1,0,1.44,0.09,True
+0,32,1,0,1.17,0.04,True
+
+Each row was the first submission after a clean reboot plus the ANE
+bring-up ladder. qid 0 and qid 1 both accepted n=8. The KMD engine_lock
+serializes submissions, so these are queue-selection tests, not concurrent
+throughput tests. No descriptor-count ceiling was established.

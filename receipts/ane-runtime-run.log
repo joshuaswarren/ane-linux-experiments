@@ -1,0 +1,5 @@
+runtime_gemm max_err=0.0000 output_ok=True qid=0
+ANE_RUNTIME_OK
+
+The resource-safe runtime owned the DRM fd and BO lifetimes, waited for
+output DMA, freed each BO, and used the qid-enabled KMD on queue 0.
