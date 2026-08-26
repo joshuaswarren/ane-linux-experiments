@@ -110,16 +110,16 @@ class QwenModel:
                 "full": full,
                 "input_norm": self.tensor(f"{prefix}.attn_norm.weight"),
                 "post_norm": self.tensor(f"{prefix}.post_attention_norm.weight"),
-                "ffn_gate": self.tensor(f"{prefix}.ffn_gate.weight").T,
-                "ffn_up": self.tensor(f"{prefix}.ffn_up.weight").T,
-                "ffn_down": self.tensor(f"{prefix}.ffn_down.weight").T,
+                "ffn_gate": self.tensor(f"{prefix}.ffn_gate.weight"),
+                "ffn_up": self.tensor(f"{prefix}.ffn_up.weight"),
+                "ffn_down": self.tensor(f"{prefix}.ffn_down.weight"),
             }
             if full:
                 layer.update({
-                    "q": self.tensor(f"{prefix}.attn_q.weight").T,
-                    "k": self.tensor(f"{prefix}.attn_k.weight").T,
-                    "v": self.tensor(f"{prefix}.attn_v.weight").T,
-                    "o": self.tensor(f"{prefix}.attn_output.weight").T,
+                    "q": self.tensor(f"{prefix}.attn_q.weight"),
+                    "k": self.tensor(f"{prefix}.attn_k.weight"),
+                    "v": self.tensor(f"{prefix}.attn_v.weight"),
+                    "o": self.tensor(f"{prefix}.attn_output.weight"),
                     "q_norm": self.tensor(f"{prefix}.attn_q_norm.weight"),
                     "k_norm": self.tensor(f"{prefix}.attn_k_norm.weight"),
                     "keys": [],
@@ -127,12 +127,12 @@ class QwenModel:
                 })
             else:
                 layer.update({
-                    "qkv": self.tensor(f"{prefix}.attn_qkv.weight").T,
-                    "z": self.tensor(f"{prefix}.attn_gate.weight").T,
-                    "beta": self.tensor(f"{prefix}.ssm_beta.weight").T,
-                    "alpha": self.tensor(f"{prefix}.ssm_alpha.weight").T,
-                    "out": self.tensor(f"{prefix}.ssm_out.weight").T,
-                    "conv": self.tensor(f"{prefix}.ssm_conv1d.weight").T,
+                    "qkv": self.tensor(f"{prefix}.attn_qkv.weight"),
+                    "z": self.tensor(f"{prefix}.attn_gate.weight"),
+                    "beta": self.tensor(f"{prefix}.ssm_beta.weight"),
+                    "alpha": self.tensor(f"{prefix}.ssm_alpha.weight"),
+                    "out": self.tensor(f"{prefix}.ssm_out.weight"),
+                    "conv": self.tensor(f"{prefix}.ssm_conv1d.weight"),
                     "a_log": self.tensor(f"{prefix}.ssm_a"),
                     "dt_bias": self.tensor(f"{prefix}.ssm_dt.bias"),
                     "ssm_norm": self.tensor(f"{prefix}.ssm_norm.weight"),
@@ -228,7 +228,7 @@ class QwenModel:
         return hidden
 
     def logits(self, hidden):
-        return self.embedding.astype(np.float32).T @ (
+        return self.embedding.astype(np.float32) @ (
             rms_norm(hidden, self.output_norm).astype(np.float32)
         )
 
