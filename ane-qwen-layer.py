@@ -38,16 +38,16 @@ def rms_norm(x, weight, eps=1e-6):
 
 
 def rope(x, position, rotary_dim=64, theta=10_000_000.0):
-    """Apply interleaved RoPE to (heads, head_dim), matching Qwen3.5."""
+    """Apply half-split RoPE from Qwen3.5 to (heads, head_dim)."""
     out = x.astype(np.float32).copy()
-    half = rotary_dim // 2
     inv = theta ** (-np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim)
     angles = position * inv
     cos, sin = np.cos(angles), np.sin(angles)
-    even, odd = out[:, :rotary_dim:2].copy(), out[:, 1:rotary_dim:2].copy()
-    out[:, :rotary_dim:2] = even * cos - odd * sin
-    out[:, 1:rotary_dim:2] = even * sin + odd * cos
-    assert half == cos.size
+    rotated = out[:, :rotary_dim].copy()
+    half = rotary_dim // 2
+    left, right = rotated[:, :half], rotated[:, half:]
+    out[:, :half] = left * cos - right * sin
+    out[:, half:rotary_dim] = right * cos + left * sin
     return out.astype(np.float16)
 
 

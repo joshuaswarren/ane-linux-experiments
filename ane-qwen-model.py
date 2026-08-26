@@ -20,7 +20,7 @@ import os
 
 import numpy as np
 
-
+_NORM_ADD_ONE = False
 
 def load(name):
     path = os.path.join(os.path.dirname(__file__), name)
@@ -44,7 +44,11 @@ def silu(x):
 
 def rms_norm(x, weight, eps=1e-6):
     x32 = x.astype(np.float32)
-    return (x32 * (1.0 / np.sqrt(np.mean(x32 * x32) + eps)) * weight.astype(np.float32)).astype(np.float16)
+    scale = 1.0 / np.sqrt(np.mean(x32 * x32) + eps)
+    norm_weight = weight.astype(np.float32)
+    if _NORM_ADD_ONE:
+        norm_weight = norm_weight + 1.0
+    return (x32 * scale * norm_weight).astype(np.float16)
 
 
 def l2_norm(x, eps=1e-6):
@@ -57,10 +61,11 @@ def rope(x, position, rotary_dim=64, theta=10_000_000.0):
     inv = theta ** (-np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim)
     angles = position * inv
     cos, sin = np.cos(angles), np.sin(angles)
-    even = out[:, :rotary_dim:2].copy()
-    odd = out[:, 1:rotary_dim:2].copy()
-    out[:, :rotary_dim:2] = even * cos - odd * sin
-    out[:, 1:rotary_dim:2] = even * sin + odd * cos
+    rotated = out[:, :rotary_dim].copy()
+    half = rotary_dim // 2
+    left, right = rotated[:, :half], rotated[:, half:]
+    out[:, :half] = left * cos - right * sin
+    out[:, half:rotary_dim] = right * cos + left * sin
     return out.astype(np.float16)
 
 class NumpyDevice:
@@ -187,7 +192,7 @@ class QwenModel:
         query = l2_norm(query.reshape(16, 128))
         key = l2_norm(key.reshape(16, 128))
         value = value.reshape(16, 128).astype(np.float32)
-        decay = -np.exp(layer["a_log"].astype(np.float32)) * np.log1p(
+        decay = layer["a_log"].astype(np.float32) * np.log1p(
             np.exp(np.clip(alpha + layer["dt_bias"].astype(np.float32), -80, 80))
         )
         state = layer["recurrent"]
@@ -243,7 +248,10 @@ def main():
     parser.add_argument("--gguf-py")
     parser.add_argument("--qid", type=int, default=None)
     parser.add_argument("--backend", choices=("ane", "cpu"), default="ane")
+    parser.add_argument("--norm-add-one", action="store_true")
     args = parser.parse_args()
+    global _NORM_ADD_ONE
+    _NORM_ADD_ONE = args.norm_add_one
 
     tokenizer_module = load("ane-tokenizer.py")
     weights_module = load("ane-weights.py")
