@@ -266,7 +266,8 @@ def main():
     parser.add_argument("--generate", type=int, default=0)
     args = parser.parse_args()
     global _F32_REFERENCE
-    _F32_REFERENCE = args.backend == "cpu"
+    # Keep recurrent and normalization math in float32 on both backends.
+    _F32_REFERENCE = True
 
     tokenizer_module = load("ane-tokenizer.py")
     weights_module = load("ane-weights.py")
