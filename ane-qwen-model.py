@@ -20,7 +20,6 @@ import os
 
 import numpy as np
 
-_NORM_ADD_ONE = False
 
 def load(name):
     path = os.path.join(os.path.dirname(__file__), name)
@@ -45,10 +44,7 @@ def silu(x):
 def rms_norm(x, weight, eps=1e-6):
     x32 = x.astype(np.float32)
     scale = 1.0 / np.sqrt(np.mean(x32 * x32) + eps)
-    norm_weight = weight.astype(np.float32)
-    if _NORM_ADD_ONE:
-        norm_weight = norm_weight + 1.0
-    return (x32 * scale * norm_weight).astype(np.float16)
+    return (x32 * scale * weight.astype(np.float32)).astype(np.float16)
 
 
 def l2_norm(x, eps=1e-6):
@@ -249,11 +245,8 @@ def main():
     parser.add_argument("--gguf-py")
     parser.add_argument("--qid", type=int, default=None)
     parser.add_argument("--backend", choices=("ane", "cpu"), default="ane")
-    parser.add_argument("--norm-add-one", action="store_true")
     parser.add_argument("--generate", type=int, default=0)
     args = parser.parse_args()
-    global _NORM_ADD_ONE
-    _NORM_ADD_ONE = args.norm_add_one
 
     tokenizer_module = load("ane-tokenizer.py")
     weights_module = load("ane-weights.py")
@@ -282,9 +275,11 @@ def main():
             generated_ids.append(next_id)
             generated_pieces.append(token_field.contents(next_id) if token_field else str(next_id))
             hidden = model.step(weights.row("token_embd.weight", next_id), len(token_ids) + offset)
+        top_ids = np.argsort(logits)[-10:][::-1]
         print(f"prompt_tokens={token_ids}")
         print(f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}")
         print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
+        print(f"top10={[(int(i), float(logits[i])) for i in top_ids]}")
         print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
         print(f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}")
         print("ANE_QWEN_FULL_TOKEN_STEP_OK")
