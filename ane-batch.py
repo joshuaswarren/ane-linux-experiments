@@ -18,7 +18,7 @@ Three phases:
      offset. If the firmware honors the per-TD KDMA source offset, the two
      outputs differ exactly as the two weight sets predict.
   C. scale: N = 2,4,8 identical TDs, wall time per tile, compared with the
-     one-ioctl-per-tile cost measured in jwm1-ane-tiled.py (1.93 ms).
+     one-ioctl-per-tile cost measured in ane-tiled.py (1.93 ms).
 
 Completion note: ane_tm_get_status polls TM_IS_IDLE, but the doorbell has
 not flipped the status to busy when the first poll lands, so the ioctl
@@ -33,7 +33,7 @@ TD layout facts used here (from gemm.py and concat.py):
   KDMA src       firmware DMA address 0x81000000, repeated 16x in the
                  descriptor; phase B adds a per-TD delta to it
 
-  usage: python3 jwm1-ane-batch.py
+  usage: python3 ane-batch.py
 """
 import os
 import struct
@@ -41,7 +41,7 @@ import time
 
 import numpy as np
 
-GEMM = "/home/joshuawarren/src/apple-ane/examples/gemm.py"
+GEMM = os.path.expanduser("~/src/apple-ane/examples/gemm.py")
 src = open(GEMM).read()
 marker = "# Build CMD_BUF with gemm weights"
 head = src.split(marker)[0]
@@ -183,7 +183,7 @@ def main():
 
     print()
     print("=== phase C: amortization vs one-ioctl-per-tile ===")
-    print("baseline per_tile from jwm1-ane-tiled.py: 1.93 ms")
+    print("baseline per_tile from ane-tiled.py: 1.93 ms")
     for n in (2, 4, 8):
         tsk_size = (n - 1) * TD_SPACING + TD_SIZE
         cmd = make_cmd(tsk_size, [np.float16(0.5)])
