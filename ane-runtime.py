@@ -2,9 +2,10 @@
 """Small resource-safe userspace runtime for the experimental ANE KMD.
 
 This is the layer the earlier scripts were missing. It owns the DRM fd and
-all BO lifetimes, submits a real task descriptor, waits for the output DMA,
-and frees every BO before returning. It does not generate model descriptors;
-the caller supplies a descriptor template from an operation builder.
+the persistent BO workspace, submits a real task descriptor, waits for output
+DMA, and frees every BO when the device closes. It does not generate model
+descriptors; the caller supplies a descriptor template from an operation
+builder.
 
 The included self-test loads the sibling ``ane-network.py`` descriptor
 builder, runs one real 512x256 gemm, and checks the result against numpy:
@@ -26,6 +27,7 @@ from fcntl import ioctl
 
 import numpy as np
 
+
 ANE_TILE_COUNT = 0x20
 DRM_ANE_BO_INIT = 0x41
 DRM_ANE_BO_FREE = 0x42
@@ -38,6 +40,7 @@ CMD_BYTES = 0x8000
 SRC_BYTES = 0x4000
 OUT_BYTES = 0x8000
 WAIT_S = 1.0
+
 
 
 class BoInit(ctypes.Structure):
@@ -129,12 +132,27 @@ class Device:
     def __init__(self, path="/dev/accel/accel0", qid=None):
         self.fd = os.open(path, os.O_RDWR)
         self.qid = qid
+        self._workspace = None
         if qid is not None and not 0 <= qid < 8:
             os.close(self.fd)
             raise ValueError("qid must be in 0..7")
 
     def buffer(self, size):
         return Buffer(self.fd, size)
+
+    def _workspace_for(self, command_size, source_size, output_size, btsp_size):
+        key = (command_size, source_size, output_size, btsp_size)
+        if self._workspace is None or self._workspace[0] != key:
+            if self._workspace is not None:
+                for buffer in self._workspace[1]:
+                    buffer.close()
+            self._workspace = (key, (
+                self.buffer(command_size),
+                self.buffer(output_size),
+                self.buffer(source_size),
+                self.buffer(btsp_size),
+            ))
+        return self._workspace[1]
 
     def submit(self, command, source, output_size, descriptor, td_count=1):
         """Run one operation and return its fp16 output bytes.
@@ -153,36 +171,37 @@ class Device:
 
         sentinel = b"\x00\x7c"
         btsp_size = (td_count - 1) * TD_SPACING + len(descriptor)
-        with self.buffer(len(command)) as cmd, self.buffer(output_size) as out:
-            out.write(sentinel * (output_size // 2))
-            with self.buffer(len(source)) as src, self.buffer(btsp_size) as btsp:
-                cmd.write(command)
-                src.write(source)
-                btsp_bytes = bytearray(btsp_size)
-                for i in range(td_count):
-                    start = i * TD_SPACING
-                    btsp_bytes[start:start + len(descriptor)] = descriptor
-                btsp.write(bytes(btsp_bytes))
+        cmd, out, src, btsp = self._workspace_for(
+            len(command), len(source), output_size, btsp_size
+        )
+        out.write(sentinel * (output_size // 2))
+        cmd.write(command)
+        src.write(source)
+        btsp_bytes = bytearray(btsp_size)
+        for i in range(td_count):
+            start = i * TD_SPACING
+            btsp_bytes[start:start + len(descriptor)] = descriptor
+        btsp.write(bytes(btsp_bytes))
 
-                request = Submit(
-                    tsk_size=tsk_size,
-                    td_count=td_count,
-                    td_size=TD_SIZE,
-                    btsp_handle=btsp.bo.handle,
-                    pad=0 if self.qid is None else 0x80 | self.qid,
-                )
-                request.handles[0] = cmd.bo.handle
-                request.handles[4] = out.bo.handle
-                request.handles[5] = src.bo.handle
+        request = Submit(
+            tsk_size=tsk_size,
+            td_count=td_count,
+            td_size=TD_SIZE,
+            btsp_handle=btsp.bo.handle,
+            pad=0 if self.qid is None else 0x80 | self.qid,
+        )
+        request.handles[0] = cmd.bo.handle
+        request.handles[4] = out.bo.handle
+        request.handles[5] = src.bo.handle
 
-                deadline = time.monotonic() + WAIT_S
-                ioctl(self.fd, IOCTL_SUBMIT, request)
-                while out.map[:2] == sentinel and time.monotonic() < deadline:
-                    pass
-                result = out.read(output_size)
-                if result[:2] == sentinel:
-                    raise TimeoutError("ANE output was not written before timeout")
-                return result
+        deadline = time.monotonic() + WAIT_S
+        ioctl(self.fd, IOCTL_SUBMIT, request)
+        while out.map[:2] == sentinel and time.monotonic() < deadline:
+            pass
+        result = out.read(output_size)
+        if result[:2] == sentinel:
+            raise TimeoutError("ANE output was not written before timeout")
+        return result
 
     def gemm(self, weights, activation, descriptor):
         """Run one canonical 512x256 fp16 matrix-vector product."""
@@ -198,7 +217,12 @@ class Device:
         raw = self.submit(bytes(command), source.tobytes(), OUT_BYTES, descriptor)
         return np.frombuffer(raw, dtype=np.float16)[:512 * 32:32].copy()
 
+
     def close(self):
+        if self._workspace is not None:
+            for buffer in self._workspace[1]:
+                buffer.close()
+            self._workspace = None
         if self.fd is not None:
             os.close(self.fd)
             self.fd = None
@@ -217,14 +241,21 @@ def load_descriptor(path):
         raise ImportError(path)
     module = importlib.util.module_from_spec(spec)
     saved_argv = sys.argv
+    saved_descriptor_only = os.environ.get("ANE_DESCRIPTOR_ONLY")
     sys.argv = [path]
+    os.environ["ANE_DESCRIPTOR_ONLY"] = "1"
     try:
         with open(os.devnull, "w") as sink, contextlib.redirect_stdout(sink):
             spec.loader.exec_module(module)
         return module.gemm_btsp()
     finally:
         sys.argv = saved_argv
-        os.close(module.fd)
+        if saved_descriptor_only is None:
+            os.environ.pop("ANE_DESCRIPTOR_ONLY", None)
+        else:
+            os.environ["ANE_DESCRIPTOR_ONLY"] = saved_descriptor_only
+        if hasattr(module, "fd"):
+            os.close(module.fd)
 def self_test(qid=None):
     descriptor_path = os.path.join(os.path.dirname(__file__), "ane-network.py")
     descriptor = load_descriptor(descriptor_path)

@@ -257,15 +257,16 @@ def run_gemm(weights_blob, x):
 # examples/elementwise.py executes one add op (it has no __main__ guard) and
 # leaves BTSP_BUF plus its helpers in a namespace we reuse. Hand-copying the
 # descriptor was tried twice and hung the queue; the verbatim one does not.
-import runpy
+if os.environ.get("ANE_DESCRIPTOR_ONLY") != "1":
+    import runpy
 
-EW = runpy.run_path(os.path.expanduser("~/src/apple-ane/examples/elementwise.py"),
-                    run_name="elementwise_harvest")
-EW_BUF = bytearray(EW["BTSP_BUF"])
-# Switch the harvested add descriptor to max mode: PECfg second_source=2,
-# op_mode=2. (The example does exactly this for its own mode dispatch.)
-EW["pack_reg"](EW_BUF, EW["reg"].PECfg, (2 << 18) | (2 << 2))
-EW["reg"]  # keep linters quiet
+    EW = runpy.run_path(os.path.expanduser("~/src/apple-ane/examples/elementwise.py"),
+                        run_name="elementwise_harvest")
+    EW_BUF = bytearray(EW["BTSP_BUF"])
+    # Switch the harvested add descriptor to max mode: PECfg second_source=2,
+    # op_mode=2. (The example does exactly this for its own mode dispatch.)
+    EW["pack_reg"](EW_BUF, EW["reg"].PECfg, (2 << 18) | (2 << 2))
+    EW["reg"]  # keep linters quiet
 
 
 def run_ew(a, b):

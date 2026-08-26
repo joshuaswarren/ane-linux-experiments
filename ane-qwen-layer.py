@@ -37,12 +37,15 @@ def rms_norm(x, weight, eps=1e-6):
     return (scale * weight.astype(np.float32)).astype(np.float16)
 
 
-def rope(x, position, rotary_dim=64, theta=10_000_000.0):
-    """Apply half-split RoPE from Qwen3.5 to (heads, head_dim)."""
+def rope(x, position, rotary_dim=64, theta=10_000_000.0, sections=(11, 11, 10)):
+    """Apply Qwen3.5 half-split MRoPE to (heads, head_dim)."""
     out = x.astype(np.float32).copy()
     inv = theta ** (-np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim)
-    angles = position * inv
-    cos, sin = np.cos(angles), np.sin(angles)
+    freqs = position * inv
+    for offset, section in zip((1, 2), sections[1:]):
+        indexes = np.arange(offset, section * 3, 3)
+        freqs[indexes] = position * inv[:indexes.size]
+    cos, sin = np.cos(freqs), np.sin(freqs)
     rotated = out[:, :rotary_dim].copy()
     half = rotary_dim // 2
     left, right = rotated[:, :half], rotated[:, half:]
