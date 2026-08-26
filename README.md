@@ -27,11 +27,30 @@ full story, including the mistakes, is written up at
 
 Numbers for all of the above are in `receipts/`.
 
+## Partially verified: batched submission
+
+`ane-batch.py` chains task descriptors in one submission. The submit ioctl
+carries `td_count` and the driver ORs it into the task manager's info
+register, so the hardware is told how many descriptors to expect.
+
+- Two descriptors per submission produce numerically correct output,
+  verified on three separate clean boots.
+- Timing is not yet stable: the same two-descriptor config measured 1.61ms,
+  0.75ms and 2.16ms total across those three boots. Something boot-dependent
+  dominates, so there is no per-tile figure worth quoting yet.
+- Three or more descriptors are **untested from a clean state**. The one run
+  that tried four had already executed one- and two-descriptor submissions in
+  the same process; four hung and every later submission in that boot failed
+  too, which is the queue-wedge signature rather than evidence of a
+  descriptor-count ceiling. Every test run after that inherited the wedge.
+
+No claim about a hardware limit is made here. Clean per-boot runs are needed.
+
 ## What is not proven
 
 No LLM runs on this. Every result uses random Gaussian weights: no tokenizer,
-no KV cache, no model file. The single largest gap is batched submission -
-many tiles per task-descriptor chain instead of one Python ioctl per tile.
+no KV cache, no model file. The largest gap is a submission path fast enough
+to matter, which needs the batching question above settled first.
 
 ## Warning
 
