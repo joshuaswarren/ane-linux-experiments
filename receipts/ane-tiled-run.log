@@ -1,0 +1,22 @@
+=== correctness: tiled vs numpy ===
+(  512,  256) tiles=  1 accum=cpu max_err=0.0004 rel=0.00048 argmax=ok wall=0.00s gemm=0.00s blob=0.00s accum=0.00s
+(  512,  512) tiles=  2 accum=cpu max_err=0.0004 rel=0.00043 argmax=ok wall=0.00s gemm=0.00s blob=0.00s accum=0.00s
+( 1024,  256) tiles=  2 accum=cpu max_err=0.0003 rel=0.00040 argmax=ok wall=0.00s gemm=0.00s blob=0.00s accum=0.00s
+( 1024,  512) tiles=  4 accum=cpu max_err=0.0004 rel=0.00031 argmax=ok wall=0.01s gemm=0.01s blob=0.00s accum=0.00s
+( 1536,  768) tiles=  9 accum=cpu max_err=0.0005 rel=0.00032 argmax=ok wall=0.02s gemm=0.02s blob=0.00s accum=0.00s
+( 2048, 1024) tiles= 16 accum=cpu max_err=0.0008 rel=0.00053 argmax=ok wall=0.03s gemm=0.03s blob=0.00s accum=0.00s
+
+=== same shape, reduction on the engine instead of the CPU ===
+( 1024,  512) tiles=  4 accum=ane max_err=0.0006 rel=0.00040 argmax=ok wall=0.01s gemm=0.01s blob=0.00s accum=0.01s
+
+=== per-call cost ===
+( 2048, 1024) tiles= 16 accum=cpu max_err=0.0006 rel=0.00039 argmax=ok wall=0.03s gemm=0.03s blob=0.00s accum=0.00s
+calls=16 per_gemm=1.71ms per_blob=0.28ms per_tile_total=1.99ms
+
+=== projection, Llama-3.2-3B forward pass ===
+weights in matmuls    2.82 B
+512x256 tiles/token   21,504
+seconds/token         42.9
+tokens/second         0.02332
+GPU measured          17.96 tok/s (llama.cpp Vulkan)
+engine slower by      770x at this call granularity

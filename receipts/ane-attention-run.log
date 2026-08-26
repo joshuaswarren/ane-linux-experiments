@@ -1,0 +1,10 @@
+run 1: scores_max_err=0.0005 probs_max_err=0.0010 out_max_err=0.0012 argmax_match=True
+run 2: scores_max_err=0.0005 probs_max_err=0.0010 out_max_err=0.0012 argmax_match=True
+run 3: scores_max_err=0.0005 probs_max_err=0.0010 out_max_err=0.0012 argmax_match=True
+
+scores[0]      = [-2.0253906   1.6669922   0.28027344  1.4208984 ]
+scores_ref[0]  = [-2.0252657  1.6670879  0.2802621  1.4206612]
+probs[0]       = [0.21386719 0.2709961  0.24853516 0.2668457 ] sum 1.0002441
+probs_ref[0]   = [0.21482795 0.2705913  0.24812508 0.26645567]
+out[0][:5]     = [ 0.02140808  0.12176514 -0.2166748  -0.23522949 -0.17053223]
+out_ref[0][:5] = [ 0.02126408  0.12166505 -0.21611721 -0.234346   -0.17004223]

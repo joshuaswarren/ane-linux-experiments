@@ -1,0 +1,1 @@
+d222767 kleidiai: Rework KleidiAI Build System/Integration (#26077)

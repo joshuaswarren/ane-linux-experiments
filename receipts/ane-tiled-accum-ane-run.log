@@ -1,0 +1,7 @@
+=== correctness: tiled vs numpy ===
+(  512,  256) tiles=  1 accum=ane max_err=0.0004 rel=0.00048 argmax=ok wall=0.00s gemm=0.00s blob=0.00s accum=0.00s
+(  512,  512) tiles=  2 accum=ane max_err=0.0005 rel=0.00056 argmax=ok wall=0.01s gemm=0.00s blob=0.00s accum=0.00s
+( 1024,  256) tiles=  2 accum=ane max_err=0.0003 rel=0.00040 argmax=ok wall=0.00s gemm=0.00s blob=0.00s accum=0.00s
+( 1024,  512) tiles=  4 accum=ane max_err=0.0008 rel=0.00057 argmax=ok wall=0.02s gemm=0.01s blob=0.00s accum=0.01s
+( 1536,  768) tiles=  9 accum=ane max_err=0.0008 rel=0.00050 argmax=ok wall=0.04s gemm=0.02s blob=0.00s accum=0.02s
+( 2048, 1024) tiles= 16 accum=ane max_err=0.0012 rel=0.00078 argmax=ok wall=0.07s gemm=0.03s blob=0.00s accum=0.04s

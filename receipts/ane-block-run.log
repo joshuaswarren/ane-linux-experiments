@@ -1,0 +1,12 @@
+run 1: shape=(4, 512) max_abs_err=0.0058 mean_abs_err=0.0009 argmax_match=False
+run 2: shape=(4, 512) max_abs_err=0.0058 mean_abs_err=0.0009 argmax_match=False
+run 3: shape=(4, 512) max_abs_err=0.0058 mean_abs_err=0.0009 argmax_match=False
+
+out[0][:6] = [ 0.96191406 -0.57128906 -1.3037109  -0.08758545  0.17895508 -0.35009766]
+ref[0][:6] = [ 0.96105756 -0.57141378 -1.30288985 -0.08827092  0.17747834 -0.34904399]
+
+argmax diagnostic, per row:
+  row 0: ane_argmax=344 ref_argmax=344 top1-top2_margin=0.08756 row_max_err=0.00259 -> same
+  row 1: ane_argmax=344 ref_argmax=344 top1-top2_margin=0.32252 row_max_err=0.00386 -> same
+  row 2: ane_argmax=344 ref_argmax=344 top1-top2_margin=0.07347 row_max_err=0.00275 -> same
+  row 3: ane_argmax=344 ref_argmax=346 top1-top2_margin=0.00131 row_max_err=0.00576 -> flip within error
