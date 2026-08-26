@@ -36,8 +36,10 @@ TD_SIZE = 0x274
 TD_SPACING = 0x300
 WEIGHT_OFFSET = 0x274
 WEIGHT_BYTES = 0x80000
+WEIGHT_BYTES_512 = 0x100000
 CMD_BYTES = 0x8000
 SRC_BYTES = 0x4000
+SRC_BYTES_512 = 0x8000
 OUT_BYTES = 0x8000
 WAIT_S = 1.0
 
@@ -124,6 +126,17 @@ def pack_weights(matrix):
     for tile in range(16):
         base = tile * 16384 + 6
         blob[base:base + 256 * 32] = matrix[tile * 32:(tile + 1) * 32].T.reshape(-1)
+    return blob
+
+def pack_weights_512(matrix):
+    """Pack a canonical (512, 512) fp16 matrix into the ANE DMA blob."""
+    matrix = np.asarray(matrix, dtype=np.float16)
+    if matrix.shape != (512, 512):
+        raise ValueError(f"weights must have shape (512, 512), got {matrix.shape}")
+    blob = np.zeros(WEIGHT_BYTES_512 // 2, dtype=np.float16)
+    for tile in range(16):
+        base = tile * 16384
+        blob[base:base + 512 * 32] = matrix[tile * 32:(tile + 1) * 32].T.reshape(-1)
     return blob
 
 class Device:
@@ -218,6 +231,21 @@ class Device:
         return np.frombuffer(raw, dtype=np.float16)[:512 * 32:32].copy()
 
 
+    def gemm512(self, weights, activation, descriptor):
+        """Run one canonical 512x512 fp16 matrix-vector product."""
+        activation = np.asarray(activation, dtype=np.float16)
+        if activation.shape != (512,):
+            raise ValueError(f"activation must have shape (512,), got {activation.shape}")
+        packed = pack_weights_512(weights)
+        command_size = ((TD_SIZE + 15) & ~15) + WEIGHT_BYTES_512
+        command = bytearray(command_size)
+        command[:len(descriptor)] = descriptor
+        command[((TD_SIZE + 15) & ~15):] = packed.tobytes()
+        source = np.zeros(SRC_BYTES_512 // 2, dtype=np.float16)
+        source[:512 * 32:32] = activation
+        raw = self.submit(bytes(command), source.tobytes(), OUT_BYTES, descriptor)
+        return np.frombuffer(raw, dtype=np.float16)[:512 * 32:32].copy()
+
     def close(self):
         if self._workspace is not None:
             for buffer in self._workspace[1]:
@@ -234,7 +262,7 @@ class Device:
         self.close()
 
 
-def load_descriptor(path):
+def load_descriptor(path, dimensions=None):
     """Load an operation builder without running its main function."""
     spec = importlib.util.spec_from_file_location("ane_operation", path)
     if spec is None or spec.loader is None:
@@ -247,6 +275,8 @@ def load_descriptor(path):
     try:
         with open(os.devnull, "w") as sink, contextlib.redirect_stdout(sink):
             spec.loader.exec_module(module)
+        if dimensions is not None:
+            module.__dict__.update({"C_GEMM": dimensions[0], "K_GEMM": dimensions[1]})
         return module.gemm_btsp()
     finally:
         sys.argv = saved_argv

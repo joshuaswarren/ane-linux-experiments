@@ -30,9 +30,9 @@ full story, including the mistakes, is written up at
   quality result.
 - **Arbitrary-size matmul by tiling** (`ane-tiled.py`): any `W @ x` in
   512x256 tiles, verified to (2048, 1024), with the cross-tile reduction
-  optionally on the engine too. A single tile costs about 1.7ms in the
-  current Python path. The submission path is the current performance
-  question.
+  optionally on the engine too. A verified 512x512 descriptor now handles
+  wide projections and halves their input-column tile count. A 1024-input
+  descriptor is not usable; its random-weight check returned `output_ok=False`.
 
 Numbers for all of the above are in `receipts/`.
 
@@ -41,15 +41,18 @@ Numbers for all of the above are in `receipts/`.
 `ane-batch.py` chains task descriptors in one submission. The submit ioctl
 carries `td_count` and the driver passes it to the task manager.
 
-- Two, three, four, and eight descriptors per submission produce numerically
-  correct output when each count is tested as the first submission after a
-  clean reboot and bring-up ladder.
+- Two, three, four, and eight identical descriptors per submission produce
+  numerically correct output when each count is tested as the first submission
+  after a clean reboot and bring-up ladder.
 - Clean first-submission results are in
   `receipts/ane-batch-perboot-clean.log`: n=3 measured 1.64ms and 1.63ms,
   n=4 measured 0.12ms and 1.64ms, and n=8 measured 1.66ms and 0.48ms total.
+- A clean two-TD test with different weight blobs produces the first output
+  but leaves the second at the `+inf` sentinel. Per-TD weight batching is not
+  verified.
 - Timing is not stable. The same n=2 configuration measured 1.61ms, 0.75ms
-  and 2.16ms total across three clean boots. Something boot-dependent
-  dominates, so no speedup or model-throughput headline is quoted.
+  and 2.16ms total across three clean boots. No model-throughput headline is
+  quoted.
 - Earlier failures were contaminated. A first run tried n=1,2,4,8 in one
   process. n=4 hung. Every later submission inherited the queue wedge. That
   did not prove a hardware limit, so no descriptor ceiling is claimed.
@@ -66,17 +69,17 @@ first tile of `blk.0.attn_qkv.weight` on the ANE and matches numpy within
 Qwen3.8-Flash-Next does not fit this machine. Its official repository is
 360.0 GB. Its available `UD-Q4_K_XL` quant is 111.3 GB.
 
-## What is not proven
+## Current Qwen status
 
-No generated text is validated against llama.cpp yet. `ane-qwen-model.py`
-runs the 24 main Qwen layers; GGUF `blk.24.nextn.*` is the MTP head and stays
-outside the loop. The model runs both Gated DeltaNet and full-attention paths,
-persistent state, and tied output logits. One real token step produced finite
-`(2048,)` hidden state and `(248320,)` logits. CPU and ANE agree on one
-generated token and the following next-token ID. `ane-tokenizer.py` provides
-real CPU token IDs. `ane-kv-cache.py` provides bounded full-attention state.
-Vulkan is the GPU path, not an ANE API; a GPU tokenizer remains a future
-backend behind the same token-ID contract.
+`ane-qwen-model.py` runs all 24 main Qwen layers; GGUF `blk.24.nextn.*` is
+the MTP head and stays outside the loop. It runs both Gated DeltaNet and
+full-attention paths, persistent state, and tied output logits. CPU and ANE
+agree on two generated prompts and return finite `(2048,)` hidden state and
+`(248320,)` logits. `ane-tokenizer.py` provides real CPU token IDs, and
+`ane-kv-cache.py` provides bounded full-attention state. The custom ANE path
+still differs from llama.cpp after the first `Hi` token and remains slower
+than the custom CPU path. Vulkan is the working fast GPU path; a GPU tokenizer
+remains a future backend behind the same token-ID contract.
 
 ## Warning
 
