@@ -21,30 +21,31 @@ full story, including the mistakes, is written up at
   buffers and computes nothing.
 - **Arbitrary-size matmul by tiling** (`ane-tiled.py`): any `W @ x` in
   512x256 tiles, verified to (2048, 1024), with the cross-tile reduction
-  optionally on the engine too. Measured cost: ~1.9 ms per tile, dominated by
-  the ioctl round trip, which projects a 3B model at ~0.023 tok/s. The wall
-  is submission granularity, not arithmetic.
+  optionally on the engine too. A single tile costs about 1.7ms in the
+  current Python path. The submission path is the current performance
+  question.
 
 Numbers for all of the above are in `receipts/`.
 
 ## Partially verified: batched submission
 
 `ane-batch.py` chains task descriptors in one submission. The submit ioctl
-carries `td_count` and the driver ORs it into the task manager's info
-register, so the hardware is told how many descriptors to expect.
+carries `td_count` and the driver passes it to the task manager.
 
-- Two descriptors per submission produce numerically correct output,
-  verified on three separate clean boots.
-- Timing is not yet stable: the same two-descriptor config measured 1.61ms,
-  0.75ms and 2.16ms total across those three boots. Something boot-dependent
-  dominates, so there is no per-tile figure worth quoting yet.
-- Three or more descriptors are **untested from a clean state**. The one run
-  that tried four had already executed one- and two-descriptor submissions in
-  the same process; four hung and every later submission in that boot failed
-  too, which is the queue-wedge signature rather than evidence of a
-  descriptor-count ceiling. Every test run after that inherited the wedge.
+- Two, three, four, and eight descriptors per submission produce numerically
+  correct output when each count is tested as the first submission after a
+  clean reboot and bring-up ladder.
+- Clean first-submission results are in
+  `receipts/ane-batch-perboot-clean.log`: n=3 measured 1.64ms and 1.63ms,
+  n=4 measured 0.12ms and 1.64ms, and n=8 measured 1.66ms and 0.48ms total.
+- Timing is not stable. The same n=2 configuration measured 1.61ms, 0.75ms
+  and 2.16ms total across three clean boots. Something boot-dependent
+  dominates, so no speedup or model-throughput headline is quoted.
+- Earlier failures were contaminated. A first run tried n=1,2,4,8 in one
+  process. n=4 hung. Every later submission inherited the queue wedge. That
+  did not prove a hardware limit, so no descriptor ceiling is claimed.
 
-No claim about a hardware limit is made here. Clean per-boot runs are needed.
+Use `--only N` to test one count as the first submission of a boot.
 
 ## What is not proven
 

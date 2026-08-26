@@ -37,9 +37,14 @@ TD layout facts used here (from gemm.py and concat.py):
 """
 import os
 import struct
+import sys
 import time
 
 import numpy as np
+
+_only = None
+if "--only" in sys.argv:
+    _only = int(sys.argv[sys.argv.index("--only") + 1])
 
 GEMM = os.path.expanduser("~/src/apple-ane/examples/gemm.py")
 src = open(GEMM).read()
@@ -151,6 +156,21 @@ def run(n, tds, cmd_buf, out_bytes):
 
 def main():
     base_td = bytes(BTSP_BUF)
+
+    if _only is not None:
+        # One n per boot, as the FIRST submission of a clean engine.
+        # Anything after a hung submission in the same boot is void: the
+        # queue wedges and every later submit fails regardless of n.
+        n = _only
+        tsk_size = (n - 1) * TD_SPACING + TD_SIZE
+        cmd = make_cmd(tsk_size, [np.float16(0.5)])
+        ret, wall, out = run(n, [base_td] * n, cmd, OUT_BYTES)
+        got = out.reshape(C, STRIDE)[:, 0]
+        exp = np.full(C, 256 * 0.5, dtype=np.float16)
+        ok = bool(np.array_equal(got, exp))
+        print(f"ONLY n={n} ret={ret} wall={wall * 1e3:.2f}ms "
+              f"per_tile={wall / n * 1e3:.2f}ms output_ok={ok}")
+        return
 
     print("=== phase A: identical TDs, one submission ===")
     for n in (1, 2, 4, 8):
