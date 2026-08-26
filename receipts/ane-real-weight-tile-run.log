@@ -1,0 +1,8 @@
+tensor=blk.0.attn_q.weight source_shape=(3072, 3072) tile=(512, 256)
+max_abs_err=0.000740 mean_abs_err=0.000119 finite=True
+ANE_REAL_WEIGHT_TILE_OK
+
+Loaded the real Q4_K tensor from the cached Llama-3.2-3B-Instruct GGUF with
+llama.cpp gguf-py, dequantized it, converted the first 512x256 tile to the
+ANE fp16 DMA layout, and ran one matrix-vector projection through the
+resource-safe runtime on qid 0.

@@ -22,6 +22,11 @@ full story, including the mistakes, is written up at
 - **A resource-safe runtime** (`ane-runtime.py`): owns the DRM fd and every
   BO, submits a real gemm, waits for output DMA, frees each BO, and passes
   `runtime_gemm max_err=0.0000 output_ok=True` on real hardware.
+- **A real model-weight tile** (`ane-weights.py`, `ane-real-tile.py`):
+  dequantizes `blk.0.attn_q.weight` from a Llama-3.2-3B Q4_K GGUF, converts
+  its first 512x256 tile to the ANE fp16 layout, and matches numpy with
+  `max_abs_err=0.000740`. This is one projection tile, not a full forward
+  pass.
 - **Arbitrary-size matmul by tiling** (`ane-tiled.py`): any `W @ x` in
   512x256 tiles, verified to (2048, 1024), with the cross-tile reduction
   optionally on the engine too. A single tile costs about 1.7ms in the
@@ -49,11 +54,13 @@ carries `td_count` and the driver passes it to the task manager.
   did not prove a hardware limit, so no descriptor ceiling is claimed.
 ## What is not proven
 
-No LLM runs on this. Every result uses random Gaussian weights: no tokenizer,
-no KV cache, no model file. The next runtime work is to load real model
-weights, convert them to the ANE fp16 tile layout, and carry a KV cache across
-tokens. Tokenization can stay on the CPU first. Vulkan is the GPU path, not an
-ANE API; a GPU tokenizer is possible later but does not replace this runtime.
+No full LLM runs on this. The remaining model path needs all real tensors
+converted and scheduled, a tokenizer, and a KV cache across tokens.
+`ane-tokenizer.py` provides a real CPU token-ID path through llama.cpp.
+`ane-kv-cache.py` provides bounded per-layer key/value state and passes its
+self-test. Tokenization can stay on the CPU first. Vulkan is the GPU path,
+not an ANE API; a GPU tokenizer is possible later but does not replace this
+runtime.
 
 ## Warning
 
@@ -81,6 +88,10 @@ Do not run any of this on a machine you care about keeping up.
 
 | File | What it does |
 |---|---|
+| `ane-weights.py` | Dequantize GGUF tensors and emit ANE fp16 tiles |
+| `ane-real-tile.py` | Execute one real model tile and compare with numpy |
+| `ane-tokenizer.py` | Token IDs from a real GGUF through llama.cpp |
+| `ane-kv-cache.py` | Bounded per-layer key/value state |
 | `ane-bringup.sh` | The gated bring-up ladder; run this first, every boot |
 | `ane-network.py` | 2-layer MLP, gemm + relu, vs numpy |
 | `ane-softmax.py` | Softmax from composed primitives, vs numpy |

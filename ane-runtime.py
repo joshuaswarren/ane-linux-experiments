@@ -112,6 +112,17 @@ class Buffer:
         self.close()
 
 
+def pack_weights(matrix):
+    """Pack a canonical (512, 256) fp16 matrix into the ANE DMA blob."""
+    matrix = np.asarray(matrix, dtype=np.float16)
+    if matrix.shape != (512, 256):
+        raise ValueError(f"weights must have shape (512, 256), got {matrix.shape}")
+    blob = np.zeros(WEIGHT_BYTES // 2, dtype=np.float16)
+    for tile in range(16):
+        base = tile * 16384 + 6
+        blob[base:base + 256 * 32] = matrix[tile * 32:(tile + 1) * 32].T.reshape(-1)
+    return blob
+
 class Device:
     """Own the ANE fd and submit operation descriptors safely."""
 
@@ -174,16 +185,14 @@ class Device:
                 return result
 
     def gemm(self, weights, activation, descriptor):
-        """Run one 512x256 fp16 gemm using a supplied descriptor template."""
-        weights = np.asarray(weights, dtype=np.float16)
+        """Run one canonical 512x256 fp16 matrix-vector product."""
         activation = np.asarray(activation, dtype=np.float16)
-        if weights.nbytes != WEIGHT_BYTES:
-            raise ValueError(f"weights must be {WEIGHT_BYTES} bytes")
-        if activation.size != 256:
-            raise ValueError("activation must contain 256 fp16 values")
+        if activation.shape != (256,):
+            raise ValueError(f"activation must have shape (256,), got {activation.shape}")
+        packed = pack_weights(weights)
         command = bytearray(CMD_BYTES)
         command[:len(descriptor)] = descriptor
-        command[WEIGHT_OFFSET:WEIGHT_OFFSET + WEIGHT_BYTES] = weights.tobytes()
+        command[WEIGHT_OFFSET:WEIGHT_OFFSET + WEIGHT_BYTES] = packed.tobytes()
         source = np.zeros(SRC_BYTES // 2, dtype=np.float16)
         source[:256 * 32:32] = activation
         raw = self.submit(bytes(command), source.tobytes(), OUT_BYTES, descriptor)
@@ -219,7 +228,7 @@ def load_descriptor(path):
 def self_test(qid=None):
     descriptor_path = os.path.join(os.path.dirname(__file__), "ane-network.py")
     descriptor = load_descriptor(descriptor_path)
-    weights = np.full(WEIGHT_BYTES // 2, np.float16(0.5))
+    weights = np.full((512, 256), np.float16(0.5))
     activation = np.ones(256, dtype=np.float16)
     with Device(qid=qid) as device:
         got = device.gemm(weights, activation, descriptor)
