@@ -1,9 +1,9 @@
 # Apple Neural Engine experiments on Linux
 
 Scripts and receipts from getting real work out of the Apple Neural Engine on
-an M1 MacBook Pro running Linux (Asahi kernel, Arch userland). Everything here
-was verified against numpy on real hardware. The full story, including the
-mistakes, is written up at
+an M1 MacBook Pro running Omarchy for Mac (Arch and Hyprland on the Asahi
+kernel). Everything here was verified against numpy on real hardware. The
+full story, including the mistakes, is written up at
 [joshuawarren.com](https://joshuawarren.com/blog/m1-neural-engine-linux-gpu-llm/).
 
 ## What is proven
@@ -42,15 +42,18 @@ Do not run any of this on a machine you care about keeping up.
 
 ## Standing on
 
+- [omarchy-mac](https://github.com/omarchy-mac/omarchy-mac) - the platform
+  this all ran on: the opinionated Arch and Hyprland setup for Apple silicon
+  Macs. The userland, the tooling, and the reason the machine was usable as
+  a workbench at all.
 - [eiln/ane](https://github.com/eiln/ane) - Eileen Yoon's reverse-engineered
   kernel driver and userspace library, and the
   [t8103 device-tree patch](https://github.com/AsahiLinux/linux/commit/bf6651bb55212f2cfab573bd0d49bf5c601b4703)
   that carries the six ANE power domains and the real MMIO base.
 - [allbilly/ane](https://github.com/allbilly/ane) - ops driven from Python
   with nothing but numpy, which these scripts build on and expect at
-  `~/src/apple-ane`.
-- [Asahi Linux](https://asahilinux.org/) - everything else about this
-  machine working at all.
+  `~/src/apple-ane`. The Asahi kernel underneath provides the DART and
+  power-management plumbing these drivers sit on.
 
 ## Layout
 
