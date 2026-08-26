@@ -1,14 +1,17 @@
 prompt_tokens=[12675]
-layers=25 full_layers=7
-hidden_shape=(2048,) logits_shape=(248320,) next_token=276
+layers=24 full_layers=6
+generated_ids=[369] generated_pieces=['Ġis']
+next_token_after_generated=264
+hidden_shape=(2048,) logits_shape=(248320,)
 hidden_finite=True logits_finite=True
 ANE_QWEN_FULL_TOKEN_STEP_OK
 
 Selected model: empero-ai/Qwen3.8-2B-Distill-GGUF,
 Qwen3.8-2B-Q4_K_M.gguf, SHA-256
 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff.
-The run used the ANE linear projections, CPU RMSNorm/conv/DeltaNet/attention,
-persistent recurrent and K/V state, and tied embedding logits. The CPU and
-ANE backends now return the same next-token ID after correcting GGUF tensor
-orientation. It did not validate token quality against llama.cpp or emit a
-sampled answer.
+CPU and ANE backends returned the same generated token ID 369 (`is`) and the
+same next-token ID 264 for the prompt token 12675 (`Hi`). The main model has
+24 layers; GGUF blk.24 is the MTP head and is excluded. The run used ANE
+linear projections, CPU RMSNorm/conv/DeltaNet/attention, persistent recurrent
+and K/V state, and tied embedding logits. It did not validate model quality
+against llama.cpp or claim a fluent answer.

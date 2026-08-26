@@ -108,7 +108,7 @@ class QwenModel:
         self.qid = qid
         self.device = runtime.Device(qid=qid)
         self.layers = []
-        for index in range(25):
+        for index in range(24):
             prefix = f"blk.{index}"
             full = self.has(f"{prefix}.attn_q.weight")
             layer = {
