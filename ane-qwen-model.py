@@ -212,9 +212,10 @@ class QwenModel:
     def full_layer(self, layer, hidden, position):
         x = rms_norm(hidden, layer["input_norm"])
         q = self.projection(layer["q"], x)
+        q_full = q.reshape(8, 512)
+        q_heads, gate = q_full[:, :256], q_full[:, 256:].reshape(-1)
         k = self.projection(layer["k"], x)
         v = self.projection(layer["v"], x)
-        q_heads, gate = q[:2048].reshape(8, 256), q[2048:]
         k_heads, v_heads = k.reshape(2, 256), v.reshape(2, 256)
         q_heads = rope(rms_norm(q_heads, layer["q_norm"]), position)
         k_heads = rope(rms_norm(k_heads, layer["k_norm"]), position)
@@ -249,6 +250,7 @@ def main():
     parser.add_argument("--qid", type=int, default=None)
     parser.add_argument("--backend", choices=("ane", "cpu"), default="ane")
     parser.add_argument("--norm-add-one", action="store_true")
+    parser.add_argument("--generate", type=int, default=0)
     args = parser.parse_args()
     global _NORM_ADD_ONE
     _NORM_ADD_ONE = args.norm_add_one
@@ -269,11 +271,21 @@ def main():
         hidden = np.zeros(2048, dtype=np.float16)
         for position, token_id in enumerate(token_ids):
             hidden = model.step(weights.row("token_embd.weight", token_id), position)
-        logits = model.logits(hidden)
-        next_id = int(np.argmax(logits))
+        generated_ids = []
+        generated_pieces = []
+        token_field = weights.reader.get_field("tokenizer.ggml.tokens")
+        for offset in range(args.generate + 1):
+            logits = model.logits(hidden)
+            next_id = int(np.argmax(logits))
+            if offset == args.generate:
+                break
+            generated_ids.append(next_id)
+            generated_pieces.append(token_field.contents(next_id) if token_field else str(next_id))
+            hidden = model.step(weights.row("token_embd.weight", next_id), len(token_ids) + offset)
         print(f"prompt_tokens={token_ids}")
         print(f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}")
         print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
+        print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
         print(f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}")
         print("ANE_QWEN_FULL_TOKEN_STEP_OK")
     finally:

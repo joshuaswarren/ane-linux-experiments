@@ -114,7 +114,8 @@ def main():
             k_err = max(k_err, float(np.abs(k - k_ref).max()))
             v_err = max(v_err, float(np.abs(v - v_ref).max()))
 
-            q_heads, gate = q[:2048].reshape(8, 256), q[2048:]
+            q_full = q.reshape(8, 512)
+            q_heads, gate = q_full[:, :256], q_full[:, 256:].reshape(-1)
             k_heads = k.reshape(2, 256)
             v_heads = v.reshape(2, 256)
             q_heads = rms_norm(q_heads, q_norm)

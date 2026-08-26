@@ -1,0 +1,12 @@
+prompt_tokens=[12675]
+backend=cpu generated_ids=[82] generated_pieces=['s'] next_token_after_generated=5475
+backend=ane generated_ids=[82] generated_pieces=['s'] next_token_after_generated=5475
+hidden_shape=(2048,) logits_shape=(248320,)
+hidden_finite=True logits_finite=True
+ANE_QWEN_CPU_ANE_GENERATION_PARITY_OK
+
+Selected model: empero-ai/Qwen3.8-2B-Distill-GGUF,
+Qwen3.8-2B-Q4_K_M.gguf, SHA-256
+4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff.
+This proves backend parity for one generated token and one following
+next-token calculation. It does not prove quality parity against llama.cpp.
