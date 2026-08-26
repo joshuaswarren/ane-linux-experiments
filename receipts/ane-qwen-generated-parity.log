@@ -1,7 +1,7 @@
 prompt=Hi
 backend=cpu generated_ids=[11, 488] generated_pieces=[',', 'Ġyou'] next_token_after_generated=628
 backend=ane generated_ids=[11, 488] generated_pieces=[',', 'Ġyou'] next_token_after_generated=628
-cpu_ane_top10_ids_match=True
+cpu_ane_top10_id_sets_match=True
 hidden_shape=(2048,) logits_shape=(248320,)
 hidden_finite=True logits_finite=True
 ANE_QWEN_CPU_ANE_GENERATION_PARITY_OK
