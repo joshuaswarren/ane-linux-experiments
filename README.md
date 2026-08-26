@@ -67,13 +67,13 @@ Qwen3.8-Flash-Next does not fit this machine. Its official repository is
 
 ## What is not proven
 
-No full LLM runs on this. The remaining model path needs all real tensors
-converted and scheduled, a complete Qwen hybrid layer, output logits, and a
-KV cache across token steps. `ane-tokenizer.py` provides a real CPU token-ID
-path through llama.cpp. `ane-kv-cache.py` provides bounded per-layer key/value
-state and passes its self-test. Tokenization can stay on the CPU first.
-Vulkan is the GPU path, not an ANE API; a GPU tokenizer is possible later but
-does not replace this runtime.
+No generated text is validated yet. `ane-qwen-model.py` runs all 25 Qwen
+layers, both Gated DeltaNet and full-attention paths, persistent state, and
+tied output logits. One real token step produced finite `(2048,)` hidden state
+and `(248320,)` logits, but its next-token choice is not yet matched against
+llama.cpp. `ane-tokenizer.py` provides real CPU token IDs. `ane-kv-cache.py`
+provides bounded full-attention state. Vulkan is the GPU path, not an ANE API;
+a GPU tokenizer remains a future backend behind the same token-ID contract.
 
 ## Warning
 
@@ -111,6 +111,8 @@ Do not run any of this on a machine you care about keeping up.
 | `ane-attention.py` | Full attention, both matmuls on-engine, vs numpy |
 | `ane-block.py` | Whole transformer block, no CPU arithmetic, vs numpy |
 | `ane-runtime.py` | Resource-safe fd/BO ownership and gemm submission |
+| `ane-qwen-layer.py` | Qwen full-attention layer with ANE projections |
+| `ane-qwen-model.py` | 25-layer Qwen token step and tied logits |
 | `ane-driver-qid.py` | Patch KMD to select qid through submit.pad |
 | `ane-tiled.py` | Arbitrary-size tiled matmul, cost measurement, projection |
 | `ane-transformer.py` | Earlier block variant (CPU softmax path kept for comparison) |
