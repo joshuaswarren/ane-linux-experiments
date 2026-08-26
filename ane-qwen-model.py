@@ -186,6 +186,7 @@ class QwenModel:
         mixed = silu(mixed.astype(np.float16))
         query, key, value = np.split(mixed, 3)
         query = l2_norm(query.reshape(16, 128))
+        query = (query.astype(np.float32) / np.sqrt(128.0)).astype(np.float16)
         key = l2_norm(key.reshape(16, 128))
         value = value.reshape(16, 128).astype(np.float32)
         decay = layer["a_log"].astype(np.float32) * np.log1p(
