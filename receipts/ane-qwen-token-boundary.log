@@ -1,0 +1,8 @@
+prompt_tokens=[760, 4560, 8213]
+layer=blk.3 q_shape=(4096,) kv_shape=(2, 3, 256)
+kv_length=3 q_finite=True kv_finite=True
+ANE_QWEN_TOKEN_BOUNDARY_OK
+
+CPU tokenizer -> real Qwen token embedding rows -> tiled ANE Q/K/V
+projections -> persistent KVCache for the full-attention layer. This is a
+real token boundary, not full logits, sampling, or language-model output.
