@@ -52,15 +52,28 @@ carries `td_count` and the driver passes it to the task manager.
 - Earlier failures were contaminated. A first run tried n=1,2,4,8 in one
   process. n=4 hung. Every later submission inherited the queue wedge. That
   did not prove a hardware limit, so no descriptor ceiling is claimed.
+
+## Standard model
+
+This work uses `empero-ai/Qwen3.8-2B-Distill-GGUF`, specifically
+`Qwen3.8-2B-Q4_K_M.gguf` at 1,312,164,224 bytes. It fits the 16 GB M1 and
+uses the Qwen3.5-2B hybrid Gated DeltaNet/full-attention architecture.
+`ane-weights.py` dequantizes its Q4_K tensors. `ane-real-tile.py` runs the
+first tile of `blk.0.attn_qkv.weight` on the ANE and matches numpy within
+`max_abs_err=0.000402`.
+
+Qwen3.8-Flash-Next does not fit this machine. Its official repository is
+360.0 GB. Its available `UD-Q4_K_XL` quant is 111.3 GB.
+
 ## What is not proven
 
 No full LLM runs on this. The remaining model path needs all real tensors
-converted and scheduled, a tokenizer, and a KV cache across tokens.
-`ane-tokenizer.py` provides a real CPU token-ID path through llama.cpp.
-`ane-kv-cache.py` provides bounded per-layer key/value state and passes its
-self-test. Tokenization can stay on the CPU first. Vulkan is the GPU path,
-not an ANE API; a GPU tokenizer is possible later but does not replace this
-runtime.
+converted and scheduled, a complete Qwen hybrid layer, output logits, and a
+KV cache across token steps. `ane-tokenizer.py` provides a real CPU token-ID
+path through llama.cpp. `ane-kv-cache.py` provides bounded per-layer key/value
+state and passes its self-test. Tokenization can stay on the CPU first.
+Vulkan is the GPU path, not an ANE API; a GPU tokenizer is possible later but
+does not replace this runtime.
 
 ## Warning
 
