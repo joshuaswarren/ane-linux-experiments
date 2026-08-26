@@ -22,11 +22,11 @@ full story, including the mistakes, is written up at
 - **A resource-safe runtime** (`ane-runtime.py`): owns the DRM fd and every
   BO, submits a real gemm, waits for output DMA, frees each BO, and passes
   `runtime_gemm max_err=0.0000 output_ok=True` on real hardware.
-- **A real model-weight tile** (`ane-weights.py`, `ane-real-tile.py`):
-  dequantizes `blk.0.attn_q.weight` from a Llama-3.2-3B Q4_K GGUF, converts
-  its first 512x256 tile to the ANE fp16 layout, and matches numpy with
-  `max_abs_err=0.000740`. This is one projection tile, not a full forward
-  pass.
+- **Real Qwen model weights** (`ane-weights.py`, `ane-real-tile.py`):
+  dequantizes `blk.0.attn_qkv.weight` from the selected Qwen3.8-2B Q4_K_M
+  GGUF, converts its first 512x256 tile to the ANE fp16 layout, and matches
+  numpy within `max_abs_err=0.000402`. This is one projection tile, not a
+  quality result.
 - **Arbitrary-size matmul by tiling** (`ane-tiled.py`): any `W @ x` in
   512x256 tiles, verified to (2048, 1024), with the cross-tile reduction
   optionally on the engine too. A single tile costs about 1.7ms in the
@@ -67,13 +67,14 @@ Qwen3.8-Flash-Next does not fit this machine. Its official repository is
 
 ## What is not proven
 
-No generated text is validated yet. `ane-qwen-model.py` runs all 25 Qwen
-layers, both Gated DeltaNet and full-attention paths, persistent state, and
-tied output logits. One real token step produced finite `(2048,)` hidden state
-and `(248320,)` logits, but its next-token choice is not yet matched against
-llama.cpp. `ane-tokenizer.py` provides real CPU token IDs. `ane-kv-cache.py`
-provides bounded full-attention state. Vulkan is the GPU path, not an ANE API;
-a GPU tokenizer remains a future backend behind the same token-ID contract.
+No generated text is validated against llama.cpp yet. `ane-qwen-model.py`
+runs all 25 Qwen layers, both Gated DeltaNet and full-attention paths,
+persistent state, and tied output logits. One real token step produced finite
+`(2048,)` hidden state and `(248320,)` logits. The CPU and ANE backends return
+the same next-token ID after the tensor-orientation fix. `ane-tokenizer.py`
+provides real CPU token IDs. `ane-kv-cache.py` provides bounded full-attention
+state. Vulkan is the GPU path, not an ANE API; a GPU tokenizer remains a
+future backend behind the same token-ID contract.
 
 ## Warning
 

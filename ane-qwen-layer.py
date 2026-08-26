@@ -82,13 +82,13 @@ def main():
     token_ids = tokenizer.encode(args.prompt)
 
     layer = "blk.3"
-    q_weight = weights.tensor(f"{layer}.attn_q.weight").T
-    k_weight = weights.tensor(f"{layer}.attn_k.weight").T
-    v_weight = weights.tensor(f"{layer}.attn_v.weight").T
-    o_weight = weights.tensor(f"{layer}.attn_output.weight").T
-    gate_weight = weights.tensor(f"{layer}.ffn_gate.weight").T
-    up_weight = weights.tensor(f"{layer}.ffn_up.weight").T
-    down_weight = weights.tensor(f"{layer}.ffn_down.weight").T
+    q_weight = weights.tensor(f"{layer}.attn_q.weight")
+    k_weight = weights.tensor(f"{layer}.attn_k.weight")
+    v_weight = weights.tensor(f"{layer}.attn_v.weight")
+    o_weight = weights.tensor(f"{layer}.attn_output.weight")
+    gate_weight = weights.tensor(f"{layer}.ffn_gate.weight")
+    up_weight = weights.tensor(f"{layer}.ffn_up.weight")
+    down_weight = weights.tensor(f"{layer}.ffn_down.weight")
     input_norm = weights.tensor(f"{layer}.attn_norm.weight")
     q_norm = weights.tensor(f"{layer}.attn_q_norm.weight")
     k_norm = weights.tensor(f"{layer}.attn_k_norm.weight")

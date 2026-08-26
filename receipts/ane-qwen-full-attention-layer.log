@@ -1,0 +1,10 @@
+prompt_tokens=[760, 4560, 8213]
+layer=blk.3 q_shape=(4096,) kv_shape=(2, 3, 256) kv_length=3
+q_max_abs_err=0.001128 k_max_abs_err=0.000835 v_max_abs_err=0.000741 o_max_abs_err=0.000947 gate_max_abs_err=0.001027 up_max_abs_err=0.001054 down_max_abs_err=0.001899
+hidden_finite=True kv_finite=True
+ANE_QWEN_FULL_ATTENTION_LAYER_OK
+
+Qwen3.5 full-attention layer 3: ANE linear projections, CPU RMSNorm, Q/K
+normalization, RoPE, causal GQA, sigmoid gate, residual, and MLP. All matrix
+projection errors compare ANE output against numpy using the same corrected
+output-by-input GGUF tensors.

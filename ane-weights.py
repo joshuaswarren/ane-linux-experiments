@@ -46,11 +46,10 @@ class GGUFWeights:
         return tuple(t.name for t in self.reader.tensors)
 
     def tensor(self, name):
-        """Return one named tensor as canonical fp16 ndarray."""
+        """Return one named tensor in its dequantized output-by-input layout."""
         tensor = self._tensor_record(name)
         value = self.dequantize(tensor.data, tensor.tensor_type)
-        shape = tuple(int(dim) for dim in tensor.shape)
-        return value.reshape(shape).astype(np.float16, copy=False)
+        return value.astype(np.float16, copy=False)
 
     def row(self, name, index):
         """Dequantize one row without expanding the whole tensor."""

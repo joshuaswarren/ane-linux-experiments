@@ -70,9 +70,9 @@ def main():
     if embedding_record.shape[0] != 2048:
         raise ValueError(f"unexpected embedding shape {tuple(embedding_record.shape)}")
     layer = "blk.3"
-    q_weight = weights.tensor(f"{layer}.attn_q.weight").T
-    k_weight = weights.tensor(f"{layer}.attn_k.weight").T
-    v_weight = weights.tensor(f"{layer}.attn_v.weight").T
+    q_weight = weights.tensor(f"{layer}.attn_q.weight")
+    k_weight = weights.tensor(f"{layer}.attn_k.weight")
+    v_weight = weights.tensor(f"{layer}.attn_v.weight")
     cache = cache_module.KVCache(n_heads=2, head_dim=256, max_seq=len(token_ids))
 
     with runtime.Device(qid=args.qid) as device:
