@@ -1,0 +1,11 @@
+512-input ANE GEMM:
+C_GEMM=512 K_GEMM=512
+random weights=(512,512), activation=(512,)
+max_err=0.0156059 output_ok=True
+
+1024-input ANE GEMM:
+C_GEMM=512 K_GEMM=1024
+random weights=(512,1024), activation=(1024,)
+max_err=137.3278 output_ok=False
+
+The Qwen model uses the verified 512-input descriptor for wide projections.

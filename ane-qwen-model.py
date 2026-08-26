@@ -105,11 +105,12 @@ def causal_attention(q, keys, values):
 class QwenModel:
     """Qwen3.5 hybrid model with ANE-backed linear projections."""
 
-    def __init__(self, model_path, gguf_py, runtime, weights, descriptor, qid):
+    def __init__(self, model_path, gguf_py, runtime, weights, descriptor, descriptor_512, qid):
         self.cpu_reference = runtime.Device is NumpyDevice
         self.weights = weights
         self.runtime = runtime
         self.descriptor = descriptor
+        self.descriptor_512 = descriptor_512
         self.qid = qid
         self.device = runtime.Device(qid=qid)
         self.layers = []
@@ -164,21 +165,23 @@ class QwenModel:
         if self.cpu_reference:
             return self.weights.row32("token_embd.weight", token_id)
         return self.weights.row("token_embd.weight", token_id)
-
     def projection(self, matrix, activation):
         if self.cpu_reference:
             return matrix.astype(np.float32) @ activation.astype(np.float32)
+        in_cols = 512 if matrix.shape[1] >= 512 else 256
+        descriptor = self.descriptor_512 if in_cols == 512 else self.descriptor
+        gemm = self.device.gemm512 if in_cols == 512 else self.device.gemm
         result = np.zeros(matrix.shape[0], dtype=np.float32)
         for row0 in range(0, matrix.shape[0], 512):
             acc = np.zeros(512, dtype=np.float32)
-            for col0 in range(0, matrix.shape[1], 256):
-                tile = np.zeros((512, 256), dtype=np.float16)
+            for col0 in range(0, matrix.shape[1], in_cols):
+                tile = np.zeros((512, in_cols), dtype=np.float16)
                 rows = min(512, matrix.shape[0] - row0)
-                cols = min(256, matrix.shape[1] - col0)
+                cols = min(in_cols, matrix.shape[1] - col0)
                 tile[:rows, :cols] = matrix[row0:row0 + rows, col0:col0 + cols]
-                x = np.zeros(256, dtype=np.float16)
+                x = np.zeros(in_cols, dtype=np.float16)
                 x[:cols] = activation[col0:col0 + cols]
-                acc += self.device.gemm(tile, x, self.descriptor).astype(np.float32)
+                acc += gemm(tile, x, descriptor).astype(np.float32)
             result[row0:row0 + min(512, matrix.shape[0] - row0)] = acc[:min(512, matrix.shape[0] - row0)]
         return result
 
@@ -276,11 +279,14 @@ def main():
         runtime.Device = NumpyDevice
     tokenizer = tokenizer_module.Tokenizer(args.model)
     weights = weights_module.GGUFWeights(args.model, args.gguf_py)
-    descriptor = None if args.backend == "cpu" else runtime.load_descriptor(
-        os.path.join(os.path.dirname(__file__), "ane-network.py")
-    )
+    descriptor = None
+    descriptor_512 = None
+    if args.backend == "ane":
+        descriptor_path = os.path.join(os.path.dirname(__file__), "ane-network.py")
+        descriptor = runtime.load_descriptor(descriptor_path)
+        descriptor_512 = runtime.load_descriptor(descriptor_path, (512, 512))
     token_ids = tokenizer.encode(args.prompt)
-    model = QwenModel(args.model, args.gguf_py, runtime, weights, descriptor, args.qid)
+    model = QwenModel(args.model, args.gguf_py, runtime, weights, descriptor, descriptor_512, args.qid)
     try:
         hidden = np.zeros(2048, dtype=np.float16)
         for position, token_id in enumerate(token_ids):
