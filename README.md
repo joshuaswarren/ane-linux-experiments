@@ -68,13 +68,14 @@ Qwen3.8-Flash-Next does not fit this machine. Its official repository is
 ## What is not proven
 
 No generated text is validated against llama.cpp yet. `ane-qwen-model.py`
-runs all 25 Qwen layers, both Gated DeltaNet and full-attention paths,
+runs the 24 main Qwen layers; GGUF `blk.24.nextn.*` is the MTP head and stays
+outside the loop. The model runs both Gated DeltaNet and full-attention paths,
 persistent state, and tied output logits. One real token step produced finite
-`(2048,)` hidden state and `(248320,)` logits. The CPU and ANE backends return
-the same next-token ID after the tensor-orientation fix. `ane-tokenizer.py`
-provides real CPU token IDs. `ane-kv-cache.py` provides bounded full-attention
-state. Vulkan is the GPU path, not an ANE API; a GPU tokenizer remains a
-future backend behind the same token-ID contract.
+`(2048,)` hidden state and `(248320,)` logits. CPU and ANE agree on one
+generated token and the following next-token ID. `ane-tokenizer.py` provides
+real CPU token IDs. `ane-kv-cache.py` provides bounded full-attention state.
+Vulkan is the GPU path, not an ANE API; a GPU tokenizer remains a future
+backend behind the same token-ID contract.
 
 ## Warning
 
@@ -97,6 +98,26 @@ Do not run any of this on a machine you care about keeping up.
   with nothing but numpy, which these scripts build on and expect at
   `~/src/apple-ane`. The Asahi kernel underneath provides the DART and
   power-management plumbing these drivers sit on.
+
+
+## Apple Core AI reference
+
+Apple's [coreai-models](https://github.com/apple/coreai-models) repo is a
+useful reference for the separate Apple Neural Engine stack on macOS and iOS
+27. It provides export recipes, PyTorch primitives, and Swift runtime tools.
+Its [Neural Engine authoring rules](https://github.com/apple/coreai-models/blob/main/skills/skills/model-authoring/references/neural_engine_rules.md)
+confirm several patterns that matter here:
+
+- use fp16 and static shapes for Neural Engine execution;
+- use BC1S layout and 1x1 Conv2d for projections;
+- split attention per head rather than expecting fused SDPA;
+- pass KV cache as readonly functional input/output;
+- use `-40000.0` instead of `-inf` for fp16 causal masks.
+
+The [Qwen3 recipe](https://github.com/apple/coreai-models/tree/main/models/qwen3)
+shows Apple's supported export path for Qwen3. It does not yet replace this
+Linux KMD runtime or provide a Qwen3.8 export, but its layout and cache rules
+are now part of the design reference for this project.
 
 ## Layout
 
