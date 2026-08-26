@@ -36,18 +36,29 @@ class GGUFWeights:
         self.reader = importlib.import_module("gguf").GGUFReader(model)
         self.dequantize = importlib.import_module("gguf.quants").dequantize
 
+    def _tensor_record(self, name):
+        try:
+            return next(t for t in self.reader.tensors if t.name == name)
+        except StopIteration as exc:
+            raise KeyError(name) from exc
+
     def names(self):
         return tuple(t.name for t in self.reader.tensors)
 
     def tensor(self, name):
         """Return one named tensor as canonical fp16 ndarray."""
-        try:
-            tensor = next(t for t in self.reader.tensors if t.name == name)
-        except StopIteration as exc:
-            raise KeyError(name) from exc
+        tensor = self._tensor_record(name)
         value = self.dequantize(tensor.data, tensor.tensor_type)
         shape = tuple(int(dim) for dim in tensor.shape)
         return value.reshape(shape).astype(np.float16, copy=False)
+
+    def row(self, name, index):
+        """Dequantize one row without expanding the whole tensor."""
+        tensor = self._tensor_record(name)
+        if tensor.data.ndim != 2 or not 0 <= index < tensor.data.shape[0]:
+            raise ValueError(f"{name} is not row-addressable at {index}")
+        value = self.dequantize(tensor.data[index:index + 1], tensor.tensor_type)
+        return value.reshape(-1).astype(np.float16, copy=False)
 
     def tiles(self, name, out_rows=512, in_cols=256):
         """Yield ``(row0, col0, tile)`` zero-padded fp16 tiles."""
