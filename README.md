@@ -6,6 +6,16 @@ kernel). Everything here was verified against numpy on real hardware. The
 full story, including the mistakes, is written up at
 [joshuawarren.com](https://joshuawarren.com/blog/m1-neural-engine-linux-gpu-llm/).
 
+## Qwen ANE success status: not achieved
+
+Success means Qwen3.8 runs on the ANE faster than CPU while matching or
+beating CPU quality. This repository has not met that bar. The `7.820x`
+result runs on the Vulkan GPU, not the ANE, and does not count.
+
+The fastest full-model ANE path remains slower than native CPU and produces
+different greedy token IDs. Until both checks pass on the ANE, this is
+research progress, not an ANE inference breakthrough.
+
 ## What is proven
 
 - **gemm and elementwise primitives** driven from Python with raw ioctls
@@ -78,23 +88,23 @@ agree on two generated prompts and return finite `(2048,)` hidden state and
 `(248320,)` logits. `ane-tokenizer.py` provides real CPU token IDs, and
 `ane-kv-cache.py` provides bounded full-attention state. The custom ANE path
 still differs from llama.cpp after the first `Hi` token and remains slower
-than the custom CPU path. The production-quality fast path is llama.cpp
-Vulkan. It matches CPU's `54.0%` HellaSwag score across the same 100 tasks
-and completes the run `7.820x` faster. An eight-token greedy trace runs
-`5.05x` faster, although its token IDs diverge after the first three.
+than the custom CPU path. The Vulkan result is a useful control. It is not an
+ANE result and does not satisfy this project's success bar. Vulkan matches
+CPU's `54.0%` HellaSwag score across the same 100 tasks and finishes `7.820x`
+faster. Its eight-token greedy trace also diverges after the first three IDs.
 See `receipts/qwen-vulkan-hellaswag.log` and
 `receipts/qwen-vulkan-exact-token-sweep.log`.
 
-## macOS static-graph reference
+## macOS ANE attempt: not a success
 
 On macOS 26.5.2, a locally patched [ANEForge](https://github.com/sbryngelson/ANEForge)
 checkout compiles the full 24-layer Qwen model into reusable ANE programs with
 resident state. It returns `[11, 353, 1144, 310]` for four greedy tokens and
 decodes them in `0.496s` after warmup. The native llama.cpp CPU reference
-returns `[11, 353, 2688, 4313]` in `0.096525s`; this confirms the static ANE
-path is fast, but its numerical parity remains incomplete. Keep ANEForge's
-Qwen residual scale at `1.0`; scale `32.0` changed the output sequence.
-See `receipts/aneforge-qwen-macos26.log` and
+returns `[11, 353, 2688, 4313]` in `0.096525s`. The ANE path is slower and
+diverges after the second token, so it does not meet the success bar.
+Keep ANEForge's Qwen residual scale at `1.0`; scale `32.0` changed the
+output sequence. See `receipts/aneforge-qwen-macos26.log` and
 `receipts/aneforge-qwen-precision-boundary.log`.
 
 ## Warning
