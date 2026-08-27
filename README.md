@@ -88,8 +88,10 @@ checkout compiles the full 24-layer Qwen model into reusable ANE programs with
 resident state. It returns `[11, 353, 1144, 310]` for four greedy tokens and
 decodes them in `0.496s` after warmup. The native llama.cpp CPU reference
 returns `[11, 353, 2688, 4313]` in `0.096525s`; this confirms the static ANE
-path is fast, but its numerical parity remains incomplete. See
-`receipts/aneforge-qwen-macos26.log`.
+path is fast, but its numerical parity remains incomplete. Keep ANEForge's
+Qwen residual scale at `1.0`; scale `32.0` changed the output sequence.
+See `receipts/aneforge-qwen-macos26.log` and
+`receipts/aneforge-qwen-precision-boundary.log`.
 
 ## Warning
 
