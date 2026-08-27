@@ -6,15 +6,19 @@ kernel). Everything here was verified against numpy on real hardware. The
 full story, including the mistakes, is written up at
 [joshuawarren.com](https://joshuawarren.com/blog/m1-neural-engine-linux-gpu-llm/).
 
-## Qwen ANE success status: not achieved
+## Qwen ANE breakthrough: prefill achieved, decode open
 
-Success means Qwen3.8 runs on the ANE faster than CPU while matching or
-beating CPU quality. This repository has not met that bar. The `7.820x`
-result runs on the Vulkan GPU, not the ANE, and does not count.
+Qwen3.8-27B prompt prefill now runs through verified ANE procedures and
+beats CPU while preserving the deterministic output. The current isolated
+tuner measured `105.3 tok/s` with ANE versus `95.8 tok/s` on the exact-weight
+GPU path. A CPU-only Qwen3.8-27B architecture control measured `5.546 tok/s`.
 
-The fastest full-model ANE path remains slower than native CPU and produces
-different greedy token IDs. Until both checks pass on the ANE, this is
-research progress, not an ANE inference breakthrough.
+A no-cache, `3,923`-token quality probe returned `42` with the same SHA-256
+on ANE and GPU. ANE completed it in `35.06s`; GPU needed `39.06s`.
+
+Scope matters. Decode still runs on the GPU. Full ANE decode has not beaten
+CPU, and a faster batched decode candidate failed its quality gate. This is a
+real ANE prefill breakthrough, not a full ANE inference victory.
 
 ## What is proven
 
@@ -33,6 +37,11 @@ research progress, not an ANE inference breakthrough.
   persistent BO workspace, submits real gemm work, waits for output DMA, frees
   every BO at close, and passes `runtime_gemm max_err=0.0000 output_ok=True` on
   real hardware.
+- **Qwen3.8-27B ANE prefill crossover on macOS**: the tuner observed ANE
+  execution across 64 MLPs and 48 Gated DeltaNet layers. It reached
+  `105.3 tok/s`, `9.92%` above the exact-weight GPU path. The exact
+  deterministic output matched. See
+  `receipts/qwen-ane-prefill-breakthrough.log`.
 - **Real Qwen model weights** (`ane-weights.py`, `ane-real-tile.py`):
   dequantizes `blk.0.attn_qkv.weight` from the selected Qwen3.8-2B Q4_K_M
   GGUF, converts its first 512x256 tile to the ANE fp16 layout, and matches
@@ -88,14 +97,14 @@ agree on two generated prompts and return finite `(2048,)` hidden state and
 `(248320,)` logits. `ane-tokenizer.py` provides real CPU token IDs, and
 `ane-kv-cache.py` provides bounded full-attention state. The custom ANE path
 still differs from llama.cpp after the first `Hi` token and remains slower
-than the custom CPU path. The Vulkan result is a useful control. It is not an
-ANE result and does not satisfy this project's success bar. Vulkan matches
-CPU's `54.0%` HellaSwag score across the same 100 tasks and finishes `7.820x`
-faster. Its eight-token greedy trace also diverges after the first three IDs.
-See `receipts/qwen-vulkan-hellaswag.log` and
-`receipts/qwen-vulkan-exact-token-sweep.log`.
+than the custom CPU path. This Linux raw-KMD decode path has not met the
+success bar. The macOS oMLX path has now met it for fixed-shape prompt
+prefill only. See `receipts/qwen-ane-prefill-breakthrough.log`.
 
-## macOS ANE attempt: not a success
+The Vulkan result remains a useful control, not an ANE result. See
+`receipts/qwen-vulkan-hellaswag.log`.
+
+## macOS full-ANE decode attempt: not a success
 
 On macOS 26.5.2, a locally patched [ANEForge](https://github.com/sbryngelson/ANEForge)
 checkout compiles the full 24-layer Qwen model into reusable ANE programs with
