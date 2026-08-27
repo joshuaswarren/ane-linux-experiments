@@ -79,6 +79,32 @@ carries `td_count` and the driver passes it to the task manager.
   process. n=4 hung. Every later submission inherited the queue wedge. That
   did not prove a hardware limit, so no descriptor ceiling is claimed.
 
+## Static ANEC graphs, weight rebinding, resident state
+
+The Linux path now runs reusable static graphs through the ANEC format.
+The stack is the `eiln/anecc` converter plus a patched `eiln/libane`. Three
+fixes made it work. The libane ANEC header offset moved from `0x800` to the
+converter's `0x1000`. Submissions now pin queue 1. Completion polls an
+output sentinel.
+
+- Retained multi-op `.ane` graphs execute. `mul`, `concat`, and the fused
+  tinygrad Conv+GOC graph all return exact expected values on Linux.
+- `ane-patch-mul-to-add.py` flips task registers in the compiled payload.
+  One MUL graph becomes an ADD graph without recompiling.
+- `ane_exec_loop` is a new libane call. It swaps the state input buffer
+  object with the state output buffer object each dispatch. Recurrent or
+  attention state stays resident on the device: `3*2*2*2 -> 24` and
+  `3+2+2+2 -> 9`.
+- `ane_bind_kernel` is a new libane call. It binds a new fp16 kernel
+  payload at runtime. An identity kernel bound into `gemm.ane` passes its
+  input through.
+
+The tied output head also now executes fully on the ANE through the verified
+descriptor runtime. Argmax and top-10 match CPU on a real prompt with max
+error `0.0228` (`receipts/ane-static-graph-loop.log`). The head remains
+slower than CPU (`0.33x`). The static `gemm.ane` layout does not yet
+reproduce canonical GEMM, so no Linux speed crossover is claimed.
+
 ## Standard model
 
 This work uses `empero-ai/Qwen3.8-2B-Distill-GGUF`, specifically
