@@ -1,0 +1,26 @@
+Experiment: Qwen3.8-2B batched ANE decode candidate
+Date: 2026-08-27
+Platform: Apple M1 Max, macOS 26.5.2
+Model: Qwen3.8-2B-Q4_K_M.gguf
+
+Batched ANE decode, batch=8, int8 ANE weights:
+  generated_ids_each=[11,353,1144,310]
+  aggregate_tokens_per_second=64.435525
+
+Native llama.cpp CPU batch=8 generation control:
+  aggregate_tokens_per_second=61.720295
+
+Speed crossover:
+  ane_speedup=1.043999x
+
+Quality gate, same first 20 HellaSwag validation tasks:
+  cpu_correct=8
+  cpu_total=20
+  cpu_accuracy=0.40
+  ane_correct=2
+  ane_total=20
+  ane_accuracy=0.10
+
+Result: rejected. The batched ANE path was 4.4% faster, but its HellaSwag
+score fell from 40% to 10%. Speed without quality does not satisfy the
+project's ANE success bar.

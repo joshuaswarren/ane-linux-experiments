@@ -1,0 +1,49 @@
+Experiment: verified Qwen3.8 ANE prefill crossover
+Date: 2026-08-27
+Platform: Apple M1 Max, macOS 26.5.2
+Runtime: oMLX 0.6.3rc2
+Model: Qwen3.8-27B-heretic-ara-oQ4e-mtp
+Scope: fixed-shape prompt prefill only; decode remains on the GPU
+
+Current isolated ANE tuner, 2048-token compiled shape, one repeat:
+  gpu_only_processing_tps=95.8
+  ane_gpu_processing_tps=105.3
+  speedup_percent=9.92
+  ane_mlp_fraction=0.6
+  ane_mlp_layers=64
+  ane_gdn_fraction=0.6
+  ane_gdn_layers=48
+  cpu_fraction=0.0
+  tuner_status=completed
+  tuner_error=null
+
+The tuner rejects candidates when compiled ANE procedures do not execute.
+This completed result therefore includes observed ANE execution, not a
+GPU-only fallback labeled as ANE.
+
+No-cache deterministic quality control, same 3923-token prompt and nonce:
+  gpu_only_total_seconds=39.06
+  gpu_only_output=42
+  gpu_only_output_sha256=73475cb40a568e8da8a045ced110137e159f890ac4da883b6b17dc651b3a8049
+  ane_gpu_total_seconds=35.06
+  ane_gpu_output=42
+  ane_gpu_output_sha256=73475cb40a568e8da8a045ced110137e159f890ac4da883b6b17dc651b3a8049
+  exact_output_match=true
+  ane_gpu_speedup=1.114090x
+
+CPU-only architecture control on the same M1 Max:
+  model=Qwen3.8-27B-Q4_0.gguf
+  model_sha256=ede16c7b36e578ca87a8c70e011e4b4633a32c831c0ce76d0f474582384e671d
+  prompt_tokens=2048
+  n_gpu_layers=0
+  samples_tps=[5.23171,5.70766,5.69857]
+  average_tps=5.545983
+
+The CPU control uses the stock Q4_0 checkpoint, not the exact heretic oQ4e
+weights. It proves the same Qwen3.8-27B architecture is far slower on CPU.
+The exact-weight ANE comparison is the GPU-only control above.
+
+Result: Qwen3.8-27B prompt prefill now runs on verified ANE procedures,
+beats the exact-weight GPU-only path, preserves the deterministic output,
+and exceeds the CPU architecture control by a wide margin. This receipt
+does not claim an ANE decode win.
