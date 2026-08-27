@@ -81,6 +81,16 @@ still differs from llama.cpp after the first `Hi` token and remains slower
 than the custom CPU path. Vulkan is the working fast GPU path; a GPU tokenizer
 remains a future backend behind the same token-ID contract.
 
+## macOS static-graph reference
+
+On macOS 26.5.2, a locally patched [ANEForge](https://github.com/sbryngelson/ANEForge)
+checkout compiles the full 24-layer Qwen model into reusable ANE programs with
+resident state. It returns `[11, 353, 1144, 310]` for four greedy tokens and
+decodes them in `0.496s` after warmup. The native llama.cpp CPU reference
+returns `[11, 353, 2688, 4313]` in `0.096525s`; this confirms the static ANE
+path is fast, but its numerical parity remains incomplete. See
+`receipts/aneforge-qwen-macos26.log`.
+
 ## Warning
 
 The bring-up path can hard-reset the machine. A wrong register write reboots
