@@ -1,0 +1,37 @@
+Experiment: deterministic Qwen3.8 CPU and Vulkan decode sweep
+Date: 2026-08-27
+Platform: Apple M1 Linux with Honeykrisp Vulkan
+Model: Qwen3.8-2B-Q4_K_M.gguf
+Model SHA256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+llama.cpp revision: f280b26983ad0fdb705a0d9ebf0503e76f2899b0
+Prompt: Hi
+Greedy tokens: 8
+
+CPU run 1:
+ids=[11,353,2688,4313,310,1791,264,709]
+decode_seconds=1.608361
+
+CPU run 2:
+ids=[11,353,2688,4313,310,1791,264,709]
+decode_seconds=1.591160
+
+Full Vulkan run 1:
+ids=[11,353,2688,264,220,17,20,1007]
+decode_seconds=0.320409
+
+Full Vulkan run 2:
+ids=[11,353,2688,264,220,17,20,1007]
+decode_seconds=0.313014
+
+Full Vulkan matches the first three CPU token IDs. It then diverges.
+The mean eight-token decode time is 1.599761 seconds on CPU and
+0.316712 seconds on Vulkan. Vulkan is 5.05 times faster for this run,
+but exact eight-token output parity is not achieved.
+
+Disabling fused Gated DeltaNet in the llama.cpp context did not change
+the Vulkan token sequence. The two unfused runs measured 0.353756 and
+0.350348 seconds.
+
+Partial Vulkan offload also diverged after the first three token IDs.
+With 20 layers offloaded, decode took 0.820513 seconds. One offloaded
+layer took 1.881422 seconds, which was slower than CPU.
