@@ -21,3 +21,8 @@ gqa=tile ids=[11, 353, 1144, 310]
 gqa=repeat ids=[11, 353, 1144, 310]
 
 Interpretation: residual scaling above the stable range changes the fp16 static-graph result; scale=1.0 is required for the recorded quality run. Cache length and GQA layout did not explain the token-2 divergence. A Qwen3.5-4B Q4_K_M static int4 compile did not finish within 1800 seconds on the 64GB 16M1MBP test host and was terminated.
+
+ANE lm_head probe, residual scale=1.0, compress=int4:
+The warmup did not complete within 1,200 seconds on the same host.
+The remote process was stopped after the timeout. The host lm_head path
+remains the measured path.
