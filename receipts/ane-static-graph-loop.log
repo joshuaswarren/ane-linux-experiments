@@ -46,3 +46,15 @@ Not yet achieved:
 - The verified descriptor runtime path executes the full tied head exactly
   (argmax and top-10 match CPU, max error 0.0228) but is still CPU-side
   slower (0.33x).
+
+Probe follow-up (same day): the layout question is sharper than "differs".
+One-hot and constant-activation probes show the graph applies a per-row
+linear map whose rows read as all-zeros or all-ones when an identity matrix
+is bound in tile-transposed form, and none of three flat bindings
+(row-major, column-major, `pack_weights_512`) reproduces canonical GEMM on
+random weights (best-case max error `74.38`). An identity matrix bound in
+RAW row-major form does pass the activation through exactly, which is why
+the earlier identity rebind looked like a working GEMM. Decoding the real
+mapping needs the TD KernelDMA descriptor fields from the HWX
+(tinygrad `extra/accel/ane/lib/ane.py` register map), not more flat-layout
+guesses.
