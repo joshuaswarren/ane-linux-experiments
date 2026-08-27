@@ -6,19 +6,22 @@ kernel). Everything here was verified against numpy on real hardware. The
 full story, including the mistakes, is written up at
 [joshuawarren.com](https://joshuawarren.com/blog/m1-neural-engine-linux-gpu-llm/).
 
-## Qwen ANE breakthrough: prefill achieved, decode open
+## Qwen ANE status: Linux full-model execution, macOS speed crossover
 
-Qwen3.8-27B prompt prefill now runs through verified ANE procedures and
-beats CPU while preserving the deterministic output. The current isolated
-tuner measured `105.3 tok/s` with ANE versus `95.8 tok/s` on the exact-weight
-GPU path. A CPU-only Qwen3.8-27B architecture control measured `5.546 tok/s`.
+The unusual result in this repository is Linux. An M1 MacBook Pro running
+Omarchy Linux now sends real Qwen3.8 GGUF weights through the Apple Neural
+Engine without Core ML, AppleNeuralEngine.framework, or a macOS runtime.
+All 24 main Qwen3.8-2B layers execute with persistent Gated DeltaNet and
+full-attention state.
 
-A no-cache, `3,923`-token quality probe returned `42` with the same SHA-256
-on ANE and GPU. ANE completed it in `35.06s`; GPU needed `39.06s`.
+The Linux path is not faster yet. One token still needs `5,376` serialized
+GEMM submissions because the available Linux interface exposes fixed
+`512x512` programs instead of a reusable whole-model graph.
 
-Scope matters. Decode still runs on the GPU. Full ANE decode has not beaten
-CPU, and a faster batched decode candidate failed its quality gate. This is a
-real ANE prefill breakthrough, not a full ANE inference victory.
+The macOS control proves the hardware can cross the speed line. oMLX runs
+Qwen3.8-27B prefill at `105.3 tok/s` with verified ANE procedures, versus
+`95.8 tok/s` on the exact-weight GPU path and `5.546 tok/s` on a CPU-only
+architecture control. A no-cache output check matched byte for byte.
 
 ## What is proven
 
