@@ -26,3 +26,7 @@ ANE lm_head probe, residual scale=1.0, compress=int4:
 The warmup did not complete within 1,200 seconds on the same host.
 The remote process was stopped after the timeout. The host lm_head path
 remains the measured path.
+
+Second larger-model attempt, same 4B file and runner:
+The Qwen3.5-4B int4 static compile did not finish within 1,800 seconds
+on a 128GB MacStudio running macOS 26.5.2. The process was stopped.
