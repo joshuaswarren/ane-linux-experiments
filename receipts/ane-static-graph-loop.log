@@ -1,0 +1,48 @@
+Experiment: Linux ANEC static graph, weight rebinding, and resident state
+Date: 2026-08-27
+Platform: Apple M1 Linux, Omarchy/Asahi, ANE KMD with queue-id 1
+Sources: eiln/anecc, eiln/libane (patched), retained tinygrad v0.10.3 HWX graphs
+Converter fix: eiln/libane read ANEC content at 0x800; anecc writes a 0x1000 header.
+`ANEC_HEADER_SIZE` patched to 0x1000. Added explicit qid 1 submission and a
+sentinel output poll to `ane_exec`.
+
+Static graph execution (Linux ANEC, via `run-anec.py`):
+- `mul.ane`: 64 outputs all `6.0` from inputs `3` and `2`.
+- `concat.ane`: executed successfully.
+- Retained tinygrad `model.hwx.golden` converted with `anecc`: fused Conv+GOC
+  graph returned `[27.0, 27.0, 27.0]` from input `[3, 3, 3]`.
+- Retained tinygrad `conv.ane`: returned `[9.0, 9.0, 9.0]` from `[3, 3, 3]`.
+
+Programmed operation patch (no recompile):
+- `patch-anec-mul-to-add.py` patched task registers
+  `PE.cfg 0x00080004 -> 0x00080000` and `MACCfg -> 0x00000000` in the MUL ANEC
+  payload. The same graph then returned `5.0` from `3 + 2`.
+
+Resident state (new `ane_exec_loop`):
+- New libane function swaps the state input BO with the state output BO between
+  iterations, keeping state resident on the device across dispatches.
+- `mul.ane` loop, 3 iterations, `((3 * 2) * 2) * 2`: returned `24.0` everywhere.
+- Patched `add-resident.ane` loop, 3 iterations, `((3 + 2) + 2) + 2`:
+  returned `9.0` everywhere.
+
+Kernel rebinding (new `ane_bind_kernel`):
+- Binds a new fp16 kernel payload into the command BO's kernel region at
+  runtime without reloading or recompiling the graph. Capacity helper:
+  `ane_kernel_capacity`.
+- `gemm.ane` with identity matrix bound: returned input unchanged.
+- `gemm.ane` identity then 2x identity: outputs `3.0` then `6.0` for input `3`.
+
+Interpretation:
+- Linux now has a working reusable static graph format (ANEC) with multi-op
+  task graphs, in-place weight rebinding, and resident state loops.
+- This removes the "thousands of separate ioctl-programs" limitation for ops
+  expressible in ANEC graphs.
+
+Not yet achieved:
+- The tinygrad `gemm.ane` descriptor does not reproduce canonical fp16 GEMM on
+  random weights (its packed weight layout differs from the runtime's
+  `pack_weights_512`); the tied-output-head speed crossover therefore remains
+  unproven on the static-graph path.
+- The verified descriptor runtime path executes the full tied head exactly
+  (argmax and top-10 match CPU, max error 0.0228) but is still CPU-side
+  slower (0.33x).

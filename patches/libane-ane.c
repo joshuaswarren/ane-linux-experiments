@@ -1,0 +1,683 @@
+// SPDX-License-Identifier: MIT
+/* Copyright 2022 Eileen Yoon <eyn@gmx.com> */
+
+#include <asm/types.h>
+#include <drm.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+
+#include <ane_accel.h>
+#include "ane.h"
+
+#ifndef LIBANE_CONFIG_NO_ERR
+#include <stdio.h>
+#define ane_err(a, ...) fprintf(stderr, "LIBANE: ERR: " a, ##__VA_ARGS__)
+#else
+#define ane_err(...) \
+	do {         \
+	} while (0)
+#endif
+
+#define TILE_SHIFT	   0xEUL
+#define TILE_SIZE	   0x4000UL
+
+#define tile_shift(x)	   (((uint64_t)(x)) << TILE_SHIFT)
+#define tile_align(x)	   ((((uint64_t)(x)) + TILE_SIZE - 1) & -TILE_SIZE)
+#define tile_size(nn, bdx) (tile_shift(to_anec(nn)->tiles[bdx]))
+
+#define ANEC_HEADER_SIZE   0x1000UL
+#define src_bdx(nn, idx)   (4 + ane_dst_count(nn) + idx)
+#define dst_bdx(nn, idx)   (4 + idx)
+
+#define MAX_ANE_DEVICES	   2
+#define MAX_NODE_LEN	   30
+#define MAX_NODE_COUNT	   64
+
+static inline void *ane_malloc(const uint64_t size)
+{
+	void *ptr = malloc(size);
+	if (ptr == NULL) {
+		ane_err("failed to malloc size 0x%lx\n", size);
+		return NULL;
+	}
+	return ptr;
+}
+
+static inline void *ane_zmalloc(const uint64_t size)
+{
+	void *ptr = malloc(size);
+	if (ptr == NULL) {
+		ane_err("failed to malloc size 0x%lx\n", size);
+		return NULL;
+	}
+	memset(ptr, 0, size);
+	return ptr;
+}
+
+static inline void *ane_memalign(const uint64_t size)
+{
+	void *ptr = NULL;
+	if (posix_memalign(&ptr, TILE_SIZE, size)) {
+		ane_err("failed to memalign size 0x%zx\n", size);
+		return NULL;
+	}
+	return ptr;
+}
+
+static inline void *ane_zmemalign(const uint64_t size)
+{
+	void *ptr = NULL;
+	if (posix_memalign(&ptr, TILE_SIZE, size)) {
+		ane_err("failed to memalign size 0x%lx\n", size);
+		return NULL;
+	}
+	memset(ptr, 0, size);
+	return ptr;
+}
+
+static inline void set_nid(void *td, int nid)
+{
+	uint32_t hdr0 = *(uint32_t *)td;
+	hdr0 = (hdr0 & 0xf00ffff) | ((nid & 0xff) << 16);
+	memcpy(td, &hdr0, sizeof(uint32_t));
+}
+
+static inline void set_btsp_and_command(struct ane_nn *nn)
+{
+	const struct anec *anec = to_anec(nn);
+
+	memcpy(nn->chans[0].map, nn->data, anec->size);
+
+	/* do not fucking overflow */
+	memcpy(nn->btsp_chan.map, nn->data, anec->td_size);
+	set_nid(nn->btsp_chan.map, ANE_FIFO_NID);
+}
+
+static inline int bo_init(struct ane_nn *nn, struct ane_bo *bo)
+{
+	struct drm_ane_bo_init args = { .size = bo->size };
+	int err = ioctl(nn->fd, DRM_IOCTL_ANE_BO_INIT, &args);
+	if (err < 0) {
+		ane_err("DRM_IOCTL_ANE_BO_INIT failed with 0x%x\n", err);
+		return -EINVAL;
+	}
+
+	bo->handle = args.handle;
+	bo->offset = args.offset;
+
+	return 0;
+}
+
+static inline void bo_free(struct ane_nn *nn, struct ane_bo *bo)
+{
+	if (bo->handle) {
+		struct drm_ane_bo_free args = { .handle = bo->handle };
+		ioctl(nn->fd, DRM_IOCTL_ANE_BO_FREE, &args);
+	}
+	bo->handle = 0;
+	bo->offset = 0;
+}
+
+static inline int bo_mmap(struct ane_nn *nn, struct ane_bo *bo)
+{
+	bo->map = mmap(0, bo->size, PROT_READ | PROT_WRITE, MAP_SHARED, nn->fd,
+		       bo->offset);
+
+	if (bo->map == MAP_FAILED) {
+		bo->map = NULL;
+		ane_err("failed to mmap bo size 0x%lx\n", bo->size);
+		return -EINVAL;
+	}
+
+	return 0;
+}
+
+static inline void bo_munmap(struct ane_nn *nn, struct ane_bo *bo)
+{
+	(void)nn;
+	if (bo->map) {
+		munmap(bo->map, bo->size);
+	}
+	bo->map = NULL;
+}
+
+static inline int ane_bo_init(struct ane_nn *nn, struct ane_bo *bo)
+{
+	int err;
+
+	if (!bo->size)
+		return -EINVAL;
+
+	err = bo_init(nn, bo);
+	if (err < 0) {
+		return err;
+	}
+
+	err = bo_mmap(nn, bo);
+	if (err < 0) {
+		bo_free(nn, bo);
+		return err;
+	}
+
+	return 0;
+}
+
+static inline void ane_bo_free(struct ane_nn *nn, struct ane_bo *bo)
+{
+	bo_munmap(nn, bo);
+	bo_free(nn, bo);
+}
+
+static inline void ane_chan_free(struct ane_nn *nn)
+{
+	ane_bo_free(nn, &nn->btsp_chan);
+
+	for (int bdx = 0; bdx < ANE_TILE_COUNT; bdx++) {
+		ane_bo_free(nn, &nn->chans[bdx]);
+	}
+}
+
+static inline int ane_chan_init(struct ane_nn *nn)
+{
+	const struct anec *anec = to_anec(nn);
+	struct ane_bo *bo;
+	int err;
+
+	for (int bdx = 0; bdx < ANE_TILE_COUNT; bdx++) {
+		if (anec->tiles[bdx]) {
+			bo = &nn->chans[bdx];
+			bo->size = tile_size(nn, bdx);
+			err = ane_bo_init(nn, bo);
+			if (err < 0)
+				goto error;
+		}
+	}
+
+	bo = &nn->btsp_chan;
+	bo->size = tile_align(anec->td_size);
+	err = ane_bo_init(nn, bo);
+	if (err < 0)
+		goto error;
+
+	set_btsp_and_command(nn);
+
+	return 0;
+
+error:
+	ane_err("failed to init memory-mapped channels\n");
+	ane_chan_free(nn);
+	return err;
+}
+
+static inline int ane_fread(const char *fname, void *data, uint64_t size)
+{
+	uint64_t done;
+	FILE *fp = fopen(fname, "rb");
+	if (!fp) {
+		ane_err("failed to open file %s", fname);
+		return -EINVAL;
+	}
+
+	done = fread((char *)data, sizeof(char), size, fp);
+	if (done != size) {
+		ane_err("only read 0x%zx/0x%zx requested\n", done, size);
+	}
+
+	fclose(fp);
+	return 0;
+}
+
+static inline int ane_fwrite(const char *fname, void *data, uint64_t size)
+{
+	uint64_t done;
+	FILE *fp = fopen(fname, "wb");
+	if (!fp) {
+		ane_err("failed to open file %s", fname);
+		return -EINVAL;
+	}
+
+	done = fwrite((char *)data, sizeof(char), size, fp);
+	if (done != size) {
+		ane_err("only wrote 0x%zx/0x%zx requested\n", done, size);
+	}
+
+	fclose(fp);
+	return 0;
+}
+
+static inline int ane_pread(const char *fname, void *data, uint64_t size,
+			    uint64_t offset)
+{
+	uint64_t done;
+	FILE *fp = fopen(fname, "rb");
+	if (!fp) {
+		ane_err("failed to open file %s", fname);
+		return -EINVAL;
+	}
+
+	/* Set the file position indicator in front of third double value. */
+	if (fseek(fp, offset, SEEK_SET) != 0) {
+		ane_err("fseek() failed on file %s", fname);
+		fclose(fp);
+		return -EINVAL;
+	}
+
+	done = fread((char *)data, sizeof(char), size, fp);
+	if (done != size) {
+		ane_err("only read 0x%zx/0x%zx requested\n", done, size);
+	}
+
+	fclose(fp);
+	return 0;
+}
+
+static inline int is_ane_device(int fd)
+{
+	drm_version_t version = {};
+	int err = ioctl(fd, DRM_IOCTL_VERSION, &version);
+	if (err < 0) {
+		ane_err("failed to get drm version with %d", err);
+		return -EINVAL;
+	}
+
+	if (!version.name_len) {
+		return -EINVAL;
+	}
+
+	version.name = (char *)ane_malloc(version.name_len + 1);
+	version.date_len = 0;
+	version.desc_len = 0;
+
+	err = ioctl(fd, DRM_IOCTL_VERSION, &version);
+	if (err < 0) {
+		ane_err("failed to get drm version with %d", err);
+		free(version.name);
+		return -EINVAL;
+	}
+
+	/* Results might not be null-terminated strings */
+	version.name[version.name_len] = '\0';
+	if (strcmp(version.name, "ane") != 0) {
+		free(version.name);
+		return -EINVAL;
+	}
+
+	free(version.name);
+
+	return 0;
+}
+
+static inline int open_fd(const char *node)
+{
+	int fd = open(node, O_RDWR | O_CLOEXEC, S_IRUSR | S_IWUSR);
+	if (fd < 0) {
+		return -ENODEV;
+	}
+
+	if (is_ane_device(fd) < 0) {
+		close(fd);
+		return -EINVAL;
+	}
+
+	return fd;
+}
+
+static inline int device_open(int dev_id)
+{
+	int fd;
+	char node[MAX_NODE_LEN];
+	int found = 0;
+
+	if (dev_id < 0 || dev_id >= MAX_ANE_DEVICES) {
+		ane_err("invalid dev_id; 0 <= dev_id <= %d\n",
+			MAX_ANE_DEVICES - 1);
+		return -EINVAL;
+	}
+
+	for (int i = 0; i < MAX_NODE_COUNT; i++) {
+		snprintf(node, MAX_NODE_LEN, "/dev/accel/accel%d", i);
+
+		fd = open_fd(node);
+		if (fd < 0) {
+			continue;
+		}
+
+		if (dev_id == found) {
+			return fd;
+		}
+
+		found++;
+		close(fd);
+	}
+
+	ane_err("failed to find device with dev_id %d\n", dev_id);
+	return -ENODEV;
+}
+
+static inline void device_close(int fd)
+{
+	if (!(fd < 0)) {
+		close(fd);
+	}
+}
+
+static inline int ane_device_open(struct ane_nn *nn, int dev_id)
+{
+	int fd = device_open(dev_id);
+	if (fd < 0) {
+		return -EINVAL;
+	}
+
+	nn->fd = fd;
+
+	return 0;
+}
+
+static inline void ane_device_close(struct ane_nn *nn)
+{
+	device_close(nn->fd);
+	nn->fd = 0;
+}
+
+static inline int ane_model_init(struct ane_nn *nn, const char *path)
+{
+	struct anec *anec = to_anec(nn);
+
+	if (ane_fread(path, anec, sizeof(struct anec)) < 0) {
+		return -EINVAL;
+	}
+
+	if (!anec->size) {
+		ane_err("invalid anec at %s\n", path);
+		return -EINVAL;
+	}
+
+	nn->data = ane_zmemalign(anec->size);
+	if (!nn->data) {
+		return -ENOMEM;
+	}
+
+	if (ane_pread(path, nn->data, anec->size, ANEC_HEADER_SIZE) < 0) {
+		free(nn->data);
+		return -EINVAL;
+	}
+
+	return 0;
+}
+
+static inline void ane_model_free(struct ane_nn *nn)
+{
+	free(nn->data);
+}
+
+struct ane_nn *__ane_init(const char *path, int dev_id)
+{
+	struct ane_nn *nn = ane_zmalloc(sizeof(struct ane_nn));
+	if (!nn) {
+		return NULL;
+	}
+
+	if (ane_model_init(nn, path) < 0) {
+		ane_err("failed to load anec from %s\n", path);
+		free(nn);
+		return NULL;
+	}
+
+	if (ane_device_open(nn, dev_id) < 0) {
+		ane_err("failed to open device with dev_id %d\n", dev_id);
+		ane_model_free(nn);
+		free(nn);
+		return NULL;
+	}
+
+	if (ane_chan_init(nn) < 0) {
+		ane_err("failed to init memory-mapped chans\n");
+		ane_device_close(nn);
+		ane_model_free(nn);
+		free(nn);
+		return NULL;
+	}
+
+	return nn;
+}
+
+void __ane_free(struct ane_nn *nn)
+{
+	ane_chan_free(nn);
+	ane_device_close(nn);
+	ane_model_free(nn);
+	free(nn);
+}
+
+static int ane_exec_with_state_swap(struct ane_nn *nn, int swap_state,
+				    uint32_t state_src_idx, uint32_t state_dst_idx)
+{
+	const struct anec *anec = to_anec(nn);
+	struct drm_ane_submit args;
+	memset(&args, 0, sizeof(args));
+
+	args.tsk_size = anec->tsk_size;
+	args.td_count = anec->td_count;
+	args.td_size = anec->td_size;
+	args.pad = 0x81; /* qid-enabled KMD: explicit reliable queue 1 */
+
+	for (int bdx = 0; bdx < ANE_TILE_COUNT; bdx++) {
+		if (anec->tiles[bdx])
+			args.handles[bdx] = nn->chans[bdx].handle;
+	}
+	if (swap_state) {
+		uint32_t src = src_bdx(nn, state_src_idx);
+		uint32_t dst = dst_bdx(nn, state_dst_idx);
+		uint32_t handle = args.handles[src];
+		args.handles[src] = args.handles[dst];
+		args.handles[dst] = handle;
+	}
+	args.btsp_handle = nn->btsp_chan.handle;
+
+	const uint16_t sentinel = 0x7c00;
+	for (uint32_t idx = 0; idx < anec->dst_count; idx++) {
+		uint32_t bdx = dst_bdx(nn, idx);
+		if (swap_state && idx == state_dst_idx)
+			bdx = src_bdx(nn, state_src_idx);
+		uint16_t *words = (uint16_t *)nn->chans[bdx].map;
+		uint64_t count = nn->chans[bdx].size / sizeof(uint16_t);
+		for (uint64_t word = 0; word < count; word++)
+			words[word] = sentinel;
+	}
+	int ret = ioctl(nn->fd, DRM_IOCTL_ANE_SUBMIT, &args);
+	if (ret < 0)
+		return ret;
+	uint32_t first_bdx = dst_bdx(nn, 0);
+	if (swap_state && state_dst_idx == 0)
+		first_bdx = src_bdx(nn, state_src_idx);
+	volatile uint16_t *first = (volatile uint16_t *)nn->chans[first_bdx].map;
+	for (int wait = 0; wait < 10000 && *first == sentinel; wait++)
+		usleep(100);
+	return *first == sentinel ? -ETIMEDOUT : ret;
+}
+
+int ane_exec(struct ane_nn *nn)
+{
+	return ane_exec_with_state_swap(nn, 0, 0, 0);
+}
+
+int ane_exec_loop(struct ane_nn *nn, uint32_t iterations,
+		  uint32_t state_src_idx, uint32_t state_dst_idx)
+{
+	if (!iterations || state_src_idx >= ane_src_count(nn) ||
+	    state_dst_idx >= ane_dst_count(nn))
+		return -EINVAL;
+	if (__ane_src_size(nn, state_src_idx) != __ane_dst_size(nn, state_dst_idx))
+		return -EINVAL;
+	for (uint32_t iteration = 0; iteration < iterations; iteration++) {
+		int ret = ane_exec_with_state_swap(nn, iteration & 1,
+						  state_src_idx, state_dst_idx);
+		if (ret < 0)
+			return ret;
+	}
+	return 0;
+}
+
+uint64_t ane_kernel_capacity(struct ane_nn *nn)
+{
+	const struct anec *anec = to_anec(nn);
+	uint64_t offset = (anec->tsk_size + 15) & ~15ULL;
+	return offset <= nn->chans[0].size ? nn->chans[0].size - offset : 0;
+}
+
+int ane_bind_kernel(struct ane_nn *nn, const void *from, uint64_t size)
+{
+	const struct anec *anec = to_anec(nn);
+	uint64_t offset = (anec->tsk_size + 15) & ~15ULL;
+	uint64_t capacity = ane_kernel_capacity(nn);
+	if (!from || size > capacity ||
+	    offset + size > nn->chans[0].size)
+		return -EINVAL;
+	memcpy((uint8_t *)nn->chans[0].map + offset, from, size);
+	return 0;
+}
+
+#ifndef LIBANE_CONFIG_NO_INDEX_CHECK
+#define INDEX_CHECK(cnt, idx, ret)                                             \
+	({                                                                     \
+		if (idx >= cnt) {                                              \
+			ane_err("tried to index %d but max is %d; bailing.\n", \
+				idx, cnt);                                     \
+			return ret;                                            \
+		}                                                              \
+	})
+#else
+#define INDEX_CHECK(nn, idx, ret) \
+	do {                      \
+	} while (0)
+#endif /* LIBANE_CONFIG_NO_INDEX_CHECK */
+
+uint64_t __ane_src_size(struct ane_nn *nn, const uint32_t idx)
+{
+	INDEX_CHECK(ane_src_count(nn), idx, 0);
+	return tile_size(nn, src_bdx(nn, idx));
+}
+
+uint64_t __ane_dst_size(struct ane_nn *nn, const uint32_t idx)
+{
+	INDEX_CHECK(ane_dst_count(nn), idx, 0);
+	return tile_size(nn, dst_bdx(nn, idx));
+}
+
+void __ane_send(struct ane_nn *nn, void *from, const uint32_t idx)
+{
+	INDEX_CHECK(ane_src_count(nn), idx, );
+	memcpy(nn->chans[src_bdx(nn, idx)].map, from,
+	       tile_size(nn, src_bdx(nn, idx)));
+}
+
+void __ane_read(struct ane_nn *nn, void *to, const uint32_t idx)
+{
+	INDEX_CHECK(ane_dst_count(nn), idx, );
+	memcpy(to, nn->chans[dst_bdx(nn, idx)].map,
+	       tile_size(nn, dst_bdx(nn, idx)));
+}
+
+// clang-format off
+void ane_tile(void *data, void *tile, const uint64_t N, const uint64_t C,
+	      const uint64_t H, const uint64_t W, const uint64_t P,
+	      const uint64_t R)
+{
+	const uint64_t new_H = P / R;
+	const uint64_t new_W = R / sizeof(uint16_t);
+	const uint64_t stride = W * sizeof(uint16_t);
+
+	const uint64_t C0 = C * H * W;
+	const uint64_t C1 = C * new_H * new_W;
+	const uint64_t H0 = H * W;
+	const uint64_t H1 = new_H * new_W;
+
+	if ((new_H == H) && (new_W == W)) {
+		memcpy(tile, data, N * C * P);
+		return;
+	}
+
+	memset(tile, 0, N * C * P);
+
+	for (uint64_t n = 0; n < N; n++) {
+		for (uint64_t c = 0; c < C; c++) {
+			for (uint64_t h = 0; h < H; h++) {
+				void *src = ((void *)(data)) + ((n * C0 + c * H0 + h * W) * sizeof(uint16_t));
+				void *dst = ((void *)(tile)) + ((n * C1 + c * H1 + h * new_W) * sizeof(uint16_t));
+				memcpy(dst, src, stride);
+			}
+		}
+	}
+	return;
+}
+
+void ane_untile(void *data, void *tile, const uint64_t N, const uint64_t C,
+		const uint64_t H, const uint64_t W, const uint64_t P,
+		const uint64_t R)
+{
+	const uint64_t new_H = P / R;
+	const uint64_t new_W = R / sizeof(uint16_t);
+	const uint64_t stride = W * sizeof(uint16_t);
+
+	const uint64_t C0 = C * H * W;
+	const uint64_t C1 = C * new_H * new_W;
+	const uint64_t H0 = H * W;
+	const uint64_t H1 = new_H * new_W;
+
+	if ((new_H == H) && (new_W == W)) {
+		memcpy(data, tile, N * C * H * W * sizeof(uint16_t));
+		return;
+	}
+
+	memset(data, 0, N * C * H * W * sizeof(uint16_t));
+
+	for (uint64_t n = 0; n < N; n++) {
+		for (uint64_t c = 0; c < C; c++) {
+			for (uint64_t h = 0; h < H; h++) {
+				void *src = ((void *)(tile)) + ((n * C1 + c * H1 + h * new_W) * sizeof(uint16_t));
+				void *dst = ((void *)(data)) + ((n * C0 + c * H0 + h * W) * sizeof(uint16_t));
+				memcpy(dst, src, stride);
+			}
+		}
+	}
+	return;
+}
+// clang-format on
+
+static inline void ___ane_tile_send(struct ane_nn *nn, void *from,
+				    const uint32_t idx)
+{
+	const struct anec *anec = to_anec(nn);
+	const int bdx = src_bdx(nn, idx);
+	ane_tile(from, nn->chans[bdx].map, anec->nchw[bdx][0],
+		 anec->nchw[bdx][1], anec->nchw[bdx][2], anec->nchw[bdx][3],
+		 anec->nchw[bdx][4], anec->nchw[bdx][5]);
+}
+
+static inline void ___ane_tile_read(struct ane_nn *nn, void *to,
+				    const uint32_t idx)
+{
+	const struct anec *anec = to_anec(nn);
+	const int bdx = dst_bdx(nn, idx);
+	ane_untile(to, nn->chans[bdx].map, anec->nchw[bdx][0],
+		   anec->nchw[bdx][1], anec->nchw[bdx][2], anec->nchw[bdx][3],
+		   anec->nchw[bdx][4], anec->nchw[bdx][5]);
+}
+
+void __ane_tile_send(struct ane_nn *nn, void *from, const uint32_t idx)
+{
+	INDEX_CHECK(ane_src_count(nn), idx, );
+	___ane_tile_send(nn, from, idx);
+}
+
+void __ane_tile_read(struct ane_nn *nn, void *to, const uint32_t idx)
+{
+	INDEX_CHECK(ane_dst_count(nn), idx, );
+	___ane_tile_read(nn, to, idx);
+}
