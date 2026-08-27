@@ -78,9 +78,12 @@ agree on two generated prompts and return finite `(2048,)` hidden state and
 `(248320,)` logits. `ane-tokenizer.py` provides real CPU token IDs, and
 `ane-kv-cache.py` provides bounded full-attention state. The custom ANE path
 still differs from llama.cpp after the first `Hi` token and remains slower
-than the custom CPU path. A deterministic llama.cpp Vulkan run is `5.05x`
-faster than CPU across eight greedy tokens. It matches the first three token
-IDs, then diverges. See `receipts/qwen-vulkan-exact-token-sweep.log`.
+than the custom CPU path. The production-quality fast path is llama.cpp
+Vulkan. It matches CPU's `54.0%` HellaSwag score across the same 100 tasks
+and completes the run `7.820x` faster. An eight-token greedy trace runs
+`5.05x` faster, although its token IDs diverge after the first three.
+See `receipts/qwen-vulkan-hellaswag.log` and
+`receipts/qwen-vulkan-exact-token-sweep.log`.
 
 ## macOS static-graph reference
 

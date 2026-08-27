@@ -1,0 +1,34 @@
+Experiment: Qwen3.8 CPU versus Vulkan HellaSwag quality and speed
+Date: 2026-08-27
+Platform: Apple M1 Linux with Honeykrisp Vulkan
+Model: Qwen3.8-2B-Q4_K_M.gguf
+Model SHA256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+llama.cpp revision: f280b26983ad0fdb705a0d9ebf0503e76f2899b0
+Dataset: HellaSwag validation, 100 randomized tasks
+Dataset source: https://github.com/rowanz/hellaswag/blob/master/data/hellaswag_val.jsonl
+Task selection: llama.cpp hardcoded seed 1; identical input file and task count
+
+Command shape:
+  LLAMA=build-vulkan/bin/llama-perplexity
+  MODEL=Qwen3.8-2B-Q4_K_M.gguf
+  DATA=hellaswag_val_full.txt
+  CPU: GGML_VK_VISIBLE_DEVICES=-1 $LLAMA -m $MODEL -ngl 0 -t 8 -tb 8 -f $DATA --hellaswag --hellaswag-tasks 100 --no-warmup
+  Vulkan: GGML_VK_VISIBLE_DEVICES=0 $LLAMA -m $MODEL -ngl all -t 8 -tb 8 -f $DATA --hellaswag --hellaswag-tasks 100 --no-warmup
+
+CPU:
+  final_acc_norm=54.00000000%
+  95_percent_confidence_interval=[44.2649%,63.4392%]
+  wall_seconds=1938.67
+
+Vulkan, standard fused Gated DeltaNet enabled:
+  final_acc_norm=54.00000000%
+  95_percent_confidence_interval=[44.2649%,63.4392%]
+  wall_seconds=247.91
+
+Result:
+  quality_score_equal=True
+  wall_time_speedup=7.820x
+
+The standard fused Vulkan path preserves the measured 100-task HellaSwag
+score and finishes 7.820 times faster than the CPU path on the same model,
+corpus, selected tasks, and machine.
