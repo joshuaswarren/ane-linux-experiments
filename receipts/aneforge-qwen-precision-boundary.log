@@ -1,0 +1,23 @@
+Experiment: ANEForge Qwen3.5-2B residual scale and cache boundary
+Date: 2026-08-27
+Platform: Apple M1, macOS 26.5.2, 16M1MBP
+Model: Qwen3.8-2B-Q4_K_M.gguf
+Model SHA256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+Runner: /tmp/aneforge-qwen-scale-probe.py
+
+Residual scale, fp16 static graph, max_len=16, host lm_head:
+scale=1.0 ids=[11, 353, 1144, 310]
+scale=2.0 ids=[11, 353, 1144, 310]
+scale=8.0 ids=[11, 353, 1144, 310]
+scale=32.0 ids=[77, 289, 289, 289]
+
+Cache length, residual scale=32.0:
+max_len=8 ids=[77, 289, 289, 289]
+max_len=16 ids=[77, 289, 289, 289]
+max_len=64 ids=[77, 289, 289, 289]
+
+GQA layout, residual scale=1.0:
+gqa=tile ids=[11, 353, 1144, 310]
+gqa=repeat ids=[11, 353, 1144, 310]
+
+Interpretation: residual scaling above the stable range changes the fp16 static-graph result; scale=1.0 is required for the recorded quality run. Cache length and GQA layout did not explain the token-2 divergence. A Qwen3.5-4B Q4_K_M static int4 compile did not finish within 1800 seconds on the 64GB 16M1MBP test host and was terminated.
