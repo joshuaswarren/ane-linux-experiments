@@ -747,3 +747,21 @@ FILES swapped to confirm, then either fix the weights-file header for the
 macOS 26 compiler or generate the weights through the oMLX/ANEForge
 pipeline. Once the compile bakes the true kernel, the Linux numeric loop
 closes immediately (device execution already proven faithful).
+
+Marker-byte capture (2026-08-28, session 12). With distinguishable
+markers (main-file kernels [1..6], bias [13, 14]), the compiled __const
+layout is FULLY decoded at the structure level:
+- per-channel 0x40-byte groups: ch0 = [bias 13.0][packed k0 02 40 02 60
+  02 70][pad], ch1 = [bias 14.0][packed k1 00 4b 00 7c 00 7c 00 7c][pad]
+- the BIAS lands at group offset 0 EXACTLY (13.0 then 14.0 per channel) -
+  bias plumbing confirmed at the compile level too.
+- the packed kernel bytes for [1, 2, 3]: "02 40, 02 60, 02 70" (for [4,
+  5, 6]: "00 4b, 00 7c, 00 7c") - a bit-packed/BE-swapped quantization,
+  not plain fp16. Empirical bit-decode attempts (shifts, rotations, xor,
+  interleave) did not resolve it - the packing lives in the macOS 26
+  quantizer (oMLX/ANEForge source or bit-level RE).
+Next session: read the oMLX/ANEForge weight-quantization source (the
+format is likely documented in their open code) OR continue the
+one-variable decode ([4,5,6] -> 00 4b 00 7c 00 7c is a strong second
+sample: 4 -> 4b, 5 -> 7c, 6 -> 7c saturation visible). Device untouched
+this session (Mac-only experiments); execution loop proven.
