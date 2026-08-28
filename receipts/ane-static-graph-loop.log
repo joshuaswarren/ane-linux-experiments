@@ -243,3 +243,30 @@ probe costs a reboot cycle. Next concrete leads when resumed: byte-diff a
 traced libane concat submit (handles/pad/btsp bytes) against the raw one
 on qid 1; inspect ane_tm.c TQ_SIZE2/TQ_ADDR2 (second queue slot the KMD
 never writes); or add a KMD debug print of the fetched TD region.
+
+Multi-TD decode II (2026-08-28, evening). Submission envelope SOLVED via
+LD_PRELOAD ioctl spy (/tmp/ane-spy.c, snapshot tools/) on the WORKING
+libane concat run:
+- tsk=0x574, td_count=2, td_size=0x274
+- handles nonzero at slots {0, 4, 5, 6} (cmd, dst, src0, src1) - NOT the
+  anecc tile slots {0,1,2,6,7,8} the .anec header lists; slot 1 (krn) is
+  left 0 for the KMD to fill
+- btsp_handle = separate BO holding payload[:td_size] (stab header + first
+  0x24c bytes of TD_0), first word nid-patched (bits 16-23 = 0x40)
+- pad = 0x81 (qid 1)
+With that envelope, a faithful raw replica of concat EXECUTES: device
+writes 3.0s into dst, no timeout. The envelope is proven; the earlier raw
+attempts failed on handle slots (anec-tile slots instead of libane slots),
+pad, and btsp content.
+
+GEMM chaining status with the proven envelope:
+- 2 gemm TDs at payload 0x28/0x328 (concat spacing), per-TD kernel bases
+  (0x81000000 + k*0x80000), per-TD src/dst offsets: TIMEOUT.
+- + W3/W7 = 0x80 (concat values): TIMEOUT.
+- Remaining suspect: the 0x28-byte task header (stab) declares per-bank
+  regions the chained task's kernel DMAs must stay inside; concat's stab
+  declares a 0x4000 kernel region, my chain needs 1 MiB. The stab field
+  semantics are undocumented and untested; crafting one is the next
+  experiment (or verify by chaining two IDENTICAL gemm TDs that share one
+  0x80000 blob - isolates bank-declaration from per-TD addressing).
+- Recovery economics unchanged: every hang = reboot + ladder (~3 min).
