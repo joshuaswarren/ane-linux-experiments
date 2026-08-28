@@ -985,3 +985,16 @@ per probe value, decode the packing incrementally - each probe is ~2 s,
 Mac-only), or (2) read the quantizer from the ANECompilerService binary
 (strings/disasm on the private framework). The shipped crossover and
 parity deliverables are unaffected either way.
+
+Encoding probe results (2026-08-28, session 16). Clean single-value
+compiles decoded the per-channel group's first 2 bytes as Q13(k[1]) in
+LE: k[1]=1 -> "00 20" (8192), k[1]=2 -> "00 40" (16384), original
+k[1]=1.875 -> "00 3c" (15360) - EXACT Q13, linear, confirmed. k[0] and
+k[2] encode to nothing visible alone; k[0] with k[1] adds a leading
+"02" byte (0x4002 for k=[1,2,0] = 2.00098 fp16 = Q13(2) + k[0] x
+(1/512)) - the multi-channel packing interleaves values at differing
+scales, and the device multiplies input-ch1 by that Q13 value (the
+identity+bias runs applied 1.0 = Q13(1.875) read as fp16). The
+nonlinear/scaled multi-channel packing and the engine's fp16-vs-Q13
+interpretation remain the open decode; single-tap-per-channel kernels
+(scales = 1) are fully functional NOW.
