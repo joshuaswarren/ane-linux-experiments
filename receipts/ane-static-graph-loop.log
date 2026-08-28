@@ -618,3 +618,17 @@ Clean numeric loop for next session (everything staged, ~10 min):
    throughput vs CPU -> the fresh-compile crossover completes the goal's
    remaining scope (chaining/batching then ride the compiler path instead
    of hand-rolled TDs - now closed as impractical).
+
+Kernel transform data capture (final, session 8). With clean fp16 marker
+kernels [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] at file 0xC0 (offset 192),
+the compiled __const 0x80 bytes are:
+  0x00: 02 40 02 60 02 70 00 00 00 00 00 00 00 00 00 00
+  0x40: 00 7c 00 7c 00 7c 00 00 00 00 00 00 00 00 00 00
+The values are packed/BE-swapped (not plain fp16; candidate reads 2.25/
+2.375/2.4375 BE-fp16 in ch0, and 0x7c00 sentinels in ch1). The marker
+experiment writes [1..12] where the ORIGINAL netbuild weights were
+[0, 1.875, 0, 0, 0, 0, ...] - both transforms land in per-channel 0x40B
+groups. Next session: vary ONE kernel value at a time (e.g. [1,0,0...] /
+[0,1,0...]) to map the exact bit packing, then close the numeric loop.
+The compiled kernel region is 0x80 bytes total (0x40 per channel) for
+Cout=2 Cin=3.
