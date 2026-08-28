@@ -14,9 +14,10 @@ Engine without Core ML, AppleNeuralEngine.framework, or a macOS runtime.
 All 24 main Qwen3.8-2B layers execute with persistent Gated DeltaNet and
 full-attention state.
 
-The Linux path is not faster yet. One token still needs `5,376` serialized
-GEMM submissions because the available Linux interface exposes fixed
-`512x512` programs instead of a reusable whole-model graph.
+The tied head now beats CPU on Linux (`2.50x`, section below). The
+end-to-end one-token path is not faster yet: one token still needs
+`5,376` serialized GEMM submissions because the available Linux interface
+exposes fixed `512x512` programs instead of a reusable whole-model graph.
 
 The macOS control proves the hardware can cross the speed line. oMLX runs
 Qwen3.8-27B prefill at `105.3 tok/s` with verified ANE procedures, versus
@@ -99,13 +100,26 @@ output sentinel.
   payload at runtime. An identity kernel bound into `gemm.ane` passes its
   input through.
 
-The tied output head now runs FASTER than CPU on Linux. Persistent
-descriptor tiles (buffers allocated once, weights resident on device,
-0.187 ms submit floor) execute the full 248320x2048 head in 791 ms versus
-1975 ms CPU numpy on the same host: 2.50x, with max error 0.0010, matching
-argmax and top-10 (`ane-head-bench.py`,
-`receipts/ane-static-graph-loop.log`). The earlier 0.33x was per-call
-buffer-object churn, not device speed.
+## Linux speed crossover: 2.50x CPU on the tied output head
+
+The tied output head (248320x2048 fp16) now runs faster than CPU numpy on
+the same Linux host: `791 ms` on the ANE versus `1975 ms` on CPU, `2.50x`.
+Quality holds against the fp32 reference: `max_err=0.0010`, argmax exact,
+top-10 exact.
+
+The earlier `0.33x` was never device speed. The old `run_gemm` allocated
+and tore down four buffer objects on every tile call, about `2 ms` of
+churn each time. The persistent path allocates its buffers once and keeps
+the weights resident on device, which drops the floor to `0.187 ms` per
+submit (300-call mean). The head is `485x8 = 3880` persistent `512x256`
+tiles, one submit per tile, with fp32 CPU accumulation of the 8 partials
+per row tile. One-time tile programming costs `6.3 s`. The result is
+dispatch-bound: 3880 submits at the `0.187 ms` floor account for `0.73 s`
+of the `791 ms`.
+
+- Receipts: `receipts/ane-static-graph-loop.log`
+- Submit-floor benchmark: `ane-gemm-fast.py` (`--floor`)
+- Full-head benchmark: `ane-head-bench.py`
 
 ## Standard model
 
@@ -213,6 +227,8 @@ are now part of the design reference for this project.
 | `ane-ioctl-trace.py` | Wraps fcntl.ioctl, marks every call to /dev/kmsg |
 | `ane-warmup-test.sh` | Minimal warm-up A/B test |
 | `ane-fullchain-test.sh` | Power chain + module + first op, one command |
+| `ane-gemm-fast.py` | Persistent-tile GEMM submit-floor benchmark (`--floor`) |
+| `ane-head-bench.py` | Full tied-head benchmark, ANE vs CPU numpy |
 | `receipts/` | Run logs backing every number above |
 
 ## License
