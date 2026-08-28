@@ -725,3 +725,25 @@ channel sum forms) - the last piece before compiler-path numeric parity.
 Everything else (fetch, banks, layout, bias, scale application, per-
 pixel output DMA) is proven working on Linux with receipts. Device left
 healthy after ~15 clean submits.
+
+Root cause narrowed to the compile-time weights consumption (2026-08-28,
+session 11). Restored the plist kernels [0, 1.875, 0, 0,0,0 | 0, 1.875, 0,
+...] and recompiled on macOS 26: the baked __const is STILL [1.0, 0, 0,
+...] - not the plist values. The Linux device then faithfully applies
+whatever the compile baked (the observed identity+bias = [[1,0,0],
+[0,1,0]] kernel + [1,1] bias applied pixel-interleaved - EXACTLY the
+compiled bytes + the net.additional bias). Two facts:
+1. The Linux execution is FAITHFUL to the compiled kernel bytes (offset
+   ignored, device reads bar[KRN]+0 - verified by the shift test: shifting
+   the blob +0x40 yields bias-only = reading zeros).
+2. The macOS 26 compiler bakes WRONG kernel values from this hand-built
+   weights file - the [1.0, 0, 0...] matches the BIAS file content
+   (net.additional.weights = [1.0, 1.0]) consumed as the kernel, i.e. the
+   compiler's weights/bias section reading is swapped or keyed differently
+   for this hand-built header (my 216-byte file uses the gen-dense-style
+   seg table, not necessarily what the macOS 26 ANECompiler expects).
+Next session (no device risk, Mac only): compile with the kernel/bias
+FILES swapped to confirm, then either fix the weights-file header for the
+macOS 26 compiler or generate the weights through the oMLX/ANEForge
+pipeline. Once the compile bakes the true kernel, the Linux numeric loop
+closes immediately (device execution already proven faithful).
