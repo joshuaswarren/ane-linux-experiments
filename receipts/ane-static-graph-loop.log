@@ -279,3 +279,27 @@ through) TDs chain; conv/gemm-family TDs do not, under the same envelope.
 Suspects narrowed to TD-family config (W6 engine flags) or the stab's
 declared bank regions, both requiring macOS IOKit RE or stab semantics
 study. Device recovered (reboot + ladder, ANE_VERIFIED).
+
+Task-header decode (same session, final addendum). The payload's first
+0x28 bytes are a TASK HEADER mirroring TD_0's W0..W9 register words (proof:
+golden model.hwx header words = 0x02000000/0/0x422/0/0xFFF86A/0/0x30009800
+= exactly its TD's W2/W4/W6 values; the 0xF401F800 "magic" at +0x28 is just
+the KernelDMA stream header (61<<26)|0x1F800, not a magic constant).
+Empirics on the 2-TD gemm chain:
+- header = concat copy (conv-family values): TIMEOUT.
+- header mirrored to gemm W-values: task COMPLETES cleanly (no timeout) but
+  writes no output - the TM now accepts and walks the chain.
+- hybrid (concat header + concat banks + gemm TD bodies): completes, no
+  writes.
+Interpretation: the header programs the task's engine/DMAC context; a
+mismatched header wedges the fetch, a matching one runs the chain through
+completion. The remaining gap to real chained output is the per-TD buffer
+window description inside the header (concat's declares its banks; a
+fabricated 10-word mirror does not describe windows the DMAs use).
+
+Next work item recorded (prefill width batching, no chaining needed): the
+hand-built descriptor's Common InDim/OutDim are (1,1); setting width W turns
+the matvec into a W-column matmul sharing one weight blob per submit -
+dispatch count per prefill token divides by W. That is the mechanism behind
+the macOS oMLX prefill crossover receipt (9.92 percent over GPU, 27B) and
+is portable to the verified Linux descriptor.
