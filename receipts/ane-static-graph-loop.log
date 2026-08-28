@@ -336,3 +336,23 @@ hand-built descriptor. Multi-pixel batching requires a compiler-generated
 descriptor (dump an oMLX ANE procedure on macOS and port its Common/DMA
 fields) - recorded as the next work item. The bit sweep is negative
 evidence; do not re-sweep these 12 combos.
+
+Compiler ground truth + sweep v3 (same night). Compiled net-local.plist
+with InputWidth 4 on macOS 26 (aneccompile, clean compile) and diffed the
+TD against the w1 golden. Real compiler w1->w4 changes (conv family):
+- DstDMAConfig 0xc1 -> 0x40000c1: BIT 26 = multi-pixel dst enable
+- Cfg 0x4144405 -> 0xc4405: bit 26 CLEARED
+- engines 0x220/0x224 0x30 -> 0x0
+- ConvResultChannelStride 0x10 -> 0x0, ConvResultRowStride 0x30 -> 0x0
+- Srcpad1 0x0 -> 0xc0 (= SrcDepthStride)
+- InDim/OutDim (1,1) -> (1,4); SrcDepthStride UNCHANGED (Cin*0x40)
+- depth strides = channels * 0x40 exactly (src 3*0x40=0xc0, dst Cout*0x40)
+
+Porting the flag to the gemm descriptor (DstDMAConfig bit 26 with
+InDim/OutDim w=4, 4 combos of result-stride/engines/srcpad1): ALL TIMEOUT.
+The bit changes the dst DMA addressing mode and wedges the conv-family
+descriptor unless the full compiler-consistent field set is ported - the
+fields interact per family. Conclusion stands: batching needs a compiler-
+generated descriptor or a complete family-consistent port; bit-sweeping
+individual fields is exhausted (sweep v1: 12 configs, v2: 4, v3: 4 - all
+recorded). Device recovered after (reboot + ladder, ANE_VERIFIED).
