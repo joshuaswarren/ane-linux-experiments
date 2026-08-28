@@ -81,3 +81,47 @@ recompile. Compressed kernels (q4 streams) bound through a static graph are
 NOT demonstrated: the raw KMD has no in-graph decompression, so compressed
 streams stay a macOS ANEForge result. On Linux, decompress on host, then
 bind the fp16 result.
+
+Offline-compile crossover probe (same day, continuation). Built a
+Mach-O-aware HWX-to-anec converter (`/tmp/hwxv2-to-anec.py`, snapshot in
+repo under `tools/`): parses the macOS 26 Mach-O sections (`__FVMLIB`
+command windows, `__TEXT,__text` = task descriptor at file 0x4028,
+`__TEXT,__const` = kernel at 0x4280), maps kernel-base-relative KDMA
+offsets (0x28000..0x3c000 step 0x4000), and emits libane `.anec` headers
+directly. Compiles 64out x 2048in dense GEMM on macOS 26 in under a
+second (294912-byte HWX).
+
+Result: every fresh-compiled task descriptor REACHES the Linux device and
+hangs it. KMD dmesg receipt: `submit: enqueue qid=1 td_size=0x274 nid=0x40
+iova=0xd0000` -> `enqueue returned 0` -> `doorbell survived` ->
+`tm execution failed w/ -110`. Output stays at the 0x7c00 sentinel (inf).
+Control graphs compiled by the OLD macOS-15-era compiler still run green
+on the same driver seconds apart: conv-rebound 3x(3+0)=9.0,
+add-resident=5.0, gemm-identity 512ch=3.0.
+
+Format isolation: same net.plist, two compilers. Old TD vs fresh TD diff =
+20 of 157 words. Most are config-shaped (2 vs 3 channels, KDMA flag
+words 0x3c/0x7c, strides 0x184/0x268/0x26c). Suspect format deltas:
+engine-count words 0x218-0x224 (conv 0x10/0x30/0x30/0x30, fresh all zero),
+0x114-0x120 (fresh 0x40 x4, conv 0), bit 26 set at 0x15c and 0x258 in the
+old TD (0x4144405 / 0xc1) and clear in fresh (0xc4405 / 0x40000c1).
+Patching those words to old values does NOT revive execution (still -110
+at the device). The incompatibility is deeper than those fields; the macOS
+26 compiler emits TD encodings this firmware/KMD cannot execute.
+
+Consequence for the crossover goal: the offline-compile route (compile big
+head tiles on macOS, run on Linux) is now blocked at device execution, one
+level past the previously documented parser gap. Both remaining crossover
+routes are blocked and documented: (1) fresh TDs do not execute on the
+Linux stack; (2) old-format single-dispatch graphs cap at 512x512 with a
+~2 ms dispatch floor, so the full tied head stays 0.33x CPU. Untried next
+step, recorded not claimed: multi-TD chaining inside one old-format anec
+(td_count, NextCommandOffset at TD+0x1c) to amortize the dispatch floor
+across several 512x512 GEMMs per submit.
+
+Converter and probe artifacts are reproducible:
+- `/tmp/hwxv2-to-anec.py` (repo copy: tools/hwxv2-to-anec.py)
+- `/tmp/fresh-bisect.py` case matrix: none/fmtbits/eng114/eng218/all,
+  all -110 at device
+- probes hwx_a..hwx_e (single-weight placement: out-stride 2 fp16,
+  in-stride 8 fp16 at 0x84E0-region; content-dependent, no flat layout)
