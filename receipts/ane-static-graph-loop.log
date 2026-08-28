@@ -811,3 +811,22 @@ not a new mechanism.
 Next session (one run): channel-major fill + tap on plane 1 (src[p][1])
 with Q13 1.875 -> expect out = 1.875 x src[p][1] + bias; then the full
 Cin=3 conv = place all three planes and the KDMA channels for each.
+
+Raw marker matrix (2026-08-28, session 13 close). Single-k compiles (each:
+set one input-channel weight, compile, dump __const u16 at +2):
+  k[1] = 1.0   -> 0x2000
+  k[1] = 2.0   -> 0x4000
+  k[1] = 2.0 (with k[0] = 1 also set) -> 0x4002  (extra byte0 = 0x02)
+  k[1] = 1.875 (original restore)     -> 0x3c00
+  k[0] = 1 or 2 alone -> NO kernel data
+  k[2] = 1 alone      -> NO kernel data
+Observations: only in-channel 1 encodes (ch0/ch2 pruned - the compiler
+sees this tiny net's kernel as rank-1 on in-ch 1); the u16 scales
+nonlinearly with the value (0x2000 vs 0x4000 vs 0x3c00 for 1/2/1.875),
+k[0] adds a byte-0 side value, and the device applies the stored value as
+fp16 (the identity+bias execution = the stored 1.0 applied). The
+nonlinear value dependence = the quantizer's dynamic scale fitting
+(search/mantissa alignment), still the open item. The experimental loop
+is now fast and clean (Mac-only, ~2 s per compile+dump); a proper matrix
+(k[1] over 16 values, controlling bias/other-file state) resolves the
+scale law next session.
