@@ -1184,3 +1184,11 @@ and `_ANEVirtualClient.copyAllModelFiles:dictionary:ioSurfaceRefs:`, but
 therefore produced `ANE_COPY missing client=false model=true` and no file
 export. The retained `model.mil` begins with `program(1.3)` and is MIL text,
 not a HWX container.
+Third-Mac export attempt (2026-08-28, 16M1MBP, macOS 26.6.2). The same
+production model loaded through oMLX `0.6.3`. Direct hook capture recorded
+four successful `_ANEInMemoryModel` compile callbacks. The server reported
+`mlp_layers=64`, `dual_ane_layers=64`, `resident_programs=4`, and
+`Eagerly compiled 64 MLP and 0 GDN procedures into 4 instance-pinned ANE
+programs (sequence_length=2048)`. Each captured directory contained only
+`model.mil`, `net.plist`, `data`, and `weights/`; no raw `.hwx` was present.
+Receipt source: `/private/tmp/ane-production-hook.out` on 16M1MBP.

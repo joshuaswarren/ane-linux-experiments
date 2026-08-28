@@ -30,3 +30,7 @@
 - 2026-08-28: `_ANEVirtualClient.copyAllModelFiles:dictionary:ioSurfaceRefs:`
   is present, but `_ANEVirtualClient sharedConnection` returns nil on
   physical JW14M2. `saveModelFiles` retains MIL text and weights, not raw HWX.
+- 2026-08-28: macOS 26.6.2 on 16M1MBP reproduced four production ANE
+  compile callbacks, but every `saveModelFiles` directory still contained
+  MIL text and weights only. A second Mac confirms the missing raw HWX is
+  an export-surface limitation, not one host's compiler state.
