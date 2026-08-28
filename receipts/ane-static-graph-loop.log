@@ -1048,3 +1048,15 @@ server pipeline. Both are next-session compile-side tasks; the Linux
 execution loop is proven and needs no changes.
 Device: the hung task wedged it - recover (reboot + ladder) before any
 further device work.
+
+Quantizer boundary confirmed hard (2026-08-28, final). The raw-byte
+marker test (non-fp16 bytes at the kernel offset) fails the compile
+(EINVAL) - the ANECompilerService parses and validates the weights as
+fp16 and transforms them internally into its packed quantized encoding
+([1, 2, 3] fp16 -> 02 40 / 02 60 / 02 70 patterns; single-value probes
+produced value-dependent scales 0x0800/0x4000/0x3c00 - a remapped
+exponent table). The transform is internal to Apple's compiler; no
+black-box sample count closes it. The fresh-format numeric parity path
+= read Apple's quantizer from the ANECompilerService binary or the
+oMLX server-mediated route. GOAL STATE: crossover 2.50x shipped+gated;
+parity exact; fresh-path RE complete to this boundary. Turn closed.
