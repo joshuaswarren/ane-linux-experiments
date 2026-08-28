@@ -789,3 +789,25 @@ sample RE of Apple's quantizer (dedicated session) OR generating weights
 through ANEForge's own tools with the scale visible. All layout/bank/
 execution knowledge is complete and receipted; the goal's shipped
 deliverables (2.50x crossover, full-model parity) are unaffected.
+
+Encoding decoded (2026-08-28, session 13). Systematic single-k markers on
+the Mac (each = one compile, dump __const u16 at +2):
+- k[1] = 1.0 -> 0x2000 = Q13(1) (8192)
+- k[1] = 2.0 -> 0x4000 = Q13(2)
+- original k[1] = 1.875 -> 0x3c00 = Q13(1.875) (15360) ✓ matches the
+  morning receipt
+- k[0] and k[2] markers -> NO kernel data (the compiler PRUNED them)
+The compiled conv kernel = Q13 (13-bit fixed point) values, and the
+compiler CONSTANT-PRUNED the taps: the original tinygrad net kernel
+[0, 1.875, 0 | 0,0,0 | 0,1.875,0 | 0,0,0] has zeros everywhere except
+in-channel 1 - the compiled kernel carries ONLY that tap. The Linux
+execution (out[p][0] = 1 x src[p][0] + 1) then makes sense as the Q13
+tap applied to my channel-major src: 1.875 x src[p][1-plane]... with my
+channel-major fill the tap hit src[p][0] (the plane swap) and the Q13
+value 1.875 showed as 1.0 through the 0.0078-scale confusion (two
+different compiles' scales compared). Numeric parity is therefore a
+TAP-PLANE ALIGNMENT fix (apply the Q13 tap to the correct src plane),
+not a new mechanism.
+Next session (one run): channel-major fill + tap on plane 1 (src[p][1])
+with Q13 1.875 -> expect out = 1.875 x src[p][1] + bias; then the full
+Cin=3 conv = place all three planes and the KDMA channels for each.
