@@ -27,3 +27,6 @@
   raw HWX export. The private compiler can retain only transient files, and a
   `DYLD_INSERT_LIBRARIES` export hook can stall in the Apple ANE bank retry.
   Record compile success and artifact capture as separate gates.
+- 2026-08-28: `_ANEVirtualClient.copyAllModelFiles:dictionary:ioSurfaceRefs:`
+  is present, but `_ANEVirtualClient sharedConnection` returns nil on
+  physical JW14M2. `saveModelFiles` retains MIL text and weights, not raw HWX.
