@@ -925,3 +925,16 @@ the oMLX app python environment (or rebuild _ext against the installed
 mlx) instead of the dev build. Shape note: the binding requires
 contiguous rank-2 float32 mx.array; 2x3 is rejected as "Invalid fixed
 shape" - use production-like dims (512x512+).
+
+oMLX venv finding (2026-08-28, session 15). Located the tuner's runtime:
+~/models/omlx-ane-cache-venv (python 3.13, installed omlx with the WORKING
+_ext.cpython-313-darwin.so + qwen35_ane_prefill). qwen35_ane_compile_linear
+(512x512 float32, seq 4) still SEGFAULTS (exit 139) from a raw python call
+- the tuner's successful compiles ran under the oMLX server with the
+qwen35_ane_prefill PATCH applied (the patch sets up the private-ANE
+environment/entitlements and the compile-cache env the C++ checks:
+OMLX_ANE_COMPILE_CACHE etc). Next session: apply
+omlx/patches/qwen35_ane_prefill.py in that venv (or replicate its env
+setup) before calling qwen35_ane_compile_linear, then continue the
+runbook (artifact under ~/Library/Caches/omlx/ane/v1 -> hwxv2 -> Linux
+bank-swap verify). Device untouched this turn (Mac-side only).
