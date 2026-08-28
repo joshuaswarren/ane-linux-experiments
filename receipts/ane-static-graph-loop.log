@@ -443,3 +443,11 @@ on jwm1-linux for the next session. Probe discipline (control first and
 after every config, discard on control failure) is fixed and documented;
 the KBase/offset boundary questions remain open with the corrected probe
 ready to run on a good boot.
+
+Keepalive session note: first live test inconclusive - the keepalive script
+itself had a bug (submit_task lives in ane-network, not runtime; fixed in
+/tmp/ane-keepalive.py on jwm1-linux, untested) and the CONTROL timed out
+even with zero idle gap after the ladder, which weakens the idle-degradation
+theory: the deterministic factor may be process-order or boot-instance
+rather than idle time. Next session: fix keepalive, verify it submits, then
+run the KBase probes under it; ladder immediately before the session.
