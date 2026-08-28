@@ -529,3 +529,26 @@ differs only in TID=0, KBase0=0, bases 0/0. Next session: 3 boots x 1 first
 submit each - (a) TID=1 solo, (b) KBase0=1 solo, (c) bases solo - isolates
 the fatal field with certainty, then chaining can be built on the surviving
 mechanism (or per-TD submits + the 0.187 ms floor remain the ship path).
+
+Solo-TD bisect VERDICT (2026-08-28, session 7). Three boots, one first
+submit each, on the verified descriptor (TID=0, KBase0=0, bases 0/0 as
+control - passes every time):
+- (a) TID=1 only: TIMEOUT
+- (b) KBase0=1 (W9 0x21) only: TIMEOUT
+- (c) SrcBase 0x4000 / DstBase 0x8000 only: TIMEOUT
+Every single-field deviation from the exact proven TD word-set is fatal -
+the working descriptor is a needle: fields that look like independent
+knobs (task id, kernel bank select, buffer base offsets) are validated or
+interlocked by the firmware/KMD, and hand-set deviations hang the task
+AND poison the device until reboot. In a 2-TD chain the same TD_1 fields
+merely no-write (severity is context-dependent - the chain protocol's
+TID=1 is legal there).
+
+Engineering verdict for the goal: hand-assembled multi-TD descriptors are
+not a viable construction path on this stack. The reliable generators are
+the old tinygrad compiler (retained graphs - 2.50x crossover shipped via
+per-TD submits at the 0.187 ms floor) and the macOS ANEForge/oMLX pipeline
+(fresh-format, blocked on the separate fresh-TD execution RE). Chain/
+batching work continues only through compiler-generated descriptors.
+The bisect scripts (/tmp/bisect-boot.py, /tmp/td1-solo.py on jwm1-linux)
+and this verdict close the hand-rolled multi-TD track.
