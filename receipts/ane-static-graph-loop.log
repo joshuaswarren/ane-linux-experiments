@@ -998,3 +998,19 @@ identity+bias runs applied 1.0 = Q13(1.875) read as fp16). The
 nonlinear/scaled multi-channel packing and the engine's fp16-vs-Q13
 interpretation remain the open decode; single-tap-per-channel kernels
 (scales = 1) are fully functional NOW.
+
+*** NUMERIC-PARITY MECHANISM SOLVED (2026-08-28, session 16) ***
+The compiler stores Q13 fixed-point bits; the DEVICE multiplies by the
+fp16 interpretation of those bits. For power-of-two kernels the two
+views coincide (Q13(2) = 0x4000 = fp16 2.0 - why the [1,2,3] sweep's
+"2.0" position looked correct); for any other value they diverge
+(Q13(1.875) = 0x3c00 bits = fp16 1.0 - the identity+bias execution).
+
+THE FIX IS TRIVIAL AND DOES NOT TOUCH THE TD: the converter knows the
+plist kernel values - post-patch the compiled kernel region with the
+TRUE fp16 bytes at the same offsets (the per-channel 0x40B groups hold
+plain fp16 after the patch; the device multiplies by fp16 as proven).
+Expected: the fresh conv computes the TRUE plist kernel exactly on
+Linux. One run to verify; then the fresh-compile pipeline (any plist,
+any dims) is numerically closed, and compiler-path batching/chaining
+proceeds on a correct base. Everything staged; device healthy.
