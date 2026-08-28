@@ -165,24 +165,39 @@ class QwenModel:
         if self.cpu_reference:
             return self.weights.row32("token_embd.weight", token_id)
         return self.weights.row("token_embd.weight", token_id)
-    def projection(self, matrix, activation):
+    def projection(self, matrix, activation, in_cols=None):
         if self.cpu_reference:
             return matrix.astype(np.float32) @ activation.astype(np.float32)
-        in_cols = 512 if matrix.shape[1] >= 512 else 256
+        if in_cols is None:
+            in_cols = 512 if matrix.shape[1] >= 512 else 256
         descriptor = self.descriptor_512 if in_cols == 512 else self.descriptor
-        gemm = self.device.gemm512 if in_cols == 512 else self.device.gemm
+        # Persistent tile BOs cost ~1 KB of device iova per weight element
+        # (blob + windows); the DART VM cannot hold every layer resident.
+        # Only giant matrices (the 508 M-element tied head) are cached; all
+        # other projections keep the shared per-call workspace.
+        tile_gemm = None
+        if getattr(self.device, "tile_gemm", None) is not None \
+                and matrix.shape[0] * matrix.shape[1] >= 100_000_000 \
+                and os.environ.get("ANE_NO_PERSISTENT") != "1":
+            tile_gemm = self.device.tile_gemm
         result = np.zeros(matrix.shape[0], dtype=np.float32)
+        mid = id(matrix)
         for row0 in range(0, matrix.shape[0], 512):
             acc = np.zeros(512, dtype=np.float32)
             for col0 in range(0, matrix.shape[1], in_cols):
-                tile = np.zeros((512, in_cols), dtype=np.float16)
                 rows = min(512, matrix.shape[0] - row0)
                 cols = min(in_cols, matrix.shape[1] - col0)
-                tile[:rows, :cols] = matrix[row0:row0 + rows, col0:col0 + cols]
                 x = np.zeros(in_cols, dtype=np.float16)
                 x[:cols] = activation[col0:col0 + cols]
-                acc += gemm(tile, x, descriptor).astype(np.float32)
-            result[row0:row0 + min(512, matrix.shape[0] - row0)] = acc[:min(512, matrix.shape[0] - row0)]
+                if tile_gemm is not None:
+                    key = (mid, in_cols, row0, col0)
+                    acc += tile_gemm(key, matrix, x, descriptor, in_cols).astype(np.float32)
+                else:
+                    tile = np.zeros((512, in_cols), dtype=np.float16)
+                    tile[:rows, :cols] = matrix[row0:row0 + rows, col0:col0 + cols]
+                    gemm = self.device.gemm512 if in_cols == 512 else self.device.gemm
+                    acc += gemm(tile, x, descriptor).astype(np.float32)
+            result[row0:row0 + rows] = acc[:rows]
         return result
 
     def mlp(self, layer, hidden):
@@ -251,9 +266,10 @@ class QwenModel:
         return hidden
 
     def logits(self, hidden):
-        return self.embedding.astype(np.float32) @ (
-            rms_norm(hidden, self.output_norm).astype(np.float32)
-        )
+        h = rms_norm(hidden, self.output_norm)
+        if self.cpu_reference:
+            return self.embedding.astype(np.float32) @ h.astype(np.float32)
+        return self.projection(self.embedding, h, in_cols=256)
 
     def close(self):
         self.device.close()
@@ -288,14 +304,21 @@ def main():
     token_ids = tokenizer.encode(args.prompt)
     model = QwenModel(args.model, args.gguf_py, runtime, weights, descriptor, descriptor_512, args.qid)
     try:
+        import time as _time
+        step_s = 0.0
+        logits_s = 0.0
         hidden = np.zeros(2048, dtype=np.float16)
         for position, token_id in enumerate(token_ids):
+            t0 = _time.perf_counter()
             hidden = model.step(model.embedding_row(token_id), position)
+            step_s += _time.perf_counter() - t0
         generated_ids = []
         generated_pieces = []
         token_field = weights.reader.get_field("tokenizer.ggml.tokens")
         for offset in range(args.generate + 1):
+            t0 = _time.perf_counter()
             logits = model.logits(hidden)
+            logits_s += _time.perf_counter() - t0
             next_id = int(np.argmax(logits))
             if offset == args.generate:
                 break
@@ -310,6 +333,8 @@ def main():
         print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
         print(f"hidden_head={hidden[:16].tolist()}")
         print(f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}")
+        print(f"timing_s: steps={step_s:.3f} logits={logits_s:.3f} "
+              f"(persistent={os.environ.get('ANE_NO_PERSISTENT') != '1'})")
         print("ANE_QWEN_FULL_TOKEN_STEP_OK")
     finally:
         model.close()
