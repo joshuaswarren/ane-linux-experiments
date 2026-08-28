@@ -320,3 +320,19 @@ Also fixed en route: ane-gemm-fast.py had lost its verify()/bench() bodies
 in an earlier scripted rewrite (the committed G1/G2 evidence predates the
 loss); both restored and re-proven on the healthy device (identity ok,
 max_err 0.0003, PERSISTENT_GEMM_VERIFY_OK).
+
+Format sweep for width batching (2026-08-28, late). 12-config sweep on the
+verified 512x256 descriptor at W=4 (src layouts depth/chmaj/pxmaj x
+SrcFmt intrlv bit 0x...31 vs 0x...11 x dst read layouts depth/px-packed):
+- EVERY config computes exactly column 0; columns 1-3 never leave the
+  sentinel. The output DMA writes one 0x8000 pixel window regardless of
+  InDim/OutDim width or SrcFmt interleave.
+- intrlv=0x...11 breaks even column 0 (intrlv bit is required for the
+  verified single-pixel path).
+- chmaj src corrupts column 0 (0.816 err), confirming the src bank window
+  IS being read from the first 0x4000 only.
+Conclusion: Common-section width does not plumb into the DMAs on this
+hand-built descriptor. Multi-pixel batching requires a compiler-generated
+descriptor (dump an oMLX ANE procedure on macOS and port its Common/DMA
+fields) - recorded as the next work item. The bit sweep is negative
+evidence; do not re-sweep these 12 combos.
