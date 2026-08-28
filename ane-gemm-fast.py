@@ -187,6 +187,43 @@ def chain_bench(n=8, calls=20):
     return 0 if ok else 1
 
 
+
+def verify():
+    gemm = FastGemm()
+    x = (_rng.standard_normal(K_GEMM) * 0.3).astype(np.float16)
+
+    ident = to_blob(np.eye(C_GEMM, K_GEMM, dtype=np.float16))
+    got = gemm.run(ident, x)
+    passthrough = np.allclose(got[:K_GEMM], x.astype(np.float32), atol=1e-2)
+    print(f"identity passthrough: {'ok' if passthrough else 'FAIL'}")
+
+    W = (_rng.standard_normal((C_GEMM, K_GEMM)) * 0.05).astype(np.float16)
+    got = gemm.run(to_blob(W), x)
+    ref = W.astype(np.float32) @ x.astype(np.float32)
+    err = float(np.abs(got - ref).max())
+    argmax = int(got.argmax()) == int(ref.argmax())
+    print(f"random 512x256: max_err={err:.4f} argmax={'ok' if argmax else 'FLIP'}")
+    gemm.close()
+    if passthrough and err < 0.01 and argmax:
+        print("PERSISTENT_GEMM_VERIFY_OK")
+        return 0
+    return 1
+
+
+def bench(calls=200):
+    gemm = FastGemm()
+    blob = to_blob((_rng.standard_normal((C_GEMM, K_GEMM)) * 0.05).astype(np.float16))
+    x = (_rng.standard_normal(K_GEMM) * 0.3).astype(np.float16)
+    gemm.run(blob, x)  # warm
+    t0 = time.perf_counter()
+    for _ in range(calls):
+        gemm.run(blob, x)
+    wall = time.perf_counter() - t0
+    print(f"persistent tile floor: {wall / calls * 1e3:.3f} ms/call over {calls} calls")
+    gemm.close()
+    return wall / calls
+
+
 def floor_bench(calls=300):
     """Submit-only floor: program once, then rewrite only the src vector."""
     gemm = FastGemm()

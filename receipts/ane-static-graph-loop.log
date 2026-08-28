@@ -303,3 +303,20 @@ the matvec into a W-column matmul sharing one weight blob per submit -
 dispatch count per prefill token divides by W. That is the mechanism behind
 the macOS oMLX prefill crossover receipt (9.92 percent over GPU, 27B) and
 is portable to the verified Linux descriptor.
+
+Prefill width-batching probe (2026-08-28, night, /tmp/gemm-batch.py design
+in receipts). Naive scaling of Common InDim/OutDim to W=4 on the verified
+512x256 descriptor: W=1 stays exact (max_err 0.0003); W=4 computes column 0
+only (cols 1-3 stay sentinel) with w-mode, and corrupts column 0 with
+h-mode. Per-submit cost rises 0.238 -> 0.38 ms, so the engine accepted the
+geometry but the multi-pixel src/dst DMA layout does not follow InDim
+alone. Missing layer: the multi-pixel pixel-interleave in SrcFmt/Srcpad0/
+DstFmt and the row/plane strides the compiler picks for compiled shapes.
+This is the same RE layer as the chaining blocker. Recorded as the next
+experiment: dump src/dst layouts from a compiled oMLX ANE procedure (macOS)
+or sweep SrcFmt interleave bits on Linux.
+
+Also fixed en route: ane-gemm-fast.py had lost its verify()/bench() bodies
+in an earlier scripted rewrite (the committed G1/G2 evidence predates the
+loss); both restored and re-proven on the healthy device (identity ok,
+max_err 0.0003, PERSISTENT_GEMM_VERIFY_OK).
