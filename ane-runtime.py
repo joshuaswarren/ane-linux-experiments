@@ -145,7 +145,8 @@ class Device:
     def __init__(self, path="/dev/accel/accel0", qid=None):
         self.fd = os.open(path, os.O_RDWR)
         self.qid = qid
-        self._workspace = None
+        self._workspaces = {}
+        self._tile_cache = {}
         if qid is not None and not 0 <= qid < 8:
             os.close(self.fd)
             raise ValueError("qid must be in 0..7")
@@ -154,18 +155,19 @@ class Device:
         return Buffer(self.fd, size)
 
     def _workspace_for(self, command_size, source_size, output_size, btsp_size):
+        """Cache one workspace per size key: alternating tile shapes used to
+        tear down and rebuild four buffer objects on every call."""
         key = (command_size, source_size, output_size, btsp_size)
-        if self._workspace is None or self._workspace[0] != key:
-            if self._workspace is not None:
-                for buffer in self._workspace[1]:
-                    buffer.close()
-            self._workspace = (key, (
+        cached = self._workspaces.get(key)
+        if cached is None:
+            cached = (
                 self.buffer(command_size),
                 self.buffer(output_size),
                 self.buffer(source_size),
                 self.buffer(btsp_size),
-            ))
-        return self._workspace[1]
+            )
+            self._workspaces[key] = cached
+        return cached
 
     def submit(self, command, source, output_size, descriptor, td_count=1):
         """Run one operation and return its fp16 output bytes.
@@ -246,11 +248,79 @@ class Device:
         raw = self.submit(bytes(command), source.tobytes(), OUT_BYTES, descriptor)
         return np.frombuffer(raw, dtype=np.float16)[:512 * 32:32].copy()
 
+    def tile_gemm(self, cache_key, weights, activation, descriptor, in_cols):
+        """Persistent cached tile matvec: the weight blob is programmed once
+        for a cache key and later calls only rewrite the source vector,
+        submit, and poll. Bit-identical to gemm/gemm512 for the same tile
+        weights because the blob bytes come from the first call's tile."""
+        program = self._tile_cache.get(cache_key)
+        if program is None:
+            _, _, row0, col0 = cache_key
+            rows = min(512, weights.shape[0] - row0)
+            cols = min(in_cols, weights.shape[1] - col0)
+            padded = np.zeros((512, in_cols), dtype=np.float16)
+            padded[:rows, :cols] = weights[row0:row0 + rows, col0:col0 + cols]
+            weights = padded
+            if in_cols == 256:
+                packed = pack_weights(weights)
+                src_slots, src_bytes = 256, SRC_BYTES
+            else:
+                # 512-in tiles need 1 MB blobs; the 256-in tile pack is
+                # valid for a 512-wide matrix too (column-major halves),
+                # but keep the verified 512 packing and share one blob BO
+                # per key instead. here: keep 512 packing.
+                packed = pack_weights_512(weights)
+                src_slots, src_bytes = 512, SRC_BYTES_512
+            # Geometry must match the packer: the 256-in blob sits 12 bytes
+            # before the kernel bar (pack_weights shifts each channel +6
+            # fp16); the 512-in blob sits exactly on it.
+            blob_off = WEIGHT_OFFSET if in_cols == 256 else (TD_SIZE + 15) & ~15
+            command = bytearray(blob_off + packed.nbytes)
+            command[:len(descriptor)] = descriptor
+            command[blob_off:] = packed.tobytes()
+            cmd = self.buffer(len(command))
+            out = self.buffer(OUT_BYTES)
+            src = self.buffer(src_bytes)
+            btsp = self.buffer(len(descriptor))
+            cmd.write(bytes(command))
+            btsp.write(bytes(descriptor))
+            request = Submit(
+                tsk_size=TD_SIZE,
+                td_count=1,
+                td_size=TD_SIZE,
+                btsp_handle=btsp.bo.handle,
+                pad=0 if self.qid is None else 0x80 | self.qid,
+            )
+            request.handles[0] = cmd.bo.handle
+            request.handles[4] = out.bo.handle
+            request.handles[5] = src.bo.handle
+            program = (cmd, out, src, request, src_slots, src_bytes)
+            self._tile_cache[cache_key] = program
+        cmd, out, src, request, src_slots, src_bytes = program
+        source = np.zeros(src_bytes // 2, dtype=np.float16)
+        source[:src_slots * 32:32] = activation
+        src.write(source.tobytes())
+        out.map.seek(0)
+        out.map.write(b"\x00\x7c" * (OUT_BYTES // 2))
+        ioctl(self.fd, IOCTL_SUBMIT, request)
+        deadline = time.monotonic() + WAIT_S
+        while out.map[:2] == b"\x00\x7c" and time.monotonic() < deadline:
+            pass
+        raw = out.read(OUT_BYTES)
+        if raw[:2] == b"\x00\x7c":
+            raise TimeoutError("ANE output was not written before timeout")
+        return np.frombuffer(raw, dtype=np.float16)[:512 * 32:32].copy()
+
     def close(self):
-        if self._workspace is not None:
-            for buffer in self._workspace[1]:
+        if self._tile_cache:
+            for program in self._tile_cache.values():
+                for buffer in program[:3]:
+                    buffer.close()
+            self._tile_cache = {}
+        for cached in self._workspaces.values():
+            for buffer in cached:
                 buffer.close()
-            self._workspace = None
+        self._workspaces = {}
         if self.fd is not None:
             os.close(self.fd)
             self.fd = None

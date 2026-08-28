@@ -163,3 +163,45 @@ EEXIST at iova 0x4000 after a wedge, reboot first, then ladder.
 
 Crossover is dispatch-bound: 3880 x 0.187 ms floor = 0.73 s of the 791 ms.
 Chaining, if ever decoded, is the next multiplier (theoretical 4-8x).
+
+Full-model persistent-tile integration (2026-08-28, continuation). Three
+libane/runtime changes landed:
+1. `Device.tile_gemm` (ane-runtime.py): persistent per-key tile programs
+   (weight blob written once), used for the tied head. Geometry note that
+   cost a debugging cycle: the 256-in packer (`pack_weights`) shifts each
+   32 KB channel +6 fp16 and pairs with a blob placed 12 bytes BEFORE the
+   kernel bar; the 512-in packer is unshifted and pairs with a blob exactly
+   ON the bar. Mixing them shifts logits by 6 token ids (observed: argmax
+   17 vs 11; fixed, shift=0, max_err=0.0023 vs fp32 reference).
+2. `Device._workspaces` per size key (was single-slot): alternating 256-in
+   and 512-in layer tiles used to tear down and rebuild four buffer objects
+   on every call.
+3. `QwenModel.logits` now computes the head on the ANE (256-in persistent
+   tiles) for the ane backend; CPU backend unchanged.
+
+Quality receipts (`ane-qwen-model.py -p "Hi" --generate 2`):
+- ANE backend: generated_ids=[11, 488] (',', ' you'), next_token=628,
+  logits argmax chain matches the CPU backend and the pre-existing parity
+  receipts exactly.
+- fp32 cross-check: best shift=0, max_err=0.0023, argmax 11 = 11.
+
+Timing (same host, honest):
+- ANE backend: steps=10.7 s, logits=8.9 s for 3 steps + 3 logits calls;
+  steady-state logits ~1.27 s/token (first call pays 6.4 s tile setup).
+- CPU backend: steps=3.1 s, logits=1.3 s.
+- The pure-GEMM head crossover (2.50x, previous receipt) does NOT yet
+  translate to an end-to-end token win: layer projections still pack and
+  write their weight blob per call (~0.5 ms overhead each, ~1740 calls per
+  token), and BLAS fp32 matmul on this host is ~1.3 s for the head.
+
+Known boundary: the ANE DART VM is 3.5 GiB (vm_size 0xe0000000 in the KMD);
+resident tiles for every layer would need ~4.5 GiB of buffer objects, so
+only the head is resident. After any ENOSPC storm the module must be
+rebooted + bring-up ladder re-run; ladder alone leaves BO_INIT failing at
+iova 0x4000.
+
+Next work items, designed not claimed:
+- Blob-swap persistent tiles for layer projections (one program per tile
+  shape, weight blob rewritten per call): removes pack+realloc, memory
+  O(1); expected layer-step floor ~0.9 s/token.
+- Multi-TD chaining (parked earlier) remains the dispatch multiplier.

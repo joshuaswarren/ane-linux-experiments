@@ -37,3 +37,9 @@ Results appended to receipts/ane-static-graph-loop.log (or a new
 crossover receipt) and committed on main.
   CHECK: git log --oneline -1 && git status --short
   EXPECT: crossover commit present, clean tree
+
+## G5: Full-model persistent head: MET 2026-08-28 with boundary
+ANE logits match CPU: generated [11, 488], next 628, shift=0 max_err=0.0023.
+Steady logits ~1.27 s/token ~= CPU 1.305 s (no end-to-end win: layers still
+per-call, DART VM 3.5 GiB caps residency). Design for layer blob-swap and
+multi-TD chaining recorded in receipts; not claimed.
