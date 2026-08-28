@@ -451,3 +451,26 @@ even with zero idle gap after the ladder, which weakens the idle-degradation
 theory: the deterministic factor may be process-order or boot-instance
 rather than idle time. Next session: fix keepalive, verify it submits, then
 run the KBase probes under it; ladder immediately before the session.
+
+Kernel-offset sweep on a HEALTHY device (2026-08-28, night, session 4).
+With the corrected probe (full 0x4000 descriptor, to_blob(+6) at
+0x274+koff, addr words = bank base constant, control re-checked after
+every config) on a fresh boot:
+- koff=0: PASS 0.0004 (control, repeatedly - device stayed healthy)
+- koff=0x40000: finite WRONG (err 1.08)
+- koff=0x78000: finite WRONG (err 0.97)
+- koff=0x80000: finite WRONG (err 0.87)
+The device executes with different wrong data per offset - no hang, no
+zeros-only signature, and the three errors differ, so the DMA lands at
+koff-dependent but non-linear locations. The field is NOT plain
+bar[KRN] + offset. Also found and fixed TWO probe bugs that poisoned
+earlier sessions: (1) kernel ADDR words overwritten with base+i*0x8000
+while the OFFSET words already carry i*0x8000 (double-add), (2) a
+bool-vs-string comparison in the sweep control that silently skipped
+every probe config. Both corrections matter for all future probes.
+
+Next experiment (mechanical, guaranteed): a LOCATOR run - place the
+correct blob at one candidate offset k' at a time with field koff fixed
+(e.g. 0x40000) and scan k' over 0x0..0x100000 step 0x8000; the k' that
+passes reveals the device's actual field->address mapping. ~16 submits,
+no hang risk (all completes observed on healthy device).
