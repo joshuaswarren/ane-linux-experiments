@@ -552,3 +552,29 @@ per-TD submits at the 0.187 ms floor) and the macOS ANEForge/oMLX pipeline
 batching work continues only through compiler-generated descriptors.
 The bisect scripts (/tmp/bisect-boot.py, /tmp/td1-solo.py on jwm1-linux)
 and this verdict close the hand-rolled multi-TD track.
+
+*** FRESH-TD EXECUTION UNLOCKED (2026-08-28, session 7) ***
+The macOS 26 compiler-generated conv (net-local.plist, InputWidth=4,
+Cin=3, Cout=2, compiled by aneccompile on jwm1-macbook) EXECUTES on the
+Linux ANE. Path: fresh Mach-O HWX -> tools/hwxv2-to-anec.py -> raw
+submit (rt.Device, pad 0x81, btsp=payload[:td_size] nid-patched) with
+SWAPPED bank mapping per the named TD diff: the fresh compiler assigns
+RBase0=4 (reads the input window, slot 4) and WBase=5 (writes the output
+window, slot 5) - the reverse of the old libane convention (slot 4 dst,
+slot 5 src). With handles[4]=input BO and handles[5]=output BO the task
+completed and wrote deterministic, input-correlated output:
+  input pixel0 [2.041, -2.5566, 0.4182] -> output [3.041, -1.5566, 1.418, 0.4321]
+  = input + 1.0 pattern (bias 1.0 from net.additional.weights visible in
+  the result).
+CAVEAT (next step): my converter lies about the kernel - krn_size is a
+hardcoded 0x40000 and the kernel pointer ignores the Mach-O __TEXT,__const
+section (real kernel offset 0x4280, size 0x3d80). The observed output =
+identity kernel + bias, consistent with the engine reading garbage/zero
+weights through the wrong window. Fix the converter to carry the true
+kernel offset/size from the Mach-O sections, then numeric parity is the
+remaining check.
+IMPACT: the fresh-TD execution wall is DOWN. Compiler-generated
+descriptors (batching w=4 already compiled; multi-op chains; macOS 26
+compiler output generally) are now a running path on Linux, not a RE
+problem. The bank-swap insight came from the aneregs.json named diff
+(RBase0/WBase/ENE bank assignments).
