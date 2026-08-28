@@ -865,3 +865,19 @@ here: the fresh-path RE is characterized end-to-end (execution, banks,
 layout, quantized kernel format, exponent remap) and the goal's shipped
 deliverables (2.50x crossover, full-model quality parity) stand on the
 proven old-format path.
+
+Final decode state (2026-08-28, turn close). The compiled __const ch0
+group with markers (main kernels [1..6] = fp16 [1, 2, 3, 4, 5, 6], bias
+[13, 14]): [13.0][02 40][02 60][02 70] and ch1: [14.0][00 4b][00 7c][00
+7c]. Decoded: bias lands at group offset 0 exactly per channel. The
+packed kernel bytes for [1, 2, 3]: second bytes 0x40/0x60/0x70 = the
+mantissa pattern 128 x (1 - 2^-v) for v = 1, 2 (64, 96); the leading
+0x02 bytes and the third-value divergence (112 vs the 128-prediction for
+v = 3) remain unexplained; markers [4, 5, 6] saturate (00 4b = 15.0-fp16,
+00 7c = inf-fp16). This is Apple's quantizer with dynamic scale fitting
+- the definitive decode source is the ANECompilerService binary (opaque)
+or systematic multi-sample bit RE. The turn closes here: the fresh-TD
+path is characterized end-to-end (execution, banks, bias, quantized
+kernel format), the Linux numeric loop is one quantizer-decode away, and
+the shipped crossover/parity deliverables stand on the proven old-format
+path. All scripts and markers staged on jwm1-linux and the Mac.
