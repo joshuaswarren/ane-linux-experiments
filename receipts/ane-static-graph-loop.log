@@ -1192,3 +1192,8 @@ four successful `_ANEInMemoryModel` compile callbacks. The server reported
 programs (sequence_length=2048)`. Each captured directory contained only
 `model.mil`, `net.plist`, `data`, and `weights/`; no raw `.hwx` was present.
 Receipt source: `/private/tmp/ane-production-hook.out` on 16M1MBP.
+A 4096-token forced compile on 16M1MBP reached the same split ladder and
+again logged `ANE_COPY_INIT missing client=false model=true` for every
+captured compile callback. Allocating `_ANEVirtualClient` directly also
+returned no usable client. The physical ANE path exposes no disk export
+through the discovered copy API.

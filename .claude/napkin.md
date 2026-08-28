@@ -34,3 +34,6 @@
   compile callbacks, but every `saveModelFiles` directory still contained
   MIL text and weights only. A second Mac confirms the missing raw HWX is
   an export-surface limitation, not one host's compiler state.
+- 2026-08-28: `_ANEVirtualClient` is unavailable on the physical ANE path,
+  even when allocated directly. The discovered `copyAllModelFiles` method
+  cannot export production HWX from a physical Mac.
