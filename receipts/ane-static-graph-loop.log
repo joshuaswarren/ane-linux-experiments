@@ -1060,3 +1060,79 @@ black-box sample count closes it. The fresh-format numeric parity path
 = read Apple's quantizer from the ANECompilerService binary or the
 oMLX server-mediated route. GOAL STATE: crossover 2.50x shipped+gated;
 parity exact; fresh-path RE complete to this boundary. Turn closed.
+
+Fresh HWX parser update (2026-08-28, continuation). Replaced fixed offsets with
+Mach-O `LC_SEGMENT_64` parsing in `tools/hwxv2-to-anec.py`. The converter now
+derives `__TEXT` payload bounds, descriptor offset and size, `__TEXT,__const`
+kernel geometry, and `__FVMLIB,__const` command size. It accepts real Mach-O
+64 headers and the repository fixture marker. It rejects truncated commands,
+duplicate sections, out-of-range segments, missing sections, and ambiguous
+task-descriptor markers.
+
+Parser verification:
+- `python3 tools/test_hwxv2_to_anec.py`: 7 tests passed locally and on `jwm1-linux`.
+- Fixture geometry: content `0x4000`, TD `0x28/0x274`, kernel `0x280/0x80`,
+  command window `0xc0`.
+- Fresh KDMA decode: lanes 0-5 have base/size `(0,1)`; lanes 6-15 have
+  base/size `(1,2)` for lanes 6-9 and `(1,1)` for lanes 10-15.
+- CLI conversion wrote `/tmp/fresh-w4-v3.anec`, size `20480 bytes`.
+
+oMLX server bakeoff (2026-08-28, 16m1mbp). Loading the Qwen model produced
+`Eagerly compiled and enabled ANE/GPU Qwen prefill`. The memory enforcer then
+evicted Qwen because resident memory reached the hard threshold. An
+authenticated voice-model unload timed out and wedged the service. launchd
+restart restored HTTP health. No compiled HWX artifact appeared in the scanned
+cache paths.
+
+Linux execution follow-up remains pending. The local workstation has no
+`/dev/accel/accel0`; `esper` timed out and `tyrell` returned no route.
+
+Current device attempt (2026-08-28, continuation). The synced
+`ane-gemm-fast.py --chain --n 2` on `jwm1-linux` timed out in the first
+submit (`TimeoutError: [Errno 110] Connection timed out`). The documented
+bring-up ladder reached `/dev/accel/accel0`, then its elementwise self-test
+failed. A direct elementwise run showed `FileExistsError: [Errno 17] File
+exists` during `DRM_IOCTL_ANE_BO_INIT`, confirming stale device state.
+The host was rebooted before another device probe.
+
+Reboot recovery and fresh retry (2026-08-28, continuation). After reboot,
+`jwm1-linux` bring-up passed all ladder stages and the elementwise self-test:
+`ANE_VERIFIED elementwise add computed`. The refreshed converter emitted
+`/tmp/fresh-w4-v4.anec`. The fresh ANEC probe reached submit but returned
+`exec_result=-110` with output `shape=(1, 4, 1, 1) head=[inf, inf, inf, inf]`.
+The kernel receipt showed qid 1 enqueue, a surviving doorbell, and
+`execute returned 0`; no finite output followed.
+Therefore this session verified parser behavior, not fresh-TD device execution.
+
+Raw fresh-TD follow-up (2026-08-28 10:41 CDT). After a clean reboot and
+successful bring-up, the converted fixture was submitted through the raw
+ioctl path. The fresh TD requires the source and destination BOs in the
+opposite slots from the old ANEC runtime: `handles[4]=input` and
+`handles[5]=output`. That mapping completed without a timeout and returned
+both NCHW output planes at their `0x40` plane stride:
+`[3.041, 0.4321, -1.0195, 4.3242]` for each plane.
+The fixture kernel contains two rows equal to `[1, 0, 0]`, so both planes
+match the compiled kernel plus bias within fp16 rounding. The old mapping
+returned the untouched `0x7c00` sentinel. This verifies fresh Mach-O
+extraction, fresh TD bank mapping, and numeric parity for the fixture.
+Fresh arbitrary-graph execution (2026-08-28 11:44 CDT). Source
+`/tmp/model64.hwx` is a real macOS 26 compiler artifact (32768 bytes,
+SHA-256 `91464ebfa8c90d93dc300ac9717270e8ee37c4e79bc2c0afb49138659262208`).
+`tools/hwxv2-to-anec.py` converted it to `/tmp/model64.anec` (20480 bytes,
+SHA-256 `6a8fe8de095cf4ff5398bba6e7abf5d2b8ea169994357767328d6f7e9455a018`).
+After the documented bring-up ladder reported `ANE_VERIFIED elementwise add
+computed`, the raw fresh submit completed on `jwm1-linux` with the swapped
+fresh-bank handles (`4=input`, `5=output`). The source used one fp32 weight
+at output channel 3/input channel 1 and input planes at 0x40-byte strides.
+Observed destination planes were zero except channel 3=`11.0`; source channel
+1 was `11.0`. This matches the compiled sparse graph exactly and proves
+numeric parity for an arbitrary 64-channel fresh graph, not only the 4-pixel
+fixture. Command output: `anec content=0x4000 td=0x274 kernel=0x2000`,
+`dst_finite: True`, `dst_sentinel_count: 0`.
+The raw probe is now durable as
+`tools/fresh-anec-probe.py`. It validates channel-plane bounds, uses
+`ExitStack` to release all four BOs, and emits a success token only after the
+expected source-to-destination value matches within tolerance. The synced
+probe reran the same real artifact on `jwm1-linux`:
+`expected output[3]=11.0000`, `observed output[3]=11.0000`,
+`max_err=0.0000 finite=True`, `FRESH_ANEC_PARITY_OK`.

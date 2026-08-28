@@ -27,7 +27,6 @@ from fcntl import ioctl
 
 import numpy as np
 
-
 ANE_TILE_COUNT = 0x20
 DRM_ANE_BO_INIT = 0x41
 DRM_ANE_BO_FREE = 0x42
@@ -117,27 +116,38 @@ class Buffer:
         self.close()
 
 
-def pack_weights(matrix):
+def _pack_buffer(size, out):
+    if out is None:
+        return np.zeros(size, dtype=np.float16)
+    if out.shape != (size,) or out.dtype != np.float16:
+        raise ValueError(f"output buffer must be float16 with {size} elements")
+    out.fill(0)
+    return out
+
+
+def pack_weights(matrix, out=None):
     """Pack a canonical (512, 256) fp16 matrix into the ANE DMA blob."""
     matrix = np.asarray(matrix, dtype=np.float16)
     if matrix.shape != (512, 256):
         raise ValueError(f"weights must have shape (512, 256), got {matrix.shape}")
-    blob = np.zeros(WEIGHT_BYTES // 2, dtype=np.float16)
+    blob = _pack_buffer(WEIGHT_BYTES // 2, out)
     for tile in range(16):
         base = tile * 16384 + 6
         blob[base:base + 256 * 32] = matrix[tile * 32:(tile + 1) * 32].T.reshape(-1)
     return blob
 
-def pack_weights_512(matrix):
+
+def pack_weights_512(matrix, out=None):
     """Pack a canonical (512, 512) fp16 matrix into the ANE DMA blob."""
     matrix = np.asarray(matrix, dtype=np.float16)
     if matrix.shape != (512, 512):
         raise ValueError(f"weights must have shape (512, 512), got {matrix.shape}")
-    blob = np.zeros(WEIGHT_BYTES_512 // 2, dtype=np.float16)
+    blob = _pack_buffer(WEIGHT_BYTES_512 // 2, out)
     for tile in range(16):
         base = tile * 16384
         blob[base:base + 512 * 32] = matrix[tile * 32:(tile + 1) * 32].T.reshape(-1)
     return blob
+
 
 class Device:
     """Own the ANE fd and submit operation descriptors safely."""
@@ -314,25 +324,22 @@ class Device:
 
 
     def blob_swap_gemm(self, cache_key, weights, activation, descriptor, in_cols):
-        """One persistent program per tile shape; the weight blob is rewritten
-        per call. Memory is O(1) per shape, so every layer projection can use
-        it without exhausting the 3.5 GiB DART VM. Skips the per-call pack
-        realloc by packing into a reused numpy buffer."""
-        # One program per tile SHAPE: the command buffer is identical apart
-        # from its weight blob, which this mode rewrites per call.
+        """Rewrite one persistent tile program's weight blob per call."""
         program = self._blob_swap_cache.get(in_cols)
         if program is None:
             _, _, row0, col0 = cache_key
             rows = min(512, weights.shape[0] - row0)
             cols = min(in_cols, weights.shape[1] - col0)
             padded = np.zeros((512, in_cols), dtype=np.float16)
+            packed_size = WEIGHT_BYTES if in_cols == 256 else WEIGHT_BYTES_512
+            packed = np.empty(packed_size // 2, dtype=np.float16)
             padded[:rows, :cols] = weights[row0:row0 + rows, col0:col0 + cols]
             if in_cols == 256:
-                packed = pack_weights(padded)
+                pack_weights(padded, packed)
                 blob_off = WEIGHT_OFFSET
                 src_slots, src_bytes = 256, SRC_BYTES
             else:
-                packed = pack_weights_512(padded)
+                pack_weights_512(padded, packed)
                 blob_off = (TD_SIZE + 15) & ~15
                 src_slots, src_bytes = 512, SRC_BYTES_512
             command = bytearray(blob_off + packed.nbytes)
@@ -354,26 +361,27 @@ class Device:
             request.handles[0] = cmd.bo.handle
             request.handles[4] = out.bo.handle
             request.handles[5] = src.bo.handle
-            program = (cmd, out, src, request, src_slots, src_bytes,
-                       blob_off, len(command) - blob_off)
+            source = np.zeros(src_bytes // 2, dtype=np.float16)
+            program = (
+                cmd, out, src, request, src_slots, src_bytes, blob_off, padded, packed, source
+            )
             self._blob_swap_cache[in_cols] = program
-        cmd, out, src, request, src_slots, src_bytes, blob_off, blob_len = program
+        cmd, out, src, request, src_slots, src_bytes, blob_off, padded, packed, source = program
         _, _, row0, col0 = cache_key
         rows = min(512, weights.shape[0] - row0)
         cols = min(in_cols, weights.shape[1] - col0)
-        padded = np.zeros((512, in_cols), dtype=np.float16)
+        padded.fill(0)
         padded[:rows, :cols] = weights[row0:row0 + rows, col0:col0 + cols]
         if in_cols == 256:
-            packed = pack_weights(padded)
+            pack_weights(padded, packed)
         else:
-            packed = pack_weights_512(padded)
+            pack_weights_512(padded, packed)
         cmd.map.seek(blob_off)
-        cmd.map.write(packed.tobytes())
-        source = np.zeros(src_bytes // 2, dtype=np.float16)
+        cmd.map.write(memoryview(packed).cast("B"))
+        source.fill(0)
         source[:src_slots * 32:32] = activation
-        src.write(source.tobytes())
-        out.map.seek(0)
-        out.map.write(b"\x00\x7c" * (OUT_BYTES // 2))
+        src.map.seek(0)
+        src.map.write(memoryview(source).cast("B"))
         ioctl(self.fd, IOCTL_SUBMIT, request)
         deadline = time.monotonic() + WAIT_S
         while out.map[:2] == b"\x00\x7c" and time.monotonic() < deadline:

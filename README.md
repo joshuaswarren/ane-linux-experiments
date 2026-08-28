@@ -161,6 +161,27 @@ Keep ANEForge's Qwen residual scale at `1.0`; scale `32.0` changed the
 output sequence. See `receipts/aneforge-qwen-macos26.log` and
 `receipts/aneforge-qwen-precision-boundary.log`.
 
+## Fresh HWX conversion
+
+`tools/hwxv2-to-anec.py` parses macOS 26 64-bit Mach-O load commands. It
+extracts the `__TEXT` payload, task descriptor, kernel section, command window,
+and fresh coefficient-DMA register fields. It accepts both real HWX headers and
+the repository's sanitized fixture header.
+
+Run the offline parser checks with:
+
+```sh
+python3 tools/test_hwxv2_to_anec.py
+```
+
+The converted fixture reaches the Linux device with the fresh TD bank mapping
+and returns both NCHW output planes. Its compiled fixture kernel has two rows
+that both select input channel zero, and both planes match that kernel.
+
+The same path also reaches the device with a real 64-channel fresh artifact.
+Its compiled sparse graph writes source channel 1 to output channel 3 exactly.
+This extends fresh-format numeric parity beyond the sanitized 4-pixel fixture.
+
 ## Warning
 
 The bring-up path can hard-reset the machine. A wrong register write reboots
