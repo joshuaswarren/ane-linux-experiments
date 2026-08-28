@@ -765,3 +765,15 @@ format is likely documented in their open code) OR continue the
 one-variable decode ([4,5,6] -> 00 4b 00 7c 00 7c is a strong second
 sample: 4 -> 4b, 5 -> 7c, 6 -> 7c saturation visible). Device untouched
 this session (Mac-only experiments); execution loop proven.
+
+fp16-domain decode samples (session 12 addendum). Reading the packed
+values as LE-fp16: markers [1, 2, 3] -> [2.002, 513.0, 8200.6]; markers
+[4, 5, 6] -> [15.0, inf, inf]. The original kernel value 1.875 appears
+(15.0 = 1.875 x 8) - suggesting the quantizer's scale interacts with the
+value exponent nonlinearly, or the compiled bytes are a bit-sliced format
+(e.g. 10/11-bit mantissa slices). Bit-level archaeology in the dark is
+exhausted; the definitive source is the oMLX/ANEForge quantizer code
+(next session: read the oMLX weight-quantization implementation on the
+Mac - it is the same pipeline that produced the macOS prefill crossover).
+Layout knowledge is complete: per-channel 0x40B groups [bias][packed
+kernel][pad]; everything else in the fresh path proven on Linux.
