@@ -669,3 +669,22 @@ own bank field, already mapped).
 Next session: align the input fill to InputInterleave=1 layout for
 (4 px x 3 ch), verify out = conv(src, K) + bias exactly, then scale the
 loop to arbitrary plists (the fresh-compile numeric pipeline completes).
+
+Channel-major layout confirmed (2026-08-28, session 10). With the src BO
+filled in CHANNEL-MAJOR planes (src[c*4 + p]), the fresh w4 conv computes
+EXACTLY: out[p][0] = 1.0 x src[p][0] + 1.0 for all 4 pixels (dst head
+[3.041, 0.4321, -1.0195, 4.3242] = src[p][0] + 1 within fp16 rounding).
+Verified against numpy on the current boot, no recovery needed - the
+device handled 6+ submits this session. The engine, bias, layout, and
+output DMA are all proven correct; the engine applied kernel row
+[1, 0, 0] + bias [1, 0] (compiled from the [1..12] marker weights' first
+row + the [1,1] bias - partial q7 consumption).
+
+Remaining (bounded): make the device consume the FULL kernel rows
+([1, 2, 3] etc.) - the compiled 0x40B-per-channel group holds [scale][q7
+packed values] and the engine currently uses only the first q7. Options:
+(a) decode the q7 packing from the [1..12] marker (data captured:
+compiled bytes 02 40 02 60 02 70 vs input [1,2,3]), (b) compile with
+weights the engine reads trivially (e.g. all-equal kernels - if out =
+k x sum(src) + b for a constant k, the plumbing is done and only the
+value mapping remains).
