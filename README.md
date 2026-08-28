@@ -99,11 +99,13 @@ output sentinel.
   payload at runtime. An identity kernel bound into `gemm.ane` passes its
   input through.
 
-The tied output head also now executes fully on the ANE through the verified
-descriptor runtime. Argmax and top-10 match CPU on a real prompt with max
-error `0.0228` (`receipts/ane-static-graph-loop.log`). The head remains
-slower than CPU (`0.33x`). The static `gemm.ane` layout does not yet
-reproduce canonical GEMM, so no Linux speed crossover is claimed.
+The tied output head now runs FASTER than CPU on Linux. Persistent
+descriptor tiles (buffers allocated once, weights resident on device,
+0.187 ms submit floor) execute the full 248320x2048 head in 791 ms versus
+1975 ms CPU numpy on the same host: 2.50x, with max error 0.0010, matching
+argmax and top-10 (`ane-head-bench.py`,
+`receipts/ane-static-graph-loop.log`). The earlier 0.33x was per-call
+buffer-object churn, not device speed.
 
 ## Standard model
 

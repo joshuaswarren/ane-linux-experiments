@@ -125,3 +125,41 @@ Converter and probe artifacts are reproducible:
   all -110 at device
 - probes hwx_a..hwx_e (single-weight placement: out-stride 2 fp16,
   in-stride 8 fp16 at 0x84E0-region; content-dependent, no flat layout)
+
+Speed crossover (2026-08-28, persistent-buffer descriptor path). Root cause
+of the old 0.33x: `run_gemm` allocated and tore down four buffer objects per
+tile call (~2 ms/call). Keeping the buffers persistent and rewriting only the
+512 KB weight blob (or, for a static head, nothing at all) drops the floor to
+0.304 ms/call with blob rewrite and 0.187 ms/call submit-only (300-call mean,
+`ane-gemm-fast.py --floor`).
+
+Full tied head (248320x2048 fp16, 485x8 = 3880 persistent 512x256 tiles,
+weights resident on device, one submit per tile, fp32 CPU accumulation of 8
+partials per row tile), `ane-head-bench.py`:
+- setup: 6.3 s one-time (1.64 ms/tile programming)
+- ANE head token: 791 ms
+- CPU numpy reference (same host): 1975 ms
+- speedup: 2.50x  <- crossover, first measured
+- quality vs fp32 reference: max_err=0.0010, argmax ok, top10 10/10
+- smoke at 1024x512: 3.20x, max_err=0.0003 (overhead-dominated at that size)
+
+The 248320x2048x2048 CPU reference on THIS host measures 1975 ms; the older
+receipt recorded 1.27 s for the same shape. Either way the ANE path is now
+faster, not slower.
+
+Multi-TD chaining (td_count>1 in one submit): attempted to cut the per-tile
+submit floor further; three geometries all hang the device (KMD `tm execution
+failed w/ -110`), including one mirroring the retained 2-TD concat.ane
+layout (TDs at content 0x28 + k*0x300, tsk=0x574, kernel blobs at
+bar[KRN]+k*0x80000). The TD fetch rule is not derivable from the current
+KMD source and each failed attempt wedges the queue until the bring-up
+ladder (or reboot + ladder) is re-run. Parked, not claimed.
+
+Device recovery procedure that works (jwm1-linux):
+`sudo ANE_KO=/home/joshuawarren/ane-boot/ane-qid.ko bash ~/ane-boot/jwm1-ane-bringup.sh`
+Run it after ANY wedge. Plain `insmod` without the ladder resets the SoC
+(two hard reboots caused that way today). If BO_INIT starts failing with
+EEXIST at iova 0x4000 after a wedge, reboot first, then ladder.
+
+Crossover is dispatch-bound: 3880 x 0.187 ms floor = 0.73 s of the 791 ms.
+Chaining, if ever decoded, is the next multiplier (theoretical 4-8x).
