@@ -1136,3 +1136,9 @@ expected source-to-destination value matches within tolerance. The synced
 probe reran the same real artifact on `jwm1-linux`:
 `expected output[3]=11.0000`, `observed output[3]=11.0000`,
 `max_err=0.0000 finite=True`, `FRESH_ANEC_PARITY_OK`.
+
+Stress run (2026-08-28 11:58 CDT). The same durable probe with
+`--value-base=-3.5` returned `expected output[3]=-2.5000`,
+`observed output[3]=-2.5000`, `max_err=0.0000 finite=True`, and
+`FRESH_ANEC_PARITY_OK`. The fresh path preserves signed numeric parity after
+the BOs are released and recreated.
