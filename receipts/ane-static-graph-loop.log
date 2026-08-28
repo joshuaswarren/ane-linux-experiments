@@ -1197,3 +1197,9 @@ again logged `ANE_COPY_INIT missing client=false model=true` for every
 captured compile callback. Allocating `_ANEVirtualClient` directly also
 returned no usable client. The physical ANE path exposes no disk export
 through the discovered copy API.
+Core ML archive attempt (2026-08-28, 16M1MBP). A temporary `coremltools 9.0`
+environment was installed under `/private/tmp/coremltools-venv` with Python
+3.9.6. `xcrun coremlc compile` rejected the captured MIL text with
+`Field number 13 has wireType 7`, and the captured temporary path was gone
+before a `coremltools.utils.load_spec` read. This path produced no HWX
+artifact.

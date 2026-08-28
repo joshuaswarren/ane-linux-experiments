@@ -37,3 +37,6 @@
 - 2026-08-28: `_ANEVirtualClient` is unavailable on the physical ANE path,
   even when allocated directly. The discovered `copyAllModelFiles` method
   cannot export production HWX from a physical Mac.
+- 2026-08-28: Core ML `coremlc` expects an MLModel protobuf, not the
+  `program(1.3)` MIL text that `saveModelFiles` returns. This path did not
+  bridge the physical ANE HWX export gap.
