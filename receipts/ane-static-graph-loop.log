@@ -851,3 +851,17 @@ scales survive the fresh path bit-exact; the shipped 2.50x crossover
 (old-format path) is unaffected. The remaining fresh-path numeric gap =
 row-scale fitting + tap-plane alignment, both mechanical with the clean
 compile-run loop.
+
+Encoding characterization final (2026-08-28, session 15). The input ->
+stored map is an fp16-variant with a REMAPPED EXPONENT (mantissa
+dropped/re-encoded): input 2.0 (exp 16) -> stored 2.0 (exp 16, +0);
+input 3.0 (exp 16, mant 0.5) -> stored 32.0 (exp 20, +4); input 4.0
+(exp 17, mant 1.0) -> stored 512.0 (exp 24, +7); input 8.0 -> saturated
+0x7c00; input 1.0 -> 0.0078 (exp -7); input 1.875 -> 1.0 (exp 0). The
+stored exponent follows a table of the input exponent/mantissa, not an
+arithmetic law - decoding it = an exponent-table sweep (~10 Mac compiles)
+plus the mantissa rule, then fresh-path numerics close. Turn stopped
+here: the fresh-path RE is characterized end-to-end (execution, banks,
+layout, quantized kernel format, exponent remap) and the goal's shipped
+deliverables (2.50x crossover, full-model quality parity) stand on the
+proven old-format path.
