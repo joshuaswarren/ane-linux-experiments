@@ -710,3 +710,18 @@ conv/mmul numerics close on Linux.
 
 Device healthy after ~15 clean submits this session (no wedges since the
 protocol fix: ladder before session, controls around experiments).
+
+Session 10 close-out. The fresh Common section declares the correct dims
+(Win/Wout = 4, Cin = 3, Cout = 2 - verified in the named diff) yet the
+engine ran degenerate (1 tap, 1 output channel, channel-0 only). The
+gating layer is therefore NOT the Common dims but the fresh KDMA table's
+own addressing: its channels (ch0-6: off 0, len 0x40; ch7: off 0x40,
+len 0x80, flags 0x80/0x40) select what the engine consumes, and the
+engine's tap/channel count followed the KDMA channels rather than the
+Common dims. The KBase1=2 bank-handle mapping made no numeric difference
+(kernel window already covered). Remaining decode: the fresh KDMA
+channel-to-engine mapping (which ch feeds which MAC row and how the
+channel sum forms) - the last piece before compiler-path numeric parity.
+Everything else (fetch, banks, layout, bias, scale application, per-
+pixel output DMA) is proven working on Linux with receipts. Device left
+healthy after ~15 clean submits.
