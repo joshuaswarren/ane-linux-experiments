@@ -596,3 +596,25 @@ driver's surface-id -> bank mapping (IOKit RE) OR making the Linux KMD map
 BOs at the fixed 0x3000xxxx windows. The passthrough+bias result shows the
 task plumbing (fetch, banks, dst DMA) works end-to-end; only the kernel
 data path needs the surface-table semantics.
+
+Kernel transform observed (2026-08-28, session 8). Compiled the net-w4 conv
+with marker kernels [1..12] fp16 and dumped the compiled __const: per-
+channel 0x40-byte groups - ch0 = [02 40, 02 60, 02 70] (BE-fp16 2.25,
+2.375, 2.4375), ch1 = [00 7c x3] (the 0x7c00 sentinel!), rest zeros. The
+compiler TRANSFORMS the plist kernel into per-channel packed groups; the
+values are bit-packed/byte-swapped (input [1,2,3] -> BE 2.25/2.375/2.4375)
+and ch1's sentinel pattern suggests the compile consumed stale/other state
+(the marker experiment wrote denormals first - uint16 packing bug - before
+the proper fp16 rewrite). The earlier Linux run (identity+bias) ran on the
+FIRST compile whose kernel source state is now uncertain.
+
+Clean numeric loop for next session (everything staged, ~10 min):
+1. Mac: set plist kernels to DISTINCT markers via numpy fp16, compile once,
+   dump __const -> decode the exact transform (per-channel groups are
+   confirmed; the packing bits need one clean sample).
+2. Linux: hwxv2-convert, submit with swapped banks, verify against numpy
+   using the decoded transform.
+3. If parity holds: port into the model prefill path, measure prefill
+   throughput vs CPU -> the fresh-compile crossover completes the goal's
+   remaining scope (chaining/batching then ride the compiler path instead
+   of hand-rolled TDs - now closed as impractical).
