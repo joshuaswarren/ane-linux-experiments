@@ -1178,3 +1178,9 @@ The captured `saveModelFiles` directory contained `model.mil`, `net.plist`,
 `model.hwx` or `additional_weights` file. A post-load hook caused a
 `Killed: 9` process, so it was not used as evidence. Production conversion
 and Linux execution remain blocked on a raw production HWX artifact.
+The private runtime scan also exposed `_ANEClient.compileModel:options:qos:error:`
+and `_ANEVirtualClient.copyAllModelFiles:dictionary:ioSurfaceRefs:`, but
+`_ANEVirtualClient sharedConnection` returned `nil` on JW14M2. The copy hook
+therefore produced `ANE_COPY missing client=false model=true` and no file
+export. The retained `model.mil` begins with `program(1.3)` and is MIL text,
+not a HWX container.
