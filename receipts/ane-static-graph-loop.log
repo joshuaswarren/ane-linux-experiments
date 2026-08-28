@@ -949,3 +949,14 @@ through the oMLX server API (apply the patch + compile via the server's
 tuning/runtime path), or replicate the server's environment (launchd/
 entitlements) for standalone compiles. Once one compiled artifact exists,
 the Linux numeric loop is immediate (hwxv2 + bank swap, both proven).
+
+Session close (2026-08-28). Discovered the oMLX tuner/advisor caches
+(63 GB under ~/Library/Caches/omlx-advisor) contain 153 MB compiled
+fresh-format procedure banks (_boundary_sna*, modified today) - real
+macOS 26 compiler output for production Qwen35 shapes, available for the
+next session's fresh-format validation (convert a bank with hwxv2 +
+execute on Linux = the definitive fresh-path test with production data).
+Goal state at close: crossover 2.50x shipped+gated; full-model quality
+parity exact; fresh-path RE characterized end-to-end to the Apple
+quantizer boundary; the quantizer packing decode = the documented
+remaining item (dedicated RE session; levers recorded).
