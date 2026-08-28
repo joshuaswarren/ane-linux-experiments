@@ -653,3 +653,19 @@ kernel at 192, bias in net.additional - the fresh HWX embeds its own
 copy), place weights/bias at the offsets the fresh TD expects, verify
 numeric parity on the conv, then batching/chaining ride the compiler
 path. Device left healthy; all scripts staged on jwm1-linux in /tmp.
+
+Numeric decode progress (2026-08-28, session 9 close). The executed fresh
+w4 conv output decodes as: out[i] = in[i] + 1.0 for the first FOUR input
+scalars, zeros after. With bias [1, 1] and the plist kernel this is the
+conv computed on a DEGENERATE dim interpretation (1 output channel, 4
+pixels x 1 effective channel) rather than the intended (2 ch x 4 px) - the
+engine ran, the bias path ran, the kernel path ran (k=1 visible), but the
+channel/width interpretation of my input fill does not match the plist's
+declared layout (InputChannels 3, Cout 2, InputInterleave 1, w=4).
+Remaining work is input/output LAYOUT alignment (interleave + dim
+plumbing), not new RE mechanisms. The KBase1=2 bank-handle mapping did not
+change the result (kernel path likely reads via the compact KDMA table's
+own bank field, already mapped).
+Next session: align the input fill to InputInterleave=1 layout for
+(4 px x 3 ch), verify out = conv(src, K) + bias exactly, then scale the
+loop to arbitrary plists (the fresh-compile numeric pipeline completes).
