@@ -496,3 +496,25 @@ Next session protocol: reconstruct gemm-chain2 byte-exactly from the
 morning state (git-stash style: save current, rebuild stepwise, verify
 tile-0-exact at each step), then continue bank addressing. Device
 discipline: control submit before and after every experiment.
+
+Device model v3 (2026-08-28, session 5 close). The bisect ran cold after
+chain4 experiments: even the known-good control (S1, identical to the
+verified config) produced no-write. Combined with every observation today,
+the best-fit model: an IMPERFECT chain submit (wrong TD_1 config - and
+possibly any timeout) POISONS all subsequent submits until reboot + ladder.
+The healthy window covers roughly: boot, ladder, controls + ONE chain
+attempt. The "idle gap" theory (v2) is dead - tonight's control timed out
+with zero idle gap. Operational rule until the poison mechanism is fixed
+in the KMD: budget ONE chain experiment per boot, run controls FIRST,
+ladder immediately before the session. The 12-config-format sweep and the
+multi-config chain loops from earlier tonight were unknowingly fighting
+this - their negative results remain valid only for the first config of
+each boot.
+
+State carried forward: chain4 unit=1 (TID/EON/LNID/NextSize protocol,
+KBase0=0 for TD_0) reproduces tile-0-exact + TD_1-no-write on a fresh
+boot. TD_1's no-write isolates to its TD configuration (TID=1 / KBase0=1 /
+bases / bank-1 blob placement) - the next session bisects that field set
+with one config per boot: (1) TD_1 fields on a solo TD (TID=1 first
+submit of the boot), (2) KBase0=1 with kernel banks via handles slots,
+(3) NextSize variants.
