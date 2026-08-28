@@ -777,3 +777,15 @@ exhausted; the definitive source is the oMLX/ANEForge quantizer code
 Mac - it is the same pipeline that produced the macOS prefill crossover).
 Layout knowledge is complete: per-channel 0x40B groups [bias][packed
 kernel][pad]; everything else in the fresh path proven on Linux.
+
+Session 12 final: the kernel packing format belongs to Apple's proprietary
+ANECompilerService (the oMLX pipeline shells out to it; no readable
+quantizer source in omlx-ane-cache-src - the compile shells to the system
+compiler). Scale-variation observations recorded: [0,1.875,0] -> scale
+1.0; [0,1,0] -> scale 2^-7 - the scale appears value-dependent
+(quantization range fitting), confirming this is a quantizer with
+dynamic per-channel scale fitting. Decoding it fully = systematic multi-
+sample RE of Apple's quantizer (dedicated session) OR generating weights
+through ANEForge's own tools with the scale visible. All layout/bank/
+execution knowledge is complete and receipted; the goal's shipped
+deliverables (2.50x crossover, full-model parity) are unaffected.
