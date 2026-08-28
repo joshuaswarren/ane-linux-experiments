@@ -356,3 +356,15 @@ fields interact per family. Conclusion stands: batching needs a compiler-
 generated descriptor or a complete family-consistent port; bit-sweeping
 individual fields is exhausted (sweep v1: 12 configs, v2: 4, v3: 4 - all
 recorded). Device recovered after (reboot + ladder, ANE_VERIFIED).
+
+Header theory eliminated (2026-08-28, night close-out). Diffed the 0x28-byte
+task headers: the macOS 26 compiler DOES emit the full task header in the
+fresh HWX, structurally identical to the old format (W0t=0x02000000,
+exe_cycles 0x42a, W6=0x30009800 all present and plausible). The fresh-TD
+execution wall is therefore NOT a missing header - it is exactly the
+20-word TD delta measured earlier: zeroed engine-count words (0x220/0x224,
+same cluster the compiler clears for multi-pixel), the Cfg bit-26 family,
+and stride words. Every open thread (fresh-TD execution, gemm chaining,
+width batching) now converges on ONE remaining RE task: the semantics of
+that TD field cluster in the macOS 26 output. Once decoded, all three
+capabilities unlock together. Localized, recorded, and parked.
