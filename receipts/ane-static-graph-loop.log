@@ -1203,3 +1203,7 @@ environment was installed under `/private/tmp/coremltools-venv` with Python
 `Field number 13 has wireType 7`, and the captured temporary path was gone
 before a `coremltools.utils.load_spec` read. This path produced no HWX
 artifact.
+Cache scan follow-up (2026-08-28). `/tmp/list-hwx-cache.py` scanned
+`~/Library/Caches/omlx-advisor` and `~/Library/Caches/omlx` on MacStudio,
+JW14M2, and 16M1MBP. Each host returned `count=0`. No cached `.hwx`
+artifact was available after the production compile attempts.
