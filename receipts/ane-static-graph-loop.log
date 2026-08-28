@@ -688,3 +688,25 @@ compiled bytes 02 40 02 60 02 70 vs input [1,2,3]), (b) compile with
 weights the engine reads trivially (e.g. all-equal kernels - if out =
 k x sum(src) + b for a constant k, the plumbing is done and only the
 value mapping remains).
+
+Scale-as-tap discovery (2026-08-28, session 10). All-ones kernel compile:
+the Linux execution produced out[p][0] = src[p][0] x 0.0078 + 1.0 for ALL
+4 pixels EXACTLY (deltas from 1.0 = src[p][0] x 0.0078 within 2 percent),
+out ch1 = written zeros. The 0.0078 = 2^-7 = the compiled fp16 SCALE in
+the channel group. Decoded semantics: the engine applied the channel's
+SCALE as tap 0's weight, ignored the q7 bytes, and only processed output
+channel 0 with the first input tap - the fresh Common section's dims
+(Cin/Cout/width) are encoded in a NEW compact format the engine reads
+differently than the old TD's Common section (which my raw path
+understands). The identity+bias run = the same degenerate case with
+scale = 1.0.
+
+CONFIRMED WORKING on Linux for the fresh format: task fetch, bank
+routing (src/dst/kernel windows), channel-major input layout, per-pixel
+math, bias, output DMA, per-channel scale application. REMAINING: the
+fresh Common-section dims encoding (why the engine ran 1x1 instead of
+3-in/2-out) - one more register-map decode, then compiler-generated
+conv/mmul numerics close on Linux.
+
+Device healthy after ~15 clean submits this session (no wedges since the
+protocol fix: ladder before session, controls around experiments).
