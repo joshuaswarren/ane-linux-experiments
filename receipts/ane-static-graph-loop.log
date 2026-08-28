@@ -913,3 +913,15 @@ compiled artifact, convert with hwxv2-to-anec, run on Linux with the bank
 swap, verify numeric parity vs quantize_rows dequant - then the
 compiler-path batching/chaining work rides this proven Apple pipeline
 instead of any hand-rolled descriptor.
+
+_ext environment note (2026-08-28, session 14 close). The DEV-build
+_ext.cpython-313-darwin.so (omlx-ane-cache-src/build) SEGFAULTS on
+qwen35_ane_compile_linear (exit 139, 512x512 float32) on this Mac - the
+homebrew python3 lacks numpy (used lists first: nanobind rejected the
+shape "Invalid fixed shape for ANE linear model" for 2x3, then mlx
+float32 512x512 segfaulted). The oMLX APP runtime (0.6.3rc2 - the
+receipt's tuner runtime) bundles its own working _ext: next session use
+the oMLX app python environment (or rebuild _ext against the installed
+mlx) instead of the dev build. Shape note: the binding requires
+contiguous rank-2 float32 mx.array; 2x3 is rejected as "Invalid fixed
+shape" - use production-like dims (512x512+).
