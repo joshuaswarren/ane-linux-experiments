@@ -75,3 +75,9 @@ Speed-versus-CPU verification (the goal's comparison deliverable):
 Conclusion: quality matches CPU; speed does not cross over, and the two
 paths to a crossover are blocked by the descriptor ceiling and the macOS 26
 HWX parser gap respectively. Both are documented here rather than claimed.
+
+Rebinding scope note: `ane_bind_kernel` rebinds fp16 kernels with no
+recompile. Compressed kernels (q4 streams) bound through a static graph are
+NOT demonstrated: the raw KMD has no in-graph decompression, so compressed
+streams stay a macOS ANEForge result. On Linux, decompress on host, then
+bind the fp16 result.
