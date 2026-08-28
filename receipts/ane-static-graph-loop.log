@@ -960,3 +960,13 @@ Goal state at close: crossover 2.50x shipped+gated; full-model quality
 parity exact; fresh-path RE characterized end-to-end to the Apple
 quantizer boundary; the quantizer packing decode = the documented
 remaining item (dedicated RE session; levers recorded).
+
+Correction (2026-08-28, final). The omlx-advisor cache "_boundary_sna*"
+entries (153 MB each) are DIRECTORIES of activation-tensor snapshots from
+the tuner's verification passes - NOT compiled ANE programs. No compiled
+fresh-format programs exist in the advisor cache. The fresh-format
+production validation still requires the server-mediated compile
+(in-process oMLX compiles segfault; the oMLX server holds the working
+private-ANE environment). The goal's shipped deliverables (2.50x
+crossover, quality parity) are unaffected; the fresh-format decode stands
+characterized to the compile-weights consumption fix documented earlier.
