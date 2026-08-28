@@ -205,3 +205,16 @@ Next work items, designed not claimed:
   shape, weight blob rewritten per call): removes pack+realloc, memory
   O(1); expected layer-step floor ~0.9 s/token.
 - Multi-TD chaining (parked earlier) remains the dispatch multiplier.
+
+Layer blob-swap mode (same day, later). `Device.blob_swap_gemm`: one
+persistent program per tile shape (256-in, 512-in); the weight blob is
+rewritten in the command BO per call instead of building a new program.
+Removes the per-call BO churn for layers without the 3.5 GiB DART residency
+ceiling. Full-model run (`Hi`, generate 2): steps 10.72 -> 7.97 s (3 steps),
+generated_ids=[11, 488], next_token=628 unchanged (parity receipts hold).
+Layer per-token cost is now ~2.66 s; the remaining per-call overhead is the
+fp16 pack (numpy transpose copy), the 512 KB blob write, and Python submit
+path - about 1.5 ms per 512x256 submit. CPU backend on the same host runs a
+full token in ~2.34 s, so end-to-end speed parity is NOT yet achieved.
+Recorded next steps: fp16 pack into a preallocated buffer, DMA write to the
+cmd blob, and multi-TD chaining.
