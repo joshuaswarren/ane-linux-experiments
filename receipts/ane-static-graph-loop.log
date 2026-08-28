@@ -518,3 +518,14 @@ bases / bank-1 blob placement) - the next session bisects that field set
 with one config per boot: (1) TD_1 fields on a solo TD (TID=1 first
 submit of the boot), (2) KBase0=1 with kernel banks via handles slots,
 (3) NextSize variants.
+
+Decisive first-submit datapoint (2026-08-28, session 6). TD1-solo (a single
+TD with TID=1, EON+LNID, KBase0=1, SrcBase 0x4000, DstBase 0x8000) ran as
+the FIRST submit of a fresh boot (ladder verified, nothing prior): hard
+TIMEOUT - not a no-write completion. So at least one of {TID=1, KBase0=1,
+nonzero src/dst bases} is fatal in a solo TD; the poison model narrows to
+the TD field values themselves, not chain context. Working single-TD config
+differs only in TID=0, KBase0=0, bases 0/0. Next session: 3 boots x 1 first
+submit each - (a) TID=1 solo, (b) KBase0=1 solo, (c) bases solo - isolates
+the fatal field with certainty, then chaining can be built on the surviving
+mechanism (or per-TD submits + the 0.187 ms floor remain the ship path).
