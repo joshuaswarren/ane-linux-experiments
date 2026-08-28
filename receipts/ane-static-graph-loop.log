@@ -270,3 +270,12 @@ GEMM chaining status with the proven envelope:
   experiment (or verify by chaining two IDENTICAL gemm TDs that share one
   0x80000 blob - isolates bank-declaration from per-TD addressing).
 - Recovery economics unchanged: every hang = reboot + ladder (~3 min).
+
+Identical-TD chain test (final, same evening): two IDENTICAL gemm TDs
+sharing ONE 0x80000 kernel blob (concat-style kernel table, no per-TD
+offsets), proven envelope: TIMEOUT. Chaining is blocked at the TD-family
+level, not per-TD kernel addressing: concat-family (elementwise pass-
+through) TDs chain; conv/gemm-family TDs do not, under the same envelope.
+Suspects narrowed to TD-family config (W6 engine flags) or the stab's
+declared bank regions, both requiring macOS IOKit RE or stab semantics
+study. Device recovered (reboot + ladder, ANE_VERIFIED).
