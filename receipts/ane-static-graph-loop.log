@@ -47,14 +47,31 @@ Not yet achieved:
   (argmax and top-10 match CPU, max error 0.0228) but is still CPU-side
   slower (0.33x).
 
-Probe follow-up (same day): the layout question is sharper than "differs".
-One-hot and constant-activation probes show the graph applies a per-row
-linear map whose rows read as all-zeros or all-ones when an identity matrix
-is bound in tile-transposed form, and none of three flat bindings
-(row-major, column-major, `pack_weights_512`) reproduces canonical GEMM on
-random weights (best-case max error `74.38`). An identity matrix bound in
-RAW row-major form does pass the activation through exactly, which is why
-the earlier identity rebind looked like a working GEMM. Decoding the real
-mapping needs the TD KernelDMA descriptor fields from the HWX
-(tinygrad `extra/accel/ane/lib/ane.py` register map), not more flat-layout
-guesses.
+Probe follow-up (same day). The graph applies a per-row linear map. With an
+identity matrix bound in tile-transposed form, each output row reads as all
+zeros or all ones. Three flat bindings do not reproduce canonical GEMM on
+random weights: row-major, column-major, and `pack_weights_512`. Best-case
+max error is `74.38`. An identity matrix bound in RAW row-major form does
+pass the activation through exactly. That is why the earlier identity rebind
+looked like a working GEMM. Decoding the real mapping needs the TD
+KernelDMA descriptor fields from the HWX. See the tinygrad
+`extra/accel/ane/lib/ane.py` register map. Flat-layout guesses are done.
+
+Fresh-compile bridge blocker (same day): regenerating graphs via macOS 26
+`ANECCompile` (tinygrad `compile.mm`, reference plist compiles clean) emits
+a Mach-O HWX whose task-descriptor layout the `anecc` parser rejects
+(`tsk_size` assertion; BASE_ADDR hits at 0x80/0xd0/0x290 vs the old single
+consecutive pair the parser expects). The retained golden files predate this
+compiler. So new-graph generation needs an anecc update for the macOS 26
+HWX container before the KDMA layout question can be probed on freshly
+compiled weights.
+
+Speed-versus-CPU verification (the goal's comparison deliverable):
+- Tied head on ANE (verified descriptor path): 3.86 s for the full
+  248320x2048 head; CPU numpy: 1.27 s. ANE is 0.33x CPU.
+- Head tiles are 512x512, which IS the verified descriptor ceiling
+  (1024-input and 1024-output descriptors fail), so no larger single-dispatch
+  tile is available on this driver.
+Conclusion: quality matches CPU; speed does not cross over, and the two
+paths to a crossover are blocked by the descriptor ceiling and the macOS 26
+HWX parser gap respectively. Both are documented here rather than claimed.
