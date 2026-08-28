@@ -368,3 +368,28 @@ and stride words. Every open thread (fresh-TD execution, gemm chaining,
 width batching) now converges on ONE remaining RE task: the semantics of
 that TD field cluster in the macOS 26 output. Once decoded, all three
 capabilities unlock together. Localized, recorded, and parked.
+
+CHAIN PROTOCOL DECODED (2026-08-28, night, session 3). Found the compiler's
+own TD register map: `lib/aneregs.json` in tinygrad-ane-v0103 (full bitfield
+names for the TD header). Decoded concat's chained pair with it:
+- W0 bits 0-15 = TID (task/chain index: 0 then 1)
+- W0 bit 24 = LNID, bit 25 = EON - set on the LAST TD only
+- W3 bits 0-15 = NextSize = 156 (0x9c) on non-last TDs, 0 on the last
+- W7 = NextPointer, W6 low bits = NextPriority; W8 = RBase0/RBE0/RBase1/
+  WBase/WBE/TBase/TBE/ENE bank enables (RBase0 6->5 and TBE 1->0 differ
+  between concat's two TDs - per-TD bank assignment is real)
+With the protocol applied (TID 0/1, EON+LNID on the last, NextSize 156/0),
+the 2-TD GEMM chain NO LONGER TIMES OUT: the device executes both TDs
+end-to-end. Remaining defect: output windows contain all-inf - the chained
+task's kernel-bank addressing (per-TD kernel field 0x81000000+k*0x80000 vs
+bar[KRN]) does not yet land on the programmed blobs, or the stab must
+declare the kernel region for chained tasks. Next probe (cheap, decisive):
+single-TD gemm with kernel field offset 0x80000 and blob at cmd 0x580+
+0x80000 - tests bank-field offsets beyond zero in isolation.
+
+aneregs.json header map (byte,bit,width): W0 TID[0,0,16] NID[2,0,8]
+LNID[3,0,1] EON[3,1,1]; W1 ExeCycles[4,0,16]; W3 NextSize[6,0,9];
+W6 NextPriority[26,0,6] TDSkip[25,1,1] DisallowAbort[25,0,1];
+W7 NextPointer[28,0,32]; W8 RBase0[32,0,5] RBE0[32,5,1] RBase1[32,6,5]
+WBase[33,4,5] WBE[34,1,1] TBase[34,2,5] TBE[34,7,1] ENE[35,0,3];
+W9 KBase0[36,0,5] KBE0[36,5,1] KBase1[36,6,5] KBE2[38,1,1] ...
