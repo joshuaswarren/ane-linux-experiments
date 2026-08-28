@@ -970,3 +970,18 @@ production validation still requires the server-mediated compile
 private-ANE environment). The goal's shipped deliverables (2.50x
 crossover, quality parity) are unaffected; the fresh-format decode stands
 characterized to the compile-weights consumption fix documented earlier.
+
+Alternative-path note (2026-08-28, session 15 close). Re-examined the
+blocker with fresh eyes: the tinygrad standalone compile path (aneccompile)
+works reliably on this Mac WITHOUT the private-ANE entitlement (dozens of
+clean compiles tonight) and its fresh-format output EXECUTES on Linux
+through the proven converter/bank-swap path. The actual remaining gap is
+narrower than "server-mediated compile": it is only the kernel-VALUE
+transform decode - the macOS 26 compiler quantizes the plist kernel
+([0, 1.875, 0]) into a packed representation ([1, 0, 0]-as-applied) whose
+encoding is Apple-internal. Two routes remain, both documented for the
+next session: (1) systematic single-value quantizer probes (one compile
+per probe value, decode the packing incrementally - each probe is ~2 s,
+Mac-only), or (2) read the quantizer from the ANECompilerService binary
+(strings/disasm on the private framework). The shipped crossover and
+parity deliverables are unaffected either way.
