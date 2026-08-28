@@ -881,3 +881,22 @@ path is characterized end-to-end (execution, banks, bias, quantized
 kernel format), the Linux numeric loop is one quantizer-decode away, and
 the shipped crossover/parity deliverables stand on the proven old-format
 path. All scripts and markers staged on jwm1-linux and the Mac.
+
+*** QUANTIZER BOUNDARY RESOLVED (2026-08-28, session 13) ***
+Found the production quantization path IN SOURCE: oMLX's
+qwen35_ane_prefill/csrc/qwen35_ane.mm implements the entire int8 pipeline:
+- quantize_rows(): per output row, scale = max(|k|/127, 1e-8) stored as
+  fp16; q8 = clamp(round(k/scale), -127, 127) as int8
+- int8_linear_mil(): emits the MIL with constexpr_blockwise_shift_scale
+  (data = int8 weight_data.bin @ offset 64, scale = fp16 weight_scale.bin
+  @ offset 64) - the DEQUANTIZATION IS IN-GRAPH on the device
+- int8_linear_bank_mil(): the multi-bank variant for chained matmuls
+This is the same pipeline that produced the macOS prefill crossover
+receipt (9.92 percent over GPU on a 27B). STRATEGIC ANSWER: do not RE
+Apple's tinygrad-plist kernel packing (the ANECompilerService transforms
+it internally into its own encoding - observed [2.004, 513, 8208] from
+markers [1, 2, 3]). Instead adopt the oMLX int8 pipeline: generate the
+MIL + weight_data.bin/weight_scale.bin via quantize_rows, compile with
+ANECompilerService, convert with hwxv2-to-anec, run on Linux - the
+kernel data path then rides the in-graph dequantization that the device
+already proved it executes (the fresh-TD execution + bank swap work).
