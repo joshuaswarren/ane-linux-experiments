@@ -632,3 +632,24 @@ groups. Next session: vary ONE kernel value at a time (e.g. [1,0,0...] /
 [0,1,0...]) to map the exact bit packing, then close the numeric loop.
 The compiled kernel region is 0x80 bytes total (0x40 per channel) for
 Cout=2 Cin=3.
+
+Quantization decode (2026-08-28, session 9). One-variable kernel markers
+decoded the fresh __const layout: per-channel [fp16 SCALE][q7 weights].
+- kernel [0, 1.875, 0 | 0,0,0] -> compiled ch0 = [scale 1.0][q7: 0, 124, 0,
+  0, 124, 0, 0, 124 ...] (1.875 -> q7 124, scale ~ 66x or a fixed q7
+  encoding), ch1 = sentinels.
+- kernel [1, 0, 0] (single marker 1.0) -> compiled ch0 = [scale 0.0078 =
+  2^-7][q7: 0] - q7 for 1.0 underflows/clamps in this encoding.
+- kernel [0, 1.0, 0] -> scale-only, no q7 (same pattern).
+So the fresh format stores QUANTIZED per-channel kernels (fp16 scale + int
+weights) - the macOS 26 compiler's default output. The Linux run's
+identity+bias result is consistent with the WEIGHTS and BIAS sections
+being consumed swapped/partially in my raw submission: the observed
+out = first-input-channels x 1.0 + 1.0 matches bias-as-kernel + kernel-
+as-bias with the 1.0 scale.
+NEXT (mechanical, next session): parse the fresh format's weights/bias
+section boundaries (the espresso weights header carries the seg table -
+kernel at 192, bias in net.additional - the fresh HWX embeds its own
+copy), place weights/bias at the offsets the fresh TD expects, verify
+numeric parity on the conv, then batching/chaining ride the compiler
+path. Device left healthy; all scripts staged on jwm1-linux in /tmp.
