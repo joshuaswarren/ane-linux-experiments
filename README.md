@@ -15,8 +15,8 @@ The speedup is `2.50x`.
 The maximum error is `0.0010`.
 The argmax and top-10 results match.
 
-Fresh macOS 26 HWX artifacts now reach the Linux device.
-A real 64-channel graph passes exact channel-level parity.
+A sanitized macOS 26 HWX fixture reaches the Linux device.
+A real 64-channel fixture graph passes exact channel-level parity.
 The graph writes source channel 1 to output channel 3.
 Signed stress values also pass.
 See [fresh HWX usage](docs/fresh-hwx-usage.md).
