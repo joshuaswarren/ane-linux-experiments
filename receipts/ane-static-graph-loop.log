@@ -578,3 +578,21 @@ descriptors (batching w=4 already compiled; multi-op chains; macOS 26
 compiler output generally) are now a running path on Linux, not a RE
 problem. The bank-swap insight came from the aneregs.json named diff
 (RBase0/WBase/ENE bank assignments).
+
+Kernel-plumbing observations (session 7 close). The executed fresh w4 conv
+output = the first input values + 1.0, linearly (in[0]+1, in[1]+1, in[2]+1,
+in[3]+1), then zeros - a passthrough+bias pattern, not the plist's
+[0, 1.875, 0] kernel. The compiled __const kernel region (0x80 bytes at
+payload 0x280) contains [1.0, 0, 0, ...] - also not the plist kernel. The
+fresh TD's KernelDMA table uses a NEW compact encoding: stream header 0x80,
+channels (flag 0x80, off 0x0, len 0x40) x6 + (flag 0x40, off 0x40,
+len 0x80) - no 0x81000000-style absolute addresses; W8/W9 = 0x80/0x80. The
+fresh compiler's bank layout (Mach-O windows): 0x30000000 (0xc0 task hdr),
+0x30004000 (0x80 bias), 0x30008000 (TD + kernel) - fixed macOS device
+addresses; the macOS driver maps surfaces through IOKit args (ane.mm
+ANE_Run: w_surf via args[0x130], in/out via args[0x128]/[0x628]).
+Porting the fresh format therefore requires decoding the macOS kernel
+driver's surface-id -> bank mapping (IOKit RE) OR making the Linux KMD map
+BOs at the fixed 0x3000xxxx windows. The passthrough+bias result shows the
+task plumbing (fetch, banks, dst DMA) works end-to-end; only the kernel
+data path needs the surface-table semantics.
