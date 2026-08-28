@@ -218,3 +218,28 @@ path - about 1.5 ms per 512x256 submit. CPU backend on the same host runs a
 full token in ~2.34 s, so end-to-end speed parity is NOT yet achieved.
 Recorded next steps: fp16 pack into a preallocated buffer, DMA write to the
 cmd blob, and multi-TD chaining.
+
+Multi-TD decode session (2026-08-28, later). Established with receipts:
+- 2-TD graphs DO execute on the current ane-qid KMD: retained concat.ane
+  via the rebuilt libane python binding returns exec_result=0 with 16400
+  outputs all 3.0. The hardware chain path works.
+- The same concat content submitted through the raw ane-runtime path
+  (handle slots 0/1/2/6/7/8 mapped per the anec tile table, btsp nid-
+  patched, qid 4 and qid 1 both tried, tsk 0x574, td_size 0x274) does NOT
+  complete: output stays at the 0x7c00 sentinel. Remaining deltas vs the
+  libane path: libane's exact btsp byte count/first-word nid write timing
+  and any queue-entry state libane's first open establishes.
+- KMD pathology measured: a hung submit leaves the device in a state where
+  BO_INIT returns -ENOSPC transiently then deterministically; rmmod+insmod
+  then yields EEXIST at iova 0x4000 with iommu_map WARN; only reboot +
+  bring-up ladder restores. Every hang experiment costs a ~3 min cycle.
+- libane build on this host: ane.c has C90 declaration-order errors under
+  the fleet patches; built with -Wno-declaration-after-statement, linked
+  /tmp/libane_python.so from libane_python.c + libane.a.
+
+Blocked on: the TM queue-entry format (TQ_ADDR1/TQ_SIZE1/TM_INFO fetch
+semantics for td_count>1) is undocumented in the KMD source, and each
+probe costs a reboot cycle. Next concrete leads when resumed: byte-diff a
+traced libane concat submit (handles/pad/btsp bytes) against the raw one
+on qid 1; inspect ane_tm.c TQ_SIZE2/TQ_ADDR2 (second queue slot the KMD
+never writes); or add a KMD debug print of the fetched TD region.
