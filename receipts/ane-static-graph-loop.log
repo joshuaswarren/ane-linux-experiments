@@ -431,3 +431,15 @@ re-run the control after every probe config - discard results if the
 control breaks. The 19-bit offset boundary and KBase semantics remain
 OPEN questions (earlier boundary datapoint was taken with a corrupted
 table and on a possibly-degraded device - treat as unsound).
+
+Device-state nondeterminism (final note, same night). Observed repeatedly:
+reboot + ladder + ANE_VERIFIED, then the FIRST probe process either runs
+(immediately-after-ladder) or BO_INIT EEXIST (after ~1 min of idle), and
+once EEXIST appears the ladder itself sometimes fails its selftest until
+the next reboot. Working hypothesis: a power-chain/autosuspend race after
+ladder exit. Designed but not yet validated: /tmp/ane-keepalive.py (150 ms
+submit loop) to hold the power chain during probe sessions - the file is
+on jwm1-linux for the next session. Probe discipline (control first and
+after every config, discard on control failure) is fixed and documented;
+the KBase/offset boundary questions remain open with the corrected probe
+ready to run on a good boot.
