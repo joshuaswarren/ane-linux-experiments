@@ -474,3 +474,25 @@ correct blob at one candidate offset k' at a time with field koff fixed
 (e.g. 0x40000) and scan k' over 0x0..0x100000 step 0x8000; the k' that
 passes reveals the device's actual field->address mapping. ~16 submits,
 no hang risk (all completes observed on healthy device).
+
+Reproduction note (2026-08-28, final). The morning chain-protocol result
+(2-TD gemm chain executes: tile 0 exact, tile 1 unwritten) did NOT
+reproduce on a freshly rebooted+laddered device with the current
+/tmp/gemm-chain2.py - it times out. The script drifted through ~6
+experiment edits (addr words, header variants, bank experiments) and no
+longer byte-matches the configuration that worked; device-state churn
+also confounds. STATUS OF KNOWLEDGE:
+- SOLID (multiple independent receipts): submission envelope (spy
+  capture), task header = W0..W9 mirror, chain protocol fields from
+  aneregs.json (TID/EON/LNID/NextSize - the morning run with these went
+  from hard hang to clean completion), packer/blob pairing rule,
+  2.50x crossover, full-model parity.
+- NEEDS REPRODUCTION: chain execution with per-TD kernel banks; the
+  exact byte-level working chain configuration (reconstruct from the
+  morning edits or re-derive cleanly next session).
+- RETRACTED: the 19-bit kernel offset boundary (probe self-corrupted);
+  KBase semantics conclusions from degraded-device runs.
+Next session protocol: reconstruct gemm-chain2 byte-exactly from the
+morning state (git-stash style: save current, rebuild stepwise, verify
+tile-0-exact at each step), then continue bank addressing. Device
+discipline: control submit before and after every experiment.
