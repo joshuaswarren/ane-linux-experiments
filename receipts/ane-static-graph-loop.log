@@ -413,3 +413,21 @@ at offset 0 - pins whether KBase is a bank id or an offset multiplier;
 State: chain executes end-to-end (protocol decoded from aneregs.json);
 kernel addressing within a 512 KiB window verified exact; > 512 KiB needs
 the W9 bank mechanism (semantics: 2-3 cheap probes away).
+
+Probe-protocol correction (2026-08-28, close). Two errors found in my own
+kbase probes, both fixed in /tmp/kbase-probes.py on jwm1-linux:
+1. The kernel DMA ADDR words had been overwritten with base+offset*i*0x8000
+   while the per-channel OFFSET words (i*0x8000) stayed - double-add =
+   corrupted tables for every i>0. Correct form: ADDR[i] = bank base
+   (constant), OFFSET[i] = i*0x8000 (untouched).
+2. Packer/blob pairing: to_blob(+6 fp16) pairs with blob at 0x274;
+   to_blob_aligned pairs with 0x280. Mixing them shifts all logits.
+Additional device finding: after a clean reboot+ladder and passing runs,
+idle gaps (~30-60 s) can degrade the device into all-submits-timeout;
+the ladder then sometimes recovers and sometimes leaves BO_INIT EEXIST
+(nondeterministic). Protocol going forward: run the ladder immediately
+before each device session, run a CONTROL (offset 0, w9 0x21) first, and
+re-run the control after every probe config - discard results if the
+control breaks. The 19-bit offset boundary and KBase semantics remain
+OPEN questions (earlier boundary datapoint was taken with a corrupted
+table and on a possibly-degraded device - treat as unsound).
