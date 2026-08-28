@@ -393,3 +393,23 @@ W6 NextPriority[26,0,6] TDSkip[25,1,1] DisallowAbort[25,0,1];
 W7 NextPointer[28,0,32]; W8 RBase0[32,0,5] RBE0[32,5,1] RBase1[32,6,5]
 WBase[33,4,5] WBE[34,1,1] TBase[34,2,5] TBE[34,7,1] ENE[35,0,3];
 W9 KBase0[36,0,5] KBE0[36,5,1] KBase1[36,6,5] KBE2[38,1,1] ...
+
+Kernel offset boundary found (same night, final probe). Single-TD gemm with
+kernel table base at bank offset 0x80000 (blob at cmd+0x580+0x80000):
+INF output - the DMA reads from offset 0 (zeros). With offset 0 (all
+previous verified runs): exact. The conv compiler's KDMA offset tables only
+ever use offsets < 0x80000 (max seen 0x3c000+0x4000). Conclusion: the TD
+KernelDMA offset field is bounded at 19 bits (512 KiB) from bar[KRN].
+
+Implication for N-TD chains: each 512x256 tile blob is EXACTLY 512 KiB, so
+per-TD kernel windows are the designed use of W9's kernel bank fields
+(KBase0-3 [5-bit base] + KBE0-3 enables, currently 0x21 = KBE0 enabled,
+KBase0=1 in both my TDs and concat's). Next probes designed: (1) offset
+0x78000 with blob there - confirms the 19-bit boundary; (2) KBase0=0 vs 1
+at offset 0 - pins whether KBase is a bank id or an offset multiplier;
+(3) then N-chain with per-TD KBase banks and the chain protocol fields
+(TID/EON/LNID/NextSize - already proven to make the chain execute).
+
+State: chain executes end-to-end (protocol decoded from aneregs.json);
+kernel addressing within a 512 KiB window verified exact; > 512 KiB needs
+the W9 bank mechanism (semantics: 2-3 cheap probes away).
