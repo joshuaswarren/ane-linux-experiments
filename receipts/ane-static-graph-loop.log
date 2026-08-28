@@ -1142,3 +1142,39 @@ Stress run (2026-08-28 11:58 CDT). The same durable probe with
 `observed output[3]=-2.5000`, `max_err=0.0000 finite=True`, and
 `FRESH_ANEC_PARITY_OK`. The fresh path preserves signed numeric parity after
 the BOs are released and recreated.
+Production fresh-format compile (2026-08-28, MacStudio, isolated oMLX server). The
+server loaded `Qwen3.8-27B-heretic-ara-q4` with
+`qwen35_ane_prefill_sequence_length=2048`, `qwen35_ane_prefill_max_layers=64`,
+and `qwen35_ane_prefill_dual_ane=true`.
+The server status reported `configured_models=1`, `attempted=true`,
+`mlp_layers=64`, `gdn_layers=0`, `dual_ane_layers=64`, and
+`resident_programs=4`.
+The first 64-procedure bank load failed with Apple ANE
+`Program load failure (0x20004)`. The production split ladder retried at
+`5940 MB per bank`, then logged `Compiled 64 ANE procedures into 2 split banks
+per instance` and `Warmed 128 ANE procedures in 7.7s at load`.
+The final log reported `Eagerly compiled 64 MLP and 0 GDN procedures into 4
+instance-pinned ANE programs (sequence_length=2048)`.
+The private oMLX compiler does not leave a raw `.hwx` artifact in the isolated
+server directory. Production HWX conversion and Linux execution remain open.
+Production export-hook attempt (2026-08-28, MacStudio, isolated oMLX server). A
+`DYLD_INSERT_LIBRARIES` hook called private `_ANEInMemoryModel` selectors
+`localModelPath` and `saveModelFiles` after compilation. The run did not reach
+the load response or hook receipt. The server log showed the 64-procedure bank
+retry at `1024 MB per bank`, then remained in the compiler path. The run was
+stopped after `04:10` with the compiler process in `UN` state. No raw `.hwx`
+file was produced or found. Production HWX conversion and Linux execution
+remain blocked on a raw production artifact.
+Alternate-Mac export attempt (2026-08-28, JW14M2, macOS 26.6.1). The
+production model was copied from MacStudio and loaded through the same
+oMLX `0.6.3rc2` runtime. Direct `DYLD_INSERT_LIBRARIES` injection captured
+two successful `_ANEInMemoryModel` compile callbacks. The server reported
+`configured_models=1`, `mlp_layers=64`, `dual_ane_layers=64`, and
+`resident_programs=2`, with
+`Eagerly compiled 64 MLP and 0 GDN procedures into 2 instance-pinned ANE
+programs (sequence_length=2048)`.
+The captured `saveModelFiles` directory contained `model.mil`, `net.plist`,
+`data`, and `weights/`, but no `.hwx`. A privileged cache scan found no
+`model.hwx` or `additional_weights` file. A post-load hook caused a
+`Killed: 9` process, so it was not used as evidence. Production conversion
+and Linux execution remain blocked on a raw production HWX artifact.

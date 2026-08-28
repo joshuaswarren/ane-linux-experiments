@@ -19,7 +19,11 @@
 - macOS 26 HWX = real Mach-O: `__TEXT,__text` @ 0x4000 = TD (0x274), `__TEXT,__const` @ 0x4280 = kernel, KDMA offsets kernel-base-relative (0x280 base, step 0x4000).
 - Old-format graphs (macOS-15-era anecc) still run on current Linux KMD; fresh macOS 26 TDs reach the device and hang it (-110 at `tm execution`). Patching engine-count/bit-26 words does not revive them.
 - Control-first bisect: same plist through both compilers isolates format from config in one diff (20/157 words for net.plist).
-- 2026-08-28: Fresh HWX fixture executes only when raw submit swaps ANEC BO slots
-  (`handles[4]=input`, `handles[5]=output`); output is NCHW channel-major.
-  Compare output planes by channel, and treat a single populated plane as
-  partial parity, not a full multi-output result.
+- 2026-08-28: Fresh HWX fixture executes only when raw submit swaps ANEC BO
+  slots (`handles[4]=input`, `handles[5]=output`); output is NCHW
+  channel-major. Compare output planes by channel, and treat a single
+  populated plane as partial parity, not a full multi-output result.
+- 2026-08-28: A successful isolated oMLX production compile does not prove a
+  raw HWX export. The private compiler can retain only transient files, and a
+  `DYLD_INSERT_LIBRARIES` export hook can stall in the Apple ANE bank retry.
+  Record compile success and artifact capture as separate gates.
