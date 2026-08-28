@@ -938,3 +938,14 @@ omlx/patches/qwen35_ane_prefill.py in that venv (or replicate its env
 setup) before calling qwen35_ane_compile_linear, then continue the
 runbook (artifact under ~/Library/Caches/omlx/ane/v1 -> hwxv2 -> Linux
 bank-swap verify). Device untouched this turn (Mac-side only).
+
+oMLX in-process compile segfaults (2026-08-28, final). qwen35_ane_compile_linear(512x512 float32, seq 4) via the omlx-ane-cache-venv (runtime
+available = True) SEGFAULTS silently ~90-330 s into the ANECompilerService
+invocation (process exits, no cache artifact, no core log). The tuner's
+successful compiles ran through the oMLX SERVER process (which applies
+the qwen35_ane_prefill patch and holds the private-ANE setup/entitlements
+at startup), not raw in-process calls. Next session: drive the compile
+through the oMLX server API (apply the patch + compile via the server's
+tuning/runtime path), or replicate the server's environment (launchd/
+entitlements) for standalone compiles. Once one compiled artifact exists,
+the Linux numeric loop is immediate (hwxv2 + bank swap, both proven).
