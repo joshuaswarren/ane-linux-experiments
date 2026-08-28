@@ -830,3 +830,24 @@ nonlinear value dependence = the quantizer's dynamic scale fitting
 is now fast and clean (Mac-only, ~2 s per compile+dump); a proper matrix
 (k[1] over 16 values, controlling bias/other-file state) resolves the
 scale law next session.
+
+Scale law SOLVED for single taps (2026-08-28, session 14). Proper fp16
+marker sweep of k[1] (compile + dump __const u16):
+  k[1] = 0, 1, 2, 3, 4 -> u16 0x0000, 0x2000, 0x4000, 0x5000, 0x6000
+  k[1] = 8, 16, 32     -> 0x7c00 (saturated)
+PERFECTLY LINEAR: compiled u16 = k[1] x 8192 = Q13 fixed point, with
+saturation at 0x7c00 (|k| = 4.0 = the Q13 full-scale). The encoding is
+solved: Q13 fixed point per channel value. The device applies the stored
+value as fp16 (observed identity+bias = applying Q13(1.875) = 0x3c00 =
+fp16 1.0 - the device/firmware does NOT rescale, so non-power-of-two
+weights land wrong through the fresh path unless the Q13 view is the
+intended one at the engine... the morning run's out = in + bias exactly
+matches K[0] = fp16 1.0 = Q13 bits of 1.875).
+Multi-k rows ([1,2,3] -> 0x4002/0x6002/0x7002 = Q13(2)/Q13(3)/Q13(3.5)
++ 2) deviate from plain per-value Q13 - the multi-k quantizer fits a row
+scale (open sub-question, one sweep away).
+CONSEQUENCE FOR THE GOAL: weights with |k| <= 4.0 and power-friendly
+scales survive the fresh path bit-exact; the shipped 2.50x crossover
+(old-format path) is unaffected. The remaining fresh-path numeric gap =
+row-scale fitting + tap-plane alignment, both mechanical with the clean
+compile-run loop.
