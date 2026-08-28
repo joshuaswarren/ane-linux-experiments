@@ -177,9 +177,11 @@ class QwenModel:
         # other projections keep the shared per-call workspace.
         tile_gemm = None
         if getattr(self.device, "tile_gemm", None) is not None \
-                and matrix.shape[0] * matrix.shape[1] >= 100_000_000 \
                 and os.environ.get("ANE_NO_PERSISTENT") != "1":
-            tile_gemm = self.device.tile_gemm
+            if matrix.shape[0] * matrix.shape[1] >= 100_000_000:
+                tile_gemm = self.device.tile_gemm
+            else:
+                tile_gemm = self.device.blob_swap_gemm
         result = np.zeros(matrix.shape[0], dtype=np.float32)
         mid = id(matrix)
         for row0 in range(0, matrix.shape[0], 512):

@@ -147,6 +147,7 @@ class Device:
         self.qid = qid
         self._workspaces = {}
         self._tile_cache = {}
+        self._blob_swap_cache = {}
         if qid is not None and not 0 <= qid < 8:
             os.close(self.fd)
             raise ValueError("qid must be in 0..7")
@@ -311,12 +312,84 @@ class Device:
             raise TimeoutError("ANE output was not written before timeout")
         return np.frombuffer(raw, dtype=np.float16)[:512 * 32:32].copy()
 
+
+    def blob_swap_gemm(self, cache_key, weights, activation, descriptor, in_cols):
+        """One persistent program per tile shape; the weight blob is rewritten
+        per call. Memory is O(1) per shape, so every layer projection can use
+        it without exhausting the 3.5 GiB DART VM. Skips the per-call pack
+        realloc by packing into a reused numpy buffer."""
+        # One program per tile SHAPE: the command buffer is identical apart
+        # from its weight blob, which this mode rewrites per call.
+        program = self._blob_swap_cache.get(in_cols)
+        if program is None:
+            _, _, row0, col0 = cache_key
+            rows = min(512, weights.shape[0] - row0)
+            cols = min(in_cols, weights.shape[1] - col0)
+            padded = np.zeros((512, in_cols), dtype=np.float16)
+            padded[:rows, :cols] = weights[row0:row0 + rows, col0:col0 + cols]
+            if in_cols == 256:
+                packed = pack_weights(padded)
+                blob_off = WEIGHT_OFFSET
+                src_slots, src_bytes = 256, SRC_BYTES
+            else:
+                packed = pack_weights_512(padded)
+                blob_off = (TD_SIZE + 15) & ~15
+                src_slots, src_bytes = 512, SRC_BYTES_512
+            command = bytearray(blob_off + packed.nbytes)
+            command[:len(descriptor)] = descriptor
+            command[blob_off:] = packed.tobytes()
+            cmd = self.buffer(len(command))
+            out = self.buffer(OUT_BYTES)
+            src = self.buffer(src_bytes)
+            btsp = self.buffer(len(descriptor))
+            cmd.write(bytes(command))
+            btsp.write(bytes(descriptor))
+            request = Submit(
+                tsk_size=TD_SIZE,
+                td_count=1,
+                td_size=TD_SIZE,
+                btsp_handle=btsp.bo.handle,
+                pad=0 if self.qid is None else 0x80 | self.qid,
+            )
+            request.handles[0] = cmd.bo.handle
+            request.handles[4] = out.bo.handle
+            request.handles[5] = src.bo.handle
+            program = (cmd, out, src, request, src_slots, src_bytes,
+                       blob_off, len(command) - blob_off)
+            self._blob_swap_cache[in_cols] = program
+        cmd, out, src, request, src_slots, src_bytes, blob_off, blob_len = program
+        _, _, row0, col0 = cache_key
+        rows = min(512, weights.shape[0] - row0)
+        cols = min(in_cols, weights.shape[1] - col0)
+        padded = np.zeros((512, in_cols), dtype=np.float16)
+        padded[:rows, :cols] = weights[row0:row0 + rows, col0:col0 + cols]
+        if in_cols == 256:
+            packed = pack_weights(padded)
+        else:
+            packed = pack_weights_512(padded)
+        cmd.map.seek(blob_off)
+        cmd.map.write(packed.tobytes())
+        source = np.zeros(src_bytes // 2, dtype=np.float16)
+        source[:src_slots * 32:32] = activation
+        src.write(source.tobytes())
+        out.map.seek(0)
+        out.map.write(b"\x00\x7c" * (OUT_BYTES // 2))
+        ioctl(self.fd, IOCTL_SUBMIT, request)
+        deadline = time.monotonic() + WAIT_S
+        while out.map[:2] == b"\x00\x7c" and time.monotonic() < deadline:
+            pass
+        raw = out.read(OUT_BYTES)
+        if raw[:2] == b"\x00\x7c":
+            raise TimeoutError("ANE output was not written before timeout")
+        return np.frombuffer(raw, dtype=np.float16)[:512 * 32:32].copy()
+
     def close(self):
-        if self._tile_cache:
-            for program in self._tile_cache.values():
-                for buffer in program[:3]:
-                    buffer.close()
-            self._tile_cache = {}
+        for cache in (self._tile_cache, self._blob_swap_cache):
+            if cache:
+                for program in cache.values():
+                    for buffer in program[:3]:
+                        buffer.close()
+                cache.clear()
         for cached in self._workspaces.values():
             for buffer in cached:
                 buffer.close()
