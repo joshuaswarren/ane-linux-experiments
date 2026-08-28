@@ -1014,3 +1014,22 @@ Expected: the fresh conv computes the TRUE plist kernel exactly on
 Linux. One run to verify; then the fresh-compile pipeline (any plist,
 any dims) is numerically closed, and compiler-path batching/chaining
 proceeds on a correct base. Everything staged; device healthy.
+
+*** LAYOUT MECHANISM IDENTIFIED (2026-08-28, session 16 final) ***
+The v1 group-overwrite test PROVED the engine does not read the kernel
+from the .anec payload group (overwriting [bias][taps] changed nothing;
+the output stayed exactly input+bias for the first 4 scalars). The fresh
+HWX Mach-O sections reveal the true mechanism: the macOS compiler maps
+the program into THREE FIXED device windows -
+  __FVMLIB 0x30000000 (0xc0B = task header),
+  __FVMLIB 0x30004000 (0x80B = bias/kernel bank),
+  __TEXT   0x30008000 (TD + kernel, 0x4000B)
+- and the TD's DMA fields address THOSE windows (macOS device addresses),
+while the Linux KMD maps BOs at dynamic DART iovas (0x2a0000-style) that
+never match. The engine's input-correlated output = it read the INPUT
+window (bank 4/5 handles) correctly, applied no kernel (unmapped bank
+reads -> zeros/identity), added the bias visible through a stale window.
+THE FIX (next session, KMD work): patch the custom ane.ko to map fresh-
+format BOs at the fixed macOS windows (a "macOS layout" mode flag in the
+iommu mapping), then run the fresh conv unmodified -> numeric parity.
+This is the same KMD the fleet already rebuilds (ane-qid.ko lineage).
