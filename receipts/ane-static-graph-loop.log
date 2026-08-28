@@ -1033,3 +1033,18 @@ THE FIX (next session, KMD work): patch the custom ane.ko to map fresh-
 format BOs at the fixed macOS windows (a "macOS layout" mode flag in the
 iommu mapping), then run the fresh conv unmodified -> numeric parity.
 This is the same KMD the fleet already rebuilds (ane-qid.ko lineage).
+
+CONCLUSIVE (2026-08-28, session 17). The tap hot-swap test settled it:
+patching the compiled group's tap value (Q13(1.875) -> fp16 1.875 at the
+exact group offset) HANGS the task - the engine's microcode is COMPILED
+FOR the quantized encoding present at compile time; hot-swapping plain
+fp16 into the constant bank produces invalid microcode data. The fresh
+compiled kernels are NOT hot-swappable, period. The remaining numeric
+route is therefore compile-side only: the weights must be correct AT
+COMPILE TIME - i.e. fix the hand-built weights file/header for the
+macOS 26 ANECompilerService (it consumed bias-as-kernel from my
+gen-dense-style 216-byte file), or generate weights through the oMLX
+server pipeline. Both are next-session compile-side tasks; the Linux
+execution loop is proven and needs no changes.
+Device: the hung task wedged it - recover (reboot + ladder) before any
+further device work.
