@@ -1,0 +1,25 @@
+macOS Qwen3.8-2B ANEForge reference repeatability
+Date: 2026-08-29
+Model file: Qwen3.8-2B-Q4_K_M.gguf
+Model bytes: 1312164224
+Model SHA-256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+Architecture: Qwen3.5 hybrid, 24 layers
+Prompt: The engine runs
+Prompt token IDs: [760, 4560, 8213]
+Generation: 32 tokens, temperature=0, top_p=1, top_k=0, argmax, no EOS stop
+Runtime: ANEForge qwen35.load_gguf, resid_scale=1.0, ANE lm_head disabled for the host fp32 reference
+Warmup runs: 1
+Measured repetitions: 3
+Max context length: 35
+Compile seconds: 33.84838483400017
+Run 1 elapsed seconds: 4.5050186660009786
+Run 1 generated IDs: [506, 220, 16, 15, 15, 15, 51969, 13, 561, 4560, 369, 4162, 506, 220, 16, 15, 15, 15, 51969, 13, 561, 4560, 369, 4162, 506, 220, 16, 15, 15, 15, 51969, 13]
+Logits shape per run: [32, 248320]
+Logits finite: true for every run
+Token sequences match: true across all three repetitions
+Logit repeatability max absolute error: 0.0
+Logit repeatability mean absolute error: 0.0
+Logit repeatability relative L2 error: 0.0
+
+Sanitized command:
+PYTHONPATH=gguf-py ANEFORGE_ROOT=ANEForge python aneforge-qwen-reference.py --model Qwen3.8-2B-Q4_K_M.gguf --prompt "The engine runs" --max-new-tokens 32 --warmup 1 --repetitions 3 --n-layers 24

@@ -1,0 +1,85 @@
+{
+  "model": {
+    "name": "empero-ai/Qwen3.8-2B-Distill-GGUF",
+    "file": "Qwen3.8-2B-Q4_K_M.gguf",
+    "bytes": 1312164224,
+    "sha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
+    "layers": 24,
+    "architecture": "Qwen3.5 hybrid Gated DeltaNet plus full attention"
+  },
+  "corpus": {
+    "file": "benchmarks/qwen38-2b-prompts.jsonl",
+    "generator": "tools/build-benchmark-corpus.py",
+    "prompts": 100,
+    "categories": 10,
+    "sha256": "9299a3b2fc136a4c0c355f9ad3e211be81823a5fb9eeadbc2e6608fb3e5718a0"
+  },
+  "tokenizer": {
+    "source": "tokenizer.ggml.* fields embedded in the GGUF model",
+    "command": "llama-tokenize -m MODEL -p PROMPT --ids",
+    "add_bos": true,
+    "parse_special": true
+  },
+  "generation": {
+    "new_tokens": 32,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "selection": "argmax",
+    "stop_on_eos": false,
+    "seed": 0
+  },
+  "backends": {
+    "macos_ane": {
+      "runtime": "ANEForge qwen35.load_gguf",
+      "compute": "ANE",
+      "resid_scale": 1.0,
+      "lm_head": "host fp32 reference until Linux supports the complete head"
+    },
+    "linux_ane": {
+      "runtime": "Linux ANE runtime in this repository",
+      "compute": "ANE only",
+      "fallback": "forbidden; any ANE failure must terminate the run"
+    },
+    "linux_cpu": {
+      "runtime": "same model and tokenizer with host tensor math",
+      "compute": "CPU only",
+      "threads": 1
+    }
+  },
+  "measurement": {
+    "warmup_runs": 3,
+    "measured_repetitions": 10,
+    "cold_start": "process launch through the first complete 32-token decode, with model load and compilation reported separately",
+    "steady_state": "after model load, graph compilation, and warmup; includes all prompt and generated-token model computation",
+    "time_to_first_token": "token IDs ready through the first selected generated token",
+    "prefill_tokens_per_second": "prompt token count divided by prompt forward time",
+    "decode_tokens_per_second": "32 generated tokens divided by generated-token forward time",
+    "end_to_end": "token IDs ready through the 32nd selected generated token",
+    "memory": "peak resident set size for the measured process",
+    "ane_submissions": "count every ANE submission used for model computation, reported per generated token",
+    "confidence_interval": "paired bootstrap 95 percent confidence interval over the ten measured repetitions"
+  },
+  "hardware": {
+    "comparison": "same physical Apple M1 system in Linux and macOS when possible",
+    "linux": "Apple M1 8-core CPU, 16 GB memory, Omarchy Linux",
+    "macos": "the same Apple M1 system and memory size",
+    "controls": "no other model server or accelerator workload; record OS, kernel, runtime, and compiler revisions"
+  },
+  "numeric_thresholds": {
+    "frozen_at": "2026-08-29",
+    "basis": "three repeated 32-token macOS ANE runs were deterministic with zero measured logit delta",
+    "finite_logits": true,
+    "top1_token_match": "all 32 tokens for every prompt",
+    "top10_overlap": 0.9,
+    "max_absolute_logit_error": 0.25,
+    "mean_absolute_logit_error": 0.02,
+    "relative_l2_error": 0.01,
+    "policy": "do not loosen after observing a Linux mismatch"
+  },
+  "performance_targets": {
+    "linux_ane_vs_macos_ane_steady_state": ">=0.95x",
+    "linux_ane_vs_linux_cpu_median": ">=1.05x",
+    "linux_ane_vs_linux_cpu_ratio_ci95_lower_bound": ">1.0x"
+  }
+}
