@@ -1,0 +1,63 @@
+Qwen Linux ANE task-layout correction
+=====================================
+
+Observed artifact geometry
+--------------------------
+
+The converted 13-layer graph contains variable source gaps between linked tasks:
+
+- 0x200: 488
+- 0x300: 898
+- 0x400: 10
+- 0x500: 7
+
+The converted 11-layer graph also contains variable source gaps:
+
+- 0x200: 423
+- 0x300: 735
+- 0x400: 11
+- 0x500: 6
+
+The former full-graph path copied each descriptor into a fixed 0x300-byte slot.
+That rewrite did not preserve bytes between task starts when a source gap was
+0x400 or 0x500 bytes.
+
+Correction
+----------
+
+A complete graph now copies the compiled task stream without changing its
+layout or NextPointer values. Partial diagnostic ranges still use dense packing
+and pointer remapping.
+
+Red test before implementation
+------------------------------
+
+Command:
+
+  uv run --with numpy python -m unittest tools.test_production_anec_probe.ProductionProbeTests.test_copy_task_stream_preserves_variable_spacing
+
+Observed failure:
+
+  AttributeError: module 'production_anec_probe' has no attribute 'copy_task_stream'
+
+Green verification
+------------------
+
+Command:
+
+  uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe && uv run ruff check tools/hwxv2-to-anec.py tools/production-anec-probe.py tools/production-anec-sequential.py tools/test_hwxv2_to_anec.py tools/test_production_anec_probe.py
+
+Observed output:
+
+  ................
+  ----------------------------------------------------------------------
+  Ran 16 tests in 0.070s
+
+  OK
+  All checks passed!
+
+Hardware status
+---------------
+
+No hardware result is recorded here yet. The branch must be pushed before the
+next full-graph submission.
