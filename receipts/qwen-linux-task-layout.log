@@ -149,3 +149,49 @@ Observed output:
 
   OK
   All checks passed!
+
+Partial-chain correction
+------------------------
+
+The `td_size=0x200` hypothesis was wrong. The first task records
+`NextSize=0x9c`, which encodes a `0x274`-byte next fetch. The `0x200` next
+offset is valid overlap, not the task size.
+
+The first one-task diagnostic also kept `NextSize=0x9c` and omitted the
+terminal `LNID` and `EON` bits. It timed out with `-110`, but that malformed
+partial chain cannot identify the original task as the cause.
+
+A second one-task probe started at task ID 1. It also timed out, but it kept
+the original nonzero task ID. Prior hardware tests show that a nonzero first
+task ID is fatal in a solo submission.
+
+The partial bootstrap builder now:
+
+- rebases selected task IDs from zero;
+- remaps selected `NextPointer` values;
+- sets `LNID` and `EON` on the selected last task;
+- clears the selected last task's `NextSize`.
+
+Red test:
+
+  AssertionError: 7 != 0
+
+Green command:
+
+  uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe && uv run ruff check tools/production-anec-probe.py tools/test_production_anec_probe.py
+
+Observed output:
+
+  ...................
+  ----------------------------------------------------------------------
+  Ran 19 tests in 0.091s
+
+  OK
+  All checks passed!
+
+Next experiment
+---------------
+
+Submit the corrected first Qwen task as a valid terminal task with
+`--td-count 1`. If it completes, increase the valid prefix until the first
+hardware failure.
