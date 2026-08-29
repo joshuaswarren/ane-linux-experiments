@@ -25,6 +25,10 @@ class ProductionProbeTests(unittest.TestCase):
         data = bytes(range(256)) * 2
         self.assertEqual(MODULE.copy_task_stream(data, 17, 100), data[17:117])
 
+    def test_submission_pad_encodes_explicit_queue(self):
+        self.assertEqual(MODULE.submission_pad(None), 0)
+        self.assertEqual(MODULE.submission_pad(1), 0x81)
+
     def test_task_bases_follow_descriptor_slots(self):
         data = bytearray(0x700)
         struct.pack_into("<I", data, 0x28, 0xF401F800)
