@@ -68,26 +68,71 @@ class HWXImage:
     td_size: int
     kernel_offset: int
     kernel_size: int
-    command_size: int
+    workspace_size: int
+    input_size: int
+    output_size: int
     kdma: KDMALayout
 
 
 
 def _name(raw: bytes) -> str:
     return raw.split(b"\0", 1)[0].decode("ascii")
-def find_task_offsets(data: bytes | mmap.mmap, content_offset: int, content_size: int) -> tuple[int, ...]:
-    """Return all aligned task descriptors in one HWX text section."""
+
+
+def find_task_offsets(
+    data: bytes | mmap.mmap, content_offset: int, content_size: int
+) -> tuple[int, ...]:
+    """Return every linked task descriptor base in one HWX text section."""
     if content_offset < 0 or content_size < 0:
         raise ValueError("task search range must be non-negative")
     end = content_offset + content_size
     if end > len(data):
         raise ValueError("task search range exceeds the HWX")
     magic = struct.pack("<I", TD_MAGIC)
-    return tuple(
-        offset - content_offset
-        for offset in range(content_offset, end - 3, 4)
+    seeds = {
+        offset - content_offset - 0x28
+        for offset in range(content_offset + 0x28, end - 3, 4)
         if data[offset:offset + 4] == magic
-    )
+        and (offset - content_offset - 0x28) % 0x100 == 0
+    }
+    tasks: set[int] = set()
+    for seed in sorted(seeds):
+        current = seed
+        chain: set[int] = set()
+        while current not in chain and current + TD_SIZE <= content_size:
+            chain.add(current)
+            tasks.add(current)
+            next_pointer = struct.unpack_from(
+                "<I", data, content_offset + current + 0x1C
+            )[0]
+            if not next_pointer or next_pointer + TD_SIZE > content_size:
+                break
+            if next_pointer % 0x100:
+                raise ValueError(f"unaligned task link {next_pointer:#x}")
+            current = next_pointer
+
+    predecessors: dict[int, list[int]] = {}
+    for current in range(0, content_size - TD_SIZE + 1, 0x100):
+        next_pointer = struct.unpack_from(
+            "<I", data, content_offset + current + 0x1C
+        )[0]
+        if (
+            next_pointer <= current
+            or next_pointer % 0x100
+            or next_pointer + TD_SIZE > content_size
+        ):
+            continue
+        current_id = struct.unpack_from("<I", data, content_offset + current)[0]
+        next_id = struct.unpack_from("<I", data, content_offset + next_pointer)[0]
+        if (next_id & 0xFFFFFF) == (current_id & 0xFFFFFF) + 1:
+            predecessors.setdefault(next_pointer, []).append(current)
+    pending = list(tasks)
+    while pending:
+        for predecessor in predecessors.get(pending.pop(), ()):
+            if predecessor not in tasks:
+                tasks.add(predecessor)
+                pending.append(predecessor)
+    return tuple(sorted(tasks))
 
 def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     """Parse Mach-O sections and derive the Linux ANEC payload geometry."""
@@ -104,6 +149,7 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
 
     sections: dict[tuple[str, str], Section] = {}
     segments: dict[str, tuple[int, int]] = {}
+    section_ranges: dict[tuple[str, str], list[tuple[int, int]]] = {}
     command_offset = 32
     for _ in range(ncmds):
         if command_offset + 8 > commands_end:
@@ -141,6 +187,7 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
                 sections[key] = Section(
                     section_segment, name, address, size, section_file_offset
                 )
+                section_ranges.setdefault(key, []).append((address, size))
         command_offset += command_size
     if command_offset != commands_end:
         raise ValueError("Mach-O load command table has trailing bytes")
@@ -149,34 +196,56 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
         text_segment_offset, text_segment_size = segments["__TEXT"]
         text = sections["__TEXT", "__text"]
         kernel = sections["__TEXT", "__const"]
-        command = sections["__FVMLIB", "__const"]
+        input_sections = section_ranges["__FVMLIB", "__const"]
+        output_sections = section_ranges["__FVMLIB", "__data"]
     except KeyError as error:
         raise ValueError(f"missing required Mach-O section: {error.args[0]}") from error
+    workspace_sections = section_ranges.get(("__DATA", "__bss"), [])
+
+    def span(entries: list[tuple[int, int]]) -> int:
+        return max(address + size for address, size in entries) - min(
+            address for address, _ in entries
+        )
+
+    input_size = span(input_sections)
+    output_size = span(output_sections)
+    workspace_size = span(workspace_sections) if workspace_sections else 0
     if text_segment_offset != text.file_offset:
         raise ValueError("__TEXT,__text must start the __TEXT file payload")
-    td_hits = find_task_offsets(data, text.file_offset, text.size)
-    if not td_hits:
+    task_offsets = find_task_offsets(data, text.file_offset, text.size)
+    if not task_offsets:
         raise ValueError("expected at least one task descriptor in __TEXT")
-    td_offset = td_hits[0] + text.file_offset - text_segment_offset
+    td_offset = task_offsets[0] + text.file_offset - text_segment_offset
     if td_offset + TD_SIZE > text_segment_size:
         raise ValueError("task descriptor exceeds the __TEXT payload")
     kernel_offset = kernel.file_offset - text_segment_offset
     if kernel_offset < 0 or kernel_offset + kernel.size > text_segment_size:
         raise ValueError("kernel section exceeds the __TEXT payload")
-    if not command.size:
-        raise ValueError("empty __FVMLIB,__const command window")
-    td = data[text_segment_offset + td_offset:text_segment_offset + td_offset + TD_SIZE]
+    if not input_size or not output_size:
+        raise ValueError("empty input or output buffer span")
+    kdma_offset = next(
+        offset
+        for offset in task_offsets
+        if struct.unpack_from("<I", data, text_segment_offset + offset + 0x28)[0]
+        == TD_MAGIC
+    )
+    td = data[
+        text_segment_offset + kdma_offset:
+        text_segment_offset + kdma_offset + TD_SIZE
+    ]
     return HWXImage(
         sections=sections,
         content_offset=text_segment_offset,
         content_size=text_segment_size,
         task_stream_size=text.size,
         td_offset=td_offset,
-        td_count=len(td_hits),
+        td_count=len(task_offsets),
         td_size=TD_SIZE,
         kernel_offset=kernel_offset,
         kernel_size=kernel.size,
-        command_size=command.size,
+        workspace_size=workspace_size,
+        input_size=input_size,
+        output_size=output_size,
         kdma=decode_kdma(td),
     )
 
@@ -199,8 +268,11 @@ def _build_header(
     out_plane, out_row = _shape_strides(out_h, out_w)
     tiles = [0] * 32
     tiles[0] = (image.content_size + TILE_SIZE - 1) // TILE_SIZE
-    tiles[5] = max(1, (in_n * in_ch * in_plane + TILE_SIZE - 1) // TILE_SIZE)
-    tiles[4] = max(1, (out_n * out_ch * out_plane + TILE_SIZE - 1) // TILE_SIZE)
+    tiles[3] = (image.workspace_size + TILE_SIZE - 1) // TILE_SIZE
+    input_bytes = max(image.input_size, in_n * in_ch * in_plane)
+    output_bytes = max(image.output_size, out_n * out_ch * out_plane)
+    tiles[5] = max(1, (input_bytes + TILE_SIZE - 1) // TILE_SIZE)
+    tiles[4] = max(1, (output_bytes + TILE_SIZE - 1) // TILE_SIZE)
     nchw = [0] * (32 * 6)
     nchw[4 * 6:4 * 6 + 6] = [out_n, out_ch, out_h, out_w, out_plane, out_row]
     nchw[5 * 6:5 * 6 + 6] = [in_n, in_ch, in_h, in_w, in_plane, in_row]
@@ -241,9 +313,9 @@ def convert_hwx_file(
     in_shape: tuple[int, int, int, int] | None = None,
     out_shape: tuple[int, int, int, int] | None = None,
 ) -> HWXImage:
-
-
-    with open(src_path, "rb") as source, mmap.mmap(source.fileno(), 0, access=mmap.ACCESS_READ) as data:
+    with open(src_path, "rb") as source, mmap.mmap(
+        source.fileno(), 0, access=mmap.ACCESS_READ
+    ) as data:
         image = parse_hwx(data)
         in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
         out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
@@ -258,6 +330,7 @@ def convert_hwx_file(
                 output.write(data[start:chunk_end])
                 start = chunk_end
         return image
+
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
@@ -282,7 +355,8 @@ def main(argv: list[str]) -> int:
     print(
         f"wrote={args.dst_path} content={image.content_size:#x} "
         f"task-stream={image.task_stream_size:#x} td-count={image.td_count} "
-        f"td@content+{image.td_offset:#x} cmd={image.command_size:#x} "
+        f"td@content+{image.td_offset:#x} workspace={image.workspace_size:#x} "
+        f"input={image.input_size:#x} output={image.output_size:#x} "
         f"kernel@content+{image.kernel_offset:#x} ({image.kernel_size:#x}B) "
         f"kdma-enabled={enabled} kdma-bases={image.kdma.base_addresses} "
         f"kdma-sizes={image.kdma.buffer_sizes}"

@@ -1,0 +1,27 @@
+Qwen3.8-2B Q4_K_M HWX export and conversion receipt
+
+$ xcrun clang++ -std=c++17 -fblocks -framework Foundation -F/System/Library/PrivateFrameworks -framework ANECompiler tools/ane-compile-hwx.mm -o ane-compile-hwx
+$ ./ane-compile-hwx <capture-dir> <output-dir> h13
+callback_status=0
+ANECCompile=0 callback_status=0
+$ shasum -a 256 <output-dir>/model.hwx
+c844f78e846554ab72371c737474270a00db064cf8050bd678360c243a4ccb41  <output-dir>/model.hwx
+$ python3 inspect-hwx.py tools/hwxv2-to-anec.py <output-dir>/model.hwx
+content=0x4b10c000 task-stream=0xc36f8 td-count=1175 workspace=0x66000 input=0x730000 output=0x71c000
+
+$ uv run --with numpy python tools/hwxv2-to-anec.py <hwx-dir>/chunk-13.model.hwx <anec-dir>/chunk-13.anec 2048 2048
+wrote=<anec-dir>/chunk-13.anec content=0x59238000 task-stream=0xea2f8 td-count=1403 td@content+0x0 cmd=0x920000 kernel@content+0xea300 (0x5914c800B) kdma-enabled=[0] kdma-bases=(63202, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) kdma-sizes=(2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+$ uv run --with numpy python tools/hwxv2-to-anec.py <hwx-dir>/chunk-11.model.hwx <anec-dir>/chunk-11.anec 2048 2048
+wrote=<anec-dir>/chunk-11.anec content=0x4b10c000 task-stream=0xc36f8 td-count=1175 td@content+0x0 cmd=0x730000 kernel@content+0xc3700 (0x4b046580B) kdma-enabled=[0] kdma-bases=(50712, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) kdma-sizes=(2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+Converted ANEC header geometry:
+chunk-13.anec td_count 1403 tiles3/4/5 26 579 584 bytes3/4/5 425984 9486336 9568256
+chunk-11.anec td_count 1175 tiles3/4/5 26 455 460 bytes3/4/5 425984 7454720 7536640
+
+$ uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe && uv run ruff check tools/hwxv2-to-anec.py tools/production-anec-probe.py tools/test_hwxv2_to_anec.py tools/test_production_anec_probe.py
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.065s
+
+OK
+All checks passed!

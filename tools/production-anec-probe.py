@@ -17,6 +17,7 @@ ROOT = Path(__file__).parent.parent
 ANEC_HEADER = struct.Struct("<QIIQQII32I192Q")
 HEADER_SIZE = 0x1000
 TILE_SIZE = 0x4000
+WORKSPACE_BDX = 3
 SRC_BDX = 5
 DST_BDX = 4
 
@@ -29,6 +30,16 @@ def load_runtime():
     runtime = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(runtime)
     return runtime
+
+
+def load_artifact_parser():
+    parser_path = Path(__file__).with_name("hwxv2-to-anec.py")
+    spec = importlib.util.spec_from_file_location("hwxv2_to_anec", parser_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("cannot load hwxv2-to-anec.py")
+    parser = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(parser)
+    return parser
 
 
 def parse_args():
@@ -59,17 +70,7 @@ def copy_content(data, offset, size, destination):
         copied += chunk_size
 
 def task_bases(data, start, size):
-    marker = struct.pack("<I", 0xF401F800)
-    end = start + size
-    bases = []
-    position = data.find(marker, start, end)
-    while position >= 0:
-        relative = position - start
-        if relative < 0x28 or relative % 4:
-            raise ValueError(f"invalid task marker at content+{relative:#x}")
-        bases.append(relative - 0x28)
-        position = data.find(marker, position + 4, end)
-    return tuple(bases)
+    return load_artifact_parser().find_task_offsets(data, start, size)
 
 
 def build_bootstrap(data, content_start, bases, td_size, td_count):
@@ -112,6 +113,7 @@ def main():
     nchw = header[39:]
     source_meta = nchw[SRC_BDX * 6:SRC_BDX * 6 + 6]
     output_meta = nchw[DST_BDX * 6:DST_BDX * 6 + 6]
+    workspace_size = tiles[WORKSPACE_BDX] * TILE_SIZE
     source_size = tiles[SRC_BDX] * TILE_SIZE
     output_size = tiles[DST_BDX] * TILE_SIZE
     if src_count != 1 or dst_count != 1:
@@ -120,9 +122,9 @@ def main():
         raise ValueError("invalid task geometry")
     print(
         f"content={content_size:#x} task-stream={tsk_size:#x} td={td_size:#x} "
-        f"td-count={td_count} kernel={kernel_size:#x} source={source_size:#x} "
-        f"output={output_size:#x} source-nchw={tuple(source_meta)} "
-        f"output-nchw={tuple(output_meta)}"
+        f"td-count={td_count} kernel={kernel_size:#x} workspace={workspace_size:#x} "
+        f"source={source_size:#x} output={output_size:#x} "
+        f"source-nchw={tuple(source_meta)} output-nchw={tuple(output_meta)}"
     )
     runtime = load_runtime()
 
@@ -140,6 +142,13 @@ def main():
         copy_content(data, HEADER_SIZE, content_size, command.map)
         source = stack.enter_context(device.buffer(source_size))
         output = stack.enter_context(device.buffer(output_size))
+        workspace = (
+            stack.enter_context(device.buffer(workspace_size))
+            if workspace_size
+            else None
+        )
+        if workspace is not None:
+            workspace.write(b"\0" * workspace_size)
         btsp = stack.enter_context(device.buffer((td_count - 1) * 0x300 + td_size))
         source_fill = np.full(source_size // 2, args.input_value, dtype=np.float16)
         source.write(source_fill.tobytes())
@@ -162,9 +171,11 @@ def main():
             td_count=td_count,
             td_size=td_size,
             btsp_handle=btsp.bo.handle,
-            pad=0x81,
+            pad=0,
         )
         request.handles[0] = command.bo.handle
+        if workspace is not None:
+            request.handles[WORKSPACE_BDX] = workspace.bo.handle
         request.handles[4] = source.bo.handle
         request.handles[5] = output.bo.handle
         ioctl(device.fd, runtime.IOCTL_SUBMIT, request)
