@@ -54,6 +54,22 @@ Qwen residual scale at `1.0`; scale `32.0` changed the output sequence.
 - Receipts: `receipts/aneforge-qwen-macos26.log`,
   `receipts/aneforge-qwen-precision-boundary.log`
 
+## Compiler-generated Qwen graph
+
+ANEForge compiles a Qwen-shaped SwiGLU block into one ANE program.
+The graph uses hidden size `2048`, intermediate size `6144`, and a `256`-wide
+logits projection. It contains eight operations: RMSNorm, two up projections,
+SiLU, multiply, residual down projection, residual add, and logits projection.
+
+The MacStudio run compiled in `0.387 s` and ran in `0.007 s`.
+The output matched the deterministic fp16 CPU reference with
+`max_err=0.018799`, `mean_err=0.005943`, and matching argmax.
+This proves compiler-generated multi-operation execution.
+It does not prove full-model end-to-end crossover.
+
+- Receipt: `receipts/aneforge-qwen-graph.log`
+- Probe: `tools/aneforge-qwen-graph.py`
+
 ## Vulkan control
 
 The Vulkan result is a useful control, not an ANE result.

@@ -1,0 +1,24 @@
+ANEForge compiler-generated Qwen-shaped graph (2026-08-29, MacStudio).
+
+Host preflight:
+$ ssh -o ConnectTimeout=8 -o BatchMode=yes macstudio 'hostname'
+MacStudio.local
+
+Source:
+tools/aneforge-qwen-graph.py
+
+Graph:
+- input shape (1, 2048)
+- RMSNorm with hidden size 2048
+- two 2048 -> 6144 SwiGLU projections
+- SiLU and elementwise product
+- 6144 -> 2048 residual projection
+- 2048 -> 256 logits projection
+
+Command:
+$ scp tools/aneforge-qwen-graph.py macstudio:/tmp/aneforge-qwen-graph.py && ssh -o ConnectTimeout=8 -o BatchMode=yes macstudio 'cd ~/src/ANEForge && ANEFORGE_ROOT=$HOME/src/ANEForge $HOME/Models/omlx-pr2935-venv/bin/python /tmp/aneforge-qwen-graph.py --build-dir /tmp/aneforge-qwen-graph'
+shape=input(1,2048) intermediate=6144 vocab=256 ops=8 compile_seconds=0.387 run_seconds=0.007
+max_err=0.018799 mean_err=0.005943 argmax_expected=106 argmax_observed=106 finite=True
+ANEFORGE_QWEN_GRAPH_OK
+
+The output matched the deterministic fp16 CPU reference within max_err=0.018799 and matched argmax. The graph compiled into one ANEForge program with 8 graph operations.

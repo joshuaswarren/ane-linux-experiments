@@ -1,6 +1,6 @@
 # Gates: Linux ANE speed crossover via persistent-buffer descriptor GEMM
 
-OWNS: ane-gemm-fast.py, ane-head-bench.py, ane-runtime.py, ane-qwen-model.py, tools/fresh-anec-probe.py, receipts/**
+OWNS: ane-gemm-fast.py, ane-head-bench.py, ane-runtime.py, ane-qwen-model.py, tools/fresh-anec-probe.py, tools/aneforge-qwen-graph.py, receipts/**
 
 Scope: persistent-buffer descriptor GEMM on the Linux ANE crosses CPU on the
 full tied head with matching quality, integrated into the full-model path.
@@ -34,3 +34,7 @@ full tied head with matching quality, integrated into the full-model path.
   CHECK: ssh joshuawarren@100.84.184.102 'cd ~/src/ane-linux-experiments && env HOME=/home/joshuawarren python3 tools/hwxv2-to-anec.py tools/fresh-64.hwx.sample /tmp/model64.anec 64 64 && python3 tools/fresh-anec-probe.py /tmp/model64.anec --input-channels 64 --output-channels 64 --expect-input-channel 1 --expect-output-channel 3'
   EXPECT: FRESH_ANEC_PARITY_OK
   EVIDENCE: 2026-08-28 fresh 64-channel Mach-O graph returned output[3]=11.0000 from source[1]=11.0000, max_err=0.0000, finite output
+- [x] G7: ANEForge compiles and executes a Qwen-shaped multi-operation graph with CPU parity
+  CHECK: scp tools/aneforge-qwen-graph.py macstudio:/tmp/aneforge-qwen-graph.py && ssh macstudio 'cd ~/src/ANEForge && ANEFORGE_ROOT=$HOME/src/ANEForge $HOME/Models/omlx-pr2935-venv/bin/python /tmp/aneforge-qwen-graph.py --build-dir /tmp/aneforge-qwen-graph'
+  EXPECT: ANEFORGE_QWEN_GRAPH_OK with finite output, matching argmax, and max_err below 0.1
+  EVIDENCE: 2026-08-29 MacStudio compiled 8 operations in 0.387 s, ran in 0.007 s, max_err=0.018799, mean_err=0.005943, matching argmax
