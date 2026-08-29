@@ -53,6 +53,11 @@ class FreshHWXParserTests(unittest.TestCase):
         data = bytearray(self.data)
         struct.pack_into('<I', data, 0, MODULE.MACHO_MAGIC_64)
         self.assertEqual(MODULE.parse_hwx(bytes(data)).td_size, 0x274)
+    def test_task_descriptor_offsets_are_counted(self):
+        data = bytearray(0x800)
+        struct.pack_into('<I', data, 0x28, MODULE.TD_MAGIC)
+        struct.pack_into('<I', data, 0x328, MODULE.TD_MAGIC)
+        self.assertEqual(MODULE.find_task_offsets(bytes(data), 0, len(data)), (0x28, 0x328))
 
     def test_invalid_headers_are_rejected(self):
         with self.assertRaises(ValueError):
