@@ -37,6 +37,10 @@ format supports variable prompt lengths and repeated runs without padding.
 The comparator maps prompt IDs before it compares logits. It compares all
 matching repeated runs. It accepts the earlier one-array-per-prompt archive
 format for existing receipts.
+The hardware-independent contract tests are
+`tools/test_ane_contract.py`.
+The no-fallback test confirms that an ANE projection error propagates instead
+of switching to host math.
 
 Export pipeline.
 The macOS runner imports `aneforge.qwen35.load_gguf`, disables the host
