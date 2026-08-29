@@ -310,7 +310,7 @@ class Device:
         source[:src_slots * 32:32] = activation
         src.write(source.tobytes())
         out.map.seek(0)
-        out.map.write(b"\x00\x7c" * (OUT_BYTES // 2))
+        out.map.write(b"\x00\x7c")
         ioctl(self.fd, IOCTL_SUBMIT, request)
         deadline = time.monotonic() + WAIT_S
         while out.map[:2] == b"\x00\x7c" and time.monotonic() < deadline:
@@ -380,6 +380,8 @@ class Device:
         source[:src_slots * 32:32] = activation
         src.map.seek(0)
         src.map.write(memoryview(source).cast("B"))
+        out.map.seek(0)
+        out.map.write(b"\x00\x7c")
         ioctl(self.fd, IOCTL_SUBMIT, request)
         deadline = time.monotonic() + WAIT_S
         while out.map[:2] == b"\x00\x7c" and time.monotonic() < deadline:

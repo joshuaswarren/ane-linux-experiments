@@ -1300,3 +1300,10 @@ The 512-input tied-head experiment also returned `generated_ids=[11]` and
 finite outputs with `steps=7.280`, `logits=5.270`, but it was not retained in
 the model path. It did not cross the CPU path and requires blob-swapped 1 MiB
 weight windows instead of the resident 512x256 head tiles.
+
+Final sentinel-polling check (2026-08-28, jwm1-linux). The clean-boot ladder
+passed and the restored 256-input resident-head path returned
+`generated_ids=[11]`, finite hidden and logits, and
+`ANE_QWEN_FULL_TOKEN_STEP_OK`. Timing was `steps=7.272`, `logits=7.672`.
+This is the committed runtime path. CPU remains faster in the comparison
+above.
