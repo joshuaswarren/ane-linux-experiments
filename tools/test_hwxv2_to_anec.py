@@ -1,6 +1,7 @@
 import importlib.util
 import struct
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -37,9 +38,15 @@ class FreshHWXParserTests(unittest.TestCase):
         self.assertEqual(image.td_size, 0x274)
         self.assertEqual(image.kernel_offset, 0x280)
         self.assertEqual(image.kernel_size, 0x2000)
-        self.assertEqual([i for i, enabled in enumerate(image.kdma.enabled) if enabled], list(range(6)))
-        self.assertEqual(image.kdma.base_addresses[:6], (80, 88, 96, 104, 112, 120))
-        self.assertEqual(image.kdma.buffer_sizes[:6], (8, 8, 8, 8, 8, 8))
+        self.assertEqual(
+            [i for i, enabled in enumerate(image.kdma.enabled) if enabled],
+            list(range(16)),
+        )
+        self.assertEqual(image.kdma.base_addresses, tuple(range(0, 128, 8)))
+        self.assertEqual(image.kdma.buffer_sizes, (8,) * 16)
+        self.assertEqual(image.workspace_size, 0)
+        self.assertEqual(image.input_size, 0x1000)
+        self.assertEqual(image.output_size, 0x1000)
 
     def test_macho_sections_are_parsed(self):
         text = self.image.sections[('__TEXT', '__text')]
@@ -53,11 +60,12 @@ class FreshHWXParserTests(unittest.TestCase):
         data = bytearray(self.data)
         struct.pack_into('<I', data, 0, MODULE.MACHO_MAGIC_64)
         self.assertEqual(MODULE.parse_hwx(bytes(data)).td_size, 0x274)
-    def test_task_descriptor_offsets_are_counted(self):
+    def test_task_descriptor_offsets_follow_noncompute_links(self):
         data = bytearray(0x800)
         struct.pack_into('<I', data, 0x28, MODULE.TD_MAGIC)
-        struct.pack_into('<I', data, 0x328, MODULE.TD_MAGIC)
-        self.assertEqual(MODULE.find_task_offsets(bytes(data), 0, len(data)), (0x28, 0x328))
+        struct.pack_into('<I', data, 0x1C, 0x300)
+        struct.pack_into('<I', data, 0x328, 0x4401F800)
+        self.assertEqual(MODULE.find_task_offsets(bytes(data), 0, len(data)), (0, 0x300))
 
     def test_invalid_headers_are_rejected(self):
         with self.assertRaises(ValueError):
@@ -69,29 +77,46 @@ class FreshHWXParserTests(unittest.TestCase):
     def test_content_and_descriptor_geometry(self):
         self.assertEqual(self.image.content_offset, 0x4000)
         self.assertEqual(self.image.content_size, 0x4000)
-        self.assertEqual(self.image.td_offset, 0x28)
+        self.assertEqual(self.image.td_offset, 0)
         self.assertEqual(self.image.td_size, 0x274)
         self.assertEqual(self.image.kernel_offset, 0x280)
         self.assertEqual(self.image.kernel_size, 0x80)
 
-    def test_command_window_size_comes_from_section(self):
-        self.assertEqual(self.image.command_size, 0xC0)
+    def test_buffer_spans_come_from_sections(self):
+        self.assertEqual(self.image.workspace_size, 0)
+        self.assertEqual(self.image.input_size, 0xC0)
+        self.assertEqual(self.image.output_size, 0x80)
 
     def test_fresh_kdma_registers_are_decoded(self):
         kdma = self.image.kdma
-        self.assertEqual([i for i, enabled in enumerate(kdma.enabled) if enabled], [])
-        self.assertEqual(kdma.base_addresses[:6], (0, 0, 0, 0, 0, 0))
-        self.assertEqual(kdma.base_addresses[6:], (1,) * 10)
-        self.assertEqual(kdma.buffer_sizes[:6], (1,) * 6)
-        self.assertEqual(kdma.buffer_sizes[6:10], (2,) * 4)
-        self.assertEqual(kdma.buffer_sizes[10:14], (0,) * 4)
-        self.assertEqual(kdma.buffer_sizes[14:], (1, 1))
+        self.assertEqual(
+            [i for i, enabled in enumerate(kdma.enabled) if enabled], [0, 1]
+        )
+        self.assertEqual(kdma.base_addresses[:2], (0, 1))
+        self.assertEqual(kdma.base_addresses[2:], (0,) * 14)
+        self.assertEqual(kdma.buffer_sizes, (1,) * 16)
 
     def test_converted_header_matches_payload(self):
         result = MODULE.convert_hwx(self.data, 4, 4)
         fields = struct.unpack_from('<QIIQQII', result, 0)
         self.assertEqual(fields[:5], (0x4000, 0x274, 1, 0x274, 0x80))
         self.assertEqual(result[0x1000:0x1000 + 0x4000], self.data[0x4000:0x8000])
+
+    def test_header_tiles_cover_virtual_buffer_spans(self):
+        image = replace(
+            self.image,
+            workspace_size=0x4001,
+            input_size=0x8001,
+            output_size=0xC001,
+        )
+        header = struct.unpack_from(
+            '<QIIQQII32I192Q',
+            MODULE._build_header(image, (1, 4, 1, 1), (1, 4, 1, 1)),
+        )
+        tiles = header[7:39]
+        self.assertEqual(tiles[3], 2)
+        self.assertEqual(tiles[5], 3)
+        self.assertEqual(tiles[4], 4)
 
     def test_packers_reuse_output_buffers(self):
         matrix_256 = np.arange(512 * 256, dtype=np.float16).reshape(512, 256)
