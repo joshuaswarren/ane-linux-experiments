@@ -69,6 +69,12 @@ def copy_content(data, offset, size, destination):
         destination.write(data[offset + copied:offset + copied + chunk_size])
         copied += chunk_size
 
+def copy_task_stream(data, content_start, task_stream_size):
+    content_end = content_start + task_stream_size
+    if content_start < 0 or task_stream_size < 1 or content_end > len(data):
+        raise ValueError("task stream exceeds the artifact")
+    return bytes(data[content_start:content_end])
+
 def task_bases(data, start, size):
     return load_artifact_parser().find_task_offsets(data, start, size)
 
@@ -126,9 +132,11 @@ def main():
         raise ValueError(f"expected one input and output, got {src_count}/{dst_count}")
     if td_count < 1 or td_size < 1 or tsk_size < td_size:
         raise ValueError("invalid task geometry")
+    original_task_layout = args.td_start == 0 and td_count == header_td_count
     print(
         f"content={content_size:#x} task-stream={tsk_size:#x} td={td_size:#x} "
-        f"td-count={td_count} kernel={kernel_size:#x} workspace={workspace_size:#x} "
+        f"td-count={td_count} task-layout={'original' if original_task_layout else 'packed'} "
+        f"kernel={kernel_size:#x} workspace={workspace_size:#x} "
         f"source={source_size:#x} output={output_size:#x} "
         f"source-nchw={tuple(source_meta)} output-nchw={tuple(output_meta)}"
     )
@@ -155,7 +163,8 @@ def main():
         )
         if workspace is not None:
             workspace.write(b"\0" * workspace_size)
-        btsp = stack.enter_context(device.buffer((td_count - 1) * 0x300 + td_size))
+        btsp_size = tsk_size if original_task_layout else (td_count - 1) * 0x300 + td_size
+        btsp = stack.enter_context(device.buffer(btsp_size))
         source_fill = np.full(source_size // 2, args.input_value, dtype=np.float16)
         source.write(source_fill.tobytes())
         del source_fill
@@ -163,8 +172,12 @@ def main():
         output_fill = np.full(output_size // 2, np.inf, dtype=np.float16)
         output.write(output_fill.tobytes())
         del output_fill
-        bootstrap = build_bootstrap(
-            data, HEADER_SIZE, tsk_size, selected_bases, td_size, td_count
+        bootstrap = (
+            copy_task_stream(data, HEADER_SIZE, tsk_size)
+            if original_task_layout
+            else build_bootstrap(
+                data, HEADER_SIZE, tsk_size, selected_bases, td_size, td_count
+            )
         )
         btsp.write(bootstrap)
         del bootstrap

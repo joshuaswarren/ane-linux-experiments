@@ -21,6 +21,10 @@ class ProductionProbeTests(unittest.TestCase):
         MODULE.copy_content(data, 17, 100, destination)
         self.assertEqual(destination.getvalue(), data[17:117])
 
+    def test_copy_task_stream_preserves_variable_spacing(self):
+        data = bytes(range(256)) * 2
+        self.assertEqual(MODULE.copy_task_stream(data, 17, 100), data[17:117])
+
     def test_task_bases_follow_descriptor_slots(self):
         data = bytearray(0x700)
         struct.pack_into("<I", data, 0x28, 0xF401F800)
