@@ -1,0 +1,13 @@
+Experiment: independent clean repository reproduction
+Date: 2026-08-29
+Source: https://github.com/joshuaswarren/ane-linux-experiments.git
+Checkout: 4d2f8e5f923deeeaa5b5adf5a2bdd62c334fa460
+Checkout directory: /tmp/ane-linux-experiments-clean.OgioPW
+Command: uv run --with numpy python -m unittest tools.test_ane_contract tools.test_aneforge_qwen_reference tools.test_compare_qwen_reference tools.test_hwxv2_to_anec tools.test_production_anec_probe
+Observed result:
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.099s
+
+OK
+Conclusion: the pushed repository reproduces its hardware-independent contract, reference-tool, comparator, and HWX/ANEC parser tests from a clean checkout. This does not prove the blocked Linux ANE-only Qwen graph.
