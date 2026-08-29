@@ -105,3 +105,47 @@ Observed output:
 
   OK
   All checks passed!
+
+Queue 1 hardware result
+-----------------------
+
+The normal KMD rejected `--qid 1` with:
+
+  OSError: [Errno 22] Invalid argument
+
+The queue-enabled KMD accepted the same request. Its trace recorded:
+
+  submit: enqueue qid=1 td_size=0x274 nid=0x40
+  submit: doorbell survived
+  tm execution failed w/ -110
+  submit: execute returned -110
+
+Explicit queue 1 did not fix the full-graph timeout.
+
+Bootstrap-size observation
+--------------------------
+
+The first linked Qwen task starts at offset `0x0`.
+Its `NextPointer` is `0x200`, but the converted header uses `td_size=0x274`.
+The KMD programs `TQ_SIZE1` from `td_size`, so the current bootstrap fetch
+extends `0x74` bytes into the next task.
+
+The probe now accepts a hexadecimal `--td-size` override. This allows a
+clean-boot test of the first task with `--td-count 1 --td-size 0x200`.
+
+Red test:
+
+  AttributeError: module 'production_anec_probe' has no attribute 'parse_int'
+
+Green command:
+
+  uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe && uv run ruff check tools/production-anec-probe.py tools/test_production_anec_probe.py
+
+Observed output:
+
+  ..................
+  ----------------------------------------------------------------------
+  Ran 18 tests in 0.067s
+
+  OK
+  All checks passed!

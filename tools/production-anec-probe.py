@@ -42,6 +42,10 @@ def load_artifact_parser():
     return parser
 
 
+def parse_int(value):
+    return int(value, 0)
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("anec", type=Path)
@@ -49,6 +53,7 @@ def parse_args():
     parser.add_argument("--timeout", type=float, default=30.0)
     parser.add_argument("--qid", type=int, choices=range(8))
     parser.add_argument("--td-count", type=int)
+    parser.add_argument("--td-size", type=parse_int)
     parser.add_argument("--td-start", type=int, default=0)
     parser.add_argument("--dump-output", type=Path)
     return parser.parse_args()
@@ -123,7 +128,16 @@ def main():
     if args.timeout <= 0:
         raise ValueError("timeout must be positive")
     header = load_anec_header(args.anec)
-    content_size, td_size, header_td_count, tsk_size, kernel_size, src_count, dst_count = header[:7]
+    (
+        content_size,
+        header_td_size,
+        header_td_count,
+        tsk_size,
+        kernel_size,
+        src_count,
+        dst_count,
+    ) = header[:7]
+    td_size = header_td_size if args.td_size is None else args.td_size
     td_count = header_td_count if args.td_count is None else args.td_count
     tiles = header[7:39]
     nchw = header[39:]
@@ -168,7 +182,11 @@ def main():
         )
         if workspace is not None:
             workspace.write(b"\0" * workspace_size)
-        btsp_size = tsk_size if original_task_layout else (td_count - 1) * 0x300 + td_size
+        btsp_size = (
+            tsk_size
+            if original_task_layout
+            else (td_count - 1) * 0x300 + td_size
+        )
         btsp = stack.enter_context(device.buffer(btsp_size))
         source_fill = np.full(source_size // 2, args.input_value, dtype=np.float16)
         source.write(source_fill.tobytes())
@@ -203,9 +221,14 @@ def main():
         request.handles[4] = source.bo.handle
         request.handles[5] = output.bo.handle
         ioctl(device.fd, runtime.IOCTL_SUBMIT, request)
-        poll_values = np.frombuffer(output.map, dtype=np.float16, count=output_size // 2)
+        poll_values = np.frombuffer(
+            output.map, dtype=np.float16, count=output_size // 2
+        )
         deadline = time.monotonic() + args.timeout
-        while not np.any(poll_values != np.float16(np.inf)) and time.monotonic() < deadline:
+        while (
+            not np.any(poll_values != np.float16(np.inf))
+            and time.monotonic() < deadline
+        ):
             time.sleep(0.001)
         completed = bool(np.any(poll_values != np.float16(np.inf)))
         del poll_values
@@ -222,9 +245,14 @@ def main():
         finite_values = output_values[changed_mask]
         finite = bool(np.isfinite(finite_values).all()) if changed_indices.size else False
         wrote_output = bool(changed_indices.size)
-        stats_values = finite_values.astype(np.float32) if changed_indices.size else finite_values
+        stats_values = (
+            finite_values.astype(np.float32) if changed_indices.size else finite_values
+        )
         stats = (
-            tuple(float(getattr(stats_values, name)()) for name in ("min", "max", "mean", "std"))
+            tuple(
+                float(getattr(stats_values, name)())
+                for name in ("min", "max", "mean", "std")
+            )
             if changed_indices.size
             else (float("nan"),) * 4
         )
@@ -232,8 +260,9 @@ def main():
         print(
             f"output-head={result.tolist()} changed={changed_indices.size} "
             f"input-head={source_result.tolist()} input-changed={source_changed_indices.size} "
-            f"range=({stats[0]:.6f},{stats[1]:.6f}) mean={stats[2]:.6f} std={stats[3]:.6f} "
-            f"finite={finite} completed={completed} wrote-output={wrote_output}"
+            f"range=({stats[0]:.6f},{stats[1]:.6f}) mean={stats[2]:.6f} "
+            f"std={stats[3]:.6f} finite={finite} completed={completed} "
+            f"wrote-output={wrote_output}"
         )
         del source_values, output_values
         if not completed or not wrote_output or not finite:
