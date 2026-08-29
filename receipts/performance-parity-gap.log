@@ -1,0 +1,27 @@
+Experiment: Qwen3.8-2B Linux ANE performance parity
+Date: 2026-08-29
+Contract: benchmarks/qwen38-2b-contract.json
+Required targets: Linux ANE >= 0.95x macOS ANE steady state; Linux ANE >= 1.05x Linux CPU median; Linux ANE versus Linux CPU ratio CI95 lower bound > 1.0x.
+
+Verified macOS reference data:
+- Instrumented two-token run after one warmup: 0.4380809170015709 seconds.
+- Time to first token: 0.2901463750004041 seconds.
+- Prefill: 14.91380747661077 tokens/second.
+- Decode: 15.285986554316986 tokens/second.
+- Ten-prompt one-run corpus mean end-to-end: 56.34133201670011 seconds.
+- Ten-prompt mean time to first token: 51.53428760429961 seconds.
+- Ten-prompt mean decode: 16.74448671344259 tokens/second.
+
+Verified Linux custom-path data:
+- Hybrid ANE one-token check: steps=7.515 seconds, logits=7.821 seconds.
+- CPU one-token check: steps=3.114 seconds, logits=2.568 seconds.
+- Both checks generated token 11.
+- The Linux path keeps RMSNorm, activations, recurrent state, attention, and logits on the host.
+
+Missing measurements:
+- No complete Linux ANE-only Qwen graph exists.
+- No matched ten-repetition Linux ANE corpus exists.
+- No paired confidence intervals, cold starts, peak memory, or full ANE-only submission count exist.
+- The bounded macOS 100-prompt attempt timed out after 900 seconds before writing artifacts.
+
+Conclusion: the performance targets are not met or validated. The current numbers describe a hybrid Linux path and a macOS reference, not the required ANE-only comparison. A raw Qwen HWX or equivalent Linux-loadable artifact is required before this benchmark can proceed.

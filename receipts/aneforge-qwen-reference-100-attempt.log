@@ -1,0 +1,10 @@
+Experiment: macOS ANEForge Qwen3.8-2B 100-prompt reference
+Date: 2026-08-29
+Platform: macOS M1 reference system
+Command: cd ~/src/ANEForge && PYTHONPATH="$HOME/src/llama.cpp/gguf-py" ~/.local/bin/uv run --project . --with pyyaml python /tmp/aneforge-qwen-reference.py --model "$HOME/ane-models/Qwen3.8-2B-Q4_K_M.gguf" --prompt-corpus /tmp/qwen38-2b-prompts.jsonl --max-new-tokens 32 --warmup 1 --repetitions 1 --logits-output /tmp/qwen38-reference-100-logits.npz
+Bound: the command ran with a 900-second tool timeout.
+Observed result: the bounded run timed out before producing a JSON result or logits archive.
+Observed output file size: /tmp/qwen38-reference-100.json was 0 bytes.
+Observed artifact state: /tmp/qwen38-reference-100-logits.npz was absent.
+Follow-up: a separate ten-prompt run completed and is recorded in receipts/aneforge-qwen-reference-10.log.
+Conclusion: the full 100-prompt corpus remains incomplete and cannot support Linux parity without a Linux candidate run.

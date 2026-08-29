@@ -24,6 +24,8 @@ The repeatability receipt is `receipts/aneforge-qwen-reference-repeatability.log
 The timing receipt is `receipts/aneforge-qwen-reference-instrumented.log`.
 The layer checkpoint receipt is `receipts/aneforge-qwen-layer-checkpoints.log`.
 The ten-prompt macOS receipt is `receipts/aneforge-qwen-reference-10.log`.
+The bounded 100-prompt attempt is recorded in
+`receipts/aneforge-qwen-reference-100-attempt.log`.
 The parity comparator is `tools/compare-qwen-reference.py`.
 The comparator tests are `tools/test_compare_qwen_reference.py`.
 The Linux custom CPU and ANE receipt is `receipts/ane-qwen-generated-parity.log`.
@@ -63,6 +65,9 @@ These numbers do not satisfy the final Linux performance targets.
 The measurements are not yet a matched ten-repetition corpus benchmark.
 The ten-prompt macOS run completed one measured run per prompt.
 Its compile time was 46.28158112500023 seconds.
+The bounded 100-prompt attempt timed out at 900 seconds before it wrote
+artifacts. The separate ten-prompt run is the largest completed corpus run.
+The performance gap receipt is `receipts/performance-parity-gap.log`.
 Measured end-to-end time ranged from 5.373820666998654 to
 103.45407875000092 seconds. The mean was 56.34133201670011 seconds.
 Mean time to first token was 51.53428760429961 seconds.

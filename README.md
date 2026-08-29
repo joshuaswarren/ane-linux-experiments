@@ -41,13 +41,62 @@ See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fr
 The probe is [tools/aneforge-qwen-graph.py](tools/aneforge-qwen-graph.py).
 The run receipt is `receipts/aneforge-qwen-graph.log`.
 
+The complete Linux Qwen path is not ANE-only.
+`ane-qwen-model.py --backend ane` uses ANE for linear projections.
+It keeps normalization, activations, recurrent state, attention, and logits
+on the host.
+No complete Linux ANE-only graph or full-model parity result is claimed.
+See [progress](docs/progress.md) for the export blocker.
+
+## Qwen reference workflow
+
+The locked macOS reference uses the real
+`Qwen3.8-2B-Q4_K_M.gguf` file and ANEForge.
+The model must exist on the macOS reference system.
+The tokenizer command `llama-tokenize` must be in `PATH`.
+Run the hardware-independent checks on Linux:
+
+```sh
+uv run --with numpy python -m unittest \
+  tools.test_ane_contract \
+  tools.test_aneforge_qwen_reference \
+  tools.test_compare_qwen_reference
+```
+
+Run a bounded macOS reference capture:
+
+```sh
+cd ~/src/ANEForge
+PYTHONPATH="$HOME/src/llama.cpp/gguf-py" \
+  ~/.local/bin/uv run --project . --with pyyaml python /tmp/aneforge-qwen-reference.py \
+  --model "$HOME/ane-models/Qwen3.8-2B-Q4_K_M.gguf" \
+  --prompt-corpus /tmp/qwen38-prompts-10.jsonl \
+  --max-new-tokens 32 --warmup 1 --repetitions 1 \
+  --logits-output /tmp/qwen38-reference-10-logits.npz
+```
+
+The runner writes one JSON summary and one compressed logits archive.
+The archive preserves prompt lengths and repeated-run boundaries.
+The comparator maps prompt IDs before it compares candidate arrays.
+The complete 100-prompt capture exceeded the 900-second bound in the current
+reference run.
+The 100-prompt attempt and ten-prompt checksums are in `receipts/`.
 
 ## Quick start
 
 1. Read the warning below.
 2. Run `./ane-bringup.sh` after every boot.
 3. Try `python3 ane-network.py`.
-4. Run `uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe`.
+4. Run the checks:
+
+   ```sh
+   uv run --with numpy python -m unittest \
+     tools.test_hwxv2_to_anec \
+     tools.test_production_anec_probe \
+     tools.test_ane_contract \
+     tools.test_aneforge_qwen_reference \
+     tools.test_compare_qwen_reference
+   ```
 
 ## Documentation
 
