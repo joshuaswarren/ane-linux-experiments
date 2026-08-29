@@ -108,6 +108,13 @@ def build_bootstrap(
         bootstrap[destination_start:destination_start + copy_size] = data[
             source_start:source_start + copy_size
         ]
+        task_header = struct.unpack_from("<I", bootstrap, destination_start)[0]
+        struct.pack_into(
+            "<I",
+            bootstrap,
+            destination_start,
+            (task_header & ~0xFFFF) | index,
+        )
         next_pointer = struct.unpack_from("<I", bootstrap, destination_start + 0x1C)[0]
         if next_pointer:
             mapped_pointer = source_to_destination.get(next_pointer)
@@ -120,6 +127,13 @@ def build_bootstrap(
             struct.pack_into(
                 "<I", bootstrap, destination_start + 0x1C, mapped_pointer
             )
+    terminal_start = (td_count - 1) * 0x300
+    terminal_header = struct.unpack_from("<I", bootstrap, terminal_start)[0]
+    struct.pack_into("<I", bootstrap, terminal_start, terminal_header | 0x03000000)
+    terminal_next_size = struct.unpack_from("<H", bootstrap, terminal_start + 6)[0]
+    struct.pack_into(
+        "<H", bootstrap, terminal_start + 6, terminal_next_size & ~0x1FF
+    )
     return bytes(bootstrap)
 
 

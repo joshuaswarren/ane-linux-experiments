@@ -42,25 +42,38 @@ class ProductionProbeTests(unittest.TestCase):
         data = bytearray(0x700)
         struct.pack_into("<I", data, 0x28, 0xF401F800)
         struct.pack_into("<I", data, 0x428, 0xF401F800)
-        data[0:4] = b"ABCD"
-        data[0x400:0x404] = b"WXYZ"
+        data[0x40:0x44] = b"ABCD"
+        data[0x440:0x444] = b"WXYZ"
         struct.pack_into("<I", data, 0x1C, 0x400)
         struct.pack_into("<I", data, 0x41C, 0x600)
         bootstrap = MODULE.build_bootstrap(data, 0, len(data), (0, 0x400), 0x274, 2)
         self.assertEqual(len(bootstrap), 0x574)
-        self.assertEqual(bootstrap[:4], b"ABCD")
-        self.assertEqual(bootstrap[0x300:0x304], b"WXYZ")
+        self.assertEqual(bootstrap[0x40:0x44], b"ABCD")
+        self.assertEqual(bootstrap[0x340:0x344], b"WXYZ")
         self.assertEqual(struct.unpack_from("<I", bootstrap, 0x1C)[0], 0x300)
         self.assertEqual(struct.unpack_from("<I", bootstrap, 0x31C)[0], 0)
         one = MODULE.build_bootstrap(data, 0, len(data), (0, 0x400), 0x274, 1)
         self.assertEqual(struct.unpack_from("<I", one, 0x1C)[0], 0)
+
+    def test_bootstrap_rebases_ids_and_terminates_last_task(self):
+        data = bytearray(0x700)
+        struct.pack_into("<I", data, 0, 7)
+        struct.pack_into("<H", data, 6, 0x9C)
+        struct.pack_into("<I", data, 0x1C, 0x400)
+        struct.pack_into("<I", data, 0x400, 9)
+        struct.pack_into("<H", data, 0x406, 0x9C)
+        bootstrap = MODULE.build_bootstrap(data, 0, len(data), (0, 0x400), 0x274, 2)
+        self.assertEqual(struct.unpack_from("<H", bootstrap, 0)[0], 0)
+        self.assertEqual(struct.unpack_from("<H", bootstrap, 0x300)[0], 1)
+        self.assertEqual(bootstrap[0x303] & 0x3, 0x3)
+        self.assertEqual(struct.unpack_from("<H", bootstrap, 0x306)[0] & 0x1FF, 0)
 
     def test_bootstrap_zero_pads_short_terminal_descriptor(self):
         data = bytearray(0x700)
         data[0x600:0x680] = b"\xA5" * 0x80
         struct.pack_into("<I", data, 0x61C, 0)
         bootstrap = MODULE.build_bootstrap(data, 0, 0x680, (0x600,), 0x274, 1)
-        self.assertEqual(bootstrap[:0x80], data[0x600:0x680])
+        self.assertEqual(bootstrap[8:0x80], data[0x608:0x680])
         self.assertEqual(bootstrap[0x80:], b"\0" * (0x274 - 0x80))
 
 
