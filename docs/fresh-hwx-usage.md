@@ -23,16 +23,32 @@
 - A prior probe left the command BO empty. That false setup produced zero
   output and a DART fault on multi-descriptor submits. The production probe
   now copies the complete content before submit.
-- Numeric parity against a macOS or CPU reference is still unproven. The
-  current receipt proves graph execution and finite output, not model quality.
+- Production numeric parity holds against the int8 weight reference from
+  `procedure000.weights`: `max_err=0.0004772`, `mean_err=0.00004533`, and
+  matching argmax for the `9216 x 2048` output. The output is finite.
 
 ## Raw submit BO slots
 
-The raw submit path pins the I/O through request handle slots:
-
 - `request.handles[4]` = input buffer object
-
 - `request.handles[5]` = output buffer object
+
+Production execution tools:
+
+The sequential runner is useful for task-range diagnosis. The direct probe
+submits the full graph after it copies the content payload into the command BO.
+Pass `--dump-output PATH` to save the raw fp16 output buffer for comparison with
+a CPU reference.
+
+Run the complete production graph in one submit:
+
+```sh
+ANE_RUNTIME_PATH=/path/to/ane-runtime.py \
+python3 tools/production-anec-probe.py /path/to/qwen-production.anec \
+  --td-count 3072 --input-value 0.25 --timeout 30 \
+  --dump-output /tmp/qwen-production-output.bin
+```
+
+The dumped output uses the NCHW shape in the ANEC header.
 
 Production execution tools:
 
@@ -86,7 +102,10 @@ Run the complete production graph in one submit:
 ```sh
 ANE_RUNTIME_PATH=/path/to/ane-runtime.py \
 python3 tools/production-anec-probe.py /path/to/qwen-production.anec \
-  --td-count 3072 --input-value 0.25 --timeout 30
+  --td-count 3072 --input-value 0.25 --timeout 30 \
+  --dump-output /tmp/qwen-production-output.bin
 ```
+
+The dumped output uses the NCHW shape in the ANEC header.
 
 Additional bisect tooling: `tools/fresh-td-bisect.py`.
