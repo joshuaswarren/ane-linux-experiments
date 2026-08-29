@@ -56,8 +56,52 @@ Observed output:
   OK
   All checks passed!
 
-Hardware status
+Hardware result
 ---------------
 
-No hardware result is recorded here yet. The branch must be pushed before the
-next full-graph submission.
+The branch was pushed at commit `7f80713` before the hardware submission.
+The ANE passed the clean bring-up self-test.
+
+Command:
+
+  python3 tools/production-anec-probe.py /artifacts/chunk-13.anec --timeout 30
+
+Observed probe metadata:
+
+  content=0x59238000 task-stream=0xea2f8 td=0x274 td-count=1404 task-layout=original kernel=0x5914c800 workspace=0x68000 source=0x920000 output=0x90c000 source-nchw=(1, 2048, 1, 1, 64, 64) output-nchw=(1, 2048, 1, 1, 64, 64)
+
+Observed result:
+
+  TimeoutError: [Errno 110] Connection timed out
+  tm execution failed w/ -110
+  submit: execute returned -110
+
+The exact task layout did not fix the full-graph timeout.
+
+Next experiment
+---------------
+
+Fresh compiler artifacts have executed through explicit queue 1 in earlier
+isolated tests. The failed full-graph probe used the KMD default queue. The
+probe now accepts `--qid 1` so the next clean-boot submission can test that
+single envelope difference.
+
+Queue selection verification
+----------------------------
+
+Red test:
+
+  AttributeError: module 'production_anec_probe' has no attribute 'submission_pad'
+
+Green command:
+
+  uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe && uv run ruff check tools/production-anec-probe.py tools/test_production_anec_probe.py
+
+Observed output:
+
+  .................
+  ----------------------------------------------------------------------
+  Ran 17 tests in 0.106s
+
+  OK
+  All checks passed!

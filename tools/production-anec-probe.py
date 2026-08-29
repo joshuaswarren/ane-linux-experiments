@@ -47,6 +47,7 @@ def parse_args():
     parser.add_argument("anec", type=Path)
     parser.add_argument("--input-value", type=float, default=0.25)
     parser.add_argument("--timeout", type=float, default=30.0)
+    parser.add_argument("--qid", type=int, choices=range(8))
     parser.add_argument("--td-count", type=int)
     parser.add_argument("--td-start", type=int, default=0)
     parser.add_argument("--dump-output", type=Path)
@@ -74,6 +75,9 @@ def copy_task_stream(data, content_start, task_stream_size):
     if content_start < 0 or task_stream_size < 1 or content_end > len(data):
         raise ValueError("task stream exceeds the artifact")
     return bytes(data[content_start:content_end])
+
+def submission_pad(qid):
+    return 0 if qid is None else 0x80 | qid
 
 def task_bases(data, start, size):
     return load_artifact_parser().find_task_offsets(data, start, size)
@@ -136,6 +140,7 @@ def main():
     print(
         f"content={content_size:#x} task-stream={tsk_size:#x} td={td_size:#x} "
         f"td-count={td_count} task-layout={'original' if original_task_layout else 'packed'} "
+        f"qid={args.qid if args.qid is not None else 'default'} "
         f"kernel={kernel_size:#x} workspace={workspace_size:#x} "
         f"source={source_size:#x} output={output_size:#x} "
         f"source-nchw={tuple(source_meta)} output-nchw={tuple(output_meta)}"
@@ -151,7 +156,7 @@ def main():
         if args.td_start < 0 or args.td_start + td_count > header_td_count:
             raise ValueError("td range is out of range")
         selected_bases = bases[args.td_start:]
-        device = stack.enter_context(runtime.Device(qid=None))
+        device = stack.enter_context(runtime.Device(qid=args.qid))
         command = stack.enter_context(device.buffer(content_size))
         copy_content(data, HEADER_SIZE, content_size, command.map)
         source = stack.enter_context(device.buffer(source_size))
@@ -190,7 +195,7 @@ def main():
             td_count=td_count,
             td_size=td_size,
             btsp_handle=btsp.bo.handle,
-            pad=0,
+            pad=submission_pad(args.qid),
         )
         request.handles[0] = command.bo.handle
         if workspace is not None:
