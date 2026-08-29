@@ -31,6 +31,39 @@ def sha256_file(path: Path) -> tuple[int, str]:
     return size, digest.hexdigest()
 
 
+def validate_contract(
+    contract_path: Path,
+    *,
+    model_size: int,
+    model_sha256: str,
+    n_layers: int,
+    max_new_tokens: int,
+    prompt_corpus: Path | None,
+) -> None:
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    model = contract["model"]
+    if model_size != model["bytes"]:
+        raise ValueError(f"model size does not match contract: {model_size} != {model['bytes']}")
+    if model_sha256 != model["sha256"]:
+        raise ValueError("model SHA-256 does not match contract")
+    if n_layers != model["layers"]:
+        raise ValueError(f"layer count does not match contract: {n_layers} != {model['layers']}")
+    if max_new_tokens != contract["generation"]["new_tokens"]:
+        raise ValueError(
+            "max-new-tokens does not match contract: "
+            f"{max_new_tokens} != {contract['generation']['new_tokens']}"
+        )
+    if prompt_corpus is None:
+        raise ValueError("contract validation requires --prompt-corpus")
+    _, corpus_sha256 = sha256_file(prompt_corpus)
+    if corpus_sha256 != contract["corpus"]["sha256"]:
+        raise ValueError("prompt corpus SHA-256 does not match contract")
+    rows = load_prompt_corpus(prompt_corpus)
+    if len(rows) != contract["corpus"]["prompts"]:
+        raise ValueError("prompt count does not match contract")
+    if len({row["category"] for row in rows}) != contract["corpus"]["categories"]:
+        raise ValueError("prompt category count does not match contract")
+
 def tokenize(binary: str, model: Path, prompt: str) -> list[int]:
     result = subprocess.run(
         [binary, "-m", str(model), "-p", prompt, "--ids"],
@@ -270,6 +303,7 @@ def save_logits(
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True, type=Path)
+    parser.add_argument("--contract", type=Path, default=None)
     prompt = parser.add_mutually_exclusive_group()
     prompt.add_argument("--prompt", default=DEFAULT_PROMPT)
     prompt.add_argument("--prompt-corpus", type=Path)
@@ -302,6 +336,15 @@ def main() -> None:
     if args.chunk_layers is not None and args.chunk_layers < 1:
         raise SystemExit("chunk-layers must be positive")
     size, model_sha256 = sha256_file(args.model)
+    if args.contract is not None:
+        validate_contract(
+            args.contract,
+            model_size=size,
+            model_sha256=model_sha256,
+            n_layers=args.n_layers,
+            max_new_tokens=args.max_new_tokens,
+            prompt_corpus=args.prompt_corpus,
+        )
     sys.path.insert(0, str(args.aneforge_root))
     import aneforge.qwen35 as qwen35
 

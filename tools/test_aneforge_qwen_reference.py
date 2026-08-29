@@ -125,5 +125,28 @@ class ReferenceRunnerTests(unittest.TestCase):
 
 
 
+    def test_validate_contract_checks_model_and_corpus_artifacts(self):
+        contract = ROOT / "benchmarks/qwen38-2b-contract.json"
+        corpus = ROOT / "benchmarks/qwen38-2b-prompts.jsonl"
+
+        MODULE.validate_contract(
+            contract,
+            model_size=1_312_164_224,
+            model_sha256="4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
+            n_layers=24,
+            max_new_tokens=32,
+            prompt_corpus=corpus,
+        )
+
+        with self.assertRaisesRegex(ValueError, "model SHA-256"):
+            MODULE.validate_contract(
+                contract,
+                model_size=1_312_164_224,
+                model_sha256="wrong",
+                n_layers=24,
+                max_new_tokens=32,
+                prompt_corpus=corpus,
+            )
+
 if __name__ == "__main__":
     unittest.main()
