@@ -1,0 +1,20 @@
+Experiment: instrumented macOS ANEForge Qwen3.8-2B reference
+Date: 2026-08-29
+Platform: macOS M1 reference system
+Model bytes: 1312164224
+Model SHA-256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+Command: cd ~/src/ANEForge && PYTHONPATH="$HOME/src/llama.cpp/gguf-py" ~/.local/bin/uv run --project . --with pyyaml python /tmp/aneforge-qwen-reference.py --model "$HOME/ane-models/Qwen3.8-2B-Q4_K_M.gguf" --prompt "The engine runs" --max-new-tokens 2 --warmup 1 --repetitions 1 --n-layers 24 --chunk-layers 1 --checkpoints-output /tmp/qwen38-checkpoints.npz
+Observed compile_seconds: 32.92690908400073
+Observed decoder chunks: 24, one layer per chunk, layers 0 through 23
+Prompt token IDs: [760, 4560, 8213]
+Generated IDs: [506, 220]
+Logits shape: [248320]
+Logits finite: true
+Prefill: 2 tokens, 0.134103917000175 seconds, 14.91380747661077 tokens/second
+Decode: 2 tokens, 0.13083879099940532 seconds, 15.285986554316986 tokens/second
+Time to first token: 0.2901463750004041 seconds
+ANEDecoder submissions: 48 total, 24.0 per generated token
+Repeatability: one measured run; per-run logits repeatability deltas were all 0.0
+Checkpoint artifact: 96 arrays, each shape [1, 2048], all finite
+Artifact SHA-256: 3a035ec54f619baee55739f2bcc40dd04a3d78f8cbe6522a04da9a9e4f2c90e2
+Result: the real Qwen decoder executed through the ANEForge hybrid decoder. The host fp32 lm_head remained enabled by the locked reference contract.

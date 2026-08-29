@@ -1,0 +1,14 @@
+Experiment: test macOS ANEForge E5RT output as Linux ANEC input
+Date: 2026-08-29
+MacOS artifact: compiled E5RT H13D.e5 bundle
+Observed artifact size: 27272 bytes
+Observed task-descriptor magic count in the E5RT artifact: 0
+Linux command: ANE_RUNTIME_PATH=/tmp/ane-runtime.py python3 /tmp/production-anec-probe.py /tmp/qwen-h13d.e5
+Linux output: ValueError: expected one input and output, got 17904/4
+Observed ANEForge path: `aneforge/_runtime.py` calls private E5RT compile
+inside the macOS process. The public runner exposes no raw HWX export.
+Observed cache shape: `.aneforge-cache` contains E5RT bundles and hashes,
+not raw HWX or Linux ANEC images.
+Result: the E5RT bundle is not a Linux ANEC image. The current Linux loader
+cannot consume it. A raw HWX or equivalent Linux-loadable artifact remains
+required for the complete Qwen graph.

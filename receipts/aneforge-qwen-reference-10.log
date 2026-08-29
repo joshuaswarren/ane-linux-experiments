@@ -1,0 +1,14 @@
+Experiment: macOS ANEForge Qwen3.8-2B ten-prompt reference
+Date: 2026-08-29
+Platform: macOS M1 reference system
+Model bytes: 1312164224
+Model SHA-256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+Prompt corpus: benchmarks/qwen38-2b-prompts.jsonl, first ten prompts copied to /tmp/qwen38-prompts-10.jsonl on the reference system
+Command: cd ~/src/ANEForge && PYTHONPATH="$HOME/src/llama.cpp/gguf-py" ~/.local/bin/uv run --project . --with pyyaml python /tmp/aneforge-qwen-reference.py --model "$HOME/ane-models/Qwen3.8-2B-Q4_K_M.gguf" --prompt-corpus /tmp/qwen38-prompts-10.jsonl --max-new-tokens 32 --warmup 1 --repetitions 1 --logits-output /tmp/qwen38-reference-10-logits.npz
+Observed output: /tmp/qwen38-reference-10.json
+Observed logits artifact: /tmp/qwen38-reference-10-logits.npz
+JSON bytes: 220185
+Logits bytes: 292745189
+JSON SHA-256: 8269c36bbbd50099c3879db7da16c570f89b9b173fc3d4f27f37345f83def493
+Logits SHA-256: d7dd5f7f3af8220c3b5fca0436fc1f11e48b1ea2b8568033526af49a7d7967e9
+Result: ten-prompt reference corpus completed with one measured run per prompt. The complete 100-prompt corpus remains unrun.

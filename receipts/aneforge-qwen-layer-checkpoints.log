@@ -1,0 +1,16 @@
+Experiment: per-layer Qwen3.8-2B ANEForge decoder checkpoints
+Date: 2026-08-29
+Platform: macOS M1 reference system
+Model bytes: 1312164224
+Model SHA-256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+Command: PYTHONPATH="$HOME/src/llama.cpp/gguf-py" ANEFORGE_ROOT="$HOME/src/ANEForge" python /tmp/aneforge-qwen-reference.py --model "$HOME/ane-models/Qwen3.8-2B-Q4_K_M.gguf" --prompt "The engine runs" --max-new-tokens 2 --warmup 0 --repetitions 1 --n-layers 24 --chunk-layers 1 --checkpoints-output /tmp/qwen38-checkpoints.npz
+Observed compile_seconds: 33.93315591700048
+Observed decoder chunks: 24, one layer per chunk, layers 0 through 23
+Prompt token IDs: [760, 4560, 8213]
+Generated IDs: [506, 220]
+Checkpoint arrays: 96
+Checkpoint array shape: [1, 2048]
+Checkpoint values: finite in all 96 arrays
+Artifact SHA-256: 3a035ec54f619baee55739f2bcc40dd04a3d78f8cbe6522a04da9a9e4f2c90e2
+Artifact size: 522787 bytes
+Result: every decoder layer boundary produced a finite hidden checkpoint for two prompt steps and two generated steps. This is a macOS ANEForge reference receipt, not Linux parity.
