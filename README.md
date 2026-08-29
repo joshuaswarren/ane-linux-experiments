@@ -30,8 +30,9 @@ The full Linux token path is not faster than CPU.
 One token still needs `5,376` serialized GEMM submissions.
 A captured production HWX converts to ANEC, and the complete `3,072`-descriptor
 graph executes in one Linux submit with finite output.
-The production probe must copy the full content payload into the command BO.
-Numeric parity against a macOS or CPU reference remains unproven.
+The production probe copies the full content payload into the command BO.
+The production graph matches its int8 weight reference with
+`max_err=0.0004772`, `mean_err=0.00004533`, and matching argmax.
 See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fresh-hwx-usage.md).
 
 

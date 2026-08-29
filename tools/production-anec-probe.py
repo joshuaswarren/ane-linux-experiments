@@ -38,6 +38,7 @@ def parse_args():
     parser.add_argument("--timeout", type=float, default=30.0)
     parser.add_argument("--td-count", type=int)
     parser.add_argument("--td-start", type=int, default=0)
+    parser.add_argument("--dump-output", type=Path)
     return parser.parse_args()
 
 
@@ -173,7 +174,10 @@ def main():
             time.sleep(0.001)
         completed = bool(np.any(poll_values != np.float16(np.inf)))
         del poll_values
-        output_values = np.frombuffer(output.read(output_size), dtype=np.float16)
+        output_bytes = output.read(output_size)
+        if args.dump_output is not None:
+            args.dump_output.write_bytes(output_bytes)
+        output_values = np.frombuffer(output_bytes, dtype=np.float16)
         source_values = np.frombuffer(source.read(source_size), dtype=np.float16)
         changed_mask = output_values != np.float16(np.inf)
         changed_indices = np.flatnonzero(changed_mask)

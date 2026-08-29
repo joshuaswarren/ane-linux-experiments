@@ -1279,3 +1279,11 @@ mean `0.013649`, standard deviation `0.244627`, and
 `PRODUCTION_ANEC_EXECUTION_OK`. The output had non-zero variation across the
 full `9216 x 2048` destination. Numeric parity against a model reference
 remains unproven.
+
+Production numeric parity reference (2026-08-28, jwm1-linux). The dumped
+`9216 x 2048` fp16 output was compared with the dequantized int8 matrix from
+`procedure000.weights` for an all-`0.25` input. The check reported:
+`max_err=0.00047719478607177734`, `mean_err=4.533272658591159e-05`,
+`argmax_expected=3410`, `argmax_observed=3410`, `finite=True`, and
+`PRODUCTION_NUMERIC_REFERENCE_OK`.
+This closes production graph numeric parity for the captured procedure.
