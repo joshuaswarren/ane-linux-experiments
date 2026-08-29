@@ -33,7 +33,13 @@ graph executes in one Linux submit with finite output.
 The production probe copies the full content payload into the command BO.
 The production graph matches its int8 weight reference with
 `max_err=0.0004772`, `mean_err=0.00004533`, and matching argmax.
+
+ANEForge also compiles and runs a Qwen-shaped SwiGLU block as one ANE program.
+The graph has eight operations and matches a deterministic CPU reference.
+It reports `max_err=0.018799` and matching argmax.
 See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fresh-hwx-usage.md).
+The probe is [tools/aneforge-qwen-graph.py](tools/aneforge-qwen-graph.py).
+The run receipt is `receipts/aneforge-qwen-graph.log`.
 
 
 ## Quick start
@@ -61,6 +67,7 @@ See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fr
 | `ane-head-bench.py` | Measure the tied output head. |
 | `ane-static-loop.py` | Run a reusable static graph. |
 | `tools/` | Convert HWX files and run fresh-format probes. |
+| `tools/aneforge-qwen-graph.py` | Compile and run a Qwen-shaped SwiGLU graph through ANEForge. |
 | `tools/production-anec-sequential.py` | Execute production tasks one at a time. |
 | `patches/` | Hold the Linux libane patches. |
 | `receipts/` | Hold command output and measured results. |

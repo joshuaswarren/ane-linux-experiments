@@ -65,8 +65,10 @@ for this check but no end-to-end speed crossover.
 
 ## Open questions
 
-The remaining speed lever is compiler-generated graph batching or chaining for
-GEMM-family tasks. Hand-built multi-TD GEMM chains are not reliable on this
-KMD, while compiler-generated fresh graphs execute. The next useful work must
-measure a compiler-generated multi-operation Qwen graph, not add more manual
-TD fields.
+The compiler-generated Qwen-shaped SwiGLU graph now compiles and executes as
+one ANEForge program with matching CPU argmax and bounded fp16 error.
+The remaining speed lever is a compiler-generated full-model graph or chaining
+for all Qwen GEMM-family tasks. Hand-built multi-TD GEMM chains are not reliable
+on this KMD, while compiler-generated graphs execute. The Linux end-to-end
+token path still needs thousands of serialized tiles and remains slower than
+CPU.
