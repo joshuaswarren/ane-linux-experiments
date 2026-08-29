@@ -20,6 +20,12 @@ The end-to-end one-token path is not faster yet. One token still needs
 `5,376` serialized GEMM submissions because the available Linux interface
 exposes fixed `512x512` programs instead of a reusable whole-model graph.
 
+The latest clean-boot Qwen check generated the same token on both paths. The
+committed ANE path measured `steps=7.272`, `logits=7.672`; the CPU path
+measured `steps=3.114`, `logits=2.568`. Vectorized weight packing and
+sentinel-only polling reduced host work, but the ANE path still does not cross
+CPU end to end.
+
 - Receipts: `receipts/ane-static-graph-loop.log`
 - Submit-floor benchmark: `ane-gemm-fast.py` (`--floor`)
 - Full-head benchmark: `ane-head-bench.py`
