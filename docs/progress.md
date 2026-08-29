@@ -13,6 +13,8 @@ ANEForge ran the complete 24-layer Qwen decoder on macOS for deterministic greed
 The host embedding gather and fp32 lm_head remain the locked macOS reference boundary.
 The runner now records prefill, decode, first-token, and decoder-submission timings.
 The runner can capture every decoder layer boundary.
+The optional `--contract` flag validates model bytes and SHA-256, layer count,
+token count, category count, and corpus SHA-256 before compilation.
 
 Receipt paths.
 The contract is `benchmarks/qwen38-2b-contract.json`.

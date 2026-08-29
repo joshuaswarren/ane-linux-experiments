@@ -54,6 +54,9 @@ The locked macOS reference uses the real
 `Qwen3.8-2B-Q4_K_M.gguf` file and ANEForge.
 The model must exist on the macOS reference system.
 The tokenizer command `llama-tokenize` must be in `PATH`.
+Pass `--contract benchmarks/qwen38-2b-contract.json` for the exact 100-prompt
+corpus. The runner then validates the model, layer count, token count, and
+corpus checksum before compilation.
 Run the hardware-independent checks on Linux:
 
 ```sh
