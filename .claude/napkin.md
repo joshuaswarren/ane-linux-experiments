@@ -43,3 +43,41 @@
 - 2026-08-28: A fresh scan of `~/Library/Caches/omlx-advisor` and
   `~/Library/Caches/omlx` returned zero `.hwx` files on MacStudio, JW14M2,
   and 16M1MBP after production compiles.
+- 2026-08-28: The production exporter works through direct
+  `ANECCompile` with `NetworkSourceFileName`/`NetworkSourcePath`; the source
+  path must end in `/`, or the compiler joins `capture-0model.mil`.
+- 2026-08-28: A production Qwen HWX has `3072` task descriptors,
+  `0x300` descriptor spacing within each procedure, `0x3100` procedure
+  spacing, and a `0xb4300000` kernel section. `tsk_size` is the
+  `__TEXT,__text` section size, not one descriptor size.
+- 2026-08-28: Convert multi-gigabyte HWX with mmap and chunked writes.
+  `Path.read_bytes()` creates an avoidable 3.0 GiB allocation.
+- 2026-08-28: NumPy views from ANE BO mmaps export pointers that prevent
+  `Buffer.close()`. Delete every `np.frombuffer` view before ExitStack cleanup.
+- 2026-08-28: Production task descriptors link across sparse source slots
+  (`0x300`, `0x400`, `0x3100`). A packed BTSP must remap `NextPointer`;
+  a selected prefix must terminate its last link at zero.
+- 2026-08-28: The production header decodes `RBase0=4`, `WBase=5`,
+  `KBase0=1`; raw execution uses input handle 4 and output handle 5.
+- 2026-08-28: One production descriptor executes with finite output. A
+  multi-descriptor submit times out with DART IOVA `0x0`, while separate
+  task-0 then task-1 submits complete. The current KMD does not carry this
+  production chain in one submit.
+- 2026-08-28: Reboot clears `/tmp` on jwm1-linux. Persist multi-gigabyte
+  production HWX and ANEC artifacts under `/home/joshuawarren/`.
+- 2026-08-28: The production probe allocated a multi-gigabyte command BO but
+  did not copy the ANEC content into it. Empty command memory caused zero
+  output and the DART fault. Always stream the full content payload before
+  submit.
+- 2026-08-28: ANE output does not guarantee that element zero changes. A
+  two-byte sentinel poll reported a false timeout after valid output arrived
+  elsewhere. Poll the output map for any non-sentinel value and fail on no
+  changed values.
+- 2026-08-28: The corrected production probe executes all `3072` descriptors
+  with finite, varied output. This proves graph execution, not numeric model
+  parity. Keep that quality boundary explicit.
+- 2026-08-28: `python -m unittest discover` skips tests under `tools/` because
+  the directory is not a package. Use explicit module targets.
+- 2026-08-28: After a failed production submit, the first reboot plus bring-up
+  can still fail its self-test with `iommu_map failed at 0x4000`. A second
+  reboot restored a clean ladder. Do not proceed from `ANE_SELFTEST_FAILED`.

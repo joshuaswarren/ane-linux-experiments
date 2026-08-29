@@ -1207,3 +1207,75 @@ Cache scan follow-up (2026-08-28). `/tmp/list-hwx-cache.py` scanned
 `~/Library/Caches/omlx-advisor` and `~/Library/Caches/omlx` on MacStudio,
 JW14M2, and 16M1MBP. Each host returned `count=0`. No cached `.hwx`
 artifact was available after the production compile attempts.
+Direct production HWX export (2026-08-28, 16M1MBP). A delayed
+`DYLD_INSERT_LIBRARIES` hook captured four `_ANEInMemoryModel` compile
+callbacks during the real `Qwen3.8-27B-heretic-ara-q4` load. The canonical
+source-form `ANECCompile` helper was then run with
+`NetworkSourcePath=/private/tmp/ane-production-capture-0/` and a trailing
+slash. It returned `callback_status=0` and wrote
+`/private/tmp/ane-direct-source-output-0/model.hwx`.
+`16m1mbp:/private/tmp/ane-direct-source-output-0/model.hwx` measured
+`3031515136` bytes. The file has HWX magic `0xbeefface`, `ncmds=453`, one
+`__TEXT,__text` section with `3072` task markers, task spacing
+`0x300` within each procedure and `0x3100` between procedures, and
+`__TEXT,__const` size `0xb4300000`.
+The artifact was copied to
+`jwm1-linux:/tmp/qwen-production.hwx`; the destination measured the same
+`3031515136` bytes.
+The streamed Linux converter accepted the duplicate `__FVMLIB` sections and
+wrote `/tmp/qwen-production.anec` with
+`content=0xb4600000 task-stream=0x2fd174 td-count=3072 kernel=0xb4300000`,
+source tile `0x1400000`, and output tile `0x2400000`. It used mmap plus
+16 MiB copy chunks, so the 3.0 GiB artifact was not loaded into one Python
+bytes object.
+
+Production ANEC execution probes (2026-08-28, jwm1-linux).
+- The production task header decodes `RBase0=4`, `WBase=5`, and `KBase0=1`.
+  The raw probe therefore binds input to handle 4 and output to handle 5.
+- A clean bring-up ladder returned `ANE_READY /dev/accel/accel0` and
+  `ANE_VERIFIED elementwise add computed`.
+- One production descriptor with its `NextPointer` cleared completed. The
+  probe reported `changed=393216`, `finite=True`, and output head values of
+  zero.
+- Two production descriptors in one submit timed out. The kernel reported
+  `apple-dart 26b800000.iommu: translation fault: status:0x80000004 stream:0 code:0x4 (NO PTE FOR IOVA) at 0x0`
+  and `tm execution failed w/ -110`.
+- Two separate submits completed when task 0 output fed task 1 input. Both
+  reported `changed=393216`, `finite=True`, and output head values of zero.
+- Full production numeric parity is not proven. The Linux KMD accepts the
+  production descriptor one task at a time, but the multi-task submit path
+  still fails at the device.
+
+Pre-fix production sequential runner (2026-08-28, jwm1-linux). The command
+`ANE_RUNTIME_PATH=/tmp/ane-runtime.py python3 /tmp/production-anec-sequential.py
+/home/joshuawarren/qwen-production.anec --td-count 48 --input-value 0.25
+--timeout 10` submitted production tasks 0 through 47 as separate stateful
+descriptors. Every task reported `changed=393216`, `finite=True`, and a
+zero-valued output head. Wall time was `479.46 seconds`. The first
+48-descriptor production procedure completes through the committed runner.
+
+Production command-buffer fix and full-graph execution (2026-08-28,
+jwm1-linux). The production probe and sequential runner now copy the complete
+`content_size=0xb4600000` payload into the command BO before submit. Before this
+copy, the same probes returned zero output and could trigger the recorded DART
+fault.
+- `td_count=1`: `changed=393216`, `finite=True`, output head
+  `[0.1622314453125, 0.1622314453125, 0.1622314453125, 0.1622314453125]`.
+- `td_count=2`: `changed=786432`, `finite=True`, output head
+  `[-0.126953125, -0.126953125, -0.126953125, -0.126953125, ...]`.
+- `td_count=48`: `changed=18874368`, `finite=True`, output head
+  `[-0.34423828125, -0.34423828125, -0.34423828125, -0.34423828125, ...]`,
+  wall time `2.86 seconds`.
+- `td_count=3072`: `changed=18874368`, `finite=True`, output head
+  `[-0.34423828125, -0.34423828125, -0.34423828125, -0.34423828125, ...]`,
+  wall time `3.56 seconds`, and `PRODUCTION_ANEC_EXECUTION_OK`.
+These outputs prove full graph execution with finite output. They do not prove
+numeric parity against a macOS or CPU model reference.
+
+Final clean-boot production probe (2026-08-28, jwm1-linux). After the ANE
+bring-up ladder, `td_count=3072` completed with `completed=True`,
+`changed=18874368`, `finite=True`, output range `(-1.078125,0.942871)`,
+mean `0.013649`, standard deviation `0.244627`, and
+`PRODUCTION_ANEC_EXECUTION_OK`. The output had non-zero variation across the
+full `9216 x 2048` destination. Numeric parity against a model reference
+remains unproven.

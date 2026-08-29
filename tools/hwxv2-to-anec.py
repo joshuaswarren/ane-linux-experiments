@@ -1,16 +1,19 @@
 """Convert a macOS 26 HWX Mach-O into Linux .anec input for libane."""
 
+import argparse
+import mmap
 import struct
 import sys
 from dataclasses import dataclass
-from pathlib import Path
 
 TILE_SIZE = 0x4000
 TD_MAGIC = 0xF401F800
+TD_SIZE = 0x274
 MACHO_MAGIC_64 = 0xFEEDFACF
 FIXTURE_MAGIC_64 = 0xBEEFFACE
 LC_SEGMENT_64 = 0x19
 ANEC_HEADER_SIZE = 0x1000
+
 
 
 @dataclass(frozen=True)
@@ -59,7 +62,9 @@ class HWXImage:
     sections: dict[tuple[str, str], Section]
     content_offset: int
     content_size: int
+    task_stream_size: int
     td_offset: int
+    td_count: int
     td_size: int
     kernel_offset: int
     kernel_size: int
@@ -67,11 +72,24 @@ class HWXImage:
     kdma: KDMALayout
 
 
+
 def _name(raw: bytes) -> str:
     return raw.split(b"\0", 1)[0].decode("ascii")
+def find_task_offsets(data: bytes | mmap.mmap, content_offset: int, content_size: int) -> tuple[int, ...]:
+    """Return all aligned task descriptors in one HWX text section."""
+    if content_offset < 0 or content_size < 0:
+        raise ValueError("task search range must be non-negative")
+    end = content_offset + content_size
+    if end > len(data):
+        raise ValueError("task search range exceeds the HWX")
+    magic = struct.pack("<I", TD_MAGIC)
+    return tuple(
+        offset - content_offset
+        for offset in range(content_offset, end - 3, 4)
+        if data[offset:offset + 4] == magic
+    )
 
-
-def parse_hwx(data: bytes) -> HWXImage:
+def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     """Parse Mach-O sections and derive the Linux ANEC payload geometry."""
     if len(data) < 32 or len(data) % 4:
         raise ValueError("HWX must have a 32-byte header and 4-byte alignment")
@@ -118,7 +136,7 @@ def parse_hwx(data: bytes) -> HWXImage:
                 if section_file_offset + size > len(data):
                     raise ValueError(f"section {section_segment},{name} exceeds the file")
                 key = (section_segment, name)
-                if key in sections:
+                if key in sections and section_segment != "__FVMLIB":
                     raise ValueError(f"duplicate Mach-O section {section_segment},{name}")
                 sections[key] = Section(
                     section_segment, name, address, size, section_file_offset
@@ -136,30 +154,26 @@ def parse_hwx(data: bytes) -> HWXImage:
         raise ValueError(f"missing required Mach-O section: {error.args[0]}") from error
     if text_segment_offset != text.file_offset:
         raise ValueError("__TEXT,__text must start the __TEXT file payload")
-    content_end = text_segment_offset + text_segment_size
-    magic = struct.pack("<I", TD_MAGIC)
-    td_hits = [
-        offset - text_segment_offset
-        for offset in range(text_segment_offset, content_end - 3, 4)
-        if data[offset:offset + 4] == magic
-    ]
-    if len(td_hits) != 1:
-        raise ValueError(f"expected one task descriptor in __TEXT, got {td_hits}")
-    td_offset = td_hits[0]
-    if td_offset + text.size > text_segment_size:
+    td_hits = find_task_offsets(data, text.file_offset, text.size)
+    if not td_hits:
+        raise ValueError("expected at least one task descriptor in __TEXT")
+    td_offset = td_hits[0] + text.file_offset - text_segment_offset
+    if td_offset + TD_SIZE > text_segment_size:
         raise ValueError("task descriptor exceeds the __TEXT payload")
     kernel_offset = kernel.file_offset - text_segment_offset
     if kernel_offset < 0 or kernel_offset + kernel.size > text_segment_size:
         raise ValueError("kernel section exceeds the __TEXT payload")
     if not command.size:
         raise ValueError("empty __FVMLIB,__const command window")
-    td = data[text_segment_offset + td_offset:text_segment_offset + td_offset + text.size]
+    td = data[text_segment_offset + td_offset:text_segment_offset + td_offset + TD_SIZE]
     return HWXImage(
         sections=sections,
         content_offset=text_segment_offset,
         content_size=text_segment_size,
+        task_stream_size=text.size,
         td_offset=td_offset,
-        td_size=text.size,
+        td_count=len(td_hits),
+        td_size=TD_SIZE,
         kernel_offset=kernel_offset,
         kernel_size=kernel.size,
         command_size=command.size,
@@ -167,44 +181,107 @@ def parse_hwx(data: bytes) -> HWXImage:
     )
 
 
-def convert_hwx(data: bytes, in_ch: int, out_ch: int) -> bytes:
-    image = parse_hwx(data)
-    content = data[image.content_offset:image.content_offset + image.content_size]
+def _shape_strides(height: int, width: int) -> tuple[int, int]:
+    if height < 1 or width < 1:
+        raise ValueError("tensor dimensions must be positive")
+    row_stride = max(0x40, (width * 2 + 0x3F) & -0x40)
+    return height * row_stride, row_stride
+
+
+def _build_header(
+    image: HWXImage,
+    in_shape: tuple[int, int, int, int],
+    out_shape: tuple[int, int, int, int],
+) -> bytes:
+    in_n, in_ch, in_h, in_w = in_shape
+    out_n, out_ch, out_h, out_w = out_shape
+    in_plane, in_row = _shape_strides(in_h, in_w)
+    out_plane, out_row = _shape_strides(out_h, out_w)
     tiles = [0] * 32
     tiles[0] = (image.content_size + TILE_SIZE - 1) // TILE_SIZE
-
+    tiles[5] = max(1, (in_n * in_ch * in_plane + TILE_SIZE - 1) // TILE_SIZE)
+    tiles[4] = max(1, (out_n * out_ch * out_plane + TILE_SIZE - 1) // TILE_SIZE)
     nchw = [0] * (32 * 6)
-
-    def put_nchw(slot: int, n: int, channels: int, height: int, width: int,
-                 plane_stride: int, row_stride: int) -> None:
-        nchw[slot * 6:slot * 6 + 6] = [
-            n, channels, height, width, plane_stride, row_stride
-        ]
-
-    put_nchw(4, 1, out_ch, 1, 1, 0x40, 0x40)
-    src_plane = (in_ch * 2 + 63) & -64
-    put_nchw(5, 1, in_ch, 1, 1, src_plane, src_plane)
-    tiles[5] = max(1, (in_ch * src_plane + TILE_SIZE - 1) // TILE_SIZE)
-    tiles[4] = max(1, (out_ch * 0x40 + TILE_SIZE - 1) // TILE_SIZE)
-    header = struct.pack(
+    nchw[4 * 6:4 * 6 + 6] = [out_n, out_ch, out_h, out_w, out_plane, out_row]
+    nchw[5 * 6:5 * 6 + 6] = [in_n, in_ch, in_h, in_w, in_plane, in_row]
+    return struct.pack(
         "<QIIQQII32I192Q",
-        image.content_size, image.td_size, 1, image.td_size, image.kernel_size,
-        1, 1, *tiles, *nchw,
+        image.content_size,
+        image.td_size,
+        image.td_count,
+        image.task_stream_size,
+        image.kernel_size,
+        1,
+        1,
+        *tiles,
+        *nchw,
     )
+
+
+def convert_hwx(
+    data: bytes,
+    in_ch: int,
+    out_ch: int,
+    in_shape: tuple[int, int, int, int] | None = None,
+    out_shape: tuple[int, int, int, int] | None = None,
+) -> bytes:
+    image = parse_hwx(data)
+    in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
+    out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
+    header = _build_header(image, in_shape, out_shape)
+    content = data[image.content_offset:image.content_offset + image.content_size]
     return header + b"\0" * (ANEC_HEADER_SIZE - len(header)) + content
 
 
+def convert_hwx_file(
+    src_path: str,
+    dst_path: str,
+    in_ch: int,
+    out_ch: int,
+    in_shape: tuple[int, int, int, int] | None = None,
+    out_shape: tuple[int, int, int, int] | None = None,
+) -> HWXImage:
+
+
+    with open(src_path, "rb") as source, mmap.mmap(source.fileno(), 0, access=mmap.ACCESS_READ) as data:
+        image = parse_hwx(data)
+        in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
+        out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
+        header = _build_header(image, in_shape, out_shape)
+        with open(dst_path, "wb") as output:
+            output.write(header)
+            output.write(b"\0" * (ANEC_HEADER_SIZE - len(header)))
+            start = image.content_offset
+            end = start + image.content_size
+            while start < end:
+                chunk_end = min(start + 16 * 1024 * 1024, end)
+                output.write(data[start:chunk_end])
+                start = chunk_end
+        return image
+
 def main(argv: list[str]) -> int:
-    if len(argv) != 5:
-        print("usage: hwxv2-to-anec.py IN.hwx OUT.anec SRC_CH DST_CH", file=sys.stderr)
-        return 2
-    src_path, dst_path, in_ch, out_ch = argv[1], argv[2], int(argv[3]), int(argv[4])
-    data = Path(src_path).read_bytes()
-    image = parse_hwx(data)
-    Path(dst_path).write_bytes(convert_hwx(data, in_ch, out_ch))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("src_path")
+    parser.add_argument("dst_path")
+    parser.add_argument("input_channels", type=int)
+    parser.add_argument("output_channels", type=int)
+    parser.add_argument("--input-height", type=int, default=1)
+    parser.add_argument("--input-width", type=int, default=1)
+    parser.add_argument("--output-height", type=int, default=1)
+    parser.add_argument("--output-width", type=int, default=1)
+    args = parser.parse_args(argv[1:])
+    image = convert_hwx_file(
+        args.src_path,
+        args.dst_path,
+        args.input_channels,
+        args.output_channels,
+        (1, args.input_channels, args.input_height, args.input_width),
+        (1, args.output_channels, args.output_height, args.output_width),
+    )
     enabled = [index for index, value in enumerate(image.kdma.enabled) if value]
     print(
-        f"wrote={dst_path} content={image.content_size:#x} "
+        f"wrote={args.dst_path} content={image.content_size:#x} "
+        f"task-stream={image.task_stream_size:#x} td-count={image.td_count} "
         f"td@content+{image.td_offset:#x} cmd={image.command_size:#x} "
         f"kernel@content+{image.kernel_offset:#x} ({image.kernel_size:#x}B) "
         f"kdma-enabled={enabled} kdma-bases={image.kdma.base_addresses} "

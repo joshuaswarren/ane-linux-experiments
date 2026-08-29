@@ -28,15 +28,19 @@ See [static graphs](docs/static-graphs.md).
 
 The full Linux token path is not faster than CPU.
 One token still needs `5,376` serialized GEMM submissions.
-Fresh-format parity for the full Qwen production model is unproven.
-See [crossover results](docs/crossover-results.md).
+A captured production HWX converts to ANEC, and the complete `3,072`-descriptor
+graph executes in one Linux submit with finite output.
+The production probe must copy the full content payload into the command BO.
+Numeric parity against a macOS or CPU reference remains unproven.
+See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fresh-hwx-usage.md).
+
 
 ## Quick start
 
 1. Read the warning below.
 2. Run `./ane-bringup.sh` after every boot.
 3. Try `python3 ane-network.py`.
-4. Run `uv run --with numpy python tools/test_hwxv2_to_anec.py`.
+4. Run `uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe`.
 
 ## Documentation
 
@@ -56,6 +60,7 @@ See [crossover results](docs/crossover-results.md).
 | `ane-head-bench.py` | Measure the tied output head. |
 | `ane-static-loop.py` | Run a reusable static graph. |
 | `tools/` | Convert HWX files and run fresh-format probes. |
+| `tools/production-anec-sequential.py` | Execute production tasks one at a time. |
 | `patches/` | Hold the Linux libane patches. |
 | `receipts/` | Hold command output and measured results. |
 
