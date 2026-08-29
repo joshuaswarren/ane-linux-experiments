@@ -1287,3 +1287,16 @@ Production numeric parity reference (2026-08-28, jwm1-linux). The dumped
 `argmax_expected=3410`, `argmax_observed=3410`, `finite=True`, and
 `PRODUCTION_NUMERIC_REFERENCE_OK`.
 This closes production graph numeric parity for the captured procedure.
+
+End-to-end ANE benchmark after vectorized weight packing (2026-08-28,
+jwm1-linux). The clean-boot bring-up passed `ANE_VERIFIED elementwise add
+computed`. `ane-qwen-model.py -p Hi --backend ane --generate 1` returned
+`generated_ids=[11]`, finite hidden and logits, and
+`ANE_QWEN_FULL_TOKEN_STEP_OK`. Timing was `steps=7.515`, `logits=7.821`. The
+CPU control returned the same generated token and finite values with
+`steps=3.114`, `logits=2.568`. The ANE path remains slower end-to-end.
+
+The 512-input tied-head experiment also returned `generated_ids=[11]` and
+finite outputs with `steps=7.280`, `logits=5.270`, but it was not retained in
+the model path. It did not cross the CPU path and requires blob-swapped 1 MiB
+weight windows instead of the resident 512x256 head tiles.

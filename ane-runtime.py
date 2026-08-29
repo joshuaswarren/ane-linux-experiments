@@ -131,9 +131,8 @@ def pack_weights(matrix, out=None):
     if matrix.shape != (512, 256):
         raise ValueError(f"weights must have shape (512, 256), got {matrix.shape}")
     blob = _pack_buffer(WEIGHT_BYTES // 2, out)
-    for tile in range(16):
-        base = tile * 16384 + 6
-        blob[base:base + 256 * 32] = matrix[tile * 32:(tile + 1) * 32].T.reshape(-1)
+    packed = matrix.reshape(16, 32, 256).transpose(0, 2, 1).reshape(16, -1)
+    blob.reshape(-1, 16384)[:16, 6:6 + 256 * 32] = packed
     return blob
 
 
@@ -143,9 +142,8 @@ def pack_weights_512(matrix, out=None):
     if matrix.shape != (512, 512):
         raise ValueError(f"weights must have shape (512, 512), got {matrix.shape}")
     blob = _pack_buffer(WEIGHT_BYTES_512 // 2, out)
-    for tile in range(16):
-        base = tile * 16384
-        blob[base:base + 512 * 32] = matrix[tile * 32:(tile + 1) * 32].T.reshape(-1)
+    packed = matrix.reshape(16, 32, 512).transpose(0, 2, 1).reshape(16, -1)
+    blob.reshape(-1, 16384)[:16, :512 * 32] = packed
     return blob
 
 

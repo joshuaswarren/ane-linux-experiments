@@ -26,6 +26,9 @@
 - Production numeric parity holds against the int8 weight reference from
   `procedure000.weights`: `max_err=0.0004772`, `mean_err=0.00004533`, and
   matching argmax for the `9216 x 2048` output. The output is finite.
+- The production descriptor decodes the fresh KDMA bank layout as `RBase0=4`,
+  `WBase=5`, and `KBase0=1`. The raw submit binds the input BO to handle 4 and
+  the output BO to handle 5.
 
 ## Raw submit BO slots
 
