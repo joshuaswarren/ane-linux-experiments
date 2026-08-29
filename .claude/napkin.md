@@ -81,3 +81,5 @@
 - 2026-08-28: After a failed production submit, the first reboot plus bring-up
   can still fail its self-test with `iommu_map failed at 0x4000`. A second
   reboot restored a clean ladder. Do not proceed from `ANE_SELFTEST_FAILED`.
+- 2026-08-28: Vectorized ANE packing is exact only for contiguous row-major tiles. A direct non-contiguous GGUF slice produced huge logits; keep the padded contiguous tile and preserve the command-BO write.
+- 2026-08-28: `blob_swap_gemm` must clear the output sentinel before each ioctl. Polling without a fresh sentinel can read stale output and report false completion.
