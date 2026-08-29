@@ -94,3 +94,5 @@ It does not prove complete Qwen execution, numeric parity, or full-run speed.
 Next experiment.
 Obtain a raw HWX or equivalent Linux-loadable artifact for the real Qwen decoder.
 Then convert it to ANEC and run the Linux graph with token and state bindings.
+The independent clean reproduction receipt is
+`receipts/clean-reproduction.log`.
