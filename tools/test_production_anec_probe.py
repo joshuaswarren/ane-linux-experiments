@@ -29,6 +29,9 @@ class ProductionProbeTests(unittest.TestCase):
         self.assertEqual(MODULE.submission_pad(None), 0)
         self.assertEqual(MODULE.submission_pad(1), 0x81)
 
+    def test_parse_int_accepts_hexadecimal_geometry(self):
+        self.assertEqual(MODULE.parse_int("0x200"), 0x200)
+
     def test_task_bases_follow_descriptor_slots(self):
         data = bytearray(0x700)
         struct.pack_into("<I", data, 0x28, 0xF401F800)
