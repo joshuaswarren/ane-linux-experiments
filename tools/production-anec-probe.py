@@ -73,7 +73,9 @@ def task_bases(data, start, size):
     return load_artifact_parser().find_task_offsets(data, start, size)
 
 
-def build_bootstrap(data, content_start, bases, td_size, td_count):
+def build_bootstrap(
+    data, content_start, task_stream_size, bases, td_size, td_count
+):
     if len(bases) < td_count:
         raise ValueError(f"ANEC has {len(bases)} task descriptors, needs {td_count}")
     selected_bases = bases[:td_count]
@@ -82,10 +84,14 @@ def build_bootstrap(data, content_start, bases, td_size, td_count):
     }
     bootstrap = bytearray((td_count - 1) * 0x300 + td_size)
     for index, base in enumerate(selected_bases):
+        available = task_stream_size - base
+        if available < 0x20:
+            raise ValueError(f"task {index} header exceeds the task stream")
         source_start = content_start + base
         destination_start = index * 0x300
-        bootstrap[destination_start:destination_start + td_size] = data[
-            source_start:source_start + td_size
+        copy_size = min(td_size, available)
+        bootstrap[destination_start:destination_start + copy_size] = data[
+            source_start:source_start + copy_size
         ]
         next_pointer = struct.unpack_from("<I", bootstrap, destination_start + 0x1C)[0]
         if next_pointer:
@@ -158,7 +164,7 @@ def main():
         output.write(output_fill.tobytes())
         del output_fill
         bootstrap = build_bootstrap(
-            data, HEADER_SIZE, selected_bases, td_size, td_count
+            data, HEADER_SIZE, tsk_size, selected_bases, td_size, td_count
         )
         btsp.write(bootstrap)
         del bootstrap

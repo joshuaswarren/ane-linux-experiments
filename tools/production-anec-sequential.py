@@ -68,7 +68,7 @@ def main():
         output.write(sentinel)
         for index in range(args.td_start, args.td_start + count):
             bootstrap = probe.build_bootstrap(
-                data, probe.HEADER_SIZE, bases[index:], td_size, 1
+                data, probe.HEADER_SIZE, task_stream_size, bases[index:], td_size, 1
             )
             btsp.write(bootstrap)
             first_word = struct.unpack_from("<I", bootstrap)[0]
