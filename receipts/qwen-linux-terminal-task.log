@@ -1,0 +1,43 @@
+Qwen Linux ANE terminal-task diagnosis
+
+Initial full 13-layer submit with workspace bound:
+content=0x59238000 task-stream=0xea2f8 td=0x274 td-count=1403 kernel=0x5914c800 workspace=0x68000 source=0x920000 output=0x90c000 source-nchw=(1, 2048, 1, 1, 64, 64) output-nchw=(1, 2048, 1, 1, 64, 64)
+TimeoutError: [Errno 110] Connection timed out
+
+Sanitized Linux kernel trace:
+ane: bo: mapping 91278 page(s) at iova 0x14000
+ane: bo: mapping 584 page(s) at iova 0x5924c000
+ane: bo: mapping 579 page(s) at iova 0x59b6c000
+ane: bo: mapping 26 page(s) at iova 0x5a478000
+ane: bo: mapping 66 page(s) at iova 0x5a4e0000
+ane: submit: enqueue qid=4 td_size=0x274 nid=0x40 iova=0x5a4e0000
+ane: submit: ringing doorbell (engine DMA starts)
+ane: tm execution failed w/ -110
+ane: submit: execute returned -110
+
+Task-chain comparison before the terminal-task fix:
+known-good production graph: tasks=3072 edges=3072 roots=63 sinks=0 external=0
+13-layer Qwen graph: tasks=1403 edges=1402 roots=1 sinks=1 external=1
+13-layer final link: 0xe9e00->0xea100, terminal bytes available=0x1f8, terminal task id=1403
+11-layer Qwen graph: tasks=1175 edges=1174 roots=1 sinks=1 external=1
+11-layer final link: 0xc3200->0xc3500, terminal bytes available=0x1f8, terminal task id=1175
+
+The prior parser required every linked task to have the compute descriptor size `0x274`.
+Each Qwen chain ends in a linked `0x1f8` noncompute task.
+The updated parser includes that task.
+The bootstrap packer copies its available bytes and zero-pads the uniform `0x274` slot.
+
+$ uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe && uv run ruff check tools/hwxv2-to-anec.py tools/production-anec-probe.py tools/production-anec-sequential.py tools/test_hwxv2_to_anec.py tools/test_production_anec_probe.py
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.078s
+
+OK
+All checks passed!
+
+$ uv run --with numpy python tools/hwxv2-to-anec.py <hwx-dir>/chunk-13.model.hwx <anec-dir>/chunk-13.anec 2048 2048
+wrote=<anec-dir>/chunk-13.anec content=0x59238000 task-stream=0xea2f8 td-count=1404 td@content+0x0 workspace=0x66000 input=0x920000 output=0x90c000 kernel@content+0xea300 (0x5914c800B)
+$ uv run --with numpy python tools/hwxv2-to-anec.py <hwx-dir>/chunk-11.model.hwx <anec-dir>/chunk-11.anec 2048 2048
+wrote=<anec-dir>/chunk-11.anec content=0x4b10c000 task-stream=0xc36f8 td-count=1176 td@content+0x0 workspace=0x66000 input=0x730000 output=0x71c000 kernel@content+0xc3700 (0x4b046580B)
+
+Hardware retest pending.

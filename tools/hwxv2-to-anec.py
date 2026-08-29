@@ -9,6 +9,7 @@ from dataclasses import dataclass
 TILE_SIZE = 0x4000
 TD_MAGIC = 0xF401F800
 TD_SIZE = 0x274
+TASK_HEADER_SIZE = 0x2C
 MACHO_MAGIC_64 = 0xFEEDFACF
 FIXTURE_MAGIC_64 = 0xBEEFFACE
 LC_SEGMENT_64 = 0x19
@@ -99,13 +100,13 @@ def find_task_offsets(
     for seed in sorted(seeds):
         current = seed
         chain: set[int] = set()
-        while current not in chain and current + TD_SIZE <= content_size:
+        while current not in chain and current + TASK_HEADER_SIZE <= content_size:
             chain.add(current)
             tasks.add(current)
             next_pointer = struct.unpack_from(
                 "<I", data, content_offset + current + 0x1C
             )[0]
-            if not next_pointer or next_pointer + TD_SIZE > content_size:
+            if not next_pointer or next_pointer + TASK_HEADER_SIZE > content_size:
                 break
             if next_pointer % 0x100:
                 raise ValueError(f"unaligned task link {next_pointer:#x}")
@@ -119,7 +120,7 @@ def find_task_offsets(
         if (
             next_pointer <= current
             or next_pointer % 0x100
-            or next_pointer + TD_SIZE > content_size
+            or next_pointer + TASK_HEADER_SIZE > content_size
         ):
             continue
         current_id = struct.unpack_from("<I", data, content_offset + current)[0]
