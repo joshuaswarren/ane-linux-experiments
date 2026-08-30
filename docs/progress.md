@@ -145,8 +145,15 @@ The compiler recovery receipt is receipts/qwen-bigsur-compiler-attempt.log.
 
 The modern program-prepare blocker is removed for staged fp16 projections.
 A single full fp16 model cannot fit in the 3.5 GiB Linux ANE DART VM.
-The runtime must stream per-layer or per-projection programs and keep recurrent state in bounded buffers.
+The runtime now reuses command, input, output, task-stream, and optional workspace buffers.
+It writes logical tensors through the compiled NCHW channel strides.
+
+The converter now accepts non-file-backed virtual sections in old-format HWX files.
+Eight converted artifacts cover every unique matrix shape in the 217-graph set.
+A 214,619,226-byte bundle contains those artifacts and their fp16 reference weights.
+Its SHA-256 is `4976c5b34dfdd13ddf9b3329637214b40134368ccfa6a0b941c36476d850f18b`.
 
 Current full-model Linux parity remains unproven.
 Current Linux performance remains the prior hybrid result and misses both targets.
-The next experiment must execute the compiled projection set through one token step.
+The Linux M1 route is unavailable, so the eight numeric hardware checks remain blocked.
+The next experiment must validate those shapes before one full token step.
