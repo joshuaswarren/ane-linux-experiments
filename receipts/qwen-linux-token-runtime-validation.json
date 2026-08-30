@@ -1,0 +1,66 @@
+{
+  "date": "2026-08-30",
+  "milestone": "Linux Qwen token-to-logits with ANE-resident recurrent and attention state",
+  "model": {
+    "file": "Qwen3.8-2B-Q4_K_M.gguf",
+    "bytes": 1312164224,
+    "sha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
+    "layers": 24,
+    "full_attention_layers": 6,
+    "recurrent_layers": 18
+  },
+  "command": "PATH=<llama.cpp-build-bin>:$PATH python3 ane-qwen-model.py -m <GGUF> -p A --recurrent-anec <RECURRENT_ANEC> --generate 0",
+  "resident_state_run": {
+    "prompt_tokens": [32],
+    "resident_token_runtime": true,
+    "hidden_shape": [2048],
+    "logits_shape": [248320],
+    "next_token": 369,
+    "hidden_finite": true,
+    "logits_finite": true,
+    "layer_seconds": 8.260,
+    "logits_seconds": 6.823,
+    "marker": "ANE_QWEN_FULL_TOKEN_STEP_OK"
+  },
+  "host_state_control": {
+    "resident_token_runtime": false,
+    "next_token": 369,
+    "hidden_finite": true,
+    "logits_finite": true,
+    "layer_seconds": 7.400,
+    "logits_seconds": 6.774,
+    "marker": "ANE_QWEN_FULL_TOKEN_STEP_OK"
+  },
+  "ane_control_before": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "ane_control_after": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "recurrent_artifact": {
+    "bytes": 102400,
+    "sha256": "776a00255e21ed0b9e04665452c7e81348a48627e81578c3364b191d8017b58b"
+  },
+  "source_sha256": {
+    "ane-qwen-model.py": "ff669b3254b80856dfb5be0c5206979875870ec75e64db7443219790c896b84c",
+    "tools/qwen-token-runtime.py": "8cc2ecd7cb6b87cd685d1bb498a593f783ec7caafe654b67f02f3a77b66d64f9",
+    "tools/attention-runtime.py": "1cad574ddd5d66b8408f928e9f53e24441b7d68f3b986ac456c155a9b738c5bd",
+    "tools/softmax-runtime.py": "1531a590471bc2f9be2ceae8e2779a8c0079fd4a6e34ad0faa6f229ac953e073",
+    "tools/recurrent-runtime.py": "ce40c3e3ebc84ad0f88fb2b70c12bce3894ba41239efcaf0c3e49dcf5cde1e5d",
+    "tools/projection-runtime.py": "c7d46f436772c71717204abdc7db3178f1a41b44c9306c810a475bf3e1306b81",
+    "tools/hwxv2-to-anec.py": "1272d6c4fb3c33e8aa8fc96967daf2dbf3866c275e8ee75ea39041ef92fe0e86",
+    "tools/production-anec-probe.py": "e323796610957b6abcb545244a0f268daf74f94ff09fd9017bd3b6e0aed7cbc6"
+  },
+  "scope": {
+    "moved_to_ane": [
+      "Gated DeltaNet recurrent state and update",
+      "full-attention key and value state",
+      "attention score GEMM",
+      "128-way causal softmax",
+      "attention value GEMM"
+    ],
+    "still_on_host": [
+      "RMSNorm",
+      "depthwise causal convolution",
+      "sigmoid and SiLU",
+      "RoPE",
+      "residual arithmetic"
+    ]
+  }
+}

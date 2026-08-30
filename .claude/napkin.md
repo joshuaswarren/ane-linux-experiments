@@ -26,8 +26,12 @@
 | 2026-08-30 | self | Left completed work on a branch instead of updating GitHub main during a long run | Push completed slices to GitHub main at least once every 12 hours |
 | 2026-08-30 | self | Put Markdown backticks inside a JavaScript template literal and triggered interpolation before the edit ran | Escape Markdown backticks or build edit input from plain string parts |
 | 2026-08-30 | self | Flattened a staged tool into the remote bundle root and broke its parent-relative import contract | Preserve the repository's parent/tools layout when staging a hardware validator |
+| 2026-08-30 | self | Copied an unrelated dirty probe into a hardware bundle and mismatched its committed parser dependency | Stage validation dependencies from the intended commit, then compare local and remote hashes |
+| 2026-08-30 | self | Replaced the wrong JSON line range and duplicated source hash keys | Re-read the complete JSON object and replace the whole object after any syntax error |
+
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
+- Ship small milestones. Update GitHub and README after each milestone.
 
 | 2026-08-28 | self | `tile_gemm` paired the 256-in packer (+6 fp16 channel shift) with an aligned blob: every logit shifted +6 token ids | Pack geometry and blob offset are ONE contract: 256-in blob sits 12 bytes before the kernel bar; 512-in sits on it. Test logits argmax after ANY layout change |
 | 2026-08-28 | self | Blob-swap cache keyed per tile (row0, col0): ENOSPC storm, 2 reboots | Shape-keyed caches for weight-swapped programs; identity-keyed only for true residency |

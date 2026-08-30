@@ -84,8 +84,9 @@ Current parity status.
 The recorded macOS prompt is repeatable across three runs.
 The layer run captured 96 finite arrays across 24 layer boundaries and four steps.
 Linux full-model token parity against the macOS reference is not proven.
-Linux performs CPU tensor math outside its linear projections.
-Linux proves resident recurrent and KV state across two ANE steps. ANE attention and logits remain unproven.
+Linux now proves token-to-logits execution with ANE-resident recurrent state,
+attention K/V state, attention scores, softmax, attended values, and logits.
+The remaining host tensor operations prevent an ANE-only parity claim.
 
 Linux graph execution.
 The corrected 13-layer artifact contains 1,404 linked tasks.
@@ -207,6 +208,14 @@ All 127 masked lanes returned zero probability.
 The control GEMM passed before and after the run.
 The report is `receipts/qwen-linux-softmax128-validation.json`.
 
-Current full-model Linux parity remains unproven.
-Current Linux performance remains the prior hybrid result and misses both targets.
-The next experiment integrates mutable attention and softmax into full token-to-logits execution.
+The full token-to-logits path now supports ANE-resident recurrent and attention state.
+A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
+The resident path and host-state control both selected token 369.
+The resident path took 8.260 seconds for layers and 6.823 seconds for logits.
+The host-state control took 7.400 seconds for layers and 6.774 seconds for logits.
+The control GEMM passed before and after both model runs.
+The report is `receipts/qwen-linux-token-runtime-validation.json`.
+
+Full-model Linux parity remains unproven.
+RMSNorm, convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain on the host.
+The next milestone removes those host tensor operations and enforces ANE-only execution.
