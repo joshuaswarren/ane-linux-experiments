@@ -85,7 +85,7 @@ The recorded macOS prompt is repeatable across three runs.
 The layer run captured 96 finite arrays across 24 layer boundaries and four steps.
 Linux full-model token parity against the macOS reference is not proven.
 Linux performs CPU tensor math outside its linear projections.
-Linux does not yet prove resident recurrent state, resident KV state, or ANE logits projection for the complete model.
+Linux proves resident recurrent state across two ANE steps. Resident KV state and ANE logits remain unproven.
 
 Linux graph execution.
 The corrected 13-layer artifact contains 1,404 linked tasks.
@@ -159,6 +159,15 @@ The report is `receipts/qwen-linux-projection-geometry-validation.json`.
 Old Espresso programs bind output to buffer index 4 and input to buffer index 5.
 The earlier square projection hid the reversed runtime binding because both buffers had equal sizes.
 
+The recurrent graph uses one `(1, 16, 133, 128)` fp16 tensor.
+Rows 4 through 131 hold the `(16, 128, 128)` DeltaNet state.
+`tools/recurrent-runtime.py` alternates the output and input BO roles after every submit.
+The host overwrites three vector rows and two gate columns before the next ANE step.
+Two sequential hardware steps completed with no intermediate host state copy.
+The second output maximum error was 0.00176867.
+The final state maximum error was 0.00004078.
+The report is `receipts/qwen-linux-recurrent-state-validation.json`.
+
 Current full-model Linux parity remains unproven.
 Current Linux performance remains the prior hybrid result and misses both targets.
-The next experiment is one complete Linux ANE token step.
+The next experiment moves attention KV state into the same ANE-resident buffer lifecycle.

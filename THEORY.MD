@@ -223,7 +223,17 @@ The converter now accepts non-file-backed `__FVMLIB` input and output sections.
 All eight prepared projection geometries pass Linux M1 numeric comparison.
 The maximum absolute error is 0.001220703125.
 The compiler-defined buffer roles are now verified for unequal input and output sizes.
-One full token step is the next proof.
+
+The full Qwen DeltaNet state update also compiles through the old Espresso path.
+Its tensor shape is `(1, 16, 133, 128)`.
+Rows 4 through 131 hold the `(16, 128, 128)` recurrent state.
+The Linux runner alternates two BOs after each submit.
+It overwrites only q, k, v, beta, and decay before the next submit.
+Two hardware steps completed without a host state round trip.
+The second output maximum error was 0.00176867.
+The final state maximum error was 0.00004078.
+
+KV state and one full token step are the next proofs.
 
 The MLX path still has three early proof gates.
 The Vulkan runtime and core kernels must meet the fixed performance bar.
