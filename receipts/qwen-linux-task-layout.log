@@ -189,9 +189,43 @@ Observed output:
   OK
   All checks passed!
 
+Packed-prefix hardware results
+------------------------------
+
+Corrected packed prefixes of 1, 2, and 108 tasks each timed out with:
+
+  tm execution failed w/ -110
+
+These results do not isolate a failing task. Dense packing changes the compiled
+spacing and discards bytes stored between task bases.
+
+Original-prefix correction
+--------------------------
+
+For prefixes that start at task zero, the probe now preserves the complete
+compiled task stream and only terminates the selected final task. Arbitrary
+nonzero task starts still use the packed diagnostic layout.
+
+Red test:
+
+  AttributeError: module 'production_anec_probe' has no attribute 'build_original_prefix'
+
+Green command:
+
+  uv run --with numpy python -m unittest tools.test_hwxv2_to_anec tools.test_production_anec_probe && uv run ruff check tools/production-anec-probe.py tools/test_production_anec_probe.py
+
+Observed output:
+
+  ....................
+  ----------------------------------------------------------------------
+  Ran 20 tests in 0.093s
+
+  OK
+  All checks passed!
+
 Next experiment
 ---------------
 
-Submit the corrected first Qwen task as a valid terminal task with
-`--td-count 1`. If it completes, increase the valid prefix until the first
-hardware failure.
+Submit an original-layout 108-task prefix on queue 1 after a clean boot. This
+preserves the compiled spacing and inter-task data while ending one candidate
+layer-sized prefix.

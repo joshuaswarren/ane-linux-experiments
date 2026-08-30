@@ -32,6 +32,18 @@ class ProductionProbeTests(unittest.TestCase):
     def test_parse_int_accepts_hexadecimal_geometry(self):
         self.assertEqual(MODULE.parse_int("0x200"), 0x200)
 
+    def test_original_prefix_preserves_spacing_and_terminates_selected_task(self):
+        data = bytearray(0x700)
+        struct.pack_into("<H", data, 6, 0x9C)
+        struct.pack_into("<I", data, 0x1C, 0x400)
+        data[0x280:0x284] = b"SIDE"
+        prefix = MODULE.build_original_prefix(data, 0, len(data), (0, 0x400), 1)
+        self.assertEqual(len(prefix), len(data))
+        self.assertEqual(prefix[0x280:0x284], b"SIDE")
+        self.assertEqual(prefix[3] & 0x3, 0x3)
+        self.assertEqual(struct.unpack_from("<H", prefix, 6)[0] & 0x1FF, 0)
+        self.assertEqual(struct.unpack_from("<I", prefix, 0x1C)[0], 0)
+
     def test_task_bases_follow_descriptor_slots(self):
         data = bytearray(0x700)
         struct.pack_into("<I", data, 0x28, 0xF401F800)
