@@ -179,6 +179,34 @@ The report is `receipts/qwen-linux-kv-state-validation.json`.
 Espresso exported only pre-attention slices and cache concats from two attempted attention graphs.
 The state-only graph retains `next@output`, compiles, and runs on Linux.
 
+A lower-level mutable GEMM route now bypasses the Monterey dynamic-matrix limit.
+The score program keeps keys in packed weight rows.
+The value program keeps values in matching packed weight columns.
+Each token updates one row and one column at the same ring position.
+The cache tensor does not return to host memory.
+
+Eight local tests cover packing, geometry, ring wrap, masking, completion polling, and lifecycle safety.
+A Linux M1 hardware run appended 130 tokens into a 128-slot ring.
+The final cursor was 2 and the final length was 128.
+The score maximum absolute error was 0.00023142993450164795.
+The attended-value maximum absolute error was 0.00016526412218809128.
+The control GEMM passed before and after the wrap test.
+The report is `receipts/qwen-linux-mutable-attention-validation.json`.
+
+The 128-wide softmax runtime composes two 64-lane raw ANE halves.
+All tensor arithmetic uses ANE max, add, multiply, and square submissions.
+The exponential uses range reduction and a degree-six polynomial.
+The reciprocal uses twelve Newton steps from a fixed 1/128 estimate.
+
+A Linux M1 run used 258 elementwise submissions across random and masked inputs.
+Four ANE BOs remained resident and were reused across every submission.
+The random maximum absolute error was 0.001615367829799652.
+The probability-sum error was 0.000038623809814453125.
+The argmax matched the fp32 reference.
+All 127 masked lanes returned zero probability.
+The control GEMM passed before and after the run.
+The report is `receipts/qwen-linux-softmax128-validation.json`.
+
 Current full-model Linux parity remains unproven.
 Current Linux performance remains the prior hybrid result and misses both targets.
-The next experiment implements ANE attention with operations retained by the Monterey Espresso export.
+The next experiment integrates mutable attention and softmax into full token-to-logits execution.
