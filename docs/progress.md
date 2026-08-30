@@ -85,7 +85,7 @@ The recorded macOS prompt is repeatable across three runs.
 The layer run captured 96 finite arrays across 24 layer boundaries and four steps.
 Linux full-model token parity against the macOS reference is not proven.
 Linux performs CPU tensor math outside its linear projections.
-Linux proves resident recurrent state across two ANE steps. Resident KV state and ANE logits remain unproven.
+Linux proves resident recurrent and KV state across two ANE steps. ANE attention and logits remain unproven.
 
 Linux graph execution.
 The corrected 13-layer artifact contains 1,404 linked tasks.
@@ -168,6 +168,17 @@ The second output maximum error was 0.00176867.
 The final state maximum error was 0.00004078.
 The report is `receipts/qwen-linux-recurrent-state-validation.json`.
 
+The KV state graph uses one `(1, 8, 259, 256)` fp16 tensor.
+Rows 2 through 129 hold replicated keys. Rows 130 through 257 hold replicated values.
+`tools/kv-runtime.py` alternates the output and input BO roles after every submit.
+The host overwrites only the new key and value rows before the next ANE step.
+Two sequential hardware steps completed with no intermediate host cache copy.
+The final cache matched both source key and value tensors exactly.
+The report is `receipts/qwen-linux-kv-state-validation.json`.
+
+Espresso exported only pre-attention slices and cache concats from two attempted attention graphs.
+The state-only graph retains `next@output`, compiles, and runs on Linux.
+
 Current full-model Linux parity remains unproven.
 Current Linux performance remains the prior hybrid result and misses both targets.
-The next experiment moves attention KV state into the same ANE-resident buffer lifecycle.
+The next experiment implements ANE attention with operations retained by the Monterey Espresso export.

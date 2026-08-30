@@ -21,6 +21,8 @@
 | 2026-08-29 | self | Used `await completion(...)` in a Python eval even though the eval prelude marks `completion` as synchronous | Call Python `completion(...)` directly; only the JavaScript helper is async |
 | 2026-08-29 | environment | `gh repo create` used GraphQL and failed after the shared user quota was exhausted | Create repositories with REST `POST /user/repos`, then add the remote and push |
 | 2026-08-29 | user | Named the public MLX project after Asahi despite the owner's repeated rule against crediting Asahi | Name the repo, package, backend, CLI, build flags, and docs after Omarchy: `mlx-omarchy` |
+| 2026-08-30 | self | Treated `ANECCompile=0` as proof that Espresso retained the complete graph | Inspect exported `net.plist` Outputs and Units. Require the named final output before hardware execution |
+| 2026-08-30 | user | Asked before rebooting the dedicated Linux M1 | The Linux M1 is dedicated to this work. Reboot it when recovery requires it |
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 

@@ -233,7 +233,18 @@ Two hardware steps completed without a host state round trip.
 The second output maximum error was 0.00176867.
 The final state maximum error was 0.00004078.
 
-KV state and one full token step are the next proofs.
+The full-attention K/V cache now uses the same device-resident ping-pong contract.
+Its tensor shape is `(1, 8, 259, 256)` for a fixed 128-token window.
+Each new two-head key and value is replicated across the eight query heads.
+The ANE shifts each cache, appends the new rows, and returns the complete next state.
+Two hardware steps preserved both caches exactly without an intermediate host copy.
+
+The first combined attention graph did not survive the Core ML to Espresso export.
+Both SoftmaxND and manual-softmax variants exported only slices and cache concats.
+The compiler exit code was insufficient proof because the final `next` output was absent.
+The exported `net.plist` output list is now a required compiler receipt.
+
+ANE attention and one full token step are the next proofs.
 
 The MLX path still has three early proof gates.
 The Vulkan runtime and core kernels must meet the fixed performance bar.

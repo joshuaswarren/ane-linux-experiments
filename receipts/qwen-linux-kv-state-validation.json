@@ -1,0 +1,37 @@
+{
+  "date": "2026-08-30",
+  "scope": "fixed-window grouped-query K/V cache update",
+  "graph": {
+    "compiler": "Monterey ANECompiler 5.5.0",
+    "heads": 8,
+    "kv_heads": 2,
+    "context": 128,
+    "dimension": 256,
+    "nchw": [1, 8, 259, 256],
+    "source_sha256": "82b790587f8a2852698d5e75f90875cd6c7e84b0094d42afa5c940f21de0e4e7"
+  },
+  "artifacts": {
+    "hwx_bytes": 49152,
+    "hwx_sha256": "b2922363ec6920785a78eae5d6d6e10275bbdb49b968bebcb6f1293e63be25fe",
+    "anec_bytes": 36864,
+    "anec_sha256": "c6974fdc18c6021d7409b7136375fc6d9e28bc4caf4ff2aeda55c19c60190fb6",
+    "task_descriptors": 7
+  },
+  "linux_validation": {
+    "steps": 2,
+    "handles_before": [2, 3],
+    "handles_after_first": [3, 2],
+    "host_cache_round_trips_between_steps": 0,
+    "cache_keys_match": true,
+    "cache_values_match": true,
+    "cache_finite": true,
+    "control_before": [27.0, 27.0],
+    "control_after": [27.0, 27.0],
+    "marker": "QWEN_KV_STATE_VALIDATION_OK"
+  },
+  "boundary": {
+    "implemented": "K/V cache shift, append, and device-resident ping-pong state",
+    "not_implemented": "attention score, softmax, and value reduction",
+    "compiler_observation": "The Monterey Espresso export pruned both SoftmaxND and manual-softmax attention tails. The retained state-only graph exports next@output and runs on Linux."
+  }
+}
