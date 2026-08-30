@@ -223,9 +223,45 @@ Observed output:
   OK
   All checks passed!
 
+Original-layout hardware results
+--------------------------------
+
+An original-layout 108-task prefix on queue 1 timed out with `-110`.
+An original-layout one-task prefix produced the same result.
+
+A diagnostic KMD recorded the one-task timeout state:
+
+  status=0x0 committed=0x400000
+  errors=0x22222222/0x22222222/0x2222
+  tq1 status=0x1 vacant=0x400 info=0x0 size=0x9c0000 nid=0x4001
+
+The task manager reported no hardware error. It remained non-idle after the
+one-second KMD poll.
+
+DART fault isolation
+--------------------
+
+The bring-up self-test left one stale `NO TTBR` fault in DART 1. The normal
+DART error acknowledgement cleared its active flag before a clean Qwen
+one-task submit.
+
+No DART active-error flag appeared after the Qwen timeout. This rules out an
+unmapped buffer as the cause of that clean one-task failure.
+
+Full-graph output inspection
+----------------------------
+
+A temporary diagnostic probe inspected the complete output immediately after
+the full 1,404-task ioctl returned `-110`. The output and input sentinels were
+unchanged:
+
+  changed=0 input-changed=0 completed=False wrote-output=False
+
+This result shows no externally visible progress. It does not identify the
+internal task where execution stopped.
+
 Next experiment
 ---------------
 
-Submit an original-layout 108-task prefix on queue 1 after a clean boot. This
-preserves the compiled spacing and inter-task data while ending one candidate
-layer-sized prefix.
+Extend the KMD poll to ten seconds for one exact original-layout task. Record
+both task-manager interrupt lines if the task remains non-idle.
