@@ -260,8 +260,48 @@ unchanged:
 This result shows no externally visible progress. It does not identify the
 internal task where execution stopped.
 
+Ten-second persistence result
+-----------------------------
+
+An exact original-layout one-task probe on queue 1 still timed out after the
+KMD poll increased from one second to ten seconds. The task manager stayed
+non-idle and reported no hardware error:
+
+  status=0x0 committed=0x400000
+  errors=0x22222222/0x22222222/0x2222
+
+The total probe wall time was 12.05 seconds. The timeout is a persistent hang,
+not a slow first task.
+
+The timeout diagnostic also read two task-manager interrupt lines:
+
+  irq0 count=0x2 info=0x5400000 unk1=0x0 tmst=0x38402da7 unk2=0x1 ack=0x2
+  irq1 count=0x1 info=0x5400000 unk1=0x0 tmst=0x38402da7 unk2=0x1
+
+Default-queue control
+---------------------
+
+A clean boot loaded a nonintrusive KMD that reads each interrupt event once
+inside the normal task-manager handler. A known-good one-task graph completed
+on the default queue:
+
+  changed=393216 input-changed=0
+  finite=True completed=True wrote-output=True
+  PRODUCTION_ANEC_EXECUTION_OK
+
+The exact Qwen one-task graph then timed out on the same default queue:
+
+  task-layout=original qid=default
+  TimeoutError: [Errno 110] Connection timed out
+
+The handler found zero queued interrupt events after both submissions. The
+earlier queue-1 interrupt tuple therefore does not identify the timeout cause.
+Queue selection is also not the cause: the known-good control completed on
+queue 4, while Qwen timed out on queues 1 and 4.
+
 Next experiment
 ---------------
 
-Extend the KMD poll to ten seconds for one exact original-layout task. Record
-both task-manager interrupt lines if the task remains non-idle.
+Replace only Qwen task zero's ten-word task envelope with the known-good task
+zero envelope. Keep Qwen's register body, linked layout, kernel, and buffers.
+This isolates the descriptor protocol from the compiled compute payload.
