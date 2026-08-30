@@ -4,10 +4,23 @@
 
 | Date | Source | What Went Wrong | What To Do Instead |
 |------|--------|-----------------|-------------------|
+| 2026-08-29 | self | Used `Path.read_bytes()[:4096]` on multi-gigabyte ANEC files while extracting headers | Open the file and read only 4,096 bytes. Never materialize a large artifact to take a prefix |
 | 2026-08-28 | self | Assumed fresh-compiled TD failure was a converter bug; burned cycles on tiles/nchw guessing before isolating with a same-plist two-compiler TD diff | When a graph times out, first run the CONTROL: same plist compiled by the known-good compiler. Diff the TDs. Config-shaped words vs format words |
 | 2026-08-28 | self | nchw plane-stride fields feed host `ane_tile` memcpy size: `N*C*pS` from a 0x4000 BO segfaulted with pS=0x1000 for 2048 fp16 | libane nchw serves TWO masters: host tiling (N*C*pS <= map) and device PS0-7 regs. For big inputs give tiles[bdx] = ceil(N*C*pS/0x4000) instead of shrinking pS |
 | 2026-08-28 | self | -1 vs -110 from run-anec looked like distinct kernel rejections; actually -110 (KMD execute timeout) printed as -1 by the python wrapper path | Read `sudo dmesg` for the KMD receipt (`tm execution failed w/ -110`) before interpreting exec_result codes |
 | 2026-08-28 | self | Put the public article in `ane-linux-experiments` instead of `~/src/joshuawarrendotcom` | Before committing public articles, check the destination repo and its `src/content/blog/` convention |
+| 2026-08-29 | self | Used JSON `null` inside a Python `eval` cell, which raised `NameError` before parallel research ran | Use Python `None` in `eval(language="py")`; JSON literals apply only inside tool argument objects |
+| 2026-08-29 | self | Passed `Metal/MLX` in a general last30days topic; the engine parsed slash-separated terms as comparison mode | Rewrite grouped slash terms with commas before invoking last30days unless the user asked for a comparison |
+| 2026-08-29 | environment | `skill://ce-plan` requires `scripts/context.mjs`, but the installed skill directory lacks that file | Run the required fence once, record `MODULE_NOT_FOUND`, then continue with the normal planning workflow as the skill directs |
+| 2026-08-29 | user | Proposed an ANE plus MLX CPU hybrid as the fastest compatibility target | The Linux MLX plan must use Apple GPU compute for fallback tensor work; CPU may orchestrate but must not be the tensor-compute backend |
+| 2026-08-29 | self | Guessed `render-markdown.md`, then tried unsupported globbing on `skill://` after the read failed | Read the internal directory first; use the returned exact filename such as `markdown-rendering.md` |
+| 2026-08-29 | self | Used `glob` on an absent `.compound-engineering` directory after learning nonexistent paths fail | For optional exact paths, use a bounded `test -f` check; reserve `glob` for existing search roots |
+| 2026-08-29 | self | Started `mkdir` with the new repository path as the working directory before it existed | Create a new repository root from its existing parent directory, then use the new path |
+| 2026-08-29 | self | Used `PUT 1*:` on a Markdown H1 because the edit contract says headings are block openers, but this runtime rejected it | Use `write` for a deliberate whole-document rewrite when the Markdown block resolver rejects the H1 |
+| 2026-08-29 | self | Replaced `main()` lines with stale pre-insertion anchors in one multi-hunk edit and broke its prologue | Re-read the full construct after any surprise and replace the whole block once; do not repair syntax damage incrementally |
+| 2026-08-29 | self | Used `await completion(...)` in a Python eval even though the eval prelude marks `completion` as synchronous | Call Python `completion(...)` directly; only the JavaScript helper is async |
+| 2026-08-29 | environment | `gh repo create` used GraphQL and failed after the shared user quota was exhausted | Create repositories with REST `POST /user/repos`, then add the remote and push |
+| 2026-08-29 | user | Named the public MLX project after Asahi despite the owner's repeated rule against crediting Asahi | Name the repo, package, backend, CLI, build flags, and docs after Omarchy: `mlx-omarchy` |
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 
@@ -29,10 +42,10 @@
   Record compile success and artifact capture as separate gates.
 - 2026-08-28: `_ANEVirtualClient.copyAllModelFiles:dictionary:ioSurfaceRefs:`
   is present, but `_ANEVirtualClient sharedConnection` returns nil on
-  physical JW14M2. `saveModelFiles` retains MIL text and weights, not raw HWX.
-- 2026-08-28: macOS 26.6.2 on 16M1MBP reproduced four production ANE
+  one physical M1 compiler host. `saveModelFiles` retains MIL text and weights, not raw HWX.
+- 2026-08-28: A second physical M1 compiler host reproduced four production ANE
   compile callbacks, but every `saveModelFiles` directory still contained
-  MIL text and weights only. A second Mac confirms the missing raw HWX is
+  MIL text and weights only. The second Mac confirms the missing raw HWX is
   an export-surface limitation, not one host's compiler state.
 - 2026-08-28: `_ANEVirtualClient` is unavailable on the physical ANE path,
   even when allocated directly. The discovered `copyAllModelFiles` method
@@ -40,9 +53,8 @@
 - 2026-08-28: Core ML `coremlc` expects an MLModel protobuf, not the
   `program(1.3)` MIL text that `saveModelFiles` returns. This path did not
   bridge the physical ANE HWX export gap.
-- 2026-08-28: A fresh scan of `~/Library/Caches/omlx-advisor` and
-  `~/Library/Caches/omlx` returned zero `.hwx` files on MacStudio, JW14M2,
-  and 16M1MBP after production compiles.
+- 2026-08-28: A fresh scan of the oMLX cache directories on three physical
+  M1 compiler hosts returned zero `.hwx` files after production compiles.
 - 2026-08-28: The production exporter works through direct
   `ANECCompile` with `NetworkSourceFileName`/`NetworkSourcePath`; the source
   path must end in `/`, or the compiler joins `capture-0model.mil`.
@@ -63,8 +75,8 @@
   multi-descriptor submit times out with DART IOVA `0x0`, while separate
   task-0 then task-1 submits complete. The current KMD does not carry this
   production chain in one submit.
-- 2026-08-28: Reboot clears `/tmp` on jwm1-linux. Persist multi-gigabyte
-  production HWX and ANEC artifacts under `/home/joshuawarren/`.
+- 2026-08-28: Reboot clears `/tmp` on the Linux M1 target. Persist multi-gigabyte
+  production HWX and ANEC artifacts in a persistent home directory.
 - 2026-08-28: The production probe allocated a multi-gigabyte command BO but
   did not copy the ANEC content into it. Empty command memory caused zero
   output and the DART fault. Always stream the full content payload before
@@ -83,3 +95,45 @@
   reboot restored a clean ladder. Do not proceed from `ANE_SELFTEST_FAILED`.
 - 2026-08-28: Vectorized ANE packing is exact only for contiguous row-major tiles. A direct non-contiguous GGUF slice produced huge logits; keep the padded contiguous tile and preserve the command-BO write.
 - 2026-08-28: `blob_swap_gemm` must clear the output sentinel before each ioctl. Polling without a fresh sentinel can read stale output and report false completion.
+- 2026-08-29: A production Qwen task chain mixes compute and noncompute
+  descriptors. Find aligned compute seeds, follow `NextPointer`, then include
+  valid predecessors. Exact `TD_MAGIC` counts undercount the graph.
+- 2026-08-29: Qwen HWX descriptors use BDX 0, 1, 3, 4, and 5. BDX 3 maps
+  `__DATA,__bss` workspace. Missing it reaches the engine but times out.
+- 2026-08-29: Derive aggregate input and output BO sizes from all
+  `__FVMLIB,__const` and `__FVMLIB,__data` virtual ranges.
+- 2026-08-29: `ANECCompile` needs trailing slashes on both
+  `NetworkSourcePath` and `OutputFilePath`. A zero callback status does not
+  prove export. Require a nonempty `model.hwx`.
+- 2026-08-29: Keep the public MLX work in one `mlx-omarchy` repository. Keep hardware research here and stable driver ABI changes in `eiln/ane`.
+- 2026-08-29: `voice_lint.py` computes Flesch from raw Markdown, including link targets and code. A short README with relative links can meet the public voice gate.
+- 2026-08-29: Exact original-layout Qwen prefixes of one and 108 tasks still
+  time out. Dense packed-prefix failures were not valid isolation because
+  task links fetch later descriptors through command buffer bank 0.
+- 2026-08-29: A clean one-task Qwen timeout leaves all TM error registers at
+  the fine value and raises no active DART fault. The task manager stays
+  non-idle, so missing BO mappings are not the current cause.
+- 2026-08-29: Build M1 diagnostic modules against
+  `~/.local/apple-hardware-sdk/usr/lib/modules/7.1.6-1-1-ARCH/build` with
+  `LD_LIBRARY_PATH=~/.local/apple-hardware-sdk/usr/lib`. The live
+  `/lib/modules/.../build` link is absent.
+- 2026-08-29: `ANE_KO=/path sudo -n bash bringup.sh` drops `ANE_KO` through
+  sudo and loads the normal module. Use
+  `sudo -n env ANE_KO=/path bash bringup.sh`, then verify the observed poll
+  duration or diagnostic log before trusting the module variant.
+- 2026-08-29: A warm reconnect can occur before the requested reboot starts.
+  Confirm `uptime -s` changed before uploading `/tmp` diagnostics.
+- 2026-08-30: TM_COMMITTED advancing to the final task does not mean ANE
+  execution completed. A diagnostic fallback returned success while output
+  stayed unchanged. Require TM_STATUS idle and an observed output change.
+- 2026-08-30: The exact fresh-compiled linear graph executes on macOS ANE but
+  not through the Linux raw-task path. Exact tensors, kernel placement, and
+  descriptor-chain headers are not the remaining difference.
+- 2026-08-30: The macOS 26 compiler accepts h13 but does not emit the old
+  self-contained format. Monterey ANECompiler 5.5.0 emits that format from
+  legacy Espresso XML and its artifacts execute through the Linux raw-task path.
+- 2026-08-30: Qwen needs 186 decoder projection graphs plus 31 tied-head
+  chunks. All 217 fp16 sources compiled successfully; staged programs avoid
+  the 3.5 GiB DART residency limit.
+- 2026-08-30: Never interpose a high-frequency IOKit method without a hard
+  event cap. One diagnostic produced nearly one million files before timeout.

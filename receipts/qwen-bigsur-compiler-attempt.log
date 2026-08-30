@@ -1,0 +1,128 @@
+UNGATED technical receipt
+=========================
+
+Purpose
+-------
+
+Recover a self-contained ANE artifact format that the Linux M1 KMD can execute.
+
+Archive result
+--------------
+
+No older full-Qwen HWX artifact was found in the available archives.
+The retained tinygrad fixture first appeared in upstream commit
+1dcaecacc476ca6369b427961c578dddf2eb9f35 on 2020-12-03.
+
+Its SHA-256 is:
+
+  c2acfb20870f97fe4d87a15c1e2cd741696e7b9df761bb8d1cff20664ddee8bd
+
+The producing environment reported Big Sur build 20A2411 and
+zin_ane_compiler v4.2.1.
+
+Big Sur loader result
+---------------------
+
+Apple-signed UniversalMac 11.0.1 build 20B29 restore image:
+
+  size: 13,610,186,458 bytes
+  SHA-1: 5f47af2829f02408b7c07cb5938cef6794ea2d5d
+
+The current loader rejected the old cache with this error:
+
+  dyld cache '(null)' not loaded: shared cache is too old, missing subcache suffixes
+
+A signed alternate-loader probe and a canonical chroot control both exited 255.
+Neither process reached its entry point.
+
+Monterey compiler result
+------------------------
+
+A macOS 12.5.1 virtual machine exposes ANECompiler 5.5.0.
+Its direct MIL route uses NetworkMILName and NetworkMILPath.
+The compiler rejected the saved iOS 18 MIL syntax.
+
+The legacy NetworkPlistName route accepts Espresso XML sources.
+The retained control compiled to this artifact:
+
+  bytes: 32,768
+  SHA-256: 48732a024ba361830d961ef069672afcbf7f0b90ce6265e588af51c7344acb58
+
+Linux M1 returned [28.0, 28.0] for input [3.0, 3.0, 3.0].
+This exactly matches six fp32 weights of 3.0 plus two fp16 biases of 1.0.
+The original Big Sur control still returned [27.0, 27.0, 27.0].
+
+Qwen projection result
+----------------------
+
+The 2,048-by-2,048 projection compiled to this old-format HWX:
+
+  bytes: 8,421,376
+  SHA-256: 918653d8209a2fa6c0bbbbde11496b199145c8977a524adad913b902bffcefa8
+
+Linux M1 returned 2,040 finite nonzero outputs.
+The output range was -0.150635 through 0.128418.
+The CPU comparison produced 0.00074070 maximum error and 0.00015527 mean error.
+Both paths selected index 555.
+
+Marker:
+
+  QWEN_MONTEREY_ESPRESSO_PARITY_OK
+
+The real blk.0.attn_qkv.weight projection has shape 6,144 by 2,048.
+It compiled to this artifact:
+
+  bytes: 25,198,592
+  SHA-256: 977641534fef47bb779e7cec0ca6301123b21ff447ba8e9299f93999f79600e3
+
+Complete projection set
+-----------------------
+
+The deterministic generator is tools/qwen-espresso-graphs.py.
+It covers all projection matrices used by decoder layers 0 through 23.
+It excludes the unused speculative layer 24.
+It splits the tied vocabulary head into 31 chunks of at most 8,192 rows.
+
+Generation command:
+
+  python3 tools/qwen-espresso-graphs.py \
+    --model Qwen3.8-2B-Q4_K_M.gguf \
+    --gguf-py ../llama.cpp/gguf-py \
+    --output qwen-full-espresso
+
+Generation result:
+
+  decoder projection graphs: 186
+  tied-head chunks: 31
+  total projection sources: 217
+  source weight bytes: 3,762,552,832
+  model SHA-256: 4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff
+  source manifest SHA-256: 86ed49fa379d8e33d807855fce47315b5078576ebe7cb924a9d2c6f75abad0da
+
+Monterey compiled every source with ANECompiler 5.5.0.
+The exported artifact verifier checked every recorded size and SHA-256.
+
+Compile result:
+
+  compiled artifacts: 217
+  verified artifacts: 217
+  total HWX bytes: 3,769,663,488
+  compile manifest SHA-256: 3ed4212b8e211fb9d4909dbdb7ae4e6b85a0f7719482e8bcd012cd4e35de3e29
+
+Markers:
+
+  QWEN_MONTEREY_FULL_COMPILE_OK artifacts=217
+  QWEN_MONTEREY_FULL_EXPORT_OK
+
+Repository manifests:
+
+  receipts/qwen-monterey-source-manifest.json
+  receipts/qwen-monterey-hwx-manifest.json
+
+Conclusion
+----------
+
+Monterey removes the modern-HWX compatibility blocker for staged fp16 projections.
+The 3.5 GiB Linux ANE DART VM cannot hold the full fp16 model at once.
+The runtime must stream bounded projection programs and preserve recurrent state separately.
+Full-model Linux token parity and both performance targets remain open.
