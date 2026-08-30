@@ -148,3 +148,6 @@
 - 2026-08-30: Monterey Espresso uses buffer index 4 for output and index 5
   for input. A square 2,048-by-2,048 graph hid the reversed binding. Verify
   asymmetric geometry before generalizing a buffer contract.
+- 2026-08-30: `espresso_dump_ir` rejects a 270,368-element one-dimensional input with `-2`. Pack recurrent data as `(16, 133, 128)` rows instead of one huge width.
+- 2026-08-30: Recurrent state can stay in two old-Espresso aggregate BOs. Write dynamic rows, submit, then swap buffer roles; do not copy the state between steps.
+- 2026-08-30: A compiled Core ML neural network becomes Monterey ANECompiler input through `espresso_plan_add_network`, `espresso_plan_build`, and `espresso_dump_ir`.

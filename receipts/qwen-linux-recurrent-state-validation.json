@@ -1,0 +1,32 @@
+{
+  "date": "2026-08-30",
+  "graph": {
+    "heads": 16,
+    "dimension": 128,
+    "nchw": [1, 16, 133, 128],
+    "elements": 272384,
+    "state_shape": [16, 128, 128],
+    "compiler": "Monterey ANECompiler 5.5.0",
+    "hwx_bytes": 114688,
+    "hwx_sha256": "cb570fca5355b7e6f8ad0cae53f0e7145c57492aa612d42506b7e0cda4972604",
+    "anec_bytes": 102400,
+    "anec_sha256": "776a00255e21ed0b9e04665452c7e81348a48627e81578c3364b191d8017b58b",
+    "task_descriptors": 107
+  },
+  "runtime": {
+    "steps": 2,
+    "buffer_strategy": "alternate output and input BO roles after each submit",
+    "host_state_round_trips_between_steps": 0,
+    "output1_max_error": 0.00143215,
+    "output2_max_error": 0.00176867,
+    "state2_max_error": 0.00004078,
+    "tolerance": 0.02
+  },
+  "observed_output": [
+    "CONTROL_OK output=[27.0, 27.0, 27.0]",
+    "FULL_RECURRENT_OK output1_max_error=0.00143215 output2_max_error=0.00176867 state2_max_error=0.00004078",
+    "RESIDENT_STATE_OK steps=2 host_state_round_trips=0",
+    "CONTROL_OK output=[27.0, 27.0, 27.0]",
+    "ANE_FULL_RECURRENT_VALIDATION_OK"
+  ]
+}
