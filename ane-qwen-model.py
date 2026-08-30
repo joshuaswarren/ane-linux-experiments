@@ -99,6 +99,7 @@ def causal_attention(q, keys, values):
     score = np.einsum("hd,htd->ht", q32, key32) / np.sqrt(256.0)
     score -= score.max(axis=1, keepdims=True)
     prob = np.exp(score)
+    prob /= np.sum(prob, axis=1, keepdims=True)
     return _compute_dtype(np.einsum("ht,htd->hd", prob, value32))
 
 
