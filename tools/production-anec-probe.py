@@ -87,6 +87,27 @@ def submission_pad(qid):
 def task_bases(data, start, size):
     return load_artifact_parser().find_task_offsets(data, start, size)
 
+def terminate_task(task_stream, task_start):
+    if task_start < 0 or task_start + 0x20 > len(task_stream):
+        raise ValueError("terminal task header exceeds the task stream")
+    terminal_header = struct.unpack_from("<I", task_stream, task_start)[0]
+    struct.pack_into(
+        "<I", task_stream, task_start, terminal_header | 0x03000000
+    )
+    terminal_next_size = struct.unpack_from("<H", task_stream, task_start + 6)[0]
+    struct.pack_into(
+        "<H", task_stream, task_start + 6, terminal_next_size & ~0x1FF
+    )
+    struct.pack_into("<I", task_stream, task_start + 0x1C, 0)
+
+
+def build_original_prefix(data, content_start, task_stream_size, bases, td_count):
+    if td_count < 1 or len(bases) < td_count:
+        raise ValueError(f"ANEC has {len(bases)} task descriptors, needs {td_count}")
+    bootstrap = bytearray(copy_task_stream(data, content_start, task_stream_size))
+    terminate_task(bootstrap, bases[td_count - 1])
+    return bytes(bootstrap)
+
 
 def build_bootstrap(
     data, content_start, task_stream_size, bases, td_size, td_count
@@ -127,13 +148,7 @@ def build_bootstrap(
             struct.pack_into(
                 "<I", bootstrap, destination_start + 0x1C, mapped_pointer
             )
-    terminal_start = (td_count - 1) * 0x300
-    terminal_header = struct.unpack_from("<I", bootstrap, terminal_start)[0]
-    struct.pack_into("<I", bootstrap, terminal_start, terminal_header | 0x03000000)
-    terminal_next_size = struct.unpack_from("<H", bootstrap, terminal_start + 6)[0]
-    struct.pack_into(
-        "<H", bootstrap, terminal_start + 6, terminal_next_size & ~0x1FF
-    )
+    terminate_task(bootstrap, (td_count - 1) * 0x300)
     return bytes(bootstrap)
 
 
@@ -164,7 +179,7 @@ def main():
         raise ValueError(f"expected one input and output, got {src_count}/{dst_count}")
     if td_count < 1 or td_size < 1 or tsk_size < td_size:
         raise ValueError("invalid task geometry")
-    original_task_layout = args.td_start == 0 and td_count == header_td_count
+    original_task_layout = args.td_start == 0
     print(
         f"content={content_size:#x} task-stream={tsk_size:#x} td={td_size:#x} "
         f"td-count={td_count} task-layout={'original' if original_task_layout else 'packed'} "
@@ -210,7 +225,9 @@ def main():
         output.write(output_fill.tobytes())
         del output_fill
         bootstrap = (
-            copy_task_stream(data, HEADER_SIZE, tsk_size)
+            build_original_prefix(
+                data, HEADER_SIZE, tsk_size, bases, td_count
+            )
             if original_task_layout
             else build_bootstrap(
                 data, HEADER_SIZE, tsk_size, selected_bases, td_size, td_count
