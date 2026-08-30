@@ -305,3 +305,98 @@ Next experiment
 Replace only Qwen task zero's ten-word task envelope with the known-good task
 zero envelope. Keep Qwen's register body, linked layout, kernel, and buffers.
 This isolates the descriptor protocol from the compiled compute payload.
+Exact-graph isolation correction
+--------------------------------
+
+The exact regenerated HWX content matches the deployed ANEC content.
+The exact 32-input padded replay still reaches the same task-20 failure.
+A one-layer graph also reaches task 20 and does not complete.
+A QKV-only graph commits its early chain but does not return to idle.
+A two-task 2048-wide linear graph commits its terminal task but does not return to idle.
+
+The linear graph uses the same real Qwen in_proj_qkv weight on both systems.
+Its HWX task stream is 0x474 bytes, so the aligned kernel boundary is 0x480.
+The converter and KMD both use that 0x480 boundary.
+Exact tensor packing and kernel placement do not explain the linear failure.
+
+TM_COMMITTED completion experiment
+----------------------------------
+
+A diagnostic KMD accepted a stable terminal committed count as success.
+It logged:
+
+  tm completion=terminal status=0x0 committed=0x400001 td_count=2
+  submit: execute returned 0
+
+Userspace did not observe an output change.
+The bounded probe exited through its external timeout and wrote no output file.
+The known-good control still completed through TM_STATUS idle.
+
+Conclusion: TM_COMMITTED records accepted descriptors, not completed compute.
+The terminal-count fallback is unsafe and remains diagnostic-only.
+A valid result requires idle status, a returned submit, and a verified output change.
+
+Exact macOS linear control
+--------------------------
+
+The exact two-task linear graph executes on macOS ANE through ANEForge.
+Observed output:
+
+  shape=(1, 2048) finite=True nonzero=2040 min=-0.150635 max=0.128418
+  head=0.010345,-0.012589,-0.006790,-0.055878,0.044006,0.017349,0.006866,-0.001404
+
+This control proves the graph, real weight, and input can execute on the M1 ANE family.
+It does not prove that direct ANECCompile output equals the e5rt prepared program.
+
+Compiler-generation boundary
+----------------------------
+
+The direct compiler was run against the same captured linear MIL and weights.
+Observed target results:
+
+  ARCH=h11 RC=1 SIZE=0 callback_status=1
+  ARCH=h12 RC=1 SIZE=0 callback_status=1
+  ARCH=h13 RC=0 SIZE=8421376 callback_status=0
+
+All available compiler hosts run macOS 26.6.1 or 26.6.2.
+No available host retains the older compiler generation.
+Target selection cannot reproduce the older self-contained descriptor format.
+
+Program-lifecycle boundary
+--------------------------
+
+The current Linux driver fork is commit 1e0afd832cf171be543d18069cef726aae2b9634.
+Its task path maps BARs, sets task size, address, and NID, then rings the doorbell.
+It exposes no ANE program-create or program-prepare operation.
+
+The macOS ANEServices export table exposes separate operations:
+
+  ANE_ProgramCreate
+  ANE_ProgramPrepare
+  ANE_ProgramSendRequest
+
+The leading missing contract is modern program preparation before task submission.
+This is consistent with old-format controls executing and all fresh modern graphs stopping.
+Further input rewrites, completion shortcuts, and isolated descriptor-bit sweeps are closed.
+
+Capture-surface probes
+----------------------
+
+A bounded scanner ran immediately before and after e5rt encode.
+The exact linear graph still executed successfully.
+The scanner found zero copies of the raw modern task signature in readable process memory.
+
+User-process IOKit interposition did not expose a stable submit payload.
+The first path observed only high-frequency status-style calls.
+The async and struct paths destabilized execution before a valid output.
+
+The ANEServices methods are visible in the dyld export table.
+An injected library could not bind those C++ symbols through normal interposition.
+The prepared program is therefore outside the current user-process capture surface.
+
+Next experiment
+---------------
+
+Capture one compiler-consistent prepared modern program from macOS.
+If capture remains unavailable, implement the complete program-create and prepare lifecycle.
+Prove that work first with the two-task linear graph before QKV or full Qwen runs.
