@@ -180,7 +180,7 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
                 ) = struct.unpack_from("<16s16sQQIIIIIIII", data, section_offset + index * 80)
                 name = _name(raw_name)
                 section_segment = _name(raw_section_segment)
-                if section_file_offset + size > len(data):
+                if file_size and section_file_offset + size > len(data):
                     raise ValueError(f"section {section_segment},{name} exceeds the file")
                 key = (section_segment, name)
                 if key in sections and section_segment != "__FVMLIB":

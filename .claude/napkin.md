@@ -137,3 +137,11 @@
   the 3.5 GiB DART residency limit.
 - 2026-08-30: Never interpose a high-frequency IOKit method without a hard
   event cap. One diagnostic produced nearly one million files before timeout.
+- 2026-08-30: Old HWX `__FVMLIB` sections can describe virtual buffers larger
+  than the file when their segment has no file payload.
+- 2026-08-30: Old-format projections can declare zero workspace. Leave submit
+  handle 3 unset instead of allocating a zero-byte buffer.
+- 2026-08-30: The full compiled Qwen set has eight unique matrix shapes.
+  Include the 2,048-by-2,048 class in geometry validation.
+- 2026-08-30: Tool wrappers can add timing metadata outside raw stdout.
+  Never write rendered command output back into source files.

@@ -217,8 +217,12 @@ It uses 186 layer projections and 31 bounded chunks for the tied vocabulary head
 All 217 sources compile to self-contained old-format HWX artifacts.
 
 The 3.5 GiB DART VM prevents full fp16 residency.
-The runtime must stream projection programs while recurrent and KV state stay in bounded buffers.
-The next proof is one full token step through this staged artifact set.
+The runtime now stages one converted projection with reusable Linux ANE buffers.
+It accepts old-format graphs that declare no workspace buffer.
+The converter now accepts non-file-backed `__FVMLIB` input and output sections.
+Eight prepared artifacts cover every projection geometry in the compiled model.
+The next proof runs these classes on Linux M1 with nonuniform inputs.
+One full token step follows only after every geometry passes numeric comparison.
 
 The MLX path still has three early proof gates.
 The Vulkan runtime and core kernels must meet the fixed performance bar.
