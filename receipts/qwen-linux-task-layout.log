@@ -392,6 +392,9 @@ The async and struct paths destabilized execution before a valid output.
 
 The ANEServices methods are visible in the dyld export table.
 An injected library could not bind those C++ symbols through normal interposition.
+A pending LLDB breakpoint on ANE_ProgramPrepare also did not resolve during e5rt startup.
+The bounded debug run timed out and was terminated.
+A plain post-debug run still returned the exact verified linear output.
 The prepared program is therefore outside the current user-process capture surface.
 
 Next experiment
