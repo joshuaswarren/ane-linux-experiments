@@ -63,12 +63,12 @@ class FakeSubmit:
         source = next(
             buffer
             for buffer in self.device.buffers
-            if buffer.bo.handle == request.handles[4]
+            if buffer.bo.handle == request.handles[5]
         )
         output = next(
             buffer
             for buffer in self.device.buffers
-            if buffer.bo.handle == request.handles[5]
+            if buffer.bo.handle == request.handles[4]
         )
         strides = (4 * 64, 64, 64, 2)
         source_view = np.ndarray(
@@ -125,6 +125,11 @@ class ProjectionRuntimeTests(unittest.TestCase):
 
     def tearDown(self):
         self.tmp.cleanup()
+
+    def test_binds_output_and_source_to_compiler_slots(self):
+        with MODULE.ProjectionRunner(self.path, device=self.device) as runner:
+            self.assertEqual(runner.request.handles[4], runner.output.bo.handle)
+            self.assertEqual(runner.request.handles[5], runner.source.bo.handle)
 
     def test_reuses_buffers_and_resets_output_before_each_submit(self):
         submit = FakeSubmit(self.device, ([1, 2, 3, 4], [5, 6, 7, 8]))

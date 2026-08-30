@@ -1,0 +1,104 @@
+{
+  "format": "qwen-projection-geometry-validation-v1",
+  "geometries": [
+    {
+      "finite": true,
+      "max_absolute_error": 0.0009765625,
+      "mean_absolute_error": 0.00015721231466159225,
+      "passed": true,
+      "shape": [
+        6144,
+        2048
+      ],
+      "source": "projections/blk-0-attn_qkv-weight",
+      "tensor": "blk.0.attn_qkv.weight"
+    },
+    {
+      "finite": true,
+      "max_absolute_error": 0.0009765625,
+      "mean_absolute_error": 0.0001647572498768568,
+      "passed": true,
+      "shape": [
+        2048,
+        2048
+      ],
+      "source": "projections/blk-0-attn_gate-weight",
+      "tensor": "blk.0.attn_gate.weight"
+    },
+    {
+      "finite": true,
+      "max_absolute_error": 0.0006103515625,
+      "mean_absolute_error": 0.0001957416534423828,
+      "passed": true,
+      "shape": [
+        16,
+        2048
+      ],
+      "source": "projections/blk-0-ssm_beta-weight",
+      "tensor": "blk.0.ssm_beta.weight"
+    },
+    {
+      "finite": true,
+      "max_absolute_error": 0.001220703125,
+      "mean_absolute_error": 0.0002711072447709739,
+      "passed": true,
+      "shape": [
+        2048,
+        6144
+      ],
+      "source": "projections/blk-0-ffn_down-weight",
+      "tensor": "blk.0.ffn_down.weight"
+    },
+    {
+      "finite": true,
+      "max_absolute_error": 0.0009765625,
+      "mean_absolute_error": 0.00015909760259091854,
+      "passed": true,
+      "shape": [
+        4096,
+        2048
+      ],
+      "source": "projections/blk-3-attn_q-weight",
+      "tensor": "blk.3.attn_q.weight"
+    },
+    {
+      "finite": true,
+      "max_absolute_error": 0.000732421875,
+      "mean_absolute_error": 0.0001545734703540802,
+      "passed": true,
+      "shape": [
+        512,
+        2048
+      ],
+      "source": "projections/blk-3-attn_k-weight",
+      "tensor": "blk.3.attn_k.weight"
+    },
+    {
+      "finite": true,
+      "max_absolute_error": 0.0009765625,
+      "mean_absolute_error": 0.00015773742052260786,
+      "passed": true,
+      "shape": [
+        8192,
+        2048
+      ],
+      "source": "projections/token_embd-weight-rows-000000-008192",
+      "tensor": "token_embd.weight"
+    },
+    {
+      "finite": true,
+      "max_absolute_error": 0.0009765625,
+      "mean_absolute_error": 0.00014876306522637606,
+      "passed": true,
+      "shape": [
+        2560,
+        2048
+      ],
+      "source": "projections/token_embd-weight-rows-245760-248320",
+      "tensor": "token_embd.weight"
+    }
+  ],
+  "geometry_count": 8,
+  "passed": true,
+  "tolerance": 0.1
+}

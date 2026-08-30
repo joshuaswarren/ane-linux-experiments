@@ -145,3 +145,6 @@
   Include the 2,048-by-2,048 class in geometry validation.
 - 2026-08-30: Tool wrappers can add timing metadata outside raw stdout.
   Never write rendered command output back into source files.
+- 2026-08-30: Monterey Espresso uses buffer index 4 for output and index 5
+  for input. A square 2,048-by-2,048 graph hid the reversed binding. Verify
+  asymmetric geometry before generalizing a buffer contract.

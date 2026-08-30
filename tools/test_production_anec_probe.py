@@ -88,6 +88,29 @@ class ProductionProbeTests(unittest.TestCase):
         self.assertEqual(bootstrap[8:0x80], data[0x608:0x680])
         self.assertEqual(bootstrap[0x80:], b"\0" * (0x274 - 0x80))
 
+    def test_stage_geometry_decodes_production_buffer_roles(self):
+        tiles = [0] * 32
+        tiles[3] = 0x66
+        tiles[4] = 5
+        tiles[5] = 6
+        nchw = [0] * 192
+        nchw[24:30] = [1, 2048, 1, 1, 64, 64]
+        nchw[30:36] = [1, 2048, 1, 1, 64, 64]
+        header = MODULE.ANEC_HEADER.pack(
+            0x59238000, 0x274, 3, 0xEA2F8, 0x40, 1, 1, *tiles, *nchw
+        )
+
+        stage = MODULE.stage_geometry(MODULE.ANEC_HEADER.unpack(header))
+
+        self.assertEqual(stage["workspace_size"], 0x66 * MODULE.TILE_SIZE)
+        self.assertEqual(stage["output_size"], 5 * MODULE.TILE_SIZE)
+        self.assertEqual(stage["source_size"], 6 * MODULE.TILE_SIZE)
+        self.assertEqual(stage["output_nchw"], (1, 2048, 1, 1, 64, 64))
+        self.assertEqual(stage["source_nchw"], (1, 2048, 1, 1, 64, 64))
+        self.assertEqual(stage["td_count"], 3)
+        self.assertEqual(stage["src_count"], 1)
+        self.assertEqual(stage["dst_count"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
