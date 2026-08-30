@@ -1,0 +1,21 @@
+{
+  "date": "2026-08-30",
+  "marker": "QWEN_MUTABLE_ATTENTION_GEMM_WRAP_OK",
+  "platform": "Linux M1",
+  "context": 128,
+  "head_dimension": 256,
+  "appended_tokens": 130,
+  "score_max_abs_error": 0.00023142993450164795,
+  "attended_max_abs_error": 0.00016526412218809128,
+  "state_cursor": 2,
+  "state_length": 128,
+  "control_before": "ANE_RUNTIME_OK",
+  "control_after": "ANE_RUNTIME_OK",
+  "source_sha256": {
+    "tools/attention-runtime.py": "1cad574ddd5d66b8408f928e9f53e24441b7d68f3b986ac456c155a9b738c5bd",
+    "tools/test_attention_runtime.py": "dca6d4d3ee79c7163d9839e0b25356cb777af840dfcf15fc341bdc31770dd09f",
+    "ane-network.py": "bdb2cdf976fadb84126884b8da97188a884f10a9652a1b51e0988575114eaa59"
+  },
+  "completion_contract": "Output row 511 is reserved for completion polling and excluded from result rows.",
+  "state_contract": "Keys remain in packed GEMM rows and values remain in matching packed GEMM columns. Each token writes one key row and one value column. After wrap, matching physical slots preserve score-to-value alignment without returning the cache tensor to host memory."
+}

@@ -23,6 +23,9 @@
 | 2026-08-29 | user | Named the public MLX project after Asahi despite the owner's repeated rule against crediting Asahi | Name the repo, package, backend, CLI, build flags, and docs after Omarchy: `mlx-omarchy` |
 | 2026-08-30 | self | Treated `ANECCompile=0` as proof that Espresso retained the complete graph | Inspect exported `net.plist` Outputs and Units. Require the named final output before hardware execution |
 | 2026-08-30 | user | Asked before rebooting the dedicated Linux M1 | The Linux M1 is dedicated to this work. Reboot it when recovery requires it |
+| 2026-08-30 | self | Left completed work on a branch instead of updating GitHub main during a long run | Push completed slices to GitHub main at least once every 12 hours |
+| 2026-08-30 | self | Put Markdown backticks inside a JavaScript template literal and triggered interpolation before the edit ran | Escape Markdown backticks or build edit input from plain string parts |
+| 2026-08-30 | self | Flattened a staged tool into the remote bundle root and broke its parent-relative import contract | Preserve the repository's parent/tools layout when staging a hardware validator |
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 
@@ -31,6 +34,8 @@
 | 2026-08-28 | self | After an ENOSPC storm, the bring-up ladder alone leaves BO_INIT failing (EEXIST at iova 0x4000) | Reboot, THEN ladder, after any iova exhaustion |
 
 ## Patterns That Work
+- Mutable raw GEMM programs can hold a KV ring in packed weight rows and columns. Update matching slots, mask unused score rows, and reserve output row 511 for completion polling.
+- Compose 128-wide softmax from two 64-lane ANE halves. Reuse four BOs, clamp at -64, divide by 128, square seven times, and run twelve Newton reciprocal steps.
 - macOS 26 HWX = real Mach-O: `__TEXT,__text` @ 0x4000 = TD (0x274), `__TEXT,__const` @ 0x4280 = kernel, KDMA offsets kernel-base-relative (0x280 base, step 0x4000).
 - Old-format graphs (macOS-15-era anecc) still run on current Linux KMD; fresh macOS 26 TDs reach the device and hang it (-110 at `tm execution`). Patching engine-count/bit-26 words does not revive them.
 - Control-first bisect: same plist through both compilers isolates format from config in one diff (20/157 words for net.plist).

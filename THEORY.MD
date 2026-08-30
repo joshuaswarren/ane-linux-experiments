@@ -2,251 +2,147 @@
 
 ## Problem
 
-Linux can map ANE buffers and push raw task descriptors through a narrow KMD interface.
+Linux can map ANE buffers and submit raw task descriptors through a narrow KMD interface.
 That path executes older self-contained programs.
 It does not reproduce the modern macOS program lifecycle.
 
-The complete Qwen goal also needs an MLX-compatible Linux tensor backend.
-On M1 Linux, that backend must use the Apple GPU through Vulkan.
-CPU code can schedule and copy, but it cannot run tensor primitives.
+The full Qwen decoder exceeds the 3.5 GiB DART virtual address space as one fp16 program.
+The runtime must stage bounded programs and keep only active state resident.
+CPU code can schedule and copy small inputs.
+It cannot compute model tensors.
 
-## Current ANE theory
+## Working artifact contract
 
 Correct old-format execution has five linked contracts.
 
 1. Task descriptors must match the target ANE.
 2. Every task link must preserve the compiled order.
 3. Each buffer index must map to the expected virtual span.
-4. Each live tensor must use the compiled address, dtype, shape, and value.
+4. Each tensor must use the compiled address, dtype, shape, and value.
 5. Kernel content must start at the compiled command-buffer boundary.
 
-Monterey ANECompiler 5.5.0 emits this self-contained contract from legacy Espresso XML.
-The Linux KMD can execute these artifacts without modern program creation or preparation.
-The verified 2,048-wide Qwen projection proves the full compile-to-Linux path.
+Monterey ANECompiler 5.5.0 emits this contract from legacy Espresso XML.
+The Linux KMD executes these artifacts without modern program preparation.
+Modern macOS HWX files reach the task manager but do not return to idle.
 
-The runtime cannot keep the full fp16 model resident in its 3.5 GiB DART VM.
-It must load bounded projection programs, submit them, then release or reuse their mappings.
-Recurrent and KV state need stable bounded buffers across those submissions.
-
-## Evidence that removed earlier theories
-
-The converted Qwen payload matches the compiler payload by hash.
-The converter preserves original task spacing and `NextPointer` values.
-The task headers use the decoded EON, LNID, next-size, and next-pointer protocol.
-
-The 13-layer graph uses buffer indices 0, 1, 3, 4, and 5.
-Buffer 0 holds command and constant data.
-Buffer 1 starts at the aligned kernel boundary inside buffer 0.
-Buffer 3 holds the `__DATA,__bss` workspace.
-Buffers 4 and 5 hold aggregate input and output spans.
-
-The exact 32-input padded replay did not move the task-20 failure.
-A one-layer graph also failed at task 20.
-A QKV-only graph committed its early tasks but did not complete.
-A two-task 2048-wide linear graph committed its terminal task but did not complete.
-
-The exact linear graph executes on macOS ANE through ANEForge.
-It returns a finite `(1, 2048)` output with 2,040 nonzero values.
-This result proves the graph, weights, and input can execute on the same M1 ANE family.
-
-The linear HWX places its kernel at the aligned `0x480` command offset.
-The Linux KMD derives that same boundary from the `0x474` task-stream size.
-Kernel placement is not the linear failure.
+The model therefore uses bounded old-format programs.
+A deterministic set covers all decoder matrices with 186 projections and 31 vocabulary-head chunks.
+All 217 sources compile to self-contained HWX artifacts.
+Eight projection geometries pass Linux M1 numeric comparison.
+The maximum absolute error is 0.001220703125.
 
 ## Completion semantics
 
 `TM_COMMITTED` records accepted task progress.
 It does not record completed compute.
 
-A diagnostic KMD returned success after the terminal task appeared committed.
-The output stayed unchanged and userspace continued to wait.
-That fallback was unsafe and remains diagnostic-only.
-
-A valid completion requires all three results.
+A valid completion requires three results.
 
 1. `TM_STATUS` returns to idle.
 2. The submit path returns without timeout.
 3. The expected output buffer changes and passes its value check.
 
-Do not use committed count as a completion shortcut.
-Do not patch the normal KMD with the diagnostic fallback.
+The mutable GEMM runtime reserves physical output row 511 for completion polling.
+Result programs can use rows 0 through 510.
+This prevents a valid infinite result in row zero from looking like an unfinished submit.
 
-## Compiler boundary
+## Resident state
 
-Current physical compiler hosts run macOS 26.
-A macOS 12.5.1 virtual machine exposes ANECompiler 5.5.0.
-Its direct MIL route rejects the saved iOS 18 program syntax.
-Its legacy Espresso XML route emits Linux-compatible old-format HWX files.
+DeltaNet recurrent state uses one `(1, 16, 133, 128)` tensor.
+Rows 4 through 131 hold the `(16, 128, 128)` state.
+The runner alternates two aggregate BOs after each submit.
+It overwrites only q, k, v, beta, and decay before the next submit.
+Two hardware steps completed without a host state round trip.
+The final state maximum error was 0.00004078.
 
-Target selection on the modern compiler does not reproduce this format.
-The compiler generation and source format select the working artifact contract.
-Big Sur loader recovery is no longer on the critical path.
+The first KV implementation used one `(1, 8, 259, 256)` tensor.
+The ANE shifted each cache and appended new key and value rows.
+Two hardware steps preserved both caches without an intermediate host copy.
 
-The model must compile as bounded projections rather than one resident fp16 program.
-The source and compile manifests preserve every projection name, shape, row range, size, and hash.
+That graph shape cannot also express full attention reliably through Monterey Espresso.
+Espresso pruned dynamic transpose, dynamic matrix multiplication, and complete manual softmax chains.
+A successful compiler return was not sufficient evidence.
+The exported `net.plist` had to retain the named final output.
 
-## Compatibility direction
+## Mutable attention contract
 
-Upstream MLX supports Linux through CPU and CUDA backends.
-Its Metal backend stays limited to Darwin.
-MLX selects complete GPU backends at build time.
-It exposes no external GPU plug-in boundary.
-The Linux port therefore needs an upstream-following MLX fork.
+Raw Linux GEMM has a simpler state boundary than Espresso.
+The command BO already contains packed GEMM weights.
+The host can update one packed row or column without copying prior state.
 
-Omarchy exposes the Apple GPU through Vulkan and OpenCL, not Metal.
-Vulkan is the full tensor baseline because Honeykrisp provides it on M1.
-The backend must preserve supported MLX graphs, streams, transforms, compilation, dtypes, shapes, and errors.
-An unsupported operation must fail by name instead of using CPU tensor code.
-Initial exclusions include CPU-stream-only linear algebra, `float64`, and complex dtypes.
+Each attention head uses two mutable GEMM programs.
 
-ANE remains an internal accelerator behind `mx.gpu`.
-The partitioner must run before `mx.compile` fusion.
-It replaces an accepted region with an opaque `AneRegion` primitive.
-The remaining graph then fuses for Vulkan.
+1. The score program stores keys as matching packed matrix rows.
+2. The value program stores values as matching packed matrix columns.
+3. Each token writes one key row and one value column at the same ring position.
+4. The score GEMM computes `K @ q`.
+5. The value GEMM computes `V^T @ probabilities`.
 
-The first hybrid path uses host-staged GPU-to-ANE copies.
-Current `libane` exposes mapped GEM buffers but no PRIME or dma-buf API.
-Direct sharing remains a later driver gate.
-The ANE worker must own the device file descriptor and resident buffers.
-The evaluator and worker exchange shared host staging buffers.
-Every crossover result must include copy and process IPC cost.
+Physical ring order does not affect attention.
+Scores and values share the same physical slot.
+After wrap, all 128 slots contain the latest 128 entries.
+Before the cache fills, the runtime masks unused score rows.
 
-Recurrent ANE state keeps stable worker-owned buffer identities across decode evaluations.
-Graph, shape, or stream changes tear down that residency and continue on Vulkan.
+A 130-token Linux M1 run exercised the full 128-slot ring and two overwritten slots.
+The final cursor was 2 and the final length was 128.
+The score maximum error was 0.00023142993450164795.
+The attended-value maximum error was 0.00016526412218809128.
+The control GEMM passed before and after the run.
 
-## Reference evidence
+This route removes the Espresso dynamic-matrix boundary.
+It also avoids returning the old KV cache tensor to host memory.
 
-The real model is `Qwen3.8-2B-Q4_K_M.gguf`.
+## Reference model
+
+The reference model is `Qwen3.8-2B-Q4_K_M.gguf`.
 It has 1,312,164,224 bytes.
 Its SHA-256 is `4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff`.
 
-ANEForge runs the complete 24-layer Qwen decoder on macOS M1.
+ANEForge runs the complete 24-layer decoder on macOS M1.
 The locked reference keeps host embedding gather and fp32 `lm_head` work.
-The reference runner records timing, logits, and each decoder layer boundary.
-
-The ten-prompt run compiled in 46.28158112500023 seconds.
-Total wall time ranged from 5.373820666998654 to 103.45407875000092 seconds.
-Mean time to first token was 51.53428760429961 seconds.
-Mean decode speed was 16.74448671344259 tokens per second.
+The reference runner records timing, logits, and every decoder layer boundary.
 
 The instrumented two-token run took 0.4380809170015709 seconds after warmup.
 Its first-token time was 0.2901463750004041 seconds.
 Its prefill rate was 14.91380747661077 tokens per second.
 Its decode rate was 15.285986554316986 tokens per second.
 
-## Export evidence
+The prior Linux hybrid path remains slower than its CPU comparison.
+Its one-token ANE timings were 7.515 seconds for steps and 7.821 seconds for logits.
+Its CPU timings were 3.114 seconds for steps and 2.568 seconds for logits.
+Those results do not satisfy the final performance contract.
 
-`ANECCompile` exported two raw HWX files from saved MIL and weight captures.
-The first graph contains 13 decoder layers and 1,404 task descriptors.
-Its content payload is `0x59238000` bytes.
-The final graph contains 11 decoder layers, output normalization, and the output head.
-It has 1,176 task descriptors and a `0x4b10c000` content payload.
+## Softmax contract
 
-`tools/ane-compile-hwx.mm` makes the direct compiler call repeatable.
-`tools/hwxv2-to-anec.py` derives task and buffer geometry from each HWX file.
-The converter streams the multi-gigabyte payload into ANEC format.
+The raw elementwise program has 64 lanes.
+A 128-wide softmax therefore operates on two halves.
+Every max, add, multiply, square, reduction, exponential approximation, and reciprocal step uses ANE submissions.
+Host code stages the two halves and broadcasts returned scalars.
+It does not compute tensor arithmetic.
 
-The compiler and converter now produce valid Linux input files.
-They do not reproduce the macOS program-prepare operation.
-A bundle format must record the required preparation contract before MLX lowering can depend on it.
+The exponential path clamps differences to -64.
+It divides by 128, evaluates a degree-six Taylor polynomial, then squares seven times.
+This range makes masked fp16 lanes underflow to zero.
+The reciprocal path starts at 1/128 and runs twelve Newton steps.
+This fixed start covers sums from 1 through 128 without host division.
 
-## Linux evidence
+A Linux M1 run used 258 ANE elementwise submissions across random and masked inputs.
+One output, two input, and one descriptor BO remained resident across every submission.
+The random maximum absolute error was 0.001615367829799652.
+The probability-sum error was 0.000038623809814453125.
+The argmax matched the fp32 reference.
+All 127 masked lanes returned zero probability.
+The control GEMM passed before and after the run.
 
-A production 3,072-task old-format graph executes in one Linux ANE submit.
-Its maximum reference error is `0.00047719478607177734`.
-Its argmax matches the reference.
-This result proves the old descriptor and submission format.
+## Current direction
 
-Fresh modern graphs reach the task manager but do not return to idle.
-The smallest proof is the two-task linear graph.
-The larger Qwen graph reaches its natural task-20 boundary.
-DART reports no active mapping fault in these failures.
+Mutable GEMM and composed softmax now provide full-attention score, probability, and value operations.
+The next boundary is full token orchestration.
+It must connect projections, recurrent state, attention, normalization, activations, and the vocabulary head.
+Every unsupported tensor operation must fail by name.
+No tensor operation can fall back to CPU or GPU.
 
-The older Linux Qwen path still uses CPU tensor math outside linear projections.
-Its one-token check reports ANE `steps=7.515` and `logits=7.821` seconds.
-The CPU check reports `steps=3.114` and `logits=2.568` seconds.
-Those checks do not satisfy the compatibility or performance contracts.
-
-An ANE timeout can require a reboot and a fresh bring-up.
-The current driver does not provide process-grade recovery.
-New integration tests must isolate ANE submits in a bounded worker.
-Testing must stop until the ANE self-test passes after a timeout.
-
-## Delivery strategy
-
-Stop changing tensor packing and completion polling.
-Those experiments no longer test the observed linear failure.
-
-Recover the modern program-prepare contract next.
-Use one compiler-consistent source of truth.
-A macOS prepared-program capture is preferred.
-A complete ANEServices lifecycle implementation is the alternative.
-Do not port individual descriptor bits without that source.
-
-Prove the preparation path with the two-task linear graph.
-Require idle completion and the known macOS output values.
-Then rerun QKV, one-layer, and full 13-layer graphs in that order.
-
-After the first full graph completes, pass its output and state into the 11-layer graph.
-Compare both boundaries with the fixed macOS reference.
-Then run the ten-prompt parity and performance contracts.
-
-Build the Omarchy Vulkan runtime independently of ANE.
-Run matched matmul and attention probes before broad primitive work.
-Both must reach 80 percent of the pinned same-machine `llama.cpp` Vulkan reference.
-Then pass MLX runtime, primitive, dtype, transform, and compile gates without CPU tensor evaluation.
-Prove MLX-LM generation and serving before adding ANE selection to the evaluator.
-
-A Vulkan-only release can ship after the GPU package gate.
-That release does not complete the hybrid goal.
-Full completion requires one useful ANE region to pass bundle, output, safety, and crossover gates.
-
-The public work has one repository: `https://github.com/joshuaswarren/mlx-omarchy`.
-It owns the MLX fork, Vulkan backend, ANE bridge, packages, tests, and releases.
-This repository remains the hardware lab.
-Stable driver and `libane` changes belong in `eiln/ane`.
-
-## Current conclusion
-
-The modern compiler format was the wrong target for the current Linux KMD.
-Monterey ANECompiler 5.5.0 removes that blocker through legacy Espresso XML graphs.
-The same old-format artifact contract works for a 2,048-wide linear and a 6,144-by-2,048 projection.
-
-A deterministic graph set now covers every matrix used by the 24-layer decoder.
-It uses 186 layer projections and 31 bounded chunks for the tied vocabulary head.
-All 217 sources compile to self-contained old-format HWX artifacts.
-
-The 3.5 GiB DART VM prevents full fp16 residency.
-The runtime now stages one converted projection with reusable Linux ANE buffers.
-It accepts old-format graphs that declare no workspace buffer.
-The converter now accepts non-file-backed `__FVMLIB` input and output sections.
-All eight prepared projection geometries pass Linux M1 numeric comparison.
-The maximum absolute error is 0.001220703125.
-The compiler-defined buffer roles are now verified for unequal input and output sizes.
-
-The full Qwen DeltaNet state update also compiles through the old Espresso path.
-Its tensor shape is `(1, 16, 133, 128)`.
-Rows 4 through 131 hold the `(16, 128, 128)` recurrent state.
-The Linux runner alternates two BOs after each submit.
-It overwrites only q, k, v, beta, and decay before the next submit.
-Two hardware steps completed without a host state round trip.
-The second output maximum error was 0.00176867.
-The final state maximum error was 0.00004078.
-
-The full-attention K/V cache now uses the same device-resident ping-pong contract.
-Its tensor shape is `(1, 8, 259, 256)` for a fixed 128-token window.
-Each new two-head key and value is replicated across the eight query heads.
-The ANE shifts each cache, appends the new rows, and returns the complete next state.
-Two hardware steps preserved both caches exactly without an intermediate host copy.
-
-The first combined attention graph did not survive the Core ML to Espresso export.
-Both SoftmaxND and manual-softmax variants exported only slices and cache concats.
-The compiler exit code was insufficient proof because the final `next` output was absent.
-The exported `net.plist` output list is now a required compiler receipt.
-
-ANE attention and one full token step are the next proofs.
-
-The MLX path still has three early proof gates.
-The Vulkan runtime and core kernels must meet the fixed performance bar.
-The old-format ANE worker must execute the staged Qwen projection set.
-A stable worker ABI must land before ANE regions join the Vulkan backend.
+Only full token parity can unlock the fixed 100-prompt corpus.
+Only that paired corpus can support the final performance comparison.
+The KV, dynamic-matrix, and softmax blockers are removed.
+Complete token orchestration remains open.

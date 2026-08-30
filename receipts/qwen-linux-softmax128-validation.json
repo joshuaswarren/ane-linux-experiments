@@ -1,0 +1,23 @@
+{
+  "date": "2026-08-30",
+  "marker": "QWEN_SOFTMAX128_ANE_REUSE_OK",
+  "platform": "Linux M1",
+  "width": 128,
+  "elementwise_lanes": 64,
+  "resident_buffers": 4,
+  "submission_count": 258,
+  "max_abs_error": 0.001615367829799652,
+  "sum_error": 0.000038623809814453125,
+  "argmax_match": true,
+  "masked_first_probability": 1.0,
+  "masked_unused_max": 0.0,
+  "control_before": "ANE_RUNTIME_OK",
+  "control_after": "ANE_RUNTIME_OK",
+  "source_sha256": {
+    "tools/softmax-runtime.py": "1531a590471bc2f9be2ceae8e2779a8c0079fd4a6e34ad0faa6f229ac953e073",
+    "tools/test_softmax_runtime.py": "ba5a541f6e60568b663c2abb3b129dacdd96e935074c9d88a40ea7c1ccc82fcc",
+    "ane-softmax.py": "e87abd3ce8a22409427c1641c5bcb3d20b3b4ce8cab536222723da5df4e4b1d7"
+  },
+  "compute_contract": "All max, add, multiply, square, exponential approximation, reduction, and reciprocal arithmetic runs through 64-lane ANE elementwise submissions. Host code stages the two halves and scalar broadcasts.",
+  "residency_contract": "One output, two input, and one descriptor BO remain allocated and are reused across all 258 submissions. Close frees all four BOs."
+}
