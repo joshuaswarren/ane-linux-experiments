@@ -41,12 +41,15 @@ See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fr
 The probe is [tools/aneforge-qwen-graph.py](tools/aneforge-qwen-graph.py).
 The run receipt is `receipts/aneforge-qwen-graph.log`.
 
-The complete Linux Qwen path is not ANE-only.
-`ane-qwen-model.py --backend ane` uses ANE for linear projections.
-It keeps normalization, activations, recurrent state, attention, and logits
-on the host.
-No complete Linux ANE-only graph or full-model parity result is claimed.
-See [progress](docs/progress.md) for the export blocker.
+The Linux Qwen path now has a bounded ANE state mode.
+Pass `--recurrent-anec <ANEC>` to keep all 18 recurrent states and six
+attention K/V caches on the ANE. A one-token hardware run produced finite
+logits and selected token `369`. The host-state control selected the same token.
+See `receipts/qwen-linux-token-runtime-validation.json` for the commands and
+source hashes.
+
+The path is not ANE-only yet. RMSNorm, convolution, sigmoid/SiLU, RoPE, and
+residual arithmetic still run on the host.
 
 ## Qwen reference workflow
 
@@ -116,6 +119,7 @@ The 100-prompt attempt and ten-prompt checksums are in `receipts/`.
 | `ane-network.py` | Run a two-layer MLP. |
 | `ane-runtime.py` | Own persistent buffers and submit GEMM work. |
 | `ane-qwen-model.py` | Run the 24-layer Qwen token step. |
+| `tools/qwen-token-runtime.py` | Keep Qwen recurrent and attention state on the ANE. |
 | `ane-head-bench.py` | Measure the tied output head. |
 | `ane-static-loop.py` | Run a reusable static graph. |
 | `tools/` | Convert HWX files and run fresh-format probes. |

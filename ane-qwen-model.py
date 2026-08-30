@@ -3,13 +3,12 @@
 
 This is the first end-to-end model path in this work. It loads the selected
 Qwen3.8-2B Q4_K_M GGUF, dequantizes each tensor, sends every linear projection
-through the ANE 512x256 runtime, keeps Gated DeltaNet recurrent state and
-full-attention K/V state across tokens, computes the remaining elementwise
-operations on the CPU, and produces output logits from the tied embedding.
+through the ANE 512x256 runtime, and keeps recurrent and attention state on the
+ANE across tokens. The CPU computes the remaining elementwise operations. The
+tied embedding produces output logits through the ANE projection runtime.
 
 The CPU operations are explicit. They cover RMSNorm, depthwise causal
-convolution, sigmoid/SiLU, RoPE, delta-rule recurrence, causal softmax, and
-the final logits dot product. This is a working correctness path, not a
+convolution, sigmoid/SiLU, and RoPE. This is a working correctness path, not a
 claim that every non-linear primitive has already moved to the ANE.
 
   python3 ane-qwen-model.py -m Qwen3.8-2B-Q4_K_M.gguf -p "The engine runs"
@@ -106,7 +105,17 @@ def causal_attention(q, keys, values):
 class QwenModel:
     """Qwen3.5 hybrid model with ANE-backed linear projections."""
 
-    def __init__(self, model_path, gguf_py, runtime, weights, descriptor, descriptor_512, qid):
+    def __init__(
+        self,
+        model_path,
+        gguf_py,
+        runtime,
+        weights,
+        descriptor,
+        descriptor_512,
+        qid,
+        token_runtime=None,
+    ):
         self.cpu_reference = runtime.Device is NumpyDevice
         self.weights = weights
         self.runtime = runtime
@@ -114,7 +123,10 @@ class QwenModel:
         self.descriptor_512 = descriptor_512
         self.qid = qid
         self.device = runtime.Device(qid=qid)
+        self.token_runtime = token_runtime
         self.layers = []
+        full_state_index = 0
+        recurrent_state_index = 0
         for index in range(24):
             prefix = f"blk.{index}"
             full = self.has(f"{prefix}.attn_q.weight")
@@ -128,6 +140,7 @@ class QwenModel:
             }
             if full:
                 layer.update({
+                    "state_index": full_state_index,
                     "q": self.tensor(f"{prefix}.attn_q.weight"),
                     "k": self.tensor(f"{prefix}.attn_k.weight"),
                     "v": self.tensor(f"{prefix}.attn_v.weight"),
@@ -137,8 +150,10 @@ class QwenModel:
                     "keys": [],
                     "values": [],
                 })
+                full_state_index += 1
             else:
                 layer.update({
+                    "state_index": recurrent_state_index,
                     "qkv": self.tensor(f"{prefix}.attn_qkv.weight"),
                     "z": self.tensor(f"{prefix}.attn_gate.weight"),
                     "beta": self.tensor(f"{prefix}.ssm_beta.weight"),
@@ -151,10 +166,10 @@ class QwenModel:
                     "conv_state": np.zeros((6144, 3), dtype=np.float16),
                     "recurrent": np.zeros((16, 128, 128), dtype=np.float32),
                 })
+                recurrent_state_index += 1
             self.layers.append(layer)
         self.output_norm = self.tensor("output_norm.weight")
         self.embedding = self.tensor("token_embd.weight")
-
     def has(self, name):
         return name in self.weights.names()
     def tensor(self, name):
@@ -226,19 +241,29 @@ class QwenModel:
         query = l2_norm(query.reshape(16, 128))
         query = _compute_dtype(query.astype(np.float32) / np.sqrt(128.0))
         key = l2_norm(key.reshape(16, 128))
-        value = value.reshape(16, 128).astype(np.float32)
+        value = value.reshape(16, 128)
         decay = layer["a_log"].astype(np.float32) * np.log1p(
             np.exp(np.clip(alpha + layer["dt_bias"].astype(np.float32), -80, 80))
         )
-        state = layer["recurrent"]
-        output = np.zeros((16, 128), dtype=np.float32)
-        for head in range(16):
-            state[head] *= np.exp(decay[head])
-            kh = key[head].astype(np.float32)
-            vh = value[head]
-            delta = (vh - state[head].T @ kh) * float(beta[head])
-            state[head] += np.outer(kh, delta)
-            output[head] = state[head].T @ query[head].astype(np.float32)
+        if self.token_runtime is not None:
+            output = self.token_runtime.recurrent(
+                layer["state_index"],
+                query.astype(np.float16),
+                key.astype(np.float16),
+                value.astype(np.float16),
+                beta.astype(np.float16),
+                decay.astype(np.float16),
+            )
+        else:
+            state = layer["recurrent"]
+            output = np.zeros((16, 128), dtype=np.float32)
+            for head in range(16):
+                state[head] *= np.exp(decay[head])
+                kh = key[head].astype(np.float32)
+                vh = value[head].astype(np.float32)
+                delta = (vh - state[head].T @ kh) * float(beta[head])
+                state[head] += np.outer(kh, delta)
+                output[head] = state[head].T @ query[head].astype(np.float32)
         norm = rms_norm(_compute_dtype(output), layer["ssm_norm"])
         norm = norm * silu(z.reshape(16, 128))
         mixed_out = self.projection(layer["out"], norm.reshape(-1))
@@ -254,11 +279,19 @@ class QwenModel:
         k_heads, v_heads = k.reshape(2, 256), v.reshape(2, 256)
         q_heads = rope(rms_norm(q_heads, layer["q_norm"]), position)
         k_heads = rope(rms_norm(k_heads, layer["k_norm"]), position)
-        layer["keys"].append(k_heads.copy())
-        layer["values"].append(v_heads.copy())
-        keys = np.stack(layer["keys"], axis=1)
-        values = np.stack(layer["values"], axis=1)
-        attended = causal_attention(q_heads, keys, values)
+        if self.token_runtime is not None:
+            attended = self.token_runtime.full_attention(
+                layer["state_index"],
+                q_heads.astype(np.float16),
+                k_heads.astype(np.float16),
+                v_heads.astype(np.float16),
+            )
+        else:
+            layer["keys"].append(k_heads.copy())
+            layer["values"].append(v_heads.copy())
+            keys = np.stack(layer["keys"], axis=1)
+            values = np.stack(layer["values"], axis=1)
+            attended = causal_attention(q_heads, keys, values)
         gated = attended.reshape(-1) * (1.0 / (1.0 + np.exp(-gate.astype(np.float32))))
         mixed_out = self.projection(layer["o"], _compute_dtype(gated))
         return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
@@ -275,6 +308,8 @@ class QwenModel:
         return self.projection(self.embedding, h, in_cols=256)
 
     def close(self):
+        if self.token_runtime is not None:
+            self.token_runtime.close()
         self.device.close()
 
 
@@ -286,7 +321,10 @@ def main():
     parser.add_argument("--qid", type=int, default=None)
     parser.add_argument("--backend", choices=("ane", "cpu"), default="ane")
     parser.add_argument("--generate", type=int, default=0)
+    parser.add_argument("--recurrent-anec")
     args = parser.parse_args()
+    if args.recurrent_anec is not None and args.backend != "ane":
+        parser.error("--recurrent-anec requires --backend ane")
     global _F32_REFERENCE
     # Keep recurrent and normalization math in float32 on both backends.
     _F32_REFERENCE = True
@@ -307,6 +345,21 @@ def main():
     token_ids = tokenizer.encode(args.prompt)
     model = QwenModel(args.model, args.gguf_py, runtime, weights, descriptor, descriptor_512, args.qid)
     try:
+        if args.recurrent_anec is not None:
+            token_runtime_module = load(os.path.join("tools", "qwen-token-runtime.py"))
+            softmax_path = os.path.join(os.path.dirname(__file__), "ane-softmax.py")
+            elementwise_descriptors = token_runtime_module.harvest_elementwise_descriptors(
+                softmax_path
+            )
+            full_layers = sum(layer["full"] for layer in model.layers)
+            model.token_runtime = token_runtime_module.QwenTokenRuntime(
+                model.device,
+                descriptor,
+                elementwise_descriptors,
+                args.recurrent_anec,
+                full_layers,
+                len(model.layers) - full_layers,
+            )
         import time as _time
         step_s = 0.0
         logits_s = 0.0
@@ -331,6 +384,7 @@ def main():
         top_ids = np.argsort(logits)[-10:][::-1]
         print(f"prompt_tokens={token_ids}")
         print(f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}")
+        print(f"resident_token_runtime={model.token_runtime is not None}")
         print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
         print(f"top10={[(int(i), float(logits[i])) for i in top_ids]}")
         print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")

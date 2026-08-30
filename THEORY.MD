@@ -134,15 +134,27 @@ The argmax matched the fp32 reference.
 All 127 masked lanes returned zero probability.
 The control GEMM passed before and after the run.
 
+## Token-to-logits orchestration
+
+The bounded state runtimes now compose inside the 24-layer Qwen model.
+Six full-attention layers own two KV-head states each.
+Eighteen DeltaNet layers own separate recurrent runners.
+One shared four-BO elementwise backend serves every 128-wide softmax.
+
+A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
+The ANE-resident state path and the host-state control both selected token 369.
+The resident path took 8.260 seconds for decoder layers and 6.823 seconds for logits.
+The host-state control took 7.400 seconds and 6.774 seconds.
+The control GEMM passed before and after both model runs.
+
+This completes the token-to-logits wiring milestone.
+It does not complete ANE-only execution or numeric parity.
+
 ## Current direction
 
-Mutable GEMM and composed softmax now provide full-attention score, probability, and value operations.
-The next boundary is full token orchestration.
-It must connect projections, recurrent state, attention, normalization, activations, and the vocabulary head.
-Every unsupported tensor operation must fail by name.
-No tensor operation can fall back to CPU or GPU.
+RMSNorm, causal convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain host tensor operations.
+Each operation now needs a bounded old-format ANE program or a composed raw runtime.
+The model must then reject every host tensor path when the ANE backend is active.
 
-Only full token parity can unlock the fixed 100-prompt corpus.
-Only that paired corpus can support the final performance comparison.
-The KV, dynamic-matrix, and softmax blockers are removed.
-Complete token orchestration remains open.
+Only that ANE-only path can enter the fixed 100-prompt corpus.
+Only the paired corpus can support the final performance comparison.
