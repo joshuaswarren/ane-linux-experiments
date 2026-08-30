@@ -220,9 +220,10 @@ The 3.5 GiB DART VM prevents full fp16 residency.
 The runtime now stages one converted projection with reusable Linux ANE buffers.
 It accepts old-format graphs that declare no workspace buffer.
 The converter now accepts non-file-backed `__FVMLIB` input and output sections.
-Eight prepared artifacts cover every projection geometry in the compiled model.
-The next proof runs these classes on Linux M1 with nonuniform inputs.
-One full token step follows only after every geometry passes numeric comparison.
+All eight prepared projection geometries pass Linux M1 numeric comparison.
+The maximum absolute error is 0.001220703125.
+The compiler-defined buffer roles are now verified for unequal input and output sizes.
+One full token step is the next proof.
 
 The MLX path still has three early proof gates.
 The Vulkan runtime and core kernels must meet the fixed performance bar.

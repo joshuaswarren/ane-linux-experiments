@@ -67,6 +67,35 @@ def load_anec_header(path):
     return ANEC_HEADER.unpack(header)
 
 
+def stage_geometry(header):
+    """Decode the production buffer roles from one ANEC header."""
+    (
+        content_size,
+        td_size,
+        td_count,
+        task_stream_size,
+        kernel_size,
+        src_count,
+        dst_count,
+    ) = header[:7]
+    tiles = header[7:39]
+    nchw = header[39:]
+    return {
+        "content_size": content_size,
+        "td_size": td_size,
+        "td_count": td_count,
+        "task_stream_size": task_stream_size,
+        "kernel_size": kernel_size,
+        "src_count": src_count,
+        "dst_count": dst_count,
+        "workspace_size": tiles[WORKSPACE_BDX] * TILE_SIZE,
+        "source_size": tiles[SRC_BDX] * TILE_SIZE,
+        "output_size": tiles[DST_BDX] * TILE_SIZE,
+        "source_nchw": tuple(nchw[SRC_BDX * 6 : SRC_BDX * 6 + 6]),
+        "output_nchw": tuple(nchw[DST_BDX * 6 : DST_BDX * 6 + 6]),
+    }
+
+
 def copy_content(data, offset, size, destination):
     destination.seek(0)
     copied = 0

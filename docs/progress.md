@@ -153,7 +153,12 @@ Eight converted artifacts cover every unique matrix shape in the 217-graph set.
 A 214,619,226-byte bundle contains those artifacts and their fp16 reference weights.
 Its SHA-256 is `4976c5b34dfdd13ddf9b3329637214b40134368ccfa6a0b941c36476d850f18b`.
 
+All eight projection geometries passed Linux M1 numeric comparison.
+The maximum absolute error was 0.001220703125 with a fixed tolerance of 0.1.
+The report is `receipts/qwen-linux-projection-geometry-validation.json`.
+Old Espresso programs bind output to buffer index 4 and input to buffer index 5.
+The earlier square projection hid the reversed runtime binding because both buffers had equal sizes.
+
 Current full-model Linux parity remains unproven.
 Current Linux performance remains the prior hybrid result and misses both targets.
-The Linux M1 route is unavailable, so the eight numeric hardware checks remain blocked.
-The next experiment must validate those shapes before one full token step.
+The next experiment is one complete Linux ANE token step.

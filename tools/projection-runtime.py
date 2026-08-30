@@ -122,8 +122,8 @@ class ProjectionRunner:
             self.request.handles[0] = self.command.bo.handle
             if self.workspace is not None:
                 self.request.handles[PROBE.WORKSPACE_BDX] = self.workspace.bo.handle
-            self.request.handles[4] = self.source.bo.handle
-            self.request.handles[5] = self.output.bo.handle
+            self.request.handles[4] = self.output.bo.handle
+            self.request.handles[5] = self.source.bo.handle
             self.sentinel = np.full(
                 self.stage["output_size"] // 2, np.inf, dtype=np.float16
             ).tobytes()
