@@ -1,7 +1,9 @@
 import contextlib
 import importlib.util
 import io
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -94,6 +96,32 @@ class QwenModelMathTests(unittest.TestCase):
         actual = MODULE.causal_attention(query, keys, values)
         np.testing.assert_array_equal(actual, np.full((4, 2), 3, dtype=np.float16))
 
+    def test_rms_norm_uses_epsilon_as_floor(self):
+        values = np.full((16, 128), np.float16(0.0015), dtype=np.float16)
+        weight = np.ones(128, dtype=np.float16)
+
+        actual = MODULE.rms_norm(values, weight)
+
+        np.testing.assert_allclose(actual, np.ones_like(values), atol=0.001)
+
+    def test_rope_uses_contiguous_neox_frequencies(self):
+        value = np.arange(128, dtype=np.float16).reshape(2, 64) / 32
+        position = 7
+
+        actual = MODULE.rope(value, position).astype(np.float32)
+
+        inverse = 10_000_000.0 ** (
+            -np.arange(0, 64, 2, dtype=np.float32) / 64
+        )
+        cosine = np.cos(position * inverse)
+        sine = np.sin(position * inverse)
+        expected = value.astype(np.float32).copy()
+        left = expected[:, :32].copy()
+        right = expected[:, 32:64].copy()
+        expected[:, :32] = left * cosine - right * sine
+        expected[:, 32:64] = right * cosine + left * sine
+
+        np.testing.assert_allclose(actual, expected, atol=0.002, rtol=0)
     def test_mlp_uses_fused_activation_runtime(self):
         model = MODULE.QwenModel.__new__(MODULE.QwenModel)
         model.cpu_reference = False
@@ -279,8 +307,37 @@ class QwenModelMathTests(unittest.TestCase):
         model.token_runtime = None
         model.layers = []
         hidden = np.zeros(2048, dtype=np.float16)
-
+    
         self.assertIs(model.step(hidden, 0), hidden)
+    
+    def test_step_captures_each_layer_boundary(self):
+        model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.cpu_reference = True
+        model.token_runtime = None
+        model.layers = [{"full": False}, {"full": True}]
+        model.output_norm = np.ones(2, dtype=np.float16)
+        model.linear_layer = lambda _layer, hidden: hidden + 1
+        model.full_layer = lambda _layer, hidden, _position: hidden + 2
+        model.normalize_rms = lambda value, _weight: value * 10
+        checkpoints = {}
+    
+        actual = model.step(
+            np.zeros(2, dtype=np.float16), 3, checkpoints=checkpoints
+        )
+    
+        np.testing.assert_array_equal(actual, np.full(2, 3, dtype=np.float16))
+        self.assertEqual(
+            list(checkpoints),
+            ["chunk_000_step_003", "chunk_001_step_003"],
+        )
+        np.testing.assert_array_equal(
+            checkpoints["chunk_000_step_003"],
+            np.ones((1, 2), dtype=np.float16),
+        )
+        np.testing.assert_array_equal(
+            checkpoints["chunk_001_step_003"],
+            np.full((1, 2), 30, dtype=np.float16),
+        )
 
     def test_projection_accumulates_partial_tiles_on_ane(self):
         class Device:
@@ -325,6 +382,46 @@ class QwenModelMathTests(unittest.TestCase):
             MODULE.main()
 
         self.assertIn("--backend ane requires --recurrent-anec", stderr.getvalue())
+
+    def test_save_parity_outputs_writes_comparator_contract(self):
+        result = {
+            "model_bytes": 1,
+            "model_sha256": "model",
+            "max_new_tokens": 2,
+            "n_layers": 1,
+            "prompts": [{"id": "p1", "runs": [{"generated_ids": [3, 4]}]}],
+        }
+        logits = [
+            np.array([0.0, 1.0], dtype=np.float32),
+            np.array([1.0, 0.0], dtype=np.float32),
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result_path = root / "result.json"
+            logits_path = root / "logits.npz"
+    
+            MODULE.save_parity_outputs(result_path, logits_path, result, logits)
+    
+            saved = json.loads(result_path.read_text(encoding="utf-8"))
+            with np.load(logits_path, allow_pickle=False) as archive:
+                self.assertEqual(archive.files, ["run_000"])
+                np.testing.assert_array_equal(
+                    archive["run_000"], np.asarray(logits)
+                )
+        self.assertEqual(saved["prompts"][0]["id"], "p1")
+    
+    def test_save_checkpoints_uses_reference_keys_and_float32(self):
+        checkpoints = {
+            "chunk_000_step_000": np.ones((1, 2), dtype=np.float16)
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "checkpoints.npz"
+    
+            MODULE.save_checkpoints(path, checkpoints)
+    
+            with np.load(path, allow_pickle=False) as archive:
+                self.assertEqual(archive.files, ["chunk_000_step_000"])
+                self.assertEqual(archive["chunk_000_step_000"].dtype, np.float32)
 
 
 if __name__ == "__main__":

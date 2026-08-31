@@ -123,6 +123,31 @@ class FreshHWXParserTests(unittest.TestCase):
         self.assertEqual(tiles[5], 3)
         self.assertEqual(tiles[4], 4)
 
+    def test_multiport_header_maps_sections_to_distinct_tiles(self):
+        image = replace(
+            self.image,
+            input_sections=((0, 0x1000), (0, 0x8001)),
+            output_sections=((0, 0x3000), (0, 0x4001)),
+        )
+        header = struct.unpack_from(
+            '<QIIQQII32I192Q',
+            MODULE._build_header(image, (1, 4, 1, 1), (1, 4, 1, 1)),
+        )
+        self.assertEqual(header[5:7], (2, 2))
+        self.assertEqual(header[7 + 4:7 + 8], (1, 2, 1, 3))
+
+    def test_multiport_tiles_cover_nchw_padding(self):
+        image = replace(
+            self.image,
+            input_sections=((0, 0x1000), (0, 0x80000), (0, 0x60000)),
+            output_sections=((0, 0x80000), (0, 0x1000), (0, 0x60000)),
+        )
+        header = struct.unpack_from(
+            '<QIIQQII32I192Q',
+            MODULE._build_header(image, (1, 2048, 1, 1), (1, 2048, 1, 1)),
+        )
+        self.assertEqual(header[7 + 4:7 + 10], (32, 8, 24, 8, 32, 24))
+
     def test_packers_reuse_output_buffers(self):
         matrix_256 = np.arange(512 * 256, dtype=np.float16).reshape(512, 256)
         expected_256 = RUNTIME.pack_weights(matrix_256)

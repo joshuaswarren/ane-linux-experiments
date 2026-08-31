@@ -122,6 +122,35 @@ def compare_checkpoints(
         return report
 
 
+def prompt_generated_ids(row: dict[str, Any]) -> list[int]:
+    if "generated_ids" in row:
+        return [int(token) for token in row["generated_ids"]]
+    runs = row.get("runs", [])
+    if not runs:
+        return []
+    sequences = [[int(token) for token in run.get("generated_ids", [])] for run in runs]
+    if any(sequence != sequences[0] for sequence in sequences[1:]):
+        raise ValueError(f"prompt {row.get('id', '<unknown>')} has divergent token runs")
+    return sequences[0]
+
+
+def generated_logits(
+    logits: np.ndarray, *, prompt_tokens: int, new_tokens: int
+) -> np.ndarray:
+    logits = np.asarray(logits, dtype=np.float32)
+    if logits.ndim != 2:
+        raise ValueError("logits must be rank-2 [steps, vocabulary]")
+    if logits.shape[0] == new_tokens:
+        return logits
+    prefill_steps = max(0, prompt_tokens - 1)
+    if logits.shape[0] == prefill_steps + new_tokens:
+        return logits[prefill_steps:]
+    raise ValueError(
+        f"logit trace has {logits.shape[0]} steps; expected {new_tokens} generated "
+        f"or {prefill_steps + new_tokens} prefill-plus-generated steps"
+    )
+
+
 def compare_token_sequences(
     reference: dict[str, Any], candidate: dict[str, Any], contract: dict[str, Any]
 ) -> dict[str, Any]:
@@ -146,8 +175,8 @@ def compare_token_sequences(
     unexpected = sorted(set(candidate_prompts) - set(reference_prompts))
     mismatches = []
     for prompt_id in sorted(set(reference_prompts) & set(candidate_prompts)):
-        expected_ids = reference_prompts[prompt_id].get("generated_ids", [])
-        actual_ids = candidate_prompts[prompt_id].get("generated_ids", [])
+        expected_ids = prompt_generated_ids(reference_prompts[prompt_id])
+        actual_ids = prompt_generated_ids(candidate_prompts[prompt_id])
         if expected_ids != actual_ids:
             mismatches.append(
                 {
@@ -185,6 +214,23 @@ def _archive_run_keys(archive: Any, prompt_index: int) -> list[str]:
         return [name for _, name in repeated]
     return [prompt_name] if prompt_name in archive else []
 
+def load_prompt_runs(path: Path, prompt_index: int) -> list[np.ndarray]:
+    archive_path = path / f"prompt_{prompt_index:03d}.npz" if path.is_dir() else path
+    with np.load(archive_path, allow_pickle=False) as archive:
+        if path.is_dir():
+            repeated = []
+            for name in archive.files:
+                if name.startswith("run_") and name[4:].isdigit():
+                    repeated.append((int(name[4:]), name))
+            repeated.sort()
+            if [index for index, _ in repeated] != list(range(len(repeated))):
+                raise ValueError(f"run shard has non-contiguous keys: {archive_path}")
+            keys = [name for _, name in repeated]
+        else:
+            keys = _archive_run_keys(archive, prompt_index)
+        return [np.asarray(archive[key], dtype=np.float32).copy() for key in keys]
+
+
 def compare_run_files(
     reference_json: Path,
     candidate_json: Path,
@@ -205,60 +251,68 @@ def compare_run_files(
     candidate_indices = {
         row["id"]: index for index, row in enumerate(candidate.get("prompts", []))
     }
-    with np.load(reference_logits, allow_pickle=False) as reference_archive, np.load(
-        candidate_logits, allow_pickle=False
-    ) as candidate_archive:
-        for index, row in enumerate(reference_rows):
-            prompt_id = row["id"]
-            reference_keys = _archive_run_keys(reference_archive, index)
-            if prompt_id not in candidate_indices:
-                logit_report["prompts"][prompt_id] = {
-                    "passed": False,
-                    "error": f"candidate is missing prompt {prompt_id}",
-                }
-                logit_report["passed"] = False
-                continue
-            candidate_index = candidate_indices[prompt_id]
-            candidate_keys = _archive_run_keys(candidate_archive, candidate_index)
-            if not reference_keys or not candidate_keys:
-                logit_report["prompts"][prompt_id] = {
-                    "passed": False,
-                    "error": (
-                        f"missing logits arrays reference={reference_keys} "
-                        f"candidate={candidate_keys}"
-                    ),
-                }
-                logit_report["passed"] = False
-                continue
-            if len(reference_keys) != len(candidate_keys):
-                logit_report["prompts"][prompt_id] = {
-                    "passed": False,
-                    "error": (
-                        f"run counts differ reference={len(reference_keys)} "
-                        f"candidate={len(candidate_keys)}"
-                    ),
-                }
-                logit_report["passed"] = False
-                continue
-            start = len(reference_prompts[prompt_id]["prompt_token_ids"]) - 1
-            runs = []
-            for run_index, (reference_key, candidate_key) in enumerate(
-                zip(reference_keys, candidate_keys)
-            ):
-                run_report = compare_logits(
-                    reference_archive[reference_key],
-                    candidate_archive[candidate_key],
-                    start,
-                    thresholds,
-                )
-                run_report["run_index"] = run_index
-                runs.append(run_report)
-            prompt_report = {
-                "runs": runs,
-                "passed": all(run["passed"] for run in runs),
+    for index, row in enumerate(reference_rows):
+        prompt_id = row["id"]
+        reference_runs = load_prompt_runs(reference_logits, index)
+        if prompt_id not in candidate_indices:
+            logit_report["prompts"][prompt_id] = {
+                "passed": False,
+                "error": f"candidate is missing prompt {prompt_id}",
             }
-            logit_report["prompts"][prompt_id] = prompt_report
-            logit_report["passed"] &= prompt_report["passed"]
+            logit_report["passed"] = False
+            continue
+        candidate_index = candidate_indices[prompt_id]
+        candidate_runs = load_prompt_runs(candidate_logits, candidate_index)
+        if not reference_runs or not candidate_runs:
+            logit_report["prompts"][prompt_id] = {
+                "passed": False,
+                "error": (
+                    f"missing logits arrays reference={len(reference_runs)} "
+                    f"candidate={len(candidate_runs)}"
+                ),
+            }
+            logit_report["passed"] = False
+            continue
+        if len(reference_runs) != len(candidate_runs):
+            logit_report["prompts"][prompt_id] = {
+                "passed": False,
+                "error": (
+                    f"run counts differ reference={len(reference_runs)} "
+                    f"candidate={len(candidate_runs)}"
+                ),
+            }
+            logit_report["passed"] = False
+            continue
+        prompt_tokens = len(reference_prompts[prompt_id]["prompt_token_ids"])
+        new_tokens = contract["generation"]["new_tokens"]
+        runs = []
+        for run_index, (reference_values, candidate_values) in enumerate(
+            zip(reference_runs, candidate_runs)
+        ):
+            reference_values = generated_logits(
+                reference_values,
+                prompt_tokens=prompt_tokens,
+                new_tokens=new_tokens,
+            )
+            candidate_values = generated_logits(
+                candidate_values,
+                prompt_tokens=prompt_tokens,
+                new_tokens=new_tokens,
+            )
+            run_report = compare_logits(
+                reference_values,
+                candidate_values,
+                0,
+                thresholds,
+            )
+            run_report["run_index"] = run_index
+            runs.append(run_report)
+        prompt_report = {
+            "runs": runs,
+            "passed": all(run["passed"] for run in runs),
+        }
+        logit_report["prompts"][prompt_id] = prompt_report
+        logit_report["passed"] &= prompt_report["passed"]
 
     checkpoint_report = None
     if reference_checkpoints is not None or candidate_checkpoints is not None:

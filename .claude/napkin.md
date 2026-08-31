@@ -36,6 +36,10 @@
 | 2026-08-30 | self | Passed the logarithmic recurrent decay into a graph that multiplies state by its input directly | Treat the recurrent graph gate as the final decay factor; compute softplus, scale, and exp before the graph |
 | 2026-08-30 | self | Compared the watermark service's base64 `cleaned` field as plain text and got a false README mismatch | Decode the returned base64 before hashing or comparing container-clean results |
 | 2026-08-30 | self | Kept the only validated recurrent ANEC under `/tmp`; reboot erased it | Persist compiled hardware artifacts outside `/tmp` and record the durable path before reboot |
+| 2026-08-30 | self | The comparator read top-level generated IDs and sliced generated-only logits as if they included prefill | Follow the artifact schema: read `prompts[].runs[].generated_ids`, and distinguish generated-only from prefill-plus-generated traces |
+| 2026-08-30 | self | Assumed macOS checkpoint steps combined prompt prefill from the checkpoint count alone | Read the reference `generate()` path. Lazy layer streaming disables batched prefill, so decoder checkpoint steps align directly with token positions |
+| 2026-08-30 | self | Validated Linux RoPE against a reference that copied the same invalid section remap | Derive the oracle from the frozen implementation. Qwen text decode uses contiguous half-split NeoX frequencies |
+| 2026-08-30 | self | Modeled native ANE RMSNorm as sqrt(mean square plus epsilon) | ANEForge's native op uses epsilon as a floor: divide by sqrt(max(mean square, epsilon)); low-energy DeltaNet outputs expose the difference |
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 - Ship small milestones. Update GitHub and README after each milestone.
@@ -173,3 +177,6 @@
 - 2026-08-30: `espresso_dump_ir` rejects a 270,368-element one-dimensional input with `-2`. Pack recurrent data as `(16, 133, 128)` rows instead of one huge width.
 - 2026-08-30: Recurrent state can stay in two old-Espresso aggregate BOs. Write dynamic rows, submit, then swap buffer roles; do not copy the state between steps.
 - 2026-08-30: A compiled Core ML neural network becomes Monterey ANECompiler input through `espresso_plan_add_network`, `espresso_plan_build`, and `espresso_dump_ir`.
+- 2026-08-30: ANEForge exposes final decoder chunk output after output RMS normalization. Match that checkpoint only; keep the recurrent hidden state raw.
+- 2026-08-30: Exact-input full-attention layers match the macOS reference within 0.0135 relative L2. DeltaNet layer 0 already differs by 0.2217 on its first token, so diagnose the DeltaNet path first.
+- 2026-08-30: A second macOS M1 can clear ANECompiler resource exhaustion without rebooting the reference host. A precomputed prompt-to-token map removes the local tokenizer prerequisite.

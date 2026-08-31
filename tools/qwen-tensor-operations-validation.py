@@ -37,9 +37,7 @@ def rope_reference(value, position):
     expected = value.astype(np.float32).copy()
     inverse = 10_000_000.0 ** (-np.arange(0, 64, 2, dtype=np.float32) / 64)
     frequencies = position * inverse
-    for offset, section in zip((1, 2), (11, 10)):
-        indexes = np.arange(offset, section * 3, 3)
-        frequencies[indexes] = position * inverse[: indexes.size]
+    
     cosine = np.cos(frequencies)
     sine = np.sin(frequencies)
     left = expected[:, :32].copy()
