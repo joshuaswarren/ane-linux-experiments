@@ -383,6 +383,61 @@ class Activations:
         return value
 
 
+class CausalConvolution:
+    """Run one depthwise causal convolution through the ANE backend."""
+
+    def __init__(self, run_elementwise, channels, kernel_size):
+        if channels < 1 or kernel_size < 1:
+            raise ValueError("channels and kernel_size must be positive")
+        self.run_elementwise = run_elementwise
+        self.channels = channels
+        self.kernel_size = kernel_size
+        self.history = np.zeros((kernel_size, channels), dtype=np.float16)
+        self.cursor = 0
+
+    def __call__(self, value, weight):
+        value = np.asarray(value)
+        weight = np.asarray(weight)
+        if value.dtype != np.float16 or value.shape != (self.channels,):
+            raise ValueError(
+                f"value shape and dtype must be ({self.channels},) float16"
+            )
+        expected_weight_shape = (self.channels, self.kernel_size)
+        if weight.dtype != np.float16 or weight.shape != expected_weight_shape:
+            raise ValueError(
+                "weight shape and dtype must be "
+                f"{expected_weight_shape} float16"
+            )
+        if not np.isfinite(value).all() or not np.isfinite(weight).all():
+            raise ValueError("value and weight must be finite")
+
+        self.history[self.cursor] = value
+        order = [
+            (self.cursor + offset + 1) % self.kernel_size
+            for offset in range(self.kernel_size)
+        ]
+        result = np.empty_like(value)
+        for start in range(0, self.channels, LANES):
+            width = min(LANES, self.channels - start)
+            source = np.zeros(LANES, dtype=np.float16)
+            coefficient = np.zeros(LANES, dtype=np.float16)
+            source[:width] = self.history[order[0], start : start + width]
+            coefficient[:width] = weight[start : start + width, 0]
+            total = self.run_elementwise("mul", source, coefficient)
+            for tap, history_index in enumerate(order[1:], start=1):
+                source.fill(0)
+                coefficient.fill(0)
+                source[:width] = self.history[
+                    history_index, start : start + width
+                ]
+                coefficient[:width] = weight[start : start + width, tap]
+                product = self.run_elementwise("mul", source, coefficient)
+                total = self.run_elementwise("add", total, product)
+            result[start : start + width] = total[:width]
+        self.cursor = (self.cursor + 1) % self.kernel_size
+        return result
+
+
 class Normalization:
     """Run row-wise RMS and L2 normalization through the ANE backend."""
 

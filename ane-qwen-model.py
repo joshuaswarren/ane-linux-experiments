@@ -286,9 +286,19 @@ class QwenModel:
         beta = self.activate_sigmoid(self.projection(layer["beta"], x))
         alpha = self.projection(layer["alpha"], x).astype(np.float32)
 
-        window = np.concatenate((layer["conv_state"], mixed[:, None]), axis=1)
-        layer["conv_state"] = window[:, 1:]
-        mixed = np.sum(window.astype(np.float32) * layer["conv"].astype(np.float32), axis=1)
+        if self.token_runtime is not None:
+            mixed = self.token_runtime.causal_convolution(
+                layer["state_index"], mixed.astype(np.float16), layer["conv"]
+            )
+        else:
+            window = np.concatenate(
+                (layer["conv_state"], mixed[:, None]), axis=1
+            )
+            layer["conv_state"] = window[:, 1:]
+            mixed = np.sum(
+                window.astype(np.float32) * layer["conv"].astype(np.float32),
+                axis=1,
+            )
         mixed = self.activate_silu(_compute_dtype(mixed))
         query, key, value = np.split(mixed, 3)
         query = self.normalize_l2(

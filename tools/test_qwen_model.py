@@ -20,12 +20,19 @@ class FakeTokenRuntime:
         self.recurrent_calls = []
         self.normalization_calls = []
         self.activation_calls = []
+        self.convolution_calls = []
 
     def full_attention(self, layer_index, query, key, value):
         self.full_calls.append(
             (layer_index, query.copy(), key.copy(), value.copy())
         )
         return np.ones((8, 256), dtype=np.float16)
+
+    def causal_convolution(self, layer_index, value, weight):
+        self.convolution_calls.append(
+            (layer_index, value.copy(), weight.copy())
+        )
+        return value.copy()
 
     def recurrent(self, layer_index, query, key, value, beta, decay):
         self.recurrent_calls.append(
@@ -196,6 +203,14 @@ class QwenModelMathTests(unittest.TestCase):
         actual = model.linear_layer(layer, hidden)
 
         self.assertEqual(len(model.token_runtime.recurrent_calls), 1)
+        self.assertEqual(len(model.token_runtime.convolution_calls), 1)
+        convolution_call = model.token_runtime.convolution_calls[0]
+        self.assertEqual(convolution_call[0], 5)
+        self.assertEqual(convolution_call[1].shape, (6144,))
+        self.assertEqual(convolution_call[2].shape, (6144, 4))
+        np.testing.assert_array_equal(
+            layer["conv_state"], np.zeros((6144, 3), dtype=np.float16)
+        )
         self.assertEqual(
             [call[:2] for call in model.token_runtime.normalization_calls],
             [

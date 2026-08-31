@@ -57,8 +57,12 @@ The activation validator covers all five model uses with errors below `0.011`.
 A full one-token run produced 248,320 finite logits and selected token `220`.
 See `receipts/qwen-linux-activation-validation.json` for commands and hashes.
 
-The path is not ANE-only yet. Convolution, RoPE, and residual arithmetic still
-run on the host.
+Depthwise causal convolution now uses the same ANE elementwise backend.
+Four sequential 6,144-channel steps stayed below `0.0016` maximum error.
+The full token run kept token `220` and produced finite logits.
+See `receipts/qwen-linux-convolution-validation.json` for commands and hashes.
+
+The path is not ANE-only yet. RoPE and residual arithmetic still run on the host.
 
 ## Qwen reference workflow
 
