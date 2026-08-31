@@ -69,6 +69,7 @@ class QwenTokenRuntime:
             self.softmax = SOFTMAX.Softmax128(self.elementwise)
             self.normalization = SOFTMAX.Normalization(self.elementwise)
             self.activations = SOFTMAX.Activations(self.elementwise)
+            self.tensor_operations = SOFTMAX.TensorOperations(self.elementwise)
             for _ in range(recurrent_layers):
                 self.convolutions.append(
                     SOFTMAX.CausalConvolution(
@@ -100,9 +101,7 @@ class QwenTokenRuntime:
                 dtype=np.float16,
             )
             for _ in range(recurrent_layers):
-                runner = RECURRENT.RecurrentRunner(
-                    recurrent_artifact, device=device
-                )
+                runner = RECURRENT.RecurrentRunner(recurrent_artifact, device=device)
                 self.recurrent_runners.append(runner)
                 runner.initialize(initial_state)
         except BaseException:
@@ -114,9 +113,7 @@ class QwenTokenRuntime:
 
     def full_attention(self, layer_index, query, key, value):
         self._ensure_open()
-        query = self._require(
-            query, (QUERY_HEADS, ATTENTION_DIMENSION), "query"
-        )
+        query = self._require(query, (QUERY_HEADS, ATTENTION_DIMENSION), "query")
         key = self._require(key, (KV_HEADS, ATTENTION_DIMENSION), "key")
         value = self._require(value, (KV_HEADS, ATTENTION_DIMENSION), "value")
         states = self.attention_states[layer_index]
@@ -139,6 +136,14 @@ class QwenTokenRuntime:
     def causal_convolution(self, layer_index, value, weight):
         self._ensure_open()
         return self.convolutions[layer_index](value, weight)
+
+    def residual_add(self, left, right):
+        self._ensure_open()
+        return self.tensor_operations.add(left, right)
+
+    def rope(self, value, position):
+        self._ensure_open()
+        return self.tensor_operations.rope(value, position)
 
     def rms_norm(self, value, weight):
         self._ensure_open()
@@ -177,9 +182,7 @@ class QwenTokenRuntime:
         value = self._require(value, vector_shape, "value")
         beta = self._require(beta, gate_shape, "beta")
         decay = self._require(decay, gate_shape, "decay")
-        return self.recurrent_runners[layer_index].step(
-            query, key, value, beta, decay
-        )
+        return self.recurrent_runners[layer_index].step(query, key, value, beta, decay)
 
     def _ensure_open(self):
         if self.closed:

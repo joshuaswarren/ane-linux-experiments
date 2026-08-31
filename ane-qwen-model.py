@@ -13,6 +13,7 @@ claim that every non-linear primitive has already moved to the ANE.
 
   python3 ane-qwen-model.py -m Qwen3.8-2B-Q4_K_M.gguf -p "The engine runs"
 """
+
 import argparse
 import importlib.util
 import os
@@ -65,7 +66,7 @@ def rope(x, position, rotary_dim=64, theta=10_000_000.0, sections=(11, 11, 10)):
     freqs = position * inv
     for offset, section in zip((1, 2), sections[1:]):
         indexes = np.arange(offset, section * 3, 3)
-        freqs[indexes] = position * inv[:indexes.size]
+        freqs[indexes] = position * inv[: indexes.size]
     cos, sin = np.cos(freqs), np.sin(freqs)
     rotated = out[:, :rotary_dim].copy()
     half = rotary_dim // 2
@@ -73,6 +74,7 @@ def rope(x, position, rotary_dim=64, theta=10_000_000.0, sections=(11, 11, 10)):
     out[:, :half] = left * cos - right * sin
     out[:, half:rotary_dim] = right * cos + left * sin
     return _compute_dtype(out)
+
 
 class NumpyDevice:
     """Reference backend using the same canonical matrices on the CPU."""
@@ -141,39 +143,45 @@ class QwenModel:
                 "ffn_down": self.tensor(f"{prefix}.ffn_down.weight"),
             }
             if full:
-                layer.update({
-                    "state_index": full_state_index,
-                    "q": self.tensor(f"{prefix}.attn_q.weight"),
-                    "k": self.tensor(f"{prefix}.attn_k.weight"),
-                    "v": self.tensor(f"{prefix}.attn_v.weight"),
-                    "o": self.tensor(f"{prefix}.attn_output.weight"),
-                    "q_norm": self.tensor(f"{prefix}.attn_q_norm.weight"),
-                    "k_norm": self.tensor(f"{prefix}.attn_k_norm.weight"),
-                    "keys": [],
-                    "values": [],
-                })
+                layer.update(
+                    {
+                        "state_index": full_state_index,
+                        "q": self.tensor(f"{prefix}.attn_q.weight"),
+                        "k": self.tensor(f"{prefix}.attn_k.weight"),
+                        "v": self.tensor(f"{prefix}.attn_v.weight"),
+                        "o": self.tensor(f"{prefix}.attn_output.weight"),
+                        "q_norm": self.tensor(f"{prefix}.attn_q_norm.weight"),
+                        "k_norm": self.tensor(f"{prefix}.attn_k_norm.weight"),
+                        "keys": [],
+                        "values": [],
+                    }
+                )
                 full_state_index += 1
             else:
-                layer.update({
-                    "state_index": recurrent_state_index,
-                    "qkv": self.tensor(f"{prefix}.attn_qkv.weight"),
-                    "z": self.tensor(f"{prefix}.attn_gate.weight"),
-                    "beta": self.tensor(f"{prefix}.ssm_beta.weight"),
-                    "alpha": self.tensor(f"{prefix}.ssm_alpha.weight"),
-                    "out": self.tensor(f"{prefix}.ssm_out.weight"),
-                    "conv": self.tensor(f"{prefix}.ssm_conv1d.weight"),
-                    "a_log": self.tensor(f"{prefix}.ssm_a"),
-                    "dt_bias": self.tensor(f"{prefix}.ssm_dt.bias"),
-                    "ssm_norm": self.tensor(f"{prefix}.ssm_norm.weight"),
-                    "conv_state": np.zeros((6144, 3), dtype=np.float16),
-                    "recurrent": np.zeros((16, 128, 128), dtype=np.float32),
-                })
+                layer.update(
+                    {
+                        "state_index": recurrent_state_index,
+                        "qkv": self.tensor(f"{prefix}.attn_qkv.weight"),
+                        "z": self.tensor(f"{prefix}.attn_gate.weight"),
+                        "beta": self.tensor(f"{prefix}.ssm_beta.weight"),
+                        "alpha": self.tensor(f"{prefix}.ssm_alpha.weight"),
+                        "out": self.tensor(f"{prefix}.ssm_out.weight"),
+                        "conv": self.tensor(f"{prefix}.ssm_conv1d.weight"),
+                        "a_log": self.tensor(f"{prefix}.ssm_a"),
+                        "dt_bias": self.tensor(f"{prefix}.ssm_dt.bias"),
+                        "ssm_norm": self.tensor(f"{prefix}.ssm_norm.weight"),
+                        "conv_state": np.zeros((6144, 3), dtype=np.float16),
+                        "recurrent": np.zeros((16, 128, 128), dtype=np.float32),
+                    }
+                )
                 recurrent_state_index += 1
             self.layers.append(layer)
         self.output_norm = self.tensor("output_norm.weight")
         self.embedding = self.tensor("token_embd.weight")
+
     def has(self, name):
         return name in self.weights.names()
+
     def tensor(self, name):
         if self.cpu_reference:
             return self.weights.tensor32(name)
@@ -183,6 +191,7 @@ class QwenModel:
         if self.cpu_reference:
             return self.weights.row32("token_embd.weight", token_id)
         return self.weights.row("token_embd.weight", token_id)
+
     def projection(self, matrix, activation, in_cols=None):
         if self.cpu_reference:
             return matrix.astype(np.float32) @ activation.astype(np.float32)
@@ -194,8 +203,10 @@ class QwenModel:
         # Only giant matrices (the 508 M-element tied head) are cached; all
         # other projections keep the shared per-call workspace.
         tile_gemm = None
-        if getattr(self.device, "tile_gemm", None) is not None \
-                and os.environ.get("ANE_NO_PERSISTENT") != "1":
+        if (
+            getattr(self.device, "tile_gemm", None) is not None
+            and os.environ.get("ANE_NO_PERSISTENT") != "1"
+        ):
             if matrix.shape[0] * matrix.shape[1] >= 100_000_000:
                 tile_gemm = self.device.tile_gemm
             else:
@@ -208,16 +219,18 @@ class QwenModel:
                 rows = min(512, matrix.shape[0] - row0)
                 cols = min(in_cols, matrix.shape[1] - col0)
                 x = np.zeros(in_cols, dtype=np.float16)
-                x[:cols] = activation[col0:col0 + cols]
+                x[:cols] = activation[col0 : col0 + cols]
                 if tile_gemm is not None:
                     key = (mid, in_cols, row0, col0)
-                    acc += tile_gemm(key, matrix, x, descriptor, in_cols).astype(np.float32)
+                    acc += tile_gemm(key, matrix, x, descriptor, in_cols).astype(
+                        np.float32
+                    )
                 else:
                     tile = np.zeros((512, in_cols), dtype=np.float16)
-                    tile[:rows, :cols] = matrix[row0:row0 + rows, col0:col0 + cols]
+                    tile[:rows, :cols] = matrix[row0 : row0 + rows, col0 : col0 + cols]
                     gemm = self.device.gemm512 if in_cols == 512 else self.device.gemm
                     acc += gemm(tile, x, descriptor).astype(np.float32)
-            result[row0:row0 + rows] = acc[:rows]
+            result[row0 : row0 + rows] = acc[:rows]
         return result
 
     def normalize_rms(self, value, weight):
@@ -271,13 +284,25 @@ class QwenModel:
         decay = a_log.astype(np.float32) * np.logaddexp(0.0, combined)
         return np.exp(decay)
 
+    def residual_add(self, left, right):
+        if self.token_runtime is not None:
+            return self.token_runtime.residual_add(
+                left.astype(np.float16), right.astype(np.float16)
+            )
+        return _compute_dtype(left.astype(np.float32) + right.astype(np.float32))
+
+    def rotate(self, value, position):
+        if self.token_runtime is not None:
+            return self.token_runtime.rope(value.astype(np.float16), position)
+        return rope(value, position)
+
     def mlp(self, layer, hidden):
         x = self.normalize_rms(hidden, layer["post_norm"])
         gate = self.projection(layer["ffn_gate"], x)
         up = self.projection(layer["ffn_up"], x)
         act = self.activate_silu_mul(gate, up)
         down = self.projection(layer["ffn_down"], act)
-        return _compute_dtype(hidden.astype(np.float32) + down)
+        return self.residual_add(hidden, down)
 
     def linear_layer(self, layer, hidden):
         x = self.normalize_rms(hidden, layer["input_norm"])
@@ -291,9 +316,7 @@ class QwenModel:
                 layer["state_index"], mixed.astype(np.float16), layer["conv"]
             )
         else:
-            window = np.concatenate(
-                (layer["conv_state"], mixed[:, None]), axis=1
-            )
+            window = np.concatenate((layer["conv_state"], mixed[:, None]), axis=1)
             layer["conv_state"] = window[:, 1:]
             mixed = np.sum(
                 window.astype(np.float32) * layer["conv"].astype(np.float32),
@@ -301,9 +324,7 @@ class QwenModel:
             )
         mixed = self.activate_silu(_compute_dtype(mixed))
         query, key, value = np.split(mixed, 3)
-        query = self.normalize_l2(
-            query.reshape(16, 128), 1.0 / np.sqrt(128.0)
-        )
+        query = self.normalize_l2(query.reshape(16, 128), 1.0 / np.sqrt(128.0))
         key = self.normalize_l2(key.reshape(16, 128))
         value = value.reshape(16, 128)
         decay_factor = self.recurrent_decay_factor(
@@ -331,7 +352,7 @@ class QwenModel:
         norm = self.normalize_rms(_compute_dtype(output), layer["ssm_norm"])
         norm = self.activate_silu_mul(z.reshape(16, 128), norm)
         mixed_out = self.projection(layer["out"], norm.reshape(-1))
-        return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
+        return self.mlp(layer, self.residual_add(hidden, mixed_out))
 
     def full_layer(self, layer, hidden, position):
         x = self.normalize_rms(hidden, layer["input_norm"])
@@ -341,8 +362,8 @@ class QwenModel:
         k = self.projection(layer["k"], x)
         v = self.projection(layer["v"], x)
         k_heads, v_heads = k.reshape(2, 256), v.reshape(2, 256)
-        q_heads = rope(self.normalize_rms(q_heads, layer["q_norm"]), position)
-        k_heads = rope(self.normalize_rms(k_heads, layer["k_norm"]), position)
+        q_heads = self.rotate(self.normalize_rms(q_heads, layer["q_norm"]), position)
+        k_heads = self.rotate(self.normalize_rms(k_heads, layer["k_norm"]), position)
         if self.token_runtime is not None:
             attended = self.token_runtime.full_attention(
                 layer["state_index"],
@@ -358,11 +379,15 @@ class QwenModel:
             attended = causal_attention(q_heads, keys, values)
         gated = self.activate_sigmoid_mul(gate, attended.reshape(-1))
         mixed_out = self.projection(layer["o"], _compute_dtype(gated))
-        return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
+        return self.mlp(layer, self.residual_add(hidden, mixed_out))
 
     def step(self, hidden, position):
         for layer in self.layers:
-            hidden = self.full_layer(layer, hidden, position) if layer["full"] else self.linear_layer(layer, hidden)
+            hidden = (
+                self.full_layer(layer, hidden, position)
+                if layer["full"]
+                else self.linear_layer(layer, hidden)
+            )
         return hidden
 
     def logits(self, hidden):
@@ -407,13 +432,15 @@ def main():
         descriptor = runtime.load_descriptor(descriptor_path)
         descriptor_512 = runtime.load_descriptor(descriptor_path, (512, 512))
     token_ids = tokenizer.encode(args.prompt)
-    model = QwenModel(args.model, args.gguf_py, runtime, weights, descriptor, descriptor_512, args.qid)
+    model = QwenModel(
+        args.model, args.gguf_py, runtime, weights, descriptor, descriptor_512, args.qid
+    )
     try:
         if args.recurrent_anec is not None:
             token_runtime_module = load(os.path.join("tools", "qwen-token-runtime.py"))
             softmax_path = os.path.join(os.path.dirname(__file__), "ane-softmax.py")
-            elementwise_descriptors = token_runtime_module.harvest_elementwise_descriptors(
-                softmax_path
+            elementwise_descriptors = (
+                token_runtime_module.harvest_elementwise_descriptors(softmax_path)
             )
             full_layers = sum(layer["full"] for layer in model.layers)
             model.token_runtime = token_runtime_module.QwenTokenRuntime(
@@ -425,6 +452,7 @@ def main():
                 len(model.layers) - full_layers,
             )
         import time as _time
+
         step_s = 0.0
         logits_s = 0.0
         hidden = np.zeros(2048, dtype=np.float16)
@@ -443,19 +471,29 @@ def main():
             if offset == args.generate:
                 break
             generated_ids.append(next_id)
-            generated_pieces.append(token_field.contents(next_id) if token_field else str(next_id))
+            generated_pieces.append(
+                token_field.contents(next_id) if token_field else str(next_id)
+            )
             hidden = model.step(model.embedding_row(next_id), len(token_ids) + offset)
         top_ids = np.argsort(logits)[-10:][::-1]
         print(f"prompt_tokens={token_ids}")
-        print(f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}")
+        print(
+            f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}"
+        )
         print(f"resident_token_runtime={model.token_runtime is not None}")
-        print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
+        print(
+            f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}"
+        )
         print(f"top10={[(int(i), float(logits[i])) for i in top_ids]}")
         print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
         print(f"hidden_head={hidden[:16].tolist()}")
-        print(f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}")
-        print(f"timing_s: steps={step_s:.3f} logits={logits_s:.3f} "
-              f"(persistent={os.environ.get('ANE_NO_PERSISTENT') != '1'})")
+        print(
+            f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}"
+        )
+        print(
+            f"timing_s: steps={step_s:.3f} logits={logits_s:.3f} "
+            f"(persistent={os.environ.get('ANE_NO_PERSISTENT') != '1'})"
+        )
         print("ANE_QWEN_FULL_TOKEN_STEP_OK")
     finally:
         model.close()

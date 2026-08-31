@@ -241,5 +241,12 @@ Decoder layers took 80.171 seconds, and logits took 7.028 seconds.
 The control GEMM passed before and after the hardware runs.
 The report is `receipts/qwen-linux-convolution-validation.json`.
 
-RoPE and residual arithmetic remain on the host.
-The next milestone moves both operations to ANE.
+RoPE rotation and every residual addition now use composed ANE submissions.
+The 2,048-wide residual case had 0.001953 maximum error.
+The 8 by 256 query and 2 by 256 key RoPE cases stayed below 0.001811.
+A complete token run selected token 220 with finite hidden state and 248,320 finite logits.
+Decoder layers took 91.686 seconds, and logits took 7.249 seconds.
+The control GEMM passed before and after the hardware runs.
+The report is `receipts/qwen-linux-tensor-operations-validation.json`.
+
+The next milestone rejects every CPU and GPU tensor fallback in ANE mode.

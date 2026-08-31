@@ -35,6 +35,7 @@
 | 2026-08-30 | self | Guessed a nonexistent partial grep path and then used apply-patch syntax with the hashline edit tool | List the real tree before filtering, and use hashline PUT or CUT operations from fresh read hashes |
 | 2026-08-30 | self | Passed the logarithmic recurrent decay into a graph that multiplies state by its input directly | Treat the recurrent graph gate as the final decay factor; compute softplus, scale, and exp before the graph |
 | 2026-08-30 | self | Compared the watermark service's base64 `cleaned` field as plain text and got a false README mismatch | Decode the returned base64 before hashing or comparing container-clean results |
+| 2026-08-30 | self | Kept the only validated recurrent ANEC under `/tmp`; reboot erased it | Persist compiled hardware artifacts outside `/tmp` and record the durable path before reboot |
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 - Ship small milestones. Update GitHub and README after each milestone.
@@ -47,6 +48,7 @@
 - Mutable raw GEMM programs can hold a KV ring in packed weight rows and columns. Update matching slots, mask unused score rows, and reserve output row 511 for completion polling.
 - Compose 128-wide softmax from two 64-lane ANE halves. Reuse four BOs, clamp at -64, divide by 128, square seven times, and run twelve Newton reciprocal steps.
 - A host-managed ring can schedule causal convolution without host tensor arithmetic. ANE runs four multiply and three add submissions per 64-lane chunk.
+- Pack one RoPE head into 64 lanes. One direct multiply, one swapped-half multiply, and one add perform the rotation.
 - macOS 26 HWX = real Mach-O: `__TEXT,__text` @ 0x4000 = TD (0x274), `__TEXT,__const` @ 0x4280 = kernel, KDMA offsets kernel-base-relative (0x280 base, step 0x4000).
 - Old-format graphs (macOS-15-era anecc) still run on current Linux KMD; fresh macOS 26 TDs reach the device and hang it (-110 at `tm execution`). Patching engine-count/bit-26 words does not revive them.
 - Control-first bisect: same plist through both compilers isolates format from config in one diff (20/157 words for net.plist).

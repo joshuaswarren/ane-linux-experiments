@@ -1,0 +1,72 @@
+{
+  "date": "2026-08-30",
+  "milestone": "Linux Qwen RoPE and residual arithmetic on ANE",
+  "hardware_validator_command": "PYTHONUNBUFFERED=1 python3 tools/qwen-tensor-operations-validation.py",
+  "hardware_validator_run": {
+    "qid": null,
+    "elapsed_seconds": 0.014506646999961958,
+    "marker": "ANE_QWEN_TENSOR_OPERATIONS_OK",
+    "cases": [
+      {
+        "name": "residual_add",
+        "shape": [2048],
+        "max_error": 0.001953125,
+        "limit": 0.04
+      },
+      {
+        "name": "query_rope",
+        "shape": [8, 256],
+        "max_error": 0.0018100738525390625,
+        "limit": 0.04
+      },
+      {
+        "name": "key_rope",
+        "shape": [2, 256],
+        "max_error": 0.0016057491302490234,
+        "limit": 0.04
+      }
+    ]
+  },
+  "full_token_command": "PATH=<llama.cpp-build-bin>:$PATH python3 ane-qwen-model.py -m <GGUF> -p A --recurrent-anec <RECURRENT_ANEC> --generate 0",
+  "full_token_run": {
+    "prompt_tokens": [32],
+    "layers": 24,
+    "full_layers": 6,
+    "resident_token_runtime": true,
+    "hidden_shape": [2048],
+    "logits_shape": [248320],
+    "next_token": 220,
+    "hidden_finite": true,
+    "logits_finite": true,
+    "layer_seconds": 91.686,
+    "logits_seconds": 7.249,
+    "marker": "ANE_QWEN_FULL_TOKEN_STEP_OK"
+  },
+  "ane_control_before": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "ane_control_after": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "recurrent_artifact": {
+    "bytes": 102400,
+    "sha256": "776a00255e21ed0b9e04665452c7e81348a48627e81578c3364b191d8017b58b",
+    "recovered_from_hwx_sha256": "cb570fca5355b7e6f8ad0cae53f0e7145c57492aa612d42506b7e0cda4972604"
+  },
+  "source_sha256": {
+    "ane-qwen-model.py": "cd79f61349cdcc7a87109378b6bc6eaaeb41cffe6e8c5e34118d9c91d83d11f1",
+    "tools/qwen-token-runtime.py": "f11a7d67d1f7e9ce8da95b06d7512f9777b7489d88532b70be06a4083b1755a2",
+    "tools/softmax-runtime.py": "a8153f32874f583be706b5dc192c12f940e58bf34e2e23e878271cd45d92cde0",
+    "tools/qwen-tensor-operations-validation.py": "0af4cac186c3812ec287cb9c7a505edaee2e79754c20e8dfe5ca3abc1949c08b",
+    "tools/test_qwen_model.py": "65f5bae58c6555524a936063d8e7896488e587c860f42e139b56a31a8d08b380",
+    "tools/test_qwen_token_runtime.py": "8c7ed085ba07c43e45312bea0816bf70b804d96cf0c728bafe13421d9f58a86b",
+    "tools/test_softmax_runtime.py": "4d401e69ed78528c3d2ae54b93109737f276b50852822446e1a0a02e9769781d"
+  },
+  "scope": {
+    "moved_to_ane": [
+      "RoPE multiply and add arithmetic for query and key heads",
+      "all model residual additions"
+    ],
+    "host_scheduler": [
+      "RoPE cosine and sine constant generation",
+      "64-lane packing and output copies"
+    ],
+    "remaining_milestone": "Enforce and verify that the ANE backend has no CPU or GPU tensor fallback."
+  }
+}

@@ -121,10 +121,24 @@ class FakeActivations:
         return value.copy()
 
     def decay_multiplier(self, alpha, bias, a_log):
-        self.calls.append(
-            ("decay_multiplier", alpha.copy(), bias.copy(), a_log.copy())
-        )
+        self.calls.append(("decay_multiplier", alpha.copy(), bias.copy(), a_log.copy()))
         return alpha.copy()
+
+
+class FakeTensorOperations:
+    instances: ClassVar[list] = []
+
+    def __init__(self, _backend):
+        self.calls = []
+        self.instances.append(self)
+
+    def add(self, left, right):
+        self.calls.append(("add", left.copy(), right.copy()))
+        return left.copy()
+
+    def rope(self, value, position):
+        self.calls.append(("rope", value.copy(), position))
+        return value.copy()
 
 
 class FakeCausalConvolution:
@@ -172,6 +186,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         FakeNormalization.instances = []
         FakeActivations.instances = []
         FakeCausalConvolution.instances = []
+        FakeTensorOperations.instances = []
         FakeRecurrentRunner.instances = []
         self.original_attention = MODULE.ATTENTION
         self.original_softmax = MODULE.SOFTMAX
@@ -187,6 +202,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
             Normalization=FakeNormalization,
             Activations=FakeActivations,
             CausalConvolution=FakeCausalConvolution,
+            TensorOperations=FakeTensorOperations,
         )
         MODULE.RECURRENT = SimpleNamespace(RecurrentRunner=FakeRecurrentRunner)
         self.runtime = MODULE.QwenTokenRuntime(
@@ -259,17 +275,11 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         actual = self.runtime.decay_multiplier(alpha, bias, a_log)
 
         np.testing.assert_array_equal(actual, alpha)
-        self.assertEqual(
-            FakeActivations.instances[0].calls[-1][0], "decay_multiplier"
-        )
+        self.assertEqual(FakeActivations.instances[0].calls[-1][0], "decay_multiplier")
 
     def test_full_attention_maps_four_query_heads_to_each_kv_head(self):
-        query = np.repeat(
-            np.arange(8, dtype=np.float16)[:, None], 256, axis=1
-        )
-        key = np.repeat(
-            np.arange(2, dtype=np.float16)[:, None], 256, axis=1
-        )
+        query = np.repeat(np.arange(8, dtype=np.float16)[:, None], 256, axis=1)
+        key = np.repeat(np.arange(2, dtype=np.float16)[:, None], 256, axis=1)
         value = key + np.float16(10)
 
         actual = self.runtime.full_attention(1, query, key, value)
@@ -286,8 +296,12 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         np.testing.assert_array_equal(
             softmax_inputs[7], np.full(128, np.float16(7.0 / 16.0))
         )
-        np.testing.assert_array_equal(actual[:4], np.full((4, 256), 3, dtype=np.float16))
-        np.testing.assert_array_equal(actual[4:], np.full((4, 256), 4, dtype=np.float16))
+        np.testing.assert_array_equal(
+            actual[:4], np.full((4, 256), 3, dtype=np.float16)
+        )
+        np.testing.assert_array_equal(
+            actual[4:], np.full((4, 256), 4, dtype=np.float16)
+        )
 
     def test_recurrent_step_uses_selected_resident_runner(self):
         q = np.ones((16, 128), dtype=np.float16)
@@ -331,6 +345,20 @@ class QwenTokenRuntimeTests(unittest.TestCase):
             [call[0] for call in FakeActivations.instances[0].calls],
             ["sigmoid", "silu", "sigmoid_mul", "silu_mul"],
         )
+
+    def test_tensor_operations_use_shared_elementwise_backend(self):
+        left = np.arange(96, dtype=np.float16)
+        right = np.ones(96, dtype=np.float16)
+        heads = np.ones((2, 256), dtype=np.float16)
+
+        residual = self.runtime.residual_add(left, right)
+        rotated = self.runtime.rope(heads, 7)
+
+        np.testing.assert_array_equal(residual, left)
+        np.testing.assert_array_equal(rotated, heads)
+        calls = FakeTensorOperations.instances[0].calls
+        self.assertEqual([call[0] for call in calls], ["add", "rope"])
+        self.assertEqual(calls[1][2], 7)
 
     def test_close_is_idempotent(self):
         self.runtime.close()
