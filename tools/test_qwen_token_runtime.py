@@ -127,6 +127,20 @@ class FakeActivations:
         return alpha.copy()
 
 
+class FakeCausalConvolution:
+    instances: ClassVar[list] = []
+
+    def __init__(self, _backend, channels, kernel_size):
+        self.channels = channels
+        self.kernel_size = kernel_size
+        self.calls = []
+        self.instances.append(self)
+
+    def __call__(self, value, weight):
+        self.calls.append((value.copy(), weight.copy()))
+        return value.copy()
+
+
 class FakeRecurrentRunner:
     instances: ClassVar[list] = []
 
@@ -157,6 +171,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         FakeSoftmax.instances = []
         FakeNormalization.instances = []
         FakeActivations.instances = []
+        FakeCausalConvolution.instances = []
         FakeRecurrentRunner.instances = []
         self.original_attention = MODULE.ATTENTION
         self.original_softmax = MODULE.SOFTMAX
@@ -171,6 +186,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
             Softmax128=FakeSoftmax,
             Normalization=FakeNormalization,
             Activations=FakeActivations,
+            CausalConvolution=FakeCausalConvolution,
         )
         MODULE.RECURRENT = SimpleNamespace(RecurrentRunner=FakeRecurrentRunner)
         self.runtime = MODULE.QwenTokenRuntime(
@@ -214,10 +230,26 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         )
         self.assertEqual(len(FakeAttentionState.instances), 4)
         self.assertEqual(len(FakeRecurrentRunner.instances), 3)
+        self.assertEqual(len(FakeCausalConvolution.instances), 3)
+        self.assertTrue(
+            all(item.channels == 6144 for item in FakeCausalConvolution.instances)
+        )
         for runner in FakeRecurrentRunner.instances:
             np.testing.assert_array_equal(
                 runner.initialized, np.zeros((16, 128, 128), dtype=np.float16)
             )
+
+    def test_causal_convolution_uses_layer_state(self):
+        value = np.arange(6144, dtype=np.float16)
+        weight = np.ones((6144, 4), dtype=np.float16)
+
+        actual = self.runtime.causal_convolution(1, value, weight)
+
+        np.testing.assert_array_equal(actual, value)
+        calls = FakeCausalConvolution.instances[1].calls
+        self.assertEqual(len(calls), 1)
+        np.testing.assert_array_equal(calls[0][0], value)
+        np.testing.assert_array_equal(calls[0][1], weight)
 
     def test_decay_multiplier_uses_shared_activation_backend(self):
         alpha = np.arange(16, dtype=np.float16)

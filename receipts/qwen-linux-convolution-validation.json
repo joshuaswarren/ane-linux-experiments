@@ -1,0 +1,70 @@
+{
+  "date": "2026-08-30",
+  "milestone": "Linux Qwen depthwise causal convolution on ANE",
+  "hardware_validator_command": "PYTHONUNBUFFERED=1 python3 tools/qwen-convolution-validation.py --qid 4",
+  "hardware_validator_run": {
+    "qid": 4,
+    "shape": [6144, 4],
+    "elapsed_seconds": 0.4343605350004509,
+    "marker": "ANE_QWEN_CONVOLUTION_OK",
+    "cases": [
+      {
+        "step": 0,
+        "max_error": 0.0004673004150390625,
+        "limit": 0.04
+      },
+      {
+        "step": 1,
+        "max_error": 0.0007913112640380859,
+        "limit": 0.04
+      },
+      {
+        "step": 2,
+        "max_error": 0.0015087127685546875,
+        "limit": 0.04
+      },
+      {
+        "step": 3,
+        "max_error": 0.001344919204711914,
+        "limit": 0.04
+      }
+    ]
+  },
+  "full_token_command": "PATH=<llama.cpp-build-bin>:$PATH python3 ane-qwen-model.py -m <GGUF> -p A --recurrent-anec <RECURRENT_ANEC> --generate 0",
+  "full_token_run": {
+    "prompt_tokens": [32],
+    "layers": 24,
+    "full_layers": 6,
+    "resident_token_runtime": true,
+    "hidden_shape": [2048],
+    "logits_shape": [248320],
+    "next_token": 220,
+    "hidden_finite": true,
+    "logits_finite": true,
+    "layer_seconds": 80.171,
+    "logits_seconds": 7.028,
+    "marker": "ANE_QWEN_FULL_TOKEN_STEP_OK"
+  },
+  "ane_control_before": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "ane_control_after": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "source_sha256": {
+    "ane-qwen-model.py": "5fc463fe613075f83bb4c67708d027b2124d4362c199f61e1d8b06689e3bfd51",
+    "tools/qwen-token-runtime.py": "52fd40f536e3895d7d6dc6e7c6c15626a9c558d591c1b34a244d877427e8016f",
+    "tools/softmax-runtime.py": "3f15bcaaf56e30bbdc4cf92283224282dbf92cbfe37f0482a9b350eae2be793a",
+    "tools/qwen-convolution-validation.py": "0adc01ff9b4272847f56b2050a3963ef1be71c818e7758df666f03e954d491dd",
+    "tools/test_qwen_model.py": "41408706e88e3c8d1fb88dc821e5726fa430f936fcbb1f235af3b49e9a073303",
+    "tools/test_qwen_token_runtime.py": "ac3906aea59d20e48dbed209bd1c5d4dfadb42fc57223423a08ec01e6362ab3d",
+    "tools/test_softmax_runtime.py": "bacb266cd98c9093ca42d9650fbcef441b6614ad31d7028634e9c2ed59723d4c"
+  },
+  "scope": {
+    "moved_to_ane": [
+      "four-tap depthwise causal convolution multiply and accumulation",
+      "post-convolution SiLU"
+    ],
+    "scheduler_state": "A four-slot host ring selects and copies convolution inputs. It performs no tensor arithmetic.",
+    "still_on_host": [
+      "RoPE",
+      "residual arithmetic"
+    ]
+  }
+}

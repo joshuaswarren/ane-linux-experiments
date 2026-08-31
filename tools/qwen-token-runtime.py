@@ -17,6 +17,8 @@ QUERY_HEADS = 8
 KV_HEADS = 2
 QUERY_GROUP_SIZE = QUERY_HEADS // KV_HEADS
 RECURRENT_HEADS = 16
+CONVOLUTION_CHANNELS = 6144
+CONVOLUTION_KERNEL_SIZE = 4
 RECURRENT_DIMENSION = 128
 
 
@@ -59,6 +61,7 @@ class QwenTokenRuntime:
         self.programs = []
         self.attention_states = []
         self.recurrent_runners = []
+        self.convolutions = []
         try:
             self.elementwise = SOFTMAX.ElementwiseBackend(
                 device, elementwise_descriptors
@@ -66,6 +69,14 @@ class QwenTokenRuntime:
             self.softmax = SOFTMAX.Softmax128(self.elementwise)
             self.normalization = SOFTMAX.Normalization(self.elementwise)
             self.activations = SOFTMAX.Activations(self.elementwise)
+            for _ in range(recurrent_layers):
+                self.convolutions.append(
+                    SOFTMAX.CausalConvolution(
+                        self.elementwise,
+                        channels=CONVOLUTION_CHANNELS,
+                        kernel_size=CONVOLUTION_KERNEL_SIZE,
+                    )
+                )
             for _ in range(full_layers):
                 layer_states = []
                 for _ in range(KV_HEADS):
@@ -124,6 +135,10 @@ class QwenTokenRuntime:
             )
             attended[query_head] = state.attend(self.softmax(scaled))
         return attended
+
+    def causal_convolution(self, layer_index, value, weight):
+        self._ensure_open()
+        return self.convolutions[layer_index](value, weight)
 
     def rms_norm(self, value, weight):
         self._ensure_open()

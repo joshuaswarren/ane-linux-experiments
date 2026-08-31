@@ -225,6 +225,48 @@ class ActivationTests(unittest.TestCase):
             )
 
 
+class CausalConvolutionTests(unittest.TestCase):
+    def setUp(self):
+        self.elementwise = FakeElementwise()
+        self.convolution = MODULE.CausalConvolution(
+            self.elementwise, channels=96, kernel_size=4
+        )
+
+    def test_matches_three_sequential_causal_steps(self):
+        rng = np.random.default_rng(20260831)
+        weight = (rng.standard_normal((96, 4)) * 0.2).astype(np.float16)
+        history = np.zeros((96, 3), dtype=np.float16)
+
+        for _ in range(3):
+            value = rng.standard_normal(96).astype(np.float16)
+            window = np.concatenate((history, value[:, None]), axis=1)
+            expected = np.sum(
+                window.astype(np.float32) * weight.astype(np.float32), axis=1
+            )
+
+            actual = self.convolution(value, weight)
+
+            self.assertLess(
+                float(np.max(np.abs(actual.astype(np.float32) - expected))),
+                0.004,
+            )
+            history = window[:, 1:]
+        self.assertIn("mul", self.elementwise.modes)
+        self.assertIn("add", self.elementwise.modes)
+
+    def test_rejects_wrong_input_and_weight_shapes(self):
+        with self.assertRaisesRegex(ValueError, "value"):
+            self.convolution(
+                np.ones(64, dtype=np.float16),
+                np.ones((96, 4), dtype=np.float16),
+            )
+        with self.assertRaisesRegex(ValueError, "weight"):
+            self.convolution(
+                np.ones(96, dtype=np.float16),
+                np.ones((96, 3), dtype=np.float16),
+            )
+
+
 class FakeBuffer:
     next_handle = 1
 

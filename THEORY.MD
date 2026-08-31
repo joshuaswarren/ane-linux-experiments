@@ -170,12 +170,25 @@ It also covered the DeltaNet decay factor.
 The five maximum absolute errors were 0.001218, 0.005288, 0.010674, 0.003075, and 0.001461.
 The control GEMM passed before and after the full token run.
 
+## Causal convolution contract
+
+Each DeltaNet layer keeps a four-slot ring for 6,144 channels.
+Host code advances the ring and copies inputs.
+It performs no convolution arithmetic.
+
+The shared elementwise backend multiplies each history slot by one depthwise kernel tap.
+It then accumulates the four products on ANE.
+The ring removes the old host concatenate, multiply, and reduction path.
+
+Four sequential Linux M1 steps had maximum absolute errors from 0.000467 through 0.001509.
+The control GEMM passed before and after the complete token run.
+
 ## Token-to-logits orchestration
 
 The bounded state runtimes now compose inside the 24-layer Qwen model.
 Six full-attention layers own two KV-head states each.
 Eighteen DeltaNet layers own separate recurrent runners.
-One shared four-BO elementwise backend serves softmax, normalization, and activations.
+One shared four-BO elementwise backend serves softmax, normalization, activations, and convolution.
 
 A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
 The ANE-resident state path and the host-state control both selected token 369.
@@ -191,12 +204,16 @@ A third full-token run moved every sigmoid, SiLU, fused gate product, and recurr
 It selected token 220 and produced 248,320 finite logits.
 Decoder layers took 78.420 seconds, and logits took 7.063 seconds.
 
-Normalization and activations are now complete.
+A fourth full-token run moved every depthwise causal convolution to ANE.
+It selected token 220 and produced 248,320 finite logits.
+Decoder layers took 80.171 seconds, and logits took 7.028 seconds.
+
+Normalization, activations, and causal convolution are now complete.
 ANE-only execution and numeric parity remain open.
 
 ## Current direction
 
-Causal convolution, RoPE, and residual arithmetic remain host tensor operations.
+RoPE and residual arithmetic remain host tensor operations.
 Each operation needs a bounded old-format ANE program or a composed raw runtime.
 The model must then reject every host tensor path when the ANE backend is active.
 

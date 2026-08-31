@@ -234,5 +234,12 @@ Decoder layers took 78.420 seconds, and logits took 7.063 seconds.
 The control GEMM passed before and after the hardware runs.
 The report is `receipts/qwen-linux-activation-validation.json`.
 
-Convolution, RoPE, and residual arithmetic remain on the host.
-The next milestone moves depthwise causal convolution to ANE.
+Depthwise four-tap causal convolution now uses composed ANE multiply and add submissions.
+Four sequential 6,144-channel steps had maximum errors from 0.000467 through 0.001509.
+A complete token run selected token 220 with finite hidden state and 248,320 finite logits.
+Decoder layers took 80.171 seconds, and logits took 7.028 seconds.
+The control GEMM passed before and after the hardware runs.
+The report is `receipts/qwen-linux-convolution-validation.json`.
+
+RoPE and residual arithmetic remain on the host.
+The next milestone moves both operations to ANE.
