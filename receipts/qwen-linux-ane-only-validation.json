@@ -1,0 +1,63 @@
+{
+  "date": "2026-08-30",
+  "milestone": "Linux Qwen ANE-only tensor execution",
+  "contract": {
+    "ane_backend": "Requires the Qwen token runtime and rejects execution when it is absent.",
+    "cpu_backend": "Runs only when selected explicitly with --backend cpu.",
+    "gpu_backend": "Not implemented and not available as a fallback.",
+    "projection_accumulation": "Adds partial ANE projection tiles through TensorOperations.add on the ANE."
+  },
+  "cli_guard_command": "python3 ane-qwen-model.py -m <GGUF> -p <PROMPT>",
+  "cli_guard_result": {
+    "exit": 2,
+    "error": "--backend ane requires --recurrent-anec"
+  },
+  "tests": {
+    "command": "python3 -m unittest tools/test_ane_contract.py tools/test_qwen_model.py tools/test_qwen_token_runtime.py tools/test_softmax_runtime.py",
+    "count": 42,
+    "result": "OK",
+    "contracts": [
+      "ANE step rejects a missing tensor runtime",
+      "explicit CPU reference step remains available",
+      "partial projection tiles use the ANE residual-add path",
+      "model normalization, activation, state, attention, RoPE, and residual calls use the token runtime"
+    ]
+  },
+  "full_token_command": "PATH=<llama.cpp-build-bin>:$PATH python3 ane-qwen-model.py -m <GGUF> -p A --recurrent-anec <RECURRENT_ANEC> --generate 0",
+  "full_token_run": {
+    "prompt_tokens": [32],
+    "layers": 24,
+    "full_layers": 6,
+    "resident_token_runtime": true,
+    "hidden_shape": [2048],
+    "logits_shape": [248320],
+    "next_token": 220,
+    "hidden_finite": true,
+    "logits_finite": true,
+    "layer_seconds": 86.342,
+    "logits_seconds": 11.893,
+    "wall_seconds": 159.31,
+    "marker": "ANE_QWEN_FULL_TOKEN_STEP_OK"
+  },
+  "ane_control_before": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "ane_control_after": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "recurrent_artifact": {
+    "bytes": 102400,
+    "sha256": "776a00255e21ed0b9e04665452c7e81348a48627e81578c3364b191d8017b58b"
+  },
+  "source_sha256": {
+    "ane-qwen-model.py": "9c2e4dafd0ff5991a28bb36cd7104d94fddcc1843327cbd97a65d28f4ccb2b1e",
+    "tools/qwen-token-runtime.py": "f11a7d67d1f7e9ce8da95b06d7512f9777b7489d88532b70be06a4083b1755a2",
+    "tools/softmax-runtime.py": "a8153f32874f583be706b5dc192c12f940e58bf34e2e23e878271cd45d92cde0",
+    "tools/test_qwen_model.py": "fde186c9c46f2d9eb94e6a4d0c9cf87200cb0aba43799c04e8d66f56b8c0b164",
+    "tools/test_ane_contract.py": "d2790b53f73a7689c23ffc5aec1a57eae5d549809791b64d7522b728afcc1c6d"
+  },
+  "host_scope": [
+    "load and dequantize model weights",
+    "gather embedding rows",
+    "build scalar constants",
+    "pack, reshape, split, and copy tensor buffers",
+    "schedule ANE submissions",
+    "select and print output tokens"
+  ]
+}

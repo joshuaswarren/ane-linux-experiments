@@ -83,10 +83,9 @@ Mean decode rate was 16.74448671344259 tokens/second.
 Current parity status.
 The recorded macOS prompt is repeatable across three runs.
 The layer run captured 96 finite arrays across 24 layer boundaries and four steps.
-Linux full-model token parity against the macOS reference is not proven.
-Linux now proves token-to-logits execution with ANE-resident recurrent state,
-attention K/V state, attention scores, softmax, normalization, attended values,
-and logits. The remaining host tensor operations prevent an ANE-only parity claim.
+Linux now proves ANE-only token-to-logits execution for one hardware token.
+The explicit CPU reference is separate, and ANE mode has no CPU or GPU tensor fallback.
+Full-model numeric parity against the locked macOS reference is not proven.
 
 Linux graph execution.
 The corrected 13-layer artifact contains 1,404 linked tasks.
@@ -249,4 +248,11 @@ Decoder layers took 91.686 seconds, and logits took 7.249 seconds.
 The control GEMM passed before and after the hardware runs.
 The report is `receipts/qwen-linux-tensor-operations-validation.json`.
 
-The next milestone rejects every CPU and GPU tensor fallback in ANE mode.
+ANE mode now rejects a missing token runtime before model execution.
+Partial projection tiles now accumulate through the ANE elementwise addition path.
+A complete hardware token run selected token 220 with finite hidden state and 248,320 finite logits.
+Decoder layers took 86.342 seconds, and logits took 11.893 seconds.
+The control GEMM passed before and after the run.
+The report is `receipts/qwen-linux-ane-only-validation.json`.
+
+The next milestone runs numeric parity on the fixed prompt corpus.

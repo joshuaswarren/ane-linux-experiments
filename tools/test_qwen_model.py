@@ -1,4 +1,7 @@
+import contextlib
 import importlib.util
+import io
+import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -93,6 +96,7 @@ class QwenModelMathTests(unittest.TestCase):
 
     def test_mlp_uses_fused_activation_runtime(self):
         model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.cpu_reference = False
         model.token_runtime = FakeTokenRuntime()
         layer = {
             "post_norm": np.ones(2048, dtype=np.float16),
@@ -121,6 +125,7 @@ class QwenModelMathTests(unittest.TestCase):
 
     def test_full_layer_uses_resident_attention_runtime(self):
         model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.cpu_reference = False
         model.token_runtime = FakeTokenRuntime()
         model.mlp = lambda _layer, value: value
         layer = {
@@ -188,6 +193,7 @@ class QwenModelMathTests(unittest.TestCase):
 
     def test_linear_layer_uses_resident_recurrent_runtime(self):
         model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.cpu_reference = False
         model.token_runtime = FakeTokenRuntime()
         model.mlp = lambda _layer, value: value
         layer = {
@@ -257,6 +263,68 @@ class QwenModelMathTests(unittest.TestCase):
         self.assertTrue(all(value.dtype == np.float16 for value in call[1:]))
         np.testing.assert_array_equal(call[-1], np.full(16, np.float16(0.75)))
         np.testing.assert_array_equal(actual, hidden)
+
+    def test_ane_step_rejects_missing_tensor_runtime(self):
+        model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.cpu_reference = False
+        model.token_runtime = None
+        model.layers = []
+
+        with self.assertRaisesRegex(RuntimeError, "ANE tensor runtime is required"):
+            model.step(np.zeros(2048, dtype=np.float16), 0)
+
+    def test_cpu_step_allows_explicit_reference_backend(self):
+        model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.cpu_reference = True
+        model.token_runtime = None
+        model.layers = []
+        hidden = np.zeros(2048, dtype=np.float16)
+
+        self.assertIs(model.step(hidden, 0), hidden)
+
+    def test_projection_accumulates_partial_tiles_on_ane(self):
+        class Device:
+            def __init__(self):
+                self.calls = 0
+
+            def gemm(self, _weights, _activation, _descriptor):
+                self.calls += 1
+                return np.full(512, self.calls, dtype=np.float16)
+
+        class Runtime:
+            def __init__(self):
+                self.calls = []
+
+            def residual_add(self, left, right):
+                self.calls.append((left.copy(), right.copy()))
+                return left + right
+
+        model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.cpu_reference = False
+        model.token_runtime = Runtime()
+        model.device = Device()
+        model.descriptor = object()
+        model.descriptor_512 = object()
+        matrix = np.ones((2, 512), dtype=np.float16)
+
+        actual = model.projection(matrix, np.ones(512, dtype=np.float16), in_cols=256)
+
+        self.assertEqual(model.device.calls, 2)
+        self.assertEqual(len(model.token_runtime.calls), 1)
+        np.testing.assert_array_equal(actual, np.full(2, 3, dtype=np.float16))
+
+    def test_cli_rejects_ane_without_recurrent_artifact(self):
+        argv = ["ane-qwen-model.py", "-m", "model.gguf", "-p", "prompt"]
+        stderr = io.StringIO()
+
+        with (
+            patch.object(sys, "argv", argv),
+            contextlib.redirect_stderr(stderr),
+            self.assertRaises(SystemExit),
+        ):
+            MODULE.main()
+
+        self.assertIn("--backend ane requires --recurrent-anec", stderr.getvalue())
 
 
 if __name__ == "__main__":

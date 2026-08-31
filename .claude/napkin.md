@@ -49,6 +49,8 @@
 - Compose 128-wide softmax from two 64-lane ANE halves. Reuse four BOs, clamp at -64, divide by 128, square seven times, and run twelve Newton reciprocal steps.
 - A host-managed ring can schedule causal convolution without host tensor arithmetic. ANE runs four multiply and three add submissions per 64-lane chunk.
 - Pack one RoPE head into 64 lanes. One direct multiply, one swapped-half multiply, and one add perform the rotation.
+- Default ANE mode must require the token runtime before any model call. Explicit CPU is a separate backend, never a fallback.
+- Partial projection tiles must accumulate through ANE elementwise addition. Host fp32 accumulation violates the ANE-only contract.
 - macOS 26 HWX = real Mach-O: `__TEXT,__text` @ 0x4000 = TD (0x274), `__TEXT,__const` @ 0x4280 = kernel, KDMA offsets kernel-base-relative (0x280 base, step 0x4000).
 - Old-format graphs (macOS-15-era anecc) still run on current Linux KMD; fresh macOS 26 TDs reach the device and hang it (-110 at `tm execution`). Patching engine-count/bit-26 words does not revive them.
 - Control-first bisect: same plist through both compilers isolates format from config in one diff (20/157 words for net.plist).
