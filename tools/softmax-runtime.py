@@ -14,6 +14,8 @@ WIDTH = 128
 ELEMENTWISE_BYTES = 0x4000
 ELEMENTWISE_MODES = ("add", "mul", "max", "sq")
 EXP_LIMIT = -64.0
+ACTIVATION_EXP_LIMIT = -16.0
+ACTIVATION_EXP_DIVISOR = 8
 RECIPROCAL_ITERATIONS = 12
 
 
@@ -177,9 +179,9 @@ class Softmax128:
             width = half
         return current[0]
 
-    def _exp(self, values):
-        clamped = self._run("max", values, self._const(EXP_LIMIT))
-        reduced = self._run("mul", clamped, self._const(1.0 / 128.0))
+    def _exp(self, values, limit=EXP_LIMIT, divisor=128):
+        clamped = self._run("max", values, self._const(limit))
+        reduced = self._run("mul", clamped, self._const(1.0 / divisor))
         square = self._run("sq", reduced, self._const(0.0))
         cube = self._run("mul", reduced, square)
         fourth = self._run("sq", square, self._const(0.0))
@@ -195,7 +197,7 @@ class Softmax128:
         ):
             term = self._run("mul", power, self._const(factor))
             result = self._run("add", result, term)
-        for _ in range(7):
+        for _ in range(divisor.bit_length() - 1):
             result = self._run("mul", result, result)
         return result
 
@@ -221,6 +223,164 @@ class Softmax128:
     @staticmethod
     def _const(value):
         return np.full(LANES, value, dtype=np.float16)
+
+
+class Activations:
+    """Run Qwen activation functions on the shared ANE backend."""
+
+    def __init__(self, run_elementwise):
+        self.math = Softmax128(run_elementwise)
+
+    def sigmoid(self, value):
+        return self._apply(value, multiplier=None, multiply_input=False)
+
+    def sigmoid_mul(self, value, multiplier):
+        return self._apply(value, multiplier=multiplier, multiply_input=False)
+
+    def silu(self, value):
+        return self._apply(value, multiplier=None, multiply_input=True)
+
+    def silu_mul(self, value, multiplier):
+        return self._apply(value, multiplier=multiplier, multiply_input=True)
+
+    def decay_multiplier(self, alpha, bias, a_log):
+        alpha = self._value(alpha)
+        bias = self._value(bias)
+        a_log = self._value(a_log)
+        if bias.shape != alpha.shape or a_log.shape != alpha.shape:
+            raise ValueError("alpha, bias, and a_log shapes must match")
+        if np.any(a_log > 0):
+            raise ValueError("a_log must be non-positive")
+
+        alpha_flat = alpha.reshape(-1)
+        bias_flat = bias.reshape(-1)
+        a_log_flat = a_log.reshape(-1)
+        result = np.empty_like(alpha_flat)
+        zero = self.math._const(0.0)
+        negative_one = self.math._const(-1.0)
+        for offset in range(0, alpha_flat.size, LANES):
+            width = min(LANES, alpha_flat.size - offset)
+            alpha_chunk = self.math._const(0.0)
+            bias_chunk = self.math._const(0.0)
+            a_log_chunk = self.math._const(0.0)
+            alpha_chunk[:width] = alpha_flat[offset : offset + width]
+            bias_chunk[:width] = bias_flat[offset : offset + width]
+            a_log_chunk[:width] = a_log_flat[offset : offset + width]
+
+            combined = self.math._run("add", alpha_chunk, bias_chunk)
+            positive = self.math._run("max", combined, zero)
+            negative = self.math._run("mul", combined, negative_one)
+            absolute = self.math._run(
+                "add", positive, self.math._run("max", negative, zero)
+            )
+            exp_negative = self._exp(
+                self.math._run("mul", absolute, negative_one)
+            )
+            denominator = self.math._run(
+                "add", exp_negative, self.math._const(2.0)
+            )
+            ratio = self.math._run(
+                "mul", exp_negative, self._reciprocal(denominator)
+            )
+            ratio_squared = self.math._run(
+                "sq", ratio, self.math._const(0.0)
+            )
+            term = ratio
+            series = ratio
+            for power in (3, 5, 7, 9):
+                term = self.math._run("mul", term, ratio_squared)
+                series = self.math._run(
+                    "add",
+                    series,
+                    self.math._run(
+                        "mul", term, self.math._const(1.0 / power)
+                    ),
+                )
+            correction = self.math._run(
+                "mul", series, self.math._const(2.0)
+            )
+            softplus = self.math._run("add", positive, correction)
+            scaled = self.math._run("mul", softplus, a_log_chunk)
+            multiplier = self._exp(scaled)
+            result[offset : offset + width] = multiplier[:width]
+        return result.reshape(alpha.shape)
+
+    def _apply(self, value, multiplier, multiply_input):
+        value = self._value(value)
+        multiplier_flat = None
+        if multiplier is not None:
+            multiplier = self._value(multiplier)
+            if multiplier.shape != value.shape:
+                raise ValueError(
+                    f"multiplier shape must match value shape {value.shape}, "
+                    f"got {multiplier.shape}"
+                )
+            multiplier_flat = multiplier.reshape(-1)
+        flat = value.reshape(-1)
+        result = np.empty_like(flat)
+        for offset in range(0, flat.size, LANES):
+            width = min(LANES, flat.size - offset)
+            chunk = self.math._const(0.0)
+            chunk[:width] = flat[offset : offset + width]
+            activated = self._sigmoid(chunk)
+            if multiply_input:
+                activated = self.math._run("mul", chunk, activated)
+            if multiplier_flat is not None:
+                right = self.math._const(0.0)
+                right[:width] = multiplier_flat[offset : offset + width]
+                activated = self.math._run("mul", activated, right)
+            result[offset : offset + width] = activated[:width]
+        return result.reshape(value.shape)
+
+    def _sigmoid(self, value):
+        zero = self.math._const(0.0)
+        negative = self.math._run("mul", value, self.math._const(-1.0))
+        negative_half = self.math._run("max", negative, zero)
+        positive_half = self.math._run("max", value, zero)
+        numerator = self._exp(
+            self.math._run(
+                "mul", negative_half, self.math._const(-1.0)
+            )
+        )
+        other = self._exp(
+            self.math._run(
+                "mul", positive_half, self.math._const(-1.0)
+            )
+        )
+        denominator = self.math._run("add", numerator, other)
+        return self.math._run(
+            "mul", numerator, self._reciprocal(denominator)
+        )
+
+    def _reciprocal(self, value):
+        reciprocal = self.math._const(0.5)
+        for _ in range(6):
+            product = self.math._run("mul", value, reciprocal)
+            correction = self.math._run(
+                "add",
+                self.math._const(2.0),
+                self.math._run("mul", product, self.math._const(-1.0)),
+            )
+            reciprocal = self.math._run("mul", reciprocal, correction)
+        return reciprocal
+
+    def _exp(self, value):
+        return self.math._exp(
+            value,
+            limit=ACTIVATION_EXP_LIMIT,
+            divisor=ACTIVATION_EXP_DIVISOR,
+        )
+
+    @staticmethod
+    def _value(value):
+        value = np.asarray(value)
+        if value.dtype != np.float16:
+            raise ValueError(f"value dtype must be float16, got {value.dtype}")
+        if not value.size:
+            raise ValueError("value must not be empty")
+        if not np.isfinite(value).all():
+            raise ValueError("value must be finite")
+        return value
 
 
 class Normalization:

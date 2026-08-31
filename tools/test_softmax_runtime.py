@@ -145,6 +145,86 @@ class NormalizationTests(unittest.TestCase):
             )
 
 
+class ActivationTests(unittest.TestCase):
+    def setUp(self):
+        self.elementwise = FakeElementwise()
+        self.activations = MODULE.Activations(self.elementwise)
+
+    def test_sigmoid_matches_stable_reference(self):
+        values = np.asarray(
+            [-80.0, -10.0, -2.0, -1.0, 0.0, 1.0, 2.0, 10.0, 80.0],
+            dtype=np.float16,
+        )
+
+        actual = self.activations.sigmoid(values)
+        values32 = values.astype(np.float32)
+        expected = 1.0 / (1.0 + np.exp(-values32))
+
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))),
+            0.003,
+        )
+
+    def test_silu_mul_matches_reference_across_chunks(self):
+        rng = np.random.default_rng(20260830)
+        values = (rng.standard_normal((2, 96)) * 2.0).astype(np.float16)
+        multiplier = rng.standard_normal((2, 96)).astype(np.float16)
+
+        actual = self.activations.silu_mul(values, multiplier)
+        values32 = values.astype(np.float32)
+        expected = values32 / (1.0 + np.exp(-values32))
+        expected *= multiplier.astype(np.float32)
+
+        self.assertEqual(actual.shape, values.shape)
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))),
+            0.03,
+        )
+
+    def test_sigmoid_mul_matches_reference(self):
+        values = np.linspace(-5.0, 5.0, 96, dtype=np.float16)
+        multiplier = np.linspace(2.0, -2.0, 96, dtype=np.float16)
+
+        actual = self.activations.sigmoid_mul(values, multiplier)
+        values32 = values.astype(np.float32)
+        expected = multiplier.astype(np.float32) / (1.0 + np.exp(-values32))
+
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))),
+            0.01,
+        )
+
+    def test_decay_multiplier_matches_stable_reference(self):
+        alpha = np.linspace(-20.0, 10.0, 96, dtype=np.float16)
+        bias = np.linspace(-2.0, 2.0, 96, dtype=np.float16)
+        a_log = np.linspace(-0.1, -8.0, 96, dtype=np.float16)
+
+        actual = self.activations.decay_multiplier(alpha, bias, a_log)
+        combined = alpha.astype(np.float32) + bias.astype(np.float32)
+        softplus = np.logaddexp(np.float32(0), combined)
+        expected = np.exp(a_log.astype(np.float32) * softplus)
+
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))),
+            0.03,
+        )
+
+    def test_activations_reject_bad_inputs(self):
+        with self.assertRaisesRegex(ValueError, "float16"):
+            self.activations.silu(np.ones(64, dtype=np.float32))
+        with self.assertRaisesRegex(ValueError, "shape"):
+            self.activations.silu_mul(
+                np.ones(64, dtype=np.float16),
+                np.ones(32, dtype=np.float16),
+            )
+        with self.assertRaisesRegex(ValueError, "non-positive"):
+            self.activations.decay_multiplier(
+                np.ones(16, dtype=np.float16),
+                np.ones(16, dtype=np.float16),
+                np.ones(16, dtype=np.float16),
+            )
+
+
 class FakeBuffer:
     next_handle = 1
 

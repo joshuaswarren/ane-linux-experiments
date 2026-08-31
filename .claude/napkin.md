@@ -32,6 +32,9 @@
 | 2026-08-30 | self | Raised while an `np.frombuffer` view still referenced an mmap, so cleanup raised `BufferError` | Copy the result and delete the mmap view before validation can raise |
 | 2026-08-30 | self | Used one SCP destination for mixed source directories and flattened staged tool paths | Copy each source directory to its matching remote directory, then remove accidental duplicates |
 
+| 2026-08-30 | self | Guessed a nonexistent partial grep path and then used apply-patch syntax with the hashline edit tool | List the real tree before filtering, and use hashline PUT or CUT operations from fresh read hashes |
+| 2026-08-30 | self | Passed the logarithmic recurrent decay into a graph that multiplies state by its input directly | Treat the recurrent graph gate as the final decay factor; compute softplus, scale, and exp before the graph |
+| 2026-08-30 | self | Compared the watermark service's base64 `cleaned` field as plain text and got a false README mismatch | Decode the returned base64 before hashing or comparing container-clean results |
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 - Ship small milestones. Update GitHub and README after each milestone.

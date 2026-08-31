@@ -19,6 +19,7 @@ class FakeTokenRuntime:
         self.full_calls = []
         self.recurrent_calls = []
         self.normalization_calls = []
+        self.activation_calls = []
 
     def full_attention(self, layer_index, query, key, value):
         self.full_calls.append(
@@ -46,6 +47,30 @@ class FakeTokenRuntime:
     def l2_norm(self, value, scale=1.0):
         self.normalization_calls.append(("l2", value.shape, None, scale))
         return value
+    def sigmoid(self, value):
+        self.activation_calls.append(("sigmoid", value.shape, None))
+        return np.ones_like(value)
+
+    def sigmoid_mul(self, value, multiplier):
+        self.activation_calls.append(
+            ("sigmoid_mul", value.shape, multiplier.shape)
+        )
+        return np.float16(0.5) * multiplier
+
+    def silu(self, value):
+        self.activation_calls.append(("silu", value.shape, None))
+        return value
+
+    def silu_mul(self, value, multiplier):
+        self.activation_calls.append(("silu_mul", value.shape, multiplier.shape))
+        return multiplier
+
+    def decay_multiplier(self, alpha, bias, a_log):
+        self.activation_calls.append(
+            ("decay_multiplier", alpha.shape, bias.shape, a_log.shape)
+        )
+        return np.full_like(alpha, np.float16(0.75))
+
 
 class QwenModelMathTests(unittest.TestCase):
     def test_causal_attention_normalizes_equal_scores(self):
@@ -54,6 +79,30 @@ class QwenModelMathTests(unittest.TestCase):
         values = np.asarray([[[2, 2], [4, 4]]], dtype=np.float16)
         actual = MODULE.causal_attention(query, keys, values)
         np.testing.assert_array_equal(actual, np.full((4, 2), 3, dtype=np.float16))
+
+    def test_mlp_uses_fused_activation_runtime(self):
+        model = MODULE.QwenModel.__new__(MODULE.QwenModel)
+        model.token_runtime = FakeTokenRuntime()
+        layer = {
+            "post_norm": np.ones(2048, dtype=np.float16),
+            "ffn_gate": "gate",
+            "ffn_up": "up",
+            "ffn_down": "down",
+        }
+        outputs = {
+            "gate": np.ones(6144, dtype=np.float16),
+            "up": np.full(6144, 2, dtype=np.float16),
+            "down": np.zeros(2048, dtype=np.float16),
+        }
+        model.projection = lambda matrix, _activation, in_cols=None: outputs[matrix]
+
+        actual = model.mlp(layer, np.zeros(2048, dtype=np.float16))
+
+        self.assertEqual(
+            [call[:3] for call in model.token_runtime.activation_calls],
+            [("silu_mul", (6144,), (6144,))],
+        )
+        np.testing.assert_array_equal(actual, np.zeros(2048, dtype=np.float16))
 
     def test_full_layer_uses_resident_attention_runtime(self):
         model = MODULE.QwenModel.__new__(MODULE.QwenModel)
@@ -102,6 +151,10 @@ class QwenModelMathTests(unittest.TestCase):
             [call[:2] for call in model.token_runtime.normalization_calls],
             [("rms", (2048,)), ("rms", (8, 256)), ("rms", (2, 256))],
         )
+        self.assertEqual(
+            [call[:3] for call in model.token_runtime.activation_calls],
+            [("sigmoid_mul", (2048,), (2048,))],
+        )
         layer_index, q_heads, k_heads, v_heads = model.token_runtime.full_calls[0]
         self.assertEqual(layer_index, 3)
         self.assertEqual(q_heads.shape, (8, 256))
@@ -127,7 +180,7 @@ class QwenModelMathTests(unittest.TestCase):
             "out": "out",
             "conv_state": np.zeros((6144, 3), dtype=np.float16),
             "conv": np.ones((6144, 4), dtype=np.float16),
-            "a_log": np.zeros(16, dtype=np.float16),
+            "a_log": np.full(16, -1, dtype=np.float16),
             "dt_bias": np.zeros(16, dtype=np.float16),
             "ssm_norm": np.ones(128, dtype=np.float16),
         }
@@ -140,11 +193,7 @@ class QwenModelMathTests(unittest.TestCase):
         }
         model.projection = lambda matrix, _activation, in_cols=None: outputs[matrix]
         hidden = np.zeros(2048, dtype=np.float16)
-        with (
-            patch.object(MODULE, "sigmoid", side_effect=lambda value: np.ones_like(value)),
-            patch.object(MODULE, "silu", side_effect=lambda value: value),
-        ):
-            actual = model.linear_layer(layer, hidden)
+        actual = model.linear_layer(layer, hidden)
 
         self.assertEqual(len(model.token_runtime.recurrent_calls), 1)
         self.assertEqual(
@@ -156,6 +205,15 @@ class QwenModelMathTests(unittest.TestCase):
                 ("rms", (16, 128)),
             ],
         )
+        self.assertEqual(
+            [call[:3] for call in model.token_runtime.activation_calls],
+            [
+                ("sigmoid", (16,), None),
+                ("silu", (6144,), None),
+                ("decay_multiplier", (16,), (16,)),
+                ("silu_mul", (16, 128), (16, 128)),
+            ],
+        )
         self.assertAlmostEqual(
             model.token_runtime.normalization_calls[1][3],
             1.0 / np.sqrt(128.0),
@@ -164,6 +222,9 @@ class QwenModelMathTests(unittest.TestCase):
         call = model.token_runtime.recurrent_calls[0]
         self.assertEqual(call[0], 5)
         self.assertTrue(all(value.dtype == np.float16 for value in call[1:]))
+        np.testing.assert_array_equal(
+            call[-1], np.full(16, np.float16(0.75))
+        )
         np.testing.assert_array_equal(actual, hidden)
 
 

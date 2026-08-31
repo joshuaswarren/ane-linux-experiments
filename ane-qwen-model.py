@@ -232,11 +232,50 @@ class QwenModel:
             return self.token_runtime.l2_norm(value.astype(np.float16), scale)
         return l2_norm(value, scale)
 
+    def activate_sigmoid(self, value):
+        if self.token_runtime is not None:
+            return self.token_runtime.sigmoid(value.astype(np.float16))
+        return sigmoid(value)
+
+    def activate_sigmoid_mul(self, value, multiplier):
+        if self.token_runtime is not None:
+            return self.token_runtime.sigmoid_mul(
+                value.astype(np.float16), multiplier.astype(np.float16)
+            )
+        return _compute_dtype(
+            sigmoid(value).astype(np.float32) * multiplier.astype(np.float32)
+        )
+
+    def activate_silu(self, value):
+        if self.token_runtime is not None:
+            return self.token_runtime.silu(value.astype(np.float16))
+        return silu(value)
+
+    def activate_silu_mul(self, value, multiplier):
+        if self.token_runtime is not None:
+            return self.token_runtime.silu_mul(
+                value.astype(np.float16), multiplier.astype(np.float16)
+            )
+        return _compute_dtype(
+            silu(value).astype(np.float32) * multiplier.astype(np.float32)
+        )
+
+    def recurrent_decay_factor(self, alpha, bias, a_log):
+        if self.token_runtime is not None:
+            return self.token_runtime.decay_multiplier(
+                alpha.astype(np.float16),
+                bias.astype(np.float16),
+                a_log.astype(np.float16),
+            )
+        combined = alpha.astype(np.float32) + bias.astype(np.float32)
+        decay = a_log.astype(np.float32) * np.logaddexp(0.0, combined)
+        return np.exp(decay)
+
     def mlp(self, layer, hidden):
         x = self.normalize_rms(hidden, layer["post_norm"])
         gate = self.projection(layer["ffn_gate"], x)
         up = self.projection(layer["ffn_up"], x)
-        act = silu(gate) * up
+        act = self.activate_silu_mul(gate, up)
         down = self.projection(layer["ffn_down"], act)
         return _compute_dtype(hidden.astype(np.float32) + down)
 
@@ -244,21 +283,21 @@ class QwenModel:
         x = self.normalize_rms(hidden, layer["input_norm"])
         mixed = _compute_dtype(self.projection(layer["qkv"], x))
         z = _compute_dtype(self.projection(layer["z"], x))
-        beta = sigmoid(self.projection(layer["beta"], x))
+        beta = self.activate_sigmoid(self.projection(layer["beta"], x))
         alpha = self.projection(layer["alpha"], x).astype(np.float32)
 
         window = np.concatenate((layer["conv_state"], mixed[:, None]), axis=1)
         layer["conv_state"] = window[:, 1:]
         mixed = np.sum(window.astype(np.float32) * layer["conv"].astype(np.float32), axis=1)
-        mixed = silu(_compute_dtype(mixed))
+        mixed = self.activate_silu(_compute_dtype(mixed))
         query, key, value = np.split(mixed, 3)
         query = self.normalize_l2(
             query.reshape(16, 128), 1.0 / np.sqrt(128.0)
         )
         key = self.normalize_l2(key.reshape(16, 128))
         value = value.reshape(16, 128)
-        decay = layer["a_log"].astype(np.float32) * np.log1p(
-            np.exp(np.clip(alpha + layer["dt_bias"].astype(np.float32), -80, 80))
+        decay_factor = self.recurrent_decay_factor(
+            alpha, layer["dt_bias"], layer["a_log"]
         )
         if self.token_runtime is not None:
             output = self.token_runtime.recurrent(
@@ -267,20 +306,20 @@ class QwenModel:
                 key.astype(np.float16),
                 value.astype(np.float16),
                 beta.astype(np.float16),
-                decay.astype(np.float16),
+                decay_factor.astype(np.float16),
             )
         else:
             state = layer["recurrent"]
             output = np.zeros((16, 128), dtype=np.float32)
             for head in range(16):
-                state[head] *= np.exp(decay[head])
+                state[head] *= decay_factor[head]
                 kh = key[head].astype(np.float32)
                 vh = value[head].astype(np.float32)
                 delta = (vh - state[head].T @ kh) * float(beta[head])
                 state[head] += np.outer(kh, delta)
                 output[head] = state[head].T @ query[head].astype(np.float32)
         norm = self.normalize_rms(_compute_dtype(output), layer["ssm_norm"])
-        norm = norm * silu(z.reshape(16, 128))
+        norm = self.activate_silu_mul(z.reshape(16, 128), norm)
         mixed_out = self.projection(layer["out"], norm.reshape(-1))
         return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
 
@@ -307,7 +346,7 @@ class QwenModel:
             keys = np.stack(layer["keys"], axis=1)
             values = np.stack(layer["values"], axis=1)
             attended = causal_attention(q_heads, keys, values)
-        gated = attended.reshape(-1) * (1.0 / (1.0 + np.exp(-gate.astype(np.float32))))
+        gated = self.activate_sigmoid_mul(gate, attended.reshape(-1))
         mixed_out = self.projection(layer["o"], _compute_dtype(gated))
         return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
 

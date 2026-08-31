@@ -97,6 +97,36 @@ class FakeNormalization:
         return value.copy()
 
 
+class FakeActivations:
+    instances: ClassVar[list] = []
+
+    def __init__(self, _backend):
+        self.calls = []
+        self.instances.append(self)
+
+    def sigmoid(self, value):
+        self.calls.append(("sigmoid", value.copy(), None))
+        return value.copy()
+
+    def sigmoid_mul(self, value, multiplier):
+        self.calls.append(("sigmoid_mul", value.copy(), multiplier.copy()))
+        return value.copy()
+
+    def silu(self, value):
+        self.calls.append(("silu", value.copy(), None))
+        return value.copy()
+
+    def silu_mul(self, value, multiplier):
+        self.calls.append(("silu_mul", value.copy(), multiplier.copy()))
+        return value.copy()
+
+    def decay_multiplier(self, alpha, bias, a_log):
+        self.calls.append(
+            ("decay_multiplier", alpha.copy(), bias.copy(), a_log.copy())
+        )
+        return alpha.copy()
+
+
 class FakeRecurrentRunner:
     instances: ClassVar[list] = []
 
@@ -126,6 +156,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         FakeElementwiseBackend.instances = []
         FakeSoftmax.instances = []
         FakeNormalization.instances = []
+        FakeActivations.instances = []
         FakeRecurrentRunner.instances = []
         self.original_attention = MODULE.ATTENTION
         self.original_softmax = MODULE.SOFTMAX
@@ -139,6 +170,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
             ElementwiseBackend=FakeElementwiseBackend,
             Softmax128=FakeSoftmax,
             Normalization=FakeNormalization,
+            Activations=FakeActivations,
         )
         MODULE.RECURRENT = SimpleNamespace(RecurrentRunner=FakeRecurrentRunner)
         self.runtime = MODULE.QwenTokenRuntime(
@@ -186,6 +218,18 @@ class QwenTokenRuntimeTests(unittest.TestCase):
             np.testing.assert_array_equal(
                 runner.initialized, np.zeros((16, 128, 128), dtype=np.float16)
             )
+
+    def test_decay_multiplier_uses_shared_activation_backend(self):
+        alpha = np.arange(16, dtype=np.float16)
+        bias = np.full(16, -1, dtype=np.float16)
+        a_log = np.full(16, -2, dtype=np.float16)
+
+        actual = self.runtime.decay_multiplier(alpha, bias, a_log)
+
+        np.testing.assert_array_equal(actual, alpha)
+        self.assertEqual(
+            FakeActivations.instances[0].calls[-1][0], "decay_multiplier"
+        )
 
     def test_full_attention_maps_four_query_heads_to_each_kv_head(self):
         query = np.repeat(
@@ -237,6 +281,24 @@ class QwenTokenRuntimeTests(unittest.TestCase):
             ["rms", "l2"],
         )
         self.assertEqual(FakeNormalization.instances[0].calls[1][2], 0.125)
+
+    def test_activations_use_shared_elementwise_backend(self):
+        value = np.ones((2, 128), dtype=np.float16)
+        multiplier = np.full((2, 128), np.float16(2.0))
+
+        sigmoid = self.runtime.sigmoid(value)
+        silu = self.runtime.silu(value)
+        sigmoid_fused = self.runtime.sigmoid_mul(value, multiplier)
+        silu_fused = self.runtime.silu_mul(value, multiplier)
+
+        np.testing.assert_array_equal(sigmoid, value)
+        np.testing.assert_array_equal(silu, value)
+        np.testing.assert_array_equal(sigmoid_fused, value)
+        np.testing.assert_array_equal(silu_fused, value)
+        self.assertEqual(
+            [call[0] for call in FakeActivations.instances[0].calls],
+            ["sigmoid", "silu", "sigmoid_mul", "silu_mul"],
+        )
 
     def test_close_is_idempotent(self):
         self.runtime.close()

@@ -51,7 +51,7 @@ This prevents a valid infinite result in row zero from looking like an unfinishe
 DeltaNet recurrent state uses one `(1, 16, 133, 128)` tensor.
 Rows 4 through 131 hold the `(16, 128, 128)` state.
 The runner alternates two aggregate BOs after each submit.
-It overwrites only q, k, v, beta, and decay before the next submit.
+It overwrites only q, k, v, beta, and the final decay factor before each submit.
 Two hardware steps completed without a host state round trip.
 The final state maximum error was 0.00004078.
 
@@ -151,12 +151,31 @@ Their maximum absolute errors were 0.004076, 0.004814, and 0.004068.
 The scaled 128-wide L2 maximum absolute error was 0.0000303.
 The control GEMM passed before and after the run.
 
+## Activation contract
+
+Sigmoid and SiLU reuse the same four resident elementwise BOs.
+Each 64-lane chunk uses stable negative and positive sigmoid halves.
+Fused variants keep the SwiGLU and attention gate products on ANE.
+
+DeltaNet needs `exp(a_log * softplus(alpha + bias))` as its state multiplier.
+The runtime evaluates softplus with a bounded log series and then applies the exponential on ANE.
+This fixes the prior contract mismatch, which passed logarithmic decay into a direct multiplier input.
+
+The activation exponential divides by eight and squares three times.
+This reduces fp16 rounding error for activation ranges.
+The softmax exponential keeps its wider division by 128 and seven squarings.
+
+A Linux M1 run covered beta sigmoid, post-convolution SiLU, and both fused gate products.
+It also covered the DeltaNet decay factor.
+The five maximum absolute errors were 0.001218, 0.005288, 0.010674, 0.003075, and 0.001461.
+The control GEMM passed before and after the full token run.
+
 ## Token-to-logits orchestration
 
 The bounded state runtimes now compose inside the 24-layer Qwen model.
 Six full-attention layers own two KV-head states each.
 Eighteen DeltaNet layers own separate recurrent runners.
-One shared four-BO elementwise backend serves softmax, RMS, and L2 normalization.
+One shared four-BO elementwise backend serves softmax, normalization, and activations.
 
 A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
 The ANE-resident state path and the host-state control both selected token 369.
@@ -168,12 +187,16 @@ A second full-token run moved every model normalization call to that backend.
 It selected token 220 and produced 248,320 finite logits.
 Decoder layers took 19.740 seconds, and logits took 6.916 seconds.
 
-This completes the normalization milestone.
-It does not complete ANE-only execution or numeric parity.
+A third full-token run moved every sigmoid, SiLU, fused gate product, and recurrent decay calculation to ANE.
+It selected token 220 and produced 248,320 finite logits.
+Decoder layers took 78.420 seconds, and logits took 7.063 seconds.
+
+Normalization and activations are now complete.
+ANE-only execution and numeric parity remain open.
 
 ## Current direction
 
-Causal convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain host tensor operations.
+Causal convolution, RoPE, and residual arithmetic remain host tensor operations.
 Each operation needs a bounded old-format ANE program or a composed raw runtime.
 The model must then reject every host tensor path when the ANE backend is active.
 

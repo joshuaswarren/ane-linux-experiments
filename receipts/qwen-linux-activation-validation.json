@@ -1,0 +1,84 @@
+{
+  "date": "2026-08-30",
+  "milestone": "Linux Qwen activation functions on ANE",
+  "hardware_validator_command": "PYTHONUNBUFFERED=1 python3 tools/qwen-activation-validation.py --qid 4",
+  "hardware_validator_run": {
+    "qid": 4,
+    "elapsed_seconds": 2.7180823090020567,
+    "marker": "ANE_QWEN_ACTIVATIONS_OK",
+    "cases": [
+      {
+        "name": "sigmoid_beta",
+        "shape": [16],
+        "max_error": 0.0012182295322418213,
+        "limit": 0.04
+      },
+      {
+        "name": "silu_convolution",
+        "shape": [6144],
+        "max_error": 0.005287647247314453,
+        "limit": 0.04
+      },
+      {
+        "name": "silu_mul_ffn",
+        "shape": [6144],
+        "max_error": 0.01067352294921875,
+        "limit": 0.04
+      },
+      {
+        "name": "sigmoid_mul_attention",
+        "shape": [2048],
+        "max_error": 0.003074824810028076,
+        "limit": 0.04
+      },
+      {
+        "name": "recurrent_decay",
+        "shape": [16],
+        "max_error": 0.001461416482925415,
+        "limit": 0.04
+      }
+    ]
+  },
+  "full_token_command": "PATH=<llama.cpp-build-bin>:$PATH python3 ane-qwen-model.py -m <GGUF> -p A --recurrent-anec <RECURRENT_ANEC> --generate 0",
+  "full_token_run": {
+    "prompt_tokens": [32],
+    "layers": 24,
+    "full_layers": 6,
+    "resident_token_runtime": true,
+    "hidden_shape": [2048],
+    "logits_shape": [248320],
+    "next_token": 220,
+    "hidden_finite": true,
+    "logits_finite": true,
+    "layer_seconds": 78.420,
+    "logits_seconds": 7.063,
+    "marker": "ANE_QWEN_FULL_TOKEN_STEP_OK"
+  },
+  "ane_control_before": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "ane_control_after": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "source_sha256": {
+    "ane-qwen-model.py": "6bc2c469cc89c58e73124903eac7a8aeffcc347b80853a8e715905d9bfa877c5",
+    "tools/qwen-token-runtime.py": "67b201668126044f0c274b05df93fb0c5198cbd36c51febac010821d8f7003cb",
+    "tools/softmax-runtime.py": "e2b16653c15e4719a05a0aeca2253094de2bb54cc01e69962aa1f4afd99a4fc9",
+    "tools/qwen-activation-validation.py": "3542af4f94f2111db26762974c5f8d51e16e3c436eea80889a379a8ab215036c",
+    "tools/test_qwen_model.py": "d0664d8c884830bef311322115f557d7554a2cdc1d9c7fce47c830ed96809989",
+    "tools/test_qwen_token_runtime.py": "ec31a85e58304d1085b943415ae558d1b49a7b754f5a9e21a29844828f78f629",
+    "tools/test_softmax_runtime.py": "5e55d3f824ce784b01d9063b371007362227cd32f4b769f710ef4699f9076ac0"
+  },
+  "scope": {
+    "moved_to_ane": [
+      "beta sigmoid",
+      "post-convolution SiLU",
+      "SwiGLU SiLU and gate product",
+      "attention sigmoid and gate product",
+      "recurrent output SiLU and gate product",
+      "recurrent softplus, scale, and exponential decay factor"
+    ],
+    "still_on_host": [
+      "depthwise causal convolution",
+      "RoPE",
+      "residual arithmetic"
+    ]
+  },
+  "correctness_fix": "The recurrent graph multiplies state by the final decay factor. The prior host path passed the logarithmic decay value. This milestone computes and passes exp(a_log * softplus(alpha + bias))."
+}
