@@ -41,9 +41,7 @@ class ElementwiseBackend:
             raise ValueError(f"missing elementwise descriptors: {sorted(missing)}")
         for mode in ELEMENTWISE_MODES:
             if len(descriptors[mode]) != ELEMENTWISE_BYTES:
-                raise ValueError(
-                    f"{mode} descriptor must be {ELEMENTWISE_BYTES} bytes"
-                )
+                raise ValueError(f"{mode} descriptor must be {ELEMENTWISE_BYTES} bytes")
 
         self.device = device
         self.descriptors = descriptors
@@ -141,26 +139,16 @@ class Softmax128:
         right = scores[LANES:]
         left_max = self._reduce("max", left)
         right_max = self._reduce("max", right)
-        maximum = self._run(
-            "max", self._const(left_max), self._const(right_max)
-        )[0]
-        negative_maximum = self._run(
-            "mul", self._const(maximum), self._const(-1.0)
-        )
+        maximum = self._run("max", self._const(left_max), self._const(right_max))[0]
+        negative_maximum = self._run("mul", self._const(maximum), self._const(-1.0))
         left_exp = self._exp(self._run("add", left, negative_maximum))
         right_exp = self._exp(self._run("add", right, negative_maximum))
         left_sum = self._reduce("add", left_exp)
         right_sum = self._reduce("add", right_exp)
-        total = self._run(
-            "add", self._const(left_sum), self._const(right_sum)
-        )[0]
+        total = self._run("add", self._const(left_sum), self._const(right_sum))[0]
         reciprocal = self._reciprocal(total)
-        left_probability = self._run(
-            "mul", left_exp, self._const(reciprocal)
-        )
-        right_probability = self._run(
-            "mul", right_exp, self._const(reciprocal)
-        )
+        left_probability = self._run("mul", left_exp, self._const(reciprocal))
+        right_probability = self._run("mul", right_exp, self._const(reciprocal))
         result = np.concatenate((left_probability, right_probability))
         if not np.isfinite(result).all():
             raise RuntimeError("ANE softmax returned a non-finite output")
@@ -273,18 +261,10 @@ class Activations:
             absolute = self.math._run(
                 "add", positive, self.math._run("max", negative, zero)
             )
-            exp_negative = self._exp(
-                self.math._run("mul", absolute, negative_one)
-            )
-            denominator = self.math._run(
-                "add", exp_negative, self.math._const(2.0)
-            )
-            ratio = self.math._run(
-                "mul", exp_negative, self._reciprocal(denominator)
-            )
-            ratio_squared = self.math._run(
-                "sq", ratio, self.math._const(0.0)
-            )
+            exp_negative = self._exp(self.math._run("mul", absolute, negative_one))
+            denominator = self.math._run("add", exp_negative, self.math._const(2.0))
+            ratio = self.math._run("mul", exp_negative, self._reciprocal(denominator))
+            ratio_squared = self.math._run("sq", ratio, self.math._const(0.0))
             term = ratio
             series = ratio
             for power in (3, 5, 7, 9):
@@ -292,13 +272,9 @@ class Activations:
                 series = self.math._run(
                     "add",
                     series,
-                    self.math._run(
-                        "mul", term, self.math._const(1.0 / power)
-                    ),
+                    self.math._run("mul", term, self.math._const(1.0 / power)),
                 )
-            correction = self.math._run(
-                "mul", series, self.math._const(2.0)
-            )
+            correction = self.math._run("mul", series, self.math._const(2.0))
             softplus = self.math._run("add", positive, correction)
             scaled = self.math._run("mul", softplus, a_log_chunk)
             multiplier = self._exp(scaled)
@@ -338,19 +314,11 @@ class Activations:
         negative_half = self.math._run("max", negative, zero)
         positive_half = self.math._run("max", value, zero)
         numerator = self._exp(
-            self.math._run(
-                "mul", negative_half, self.math._const(-1.0)
-            )
+            self.math._run("mul", negative_half, self.math._const(-1.0))
         )
-        other = self._exp(
-            self.math._run(
-                "mul", positive_half, self.math._const(-1.0)
-            )
-        )
+        other = self._exp(self.math._run("mul", positive_half, self.math._const(-1.0)))
         denominator = self.math._run("add", numerator, other)
-        return self.math._run(
-            "mul", numerator, self._reciprocal(denominator)
-        )
+        return self.math._run("mul", numerator, self._reciprocal(denominator))
 
     def _reciprocal(self, value):
         reciprocal = self.math._const(0.5)
@@ -383,6 +351,95 @@ class Activations:
         return value
 
 
+class TensorOperations:
+    """Run residual addition and rotary embedding math on ANE."""
+
+    def __init__(self, run_elementwise):
+        self.run_elementwise = run_elementwise
+
+    def add(self, left, right):
+        left = self._value(left, "left")
+        right = self._value(right, "right")
+        if right.shape != left.shape:
+            raise ValueError(
+                f"right shape must match left shape {left.shape}, got {right.shape}"
+            )
+        left_flat = left.reshape(-1)
+        right_flat = right.reshape(-1)
+        result = np.empty_like(left_flat)
+        for offset in range(0, left_flat.size, LANES):
+            width = min(LANES, left_flat.size - offset)
+            left_chunk = np.zeros(LANES, dtype=np.float16)
+            right_chunk = np.zeros(LANES, dtype=np.float16)
+            left_chunk[:width] = left_flat[offset : offset + width]
+            right_chunk[:width] = right_flat[offset : offset + width]
+            added = self.run_elementwise("add", left_chunk, right_chunk)
+            result[offset : offset + width] = added[:width]
+        return result.reshape(left.shape)
+
+    def rope(
+        self,
+        value,
+        position,
+        rotary_dim=64,
+        theta=10_000_000.0,
+        sections=(11, 11, 10),
+    ):
+        value = self._value(value, "value")
+        if value.ndim != 2:
+            raise ValueError(f"value shape must be two-dimensional, got {value.shape}")
+        if rotary_dim < 2 or rotary_dim > LANES or rotary_dim % 2:
+            raise ValueError(f"rotary_dim must be even and between 2 and {LANES}")
+        if rotary_dim > value.shape[1]:
+            raise ValueError(
+                f"rotary_dim {rotary_dim} exceeds value width {value.shape[1]}"
+            )
+        if len(sections) != 3 or sum(sections) != rotary_dim // 2:
+            raise ValueError(
+                "sections must contain three parts totaling rotary_dim / 2"
+            )
+        if not isinstance(position, (int, np.integer)) or position < 0:
+            raise ValueError("position must be a non-negative integer")
+        if theta <= 0:
+            raise ValueError("theta must be positive")
+
+        inverse = theta ** (-np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim)
+        frequencies = position * inverse
+        for offset, section in zip((1, 2), sections[1:]):
+            indexes = np.arange(offset, section * 3, 3)
+            frequencies[indexes] = position * inverse[: indexes.size]
+        cosine = np.cos(frequencies).astype(np.float16)
+        sine = np.sin(frequencies).astype(np.float16)
+        half = rotary_dim // 2
+        direct_factors = np.zeros(LANES, dtype=np.float16)
+        cross_factors = np.zeros(LANES, dtype=np.float16)
+        direct_factors[:rotary_dim] = np.concatenate((cosine, cosine))
+        cross_factors[:rotary_dim] = np.concatenate((-sine, sine))
+
+        result = value.copy()
+        for head, row in enumerate(value):
+            direct = np.zeros(LANES, dtype=np.float16)
+            cross = np.zeros(LANES, dtype=np.float16)
+            direct[:rotary_dim] = row[:rotary_dim]
+            cross[:rotary_dim] = np.concatenate((row[half:rotary_dim], row[:half]))
+            direct = self.run_elementwise("mul", direct, direct_factors)
+            cross = self.run_elementwise("mul", cross, cross_factors)
+            rotated = self.run_elementwise("add", direct, cross)
+            result[head, :rotary_dim] = rotated[:rotary_dim]
+        return result
+
+    @staticmethod
+    def _value(value, name):
+        value = np.asarray(value)
+        if value.dtype != np.float16:
+            raise ValueError(f"{name} dtype must be float16, got {value.dtype}")
+        if not value.size:
+            raise ValueError(f"{name} must not be empty")
+        if not np.isfinite(value).all():
+            raise ValueError(f"{name} must be finite")
+        return value
+
+
 class CausalConvolution:
     """Run one depthwise causal convolution through the ANE backend."""
 
@@ -405,8 +462,7 @@ class CausalConvolution:
         expected_weight_shape = (self.channels, self.kernel_size)
         if weight.dtype != np.float16 or weight.shape != expected_weight_shape:
             raise ValueError(
-                "weight shape and dtype must be "
-                f"{expected_weight_shape} float16"
+                f"weight shape and dtype must be {expected_weight_shape} float16"
             )
         if not np.isfinite(value).all() or not np.isfinite(weight).all():
             raise ValueError("value and weight must be finite")
@@ -427,9 +483,7 @@ class CausalConvolution:
             for tap, history_index in enumerate(order[1:], start=1):
                 source.fill(0)
                 coefficient.fill(0)
-                source[:width] = self.history[
-                    history_index, start : start + width
-                ]
+                source[:width] = self.history[history_index, start : start + width]
                 coefficient[:width] = weight[start : start + width, tap]
                 product = self.run_elementwise("mul", source, coefficient)
                 total = self.run_elementwise("add", total, product)
@@ -469,9 +523,7 @@ class Normalization:
                 self.math._const(total),
                 self.math._const(1.0 / divisor),
             )
-            adjusted = self.math._run(
-                "add", scaled_total, self.math._const(eps)
-            )[0]
+            adjusted = self.math._run("add", scaled_total, self.math._const(eps))[0]
             inverse = self._inverse_sqrt(adjusted)
             if output_scale != 1.0:
                 inverse = self.math._run(
@@ -512,15 +564,9 @@ class Normalization:
         for _ in range(5):
             product = self.math._run("mul", source, estimate)
             product = self.math._run("mul", product, estimate)
-            negative = self.math._run(
-                "mul", product, self.math._const(-1.0)
-            )
-            correction = self.math._run(
-                "add", self.math._const(3.0), negative
-            )
-            half = self.math._run(
-                "mul", correction, self.math._const(0.5)
-            )
+            negative = self.math._run("mul", product, self.math._const(-1.0))
+            correction = self.math._run("add", self.math._const(3.0), negative)
+            half = self.math._run("mul", correction, self.math._const(0.5))
             estimate = self.math._run("mul", estimate, half)
         return estimate[0]
 
@@ -529,8 +575,14 @@ class Normalization:
         value = np.asarray(value)
         if value.dtype != np.float16:
             raise ValueError(f"value dtype must be float16, got {value.dtype}")
-        if not value.shape or value.shape[-1] % LANES or value.shape[-1] > LANES * LANES:
-            raise ValueError("final value dimension must be a multiple of 64 up to 4096")
+        if (
+            not value.shape
+            or value.shape[-1] % LANES
+            or value.shape[-1] > LANES * LANES
+        ):
+            raise ValueError(
+                "final value dimension must be a multiple of 64 up to 4096"
+            )
         if not np.isfinite(value).all():
             raise ValueError("value must be finite")
         return value

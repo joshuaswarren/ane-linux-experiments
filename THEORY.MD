@@ -183,12 +183,25 @@ The ring removes the old host concatenate, multiply, and reduction path.
 Four sequential Linux M1 steps had maximum absolute errors from 0.000467 through 0.001509.
 The control GEMM passed before and after the complete token run.
 
+## Tensor operations contract
+
+Every residual addition runs as 64-lane ANE chunks.
+RoPE packs each head's two 32-lane halves into one 64-lane submission.
+One direct multiply, one swapped-half multiply, and one add produce the rotated head.
+
+The host computes cosine and sine constants for each position.
+It packs constants and copies results.
+It does not perform RoPE or residual tensor arithmetic.
+
+The residual maximum error was 0.001953125.
+Query and key RoPE maximum errors were 0.0018101 and 0.0016057.
+The control GEMM passed before and after the complete token run.
 ## Token-to-logits orchestration
 
 The bounded state runtimes now compose inside the 24-layer Qwen model.
 Six full-attention layers own two KV-head states each.
 Eighteen DeltaNet layers own separate recurrent runners.
-One shared four-BO elementwise backend serves softmax, normalization, activations, and convolution.
+One shared four-BO elementwise backend serves softmax, normalization, activations, convolution, RoPE, and residual additions.
 
 A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
 The ANE-resident state path and the host-state control both selected token 369.
@@ -207,15 +220,18 @@ Decoder layers took 78.420 seconds, and logits took 7.063 seconds.
 A fourth full-token run moved every depthwise causal convolution to ANE.
 It selected token 220 and produced 248,320 finite logits.
 Decoder layers took 80.171 seconds, and logits took 7.028 seconds.
+A fifth full-token run moved every RoPE rotation and residual addition to ANE.
+It selected token 220 and produced 248,320 finite logits.
+Decoder layers took 91.686 seconds, and logits took 7.249 seconds.
 
-Normalization, activations, and causal convolution are now complete.
-ANE-only execution and numeric parity remain open.
+Normalization, activations, causal convolution, RoPE, and residual additions are now complete.
+ANE-only enforcement and numeric parity remain open.
 
 ## Current direction
 
-RoPE and residual arithmetic remain host tensor operations.
-Each operation needs a bounded old-format ANE program or a composed raw runtime.
-The model must then reject every host tensor path when the ANE backend is active.
+The model must reject every host tensor path when the ANE backend is active.
+A runtime audit must prove that CPU and GPU tensor fallbacks cannot execute.
+The remaining host work may only schedule operations, build constants, and copy buffers.
 
 Only that ANE-only path can enter the fixed 100-prompt corpus.
 Only the paired corpus can support the final performance comparison.

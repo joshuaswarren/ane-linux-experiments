@@ -49,7 +49,9 @@ class Softmax128Tests(unittest.TestCase):
         actual = self.softmax(scores)
         expected = self.reference(scores)
 
-        self.assertLess(float(np.max(np.abs(actual.astype(np.float32) - expected))), 0.003)
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))), 0.003
+        )
         self.assertAlmostEqual(float(actual.astype(np.float32).sum()), 1.0, delta=0.001)
         self.assertEqual(int(actual.argmax()), int(expected.argmax()))
         self.assertIn("max", self.elementwise.modes)
@@ -85,7 +87,6 @@ class Softmax128Tests(unittest.TestCase):
             self.softmax(scores)
 
 
-
 class NormalizationTests(unittest.TestCase):
     def setUp(self):
         self.elementwise = FakeElementwise()
@@ -115,8 +116,10 @@ class NormalizationTests(unittest.TestCase):
 
         actual = self.normalization.l2_norm(values, scale=0.125)
         values32 = values.astype(np.float32)
-        expected = 0.125 * values32 / np.sqrt(
-            np.sum(values32 * values32, axis=-1, keepdims=True) + 1e-6
+        expected = (
+            0.125
+            * values32
+            / np.sqrt(np.sum(values32 * values32, axis=-1, keepdims=True) + 1e-6)
         )
 
         self.assertEqual(actual.dtype, np.float16)
@@ -223,6 +226,59 @@ class ActivationTests(unittest.TestCase):
                 np.ones(16, dtype=np.float16),
                 np.ones(16, dtype=np.float16),
             )
+
+
+class TensorOperationsTests(unittest.TestCase):
+    def setUp(self):
+        self.elementwise = FakeElementwise()
+        self.operations = MODULE.TensorOperations(self.elementwise)
+
+    def test_residual_add_matches_reference_across_partial_chunk(self):
+        left = np.arange(96, dtype=np.float16)
+        right = np.linspace(1.0, -1.0, 96, dtype=np.float16)
+
+        actual = self.operations.add(left, right)
+
+        np.testing.assert_array_equal(actual, np.add(left, right, dtype=np.float16))
+        self.assertEqual(self.elementwise.modes, ["add", "add"])
+
+    def test_rope_matches_mrope_reference_and_preserves_tail(self):
+        rng = np.random.default_rng(20260901)
+        value = rng.standard_normal((8, 256)).astype(np.float16)
+        position = 37
+
+        actual = self.operations.rope(value, position)
+
+        expected = value.astype(np.float32).copy()
+        inverse = 10_000_000.0 ** (-np.arange(0, 64, 2, dtype=np.float32) / 64)
+        frequencies = position * inverse
+        for offset, section in zip((1, 2), (11, 10)):
+            indexes = np.arange(offset, section * 3, 3)
+            frequencies[indexes] = position * inverse[: indexes.size]
+        cosine = np.cos(frequencies)
+        sine = np.sin(frequencies)
+        left = expected[:, :32].copy()
+        right = expected[:, 32:64].copy()
+        expected[:, :32] = left * cosine - right * sine
+        expected[:, 32:64] = right * cosine + left * sine
+
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))),
+            0.004,
+        )
+        np.testing.assert_array_equal(actual[:, 64:], value[:, 64:])
+        self.assertEqual(self.elementwise.modes, ["mul", "mul", "add"] * 8)
+
+    def test_rejects_bad_tensor_inputs(self):
+        with self.assertRaisesRegex(ValueError, "shape"):
+            self.operations.add(
+                np.ones(64, dtype=np.float16),
+                np.ones(32, dtype=np.float16),
+            )
+        with self.assertRaisesRegex(ValueError, "float16"):
+            self.operations.rope(np.ones((2, 256), dtype=np.float32), 0)
+        with self.assertRaisesRegex(ValueError, "rotary_dim"):
+            self.operations.rope(np.ones((2, 32), dtype=np.float16), 0, rotary_dim=64)
 
 
 class CausalConvolutionTests(unittest.TestCase):

@@ -62,7 +62,13 @@ Four sequential 6,144-channel steps stayed below `0.0016` maximum error.
 The full token run kept token `220` and produced finite logits.
 See `receipts/qwen-linux-convolution-validation.json` for commands and hashes.
 
-The path is not ANE-only yet. RoPE and residual arithmetic still run on the host.
+RoPE rotation and every residual addition now use the shared ANE backend.
+The three hardware cases stayed below `0.002` maximum error.
+The full token run kept token `220` and produced finite logits.
+See `receipts/qwen-linux-tensor-operations-validation.json` for the evidence.
+
+The host builds RoPE constants and packs lanes.
+The next milestone enforces no CPU or GPU tensor fallback.
 
 ## Qwen reference workflow
 

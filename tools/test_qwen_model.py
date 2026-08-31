@@ -21,17 +21,22 @@ class FakeTokenRuntime:
         self.normalization_calls = []
         self.activation_calls = []
         self.convolution_calls = []
+        self.tensor_calls = []
 
     def full_attention(self, layer_index, query, key, value):
-        self.full_calls.append(
-            (layer_index, query.copy(), key.copy(), value.copy())
-        )
+        self.full_calls.append((layer_index, query.copy(), key.copy(), value.copy()))
         return np.ones((8, 256), dtype=np.float16)
 
     def causal_convolution(self, layer_index, value, weight):
-        self.convolution_calls.append(
-            (layer_index, value.copy(), weight.copy())
-        )
+        self.convolution_calls.append((layer_index, value.copy(), weight.copy()))
+        return value.copy()
+
+    def residual_add(self, left, right):
+        self.tensor_calls.append(("residual", left.copy(), right.copy()))
+        return left.copy()
+
+    def rope(self, value, position):
+        self.tensor_calls.append(("rope", value.copy(), position))
         return value.copy()
 
     def recurrent(self, layer_index, query, key, value, beta, decay):
@@ -54,14 +59,13 @@ class FakeTokenRuntime:
     def l2_norm(self, value, scale=1.0):
         self.normalization_calls.append(("l2", value.shape, None, scale))
         return value
+
     def sigmoid(self, value):
         self.activation_calls.append(("sigmoid", value.shape, None))
         return np.ones_like(value)
 
     def sigmoid_mul(self, value, multiplier):
-        self.activation_calls.append(
-            ("sigmoid_mul", value.shape, multiplier.shape)
-        )
+        self.activation_calls.append(("sigmoid_mul", value.shape, multiplier.shape))
         return np.float16(0.5) * multiplier
 
     def silu(self, value):
@@ -109,6 +113,10 @@ class QwenModelMathTests(unittest.TestCase):
             [call[:3] for call in model.token_runtime.activation_calls],
             [("silu_mul", (6144,), (6144,))],
         )
+        self.assertEqual(
+            [call[0] for call in model.token_runtime.tensor_calls],
+            ["residual"],
+        )
         np.testing.assert_array_equal(actual, np.zeros(2048, dtype=np.float16))
 
     def test_full_layer_uses_resident_attention_runtime(self):
@@ -148,9 +156,7 @@ class QwenModelMathTests(unittest.TestCase):
 
         model.projection = projection
         hidden = np.zeros(2048, dtype=np.float16)
-        with patch.object(
-            MODULE, "rope", side_effect=lambda value, _position: value
-        ):
+        with patch.object(MODULE, "rope", side_effect=lambda value, _position: value):
             actual = model.full_layer(layer, hidden, 0)
 
         self.assertEqual(len(model.token_runtime.full_calls), 1)
@@ -161,6 +167,14 @@ class QwenModelMathTests(unittest.TestCase):
         self.assertEqual(
             [call[:3] for call in model.token_runtime.activation_calls],
             [("sigmoid_mul", (2048,), (2048,))],
+        )
+        self.assertEqual(
+            [call[0] for call in model.token_runtime.tensor_calls],
+            ["rope", "rope", "residual"],
+        )
+        self.assertEqual(
+            [call[2] for call in model.token_runtime.tensor_calls[:2]],
+            [0, 0],
         )
         layer_index, q_heads, k_heads, v_heads = model.token_runtime.full_calls[0]
         self.assertEqual(layer_index, 3)
@@ -229,6 +243,10 @@ class QwenModelMathTests(unittest.TestCase):
                 ("silu_mul", (16, 128), (16, 128)),
             ],
         )
+        self.assertEqual(
+            [call[0] for call in model.token_runtime.tensor_calls],
+            ["residual"],
+        )
         self.assertAlmostEqual(
             model.token_runtime.normalization_calls[1][3],
             1.0 / np.sqrt(128.0),
@@ -237,9 +255,7 @@ class QwenModelMathTests(unittest.TestCase):
         call = model.token_runtime.recurrent_calls[0]
         self.assertEqual(call[0], 5)
         self.assertTrue(all(value.dtype == np.float16 for value in call[1:]))
-        np.testing.assert_array_equal(
-            call[-1], np.full(16, np.float16(0.75))
-        )
+        np.testing.assert_array_equal(call[-1], np.full(16, np.float16(0.75)))
         np.testing.assert_array_equal(actual, hidden)
 
 
