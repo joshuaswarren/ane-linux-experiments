@@ -64,6 +64,7 @@ class QwenTokenRuntime:
                 device, elementwise_descriptors
             )
             self.softmax = SOFTMAX.Softmax128(self.elementwise)
+            self.normalization = SOFTMAX.Normalization(self.elementwise)
             for _ in range(full_layers):
                 layer_states = []
                 for _ in range(KV_HEADS):
@@ -122,6 +123,14 @@ class QwenTokenRuntime:
             )
             attended[query_head] = state.attend(self.softmax(scaled))
         return attended
+
+    def rms_norm(self, value, weight):
+        self._ensure_open()
+        return self.normalization.rms_norm(value, weight)
+
+    def l2_norm(self, value, scale=1.0):
+        self._ensure_open()
+        return self.normalization.l2_norm(value, scale)
 
     def recurrent(self, layer_index, query, key, value, beta, decay):
         self._ensure_open()

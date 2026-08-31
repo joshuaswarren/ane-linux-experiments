@@ -85,6 +85,66 @@ class Softmax128Tests(unittest.TestCase):
             self.softmax(scores)
 
 
+
+class NormalizationTests(unittest.TestCase):
+    def setUp(self):
+        self.elementwise = FakeElementwise()
+        self.normalization = MODULE.Normalization(self.elementwise)
+
+    def test_rms_norm_matches_rowwise_reference(self):
+        rng = np.random.default_rng(20260830)
+        values = (rng.standard_normal((8, 256)) * 0.5).astype(np.float16)
+        weight = rng.uniform(0.75, 1.25, 256).astype(np.float16)
+
+        actual = self.normalization.rms_norm(values, weight)
+        values32 = values.astype(np.float32)
+        expected = values32 / np.sqrt(
+            np.mean(values32 * values32, axis=-1, keepdims=True) + 1e-6
+        )
+        expected *= weight.astype(np.float32)
+
+        self.assertEqual(actual.dtype, np.float16)
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))),
+            0.03,
+        )
+
+    def test_l2_norm_matches_rowwise_reference(self):
+        rng = np.random.default_rng(20260831)
+        values = rng.standard_normal((16, 128)).astype(np.float16)
+
+        actual = self.normalization.l2_norm(values, scale=0.125)
+        values32 = values.astype(np.float32)
+        expected = 0.125 * values32 / np.sqrt(
+            np.sum(values32 * values32, axis=-1, keepdims=True) + 1e-6
+        )
+
+        self.assertEqual(actual.dtype, np.float16)
+        self.assertLess(
+            float(np.max(np.abs(actual.astype(np.float32) - expected))),
+            0.003,
+        )
+
+    def test_rms_norm_handles_zero_input(self):
+        values = np.zeros((16, 128), dtype=np.float16)
+        weight = np.ones(128, dtype=np.float16)
+
+        actual = self.normalization.rms_norm(values, weight)
+
+        np.testing.assert_array_equal(actual, values)
+
+    def test_normalization_rejects_non_target_shapes_and_dtypes(self):
+        with self.assertRaisesRegex(ValueError, "multiple of 64"):
+            self.normalization.l2_norm(np.ones(65, dtype=np.float16))
+        with self.assertRaisesRegex(ValueError, "float16"):
+            self.normalization.l2_norm(np.ones(128, dtype=np.float32))
+        with self.assertRaisesRegex(ValueError, "weight"):
+            self.normalization.rms_norm(
+                np.ones(128, dtype=np.float16),
+                np.ones(64, dtype=np.float16),
+            )
+
+
 class FakeBuffer:
     next_handle = 1
 

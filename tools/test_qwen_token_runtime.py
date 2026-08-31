@@ -81,6 +81,22 @@ class FakeSoftmax:
         return np.full(128, np.float16(1.0 / 128.0), dtype=np.float16)
 
 
+class FakeNormalization:
+    instances: ClassVar[list] = []
+
+    def __init__(self, _backend):
+        self.calls = []
+        self.instances.append(self)
+
+    def rms_norm(self, value, weight):
+        self.calls.append(("rms", value.copy(), weight.copy()))
+        return value.copy()
+
+    def l2_norm(self, value, scale=1.0):
+        self.calls.append(("l2", value.copy(), scale))
+        return value.copy()
+
+
 class FakeRecurrentRunner:
     instances: ClassVar[list] = []
 
@@ -109,6 +125,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         FakeAttentionState.instances = []
         FakeElementwiseBackend.instances = []
         FakeSoftmax.instances = []
+        FakeNormalization.instances = []
         FakeRecurrentRunner.instances = []
         self.original_attention = MODULE.ATTENTION
         self.original_softmax = MODULE.SOFTMAX
@@ -121,6 +138,7 @@ class QwenTokenRuntimeTests(unittest.TestCase):
             LANES=64,
             ElementwiseBackend=FakeElementwiseBackend,
             Softmax128=FakeSoftmax,
+            Normalization=FakeNormalization,
         )
         MODULE.RECURRENT = SimpleNamespace(RecurrentRunner=FakeRecurrentRunner)
         self.runtime = MODULE.QwenTokenRuntime(
@@ -204,6 +222,21 @@ class QwenTokenRuntimeTests(unittest.TestCase):
         np.testing.assert_array_equal(actual, q)
         self.assertEqual(len(FakeRecurrentRunner.instances[2].steps), 1)
         self.assertEqual(len(FakeRecurrentRunner.instances[0].steps), 0)
+
+    def test_normalization_uses_shared_elementwise_backend(self):
+        value = np.ones((2, 128), dtype=np.float16)
+        weight = np.full(128, np.float16(2.0))
+
+        rms = self.runtime.rms_norm(value, weight)
+        l2 = self.runtime.l2_norm(value, 0.125)
+
+        np.testing.assert_array_equal(rms, value)
+        np.testing.assert_array_equal(l2, value)
+        self.assertEqual(
+            [call[0] for call in FakeNormalization.instances[0].calls],
+            ["rms", "l2"],
+        )
+        self.assertEqual(FakeNormalization.instances[0].calls[1][2], 0.125)
 
     def test_close_is_idempotent(self):
         self.runtime.close()

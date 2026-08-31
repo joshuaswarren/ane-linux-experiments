@@ -48,13 +48,15 @@ def silu(x):
 
 def rms_norm(x, weight, eps=1e-6):
     x32 = x.astype(np.float32)
-    scale = 1.0 / np.sqrt(np.mean(x32 * x32) + eps)
+    mean_square = np.mean(x32 * x32, axis=-1, keepdims=True)
+    scale = 1.0 / np.sqrt(mean_square + eps)
     return _compute_dtype(x32 * scale * weight.astype(np.float32))
 
 
-def l2_norm(x, eps=1e-6):
+def l2_norm(x, scale=1.0, eps=1e-6):
     x32 = x.astype(np.float32)
-    return _compute_dtype(x32 / np.sqrt(np.sum(x32 * x32, axis=-1, keepdims=True) + eps))
+    magnitude = np.sqrt(np.sum(x32 * x32, axis=-1, keepdims=True) + eps)
+    return _compute_dtype(x32 * scale / magnitude)
 
 
 def rope(x, position, rotary_dim=64, theta=10_000_000.0, sections=(11, 11, 10)):
@@ -218,8 +220,20 @@ class QwenModel:
             result[row0:row0 + rows] = acc[:rows]
         return result
 
+    def normalize_rms(self, value, weight):
+        if self.token_runtime is not None:
+            return self.token_runtime.rms_norm(
+                value.astype(np.float16), weight.astype(np.float16)
+            )
+        return rms_norm(value, weight)
+
+    def normalize_l2(self, value, scale=1.0):
+        if self.token_runtime is not None:
+            return self.token_runtime.l2_norm(value.astype(np.float16), scale)
+        return l2_norm(value, scale)
+
     def mlp(self, layer, hidden):
-        x = rms_norm(hidden, layer["post_norm"])
+        x = self.normalize_rms(hidden, layer["post_norm"])
         gate = self.projection(layer["ffn_gate"], x)
         up = self.projection(layer["ffn_up"], x)
         act = silu(gate) * up
@@ -227,7 +241,7 @@ class QwenModel:
         return _compute_dtype(hidden.astype(np.float32) + down)
 
     def linear_layer(self, layer, hidden):
-        x = rms_norm(hidden, layer["input_norm"])
+        x = self.normalize_rms(hidden, layer["input_norm"])
         mixed = _compute_dtype(self.projection(layer["qkv"], x))
         z = _compute_dtype(self.projection(layer["z"], x))
         beta = sigmoid(self.projection(layer["beta"], x))
@@ -238,9 +252,10 @@ class QwenModel:
         mixed = np.sum(window.astype(np.float32) * layer["conv"].astype(np.float32), axis=1)
         mixed = silu(_compute_dtype(mixed))
         query, key, value = np.split(mixed, 3)
-        query = l2_norm(query.reshape(16, 128))
-        query = _compute_dtype(query.astype(np.float32) / np.sqrt(128.0))
-        key = l2_norm(key.reshape(16, 128))
+        query = self.normalize_l2(
+            query.reshape(16, 128), 1.0 / np.sqrt(128.0)
+        )
+        key = self.normalize_l2(key.reshape(16, 128))
         value = value.reshape(16, 128)
         decay = layer["a_log"].astype(np.float32) * np.log1p(
             np.exp(np.clip(alpha + layer["dt_bias"].astype(np.float32), -80, 80))
@@ -264,21 +279,21 @@ class QwenModel:
                 delta = (vh - state[head].T @ kh) * float(beta[head])
                 state[head] += np.outer(kh, delta)
                 output[head] = state[head].T @ query[head].astype(np.float32)
-        norm = rms_norm(_compute_dtype(output), layer["ssm_norm"])
+        norm = self.normalize_rms(_compute_dtype(output), layer["ssm_norm"])
         norm = norm * silu(z.reshape(16, 128))
         mixed_out = self.projection(layer["out"], norm.reshape(-1))
         return self.mlp(layer, _compute_dtype(hidden.astype(np.float32) + mixed_out))
 
     def full_layer(self, layer, hidden, position):
-        x = rms_norm(hidden, layer["input_norm"])
+        x = self.normalize_rms(hidden, layer["input_norm"])
         q = self.projection(layer["q"], x)
         q_full = q.reshape(8, 512)
         q_heads, gate = q_full[:, :256], q_full[:, 256:].reshape(-1)
         k = self.projection(layer["k"], x)
         v = self.projection(layer["v"], x)
         k_heads, v_heads = k.reshape(2, 256), v.reshape(2, 256)
-        q_heads = rope(rms_norm(q_heads, layer["q_norm"]), position)
-        k_heads = rope(rms_norm(k_heads, layer["k_norm"]), position)
+        q_heads = rope(self.normalize_rms(q_heads, layer["q_norm"]), position)
+        k_heads = rope(self.normalize_rms(k_heads, layer["k_norm"]), position)
         if self.token_runtime is not None:
             attended = self.token_runtime.full_attention(
                 layer["state_index"],
@@ -302,7 +317,7 @@ class QwenModel:
         return hidden
 
     def logits(self, hidden):
-        h = rms_norm(hidden, self.output_norm)
+        h = self.normalize_rms(hidden, self.output_norm)
         if self.cpu_reference:
             return self.embedding.astype(np.float32) @ h.astype(np.float32)
         return self.projection(self.embedding, h, in_cols=256)
