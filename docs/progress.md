@@ -255,4 +255,9 @@ Decoder layers took 86.342 seconds, and logits took 11.893 seconds.
 The control GEMM passed before and after the run.
 The report is `receipts/qwen-linux-ane-only-validation.json`.
 
-The next milestone runs numeric parity on the fixed prompt corpus.
+The next milestone remains blocked on a raw Qwen HWX export or equivalent Linux-loadable artifact.
+Lower-level export probe, 2026-08-31.
+A known-good legacy net.plist graph compiled and loaded through ANEForge `_ANEInMemoryModel`.
+`saveModelFiles` returned a transient cache directory with `net.plist`, `weights.0`, and empty `data` only.
+It did not write `.hwx` or another Linux-loadable artifact.
+The complete Qwen graph remains blocked on an export surface that the current macOS runtime does not expose.
