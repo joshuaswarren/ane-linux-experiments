@@ -65,6 +65,7 @@ class QwenTokenRuntime:
             )
             self.softmax = SOFTMAX.Softmax128(self.elementwise)
             self.normalization = SOFTMAX.Normalization(self.elementwise)
+            self.activations = SOFTMAX.Activations(self.elementwise)
             for _ in range(full_layers):
                 layer_states = []
                 for _ in range(KV_HEADS):
@@ -131,6 +132,26 @@ class QwenTokenRuntime:
     def l2_norm(self, value, scale=1.0):
         self._ensure_open()
         return self.normalization.l2_norm(value, scale)
+
+    def sigmoid(self, value):
+        self._ensure_open()
+        return self.activations.sigmoid(value)
+
+    def sigmoid_mul(self, value, multiplier):
+        self._ensure_open()
+        return self.activations.sigmoid_mul(value, multiplier)
+
+    def silu(self, value):
+        self._ensure_open()
+        return self.activations.silu(value)
+
+    def silu_mul(self, value, multiplier):
+        self._ensure_open()
+        return self.activations.silu_mul(value, multiplier)
+
+    def decay_multiplier(self, alpha, bias, a_log):
+        self._ensure_open()
+        return self.activations.decay_multiplier(alpha, bias, a_log)
 
     def recurrent(self, layer_index, query, key, value, beta, decay):
         self._ensure_open()

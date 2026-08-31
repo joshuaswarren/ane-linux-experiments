@@ -50,12 +50,15 @@ source hashes.
 
 RMS and L2 normalization now use the same four resident elementwise ANE BOs.
 The hardware validator covers the model's 2,048-, 256-, and 128-wide shapes.
-A full one-token run produced 248,320 finite logits and selected token `220`.
-See `receipts/qwen-linux-normalization-validation.json` for error limits and
-source hashes.
+See `receipts/qwen-linux-normalization-validation.json` for the measured errors.
 
-The path is not ANE-only yet. Convolution, sigmoid/SiLU, RoPE, and residual
-arithmetic still run on the host.
+Sigmoid, SiLU, fused gate products, and recurrent decay now run on those BOs.
+The activation validator covers all five model uses with errors below `0.011`.
+A full one-token run produced 248,320 finite logits and selected token `220`.
+See `receipts/qwen-linux-activation-validation.json` for commands and hashes.
+
+The path is not ANE-only yet. Convolution, RoPE, and residual arithmetic still
+run on the host.
 
 ## Qwen reference workflow
 

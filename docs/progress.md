@@ -226,5 +226,13 @@ Decoder layers took 19.740 seconds, and logits took 6.916 seconds.
 The control GEMM passed before and after the hardware runs.
 The report is `receipts/qwen-linux-normalization-validation.json`.
 
-Convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain on the host.
-The next milestone moves sigmoid and SiLU to ANE submissions.
+Sigmoid, SiLU, fused gate products, and recurrent decay now use composed ANE submissions.
+The five model activation cases had maximum errors from 0.001218 through 0.010674.
+The recurrent path now passes the final exponential decay factor into its direct multiplier input.
+A complete token run selected token 220 with finite hidden state and 248,320 finite logits.
+Decoder layers took 78.420 seconds, and logits took 7.063 seconds.
+The control GEMM passed before and after the hardware runs.
+The report is `receipts/qwen-linux-activation-validation.json`.
+
+Convolution, RoPE, and residual arithmetic remain on the host.
+The next milestone moves depthwise causal convolution to ANE.
