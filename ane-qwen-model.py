@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
-"""Run a complete one-token Qwen3.8-2B forward pass with ANE linear layers.
+"""Run one Qwen3.8-2B token through Linux ANE or an explicit CPU reference.
 
-This is the first end-to-end model path in this work. It loads the selected
-Qwen3.8-2B Q4_K_M GGUF, dequantizes each tensor, sends every linear projection
-through the ANE 512x256 runtime, and keeps recurrent and attention state on the
-ANE across tokens. The CPU computes the remaining elementwise operations. The
-tied embedding produces output logits through the ANE projection runtime.
+The ANE backend runs every model tensor operation on the ANE.
+The host loads weights, gathers embeddings, packs tensors, and schedules submissions.
+The CPU backend is an explicit reference path and never serves as an ANE fallback.
 
-The CPU operations are explicit. They cover RMSNorm, depthwise causal
-convolution, sigmoid/SiLU, and RoPE. This is a working correctness path, not a
-claim that every non-linear primitive has already moved to the ANE.
-
-  python3 ane-qwen-model.py -m Qwen3.8-2B-Q4_K_M.gguf -p "The engine runs"
+  python3 ane-qwen-model.py -m model.gguf -p prompt --recurrent-anec model.anec
 """
 
 import argparse
@@ -107,7 +101,7 @@ def causal_attention(q, keys, values):
 
 
 class QwenModel:
-    """Qwen3.5 hybrid model with ANE-backed linear projections."""
+    """Qwen3.5 model with ANE-only and explicit CPU execution modes."""
 
     def __init__(
         self,
@@ -192,9 +186,18 @@ class QwenModel:
             return self.weights.row32("token_embd.weight", token_id)
         return self.weights.row("token_embd.weight", token_id)
 
+    def _require_tensor_runtime(self):
+        runtime = self.token_runtime
+        if runtime is None:
+            raise RuntimeError(
+                "ANE tensor runtime is required; CPU and GPU tensor fallback is disabled"
+            )
+        return runtime
+
     def projection(self, matrix, activation, in_cols=None):
         if self.cpu_reference:
             return matrix.astype(np.float32) @ activation.astype(np.float32)
+        tensor_runtime = self._require_tensor_runtime()
         if in_cols is None:
             in_cols = 512 if matrix.shape[1] >= 512 else 256
         descriptor = self.descriptor_512 if in_cols == 512 else self.descriptor
@@ -211,90 +214,97 @@ class QwenModel:
                 tile_gemm = self.device.tile_gemm
             else:
                 tile_gemm = self.device.blob_swap_gemm
-        result = np.zeros(matrix.shape[0], dtype=np.float32)
+        result = np.empty(matrix.shape[0], dtype=np.float16)
         mid = id(matrix)
         for row0 in range(0, matrix.shape[0], 512):
-            acc = np.zeros(512, dtype=np.float32)
+            rows = min(512, matrix.shape[0] - row0)
+            acc = None
             for col0 in range(0, matrix.shape[1], in_cols):
-                rows = min(512, matrix.shape[0] - row0)
                 cols = min(in_cols, matrix.shape[1] - col0)
                 x = np.zeros(in_cols, dtype=np.float16)
                 x[:cols] = activation[col0 : col0 + cols]
                 if tile_gemm is not None:
                     key = (mid, in_cols, row0, col0)
-                    acc += tile_gemm(key, matrix, x, descriptor, in_cols).astype(
-                        np.float32
+                    partial = tile_gemm(key, matrix, x, descriptor, in_cols).astype(
+                        np.float16
                     )
                 else:
                     tile = np.zeros((512, in_cols), dtype=np.float16)
                     tile[:rows, :cols] = matrix[row0 : row0 + rows, col0 : col0 + cols]
                     gemm = self.device.gemm512 if in_cols == 512 else self.device.gemm
-                    acc += gemm(tile, x, descriptor).astype(np.float32)
+                    partial = gemm(tile, x, descriptor).astype(np.float16)
+                acc = (
+                    partial
+                    if acc is None
+                    else tensor_runtime.residual_add(acc, partial)
+                )
+            if acc is None:
+                raise ValueError("projection matrix must have at least one column")
             result[row0 : row0 + rows] = acc[:rows]
         return result
 
     def normalize_rms(self, value, weight):
-        if self.token_runtime is not None:
-            return self.token_runtime.rms_norm(
-                value.astype(np.float16), weight.astype(np.float16)
-            )
-        return rms_norm(value, weight)
+        if self.cpu_reference:
+            return rms_norm(value, weight)
+        return self._require_tensor_runtime().rms_norm(
+            value.astype(np.float16), weight.astype(np.float16)
+        )
 
     def normalize_l2(self, value, scale=1.0):
-        if self.token_runtime is not None:
-            return self.token_runtime.l2_norm(value.astype(np.float16), scale)
-        return l2_norm(value, scale)
+        if self.cpu_reference:
+            return l2_norm(value, scale)
+        return self._require_tensor_runtime().l2_norm(value.astype(np.float16), scale)
 
     def activate_sigmoid(self, value):
-        if self.token_runtime is not None:
-            return self.token_runtime.sigmoid(value.astype(np.float16))
-        return sigmoid(value)
+        if self.cpu_reference:
+            return sigmoid(value)
+        return self._require_tensor_runtime().sigmoid(value.astype(np.float16))
 
     def activate_sigmoid_mul(self, value, multiplier):
-        if self.token_runtime is not None:
-            return self.token_runtime.sigmoid_mul(
-                value.astype(np.float16), multiplier.astype(np.float16)
+        if self.cpu_reference:
+            return _compute_dtype(
+                sigmoid(value).astype(np.float32) * multiplier.astype(np.float32)
             )
-        return _compute_dtype(
-            sigmoid(value).astype(np.float32) * multiplier.astype(np.float32)
+        return self._require_tensor_runtime().sigmoid_mul(
+            value.astype(np.float16), multiplier.astype(np.float16)
         )
 
     def activate_silu(self, value):
-        if self.token_runtime is not None:
-            return self.token_runtime.silu(value.astype(np.float16))
-        return silu(value)
+        if self.cpu_reference:
+            return silu(value)
+        return self._require_tensor_runtime().silu(value.astype(np.float16))
 
     def activate_silu_mul(self, value, multiplier):
-        if self.token_runtime is not None:
-            return self.token_runtime.silu_mul(
-                value.astype(np.float16), multiplier.astype(np.float16)
+        if self.cpu_reference:
+            return _compute_dtype(
+                silu(value).astype(np.float32) * multiplier.astype(np.float32)
             )
-        return _compute_dtype(
-            silu(value).astype(np.float32) * multiplier.astype(np.float32)
+        return self._require_tensor_runtime().silu_mul(
+            value.astype(np.float16), multiplier.astype(np.float16)
         )
 
     def recurrent_decay_factor(self, alpha, bias, a_log):
-        if self.token_runtime is not None:
-            return self.token_runtime.decay_multiplier(
-                alpha.astype(np.float16),
-                bias.astype(np.float16),
-                a_log.astype(np.float16),
-            )
-        combined = alpha.astype(np.float32) + bias.astype(np.float32)
-        decay = a_log.astype(np.float32) * np.logaddexp(0.0, combined)
-        return np.exp(decay)
+        if self.cpu_reference:
+            combined = alpha.astype(np.float32) + bias.astype(np.float32)
+            decay = a_log.astype(np.float32) * np.logaddexp(0.0, combined)
+            return np.exp(decay)
+        return self._require_tensor_runtime().decay_multiplier(
+            alpha.astype(np.float16),
+            bias.astype(np.float16),
+            a_log.astype(np.float16),
+        )
 
     def residual_add(self, left, right):
-        if self.token_runtime is not None:
-            return self.token_runtime.residual_add(
-                left.astype(np.float16), right.astype(np.float16)
-            )
-        return _compute_dtype(left.astype(np.float32) + right.astype(np.float32))
+        if self.cpu_reference:
+            return _compute_dtype(left.astype(np.float32) + right.astype(np.float32))
+        return self._require_tensor_runtime().residual_add(
+            left.astype(np.float16), right.astype(np.float16)
+        )
 
     def rotate(self, value, position):
-        if self.token_runtime is not None:
-            return self.token_runtime.rope(value.astype(np.float16), position)
-        return rope(value, position)
+        if self.cpu_reference:
+            return rope(value, position)
+        return self._require_tensor_runtime().rope(value.astype(np.float16), position)
 
     def mlp(self, layer, hidden):
         x = self.normalize_rms(hidden, layer["post_norm"])
@@ -311,16 +321,16 @@ class QwenModel:
         beta = self.activate_sigmoid(self.projection(layer["beta"], x))
         alpha = self.projection(layer["alpha"], x).astype(np.float32)
 
-        if self.token_runtime is not None:
-            mixed = self.token_runtime.causal_convolution(
-                layer["state_index"], mixed.astype(np.float16), layer["conv"]
-            )
-        else:
+        if self.cpu_reference:
             window = np.concatenate((layer["conv_state"], mixed[:, None]), axis=1)
             layer["conv_state"] = window[:, 1:]
             mixed = np.sum(
                 window.astype(np.float32) * layer["conv"].astype(np.float32),
                 axis=1,
+            )
+        else:
+            mixed = self._require_tensor_runtime().causal_convolution(
+                layer["state_index"], mixed.astype(np.float16), layer["conv"]
             )
         mixed = self.activate_silu(_compute_dtype(mixed))
         query, key, value = np.split(mixed, 3)
@@ -330,16 +340,7 @@ class QwenModel:
         decay_factor = self.recurrent_decay_factor(
             alpha, layer["dt_bias"], layer["a_log"]
         )
-        if self.token_runtime is not None:
-            output = self.token_runtime.recurrent(
-                layer["state_index"],
-                query.astype(np.float16),
-                key.astype(np.float16),
-                value.astype(np.float16),
-                beta.astype(np.float16),
-                decay_factor.astype(np.float16),
-            )
-        else:
+        if self.cpu_reference:
             state = layer["recurrent"]
             output = np.zeros((16, 128), dtype=np.float32)
             for head in range(16):
@@ -349,6 +350,15 @@ class QwenModel:
                 delta = (vh - state[head].T @ kh) * float(beta[head])
                 state[head] += np.outer(kh, delta)
                 output[head] = state[head].T @ query[head].astype(np.float32)
+        else:
+            output = self._require_tensor_runtime().recurrent(
+                layer["state_index"],
+                query.astype(np.float16),
+                key.astype(np.float16),
+                value.astype(np.float16),
+                beta.astype(np.float16),
+                decay_factor.astype(np.float16),
+            )
         norm = self.normalize_rms(_compute_dtype(output), layer["ssm_norm"])
         norm = self.activate_silu_mul(z.reshape(16, 128), norm)
         mixed_out = self.projection(layer["out"], norm.reshape(-1))
@@ -364,24 +374,26 @@ class QwenModel:
         k_heads, v_heads = k.reshape(2, 256), v.reshape(2, 256)
         q_heads = self.rotate(self.normalize_rms(q_heads, layer["q_norm"]), position)
         k_heads = self.rotate(self.normalize_rms(k_heads, layer["k_norm"]), position)
-        if self.token_runtime is not None:
-            attended = self.token_runtime.full_attention(
-                layer["state_index"],
-                q_heads.astype(np.float16),
-                k_heads.astype(np.float16),
-                v_heads.astype(np.float16),
-            )
-        else:
+        if self.cpu_reference:
             layer["keys"].append(k_heads.copy())
             layer["values"].append(v_heads.copy())
             keys = np.stack(layer["keys"], axis=1)
             values = np.stack(layer["values"], axis=1)
             attended = causal_attention(q_heads, keys, values)
+        else:
+            attended = self._require_tensor_runtime().full_attention(
+                layer["state_index"],
+                q_heads.astype(np.float16),
+                k_heads.astype(np.float16),
+                v_heads.astype(np.float16),
+            )
         gated = self.activate_sigmoid_mul(gate, attended.reshape(-1))
         mixed_out = self.projection(layer["o"], _compute_dtype(gated))
         return self.mlp(layer, self.residual_add(hidden, mixed_out))
 
     def step(self, hidden, position):
+        if not self.cpu_reference:
+            self._require_tensor_runtime()
         for layer in self.layers:
             hidden = (
                 self.full_layer(layer, hidden, position)
@@ -391,6 +403,8 @@ class QwenModel:
         return hidden
 
     def logits(self, hidden):
+        if not self.cpu_reference:
+            self._require_tensor_runtime()
         h = self.normalize_rms(hidden, self.output_norm)
         if self.cpu_reference:
             return self.embedding.astype(np.float32) @ h.astype(np.float32)
@@ -414,9 +428,10 @@ def main():
     args = parser.parse_args()
     if args.recurrent_anec is not None and args.backend != "ane":
         parser.error("--recurrent-anec requires --backend ane")
+    if args.backend == "ane" and args.recurrent_anec is None:
+        parser.error("--backend ane requires --recurrent-anec")
     global _F32_REFERENCE
-    # Keep recurrent and normalization math in float32 on both backends.
-    _F32_REFERENCE = True
+    _F32_REFERENCE = args.backend == "cpu"
 
     tokenizer_module = load("ane-tokenizer.py")
     weights_module = load("ane-weights.py")

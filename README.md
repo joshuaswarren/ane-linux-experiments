@@ -41,34 +41,24 @@ See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fr
 The probe is [tools/aneforge-qwen-graph.py](tools/aneforge-qwen-graph.py).
 The run receipt is `receipts/aneforge-qwen-graph.log`.
 
-The Linux Qwen path now has a bounded ANE state mode.
-Pass `--recurrent-anec <ANEC>` to keep all 18 recurrent states and six
-attention K/V caches on the ANE. A one-token hardware run produced finite
-logits and selected token `369`. The host-state control selected the same token.
-See `receipts/qwen-linux-token-runtime-validation.json` for the commands and
-source hashes.
+The Linux Qwen path now uses only the ANE for tensor work.
+Pass `--recurrent-anec <ANEC>` to start the ANE tensor runtime.
+The command stops if that runtime is missing.
 
-RMS and L2 normalization now use the same four resident elementwise ANE BOs.
-The hardware validator covers the model's 2,048-, 256-, and 128-wide shapes.
-See `receipts/qwen-linux-normalization-validation.json` for the measured errors.
+All model math runs on the ANE.
+This includes norms, gates, convolution, state, attention, RoPE, residuals,
+and projections. The ANE also adds partial projection tiles.
+The host loads weights and looks up embeddings.
+It builds constants, packs buffers, and picks output tokens.
 
-Sigmoid, SiLU, fused gate products, and recurrent decay now run on those BOs.
-The activation validator covers all five model uses with errors below `0.011`.
-A full one-token run produced 248,320 finite logits and selected token `220`.
-See `receipts/qwen-linux-activation-validation.json` for commands and hashes.
+A complete hardware run produced 248,320 finite logits and selected token `220`.
+Decoder layers took `86.342` seconds. Logits took `11.893` seconds.
+The ANE control passed before and after the run.
+See `receipts/qwen-linux-ane-only-validation.json` for commands and hashes.
 
-Depthwise causal convolution now uses the same ANE elementwise backend.
-Four sequential 6,144-channel steps stayed below `0.0016` maximum error.
-The full token run kept token `220` and produced finite logits.
-See `receipts/qwen-linux-convolution-validation.json` for commands and hashes.
-
-RoPE rotation and every residual addition now use the shared ANE backend.
-The three hardware cases stayed below `0.002` maximum error.
-The full token run kept token `220` and produced finite logits.
-See `receipts/qwen-linux-tensor-operations-validation.json` for the evidence.
-
-The host builds RoPE constants and packs lanes.
-The next milestone enforces no CPU or GPU tensor fallback.
+The explicit `--backend cpu` path remains a reference.
+There is no GPU or automatic tensor fallback.
+Numeric parity across the fixed corpus is the next milestone.
 
 ## Qwen reference workflow
 

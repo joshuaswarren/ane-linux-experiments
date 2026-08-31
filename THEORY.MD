@@ -201,7 +201,8 @@ The control GEMM passed before and after the complete token run.
 The bounded state runtimes now compose inside the 24-layer Qwen model.
 Six full-attention layers own two KV-head states each.
 Eighteen DeltaNet layers own separate recurrent runners.
-One shared four-BO elementwise backend serves softmax, normalization, activations, convolution, RoPE, and residual additions.
+One shared four-BO elementwise backend serves softmax, normalization, activations, and convolution.
+It also serves RoPE and residual additions.
 
 A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
 The ANE-resident state path and the host-state control both selected token 369.
@@ -224,14 +225,23 @@ A fifth full-token run moved every RoPE rotation and residual addition to ANE.
 It selected token 220 and produced 248,320 finite logits.
 Decoder layers took 91.686 seconds, and logits took 7.249 seconds.
 
-Normalization, activations, causal convolution, RoPE, and residual additions are now complete.
-ANE-only enforcement and numeric parity remain open.
+Normalization, activations, causal convolution, RoPE, residual additions, and projection accumulation are complete.
+ANE mode now requires the token runtime before model execution.
+Every model tensor method selects ANE from that explicit backend state.
+The CPU reference remains a separate, explicit backend.
+No GPU tensor backend exists.
+
+Partial projection tiles previously accumulated in host fp32 arrays.
+They now use the same 64-lane ANE addition path as residuals.
+A complete hardware token run selected token 220 and returned finite hidden state and logits.
+Decoder layers took 86.342 seconds, and logits took 11.893 seconds.
+The control GEMM passed before and after the run.
 
 ## Current direction
 
-The model must reject every host tensor path when the ANE backend is active.
-A runtime audit must prove that CPU and GPU tensor fallbacks cannot execute.
-The remaining host work may only schedule operations, build constants, and copy buffers.
+The host may load and dequantize weights, gather embeddings, build constants, pack buffers, and schedule submissions.
+It may also reshape, split, copy, and select output tokens.
+It cannot compute model tensors in ANE mode.
 
-Only that ANE-only path can enter the fixed 100-prompt corpus.
-Only the paired corpus can support the final performance comparison.
+The fixed 100-prompt corpus is now the next gate.
+That paired corpus must establish numeric parity before the final performance comparison.

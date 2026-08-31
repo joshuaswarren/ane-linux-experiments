@@ -58,6 +58,7 @@ class AneContractTests(unittest.TestCase):
 
         model = object.__new__(module.QwenModel)
         model.cpu_reference = False
+        model.token_runtime = object()
         model.device = FailingDevice()
         model.descriptor = object()
         model.descriptor_512 = object()
