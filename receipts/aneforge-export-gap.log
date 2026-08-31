@@ -12,3 +12,8 @@ not raw HWX or Linux ANEC images.
 Result: the E5RT bundle is not a Linux ANEC image. The current Linux loader
 cannot consume it. A raw HWX or equivalent Linux-loadable artifact remains
 required for the complete Qwen graph.
+Follow-up date: 2026-08-31
+Probe: compiled legacy net.plist graph through ANEForge `_ANEInMemoryModel` and called `saveModelFiles` after compile/load.
+Returned model URL: transient macOS cache directory under `/var/folders/.../T/`.
+Saved files: `net.plist`, `weights.0`, and empty `data`; no `.hwx` file.
+Result: `saveModelFiles` does not expose the compiled HWX or a Linux-loadable equivalent, even for a known-good legacy graph.

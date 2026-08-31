@@ -265,6 +265,12 @@ The Linux path submits projections, convolution, recurrence, normalization, gati
 The macOS path compiles one fused graph.
 The same staging also costs 86.183 seconds for one decoder step.
 
-The next gate replaces staged DeltaNet work with a bounded fused old-format program.
+The next gate remains blocked on a bounded fused old-format program or an equivalent export.
 That program must preserve resident convolution and recurrent state.
 It must pass the frozen layer and corpus thresholds before the full performance run.
+## Modern export boundary
+
+The physical macOS ANEForge path compiles a known-good legacy graph through `_ANEInMemoryModel`.
+Its `saveModelFiles` call returns a transient cache directory with `net.plist`, `weights.0`, and empty `data` only.
+It does not expose `.hwx` or another Linux-loadable artifact.
+The current macOS runtime therefore cannot provide the artifact needed for a complete Linux fused Qwen graph.

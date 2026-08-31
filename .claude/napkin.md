@@ -40,6 +40,8 @@
 | 2026-08-30 | self | Assumed macOS checkpoint steps combined prompt prefill from the checkpoint count alone | Read the reference `generate()` path. Lazy layer streaming disables batched prefill, so decoder checkpoint steps align directly with token positions |
 | 2026-08-30 | self | Validated Linux RoPE against a reference that copied the same invalid section remap | Derive the oracle from the frozen implementation. Qwen text decode uses contiguous half-split NeoX frequencies |
 | 2026-08-30 | self | Modeled native ANE RMSNorm as sqrt(mean square plus epsilon) | ANEForge's native op uses epsilon as a floor: divide by sqrt(max(mean square, epsilon)); low-energy DeltaNet outputs expose the difference |
+| 2026-08-31 | self | Put escaped `find` grouping into a pi-natives command and hit a shell syntax error | Use specialized glob or simple fact commands for file inspection |
+| 2026-08-31 | self | Assumed `saveModelFiles` might export compiled HWX | Inspect the saved directory contents; the physical path returned only `net.plist`, `weights.0`, and empty `data` |
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 - Ship small milestones. Update GitHub and README after each milestone.
