@@ -383,7 +383,6 @@ class TensorOperations:
         position,
         rotary_dim=64,
         theta=10_000_000.0,
-        sections=(11, 11, 10),
     ):
         value = self._value(value, "value")
         if value.ndim != 2:
@@ -394,20 +393,13 @@ class TensorOperations:
             raise ValueError(
                 f"rotary_dim {rotary_dim} exceeds value width {value.shape[1]}"
             )
-        if len(sections) != 3 or sum(sections) != rotary_dim // 2:
-            raise ValueError(
-                "sections must contain three parts totaling rotary_dim / 2"
-            )
         if not isinstance(position, (int, np.integer)) or position < 0:
             raise ValueError("position must be a non-negative integer")
         if theta <= 0:
             raise ValueError("theta must be positive")
-
+    
         inverse = theta ** (-np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim)
         frequencies = position * inverse
-        for offset, section in zip((1, 2), sections[1:]):
-            indexes = np.arange(offset, section * 3, 3)
-            frequencies[indexes] = position * inverse[: indexes.size]
         cosine = np.cos(frequencies).astype(np.float16)
         sine = np.sin(frequencies).astype(np.float16)
         half = rotary_dim // 2
@@ -415,7 +407,7 @@ class TensorOperations:
         cross_factors = np.zeros(LANES, dtype=np.float16)
         direct_factors[:rotary_dim] = np.concatenate((cosine, cosine))
         cross_factors[:rotary_dim] = np.concatenate((-sine, sine))
-
+    
         result = value.copy()
         for head, row in enumerate(value):
             direct = np.zeros(LANES, dtype=np.float16)
@@ -516,6 +508,7 @@ class Normalization:
         rows = value.reshape(-1, dimension)
         result = np.empty_like(rows)
         divisor = dimension if mean else 1
+        operation = "max" if mean else "add"
         for row_index, row in enumerate(rows):
             total = self._sum_squares(row)
             scaled_total = self.math._run(
@@ -523,7 +516,11 @@ class Normalization:
                 self.math._const(total),
                 self.math._const(1.0 / divisor),
             )
-            adjusted = self.math._run("add", scaled_total, self.math._const(eps))[0]
+            adjusted = self.math._run(
+                operation,
+                scaled_total,
+                self.math._const(eps),
+            )[0]
             inverse = self._inverse_sqrt(adjusted)
             if output_scale != 1.0:
                 inverse = self.math._run(
@@ -543,7 +540,6 @@ class Normalization:
                     )
                 result[row_index, offset : offset + LANES] = chunk
         return result.reshape(value.shape)
-
     def _sum_squares(self, row):
         partials = self.math._const(0.0)
         for index, offset in enumerate(range(0, row.size, LANES)):

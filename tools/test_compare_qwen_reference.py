@@ -190,5 +190,55 @@ class QwenParityComparatorTests(unittest.TestCase):
         self.assertTrue(report["passed"])
         self.assertEqual(len(report["logit_parity"]["prompts"]["b"]["runs"]), 2)
 
+    def test_compare_token_sequences_reads_reference_run_shape(self):
+        contract = {
+            "model": {"bytes": 1, "sha256": "model", "layers": 1},
+            "generation": {"new_tokens": 2},
+        }
+        reference = {
+            "model_bytes": 1,
+            "model_sha256": "model",
+            "max_new_tokens": 2,
+            "n_layers": 1,
+            "prompts": [{"id": "p1", "runs": [{"generated_ids": [3, 4]}]}],
+        }
+        candidate = {
+            **reference,
+            "prompts": [{"id": "p1", "runs": [{"generated_ids": [3, 5]}]}],
+        }
+
+        report = MODULE.compare_token_sequences(reference, candidate, contract)
+
+        self.assertFalse(report["passed"])
+        self.assertEqual(report["mismatches"][0]["reference"], [3, 4])
+        self.assertEqual(report["mismatches"][0]["candidate"], [3, 5])
+
+    def test_generated_logits_accepts_generated_only_trace(self):
+        logits = np.arange(24, dtype=np.float32).reshape(2, 12)
+
+        generated = MODULE.generated_logits(logits, prompt_tokens=4, new_tokens=2)
+
+        np.testing.assert_array_equal(generated, logits)
+
+    def test_generated_logits_strips_prefill_trace(self):
+        logits = np.arange(60, dtype=np.float32).reshape(5, 12)
+
+        generated = MODULE.generated_logits(logits, prompt_tokens=4, new_tokens=2)
+
+        np.testing.assert_array_equal(generated, logits[3:])
+
+
+    def test_load_prompt_runs_reads_sharded_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            logits = np.arange(24, dtype=np.float32).reshape(2, 12)
+            np.savez(root / "prompt_000.npz", run_000=logits)
+
+            runs = MODULE.load_prompt_runs(root, 0)
+
+        self.assertEqual(len(runs), 1)
+        np.testing.assert_array_equal(runs[0], logits)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -9,8 +9,11 @@ The CPU backend is an explicit reference path and never serves as an ANE fallbac
 """
 
 import argparse
+import hashlib
 import importlib.util
+import json
 import os
+from pathlib import Path
 
 import numpy as np
 
@@ -43,8 +46,11 @@ def silu(x):
 
 def rms_norm(x, weight, eps=1e-6):
     x32 = x.astype(np.float32)
-    mean_square = np.mean(x32 * x32, axis=-1, keepdims=True)
-    scale = 1.0 / np.sqrt(mean_square + eps)
+    mean_square = np.maximum(
+        np.mean(x32 * x32, axis=-1, keepdims=True),
+        eps,
+    )
+    scale = 1.0 / np.sqrt(mean_square)
     return _compute_dtype(x32 * scale * weight.astype(np.float32))
 
 
@@ -54,19 +60,18 @@ def l2_norm(x, scale=1.0, eps=1e-6):
     return _compute_dtype(x32 * scale / magnitude)
 
 
-def rope(x, position, rotary_dim=64, theta=10_000_000.0, sections=(11, 11, 10)):
+def rope(x, position, rotary_dim=64, theta=10_000_000.0):
     out = x.astype(np.float32).copy()
-    inv = theta ** (-np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim)
-    freqs = position * inv
-    for offset, section in zip((1, 2), sections[1:]):
-        indexes = np.arange(offset, section * 3, 3)
-        freqs[indexes] = position * inv[: indexes.size]
-    cos, sin = np.cos(freqs), np.sin(freqs)
+    inverse = theta ** (
+        -np.arange(0, rotary_dim, 2, dtype=np.float32) / rotary_dim
+    )
+    frequencies = position * inverse
+    cosine, sine = np.cos(frequencies), np.sin(frequencies)
     rotated = out[:, :rotary_dim].copy()
     half = rotary_dim // 2
     left, right = rotated[:, :half], rotated[:, half:]
-    out[:, :half] = left * cos - right * sin
-    out[:, half:rotary_dim] = right * cos + left * sin
+    out[:, :half] = left * cosine - right * sine
+    out[:, half:rotary_dim] = right * cosine + left * sine
     return _compute_dtype(out)
 
 
@@ -391,15 +396,23 @@ class QwenModel:
         mixed_out = self.projection(layer["o"], _compute_dtype(gated))
         return self.mlp(layer, self.residual_add(hidden, mixed_out))
 
-    def step(self, hidden, position):
+    def step(self, hidden, position, checkpoints=None):
         if not self.cpu_reference:
             self._require_tensor_runtime()
-        for layer in self.layers:
+        for layer_index, layer in enumerate(self.layers):
             hidden = (
                 self.full_layer(layer, hidden, position)
                 if layer["full"]
                 else self.linear_layer(layer, hidden)
             )
+            if checkpoints is not None:
+                key = f"chunk_{layer_index:03d}_step_{position:03d}"
+                checkpoint_hidden = (
+                    self.normalize_rms(hidden, self.output_norm)
+                    if layer_index == len(self.layers) - 1
+                    else hidden
+                )
+                checkpoints[key] = np.asarray(checkpoint_hidden).reshape(1, -1).copy()
         return hidden
 
     def logits(self, hidden):
@@ -416,20 +429,68 @@ class QwenModel:
         self.device.close()
 
 
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def save_parity_outputs(result_path, logits_path, result, logits):
+    values = np.asarray(logits, dtype=np.float32)
+    if values.ndim != 2 or values.shape[0] == 0:
+        raise ValueError("parity logits must be a non-empty rank-2 array")
+    logits_path.parent.mkdir(parents=True, exist_ok=True)
+    logits_tmp = logits_path.with_suffix(logits_path.suffix + ".tmp")
+    with logits_tmp.open("wb") as stream:
+        np.savez_compressed(stream, run_000=values)
+    logits_tmp.replace(logits_path)
+    result_path.parent.mkdir(parents=True, exist_ok=True)
+    result_tmp = result_path.with_suffix(result_path.suffix + ".tmp")
+    encoded = json.dumps(result, indent=2, sort_keys=True) + chr(10)
+    result_tmp.write_text(encoded, encoding="utf-8")
+    result_tmp.replace(result_path)
+
+def save_checkpoints(path, checkpoints):
+    if not checkpoints:
+        raise ValueError("checkpoint output requires at least one layer boundary")
+    arrays = {
+        key: np.asarray(value, dtype=np.float32)
+        for key, value in checkpoints.items()
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with temporary.open("wb") as stream:
+        np.savez_compressed(stream, **arrays)
+    temporary.replace(path)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--model", required=True)
     parser.add_argument("-p", "--prompt", required=True)
+    parser.add_argument("--prompt-id", default="single")
+    parser.add_argument("--category", default="single")
     parser.add_argument("--gguf-py")
     parser.add_argument("--qid", type=int, default=None)
     parser.add_argument("--backend", choices=("ane", "cpu"), default="ane")
     parser.add_argument("--generate", type=int, default=0)
     parser.add_argument("--recurrent-anec")
+    parser.add_argument("--result-output", type=Path)
+    parser.add_argument("--logits-output", type=Path)
+    parser.add_argument("--checkpoints-output", type=Path)
     args = parser.parse_args()
     if args.recurrent_anec is not None and args.backend != "ane":
         parser.error("--recurrent-anec requires --backend ane")
     if args.backend == "ane" and args.recurrent_anec is None:
         parser.error("--backend ane requires --recurrent-anec")
+    if args.generate < 0:
+        parser.error("--generate cannot be negative")
+    if (args.result_output is None) != (args.logits_output is None):
+        parser.error("--result-output and --logits-output must be used together")
+    if args.result_output is not None and args.generate < 1:
+        parser.error("parity output requires --generate greater than zero")
     global _F32_REFERENCE
     _F32_REFERENCE = args.backend == "cpu"
 
@@ -454,8 +515,8 @@ def main():
         if args.recurrent_anec is not None:
             token_runtime_module = load(os.path.join("tools", "qwen-token-runtime.py"))
             softmax_path = os.path.join(os.path.dirname(__file__), "ane-softmax.py")
-            elementwise_descriptors = (
-                token_runtime_module.harvest_elementwise_descriptors(softmax_path)
+            elementwise_descriptors = token_runtime_module.harvest_elementwise_descriptors(
+                softmax_path
             )
             full_layers = sum(layer["full"] for layer in model.layers)
             model.token_runtime = token_runtime_module.QwenTokenRuntime(
@@ -470,35 +531,45 @@ def main():
 
         step_s = 0.0
         logits_s = 0.0
+        checkpoints = {} if args.checkpoints_output is not None else None
         hidden = np.zeros(2048, dtype=np.float16)
         for position, token_id in enumerate(token_ids):
             t0 = _time.perf_counter()
-            hidden = model.step(model.embedding_row(token_id), position)
+            hidden = model.step(
+                model.embedding_row(token_id), position, checkpoints=checkpoints
+            )
             step_s += _time.perf_counter() - t0
         generated_ids = []
         generated_pieces = []
+        captured_logits = []
+        
         token_field = weights.reader.get_field("tokenizer.ggml.tokens")
-        for offset in range(args.generate + 1):
+        for offset in range(args.generate):
             t0 = _time.perf_counter()
             logits = model.logits(hidden)
             logits_s += _time.perf_counter() - t0
             next_id = int(np.argmax(logits))
-            if offset == args.generate:
-                break
+            captured_logits.append(np.asarray(logits, dtype=np.float32).copy())
             generated_ids.append(next_id)
             generated_pieces.append(
                 token_field.contents(next_id) if token_field else str(next_id)
             )
-            hidden = model.step(model.embedding_row(next_id), len(token_ids) + offset)
+            hidden = model.step(
+                model.embedding_row(next_id),
+                len(token_ids) + offset,
+                checkpoints=checkpoints,
+            )
+        t0 = _time.perf_counter()
+        logits = model.logits(hidden)
+        logits_s += _time.perf_counter() - t0
+        next_id = int(np.argmax(logits))
         top_ids = np.argsort(logits)[-10:][::-1]
         print(f"prompt_tokens={token_ids}")
         print(
             f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}"
         )
         print(f"resident_token_runtime={model.token_runtime is not None}")
-        print(
-            f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}"
-        )
+        print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
         print(f"top10={[(int(i), float(logits[i])) for i in top_ids]}")
         print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
         print(f"hidden_head={hidden[:16].tolist()}")
@@ -509,6 +580,35 @@ def main():
             f"timing_s: steps={step_s:.3f} logits={logits_s:.3f} "
             f"(persistent={os.environ.get('ANE_NO_PERSISTENT') != '1'})"
         )
+        if args.result_output is not None:
+            model_path = Path(args.model)
+            run = {
+                "generated_ids": generated_ids,
+                "logits_shape": list(np.asarray(captured_logits).shape),
+                "logits_finite": bool(np.isfinite(captured_logits).all()),
+                "step_seconds": step_s,
+                "logits_seconds": logits_s,
+            }
+            result = {
+                "model_bytes": model_path.stat().st_size,
+                "model_sha256": sha256_file(model_path),
+                "max_new_tokens": args.generate,
+                "n_layers": len(model.layers),
+                "prompts": [
+                    {
+                        "id": args.prompt_id,
+                        "category": args.category,
+                        "prompt": args.prompt,
+                        "prompt_token_ids": token_ids,
+                        "runs": [run],
+                    }
+                ],
+            }
+            save_parity_outputs(
+                args.result_output, args.logits_output, result, captured_logits
+            )
+        if args.checkpoints_output is not None:
+            save_checkpoints(args.checkpoints_output, checkpoints)
         print("ANE_QWEN_FULL_TOKEN_STEP_OK")
     finally:
         model.close()

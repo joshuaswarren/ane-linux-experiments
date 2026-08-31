@@ -186,15 +186,19 @@ The control GEMM passed before and after the complete token run.
 ## Tensor operations contract
 
 Every residual addition runs as 64-lane ANE chunks.
-RoPE packs each head's two 32-lane halves into one 64-lane submission.
-One direct multiply, one swapped-half multiply, and one add produce the rotated head.
+RoPE uses contiguous half-split NeoX frequencies across its 64 rotated dimensions.
+Each head needs one direct multiply, one swapped-half multiply, and one add.
 
 The host computes cosine and sine constants for each position.
 It packs constants and copies results.
 It does not perform RoPE or residual tensor arithmetic.
 
-The residual maximum error was 0.001953125.
-Query and key RoPE maximum errors were 0.0018101 and 0.0016057.
+An earlier Linux path remapped 21 frequency slots through three multimodal sections.
+The local hardware oracle copied that remap and hid the defect.
+The frozen macOS reference uses the contiguous table, so every Linux path now uses it.
+
+The residual maximum error is 0.001953125.
+The corrected query and key RoPE maximum errors are 0.0018101 and 0.0014778.
 The control GEMM passed before and after the complete token run.
 ## Token-to-logits orchestration
 
@@ -243,5 +247,24 @@ The host may load and dequantize weights, gather embeddings, build constants, pa
 It may also reshape, split, copy, and select output tokens.
 It cannot compute model tensors in ANE mode.
 
-The fixed 100-prompt corpus is now the next gate.
-That paired corpus must establish numeric parity before the final performance comparison.
+The locked macOS reference completed all 100 prompts and 32 generated tokens per prompt.
+Its median decode rate was 17.651082866938346 tokens per second.
+Every repeated token sequence matched.
+
+Exact-input full-attention layers remain close to the macOS checkpoints.
+DeltaNet is the first divergent layer type.
+The first layer boundary probes measured relative L2 of 0.000719 after the query projection, 0.022559 after convolution, and 0.058874 after recurrence.
+
+The native ANE RMS operation uses epsilon as a lower bound on mean square.
+It does not add epsilon to mean square.
+The former rule amplified low-energy DeltaNet output error.
+Matching the native rule reduced first-layer relative L2 from about 0.243 to 0.137477.
+
+The remaining mismatch accumulates inside the staged DeltaNet mixer.
+The Linux path submits projections, convolution, recurrence, normalization, gating, and residual work as separate programs.
+The macOS path compiles one fused graph.
+The same staging also costs 86.183 seconds for one decoder step.
+
+The next gate replaces staged DeltaNet work with a bounded fused old-format program.
+That program must preserve resident convolution and recurrent state.
+It must pass the frozen layer and corpus thresholds before the full performance run.

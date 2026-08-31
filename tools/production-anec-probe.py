@@ -2,6 +2,7 @@
 """Submit a streamed production ANEC graph through the Linux ANE KMD."""
 
 import argparse
+import hashlib
 import importlib.util
 import mmap
 import os
@@ -20,6 +21,10 @@ TILE_SIZE = 0x4000
 WORKSPACE_BDX = 3
 SRC_BDX = 5
 DST_BDX = 4
+TEN_WORD_ENVELOPE_SIZE = 0x28
+TD_SIZE = 0x274
+NEXT_POINTER_OFFSET = 0x1C
+TASK_ID_MASK = 0xFFFF
 
 
 def load_runtime():
@@ -56,6 +61,26 @@ def parse_args():
     parser.add_argument("--td-size", type=parse_int)
     parser.add_argument("--td-start", type=int, default=0)
     parser.add_argument("--dump-output", type=Path)
+    parser.add_argument("--expect-sha256", metavar="SHA256")
+    splice_group = parser.add_mutually_exclusive_group()
+    splice_group.add_argument(
+        "--task-zero-envelope",
+        type=Path,
+        metavar="CONTROL_ANEC",
+        help=(
+            "replace task zero's ten-word envelope with CONTROL_ANEC's "
+            "before submit"
+        ),
+    )
+    splice_group.add_argument(
+        "--task-zero-descriptor",
+        type=Path,
+        metavar="CONTROL_ANEC",
+        help=(
+            "replace task zero's whole 0x274-byte descriptor with "
+            "CONTROL_ANEC's before submit"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -66,6 +91,13 @@ def load_anec_header(path):
         raise ValueError("ANEC header is truncated")
     return ANEC_HEADER.unpack(header)
 
+def read_control_stream(path, task_stream_size):
+    with Path(path).open("rb") as stream:
+        stream.seek(HEADER_SIZE)
+        data = stream.read(task_stream_size)
+    if len(data) != task_stream_size:
+        raise ValueError("control artifact task stream is truncated")
+    return data
 
 def stage_geometry(header):
     """Decode the production buffer roles from one ANEC header."""
@@ -91,10 +123,62 @@ def stage_geometry(header):
         "workspace_size": tiles[WORKSPACE_BDX] * TILE_SIZE,
         "source_size": tiles[SRC_BDX] * TILE_SIZE,
         "output_size": tiles[DST_BDX] * TILE_SIZE,
-        "source_nchw": tuple(nchw[SRC_BDX * 6 : SRC_BDX * 6 + 6]),
-        "output_nchw": tuple(nchw[DST_BDX * 6 : DST_BDX * 6 + 6]),
+        "source_nchw": tuple(nchw[SRC_BDX * 6:SRC_BDX * 6 + 6]),
+        "output_nchw": tuple(nchw[DST_BDX * 6:DST_BDX * 6 + 6]),
     }
 
+
+def file_sha256(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for chunk in iter(lambda: stream.read(16 * 1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def validate_expected_hash(path, expected):
+    """Raise before submission when the artifact digest misses the manifest."""
+    actual = file_sha256(path)
+    if expected is not None and actual != expected:
+        raise ValueError(
+            f"{path} sha256 mismatch: expected {expected}, got {actual}"
+        )
+    return actual
+
+
+def validate_handoff(head, tail):
+    """Require the tail input contract to match the saved head output."""
+    if head["output_nchw"] != tail["source_nchw"]:
+        raise ValueError(
+            f"handoff shape mismatch: head output {head['output_nchw']} "
+            f"!= tail source {tail['source_nchw']}"
+        )
+    if tail["source_size"] > head["output_size"]:
+        raise ValueError(
+            f"tail source buffer {tail['source_size']:#x} exceeds saved "
+            f"head output {head['output_size']:#x}"
+        )
+    if head["workspace_size"] == 0 or tail["workspace_size"] == 0:
+        raise ValueError("chain stages must declare a workspace")
+
+def validate_splice_geometry(
+    target_stage, target_size, control_stage, control_size, min_td=TEN_WORD_ENVELOPE_SIZE
+):
+    """Reject malformed splice inputs before any device opens."""
+    for name, stage, size in (
+        ("target", target_stage, target_size),
+        ("control", control_stage, control_size),
+    ):
+        if size < HEADER_SIZE + stage["task_stream_size"]:
+            raise ValueError(f"{name} artifact is truncated")
+        if stage["td_size"] < min_td:
+            raise ValueError(
+                f"{name} td {stage['td_size']:#x} is smaller than required {min_td:#x}"
+            )
+        if stage["task_stream_size"] < stage["td_size"]:
+            raise ValueError(
+                f"{name} task stream is smaller than its descriptor"
+            )
 
 def copy_content(data, offset, size, destination):
     destination.seek(0)
@@ -109,6 +193,78 @@ def copy_task_stream(data, content_start, task_stream_size):
     if content_start < 0 or task_stream_size < 1 or content_end > len(data):
         raise ValueError("task stream exceeds the artifact")
     return bytes(data[content_start:content_end])
+
+def splice_task_zero_envelope(target, control, target_base=0, control_base=0):
+    """Replace task zero's ten-word envelope with the control's.
+
+    The first ten words of a task descriptor carry the submission protocol.
+    Word 0's low half is the task id and NEXT_POINTER_OFFSET holds the
+    NextPointer; both route the target's own chain, so they survive the
+    copy. Every other envelope word is the control's; every byte past the
+    envelope stays the target's.
+    """
+    for name, data, base in (
+        ("target", target, target_base),
+        ("control", control, control_base),
+    ):
+        if base < 0 or base + TEN_WORD_ENVELOPE_SIZE > len(data):
+            raise ValueError(
+                f"{name} artifact is truncated below one ten-word envelope"
+            )
+    patched = bytearray(target)
+    source = control[control_base:control_base + TEN_WORD_ENVELOPE_SIZE]
+    patched[target_base:target_base + TEN_WORD_ENVELOPE_SIZE] = source
+    control_word = struct.unpack_from("<I", control, control_base)[0]
+    target_word = struct.unpack_from("<I", target, target_base)[0]
+    struct.pack_into(
+        "<I",
+        patched,
+        target_base,
+        (control_word & ~TASK_ID_MASK) | (target_word & TASK_ID_MASK),
+    )
+    next_pointer = struct.unpack_from(
+        "<I", target, target_base + NEXT_POINTER_OFFSET
+    )[0]
+    struct.pack_into(
+        "<I", patched, target_base + NEXT_POINTER_OFFSET, next_pointer
+    )
+    return bytes(patched)
+
+def splice_task_zero_descriptor(target, control, target_base=0, control_base=0):
+    """Replace task zero's whole descriptor with the control's.
+
+    TD_SIZE bytes carry the full task-zero body: envelope, kernel
+    bindings, and weights references. Word 0's low half is the task id
+    and NEXT_POINTER_OFFSET holds the NextPointer; both route the
+    target's own chain, so they survive the copy. Every byte past the
+    descriptor stays the target's.
+    """
+    for name, data, base in (
+        ("target", target, target_base),
+        ("control", control, control_base),
+    ):
+        if base < 0 or base + TD_SIZE > len(data):
+            raise ValueError(
+                f"{name} artifact is truncated below one descriptor"
+            )
+    patched = bytearray(target)
+    source = control[control_base:control_base + TD_SIZE]
+    patched[target_base:target_base + TD_SIZE] = source
+    control_word = struct.unpack_from("<I", control, control_base)[0]
+    target_word = struct.unpack_from("<I", target, target_base)[0]
+    struct.pack_into(
+        "<I",
+        patched,
+        target_base,
+        (control_word & ~TASK_ID_MASK) | (target_word & TASK_ID_MASK),
+    )
+    next_pointer = struct.unpack_from(
+        "<I", target, target_base + NEXT_POINTER_OFFSET
+    )[0]
+    struct.pack_into(
+        "<I", patched, target_base + NEXT_POINTER_OFFSET, next_pointer
+    )
+    return bytes(patched)
 
 def submission_pad(qid):
     return 0 if qid is None else 0x80 | qid
@@ -185,35 +341,54 @@ def main():
     args = parse_args()
     if args.timeout <= 0:
         raise ValueError("timeout must be positive")
-    header = load_anec_header(args.anec)
-    (
-        content_size,
-        header_td_size,
-        header_td_count,
-        tsk_size,
-        kernel_size,
-        src_count,
-        dst_count,
-    ) = header[:7]
-    td_size = header_td_size if args.td_size is None else args.td_size
-    td_count = header_td_count if args.td_count is None else args.td_count
-    tiles = header[7:39]
-    nchw = header[39:]
-    source_meta = nchw[SRC_BDX * 6:SRC_BDX * 6 + 6]
-    output_meta = nchw[DST_BDX * 6:DST_BDX * 6 + 6]
-    workspace_size = tiles[WORKSPACE_BDX] * TILE_SIZE
-    source_size = tiles[SRC_BDX] * TILE_SIZE
-    output_size = tiles[DST_BDX] * TILE_SIZE
-    if src_count != 1 or dst_count != 1:
-        raise ValueError(f"expected one input and output, got {src_count}/{dst_count}")
+    stage = stage_geometry(load_anec_header(args.anec))
+    if args.expect_sha256 is not None:
+        validate_expected_hash(args.anec, args.expect_sha256)
+    content_size = stage["content_size"]
+    tsk_size = stage["task_stream_size"]
+    td_size = stage["td_size"] if args.td_size is None else args.td_size
+    td_count = stage["td_count"] if args.td_count is None else args.td_count
+    source_meta = stage["source_nchw"]
+    output_meta = stage["output_nchw"]
+    workspace_size = stage["workspace_size"]
+    source_size = stage["source_size"]
+    output_size = stage["output_size"]
+    if stage["src_count"] != 1 or stage["dst_count"] != 1:
+        raise ValueError(
+            f"expected one input and output, got "
+            f"{stage['src_count']}/{stage['dst_count']}"
+        )
     if td_count < 1 or td_size < 1 or tsk_size < td_size:
         raise ValueError("invalid task geometry")
+    splice_control = args.task_zero_envelope
+    min_td = TEN_WORD_ENVELOPE_SIZE
+    if args.task_zero_descriptor is not None:
+        splice_control = args.task_zero_descriptor
+        min_td = TD_SIZE
+    if splice_control is not None:
+        control_stage = stage_geometry(load_anec_header(splice_control))
+        validate_splice_geometry(
+            stage,
+            args.anec.stat().st_size,
+            control_stage,
+            splice_control.stat().st_size,
+            min_td=min_td,
+        )
+        control_stream = read_control_stream(
+            splice_control, control_stage["task_stream_size"]
+        )
+        control_bases = task_bases(control_stream, 0, len(control_stream))
+        if len(control_bases) != control_stage["td_count"]:
+            raise ValueError(
+                f"control header has {control_stage['td_count']} tasks, "
+                f"found {len(control_bases)}"
+            )
     original_task_layout = args.td_start == 0
     print(
         f"content={content_size:#x} task-stream={tsk_size:#x} td={td_size:#x} "
         f"td-count={td_count} task-layout={'original' if original_task_layout else 'packed'} "
         f"qid={args.qid if args.qid is not None else 'default'} "
-        f"kernel={kernel_size:#x} workspace={workspace_size:#x} "
+        f"kernel={stage['kernel_size']:#x} workspace={workspace_size:#x} "
         f"source={source_size:#x} output={output_size:#x} "
         f"source-nchw={tuple(source_meta)} output-nchw={tuple(output_meta)}"
     )
@@ -223,14 +398,42 @@ def main():
         stream.fileno(), 0, access=mmap.ACCESS_READ
     ) as data, ExitStack() as stack:
         bases = task_bases(data, HEADER_SIZE, tsk_size)
-        if len(bases) != header_td_count:
-            raise ValueError(f"header has {header_td_count} tasks, found {len(bases)}")
-        if args.td_start < 0 or args.td_start + td_count > header_td_count:
+        if len(bases) != stage["td_count"]:
+            raise ValueError(
+                f"header has {stage['td_count']} tasks, found {len(bases)}"
+            )
+        if args.td_start < 0 or args.td_start + td_count > stage["td_count"]:
             raise ValueError("td range is out of range")
         selected_bases = bases[args.td_start:]
+        patched_stream = None
+        if args.task_zero_envelope is not None:
+            patched_stream = splice_task_zero_envelope(
+                copy_task_stream(data, HEADER_SIZE, tsk_size),
+                control_stream,
+                target_base=bases[0],
+                control_base=control_bases[0],
+            )
+            print(
+                f"task-zero-envelope={args.task_zero_envelope} "
+                f"sha256={file_sha256(args.task_zero_envelope)}"
+            )
+        elif args.task_zero_descriptor is not None:
+            patched_stream = splice_task_zero_descriptor(
+                copy_task_stream(data, HEADER_SIZE, tsk_size),
+                control_stream,
+                target_base=bases[0],
+                control_base=control_bases[0],
+            )
+            print(
+                f"task-zero-descriptor={args.task_zero_descriptor} "
+                f"sha256={file_sha256(args.task_zero_descriptor)}"
+            )
         device = stack.enter_context(runtime.Device(qid=args.qid))
         command = stack.enter_context(device.buffer(content_size))
         copy_content(data, HEADER_SIZE, content_size, command.map)
+        if patched_stream is not None:
+            command.map.seek(0)
+            command.map.write(patched_stream)
         source = stack.enter_context(device.buffer(source_size))
         output = stack.enter_context(device.buffer(output_size))
         workspace = (
@@ -253,13 +456,15 @@ def main():
         output_fill = np.full(output_size // 2, np.inf, dtype=np.float16)
         output.write(output_fill.tobytes())
         del output_fill
+        td_source = patched_stream if patched_stream is not None else data
+        td_start = 0 if patched_stream is not None else HEADER_SIZE
         bootstrap = (
             build_original_prefix(
-                data, HEADER_SIZE, tsk_size, bases, td_count
+                td_source, td_start, tsk_size, bases, td_count
             )
             if original_task_layout
             else build_bootstrap(
-                data, HEADER_SIZE, tsk_size, selected_bases, td_size, td_count
+                td_source, td_start, tsk_size, selected_bases, td_size, td_count
             )
         )
         btsp.write(bootstrap)

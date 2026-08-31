@@ -72,6 +72,8 @@ class HWXImage:
     workspace_size: int
     input_size: int
     output_size: int
+    input_sections: tuple[tuple[int, int], ...]
+    output_sections: tuple[tuple[int, int], ...]
     kdma: KDMALayout
 
 
@@ -247,6 +249,8 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
         workspace_size=workspace_size,
         input_size=input_size,
         output_size=output_size,
+        input_sections=tuple(input_sections),
+        output_sections=tuple(output_sections),
         kdma=decode_kdma(td),
     )
 
@@ -267,16 +271,37 @@ def _build_header(
     out_n, out_ch, out_h, out_w = out_shape
     in_plane, in_row = _shape_strides(in_h, in_w)
     out_plane, out_row = _shape_strides(out_h, out_w)
+    input_sections = image.input_sections or ((0, image.input_size),)
+    output_sections = image.output_sections or ((0, image.output_size),)
+    if len(input_sections) + len(output_sections) > 28:
+        raise ValueError("ANEC supports at most 28 input and output ports")
     tiles = [0] * 32
     tiles[0] = (image.content_size + TILE_SIZE - 1) // TILE_SIZE
     tiles[3] = (image.workspace_size + TILE_SIZE - 1) // TILE_SIZE
-    input_bytes = max(image.input_size, in_n * in_ch * in_plane)
-    output_bytes = max(image.output_size, out_n * out_ch * out_plane)
-    tiles[5] = max(1, (input_bytes + TILE_SIZE - 1) // TILE_SIZE)
-    tiles[4] = max(1, (output_bytes + TILE_SIZE - 1) // TILE_SIZE)
+    dst_count = len(output_sections)
+    input_shapes = [(in_n, in_ch, in_h, in_w)] * len(input_sections)
+    output_shapes = [(out_n, out_ch, out_h, out_w)] * len(output_sections)
+    output_sizes = [size for _, size in output_sections]
+    input_sizes = [size for _, size in input_sections]
+    if len(output_sizes) == 1:
+        output_sizes[0] = max(output_sizes[0], image.output_size)
+    if len(input_sizes) == 1:
+        input_sizes[0] = max(input_sizes[0], image.input_size)
+    for index, size in enumerate(output_sizes):
+        shape = output_shapes[index]
+        shape_bytes = shape[0] * shape[1] * out_plane
+        required = max(size, shape_bytes)
+        tiles[4 + index] = max(1, (required + TILE_SIZE - 1) // TILE_SIZE)
+    for index, size in enumerate(input_sizes):
+        shape = input_shapes[index]
+        shape_bytes = shape[0] * shape[1] * in_plane
+        required = max(size, shape_bytes)
+        tiles[4 + dst_count + index] = max(1, (required + TILE_SIZE - 1) // TILE_SIZE)
     nchw = [0] * (32 * 6)
-    nchw[4 * 6:4 * 6 + 6] = [out_n, out_ch, out_h, out_w, out_plane, out_row]
-    nchw[5 * 6:5 * 6 + 6] = [in_n, in_ch, in_h, in_w, in_plane, in_row]
+    for index, shape in enumerate(output_shapes):
+        nchw[(4 + index) * 6:(4 + index) * 6 + 6] = [*shape, out_plane, out_row]
+    for index, shape in enumerate(input_shapes):
+        nchw[(4 + dst_count + index) * 6:(4 + dst_count + index) * 6 + 6] = [*shape, in_plane, in_row]
     return struct.pack(
         "<QIIQQII32I192Q",
         image.content_size,
@@ -284,8 +309,8 @@ def _build_header(
         image.td_count,
         image.task_stream_size,
         image.kernel_size,
-        1,
-        1,
+        len(input_sections),
+        len(output_sections),
         *tiles,
         *nchw,
     )

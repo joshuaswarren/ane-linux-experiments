@@ -99,9 +99,8 @@ class NormalizationTests(unittest.TestCase):
 
         actual = self.normalization.rms_norm(values, weight)
         values32 = values.astype(np.float32)
-        expected = values32 / np.sqrt(
-            np.mean(values32 * values32, axis=-1, keepdims=True) + 1e-6
-        )
+        mean_square = np.mean(values32 * values32, axis=-1, keepdims=True)
+        expected = values32 / np.sqrt(np.maximum(mean_square, 1e-6))
         expected *= weight.astype(np.float32)
 
         self.assertEqual(actual.dtype, np.float16)
@@ -109,6 +108,14 @@ class NormalizationTests(unittest.TestCase):
             float(np.max(np.abs(actual.astype(np.float32) - expected))),
             0.03,
         )
+
+    def test_rms_norm_uses_epsilon_as_floor(self):
+        values = np.full((16, 128), np.float16(0.0015), dtype=np.float16)
+        weight = np.ones(128, dtype=np.float16)
+
+        actual = self.normalization.rms_norm(values, weight)
+
+        np.testing.assert_allclose(actual, np.ones_like(values), atol=0.02)
 
     def test_l2_norm_matches_rowwise_reference(self):
         rng = np.random.default_rng(20260831)
@@ -146,8 +153,6 @@ class NormalizationTests(unittest.TestCase):
                 np.ones(128, dtype=np.float16),
                 np.ones(64, dtype=np.float16),
             )
-
-
 class ActivationTests(unittest.TestCase):
     def setUp(self):
         self.elementwise = FakeElementwise()
@@ -242,7 +247,7 @@ class TensorOperationsTests(unittest.TestCase):
         np.testing.assert_array_equal(actual, np.add(left, right, dtype=np.float16))
         self.assertEqual(self.elementwise.modes, ["add", "add"])
 
-    def test_rope_matches_mrope_reference_and_preserves_tail(self):
+    def test_rope_matches_neox_reference_and_preserves_tail(self):
         rng = np.random.default_rng(20260901)
         value = rng.standard_normal((8, 256)).astype(np.float16)
         position = 37
@@ -252,9 +257,6 @@ class TensorOperationsTests(unittest.TestCase):
         expected = value.astype(np.float32).copy()
         inverse = 10_000_000.0 ** (-np.arange(0, 64, 2, dtype=np.float32) / 64)
         frequencies = position * inverse
-        for offset, section in zip((1, 2), (11, 10)):
-            indexes = np.arange(offset, section * 3, 3)
-            frequencies[indexes] = position * inverse[: indexes.size]
         cosine = np.cos(frequencies)
         sine = np.sin(frequencies)
         left = expected[:, :32].copy()
