@@ -2,6 +2,7 @@
 """Compose 128-wide softmax from reusable Linux ANE elementwise programs."""
 
 import importlib.util
+import math
 from fcntl import ioctl
 from pathlib import Path
 
@@ -95,6 +96,7 @@ class ElementwiseBackend:
             count=ELEMENTWISE_BYTES // 2,
         )
         result = values[: LANES * 32 : 32].copy()
+        del values
         if not np.isfinite(result).all():
             raise RuntimeError(f"ANE elementwise {mode} returned a non-finite output")
         return result
@@ -219,3 +221,101 @@ class Softmax128:
     @staticmethod
     def _const(value):
         return np.full(LANES, value, dtype=np.float16)
+
+
+class Normalization:
+    """Run row-wise RMS and L2 normalization through the ANE backend."""
+
+    def __init__(self, run_elementwise):
+        self.math = Softmax128(run_elementwise)
+
+    def rms_norm(self, value, weight, eps=1e-6):
+        value = self._value(value)
+        weight = np.asarray(weight)
+        if weight.dtype != np.float16 or weight.shape != (value.shape[-1],):
+            raise ValueError(
+                "weight shape and dtype must match the final value dimension float16"
+            )
+        return self._normalize(value, weight, eps, mean=True)
+
+    def l2_norm(self, value, scale=1.0, eps=1e-6):
+        value = self._value(value)
+        return self._normalize(value, None, eps, mean=False, output_scale=scale)
+
+    def _normalize(self, value, weight, eps, mean, output_scale=1.0):
+        dimension = value.shape[-1]
+        rows = value.reshape(-1, dimension)
+        result = np.empty_like(rows)
+        divisor = dimension if mean else 1
+        for row_index, row in enumerate(rows):
+            total = self._sum_squares(row)
+            scaled_total = self.math._run(
+                "mul",
+                self.math._const(total),
+                self.math._const(1.0 / divisor),
+            )
+            adjusted = self.math._run(
+                "add", scaled_total, self.math._const(eps)
+            )[0]
+            inverse = self._inverse_sqrt(adjusted)
+            if output_scale != 1.0:
+                inverse = self.math._run(
+                    "mul",
+                    self.math._const(inverse),
+                    self.math._const(output_scale),
+                )[0]
+            for offset in range(0, dimension, LANES):
+                chunk = self.math._run(
+                    "mul",
+                    row[offset : offset + LANES],
+                    self.math._const(inverse),
+                )
+                if weight is not None:
+                    chunk = self.math._run(
+                        "mul", chunk, weight[offset : offset + LANES]
+                    )
+                result[row_index, offset : offset + LANES] = chunk
+        return result.reshape(value.shape)
+
+    def _sum_squares(self, row):
+        partials = self.math._const(0.0)
+        for index, offset in enumerate(range(0, row.size, LANES)):
+            squared = self.math._run(
+                "sq", row[offset : offset + LANES], self.math._const(0.0)
+            )
+            partials[index] = self.math._reduce("add", squared)
+        return self.math._reduce("add", partials)
+
+    def _inverse_sqrt(self, value):
+        if not np.isfinite(value) or value <= 0:
+            raise RuntimeError("ANE normalization sum must be positive and finite")
+        _, exponent = math.frexp(float(value))
+        factor = 0.7071067811865476 if exponent % 2 else 1.0
+        initial = math.ldexp(factor, -(exponent // 2))
+        source = self.math._const(value)
+        estimate = self.math._const(initial)
+        for _ in range(5):
+            product = self.math._run("mul", source, estimate)
+            product = self.math._run("mul", product, estimate)
+            negative = self.math._run(
+                "mul", product, self.math._const(-1.0)
+            )
+            correction = self.math._run(
+                "add", self.math._const(3.0), negative
+            )
+            half = self.math._run(
+                "mul", correction, self.math._const(0.5)
+            )
+            estimate = self.math._run("mul", estimate, half)
+        return estimate[0]
+
+    @staticmethod
+    def _value(value):
+        value = np.asarray(value)
+        if value.dtype != np.float16:
+            raise ValueError(f"value dtype must be float16, got {value.dtype}")
+        if not value.shape or value.shape[-1] % LANES or value.shape[-1] > LANES * LANES:
+            raise ValueError("final value dimension must be a multiple of 64 up to 4096")
+        if not np.isfinite(value).all():
+            raise ValueError("value must be finite")
+        return value

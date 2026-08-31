@@ -48,8 +48,14 @@ logits and selected token `369`. The host-state control selected the same token.
 See `receipts/qwen-linux-token-runtime-validation.json` for the commands and
 source hashes.
 
-The path is not ANE-only yet. RMSNorm, convolution, sigmoid/SiLU, RoPE, and
-residual arithmetic still run on the host.
+RMS and L2 normalization now use the same four resident elementwise ANE BOs.
+The hardware validator covers the model's 2,048-, 256-, and 128-wide shapes.
+A full one-token run produced 248,320 finite logits and selected token `220`.
+See `receipts/qwen-linux-normalization-validation.json` for error limits and
+source hashes.
+
+The path is not ANE-only yet. Convolution, sigmoid/SiLU, RoPE, and residual
+arithmetic still run on the host.
 
 ## Qwen reference workflow
 

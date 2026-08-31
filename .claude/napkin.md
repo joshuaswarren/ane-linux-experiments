@@ -28,6 +28,9 @@
 | 2026-08-30 | self | Flattened a staged tool into the remote bundle root and broke its parent-relative import contract | Preserve the repository's parent/tools layout when staging a hardware validator |
 | 2026-08-30 | self | Copied an unrelated dirty probe into a hardware bundle and mismatched its committed parser dependency | Stage validation dependencies from the intended commit, then compare local and remote hashes |
 | 2026-08-30 | self | Replaced the wrong JSON line range and duplicated source hash keys | Re-read the complete JSON object and replace the whole object after any syntax error |
+| 2026-08-30 | self | Squared a large fp16 inverse-root estimate before multiplying by its small source and overflowed on near-zero model state | Evaluate the Newton term as `(source * estimate) * estimate`; both intermediates stay representable |
+| 2026-08-30 | self | Raised while an `np.frombuffer` view still referenced an mmap, so cleanup raised `BufferError` | Copy the result and delete the mmap view before validation can raise |
+| 2026-08-30 | self | Used one SCP destination for mixed source directories and flattened staged tool paths | Copy each source directory to its matching remote directory, then remove accidental duplicates |
 
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.

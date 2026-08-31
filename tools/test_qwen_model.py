@@ -18,6 +18,7 @@ class FakeTokenRuntime:
     def __init__(self):
         self.full_calls = []
         self.recurrent_calls = []
+        self.normalization_calls = []
 
     def full_attention(self, layer_index, query, key, value):
         self.full_calls.append(
@@ -38,6 +39,13 @@ class FakeTokenRuntime:
         )
         return np.zeros((16, 128), dtype=np.float16)
 
+    def rms_norm(self, value, weight):
+        self.normalization_calls.append(("rms", value.shape, weight, 1.0))
+        return value
+
+    def l2_norm(self, value, scale=1.0):
+        self.normalization_calls.append(("l2", value.shape, None, scale))
+        return value
 
 class QwenModelMathTests(unittest.TestCase):
     def test_causal_attention_normalizes_equal_scores(self):
@@ -53,13 +61,13 @@ class QwenModelMathTests(unittest.TestCase):
         model.mlp = lambda _layer, value: value
         layer = {
             "state_index": 3,
-            "input_norm": "input_norm",
+            "input_norm": np.ones(2048, dtype=np.float16),
             "q": "q",
             "k": "k",
             "v": "v",
             "o": "o",
-            "q_norm": "q_norm",
-            "k_norm": "k_norm",
+            "q_norm": np.ones(256, dtype=np.float16),
+            "k_norm": np.ones(256, dtype=np.float16),
         }
         query = np.concatenate(
             (
@@ -84,13 +92,16 @@ class QwenModelMathTests(unittest.TestCase):
 
         model.projection = projection
         hidden = np.zeros(2048, dtype=np.float16)
-        with (
-            patch.object(MODULE, "rms_norm", side_effect=lambda value, _weight: value),
-            patch.object(MODULE, "rope", side_effect=lambda value, _position: value),
+        with patch.object(
+            MODULE, "rope", side_effect=lambda value, _position: value
         ):
             actual = model.full_layer(layer, hidden, 0)
 
         self.assertEqual(len(model.token_runtime.full_calls), 1)
+        self.assertEqual(
+            [call[:2] for call in model.token_runtime.normalization_calls],
+            [("rms", (2048,)), ("rms", (8, 256)), ("rms", (2, 256))],
+        )
         layer_index, q_heads, k_heads, v_heads = model.token_runtime.full_calls[0]
         self.assertEqual(layer_index, 3)
         self.assertEqual(q_heads.shape, (8, 256))
@@ -107,7 +118,7 @@ class QwenModelMathTests(unittest.TestCase):
         model.mlp = lambda _layer, value: value
         layer = {
             "state_index": 5,
-            "input_norm": "input_norm",
+            "input_norm": np.ones(2048, dtype=np.float16),
             "post_norm": "post_norm",
             "qkv": "qkv",
             "z": "z",
@@ -130,14 +141,26 @@ class QwenModelMathTests(unittest.TestCase):
         model.projection = lambda matrix, _activation, in_cols=None: outputs[matrix]
         hidden = np.zeros(2048, dtype=np.float16)
         with (
-            patch.object(MODULE, "rms_norm", side_effect=lambda value, _weight: value),
-            patch.object(MODULE, "l2_norm", side_effect=lambda value: value),
             patch.object(MODULE, "sigmoid", side_effect=lambda value: np.ones_like(value)),
             patch.object(MODULE, "silu", side_effect=lambda value: value),
         ):
             actual = model.linear_layer(layer, hidden)
 
         self.assertEqual(len(model.token_runtime.recurrent_calls), 1)
+        self.assertEqual(
+            [call[:2] for call in model.token_runtime.normalization_calls],
+            [
+                ("rms", (2048,)),
+                ("l2", (16, 128)),
+                ("l2", (16, 128)),
+                ("rms", (16, 128)),
+            ],
+        )
+        self.assertAlmostEqual(
+            model.token_runtime.normalization_calls[1][3],
+            1.0 / np.sqrt(128.0),
+        )
+        self.assertEqual(model.token_runtime.normalization_calls[2][3], 1.0)
         call = model.token_runtime.recurrent_calls[0]
         self.assertEqual(call[0], 5)
         self.assertTrue(all(value.dtype == np.float16 for value in call[1:]))

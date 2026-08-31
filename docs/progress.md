@@ -85,8 +85,8 @@ The recorded macOS prompt is repeatable across three runs.
 The layer run captured 96 finite arrays across 24 layer boundaries and four steps.
 Linux full-model token parity against the macOS reference is not proven.
 Linux now proves token-to-logits execution with ANE-resident recurrent state,
-attention K/V state, attention scores, softmax, attended values, and logits.
-The remaining host tensor operations prevent an ANE-only parity claim.
+attention K/V state, attention scores, softmax, normalization, attended values,
+and logits. The remaining host tensor operations prevent an ANE-only parity claim.
 
 Linux graph execution.
 The corrected 13-layer artifact contains 1,404 linked tasks.
@@ -217,5 +217,14 @@ The control GEMM passed before and after both model runs.
 The report is `receipts/qwen-linux-token-runtime-validation.json`.
 
 Full-model Linux parity remains unproven.
-RMSNorm, convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain on the host.
-The next milestone removes those host tensor operations and enforces ANE-only execution.
+RMS and L2 normalization now use composed ANE elementwise submissions.
+The tested RMS shapes were 2,048, 8 by 256, and 16 by 128.
+Their maximum absolute errors were 0.004076, 0.004814, and 0.004068.
+The scaled 16 by 128 L2 case had 0.0000303 maximum absolute error.
+A complete token run selected token 220 with finite hidden state and logits.
+Decoder layers took 19.740 seconds, and logits took 6.916 seconds.
+The control GEMM passed before and after the hardware runs.
+The report is `receipts/qwen-linux-normalization-validation.json`.
+
+Convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain on the host.
+The next milestone moves sigmoid and SiLU to ANE submissions.

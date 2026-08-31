@@ -1,0 +1,74 @@
+{
+  "date": "2026-08-30",
+  "milestone": "Linux Qwen RMS and L2 normalization on ANE",
+  "normalization_command": "python3 tools/qwen-normalization-validation.py --qid 4",
+  "normalization_run": {
+    "elapsed_seconds": 0.45263270700525027,
+    "cases": [
+      {
+        "name": "rms_hidden",
+        "shape": [2048],
+        "max_error": 0.0040760040283203125,
+        "limit": 0.04
+      },
+      {
+        "name": "rms_attention",
+        "shape": [8, 256],
+        "max_error": 0.004813671112060547,
+        "limit": 0.04
+      },
+      {
+        "name": "rms_recurrent",
+        "shape": [16, 128],
+        "max_error": 0.004067659378051758,
+        "limit": 0.04
+      },
+      {
+        "name": "l2_recurrent_query",
+        "shape": [16, 128],
+        "max_error": 0.00003027293680102003,
+        "limit": 0.004
+      }
+    ],
+    "marker": "ANE_QWEN_NORMALIZATION_OK"
+  },
+  "full_token_command": "PATH=<llama.cpp-build-bin>:$PATH python3 ane-qwen-model.py -m <GGUF> -p A --recurrent-anec <RECURRENT_ANEC> --generate 0",
+  "full_token_run": {
+    "prompt_tokens": [32],
+    "layers": 24,
+    "full_attention_layers": 6,
+    "resident_token_runtime": true,
+    "hidden_shape": [2048],
+    "logits_shape": [248320],
+    "next_token": 220,
+    "hidden_finite": true,
+    "logits_finite": true,
+    "layer_seconds": 19.740,
+    "logits_seconds": 6.916,
+    "marker": "ANE_QWEN_FULL_TOKEN_STEP_OK"
+  },
+  "ane_control_before": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "ane_control_after": "runtime_gemm max_err=0.0000 output_ok=True qid=4; ANE_RUNTIME_OK",
+  "tests": "20 normalization, token-runtime, and model tests passed",
+  "source_sha256": {
+    "ane-qwen-model.py": "0a63d8c951cf87de5b07158eb7804c1e5d55207634a3602012fe9b2d44b0682d",
+    "tools/qwen-token-runtime.py": "c46fa620f3ba068d4df54247598b93ada6de30dc8bc11445a6e80d2549828861",
+    "tools/softmax-runtime.py": "4b4cfb1daa886b098a9e95ff249f602fc7480bddd4982e418e85e84080c50f6e",
+    "tools/qwen-normalization-validation.py": "6c23df485461f2969412e89f462c871f4639bc075539b0ef8cb5f73e5a656ba3"
+  },
+  "scope": {
+    "moved_to_ane": [
+      "hidden-state RMS normalization",
+      "attention query and key RMS normalization",
+      "recurrent output RMS normalization",
+      "recurrent query and key L2 normalization",
+      "recurrent query 1/sqrt(128) scale"
+    ],
+    "still_on_host": [
+      "depthwise causal convolution",
+      "sigmoid and SiLU",
+      "RoPE",
+      "residual arithmetic"
+    ]
+  }
+}

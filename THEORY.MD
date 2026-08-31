@@ -134,12 +134,29 @@ The argmax matched the fp32 reference.
 All 127 masked lanes returned zero probability.
 The control GEMM passed before and after the run.
 
+## Normalization contract
+
+RMS and L2 normalization reuse the same four resident elementwise BOs as softmax.
+The runtime squares and reduces each 64-lane chunk on ANE.
+It applies epsilon, Newton inverse square root, output scale, and RMS weight on ANE.
+Host code schedules rows and broadcasts returned scalars.
+It does not compute normalization tensors.
+
+The inverse square root multiplies source by estimate twice.
+It never squares a large reciprocal estimate directly in fp16.
+This order prevents overflow when the RMS input is zero or nearly zero.
+
+A Linux M1 run covered 2,048-, 256-, and 128-wide RMS shapes.
+Their maximum absolute errors were 0.004076, 0.004814, and 0.004068.
+The scaled 128-wide L2 maximum absolute error was 0.0000303.
+The control GEMM passed before and after the run.
+
 ## Token-to-logits orchestration
 
 The bounded state runtimes now compose inside the 24-layer Qwen model.
 Six full-attention layers own two KV-head states each.
 Eighteen DeltaNet layers own separate recurrent runners.
-One shared four-BO elementwise backend serves every 128-wide softmax.
+One shared four-BO elementwise backend serves softmax, RMS, and L2 normalization.
 
 A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
 The ANE-resident state path and the host-state control both selected token 369.
@@ -147,13 +164,17 @@ The resident path took 8.260 seconds for decoder layers and 6.823 seconds for lo
 The host-state control took 7.400 seconds and 6.774 seconds.
 The control GEMM passed before and after both model runs.
 
-This completes the token-to-logits wiring milestone.
+A second full-token run moved every model normalization call to that backend.
+It selected token 220 and produced 248,320 finite logits.
+Decoder layers took 19.740 seconds, and logits took 6.916 seconds.
+
+This completes the normalization milestone.
 It does not complete ANE-only execution or numeric parity.
 
 ## Current direction
 
-RMSNorm, causal convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain host tensor operations.
-Each operation now needs a bounded old-format ANE program or a composed raw runtime.
+Causal convolution, sigmoid/SiLU, RoPE, and residual arithmetic remain host tensor operations.
+Each operation needs a bounded old-format ANE program or a composed raw runtime.
 The model must then reject every host tensor path when the ANE backend is active.
 
 Only that ANE-only path can enter the fixed 100-prompt corpus.
