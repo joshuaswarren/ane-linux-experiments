@@ -261,11 +261,3 @@ A known-good legacy net.plist graph compiled and loaded through ANEForge `_ANEIn
 `saveModelFiles` returned a transient cache directory with `net.plist`, `weights.0`, and empty `data` only.
 It did not write `.hwx` or another Linux-loadable artifact.
 The complete Qwen graph remains blocked on an export surface that the current macOS runtime does not expose.
-
-Boot and device tree reference, 2026-09-03.
-The durable reference for the boot and device-tree chain is
-`docs/boot-and-kernel.md`.
-It documents how m1n1 patches the packaged `.dtb` on every boot, why GRUB's
-`devicetree` override froze live values and booted one core, the current
-ANE node and driver status, and the packaging requirements for the Omarchy
-Linux kernel for Mac.
