@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-12",
+  "scope": {
+    "target": "Apple T6000 ANE platform discovery",
+    "method": "read-only local-history and primary-source research",
+    "excluded": [
+      "target host inventory",
+      "host writes",
+      "SSH",
+      "module loading",
+      "boot, device-tree, kernel, or firmware changes",
+      "GPU or ANE opens",
+      "address or binding inference from T8103"
+    ]
+  },
+  "resolved_model": {
+    "configured": "openai-codex/gpt-5.6-terra",
+    "actual": "openai-codex/gpt-5.6-terra",
+    "fallback": false
+  },
+  "decision": {
+    "status": "blocked_no_complete_authoritative_t6000_mapping",
+    "candidate_fragment": null,
+    "application_authorization": false,
+    "reason": "No reviewed primary-source T6000 ANE DTS, DTBO, or raw ADT node was found that directly proves every load-bearing property. A compatible-string match alone is not a platform mapping."
+  },
+  "required_fields": {
+    "engine_mmio_resource": {
+      "status": "absent",
+      "required_linux_binding": "A T6000 ANE node with a named `engine` reg resource consumable by `devm_platform_ioremap_resource_byname(pdev, \"engine\")`.",
+      "direct_evidence": [],
+      "gap": "No `ane` node or `apple,t6000-ane` content exists in the inspected Asahi Linux T6000 DTS closure; no raw T6000 ADT was provided."
+    },
+    "ane_irq": {
+      "status": "absent",
+      "required_linux_binding": "An ANE interrupt named `ane`, with its interrupt-controller relationship, consumable by `platform_get_irq_byname(pdev, \"ane\")`.",
+      "direct_evidence": [],
+      "gap": "No T6000 ANE DTS/DTBO/ADT property proves the ANE interrupt number, trigger, or naming."
+    },
+    "memory_or_reservation_binding": {
+      "status": "absent",
+      "required_linux_binding": "Direct T6000 evidence for any ANE-reserved memory, memory-region, DMA aperture, or explicit evidence that none is required by this hardware/firmware path.",
+      "direct_evidence": [],
+      "driver_consumer_status": "The inspected driver has no `memory-region`, `reserved-memory`, `dma-ranges`, or `dma-coherent` consumer. That does not prove the T6000 platform has no reservation requirement.",
+      "gap": "No raw T6000 ANE ADT properties are available."
+    },
+    "power_domains": {
+      "status": "absent",
+      "required_linux_binding": "A T6000 ANE power-domain phandle list whose suppliers and ordering match the driver’s `power-domains` traversal.",
+      "direct_evidence": [],
+      "gap": "No T6000 ANE node establishes its PMGR power-gate identity or Linux genpd translation."
+    },
+    "dart_iommu_relationship": {
+      "status": "absent",
+      "required_linux_binding": "A T6000 ANE `iommus` relationship to the correct DART provider(s), stream IDs, and required provider power topology.",
+      "direct_evidence": [],
+      "gap": "The driver deliberately requires a provider-owned IOMMU domain and has no direct-DART fallback; no T6000 ANE-to-DART binding was found."
+    }
+  },
+  "driver_contract": {
+    "source": "/home/joshuawarren/.config/superpowers/worktrees/omarchy-ane/m1max-bringup/ane/src/ane_drv.c",
+    "current_of_matches": [
+      "apple,t8103-ane",
+      "apple,t6000-ane"
+    ],
+    "actual_consumers": {
+      "engine_mmio": "devm_platform_ioremap_resource_byname(pdev, \"engine\")",
+      "ane_irq": "platform_get_irq_byname(pdev, \"ane\")",
+      "power_domains": "of_count_phandle_with_args(dev->of_node, \"power-domains\", \"#power-domain-cells\") followed by dev_pm_domain_attach_by_id",
+      "iommu": "iommu_get_domain_for_dev(ane->dev); probe defers or fails without a provider-owned domain"
+    },
+    "safety_relevant_behavior": "The source explicitly says it must not bind without IOMMU providers and must not directly program DART."
+  },
+  "primary_sources": [
+    {
+      "id": "eiln-ane-t6000-compatible-commit",
+      "kind": "driver provenance",
+      "url": "https://github.com/eiln/ane/commit/8a3eb909d73b856012c263bcd906357a04130cc9",
+      "commit": "8a3eb909d73b856012c263bcd906357a04130cc9",
+      "author": "Eileen Yoon",
+      "timestamp": "2023-05-05T01:46:01Z",
+      "verified_signature": true,
+      "change": "One added line: `apple,t6000-ane` uses the existing T8103 hardware data.",
+      "review_merge_provenance": "GitHub’s commit-to-pulls endpoint returned an empty list. This is a direct signed upstream commit, not evidence of a reviewed platform mapping.",
+      "mapping_value": "negative_only"
+    },
+    {
+      "id": "asahi-linux-t6000-dtsi",
+      "kind": "platform DTS closure",
+      "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/boot/dts/apple/t6000.dtsi",
+      "raw_url": "https://raw.githubusercontent.com/AsahiLinux/linux/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/boot/dts/apple/t6000.dtsi",
+      "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+      "branch": "asahi",
+      "inspection": "The T6000 DTS includes `t6001.dtsi`, sets the SoC compatible and GPU compatible, and contains no ANE node or ANE binding. The recursively indexed source tree contains only `t6000.dtsi` and board DTS files for T6000; no path identified an ANE DTS/DTBO or binding.",
+      "review_merge_provenance": "Tip commit provenance was retrieved from the GitHub API: single parent `6081dfc5239b1b7bb09490955be426b4bea16a9e`; it is not an ANE change.",
+      "mapping_value": "negative_only"
+    },
+    {
+      "id": "asahi-linux-apple-dart-driver",
+      "kind": "IOMMU provider implementation",
+      "url": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/drivers/iommu/apple-dart.c",
+      "commit": "77cb8f24c2381a8abb7272d7bbdec548d6426a8a",
+      "inspection": "Authoritative provider source establishes that a DTS `iommus` relation is meaningful, but it does not identify a T6000 ANE DART, stream, or address.",
+      "mapping_value": "binding_model_only"
+    },
+    {
+      "id": "asahi-m1n1-adt-parser",
+      "kind": "raw ADT parsing and acquisition",
+      "url": "https://github.com/AsahiLinux/m1n1/blob/b4654b32941d51afdb77579d63e7cb1aa6c03ecc/proxyclient/m1n1/adt.py",
+      "commit": "b4654b32941d51afdb77579d63e7cb1aa6c03ecc",
+      "inspection": "`load_adt(data)` parses an ADT. Its CLI defines `-r/--retrieve`; under that flag it imports setup, calls `u.get_adt()`, and writes the returned bytes to the selected output path. `proxyutils.LazyADT` also parses `self._utils.get_adt()`.",
+      "review_merge_provenance": "Tip commit provenance was retrieved from the GitHub API: single parent `940439b9a407fbfc499bea933269219f3f62d4c7`; the ADT parser is not modified by that tip commit.",
+      "mapping_value": "concrete_read_only_acquisition_mechanism"
+    },
+    {
+      "id": "asahi-m1n1-pmgr-adt2dt",
+      "kind": "ADT-to-DT translation consumer",
+      "url": "https://github.com/AsahiLinux/m1n1/blob/b4654b32941d51afdb77579d63e7cb1aa6c03ecc/proxyclient/tools/pmgr_adt2dt.py",
+      "commit": "b4654b32941d51afdb77579d63e7cb1aa6c03ecc",
+      "inspection": "Reads an ADT blob and calls `adt.load_adt`, then consumes `/arm-io/pmgr`. It is evidence that PMGR information must be derived from the captured ADT, not guessed from another SoC.",
+      "mapping_value": "derivation_tooling_only"
+    }
+  ],
+  "non_transferable_comparator": {
+    "source": "https://github.com/AsahiLinux/linux/blob/77cb8f24c2381a8abb7272d7bbdec548d6426a8a/arch/arm64/boot/dts/apple/t8103.dtsi",
+    "status": "not_a_candidate",
+    "reason": "T8103 demonstrates generic Linux DART/IOMMU binding syntax but supplies no direct T6000 evidence. Its addresses, IRQs, power domains, reservations, and stream IDs must not be transplanted."
+  },
+  "minimal_missing_raw_evidence": {
+    "artifact": "An unmodified raw ADT blob captured from an already-authorized T6000 machine through m1n1, plus a reproducible parser report derived only from that blob.",
+    "must_identify": [
+      "The ANE node path and compatible string under `/arm-io`.",
+      "All ANE `reg` tuples, with the tuple designated as the named engine resource by direct node semantics or a documented ADT-to-Linux transformation.",
+      "The ANE interrupt property and its AIC parent/trigger semantics.",
+      "Any ANE memory reservation, DMA aperture, or an authoritative indication that the ADT provides none.",
+      "ANE PMGR power-gate/device identity and every parent dependency needed to produce the Linux power-domain list.",
+      "Every ANE DART/IOMMU reference, provider node, stream identifier, and provider power dependency."
+    ],
+    "read_only_acquisition_path_not_executed": {
+      "precondition": "Use an already-authorized T6000 machine in an m1n1 proxy session; do not alter boot state, load modules, open ANE/GPU, or write to target firmware/kernel/device tree.",
+      "upstream_command_shape": "python3 proxyclient/m1n1/adt.py -r <new-local-output.adt>",
+      "why_this_is_read_only_at_the_hardware_boundary": "The upstream retrieval path calls `u.get_adt()` and serializes the returned ADT bytes; it does not program the ANE, GPU, DART, boot configuration, kernel, or firmware.",
+      "local_followup": "Parse the captured blob with the same m1n1 parser and preserve the raw blob hash plus selected node/property dump. Propose no DTS fragment unless all five required fields above have direct evidence."
+    }
+  },
+  "local_history_receipts": {
+    "matching_commit": "8a3eb909d73b856012c263bcd906357a04130cc9 ane/ane_drv.c: add t6000 of match",
+    "current_driver_lines": {
+      "of_match": "734-740",
+      "engine_resource": "624-629",
+      "ane_irq": "615-622",
+      "power_domains": "551-585",
+      "iommu": "508-531 and 635-642"
+    },
+    "prior_evidence_input": "/tmp/m1max-ane-device-tree-evidence.json",
+    "prior_evidence_use": "Starting evidence only; this artifact deliberately does not repeat host inventory."
+  },
+  "verification": {
+    "artifact_validation": "JSON parse and required-field-status validation recorded in the accompanying command receipt.",
+    "hardware_validation": "not performed",
+    "candidate_mapping_validated": false
+  }
+}
