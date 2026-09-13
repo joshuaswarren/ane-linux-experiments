@@ -11,18 +11,18 @@
     "agent_model_fallback": false
   },
   "final_outcome": {
-    "status": "cycle_4_insmod_hard_reset_external_abort_rolled_back_stopped_permanently",
+    "status": "cycle_7_runtime_pm_resume_path_crash_pre_resume_rolled_back_stopped",
     "accel0_live": false,
     "workload_submitted": false,
     "encoder_claim_made": false,
-    "total_reboots": 5,
-    "reboot_authorization": "One initial (cycle 1), one boundary-correction (cycle 2), one stock recovery (consumed by a 600 s window that proved too short; parent recovered via console), one final bind (cycle 3), one cycle-4 bind (parent: 'CYCLE 4, and it is the LAST regardless of outcome'). The cycle-4 insmod caused an unplanned hard reset; the post-crash boot was not an authorized test cycle.",
+    "total_reboots": 11,
+    "reboot_authorization": "Cycles 1-6 as previously recorded. Parent authorized cycle 7: pm_runtime_enable + get_sync before engine MMIO with netconsole breadcrumbs, one cycle reboot plus crash-recovery, stop on any new failure.",
     "single_insmod_per_cycle": true,
     "second_probe_retry": false,
     "persistent_rollback_complete": true,
     "runtime_rollback_complete": true,
     "llama_stopped": true,
-    "final_cycle_stop_rule": "Parent instruction, cycle 4: 'it is the LAST regardless of outcome'; on new failure: rollback, stop permanently, consolidate the full bug list as handoff."
+    "final_cycle_stop_rule": "Parent instruction, cycle 7: 'STOP on any new failure with rollback. If accel0 appears: bind-level receipt, no workloads.'"
   },
   "source_commits": {
     "omarchy_linux_initial": "dd84b5f11deefd03a55e0c009e9d4f827dcb54f1",
@@ -929,6 +929,182 @@
         "setup_translation: enable_streams, set_ttbr with TTBR_VALID|paddr>>12, enable_translation (TCR), invalidate_tlb"
       ],
       "observed_dart1_vs_dart0": "dart0 looks like an initialized apple-dart (params1 0x1eef1020, config 0xec016100, ttbr 0x9001187c VALID). dart1/dart2 share params1 0x2ed01044 and config 0x1e010000 with TTBR VALID clear. Copying dart0's VALID TTBR onto dart1 is not the T8103 programming sequence."
+    }
+  },
+  "cycle_5_appended": true
+  ,
+  "cycle_5": {
+    "authorized_by_parent": true,
+    "design": "ISP pattern from t600x-die0.dtsi:803-835 applied to the ANE - three standalone apple,t6000-dart provider nodes (dart0 @285800000 ps_ane_sys, dart1 @285810000 ps_ane_sys_cpu, dart2 @285820000 ps_ane_sys_cpu, shared IRQ 771, #iommu-cells 1), ane node with engine-only reg 0x284000000+0x1800000 and THREE iommus tuples; driver gates all manual dart programming behind hw->dart.manual (T8103 only).",
+    "source_commit": "2cf4af1 'Gate manual ANE dart programming behind hw match data' (on feature/t6001-ane-bind after 3946f76, 499bae36, 16720f0)",
+    "enabled_dtb_sha256": "e53a2f6e33c6f064b900cc80487d3ea5d5ce7b04d30269295a100140ffa5f371",
+    "enabled_boot_bin_sha256": "a279ac03f346b86022efebb97f9fcaa451866271514d847f99e55df3c596632a",
+    "module_sha256": "c3c7295ad6a89c23686918f386dfdddfd1723559a0130f500bae1713b9665d0f",
+    "module_vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+    "build_dir": "/home/joshuawarren/ane-build-2cf4af1",
+    "netconsole": {
+      "receiver": "192.168.10.235:6666 UDP MAC bc:24:11:82:c5:1e (omp-studio-local eth0)",
+      "unit": "jw16-netconsole.service (enabled, auto-arms post-boot)",
+      "log": "/tmp/jw16-netconsole-2026-09-13.log",
+      "dying_words_artifact": "/tmp/jw16-c5-dying-words.log",
+      "arm_verification": "JW16_NETCONSOLE_C5_ARM_TEST captured locally before the cycle"
+    },
+    "reboot": {
+      "boot_id_before": "f453f1e7-1835-40a4-9789-54fa9b6388e0",
+      "boot_id_after": "bc47ce57-b707-49cf-8cc6-bda1c442713e",
+      "uptime_after": "2026-09-13 15:33:50",
+      "ssh_return_seconds": 48
+    },
+    "post_boot_verified": {
+      "llama_and_timer": "stopped",
+      "nproc": 10,
+      "live_fdt": {
+        "ane_status": "okay",
+        "ane_iommus_hex_cells": ["109","0","10a","0","10b","0"],
+        "ane_reg": "engine only 0x284000000+0x1800000",
+        "darts": ["285800000 okay bound=apple-dart", "285810000 okay bound=apple-dart", "285820000 okay bound=apple-dart"],
+        "ane_iommu_group": "0"
+      },
+      "module_hash_verified_before_insert": true
+    },
+    "probe_netconsole_verbatim": [
+      "[  28.733053] ane: loading out-of-tree module taints kernel.",
+      "[  28.735096] ane 284000000.ane: irq: dart lines owned by apple-dart providers",
+      "[  28.735111] ane 284000000.ane: dart: translations owned by apple-dart providers",
+      "[  28.735113] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000",
+      "[  28.735115] ane 284000000.ane: res-dump: dart0 MISSING",
+      "[  28.735116] ane 284000000.ane: res-dump: dart1 MISSING",
+      "[  28.735117] ane 284000000.ane: res-dump: dart2 MISSING",
+      "[  28.735117] ane 284000000.ane: res-dump: mapped engine=0000000078b6373c dart0=(null) dart1=(null) dart2=(null)",
+      "[  28.735119] ane 284000000.ane: res-dump: ttbr offset=0x0",
+      "[  28.735120] ane 284000000.ane: probe: iommu ok, powering domains",
+      "[  28.735159] ane 284000000.ane: power: ps@0x268 before 0x1f0003ff"
+    ],
+    "crash_analysis": {
+      "gating_verified_working": "All manual dart paths provably skipped (dart0/1/2 MISSING by design, no ttbr writes executed, no dart irq touched). The three apple-dart providers bound pre-insmod and the ane device sat in iommu group 0.",
+      "crash_point": "At or immediately after the ane_force_power regmap write to ps_ane_sys @0x268. No 'ps@0x268 active' line, no error, no oops; console silence then hard reset ~68 s later.",
+      "before_value": "0x1f0003ff = PS_TARGET 0xf (ACTIVE), PS_ACTUAL 0xf (ACTIVE), AUTO_ENABLE set - ps_ane_sys was ALREADY powered by the kernel: the three dart provider nodes hold power-domains on ps_ane_sys/ps_ane_sys_cpu and apple-dart probes powered them.",
+      "mechanism": "The manual force_power write recomputes the register as 0x0f0003ff, momentarily clearing AUTO_ENABLE (bit 28) on a domain the kernel's pmgr-pwrstate genpd now actively manages for three bound consumers; the raw write fights kernel-owned power state and the machine dies (reset observed ~68 s after console silence).",
+      "implication": "With the ISP pattern, ane_force_power is not merely unnecessary on T600x - it is harmful. ps_ane_sys/ps_ane_sys_cpu are kernel-managed via the darts' and ane's power-domains; the manual PMGR path must also be gated manual/T8103-only (or dropped for t6000) in the next driver revision.",
+      "stage3c_revision": "Cycle 4's crash attribution to the TTBR write alone was incomplete: with netconsole absent, the PMGR write could not be excluded. Cycle 5 isolates it: even with zero dart writes, the PMGR force_power write alone kills the machine in this configuration."
+    },
+    "crash_recovery_boot": {
+      "boot_id": "3eb92d41-b169-45f0-88f6-1579969c2a09",
+      "uptime": "2026-09-13 15:35:12",
+      "llama_resurrected_and_stopped_again": true
+    },
+    "rollback": {
+      "verification_marker": "C5_ROLLBACK_FINAL_VERIFIED",
+      "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+      "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+      "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+      "next_boot_fully_stock": true,
+      "reboot_required": false
+    },
+    "next_driver_fix": "Gate ane_force_power behind hw->dart.manual as well (T8103-only), letting the t6000 path rely entirely on genpd + the three apple-dart providers. Overlay and module 2cf4af1 need no other changes; rebuild and re-run one authorized cycle."
+  },
+  "cycle_6": {
+    "authorized_by_parent": true,
+    "change": "omarchy-ane 8cfacda 'Gate ane_force_power behind manual dart mode': t6000 skips the manual PMGR writes entirely ('power: genpd-owned on this SoC'), T8103 unchanged.",
+    "module_sha256": "6aebb45f84d3acec42d17d5f57947ef8f4d9d8cbff93559065724658b6184a92",
+    "module_vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+    "build_dir": "/home/joshuawarren/ane-build-8cfacda",
+    "enabled_dtb_sha256": "e53a2f6e33c6f064b900cc80487d3ea5d5ce7b04d30269295a100140ffa5f371",
+    "enabled_boot_bin_sha256": "a279ac03f346b86022efebb97f9fcaa451866271514d847f99e55df3c596632a",
+    "hash_verified_before_insert": true,
+    "reboot": {
+      "boot_id_before": "3eb92d41-b169-45f0-88f6-1579969c2a09",
+      "boot_id_after": "92e1564a-f7c5-4d31-9294-a30f98e2476b",
+      "ssh_return_seconds": 48
+    },
+    "post_boot": {
+      "llama_and_timer": "stopped",
+      "darts": "all three okay and bound to apple-dart",
+      "ane_iommu_group": "0",
+      "netconsole": "active, test line received"
+    },
+    "probe_netconsole_verbatim": [
+      "[  20.751763] ane: loading out-of-tree module taints kernel.",
+      "[  20.753793] ane 284000000.ane: irq: dart lines owned by apple-dart providers",
+      "[  20.753808] ane 284000000.ane: dart: translations owned by apple-dart providers",
+      "[  20.753810] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000",
+      "[  20.753813] ane 284000000.ane: res-dump: dart0 MISSING",
+      "[  20.753813] ane 284000000.ane: res-dump: dart1 MISSING"
+    ],
+    "crash_analysis": {
+      "last_flushed_line": "res-dump: dart1 MISSING - death before 'res-dump: dart2 MISSING', 'probe: iommu ok, powering domains', and 'power: genpd-owned' could flush (netconsole is best-effort; queued lines lost at freeze, so the true death point is at or after the last flushed line)",
+      "likely_point": "ane_tm_enable's first engine MMIO (readl TM_TQ_EN). With force_power gated off, nothing powers ps_ane_sys_cpu for the ane device mid-probe: the core's implicit single-domain genpd attach only powers the domain at device runtime resume, and the driver's pm_runtime setup happens AFTER ane_tm_enable. The engine window sits in the ps_ane_sys_cpu partition (driver's own comment), so the first readl into a gated partition = external abort hard reset.",
+      "cycle_5_cross_check": "ps_ane_sys (0x268) was ACTIVE at probe (0x1f0003ff) but ps_ane_sys_cpu (0x2c8) state was never observed - C5 died before its 'before' line. The two partitions differ; only the cpu partition gates the engine.",
+      "remaining_options": "Power the engine partition through the DEVICE's runtime PM before any engine MMIO: devm_pm_domain / pm_runtime_get_sync(dev) (or dev_pm_domain_attach + pm_runtime_resume) placed before ane_tm_enable, keeping everything else ISP-pattern. Alternative: keep manual PMGR but preserve AUTO_ENABLE on already-active domains (read-modify-write that never clears bit 28) - though cycle 5 shows even the re-write of other bits coincided with death, so the runtime-PM route is the kernel-sanctioned one.",
+      "frontier_progress": "C5 eliminated dart writes; C6 eliminated manual PMGR writes; the next lethal frontier is engine-partition power before engine MMIO."
+    },
+    "crash_recovery_boot": {
+      "boot_id": "531dcc37-7adf-4885-90da-7a605ebf1a7c",
+      "uptime": "2026-09-13 15:41:13"
+    },
+    "dying_words_artifact": "/tmp/jw16-c6-dying-words.log",
+    "rollback": {
+      "verification_marker": "C6_ROLLBACK_FINAL_VERIFIED",
+      "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+      "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+      "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+      "next_boot_fully_stock": true,
+      "reboot_required": false
+    }
+  },
+  "cycle_7": {
+    "authorized_by_parent": true,
+    "change": "omarchy-ane 2dea2f3 'Resume the device through runtime PM before engine MMIO': pm_runtime setup moved ahead of ane_tm_enable, pm_runtime_enable + get_sync before any engine MMIO (raises ps_ane_sys_cpu via genpd; .runtime_resume does the SoC-appropriate enable), put_sync on error path, hold across probe engine access, mdelay(50) netconsole breadcrumbs between stages. local branch feature/t6001-ane-bind, not pushed - Main lands.",
+    "module_sha256": "b6311ec21854bbd9f294695bbdceb816faf56c1573dcaa157ce9ee3f03f43830",
+    "module_vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+    "build_dir": "/home/joshuawarren/ane-build-2dea2f3",
+    "enabled_dtb_sha256": "e53a2f6e33c6f064b900cc80487d3ea5d5ce7b04d30269295a100140ffa5f371",
+    "enabled_boot_bin_sha256": "a279ac03f346b86022efebb97f9fcaa451866271514d847f99e55df3c596632a",
+    "hash_verified_before_insert": true,
+    "reboot": {
+      "boot_id_before": "531dcc37-7adf-4885-90da-7a605ebf1a7c",
+      "boot_id_after": "1864bdf6-97c0-4af9-94d5-64cf79b4eae2",
+      "ssh_return_seconds": 46
+    },
+    "post_boot": {
+      "llama_and_timer": "stopped (llama since disabled by Main)",
+      "darts": "all three okay and bound to apple-dart",
+      "ane_iommu_group": "0",
+      "netconsole": "active, pre-insmod line received",
+      "note": "insmod ran ~97 min after boot (box idle in between; GPU sibling ran Q4 decode/prefill concurrently during the probe window - new variable vs cycles 5/6)"
+    },
+    "probe_netconsole_verbatim": [
+      "[ 5801.666790] ane: loading out-of-tree module taints kernel.",
+      "[ 5801.669189] ane 284000000.ane: irq: dart lines owned by apple-dart providers",
+      "[ 5801.669204] ane 284000000.ane: dart: translations owned by apple-dart providers",
+      "[ 5801.669206] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000",
+      "[ 5801.669208] ane 284000000.ane: res-dump: dart0 MISSING",
+      "[ 5801.669209] ane 284000000.ane: res-dump: dart1 MISSING",
+      "[ 5801.669210] ane 284000000.ane: res-dump: dart2 MISSING",
+      "[ 5801.669211] ane 284000000.ane: res-dump: mapped engine=... dart0/1/2=(null)",
+      "[ 5801.669214] ane 284000000.ane: res-dump: ttbr offset=0x0",
+      "[ 5801.669215] ane 284000000.ane: probe: iommu ok, powering domains",
+      "[ 5801.719219] ane 284000000.ane: power: genpd-owned on this SoC",
+      "[ 5801.769226] ane 284000000.ane: probe: domains on, remap ttbr"
+    ],
+    "crash_analysis": {
+      "last_flushed_line": "'probe: domains on, remap ttbr' - 'probe: ttbr done, setting up runtime pm' never flushed. Breadcrumbs prove 50ms flush cadence was working, so death is at/after 'domains on' within tens of ms.",
+      "code_between": "stage30-32 check (skipped, stage=99), ane_iommu_remap_ttbr (immediate return on t6000 - match data proven by ttbr offset=0x0), stage2 check (skipped). NO MMIO, NO PMGR writes, NO dart touches in that window.",
+      "conclusion": "Death in a window of pure-safe code means the killer is ASYNCHRONOUS or printk loss hides a later stage. No new synchronous cause is isolated: the C6 engine-MMIO-before-power hypothesis is NOT confirmed - the probe never reached get_sync/tm_enable ('probe: ttbr done' absent). Candidate async killers: (a) unacked DART fault on shared IRQ 771 escalating to SoC reset (driver's own documented hazard; dart1/2 have TTBR VALID clear per stage evidence); (b) concurrent GPU Q4 load racing shared-fabric power transitions; (c) printk loss understating the death point - C6 taught us flushed lines lag the true point, but here the 50ms breadcrumbs bound the lag to one stage.",
+      "next_debug_path": "Per-line blocking flush (console_flush + mdelay) to remove printk-loss ambiguity; staged probe that stops BEFORE 'domains on' (ane_stop_stage exit) then re-runs with one more stage to bisect the lethal op; capture dart fault/error registers via the apple-dart nodes before reprobing; consider quiescing the GPU sibling during the probe window."
+    },
+    "crash_recovery_boot": {
+      "boot_id": "733a28c0-f7d5-4f43-b29e-e3f7c3e94e61",
+      "uptime": "2026-09-13 17:23:00"
+    },
+    "dying_words_artifact": "/tmp/jw16-c7-dying-words.log",
+    "rollback": {
+      "verification_marker": "C7_ROLLBACK_FINAL_VERIFIED",
+      "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+      "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+      "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+      "next_boot_fully_stock": true,
+      "reboot_required": false
     }
   }
 }
