@@ -11,18 +11,18 @@
     "agent_model_fallback": false
   },
   "final_outcome": {
-    "status": "cycle_7_runtime_pm_resume_path_crash_pre_resume_rolled_back_stopped",
+    "status": "cycle_8_bisected_killer_to_get_sync_resume_window_rolled_back_stopped",
     "accel0_live": false,
     "workload_submitted": false,
     "encoder_claim_made": false,
-    "total_reboots": 11,
-    "reboot_authorization": "Cycles 1-6 as previously recorded. Parent authorized cycle 7: pm_runtime_enable + get_sync before engine MMIO with netconsole breadcrumbs, one cycle reboot plus crash-recovery, stop on any new failure.",
+    "total_reboots": 13,
+    "reboot_authorization": "Cycles 1-7 as previously recorded. Parent authorized cycle 8 only after Jw16GpuDecode finished with lock free and GPU quiesced: per-line blocking flush, stop_stage bisection of the domains-on to ttbr-done gap, dart fault-register dump, one reboot, netconsole armed, stop on new failure.",
     "single_insmod_per_cycle": true,
     "second_probe_retry": false,
     "persistent_rollback_complete": true,
     "runtime_rollback_complete": true,
     "llama_stopped": true,
-    "final_cycle_stop_rule": "Parent instruction, cycle 7: 'STOP on any new failure with rollback. If accel0 appears: bind-level receipt, no workloads.'"
+    "final_cycle_stop_rule": "Parent instruction, cycle 8: 'STOP on new failure. No workloads.'"
   },
   "source_commits": {
     "omarchy_linux_initial": "dd84b5f11deefd03a55e0c009e9d4f827dcb54f1",
@@ -1100,6 +1100,59 @@
     "dying_words_artifact": "/tmp/jw16-c7-dying-words.log",
     "rollback": {
       "verification_marker": "C7_ROLLBACK_FINAL_VERIFIED",
+      "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+      "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+      "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+      "next_boot_fully_stock": true,
+      "reboot_required": false
+    }
+  },
+  "cycle_8": {
+    "authorized_by_parent": true,
+    "gate": "Jw16GpuDecode signaled done (no further GPU work, lock free); fabric verified quiet pre-probe (no GPU procs, lock free). GPU-concurrency theory eliminated: crash reproduced on quiet fabric.",
+    "change": "omarchy-ane d313c93 'Bisect the domains-on to ttbr-done probe gap': mdelay(50) after every print in the gap, 'ttbr remap returned' breadcrumb, staged -EINVAL exits 4 (after domains-on) and 5 (after remap). Local branch feature/t6001-ane-bind, unpushed - Main lands.",
+    "module_sha256": "495ea5e02ec34417f177e8097cb304e6751144511f44bf12366892c22640f7cd",
+    "module_vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+    "build_dir": "/home/joshuawarren/ane-build-d313c93",
+    "enabled_dtb_sha256": "e53a2f6e33c6f064b900cc80487d3ea5d5ce7b04d30269295a100140ffa5f371",
+    "enabled_boot_bin_sha256": "a279ac03f346b86022efebb97f9fcaa451866271514d847f99e55df3c596632a",
+    "hash_verified_before_insert": true,
+    "reboot": {
+      "boot_id_before": "733a28c0-f7d5-4f43-b29e-e3f7c3e94e61",
+      "boot_id_after": "dec49a5f-ed71-4745-94e0-74ffaee970d7",
+      "ssh_return_seconds": 48
+    },
+    "post_boot": {
+      "llama_and_timer": "stopped",
+      "gpu": "idle, lock free",
+      "darts": "all three okay and bound to apple-dart",
+      "debugfs_dart_iommu": "none present - no sysfs fault-register path; no new MMIO attempted for fault dump"
+    },
+    "probe1_stage4": {
+      "command": "insmod ane.ko ane_stop_stage=4",
+      "result": "SURVIVED. insmod rc=0 with 'probe with driver ane failed with error -22' (staged -EINVAL by design), device cleanly unbound, rmmod clean. Breadcrumbs flushed on exact 50ms cadence through 'stop after domains-on'. Proves everything up to and including the domains-on print is safe.",
+      "script_note": "Runner script treated rc=0 as unexpected and exited before probe 2; probe 2 was run as an immediate follow-up on the same live boot after clean rmmod."
+    },
+    "probe2_full_netconsole_verbatim_tail": [
+      "[  34.239045] ane 284000000.ane: probe: iommu ok, powering domains",
+      "[  34.289047] ane 284000000.ane: power: genpd-owned on this SoC",
+      "[  34.339058] ane 284000000.ane: probe: domains on, remap ttbr",
+      "[  34.389068] ane 284000000.ane: probe: ttbr remap returned",
+      "[  34.439077] ane 284000000.ane: probe: ttbr done, setting up runtime pm"
+    ],
+    "crash_analysis": {
+      "bisection_result": "Probe 1 proves the gap entry is safe; probe 2 dies after 'ttbr done, setting up runtime pm' flushed. The killer is now bounded to: pm_runtime_set_autosuspend_delay/use_autosuspend/enable (safe syscalls), pm_runtime_get_sync -> genpd power-on of ps_ane_sys_cpu (kernel pmgr-pwrstate sequencing) -> .runtime_resume callback (force_power no-op, remap skip, ane_tm_enable first engine MMIO) -> 'runtime resumed' print. Exactly two dangerous ops remain: (1) kernel genpd power-on of ps_ane_sys_cpu, (2) first engine MMIO in tm_enable.",
+      "c6_hypothesis_status": "Engine-MMIO-before-power remains the prime suspect but is STILL unconfirmed - 'runtime resumed' never flushed, and breadcrumbs bound printk lag to ~50ms, so death is inside get_sync-or-resume.",
+      "async_killer_status": "Weakened but not dead: death inside get_sync (a sleeping call) leaves room for an async fault; however dmesg/netconsole show no apple-dart fault lines, and the quiet-fabric repro removes GPU concurrency. Synchronous genpd/engine cause now favored.",
+      "next_debug_path": "Breadcrumb INSIDE ane_runtime_resume (entry print + post-force_power print + pre/post-tm_enable prints with mdelays) to separate genpd-power-on death from first-engine-MMIO death; that split decides between 'fix genpd sequencing/attach (e.g. explicit dev_pm_domain_attach_by_id + pm_runtime_resume_and_get before engine map)' vs 'engine needs more than ps_ane_sys_cpu (clocks/sep handshake like the AOP/DCP firmware dance)'."
+    },
+    "crash_recovery_boot": {
+      "boot_id": "f8f92db0-4d9d-474e-88a7-cdcd48f30d2e",
+      "uptime": "2026-09-13 17:30:39"
+    },
+    "dying_words_artifact": "/tmp/jw16-c8-dying-words.log",
+    "rollback": {
+      "verification_marker": "C8_ROLLBACK_FINAL_VERIFIED",
       "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
       "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
       "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
