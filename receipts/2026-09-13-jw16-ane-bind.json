@@ -660,7 +660,7 @@
       "cycle": 4,
       "bug": "CLOSED isolation: insmod of the PMGR-fixed module hard-resets because ane_iommu_remap_ttbr writes dart1/dart2 TTBR. SError 0xbe000000 on CPU during insmod immediately after 'probe: domains on, remap ttbr'.",
       "evidence": "Netconsole /tmp/jw16-netconsole-2026-09-13.log stage 3: power ps@268 and ps@2c8 active, then SError 0xbe000000. Stage 2 dart0 read 0x90007e60 was stable 900s.",
-      "next_debug_path": "Do not call ane_iommu_remap_ttbr on T6001 until dart1/dart2 are proven writable. Next isolation would be ane_stop_stage=31 (dart1 write only) with netconsole; not run (reset rule)."
+      "next_debug_path": "Stage 3b: dart1/dart2 PARAMS1/CONFIG/TTBR reads succeed after force_power (stable 900s). SError is the TTBR write. Next: program dart1 like apple-dart unlocked setup_translation (enable_streams, VALID TTBR, TCR, invalidate) instead of copying dart0's TTBR word."
     }
   ],
   "stage_ladder": {
@@ -806,33 +806,86 @@
         "ane_stop_stage": 3,
         "result": "not_run",
         "reason": "Stage 3 SError/hard-reset. Parent rule: do not advance; rollback stock."
+      },
+      {
+        "stage": "3b",
+        "ane_stop_stage": 33,
+        "boot_id": "9d7553fb-aa25-4480-b9c6-0d0ce5f27409",
+        "uptime_after": "2026-09-13 14:54:53",
+        "module_sha256": "607af57289134c4d8ae8fde115a2e7ceea2f3dffd7ca1efebbd2dd66c92e5cfa",
+        "ane_drv_c_sha256": "10ded31e09e505a1cc942e09d6752bf32c736e19d52a53077a13727eebc4d07b",
+        "insmod": "sudo insmod /home/joshuawarren/ane-build-ladder/ane.ko ane_stop_stage=33",
+        "insmod_rc": 0,
+        "ttbr_write": false,
+        "result": "stable_900s",
+        "probe_error": -22,
+        "reads": {
+          "dart0": {
+            "params1": "0x1eef1020",
+            "config": "0xec016100",
+            "ttbr": "0x9001187c",
+            "ttbr_valid_bit31": true,
+            "config_lock_bit15": false
+          },
+          "dart1": {
+            "params1": "0x2ed01044",
+            "config": "0x1e010000",
+            "ttbr": "0x3f3d3e14",
+            "ttbr_valid_bit31": false,
+            "config_lock_bit15": false
+          },
+          "dart2": {
+            "params1": "0x2ed01044",
+            "config": "0x1e010000",
+            "ttbr": "0x1a3d0b64",
+            "ttbr_valid_bit31": false,
+            "config_lock_bit15": false
+          }
+        },
+        "netconsole_verbatim": [
+          "[   37.369133] ane 284000000.ane: probe: domains on, remap ttbr",
+          "[   37.369134] ane 284000000.ane: probe: stage33 dart1/dart2 read-only after force_power",
+          "[   37.369136] ane 284000000.ane: probe: stage33 reading dart0",
+          "[   37.369137] ane 284000000.ane: probe: stage33 dart0 params1(0x0)=0x1eef1020",
+          "[   37.369139] ane 284000000.ane: probe: stage33 dart0 config(0x60)=0xec016100",
+          "[   37.369143] ane 284000000.ane: probe: stage33 dart0 ttbr(0x200)=0x9001187c",
+          "[   37.369145] ane 284000000.ane: probe: stage33 reading dart1",
+          "[   37.369146] ane 284000000.ane: probe: stage33 dart1 params1(0x0)=0x2ed01044",
+          "[   37.369147] ane 284000000.ane: probe: stage33 dart1 config(0x60)=0x1e010000",
+          "[   37.369148] ane 284000000.ane: probe: stage33 dart1 ttbr(0x200)=0x3f3d3e14",
+          "[   37.369149] ane 284000000.ane: probe: stage33 reading dart2",
+          "[   37.369150] ane 284000000.ane: probe: stage33 dart2 params1(0x0)=0x2ed01044",
+          "[   37.369151] ane 284000000.ane: probe: stage33 dart2 config(0x60)=0x1e010000",
+          "[   37.369152] ane 284000000.ane: probe: stage33 dart2 ttbr(0x200)=0x1a3d0b64",
+          "[   37.369153] ane 284000000.ane: probe with driver ane failed with error -22"
+        ],
+        "conclusion": "dart1@0x285810000 and dart2@0x285820000 are live and readable after force_power. Windows are not dead/unmapped. Stage 3 SError is a WRITE-sequencing bug."
       }
     ],
     "stock_restore": {
       "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
       "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
       "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
-      "stock_boot_id": "d328a7f6-49e0-44ff-b871-376367e0ed92",
-      "stock_uptime": "2026-09-13 14:05:14",
-      "live_ane_nodes": "none",
+      "live_boot_id_still_enabled_fdt": "9d7553fb-aa25-4480-b9c6-0d0ce5f27409",
+      "next_boot_is_stock": true,
       "nproc": 10,
       "llama_stopped": true,
-      "verification_marker": "STAGE3_SERROR_STOCK_VERIFIED"
+      "reboot_used": 1,
+      "verification_marker": "STAGE3B_STOCK_FILES_NEXT_BOOT"
     },
     "narrowed_cause": {
       "acceptance": "a",
-      "summary": "The cycle-4 hard reset is ane_iommu_remap_ttbr dart1/dart2 TTBR writes. Force-power of ane_sys@268 and ane_sys_cpu@2c8 plus dart0 TTBR read are stable. The first writel to dart1+0x200 after 'probe: domains on, remap ttbr' produces SError 0xbe000000 (MACHINE_CHECK) and a hard reset. ane_tm_enable was never reached.",
-      "exact_write": "ane_iommu_remap_ttbr: writel_relaxed(dart0.ttbr, dart1+ttbr) at dart.ttbr offset 0x200 (dart1 phys 0x285810000)",
+      "summary": "SError 0xbe000000 is the dart1/dart2 TTBR WRITE, not a dead window. After force_power, dart1 and dart2 PARAMS1/CONFIG/TTBR all read successfully and the host stayed up 900s. The ANE remap path writes dart0's TTBR word into dart1/dart2 with none of the T8103 apple-dart sequence (disable_dma, enable_streams, VALID construction, TCR, invalidate).",
+      "exact_write": "ane_iommu_remap_ttbr writel_relaxed(dart0.ttbr, dart1+0x200) at phys 0x285810000",
       "serror": "0x00000000be000000",
       "ruled_out": [
-        "ioremap+iommu_domain_init without force_power",
-        "ane_force_power ane_sys@268 and ane_sys_cpu@2c8",
-        "dart0 TTBR read-only",
-        "ane_tm_enable (not reached)"
+        "dead/unmapped dart1/dart2 after power-on",
+        "force_power of ane_sys@268 and ane_sys_cpu@2c8",
+        "dart0/dart1/dart2 PARAMS1, CONFIG, TTBR reads",
+        "ane_tm_enable (not reached in the crashing probe)"
       ],
       "still_open": [
-        "Whether dart1 vs dart2 is the first aborting write (no surviving readback)",
-        "Whether dart1 needs a different power/clock/DART init sequence before TTBR is writable"
+        "Whether STREAM_SELECT+invalidate-before-TTBR, or TCR disable, or VALID-bit/SID programming is the missing unlock that makes the dart1 TTBR write legal"
       ]
     },
     "continuation": "stages_3_4",
@@ -843,6 +896,14 @@
       "patch": "ane_stop_stage=2 logs dart0/1/2 TTBR readback after ane_iommu_remap_ttbr; ane_stop_stage=3 stops after ane_tm_enable. Patch lived only on jw16 build tree.",
       "vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64"
     },
-    "reboots_used_continuation": 2
+    "reboots_used_continuation": 2,
+    "t8103_remap_comparison": {
+      "ane_iommu_remap_ttbr": "naked writel of dart0 TTBR word into dart1+0x200 then dart2+0x200; no STREAM_SELECT, no TCR/disable_dma, no enable_streams, no VALID-bit construction, no TLB invalidate",
+      "apple_dart_unlocked_order": [
+        "hw_reset: disable_dma, clear_all_ttbrs, enable_streams (0xfc), clear error, invalidate_tlb (STREAM_SELECT then STREAM_COMMAND_INVALIDATE)",
+        "setup_translation: enable_streams, set_ttbr with TTBR_VALID|paddr>>12, enable_translation (TCR), invalidate_tlb"
+      ],
+      "observed_dart1_vs_dart0": "dart0 looks like an initialized apple-dart (params1 0x1eef1020, config 0xec016100, ttbr 0x9001187c VALID). dart1/dart2 share params1 0x2ed01044 and config 0x1e010000 with TTBR VALID clear. Copying dart0's VALID TTBR onto dart1 is not the T8103 programming sequence."
+    }
   }
 }
