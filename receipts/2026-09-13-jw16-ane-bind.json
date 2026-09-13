@@ -11,18 +11,18 @@
     "agent_model_fallback": false
   },
   "final_outcome": {
-    "status": "cycle_8_bisected_killer_to_get_sync_resume_window_rolled_back_stopped",
+    "status": "cycle_10_ps_ane_sys_cpu_proven_active_engine_fault_is_clocks_handshake_offsets",
     "accel0_live": false,
     "workload_submitted": false,
     "encoder_claim_made": false,
-    "total_reboots": 13,
-    "reboot_authorization": "Cycles 1-7 as previously recorded. Parent authorized cycle 8 only after Jw16GpuDecode finished with lock free and GPU quiesced: per-line blocking flush, stop_stage bisection of the domains-on to ttbr-done gap, dart fault-register dump, one reboot, netconsole armed, stop on new failure.",
+    "total_reboots": 16,
+    "reboot_authorization": "Cycles 1-9 as previously recorded. Parent authorized cycle 10: resume-only stop after get_sync plus read-only ps_ane_sys_cpu ACTUAL discriminator, one reboot, fabric quiet, netconsole armed, stop on crash, push branch after probe.",
     "single_insmod_per_cycle": true,
     "second_probe_retry": false,
     "persistent_rollback_complete": true,
     "runtime_rollback_complete": true,
     "llama_stopped": true,
-    "final_cycle_stop_rule": "Parent instruction, cycle 8: 'STOP on new failure. No workloads.'"
+    "final_cycle_stop_rule": "Cycle 9 complete: killer isolated to first engine MMIO. STOP per standing rule. No further probes without a new hypothesis addressing engine power/clocks/offsets."
   },
   "source_commits": {
     "omarchy_linux_initial": "dd84b5f11deefd03a55e0c009e9d4f827dcb54f1",
@@ -1153,6 +1153,104 @@
     "dying_words_artifact": "/tmp/jw16-c8-dying-words.log",
     "rollback": {
       "verification_marker": "C8_ROLLBACK_FINAL_VERIFIED",
+      "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+      "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+      "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+      "next_boot_fully_stock": true,
+      "reboot_required": false
+    }
+  },
+  "cycle_9": {
+    "authorized_by_parent": true,
+    "change": "omarchy-ane c9f1644 'Split ane_runtime_resume with breadcrumbs and staged exits': entry/post-force_power/pre-tm/post-tm prints with mdelay(50), staged -EIO exits 6/7/8. Local branch feature/t6001-ane-bind, unpushed - Main lands.",
+    "module_sha256": "37644c9e4a79ec2a1be307a26ed956369935f6e711f04867b11376a1ff0f442a",
+    "module_vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+    "build_dir": "/home/joshuawarren/ane-build-c9f1644",
+    "enabled_dtb_sha256": "e53a2f6e33c6f064b900cc80487d3ea5d5ce7b04d30269295a100140ffa5f371",
+    "enabled_boot_bin_sha256": "a279ac03f346b86022efebb97f9fcaa451866271514d847f99e55df3c596632a",
+    "hash_verified_before_insert": true,
+    "reboot": {
+      "boot_id_before": "f8f92db0-4d9d-474e-88a7-cdcd48f30d2e",
+      "boot_id_after": "e6453d17-2cf5-4122-ab6c-b5d1be0c8ac0",
+      "ssh_return_seconds": 49
+    },
+    "post_boot": {
+      "llama_and_timer": "stopped",
+      "gpu": "idle, lock free (sibling done, fabric quiet)",
+      "darts": "all three okay and bound to apple-dart",
+      "netconsole": "active"
+    },
+    "stage6_stop_at_resume_entry": {
+      "command": "insmod ane.ko ane_stop_stage=6",
+      "result": "SURVIVED. 'resume: entry' printed (genpd power-on of ps_ane_sys_cpu completed WITHOUT reset), then staged 'resume: stop at entry', clean -EIO unbind (-5), rmmod clean. PROVES kernel genpd power sequencing of the engine partition is SAFE.",
+      "dmesg_tail": ["resume: entry", "resume: stop at entry", "probe: runtime resume failed -5", "probe with driver ane failed with error -5"]
+    },
+    "stage7_stop_pre_tm": {
+      "command": "insmod ane.ko ane_stop_stage=7 (after clean rmmod)",
+      "result": "INVALID - no crash, box alive, but the resume callback NEVER RAN: get_sync returned -22 with zero resume lines. Root cause: probe 1's failed resume set dev->power.runtime_error on the persistent platform device (drivers/base/power/runtime.c:473), and rpm_resume short-circuits with -EINVAL while it is set (:796). sysfs power/runtime_status reads 'error' (read-only, no userspace clear); only pm_runtime_init or __pm_runtime_set_status-success clears it - i.e. effectively a fresh boot. Module rmmod'd clean; box healthy.",
+      "mechanism_proof": ["runtime.c:796 rpm_resume returns -EINVAL when runtime_error set", "runtime.c:473 failed resume records runtime_error", "live: /sys/bus/platform/devices/284000000.ane/power/runtime_status == 'error'"]
+    },
+    "current_box_state": {
+      "boot_id": "e6453d17-2cf5-4122-ab6c-b5d1be0c8ac0",
+      "module": "absent (rmmod clean)",
+      "dtb": "enabled (e53a2f6e still installed - no reinstall needed for next boot)",
+      "llama": "stopped",
+      "health": "fully healthy, no crash in cycle 9"
+    },
+    "request": "Superseded by stage-8 result below - reboot 2 unspent.",
+    "reboot1_stage8": {
+      "boot_id": "372837f8-e4c2-413a-8957-f6038b015eab",
+      "preflight": "installed DTB e53a2f6e + boot a279ac03 verified, lock free, no GPU procs",
+      "command": "insmod ane.ko ane_stop_stage=8 (fresh boot, runtime_error clear)",
+      "probe_netconsole_verbatim_tail": [
+        "[  27.613825] ane 284000000.ane: resume: entry",
+        "[  27.663832] ane 284000000.ane: power: genpd-owned on this SoC",
+        "[  27.663838] ane 284000000.ane: resume: force_power done",
+        "[  27.713842] ane 284000000.ane: resume: pre tm_enable"
+      ],
+      "verdict": "CRASH inside ane_tm_enable: 'resume: tm_enable done' never flushed. The first engine MMIO (tm_read32 TM_TQ_EN) hard-resets the SoC even though genpd power sequencing completed safely seconds earlier in the same callback.",
+      "killer_isolated": "First engine-register access aborts despite ps_ane_sys_cpu raised via kernel genpd. Remaining hypotheses: (a) genpd thinks the domain is on but it is not (sync gap); (b) engine needs clocks the ane node never declares (no clocks property anywhere in the ANE path); (c) SEP/AOP firmware handshake required before register access (as with AOP/DCP bringup); (d) T600x ANE task-manager registers moved vs T8103 offsets, so ANE_TM_BASE points at an unmapped region.",
+      "discriminator": "Read back ps_ane_sys_cpu actual-state via always-on PMGR syscon (safe MMIO, proven readable in cycle 5) after a resume-only probe (stage 6 equivalent): if ACTUAL==0xf at tm time, power is real and the fault is clocks/handshake/offsets; if not, genpd attach is hollow.",
+      "recovery_boot": "c82469c5-beb5-40db-a859-d8cd4cdeecb2 2026-09-13 17:39:25",
+      "dying_words_artifact": "/tmp/jw16-c9r1-stage8-dying-words.log",
+      "rollback_marker": "C9R1_ROLLBACK_FINAL_VERIFIED (exact stock hashes, llama stopped, module absent, no reboot needed)",
+      "reboot2_full_probe": "NOT RUN - moot: full probe would die at the same tm_enable. Unspent authorization returned."
+    }
+  },
+  "cycle_10": {
+    "authorized_by_parent": true,
+    "change": "omarchy-ane 59e846f 'Add read-only ps_ane_sys_cpu ACTUAL discriminator': stage 9 runs resume to success skipping tm_enable; probe path reads ACTUAL via PMGR syscon (read-only) with resume held, exits -EINVAL by design. Pushed to origin/feature/t6001-ane-bind (16720f0..59e846f).",
+    "module_sha256": "ef58b364bdaf9af01e09852298d71207b0ccffa0b3e3a7ed9ab8655b2391b6a7",
+    "module_vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+    "build_dir": "/home/joshuawarren/ane-build-59e846f",
+    "enabled_dtb_sha256": "e53a2f6e33c6f064b900cc80487d3ea5d5ce7b04d30269295a100140ffa5f371",
+    "enabled_boot_bin_sha256": "a279ac03f346b86022efebb97f9fcaa451866271514d847f99e55df3c596632a",
+    "hash_verified_before_insert": true,
+    "reboot": {
+      "boot_id_before": "c82469c5-beb5-40db-a859-d8cd4cdeecb2",
+      "boot_id_after": "9cebea84-adcb-4b58-99b7-5fe03b31bdd6",
+      "ssh_return_seconds": 49
+    },
+    "post_boot": {
+      "llama_and_timer": "stopped",
+      "gpu": "idle, lock free",
+      "darts": "all three okay and bound to apple-dart",
+      "netconsole": "active"
+    },
+    "probe_stage9_netconsole_verbatim_tail": [
+      "[  22.681254] ane 284000000.ane: resume: entry",
+      "[  22.731259] ane 284000000.ane: power: genpd-owned on this SoC",
+      "[  22.731268] ane 284000000.ane: resume: force_power done",
+      "[  22.781273] ane 284000000.ane: resume: pre tm_enable",
+      "[  22.831281] ane 284000000.ane: resume: stop pre-tm (stage 9, success)",
+      "[  22.881292] ane 284000000.ane: probe: runtime resumed (0)",
+      "[  22.931335] ane 284000000.ane: power: ps_ane_sys_cpu@0x2c8 actual=0xf (ACTIVE)",
+      "[  22.981341] ane 284000000.ane: probe: cpu-actual readback rc=0",
+      "[  23.031355] ane 284000000.ane: probe with driver ane failed with error -22"
+    ],
+    "verdict": "BOX SURVIVED. ps_ane_sys_cpu@0x2c8 ACTUAL=0xf (ACTIVE) with the resume held and zero engine MMIO. Power is REAL - hypothesis (a) genpd-sync-gap is DEAD. The tm_enable abort is clocks (b), SEP/AOP-style firmware handshake (c), or moved T600x TM register offsets (d). rmmod clean afterwards.",
+    "rollback": {
+      "verification_marker": "C10_ROLLBACK_FINAL_VERIFIED",
       "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
       "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
       "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
