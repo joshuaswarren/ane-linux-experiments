@@ -1,276 +1,52 @@
-# Theory: Linux Qwen ANE needs staged old-format programs
+# Theory: qualify the whole Linux accelerator path
 
-## Problem
+## Current strategy
 
-Linux can map ANE buffers and submit raw task descriptors through a narrow KMD interface.
-That path executes older self-contained programs.
-It does not reproduce the modern macOS program lifecycle.
+This repository supplies raw-ANE and compiler evidence for the MLX Omarchy work. The ANE, CoreML, and performance plans remain separate, concurrent workstreams. A passing component does not qualify their composition. Export, bundle validation, installed-library selection, worker startup, device submission, numerical behavior, and measured performance each need evidence from the actual consumer.
 
-The full Qwen decoder exceeds the 3.5 GiB DART virtual address space as one fp16 program.
-The runtime must stage bounded programs and keep only active state resident.
-CPU code can schedule and copy small inputs.
-It cannot compute model tensors.
+Host code may schedule work, prepare constants, copy buffers, and select tokens. The Linux product must use Apple GPU compute for tensor work that cannot run on ANE. The older all-ANE research runner described below has a narrower contract: its explicit ANE mode performs tensor arithmetic on ANE, while its CPU reference is separate. That runner's limitations are not a reason to introduce CPU tensor fallback into MLX Omarchy.
 
-## Working artifact contract
+The current evidence makes the remaining boundaries specific:
 
-Correct old-format execution has five linked contracts.
+- The relocated installed ANE runtime now passes real add and add-mul execution on the base M1, with exact output, worker release, and mapped library/worker identities checked against the wheel RECORD. A subsequent explicit GPU matmul/add returns the expected values and releases its lock. Relative worker RUNPATH and runtime-image-based worker selection resolve the former startup failure without LD_LIBRARY_PATH. This qualifies those installed contracts, not full-model execution or other hardware. Receipt: mlx-omarchy `receipts/2026-09-12-ane-runtime-hardening/`, tested source `9ea7501f`.
+- The Parakeet frontend now has a full Apple GPU stage/final comparison at corrected source `3ea8334b`: all 18 comparisons are bit-exact, including the original underflow case and low-scale power/mel projection. The measured window includes 15 GPU primitives, eight Vulkan computes, and one submission. This qualifies the frontend only, not encoder, decoder, or full transcription.
+- The existing licensed Parakeet capture contains emitted tokens, frame indices, and durations, not every joint invocation. Blank decisions and decoder-state reuse cannot be reconstructed from those emissions. Host TDT control can be source-matched without claiming a complete independently captured decision oracle. The next reference capture must record actual decisions inside the pinned decoder loop.
+- The composition-exact 256-thread BF16 attention candidate did not improve release decode. The subsequent GEMV correction passes a physical regression and its observed six-run matrix gives 24.8670 versus 24.9587 tokens/s for control. However, that run used stale staged runner files, not the reviewed protocol; its lifecycle acceptance failed. Root independently confirmed absent workers and leases, empty quarantine, and a free lock afterward. The numerical observation does not justify promoting the optimization or claiming an accepted performance run.
 
-1. Task descriptors must match the target ANE.
-2. Every task link must preserve the compiled order.
-3. Each buffer index must map to the expected virtual span.
-4. Each tensor must use the compiled address, dtype, shape, and value.
-5. Kernel content must start at the compiled command-buffer boundary.
+One physical GPU has one owner. Acquire only after staging and preflight, use an absolute deadline, and verify child processes, quarantine, lease removal, and lock release before transfer. A failed status does not prove a worker stopped. Independent review caught two gaps missed by the initial host tests: execution loading bypassed directory enumeration, and ANEC table bounds exceeded the driver limits. Both are now fixed in combined source 57cc36a2; the rebuilt runtime suite passes 398 assertions and the bundle suite passes 2308. Independent bypass probes and installed hardware qualification remain separate gates. The loader regression must call AneRuntime::load, not substitute the inspector CLI.
 
-Monterey ANECompiler 5.5.0 emits this contract from legacy Espresso XML.
-The Linux KMD executes these artifacts without modern program preparation.
-Modern macOS HWX files reach the task manager but do not return to idle.
+## Platform and artifact boundaries
 
-The model therefore uses bounded old-format programs.
-A deterministic set covers all decoder matrices with 186 projections and 31 vocabulary-head chunks.
-All 217 sources compile to self-contained HWX artifacts.
-Eight projection geometries pass Linux M1 numeric comparison.
-The maximum absolute error is 0.001220703125.
+Linux can map ANE buffers and submit raw task descriptors through a narrow KMD interface. That executes older self-contained programs; it does not reproduce the modern macOS program lifecycle. A bundle parser accepting schema 3 proves the host contract, not firmware applicability or hardware execution.
 
-## Completion semantics
-
-`TM_COMMITTED` records accepted task progress.
-It does not record completed compute.
-
-A valid completion requires three results.
+The board-matched T6001 firmware DeviceTree and a private live ADT capture are available. A standard phram read removed the need to reboot into a proxy, but loading the external module changed the current boot taint from 4 to 4100, as the original capture receipt records. The module and MTD baseline were restored; full kernel-state restoration is not claimed. The pinned parser translates physical addresses, but named engine/IRQ semantics, reserved-memory requirements, Linux DART stream mapping, and the ordered PMGR supplier list remain unresolved. No hardware binding follows from raw fields alone.
 
-1. `TM_STATUS` returns to idle.
-2. The submit path returns without timeout.
-3. The expected output buffer changes and passes its value check.
-
-The mutable GEMM runtime reserves physical output row 511 for completion polling.
-Result programs can use rows 0 through 510.
-This prevents a valid infinite result in row zero from looking like an unfinished submit.
-
-## Resident state
-
-DeltaNet recurrent state uses one `(1, 16, 133, 128)` tensor.
-Rows 4 through 131 hold the `(16, 128, 128)` state.
-The runner alternates two aggregate BOs after each submit.
-It overwrites only q, k, v, beta, and the final decay factor before each submit.
-Two hardware steps completed without a host state round trip.
-The final state maximum error was 0.00004078.
+Correct old-format execution links five contracts: target-compatible task descriptors; preserved task order; buffer indices mapped to the expected virtual spans; exact compiled tensor address, dtype, shape, and value; and kernel content starting at the command-buffer boundary. Monterey ANECompiler 5.5.0 emits this contract from legacy Espresso XML.
 
-The first KV implementation used one `(1, 8, 259, 256)` tensor.
-The ANE shifted each cache and appended new key and value rows.
-Two hardware steps preserved both caches without an intermediate host copy.
+A successful compiler return is insufficient. Espresso pruned dynamic transpose, dynamic matrix multiplication, and complete manual softmax chains in prior experiments. Inspect the exported graph and its named final output before hardware execution. Modern ANEForge exported source and weights, not a Linux-loadable HWX artifact. Textual MIL now preserves the pinned Parakeet encoder through parsing/import: 3351 operations, 3375 results, all 24 split pairs, and 48 named uses. Streaming normalization preserves all 194 LUT constants and 120 FP16 immediates against Apple reference bytes. The remaining first compiler failure is H13 lowering for the ordered two-result split at line 265. This is a lowering requirement, no longer a text-interface loss; the private direct API offers no shortcut.
 
-That graph shape cannot also express full attention reliably through Monterey Espresso.
-Espresso pruned dynamic transpose, dynamic matrix multiplication, and complete manual softmax chains.
-A successful compiler return was not sufficient evidence.
-The exported `net.plist` had to retain the named final output.
-
-## Mutable attention contract
+## Resident state and numerical contracts
 
-Raw Linux GEMM has a simpler state boundary than Espresso.
-The command BO already contains packed GEMM weights.
-The host can update one packed row or column without copying prior state.
-
-Each attention head uses two mutable GEMM programs.
-
-1. The score program stores keys as matching packed matrix rows.
-2. The value program stores values as matching packed matrix columns.
-3. Each token writes one key row and one value column at the same ring position.
-4. The score GEMM computes `K @ q`.
-5. The value GEMM computes `V^T @ probabilities`.
+The full fp16 Qwen decoder exceeds the 3.5 GiB DART virtual address space as one program. Bounded programs must preserve active state rather than repeatedly stage the whole model.
 
-Physical ring order does not affect attention.
-Scores and values share the same physical slot.
-After wrap, all 128 slots contain the latest 128 entries.
-Before the cache fills, the runtime masks unused score rows.
+Raw mutable GEMM avoids Espresso's dynamic-attention boundary. Each head uses one program with keys packed as matrix rows and one with values packed as matrix columns. Each token updates one matching ring slot; scores compute `K @ q`, and values compute `V^T @ probabilities`. Physical ring order does not matter when scores and values use the same slots. Unused score slots must be masked until the cache fills. The historical 130-token Linux run exercised all 128 slots and two overwrites while preserving the control GEMM.
 
-A 130-token Linux M1 run exercised the full 128-slot ring and two overwritten slots.
-The final cursor was 2 and the final length was 128.
-The score maximum error was 0.00023142993450164795.
-The attended-value maximum error was 0.00016526412218809128.
-The control GEMM passed before and after the run.
+The shared elementwise path keeps one output, two inputs, and one descriptor buffer resident. It operates in 64-lane chunks; host code schedules chunks and broadcasts returned scalars without performing their tensor arithmetic.
 
-This route removes the Espresso dynamic-matrix boundary.
-It also avoids returning the old KV cache tensor to host memory.
+- Softmax clamps differences to -64, divides by 128, evaluates a degree-six exponential polynomial, and squares seven times. Its reciprocal starts at 1/128 and performs twelve Newton steps, covering sums from one to 128.
+- RMS and L2 normalization perform square, reduction, epsilon handling, inverse square root, and scaling on ANE. Compute `source * estimate * estimate`; do not square a large reciprocal estimate first in fp16. The native reference uses epsilon as a lower bound on mean square, not an added term.
+- Sigmoid and SiLU use stable positive and negative halves. Activation exponentials divide by eight and square three times; they do not use the wider softmax approximation. DeltaNet decay must implement `exp(a_log * softplus(alpha + bias))`, not pass a logarithmic decay directly as a multiplier.
+- Causal convolution keeps a four-slot history ring for 6,144 channels. The host advances slots and copies inputs; ANE multiplies taps and accumulates products.
+- RoPE uses contiguous half-split NeoX frequencies across 64 rotated dimensions. The earlier multimodal remapping was wrong, and a local oracle copied that error. A frozen independent reference exposed it. Residuals and partial projection tiles also accumulate through ANE operations, not host fp32 arrays.
 
-## Reference model
+These operations passed bounded hardware checks individually and composed into full-token runs. That establishes execution coverage, not model parity or acceptable speed.
 
-The reference model is `Qwen3.8-2B-Q4_K_M.gguf`.
-It has 1,312,164,224 bytes.
-Its SHA-256 is `4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff`.
+## Model and performance limits
 
-ANEForge runs the complete 24-layer decoder on macOS M1.
-The locked reference keeps host embedding gather and fp32 `lm_head` work.
-The reference runner records timing, logits, and every decoder layer boundary.
-
-The instrumented two-token run took 0.4380809170015709 seconds after warmup.
-Its first-token time was 0.2901463750004041 seconds.
-Its prefill rate was 14.91380747661077 tokens per second.
-Its decode rate was 15.285986554316986 tokens per second.
-
-The prior Linux hybrid path remains slower than its CPU comparison.
-Its one-token ANE timings were 7.515 seconds for steps and 7.821 seconds for logits.
-Its CPU timings were 3.114 seconds for steps and 2.568 seconds for logits.
-Those results do not satisfy the final performance contract.
-
-## Softmax contract
-
-The raw elementwise program has 64 lanes.
-A 128-wide softmax therefore operates on two halves.
-Every max, add, multiply, square, reduction, exponential approximation, and reciprocal step uses ANE submissions.
-Host code stages the two halves and broadcasts returned scalars.
-It does not compute tensor arithmetic.
-
-The exponential path clamps differences to -64.
-It divides by 128, evaluates a degree-six Taylor polynomial, then squares seven times.
-This range makes masked fp16 lanes underflow to zero.
-The reciprocal path starts at 1/128 and runs twelve Newton steps.
-This fixed start covers sums from 1 through 128 without host division.
-
-A Linux M1 run used 258 ANE elementwise submissions across random and masked inputs.
-One output, two input, and one descriptor BO remained resident across every submission.
-The random maximum absolute error was 0.001615367829799652.
-The probability-sum error was 0.000038623809814453125.
-The argmax matched the fp32 reference.
-All 127 masked lanes returned zero probability.
-The control GEMM passed before and after the run.
-
-## Normalization contract
-
-RMS and L2 normalization reuse the same four resident elementwise BOs as softmax.
-The runtime squares and reduces each 64-lane chunk on ANE.
-It applies epsilon, Newton inverse square root, output scale, and RMS weight on ANE.
-Host code schedules rows and broadcasts returned scalars.
-It does not compute normalization tensors.
-
-The inverse square root multiplies source by estimate twice.
-It never squares a large reciprocal estimate directly in fp16.
-This order prevents overflow when the RMS input is zero or nearly zero.
-
-A Linux M1 run covered 2,048-, 256-, and 128-wide RMS shapes.
-Their maximum absolute errors were 0.004076, 0.004814, and 0.004068.
-The scaled 128-wide L2 maximum absolute error was 0.0000303.
-The control GEMM passed before and after the run.
-
-## Activation contract
-
-Sigmoid and SiLU reuse the same four resident elementwise BOs.
-Each 64-lane chunk uses stable negative and positive sigmoid halves.
-Fused variants keep the SwiGLU and attention gate products on ANE.
-
-DeltaNet needs `exp(a_log * softplus(alpha + bias))` as its state multiplier.
-The runtime evaluates softplus with a bounded log series and then applies the exponential on ANE.
-This fixes the prior contract mismatch, which passed logarithmic decay into a direct multiplier input.
-
-The activation exponential divides by eight and squares three times.
-This reduces fp16 rounding error for activation ranges.
-The softmax exponential keeps its wider division by 128 and seven squarings.
-
-A Linux M1 run covered beta sigmoid, post-convolution SiLU, and both fused gate products.
-It also covered the DeltaNet decay factor.
-The five maximum absolute errors were 0.001218, 0.005288, 0.010674, 0.003075, and 0.001461.
-The control GEMM passed before and after the full token run.
-
-## Causal convolution contract
-
-Each DeltaNet layer keeps a four-slot ring for 6,144 channels.
-Host code advances the ring and copies inputs.
-It performs no convolution arithmetic.
-
-The shared elementwise backend multiplies each history slot by one depthwise kernel tap.
-It then accumulates the four products on ANE.
-The ring removes the old host concatenate, multiply, and reduction path.
-
-Four sequential Linux M1 steps had maximum absolute errors from 0.000467 through 0.001509.
-The control GEMM passed before and after the complete token run.
-
-## Tensor operations contract
-
-Every residual addition runs as 64-lane ANE chunks.
-RoPE uses contiguous half-split NeoX frequencies across its 64 rotated dimensions.
-Each head needs one direct multiply, one swapped-half multiply, and one add.
-
-The host computes cosine and sine constants for each position.
-It packs constants and copies results.
-It does not perform RoPE or residual tensor arithmetic.
-
-An earlier Linux path remapped 21 frequency slots through three multimodal sections.
-The local hardware oracle copied that remap and hid the defect.
-The frozen macOS reference uses the contiguous table, so every Linux path now uses it.
-
-The residual maximum error is 0.001953125.
-The corrected query and key RoPE maximum errors are 0.0018101 and 0.0014778.
-The control GEMM passed before and after the complete token run.
-## Token-to-logits orchestration
-
-The bounded state runtimes now compose inside the 24-layer Qwen model.
-Six full-attention layers own two KV-head states each.
-Eighteen DeltaNet layers own separate recurrent runners.
-One shared four-BO elementwise backend serves softmax, normalization, activations, and convolution.
-It also serves RoPE and residual additions.
-
-A Linux M1 run processed prompt token 32 and produced 248,320 finite logits.
-The ANE-resident state path and the host-state control both selected token 369.
-The resident path took 8.260 seconds for decoder layers and 6.823 seconds for logits.
-The host-state control took 7.400 seconds and 6.774 seconds.
-The control GEMM passed before and after both model runs.
-
-A second full-token run moved every model normalization call to that backend.
-It selected token 220 and produced 248,320 finite logits.
-Decoder layers took 19.740 seconds, and logits took 6.916 seconds.
-
-A third full-token run moved every sigmoid, SiLU, fused gate product, and recurrent decay calculation to ANE.
-It selected token 220 and produced 248,320 finite logits.
-Decoder layers took 78.420 seconds, and logits took 7.063 seconds.
-
-A fourth full-token run moved every depthwise causal convolution to ANE.
-It selected token 220 and produced 248,320 finite logits.
-Decoder layers took 80.171 seconds, and logits took 7.028 seconds.
-A fifth full-token run moved every RoPE rotation and residual addition to ANE.
-It selected token 220 and produced 248,320 finite logits.
-Decoder layers took 91.686 seconds, and logits took 7.249 seconds.
-
-Normalization, activations, causal convolution, RoPE, residual additions, and projection accumulation are complete.
-ANE mode now requires the token runtime before model execution.
-Every model tensor method selects ANE from that explicit backend state.
-The CPU reference remains a separate, explicit backend.
-No GPU tensor backend exists.
-
-Partial projection tiles previously accumulated in host fp32 arrays.
-They now use the same 64-lane ANE addition path as residuals.
-A complete hardware token run selected token 220 and returned finite hidden state and logits.
-Decoder layers took 86.342 seconds, and logits took 11.893 seconds.
-The control GEMM passed before and after the run.
-
-## Current direction
-
-The host may load and dequantize weights, gather embeddings, build constants, pack buffers, and schedule submissions.
-It may also reshape, split, copy, and select output tokens.
-It cannot compute model tensors in ANE mode.
-
-The locked macOS reference completed all 100 prompts and 32 generated tokens per prompt.
-Its median decode rate was 17.651082866938346 tokens per second.
-Every repeated token sequence matched.
-
-Exact-input full-attention layers remain close to the macOS checkpoints.
-DeltaNet is the first divergent layer type.
-The first layer boundary probes measured relative L2 of 0.000719 after the query projection, 0.022559 after convolution, and 0.058874 after recurrence.
-
-The native ANE RMS operation uses epsilon as a lower bound on mean square.
-It does not add epsilon to mean square.
-The former rule amplified low-energy DeltaNet output error.
-Matching the native rule reduced first-layer relative L2 from about 0.243 to 0.137477.
-
-The remaining mismatch accumulates inside the staged DeltaNet mixer.
-The Linux path submits projections, convolution, recurrence, normalization, gating, and residual work as separate programs.
-The macOS path compiles one fused graph.
-The same staging also costs 86.183 seconds for one decoder step.
-
-The next gate remains blocked on a bounded fused old-format program or an equivalent export.
-That program must preserve resident convolution and recurrent state.
-It must pass the frozen layer and corpus thresholds before the full performance run.
-## Modern export boundary
-
-The physical macOS ANEForge path compiles a known-good legacy graph through `_ANEInMemoryModel`.
-Its `saveModelFiles` call returns a transient cache directory with `net.plist`, `weights.0`, and empty `data` only.
-It does not expose `.hwx` or another Linux-loadable artifact.
-The current macOS runtime therefore cannot provide the artifact needed for a complete Linux fused Qwen graph.
+The historical reference is `Qwen3.8-2B-Q4_K_M.gguf`, 1,312,164,224 bytes, SHA-256 `4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff`. The macOS reference completed 100 prompts with 32 generated tokens each and repeatable token sequences. Its median decode rate was 17.651082866938346 tokens/s. Its host embedding gather and fp32 output projection belong to that reference, not to the Linux product's allowed tensor fallback.
+
+The staged Linux model composes six full-attention layers, eighteen DeltaNet layers, and a shared elementwise backend. Historical full-token runs produced 248,320 finite logits, but moving all tensor operations onto small ANE programs raised decoder time into tens of seconds. Finite logits and a selected token are not parity evidence.
+
+Exact-input attention layers remain close to the macOS checkpoints. DeltaNet diverges first, and correcting epsilon semantics reduced rather than eliminated its error. The staged projections, convolution, recurrence, normalization, gating, and residual operations round differently from the reference's fused graph. A bounded fused old-format program, or an equivalent export preserving convolution and recurrent state, must pass the frozen layer and corpus thresholds before a full performance comparison.
+
+The earlier q4 Vulkan profile in `receipts/2026-09-02-gpu-profile-decode.md` showed roughly 1,585 dispatches per token, 35.7 ms of GPU busy time, and 371.8 ms of join wait on its profiled one-core host. That evidence prioritized submission and synchronization overhead over isolated arithmetic tuning. It is not a current BF16 release benchmark, and overlapping host waits and GPU intervals must not be added as independent costs. Current optimization decisions require phase-isolated, source-identified measurements and an unprofiled release comparison.
