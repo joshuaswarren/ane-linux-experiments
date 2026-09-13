@@ -11,12 +11,12 @@
     "agent_model_fallback": false
   },
   "final_outcome": {
-    "status": "cycle_10_ps_ane_sys_cpu_proven_active_engine_fault_is_clocks_handshake_offsets",
-    "accel0_live": false,
+    "status": "cycle_11_accel0_live_bind_complete_no_workloads",
+    "accel0_live": true,
     "workload_submitted": false,
     "encoder_claim_made": false,
-    "total_reboots": 16,
-    "reboot_authorization": "Cycles 1-9 as previously recorded. Parent authorized cycle 10: resume-only stop after get_sync plus read-only ps_ane_sys_cpu ACTUAL discriminator, one reboot, fabric quiet, netconsole armed, stop on crash, push branch after probe.",
+    "total_reboots": 17,
+    "reboot_authorization": "Cycles 1-10 as previously recorded. Parent authorized cycle 11 on the sourced engine-slice hypothesis: engine reg 0x285c04000+0x24000, one reboot, fabric quiet, netconsole armed, single full insmod; accel0+udev+bind receipt then STOP with no workloads.",
     "single_insmod_per_cycle": true,
     "second_probe_retry": false,
     "persistent_rollback_complete": true,
@@ -1257,5 +1257,41 @@
       "next_boot_fully_stock": true,
       "reboot_required": false
     }
+  }
+  ,
+  "cycle_11": {
+    "authorized_by_parent": true,
+    "hypothesis": "T8103 ANE_TM_BASE 0x20000 is slice-relative (T8103 engine slice 0x26bc04000+0x24000, TM at slice+0x20000). T6001 analogue independently derived from m1n1 sources: TM_BASE_ADDR = ADT arm-io/ane reg(0) + 0x1c00000 + 0x24000; with reg(0)=0x284000000 this gives slice 0x285c04000+0x24000, TM 0x285c24000, TQ 0x285c25000 - matching the driver's ANE_TM_BASE 0x20000/ANE_TQ_BASE 0x21000. Prior overlay mapped the ANE block base, so engine+0x20000 hit 0x284020000 (not TM) - the first tm_read32 aborted with power proven real. Stock DT has zero 0x285c mentions (no conflict).",
+    "overlay_change": "ane engine reg 0x284000000+0x1800000 -> 0x285c04000+0x24000 only; darts/iommus/PDs/IRQs unchanged (ISP pattern). No driver change; reused module 59e846f (ef58b364, hash verified pre-insert).",
+    "enabled_dtb_sha256": "a41ca6cd46b74a7ecd82f83eb863ea6b60027b4f6f42382459080bbfbdf02e16",
+    "enabled_boot_bin_sha256": "424de47d5a65cf2602030ace99d9ab9f0dfa4d17a6d05410ab93eeac62386705",
+    "reboot": {
+      "boot_id_before": "9cebea84-adcb-4b58-99b7-5fe03b31bdd6",
+      "boot_id_after": "54c0b95d-0d46-421b-a17e-f58e4ccbeee2",
+      "ssh_return_seconds": 49
+    },
+    "post_boot": {
+      "llama_and_timer": "stopped",
+      "gpu": "idle, lock free",
+      "live_fdt_engine_reg": "0x285c04000+0x24000",
+      "darts": "all three okay and bound to apple-dart",
+      "netconsole": "active"
+    },
+    "probe_dmesg_tail": [
+      "resume: pre tm_enable",
+      "resume: tm_enable done",
+      "probe: runtime resumed (0)",
+      "probe: tm enabled",
+      "[drm] Initialized ane 0.0.0 for 285c04000.ane on minor 0",
+      "loaded ane!"
+    ],
+    "bind_receipt": {
+      "accel0": "crw-rw-rw- root:render 261, 0",
+      "mode": "666 (native; chmod re-applied, no change)",
+      "module": "ane 65536 0 - Live, driver bound to 285c04000.ane",
+      "open_close": "OPEN_OK fd=3, CLOSE_OK (trivial bind-level check, no workload, no encoder claim)",
+      "dmesg_boot_line": "platform 285c04000.ane: Adding to iommu group 0"
+    },
+    "persistent_state": "ENABLED DTB + boot.bin live on this boot (required for the bind); llama stopped; no rollback performed - box is in the bound working state by design. Rollback commands in rollback_commands restore stock whenever directed."
   }
 }
