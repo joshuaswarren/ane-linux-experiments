@@ -60,13 +60,20 @@
       "asahi_boot": {
         "lines": 6139,
         "bytes": 181646,
-        "non_ane_examples": ["chassis-type", "dwc3_0", "sound"],
+        "non_ane_examples": [
+          "chassis-type",
+          "dwc3_0",
+          "sound"
+        ],
         "host_artifact": "/tmp/source-vs-asahi.diff"
       },
       "modules": {
         "lines": 4829,
         "bytes": 139686,
-        "non_ane_examples": ["__symbols__", "dwc3_0"],
+        "non_ane_examples": [
+          "__symbols__",
+          "dwc3_0"
+        ],
         "host_artifact": "/tmp/source-vs-modules.diff"
       }
     },
@@ -112,17 +119,60 @@
       "nproc_before": 10,
       "nproc_after": 10,
       "live_fdt": {
-        "ane_reg_hex_cells": ["2", "84000000", "0", "2000000", "2", "85800000", "0", "4000", "2", "85810000", "0", "4000", "2", "85820000", "0", "4000"],
-        "dart_reg_hex_cells": ["2", "85800000", "0", "4000"],
+        "ane_reg_hex_cells": [
+          "2",
+          "84000000",
+          "0",
+          "2000000",
+          "2",
+          "85800000",
+          "0",
+          "4000",
+          "2",
+          "85810000",
+          "0",
+          "4000",
+          "2",
+          "85820000",
+          "0",
+          "4000"
+        ],
+        "dart_reg_hex_cells": [
+          "2",
+          "85800000",
+          "0",
+          "4000"
+        ],
         "ane_compatible": "apple,t6000-ane",
         "dart_compatible": "apple,t6000-dart",
         "ane_status": "okay",
         "dart_status": "okay",
-        "ane_interrupts_hex_cells": ["0", "0", "302", "4", "0", "0", "303", "4"],
-        "dart_interrupts_hex_cells": ["0", "0", "303", "4"],
-        "ane_iommus_hex_cells": ["108", "0"],
-        "ane_power_domains_hex_cells": ["109"],
-        "dart_power_domains_hex_cells": ["18"]
+        "ane_interrupts_hex_cells": [
+          "0",
+          "0",
+          "302",
+          "4",
+          "0",
+          "0",
+          "303",
+          "4"
+        ],
+        "dart_interrupts_hex_cells": [
+          "0",
+          "0",
+          "303",
+          "4"
+        ],
+        "ane_iommus_hex_cells": [
+          "108",
+          "0"
+        ],
+        "ane_power_domains_hex_cells": [
+          "109"
+        ],
+        "dart_power_domains_hex_cells": [
+          "18"
+        ]
       },
       "probe": {
         "insmod_return_code": 0,
@@ -176,13 +226,56 @@
         "dart_compatible": "apple,t6000-dart",
         "ane_status": "okay",
         "dart_status": "okay",
-        "ane_reg_hex_cells": ["2", "84000000", "0", "1800000", "2", "85800000", "0", "4000", "2", "85810000", "0", "4000", "2", "85820000", "0", "4000"],
-        "dart_reg_hex_cells": ["2", "85800000", "0", "4000"],
-        "ane_interrupts_hex_cells": ["0", "0", "302", "4", "0", "0", "303", "4"],
-        "dart_interrupts_hex_cells": ["0", "0", "303", "4"],
-        "ane_iommus_hex_cells": ["108", "0"],
-        "ane_power_domains_hex_cells": ["109"],
-        "dart_power_domains_hex_cells": ["18"]
+        "ane_reg_hex_cells": [
+          "2",
+          "84000000",
+          "0",
+          "1800000",
+          "2",
+          "85800000",
+          "0",
+          "4000",
+          "2",
+          "85810000",
+          "0",
+          "4000",
+          "2",
+          "85820000",
+          "0",
+          "4000"
+        ],
+        "dart_reg_hex_cells": [
+          "2",
+          "85800000",
+          "0",
+          "4000"
+        ],
+        "ane_interrupts_hex_cells": [
+          "0",
+          "0",
+          "302",
+          "4",
+          "0",
+          "0",
+          "303",
+          "4"
+        ],
+        "dart_interrupts_hex_cells": [
+          "0",
+          "0",
+          "303",
+          "4"
+        ],
+        "ane_iommus_hex_cells": [
+          "108",
+          "0"
+        ],
+        "ane_power_domains_hex_cells": [
+          "109"
+        ],
+        "dart_power_domains_hex_cells": [
+          "18"
+        ]
       },
       "probe": {
         "insmod_return_code": 139,
@@ -328,12 +421,45 @@
       "live_fdt": {
         "ane_status": "okay",
         "ane_compatible": "apple,t6000-ane",
-        "ane_reg_hex_cells": ["2","84000000","0","1800000","2","85800000","0","4000","2","85810000","0","4000","2","85820000","0","4000"],
-        "ane_iommus_hex_cells": ["108","0"],
-        "ane_power_domains_hex_cells": ["109"],
-        "ane_interrupts_hex_cells": ["0","0","302","4","0","0","303","4"],
+        "ane_reg_hex_cells": [
+          "2",
+          "84000000",
+          "0",
+          "1800000",
+          "2",
+          "85800000",
+          "0",
+          "4000",
+          "2",
+          "85810000",
+          "0",
+          "4000",
+          "2",
+          "85820000",
+          "0",
+          "4000"
+        ],
+        "ane_iommus_hex_cells": [
+          "108",
+          "0"
+        ],
+        "ane_power_domains_hex_cells": [
+          "109"
+        ],
+        "ane_interrupts_hex_cells": [
+          "0",
+          "0",
+          "302",
+          "4",
+          "0",
+          "0",
+          "303",
+          "4"
+        ],
         "dart_status": "okay",
-        "dart_power_domains_hex_cells": ["18"]
+        "dart_power_domains_hex_cells": [
+          "18"
+        ]
       }
     },
     "probe_script_incident": "First probe script hung on a foreground 'dmesg --follow' line and never reached insmod. Evidence it did not execute: no insmod process, no ane module entry, zero ane dmesg lines. The authorized single insmod was still unused.",
@@ -417,8 +543,7 @@
     "of_node_name_eq semantics: tool outputs titled 'Reading child-name matching semantics' and 'Finding of_get_child_by_name implementation' (drivers/of/base.c:59-71, 882-891).",
     "PMGR label fix commit and compile check: tool outputs titled 'Committing label-based PMGR fix' (16720f0) and 'Compile-checking fixed module' (6bb22ee1...).",
     "Final-cycle rollback: tool output titled 'Rolling back final cycle' (ROLLBACK_FINAL_VERIFIED)."
-  ]
-  ,
+  ],
   "cycle_4": {
     "authorized_by_parent": true,
     "authorization_quote": "AUTHORIZED: CYCLE 4, and it is the LAST regardless of outcome. ... single insmod of 6bb22ee1 (verify the built .ko hash before inserting) ... If any new failure: rollback as before, stop permanently, consolidate everything into the receipt with the full bug list (EBUSY span -> pd_dev NULL -> PMGR name match) as the handoff.",
@@ -434,7 +559,10 @@
     "install": {
       "installed_dtb_sha256": "9222df50862200a78427bf0bf8328fcfb3d49b82f34549494c4310e321918a7d",
       "enabled_boot_bin_sha256": "c7b33b1094dadaac0cb84c11543f5010084f0240063da65e6f26029eb312674e",
-      "update_m1n1_output": ["Mounted System ESP /dev/nvme0n1p4 at /run/.system-efi", "m1n1 updated at /run/.system-efi/m1n1/boot.bin"]
+      "update_m1n1_output": [
+        "Mounted System ESP /dev/nvme0n1p4 at /run/.system-efi",
+        "m1n1 updated at /run/.system-efi/m1n1/boot.bin"
+      ]
     },
     "reboot": {
       "ssh_return_seconds": 45,
@@ -449,9 +577,31 @@
       "live_fdt": {
         "ane_status": "okay",
         "ane_compatible": "apple,t6000-ane",
-        "ane_reg_hex_cells": ["2","84000000","0","1800000","2","85800000","0","4000","2","85810000","0","4000","2","85820000","0","4000"],
-        "ane_iommus_hex_cells": ["108","0"],
-        "ane_power_domains_hex_cells": ["109"],
+        "ane_reg_hex_cells": [
+          "2",
+          "84000000",
+          "0",
+          "1800000",
+          "2",
+          "85800000",
+          "0",
+          "4000",
+          "2",
+          "85810000",
+          "0",
+          "4000",
+          "2",
+          "85820000",
+          "0",
+          "4000"
+        ],
+        "ane_iommus_hex_cells": [
+          "108",
+          "0"
+        ],
+        "ane_power_domains_hex_cells": [
+          "109"
+        ],
         "dart_status": "okay"
       },
       "module_hash_verified_before_insert": "6bb22ee1c8983973d909f3674356e18ff75583fce9282cd2b5b6374ba050bd13"
@@ -509,8 +659,136 @@
       "order": 4,
       "cycle": 4,
       "bug": "OPEN: insmod of the PMGR-fixed module hard-reset the machine (~96 s into boot, external abort, no oops, no pstore). Cause not yet isolated: either the two PS states (ane_sys/ane_sys_cpu) did not actually power the partition on T6001, or the engine/dart MMIO path aborts for a different gating reason (additional PS states, clock/dap enable, or dart ttbr sequencing).",
-      "evidence": "SSH transport death during insmod; boot_id 5fe0942d -> 0f968aa6; no dmesg survives.",
-      "next_debug_path": "Requires serial console or panic/pstore capture (ramoops) on jw16 plus staged probe instrumentation (ane_stop_stage module param already exists): power-only stop, then dart0-read-only stop, before any ttbr write. Do NOT iterate blind insmods without console capture - each failure costs a hard reset."
+      "evidence": "Cycle-4 SSH death during full probe. Ladder: power-on and dart0 read did not reset. Netconsole captured stage-2 force_power and dart0 read.",
+      "next_debug_path": "Stage ladder 2026-09-13: ane_stop_stage=1 stable 900s (no force_power on T6001); ane_stop_stage=30 stable 900s (force_power ACTIVE on ps@268 and ps@2c8, dart0 ttbr=0x90007e60, no TTBR writes). 96s reset is post-dart0-read: remap_ttbr dart1/dart2 writes and/or tm_enable. Netconsole log /tmp/jw16-netconsole-2026-09-13.log."
     }
-  ]
+  ],
+  "stage_ladder": {
+    "agent": "Jw16NetconsoleLadder",
+    "agent_model": "openai-codex/gpt-5.6-sol",
+    "agent_model_fallback": false,
+    "date": "2026-09-13",
+    "source_commit": "16720f05da69075306f6a8b01537213a34207af9",
+    "source_subject": "Find PMGR power states by label, not unit address",
+    "branch": "origin/feature/t6001-ane-bind",
+    "ane_drv_c_sha256": "31c3a134cec2f9721b9fd1d8934abcdd148cfc05b5915dcf5100420c0c83d42d",
+    "module": {
+      "path": "/home/joshuawarren/ane-build-ladder/ane.ko",
+      "sha256": "0957148aa9675bc797dbce8fe6e3f7f75362d44e1b4442bb468942ed01994fe5",
+      "vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+      "rebuilt_on": "jw16mbp1-linux against /lib/modules/7.1.6-1-1-ARCH/build"
+    },
+    "netconsole": {
+      "receiver_host": "omp-studio-local",
+      "receiver_ip": "192.168.10.235",
+      "receiver_port": 6666,
+      "receiver_mac_used": "bc:24:11:82:c5:1e",
+      "receiver_log": "/tmp/jw16-netconsole-2026-09-13.log",
+      "jw16_src_ip": "192.168.10.244",
+      "jw16_iface": "enu1",
+      "jw16_src_mac": "f4:4d:ad:07:c6:64",
+      "unit": "/etc/systemd/system/jw16-netconsole.service",
+      "start_script": "/usr/local/sbin/jw16-netconsole-start.sh",
+      "pre_ane_roundtrip": "JW16_NETCONSOLE_TEST 2026-09-13T13:24:02-05:00 boot=0f968aa6-f19b-4da4-ad43-a76bbde67c82",
+      "boot_unit_failure": "first enabled-DTB boot started netconsole before enu1 existed (local 0.0.0.0, netpoll abort). Reloaded at 179.95s with 192.168.10.244/enu1 after a wait-for-IPv4 script.",
+      "stage2_capture": "armed and captured force_power + dart0 read lines"
+    },
+    "stop_stage_semantics": {
+      "ane_stop_stage_1": "after genpd pm_runtime_get_sync loop, before ane_force_power; no TTBR, no DART MMIO. On T6001 pd_count<=1 is normalized to 0, so the loop is a no-op.",
+      "ane_stop_stage_10": "after ane_force_power PMGR writes; not used (reboot budget).",
+      "ane_stop_stage_30": "after force_power, dart0 TTBR read-only, then -EINVAL; no dart1/dart2 writes, no ane_iommu_remap_ttbr, no ane_tm_enable.",
+      "ttbr_writes_this_run": false
+    },
+    "reboots_used": 2,
+    "reboot_max": 3,
+    "stages": [
+      {
+        "stage": 1,
+        "ane_stop_stage": 1,
+        "boot_id": "65a53a16-1263-4c11-9e71-8f8662050fad",
+        "uptime_after": "2026-09-13 13:25:05",
+        "enabled_dtb_sha256": "9222df50862200a78427bf0bf8328fcfb3d49b82f34549494c4310e321918a7d",
+        "enabled_boot_bin_sha256": "c7b33b1094dadaac0cb84c11543f5010084f0240063da65e6f26029eb312674e",
+        "insmod": "sudo insmod /home/joshuawarren/ane-build-ladder/ane.ko ane_stop_stage=1",
+        "insmod_rc": 0,
+        "module_hash_verified_before_insert": "0957148aa9675bc797dbce8fe6e3f7f75362d44e1b4442bb468942ed01994fe5",
+        "dmesg": [
+          "[   48.224645] ane 284000000.ane: irq: leaving dart irq 61 enabled",
+          "[   48.224664] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000",
+          "[   48.224672] ane 284000000.ane: res-dump: dart0 start=0x0000000285800000 size=0x4000",
+          "[   48.224675] ane 284000000.ane: res-dump: dart1 start=0x0000000285810000 size=0x4000",
+          "[   48.224677] ane 284000000.ane: res-dump: dart2 start=0x0000000285820000 size=0x4000",
+          "[   48.224681] ane 284000000.ane: res-dump: ttbr offset=0x200",
+          "[   48.224683] ane 284000000.ane: probe: iommu ok, powering domains",
+          "[   48.224686] ane 284000000.ane: probe: stop after power-on",
+          "[   48.224687] ane 284000000.ane: probe with driver ane failed with error -22"
+        ],
+        "probe_error": -22,
+        "force_power_ran": false,
+        "ttbr_write": false,
+        "accel0": false,
+        "observe_s": 900,
+        "result": "stable",
+        "note": "T6001 pd_count=0; stage 1 did not call ane_force_power. ioremap + iommu_domain_init + empty pd loop did not reset."
+      },
+      {
+        "stage": 2,
+        "ane_stop_stage": 30,
+        "same_boot_as_stage_1": true,
+        "boot_id": "65a53a16-1263-4c11-9e71-8f8662050fad",
+        "insmod": "sudo insmod /home/joshuawarren/ane-build-ladder/ane.ko ane_stop_stage=30",
+        "insmod_rc": 0,
+        "netconsole_verbatim": [
+          "[  988.075435] ane 284000000.ane: irq: leaving dart irq 61 enabled",
+          "[  988.075453] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000",
+          "[  988.075455] ane 284000000.ane: res-dump: dart0 start=0x0000000285800000 size=0x4000",
+          "[  988.075456] ane 284000000.ane: res-dump: dart1 start=0x0000000285810000 size=0x4000",
+          "[  988.075457] ane 284000000.ane: res-dump: dart2 start=0x0000000285820000 size=0x4000",
+          "[  988.075460] ane 284000000.ane: res-dump: ttbr offset=0x200",
+          "[  988.075460] ane 284000000.ane: probe: iommu ok, powering domains",
+          "[  988.075521] ane 284000000.ane: power: ps@0x268 before 0x1f0003ff",
+          "[  988.075525] ane 284000000.ane: power: ps@0x268 active",
+          "[  988.075528] ane 284000000.ane: power: ps@0x2c8 before 0x3ff",
+          "[  988.075539] ane 284000000.ane: power: ps@0x2c8 active",
+          "[  988.075542] ane 284000000.ane: probe: domains on, remap ttbr",
+          "[  988.075543] ane 284000000.ane: probe: stage30 reading dart0 ttbr",
+          "[  988.075544] ane 284000000.ane: probe: stage30 dart0 ttbr = 0x90007e60",
+          "[  988.075546] ane 284000000.ane: probe with driver ane failed with error -22"
+        ],
+        "force_power_ran": true,
+        "ane_sys_offset": "0x268",
+        "ane_sys_cpu_offset": "0x2c8",
+        "dart0_ttbr": "0x90007e60",
+        "ttbr_write": false,
+        "accel0": false,
+        "observe_s": 900,
+        "result": "stable"
+      }
+    ],
+    "stock_restore": {
+      "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+      "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+      "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+      "stock_boot_id": "911fa2a8-2061-46b5-a89d-2af3cab5f5e0",
+      "stock_uptime": "2026-09-13 13:57:51",
+      "live_ane_nodes": "none",
+      "nproc": 10,
+      "llama_stopped": true,
+      "verification_marker": "STAGE_LADDER_STOCK_VERIFIED"
+    },
+    "narrowed_cause": {
+      "acceptance": "b",
+      "summary": "Power-on itself is proven stable. Both PMGR ANE power states reached ACTIVE and a dart0 TTBR read returned 0x90007e60 with no SoC reset over 15 minutes. The cycle-4 ~96s hard reset is narrowed to post-dart0-read probe activity that this run was forbidden to execute: ane_iommu_remap_ttbr dart1/dart2 TTBR writes and/or ane_tm_enable engine MMIO.",
+      "ruled_out": [
+        "ioremap of engine/dart0/dart1/dart2 plus iommu_domain_init without PMGR force_power",
+        "ane_force_power of ane_sys@268 and ane_sys_cpu@2c8",
+        "dart0 TTBR read-only"
+      ],
+      "still_open": [
+        "ane_iommu_remap_ttbr writel to dart1/dart2 TTBR",
+        "ane_tm_enable engine MMIO"
+      ],
+      "next_safe_step": "With netconsole armed (wait-for-enu1 script), one insmod ane_stop_stage=31 (dart1 TTBR write only) or ane_stop_stage=2 is the next isolation. Do not run default probe."
+    }
+  }
 }

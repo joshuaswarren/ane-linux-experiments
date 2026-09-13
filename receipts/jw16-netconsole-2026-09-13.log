@@ -1,0 +1,1199 @@
+2026-09-13T13:23:40.820511 RECEIVER_START 0.0.0.0:6666
+2026-09-13T13:24:02.062654 192.168.10.244:6666 [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x612f0280]
+2026-09-13T13:24:02.063309 192.168.10.244:6666 [    0.000000] Linux version 7.1.6-1-1-ARCH (linux-asahi@archlinux) (gcc (GCC) 16.1.1 20260430, GNU ld (GNU Binutils) 2.46.0) #1 SMP PREEMPT_DYNAMIC Sat, 08 Aug 2026 17:14:04 +0000
+2026-09-13T13:24:02.063378 192.168.10.244:6666 [    0.000000] random: crng init done
+2026-09-13T13:24:02.063412 192.168.10.244:6666 [    0.000000] Machine model: Apple MacBook Pro (16-inch, M1 Max, 2021)
+2026-09-13T13:24:02.063435 192.168.10.244:6666 [    0.000000] efi: EFI v2.11 by Das U-Boot
+2026-09-13T13:24:02.063450 192.168.10.244:6666 [    0.000000] efi: RTPROP=0x10fb32b0040 SMBIOS 3.0=0x10fb4354000 INITRD=0x10fb3233040 MEMRESERVE=0x10fb3232040 
+2026-09-13T13:24:02.063466 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010001d70000..0x0000010002093fff (3216 KiB) nomap non-reusable asc-firmware@10001d70000
+2026-09-13T13:24:02.063494 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010000c68000..0x00000100015e7fff (9728 KiB) nomap non-reusable asc-firmware@10000c68000
+2026-09-13T13:24:02.063545 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb840c000..0x0000010fb840ffff (16 KiB) nomap non-reusable sio-firmware-data@10fb840c000
+2026-09-13T13:24:02.063566 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8410000..0x0000010fb8413fff (16 KiB) nomap non-reusable sio-firmware-data@10fb8410000
+2026-09-13T13:24:02.063591 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8414000..0x0000010fb8433fff (128 KiB) nomap non-reusable sio-firmware-data@10fb8414000
+2026-09-13T13:24:02.063606 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8434000..0x0000010fb8437fff (16 KiB) nomap non-reusable sio-firmware-data@10fb8434000
+2026-09-13T13:24:02.063633 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010002094000..0x000001000218bfff (992 KiB) nomap non-reusable asc-firmware@10002094000
+2026-09-13T13:24:02.063650 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x000001000163c000..0x0000010001657fff (112 KiB) nomap non-reusable asc-firmware@1000163c000
+2026-09-13T13:24:02.063664 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbeecc000..0x0000010fc618ffff (117520 KiB) nomap non-reusable framebuffer@10fbeecc000
+2026-09-13T13:24:02.063676 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbdbc8000..0x0000010fbebc7fff (16384 KiB) nomap non-reusable @10fbdbc8000
+2026-09-13T13:24:02.063692 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbebc8000..0x0000010fbeec7fff (3072 KiB) nomap non-reusable dcpext0_data@10fbebc8000
+2026-09-13T13:24:02.063705 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbeec8000..0x0000010fbeecbfff (16 KiB) nomap non-reusable region157@10fbeec8000
+2026-09-13T13:24:02.063722 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc6190000..0x0000010fc624ffff (768 KiB) nomap non-reusable region95@10fc6190000
+2026-09-13T13:24:02.063741 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc6250000..0x0000010fc659ffff (3392 KiB) nomap non-reusable region94@10fc6250000
+2026-09-13T13:24:02.063754 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc65a0000..0x0000010fc759ffff (16384 KiB) nomap non-reusable region57@10fc65a0000
+2026-09-13T13:24:02.063766 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc75a0000..0x0000010fc789ffff (3072 KiB) nomap non-reusable dcp_data@10fc75a0000
+2026-09-13T13:24:02.063783 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8458000..0x0000010fb845bfff (16 KiB) map non-reusable flash@10fb8458000
+2026-09-13T13:24:02.063796 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x00000100057e0000..0x000001000585bfff (496 KiB) map non-reusable flash@100057e0000
+2026-09-13T13:24:02.063808 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8438000..0x0000010fb844bfff (80 KiB) map non-reusable globals
+2026-09-13T13:24:02.063825 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8450000..0x0000010fb8457fff (32 KiB) map non-reusable hw-cal-a
+2026-09-13T13:24:02.063838 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb844c000..0x0000010fb844ffff (16 KiB) map non-reusable hw-cal-b
+2026-09-13T13:24:02.063852 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffff70000..0x0000010ffff73fff (16 KiB) map non-reusable uat-handoff
+2026-09-13T13:24:02.063870 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffff78000..0x0000010ffffb7fff (256 KiB) map non-reusable uat-pagetables
+2026-09-13T13:24:02.063888 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffffb8000..0x0000010ffffbbfff (16 KiB) map non-reusable uat-ttbs
+2026-09-13T13:24:02.063901 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb845c000..0x0000010fb86b7fff (2416 KiB) nomap non-reusable isp-heap
+2026-09-13T13:24:02.063913 192.168.10.244:6666 [    0.000000] cma: Reserved 64 MiB at 0x000001000a000000
+2026-09-13T13:24:02.063929 192.168.10.244:6666 [    0.000000] Zone ranges:
+2026-09-13T13:24:02.063942 192.168.10.244:6666 [    0.000000]   DMA      [mem 0x0000010000c68000-0x0000010ffffbbfff]
+2026-09-13T13:24:02.063954 192.168.10.244:6666 [    0.000000]   DMA32    empty
+2026-09-13T13:24:02.063966 192.168.10.244:6666 [    0.000000]   Normal   empty
+2026-09-13T13:24:02.063979 192.168.10.244:6666 [    0.000000] Movable zone start for each node
+2026-09-13T13:24:02.063992 192.168.10.244:6666 [    0.000000] Early memory node ranges
+2026-09-13T13:24:02.064007 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010000c68000-0x00000100015e7fff]
+2026-09-13T13:24:02.064019 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000163c000-0x0000010001657fff]
+2026-09-13T13:24:02.064032 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010001d70000-0x000001000218bfff]
+2026-09-13T13:24:02.064044 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000218c000-0x00000100058b3fff]
+2026-09-13T13:24:02.064060 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100058b4000-0x00000100059c3fff]
+2026-09-13T13:24:02.064072 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100059c4000-0x000001000890ffff]
+2026-09-13T13:24:02.064084 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008910000-0x000001000891ffff]
+2026-09-13T13:24:02.064096 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008920000-0x0000010008923fff]
+2026-09-13T13:24:02.064108 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008924000-0x0000010008933fff]
+2026-09-13T13:24:02.064124 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008934000-0x0000010008937fff]
+2026-09-13T13:24:02.064137 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008938000-0x0000010008947fff]
+2026-09-13T13:24:02.064157 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008948000-0x000001000894bfff]
+2026-09-13T13:24:02.064171 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000894c000-0x000001000895bfff]
+2026-09-13T13:24:02.064187 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000895c000-0x000001000895ffff]
+2026-09-13T13:24:02.064199 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008960000-0x000001000896ffff]
+2026-09-13T13:24:02.064211 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008970000-0x0000010008973fff]
+2026-09-13T13:24:02.064228 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008974000-0x0000010008983fff]
+2026-09-13T13:24:02.064246 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008984000-0x0000010008987fff]
+2026-09-13T13:24:02.064258 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008988000-0x0000010008997fff]
+2026-09-13T13:24:02.064270 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008998000-0x000001000899bfff]
+2026-09-13T13:24:02.064283 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000899c000-0x00000100089abfff]
+2026-09-13T13:24:02.064300 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100089ac000-0x00000100089affff]
+2026-09-13T13:24:02.064318 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100089b0000-0x00000100089bffff]
+2026-09-13T13:24:02.064331 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100089c0000-0x00000100089c3fff]
+2026-09-13T13:24:02.064343 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100089c4000-0x00000100089f3fff]
+2026-09-13T13:24:02.064360 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100089f4000-0x0000010f1a3fffff]
+2026-09-13T13:24:02.064378 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010f1a400000-0x0000010f1a403fff]
+2026-09-13T13:24:02.064391 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010f1a404000-0x0000010fb32affff]
+2026-09-13T13:24:02.064404 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb32b0000-0x0000010fb32d3fff]
+2026-09-13T13:24:02.064422 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb32d4000-0x0000010fb4353fff]
+2026-09-13T13:24:02.064435 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb4354000-0x0000010fb4357fff]
+2026-09-13T13:24:02.064456 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb4358000-0x0000010fb831ffff]
+2026-09-13T13:24:02.064469 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8320000-0x0000010fb832ffff]
+2026-09-13T13:24:02.064481 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8330000-0x0000010fb8407fff]
+2026-09-13T13:24:02.064493 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb840c000-0x0000010fb8437fff]
+2026-09-13T13:24:02.064510 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8438000-0x0000010fb845bfff]
+2026-09-13T13:24:02.064523 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb845c000-0x0000010fb86b7fff]
+2026-09-13T13:24:02.064535 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fbdbc8000-0x0000010fc789ffff]
+2026-09-13T13:24:02.064547 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010ffff70000-0x0000010ffff73fff]
+2026-09-13T13:24:02.064563 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010ffff78000-0x0000010ffffbbfff]
+2026-09-13T13:24:02.064575 192.168.10.244:6666 [    0.000000] Initmem setup node 0 [mem 0x0000010000c68000-0x0000010ffffbbfff]
+2026-09-13T13:24:02.064587 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 794 pages in unavailable ranges
+2026-09-13T13:24:02.064604 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 21 pages in unavailable ranges
+2026-09-13T13:24:02.064632 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 454 pages in unavailable ranges
+2026-09-13T13:24:02.064653 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 1 pages in unavailable ranges
+2026-09-13T13:24:02.064665 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 5444 pages in unavailable ranges
+2026-09-13T13:24:02.064677 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 8628 pages in unavailable ranges
+2026-09-13T13:24:02.064698 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 1 pages in unavailable ranges
+2026-09-13T13:24:02.064718 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 17 pages in unavailable ranges
+2026-09-13T13:24:02.064732 192.168.10.244:6666 [    0.000000] percpu: Embedded 9 pages/cpu s103320 r8192 d35944 u147456
+2026-09-13T13:24:02.064749 192.168.10.244:6666 [    0.000000] pcpu-alloc: s103320 r8192 d35944 u147456 alloc=9*16384
+2026-09-13T13:24:02.064761 192.168.10.244:6666 [    0.000000] pcpu-alloc: [0] 00 [0] 01 [0] 02 [0] 03 [0] 04 [0] 05 [0] 06 [0] 07 
+2026-09-13T13:24:02.064782 192.168.10.244:6666 [    0.000000] pcpu-alloc: [0] 08 [0] 09 
+2026-09-13T13:24:02.064796 192.168.10.244:6666 [    0.000000] Detected VIPT I-cache on CPU0
+2026-09-13T13:24:02.064808 192.168.10.244:6666 [    0.000000] CPU features: detected: Address authentication (IMP DEF algorithm)
+2026-09-13T13:24:02.064821 192.168.10.244:6666 [    0.000000] CPU features: detected: Virtualization Host Extensions
+2026-09-13T13:24:02.064834 192.168.10.244:6666 [    0.000000] CPU features: detected: Spectre-v4
+2026-09-13T13:24:02.064851 192.168.10.244:6666 [    0.000000] CPU features: detected: Spectre-BHB
+2026-09-13T13:24:02.064864 192.168.10.244:6666 [    0.000000] CPU features: detected: Apple IMPDEF PMUv3 Traps
+2026-09-13T13:24:02.064876 192.168.10.244:6666 [    0.000000] alternatives: applying boot alternatives
+2026-09-13T13:24:02.064888 192.168.10.244:6666 [    0.000000] Kernel command line: BOOT_IMAGE=/vmlinuz-linux-asahi root=UUID=4f4d5801-524f-4f54-8000-000000000001 rw rootflags=subvol=@ zswap.enabled=0 rootfstype=btrfs quiet loglevel=3 splash
+2026-09-13T13:24:02.064911 192.168.10.244:6666 [    0.000000] Unknown kernel command line parameters "splash", will be passed to user space.
+2026-09-13T13:24:02.064924 192.168.10.244:6666 [    0.000000] printk: log buffer data + meta data: 262144 + 1114112 = 1376256 bytes
+2026-09-13T13:24:02.064937 192.168.10.244:6666 [    0.000000] Dentry cache hash table entries: 8388608 (order: 12, 67108864 bytes, linear)
+2026-09-13T13:24:02.064954 192.168.10.244:6666 [    0.000000] Inode-cache hash table entries: 4194304 (order: 11, 33554432 bytes, linear)
+2026-09-13T13:24:02.064972 192.168.10.244:6666 [    0.000000] software IO TLB: SWIOTLB bounce buffer size adjusted to 63MB
+2026-09-13T13:24:02.064984 192.168.10.244:6666 [    0.000000] software IO TLB: area num 16.
+2026-09-13T13:24:02.064996 192.168.10.244:6666 [    0.000000] software IO TLB: SWIOTLB bounce buffer size roundup to 64MB
+2026-09-13T13:24:02.065011 192.168.10.244:6666 [    0.000000] software IO TLB: mapped [mem 0x0000010fa9230000-0x0000010fad230000] (64MB)
+2026-09-13T13:24:02.065030 192.168.10.244:6666 [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 4129792
+2026-09-13T13:24:02.065042 192.168.10.244:6666 [    0.000000] mem auto-init: stack:off, heap alloc:on, heap free:off
+2026-09-13T13:24:02.065055 192.168.10.244:6666 [    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=10, Nodes=1
+2026-09-13T13:24:02.065067 192.168.10.244:6666 [    0.000000] Dynamic Preempt: full
+2026-09-13T13:24:02.065088 192.168.10.244:6666 [    0.000000] rcu: Preemptible hierarchical RCU implementation.
+2026-09-13T13:24:02.065101 192.168.10.244:6666 [    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=10.
+2026-09-13T13:24:02.065116 192.168.10.244:6666 [    0.000000] 	Trampoline variant of Tasks RCU enabled.
+2026-09-13T13:24:02.065130 192.168.10.244:6666 [    0.000000] 	Tracing variant of Tasks RCU enabled.
+2026-09-13T13:24:02.065143 192.168.10.244:6666 [    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+2026-09-13T13:24:02.065161 192.168.10.244:6666 [    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=10
+2026-09-13T13:24:02.065173 192.168.10.244:6666 [    0.000000] RCU Tasks: Setting shift to 4 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=10.
+2026-09-13T13:24:02.065185 192.168.10.244:6666 [    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+2026-09-13T13:24:02.065201 192.168.10.244:6666 [    0.000000] Root IRQ handler: aic_handle_irq
+2026-09-13T13:24:02.065218 192.168.10.244:6666 [    0.000000] Root FIQ handler: aic_handle_fiq
+2026-09-13T13:24:02.065230 192.168.10.244:6666 [    0.000000] irq_apple_aic: Using Fast IPIs
+2026-09-13T13:24:02.065246 192.168.10.244:6666 [    0.000000] irq_apple_aic: Initialized with 1806/4096 IRQs * 1/8 die(s), 7 FIQs, 32 vIPIs
+2026-09-13T13:24:02.065261 192.168.10.244:6666 [    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+2026-09-13T13:24:02.065273 192.168.10.244:6666 [    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+2026-09-13T13:24:02.065290 192.168.10.244:6666 [    0.000000] arch_timer: cp15 timer running at 24.00MHz (phys).
+2026-09-13T13:24:02.065307 192.168.10.244:6666 [    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x588fe9dc0, max_idle_ns: 440795202592 ns
+2026-09-13T13:24:02.065320 192.168.10.244:6666 [    0.000000] sched_clock: 56 bits at 24MHz, resolution 41ns, wraps every 4398046511097ns
+2026-09-13T13:24:02.065343 192.168.10.244:6666 [    0.000163] Console: colour dummy device 80x25
+2026-09-13T13:24:02.065357 192.168.10.244:6666 [    0.000166] printk: legacy console [tty0] enabled
+2026-09-13T13:24:02.065373 192.168.10.244:6666 [    0.000191] Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=24000)
+2026-09-13T13:24:02.065387 192.168.10.244:6666 [    0.000521] Mount-cache hash table entries: 131072 (order: 6, 1048576 bytes, linear)
+2026-09-13T13:24:02.065410 192.168.10.244:6666 [    0.000537] Mountpoint-cache hash table entries: 131072 (order: 6, 1048576 bytes, linear)
+2026-09-13T13:24:02.065426 192.168.10.244:6666 [    0.000634] VFS: Finished mounting rootfs on nullfs
+2026-09-13T13:24:02.065442 192.168.10.244:6666 [    0.001343] rcu: Hierarchical SRCU implementation.
+2026-09-13T13:24:02.065455 192.168.10.244:6666 [    0.001346] rcu: 	Max phase no-delay instances is 400.
+2026-09-13T13:24:02.065469 192.168.10.244:6666 [    0.001390] Timer migration: 2 hierarchy levels; 8 children per group; 2 crossnode level
+2026-09-13T13:24:02.065490 192.168.10.244:6666 [    0.001616] Remapping and enabling EFI services.
+2026-09-13T13:24:02.065506 192.168.10.244:6666 [    0.001723] smp: Bringing up secondary CPUs ...
+2026-09-13T13:24:02.065519 192.168.10.244:6666 [    0.001822] Detected VIPT I-cache on CPU1
+2026-09-13T13:24:02.065532 192.168.10.244:6666 [    0.001859] CPU1: Booted secondary processor 0x0000000001 [0x612f0280]
+2026-09-13T13:24:02.065551 192.168.10.244:6666 [    0.001994] Detected VIPT I-cache on CPU2
+2026-09-13T13:24:02.065566 192.168.10.244:6666 [    0.002029] CPU2: Booted secondary processor 0x0000010100 [0x612f0290]
+2026-09-13T13:24:02.065579 192.168.10.244:6666 [    0.002178] Detected VIPT I-cache on CPU3
+2026-09-13T13:24:02.065596 192.168.10.244:6666 [    0.002202] CPU3: Booted secondary processor 0x0000010101 [0x612f0290]
+2026-09-13T13:24:02.065621 192.168.10.244:6666 [    0.002329] Detected VIPT I-cache on CPU4
+2026-09-13T13:24:02.065645 192.168.10.244:6666 [    0.002354] CPU4: Booted secondary processor 0x0000010102 [0x612f0290]
+2026-09-13T13:24:02.065661 192.168.10.244:6666 [    0.002495] Detected VIPT I-cache on CPU5
+2026-09-13T13:24:02.065680 192.168.10.244:6666 [    0.002520] CPU5: Booted secondary processor 0x0000010103 [0x612f0290]
+2026-09-13T13:24:02.065700 192.168.10.244:6666 [    0.002663] Detected VIPT I-cache on CPU6
+2026-09-13T13:24:02.065720 192.168.10.244:6666 [    0.002699] CPU6: Booted secondary processor 0x0000010200 [0x612f0290]
+2026-09-13T13:24:02.065747 192.168.10.244:6666 [    0.002855] Detected VIPT I-cache on CPU7
+2026-09-13T13:24:02.065769 192.168.10.244:6666 [    0.002881] CPU7: Booted secondary processor 0x0000010201 [0x612f0290]
+2026-09-13T13:24:02.065791 192.168.10.244:6666 [    0.003009] Detected VIPT I-cache on CPU8
+2026-09-13T13:24:02.065816 192.168.10.244:6666 [    0.003034] CPU8: Booted secondary processor 0x0000010202 [0x612f0290]
+2026-09-13T13:24:02.065837 192.168.10.244:6666 [    0.003287] alternatives: applying system-wide alternatives
+2026-09-13T13:24:02.065862 192.168.10.244:6666 [    0.003960] CPU features: detected: ACTLR virtualization (IMPDEF, Apple)
+2026-09-13T13:24:02.065881 192.168.10.244:6666 [    0.003964] CPU features: detected: ICV_DIR_EL1 trapping
+2026-09-13T13:24:02.065900 192.168.10.244:6666 [    0.003964] CPU features: detected: TSO memory model (Apple)
+2026-09-13T13:24:02.065920 192.168.10.244:6666 [    0.004385] Memory: 65308240K/66076672K available (16128K kernel code, 2850K rwdata, 11888K rodata, 2048K init, 663K bss, 689200K reserved, 65536K cma-reserved)
+2026-09-13T13:24:02.065947 192.168.10.244:6666 [    0.005052] devtmpfs: initialized
+2026-09-13T13:24:02.065961 192.168.10.244:6666 [    0.009305] posixtimers hash table entries: 8192 (order: 3, 131072 bytes, linear)
+2026-09-13T13:24:02.065974 192.168.10.244:6666 [    0.009331] futex hash table entries: 4096 (262144 bytes on 1 NUMA nodes, total 256 KiB, linear).
+2026-09-13T13:24:02.065986 192.168.10.244:6666 [    0.009394] 6068 pages in range for non-PLT usage
+2026-09-13T13:24:02.066004 192.168.10.244:6666 [    0.009395] 128948 pages in range for PLT usage
+2026-09-13T13:24:02.066017 192.168.10.244:6666 [    0.009632] DMI: SMBIOS 3.7.0 present.
+2026-09-13T13:24:02.066028 192.168.10.244:6666 [    0.009636] DMI: Apple Inc. MacBookPro18,2/J316c, BIOS 2026.04 04/01/2026
+2026-09-13T13:24:02.066041 192.168.10.244:6666 [    0.009641] DMI: Memory slots populated: 0/0
+2026-09-13T13:24:02.066053 192.168.10.244:6666 [    0.010219] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+2026-09-13T13:24:02.066070 192.168.10.244:6666 [    0.011303] DMA: preallocated 8192 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+2026-09-13T13:24:02.066082 192.168.10.244:6666 [    0.011315] audit: initializing netlink subsys (disabled)
+2026-09-13T13:24:02.066094 192.168.10.244:6666 [    0.011348] audit: type=2000 audit(0.011:1): state=initialized audit_enabled=0 res=1
+2026-09-13T13:24:02.066106 192.168.10.244:6666 [    0.011454] thermal_sys: Registered thermal governor 'fair_share'
+2026-09-13T13:24:02.066123 192.168.10.244:6666 [    0.011457] thermal_sys: Registered thermal governor 'bang_bang'
+2026-09-13T13:24:02.066136 192.168.10.244:6666 [    0.011458] thermal_sys: Registered thermal governor 'step_wise'
+2026-09-13T13:24:02.066148 192.168.10.244:6666 [    0.011460] thermal_sys: Registered thermal governor 'user_space'
+2026-09-13T13:24:02.066160 192.168.10.244:6666 [    0.011461] thermal_sys: Registered thermal governor 'power_allocator'
+2026-09-13T13:24:02.066176 192.168.10.244:6666 [    0.011472] cpuidle: using governor ladder
+2026-09-13T13:24:02.066189 192.168.10.244:6666 [    0.011479] cpuidle: using governor menu
+2026-09-13T13:24:02.066201 192.168.10.244:6666 [    0.011531] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+2026-09-13T13:24:02.066214 192.168.10.244:6666 [    0.011614] ASID allocator initialised with 256 entries
+2026-09-13T13:24:02.066226 192.168.10.244:6666 [    0.014752] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:24:02.066243 192.168.10.244:6666 [    0.014764] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:24:02.066261 192.168.10.244:6666 [    0.014780] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:24:02.066277 192.168.10.244:6666 [    0.014790] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:24:02.066295 192.168.10.244:6666 [    0.014805] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:24:02.066308 192.168.10.244:6666 [    0.014815] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:24:02.066324 192.168.10.244:6666 [    0.014939] /soc/pcie@590000000: Fixed dependency cycle(s) with /soc/pcie@590000000
+2026-09-13T13:24:02.066338 192.168.10.244:6666 [    0.014944] /soc/pcie@590000000/pci@0,0: Fixed dependency cycle(s) with /soc/pcie@590000000/pci@0,0
+2026-09-13T13:24:02.066356 192.168.10.244:6666 [    0.014955] /soc/pcie@590000000/pci@1,0: Fixed dependency cycle(s) with /soc/pcie@590000000/pci@1,0
+2026-09-13T13:24:02.066368 192.168.10.244:6666 [    0.014977] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/audio-controller@39b504000
+2026-09-13T13:24:02.066383 192.168.10.244:6666 [    0.014983] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/phy@1303000000
+2026-09-13T13:24:02.066407 192.168.10.244:6666 [    0.015358] /soc/audio-controller@39b504000: Fixed dependency cycle(s) with /soc/dcp@289c00000
+2026-09-13T13:24:02.066421 192.168.10.244:6666 [    0.015368] /soc/usb@702280000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@38/connector
+2026-09-13T13:24:02.066433 192.168.10.244:6666 [    0.015377] /soc/usb@702280000: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:24:02.066446 192.168.10.244:6666 [    0.015393] /soc/phy@703000000: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:24:02.066466 192.168.10.244:6666 [    0.015400] /soc/phy@703000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@38/connector
+2026-09-13T13:24:02.066478 192.168.10.244:6666 [    0.015412] /soc/usb@b02280000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3f/connector
+2026-09-13T13:24:02.066490 192.168.10.244:6666 [    0.015421] /soc/usb@b02280000: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:24:02.066502 192.168.10.244:6666 [    0.015438] /soc/phy@b03000000: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:24:02.066522 192.168.10.244:6666 [    0.015444] /soc/phy@b03000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3f/connector
+2026-09-13T13:24:02.066535 192.168.10.244:6666 [    0.015457] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3b/connector
+2026-09-13T13:24:02.066548 192.168.10.244:6666 [    0.015465] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:24:02.066565 192.168.10.244:6666 [    0.015481] /soc/phy@f03000000: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:24:02.066577 192.168.10.244:6666 [    0.015488] /soc/phy@f03000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3b/connector
+2026-09-13T13:24:02.066589 192.168.10.244:6666 [    0.015504] /soc/phy@1303000000: Fixed dependency cycle(s) with /soc/dcp@289c00000
+2026-09-13T13:24:02.066603 192.168.10.244:6666 [    0.016386] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:24:02.066629 192.168.10.244:6666 [    0.016397] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:24:02.066642 192.168.10.244:6666 [    0.016412] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:24:02.066689 192.168.10.244:6666 [    0.016422] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:24:02.066717 192.168.10.244:6666 [    0.016437] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:24:02.066731 192.168.10.244:6666 [    0.016447] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:24:02.066743 192.168.10.244:6666 [    0.017137] /soc/pcie@590000000: Fixed dependency cycle(s) with /soc/pcie@590000000
+2026-09-13T13:24:02.066756 192.168.10.244:6666 [    0.017146] /soc/pcie@590000000/pci@0,0: Fixed dependency cycle(s) with /soc/pcie@590000000/pci@0,0
+2026-09-13T13:24:02.066777 192.168.10.244:6666 [    0.017157] /soc/pcie@590000000/pci@1,0: Fixed dependency cycle(s) with /soc/pcie@590000000/pci@1,0
+2026-09-13T13:24:02.066796 192.168.10.244:6666 [    0.017491] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/audio-controller@39b504000
+2026-09-13T13:24:02.066810 192.168.10.244:6666 [    0.017498] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/phy@1303000000
+2026-09-13T13:24:02.066828 192.168.10.244:6666 [    0.026678] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/audio-controller@39b504000
+2026-09-13T13:24:02.066841 192.168.10.244:6666 [    0.026697] /soc/audio-controller@39b504000: Fixed dependency cycle(s) with /soc/dcp@289c00000
+2026-09-13T13:24:02.066856 192.168.10.244:6666 [    0.026765] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:24:02.066871 192.168.10.244:6666 [    0.026785] /soc/usb@702280000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@38/connector
+2026-09-13T13:24:02.066889 192.168.10.244:6666 [    0.026795] /soc/usb@702280000: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:24:02.066901 192.168.10.244:6666 [    0.026958] /soc/usb@702280000: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:24:02.066913 192.168.10.244:6666 [    0.026975] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:24:02.066933 192.168.10.244:6666 [    0.026994] /soc/phy@703000000: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:24:02.066949 192.168.10.244:6666 [    0.027011] /soc/phy@703000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@38/connector
+2026-09-13T13:24:02.066962 192.168.10.244:6666 [    0.027071] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:24:02.066975 192.168.10.244:6666 [    0.046198] Trying to unpack rootfs image as initramfs...
+2026-09-13T13:24:02.066993 192.168.10.244:6666 [    0.050548] kvm [1]: nv: 570 coarse grained trap handlers
+2026-09-13T13:24:02.067007 192.168.10.244:6666 [    0.050574] kvm [1]: nv: 710 fine grained trap handlers
+2026-09-13T13:24:02.067024 192.168.10.244:6666 [    0.050643] kvm [1]: IPA Size Limit: 42 bits
+2026-09-13T13:24:02.067036 192.168.10.244:6666 [    0.050651] kvm [1]: Non-architectural vgic, tainting kernel
+2026-09-13T13:24:02.067049 192.168.10.244:6666 [    0.050652] kvm [1]: GICv3: no GICV resource entry
+2026-09-13T13:24:02.067067 192.168.10.244:6666 [    0.050653] kvm [1]: disabling GICv2 emulation
+2026-09-13T13:24:02.067079 192.168.10.244:6666 [    0.050654] kvm [1]: GICv3 with broken locally generated SEI
+2026-09-13T13:24:02.067095 192.168.10.244:6666 [    0.050655] kvm [1]: GICv3 sysreg trapping enabled ([G0G1D], reduced performance)
+2026-09-13T13:24:02.067109 192.168.10.244:6666 [    0.050681] kvm [1]: GIC system register CPU interface enabled
+2026-09-13T13:24:02.067121 192.168.10.244:6666 [    0.050685] kvm [1]: vgic interrupt IRQ33
+2026-09-13T13:24:02.067138 192.168.10.244:6666 [    0.050704] kvm [1]: VHE mode initialized successfully
+2026-09-13T13:24:02.067150 192.168.10.244:6666 [    0.051073] Initialise system trusted keyrings
+2026-09-13T13:24:02.067165 192.168.10.244:6666 [    0.051111] workingset: timestamp_bits=46 (anon: 42) max_order=22 bucket_order=0 (anon: 0)
+2026-09-13T13:24:02.067181 192.168.10.244:6666 [    0.051406] NFS: Registering the id_resolver key type
+2026-09-13T13:24:02.067198 192.168.10.244:6666 [    0.051408] Key type id_resolver registered
+2026-09-13T13:24:02.067210 192.168.10.244:6666 [    0.051409] Key type id_legacy registered
+2026-09-13T13:24:02.067222 192.168.10.244:6666 [    0.051413] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+2026-09-13T13:24:02.067234 192.168.10.244:6666 [    0.051415] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+2026-09-13T13:24:02.067251 192.168.10.244:6666 [    0.051505] cryptd: max_cpu_qlen set to 1000
+2026-09-13T13:24:02.067269 192.168.10.244:6666 [    0.058994] NET: Registered PF_ALG protocol family
+2026-09-13T13:24:02.067286 192.168.10.244:6666 [    0.120310] asahi 406400000.gpu: MMU: IO map: 0x28e3c0000:0x4000 -> 0xffffffaf00744000
+2026-09-13T13:24:02.067299 192.168.10.244:6666 [    0.120373] asahi 406400000.gpu: RTKit: Initializing (protocol version 12)
+2026-09-13T13:24:02.067312 192.168.10.244:6666 [    0.120633] [drm] Initialized asahi 0.0.0 for 406400000.gpu on minor 1
+2026-09-13T13:24:02.067333 192.168.10.244:6666 [    0.122264] macsmc 290400000.smc: RTKit: Initializing (protocol version 12)
+2026-09-13T13:24:02.067347 192.168.10.244:6666 [    0.126608] macsmc-gpio macsmc-gpio: First GPIO key: gP01 (0x67503031)
+2026-09-13T13:24:02.067359 192.168.10.244:6666 [    0.133036] macsmc-low-gpio: Failed to locate of_node [id: -1]
+2026-09-13T13:24:02.067372 192.168.10.244:6666 [    0.134312] mousedev: PS/2 mouse device common for all mice
+2026-09-13T13:24:02.067384 192.168.10.244:6666 [    0.134907] input: Apple SMC power/lid events as /devices/platform/soc/290400000.smc/macsmc-input/input/input0
+2026-09-13T13:24:02.067406 192.168.10.244:6666 [    0.140259] hwmon hwmon2: temp1_input not attached to any thermal zone
+2026-09-13T13:24:02.067419 192.168.10.244:6666 [    0.140284] hwmon hwmon2: temp2_input not attached to any thermal zone
+2026-09-13T13:24:02.067432 192.168.10.244:6666 [    0.140305] hwmon hwmon2: temp3_input not attached to any thermal zone
+2026-09-13T13:24:02.067444 192.168.10.244:6666 [    0.140325] hwmon hwmon2: temp4_input not attached to any thermal zone
+2026-09-13T13:24:02.067464 192.168.10.244:6666 [    0.140572] device-mapper: uevent: version 1.0.3
+2026-09-13T13:24:02.067481 192.168.10.244:6666 [    0.140604] device-mapper: ioctl: 4.50.0-ioctl (2025-04-28) initialised: dm-devel@lists.linux.dev
+2026-09-13T13:24:02.067496 192.168.10.244:6666 [    0.140814] cpu cpu0: EM: created perf domain
+2026-09-13T13:24:02.067508 192.168.10.244:6666 [    0.141097] cpu cpu2: EM: created perf domain
+2026-09-13T13:24:02.067528 192.168.10.244:6666 [    0.141195] cpu cpu6: EM: created perf domain
+2026-09-13T13:24:02.067541 192.168.10.244:6666 [    0.141196] energy_model: updating cpu0 cpu_cap=485 old capacity=714
+2026-09-13T13:24:02.067555 192.168.10.244:6666 [    0.141501] hid: raw HID events driver (C) Jiri Kosina
+2026-09-13T13:24:02.067571 192.168.10.244:6666 [    0.142266] watchdog: NMI not fully supported
+2026-09-13T13:24:02.067584 192.168.10.244:6666 [    0.142268] watchdog: Hard watchdog permanently disabled
+2026-09-13T13:24:02.067601 192.168.10.244:6666 [    0.142388] hw perfevents: enabled with apple_icestorm_pmu PMU driver, 10 (0,000003ff) counters available
+2026-09-13T13:24:02.067626 192.168.10.244:6666 [    0.142548] hw perfevents: enabled with apple_firestorm_pmu PMU driver, 10 (0,000003ff) counters available
+2026-09-13T13:24:02.067641 192.168.10.244:6666 [    0.142912] Initializing XFRM netlink socket
+2026-09-13T13:24:02.067653 192.168.10.244:6666 [    0.668104] pci 0000:00:00.0: PCI bridge to [bus 01]
+2026-09-13T13:24:02.067671 192.168.10.244:6666 [    0.668112] pci 0000:00:00.0:   bridge window [mem 0x5c0000000-0x5c14fffff]
+2026-09-13T13:24:02.067684 192.168.10.244:6666 [    0.668127] pci 0000:02:00.0: BAR 0 [mem 0x5c1500000-0x5c1500fff]: assigned
+2026-09-13T13:24:02.067698 192.168.10.244:6666 [    0.668153] pci 0000:00:01.0: PCI bridge to [bus 02]
+2026-09-13T13:24:02.067715 192.168.10.244:6666 [    0.668160] pci 0000:00:01.0:   bridge window [mem 0x5c1500000-0x5c15fffff]
+2026-09-13T13:24:02.067733 192.168.10.244:6666 [    0.668171] pci_bus 0000:00: resource 4 [mem 0x5a0000000-0x5bfffffff pref]
+2026-09-13T13:24:02.067745 192.168.10.244:6666 [    0.668177] pci_bus 0000:00: resource 5 [mem 0x5c0000000-0x5ffffffff]
+2026-09-13T13:24:02.067758 192.168.10.244:6666 [    0.668182] pci_bus 0000:01: resource 1 [mem 0x5c0000000-0x5c14fffff]
+2026-09-13T13:24:02.067770 192.168.10.244:6666 [    0.668188] pci_bus 0000:02: resource 1 [mem 0x5c1500000-0x5c15fffff]
+2026-09-13T13:24:02.067791 192.168.10.244:6666 [    0.668285] OF: /soc/pcie@590000000: no iommu-map translation for id 0x0 on (null)
+2026-09-13T13:24:02.067811 192.168.10.244:6666 [    0.668570] pcieport 0000:00:00.0: PME: Signaling with IRQ 107
+2026-09-13T13:24:02.067823 192.168.10.244:6666 [    0.668860] pcieport 0000:00:00.0: AER: enabled with IRQ 107
+2026-09-13T13:24:02.067836 192.168.10.244:6666 [    0.669115] OF: /soc/pcie@590000000: no iommu-map translation for id 0x8 on (null)
+2026-09-13T13:24:02.067848 192.168.10.244:6666 [    0.669356] pcieport 0000:00:01.0: PME: Signaling with IRQ 109
+2026-09-13T13:24:02.067869 192.168.10.244:6666 [    0.669602] pcieport 0000:00:01.0: AER: enabled with IRQ 109
+2026-09-13T13:24:02.067882 192.168.10.244:6666 [    0.670091] pcieport 0000:00:01.0: mask Replay Timer Timeout Correctable Errors due to 0000:02:00.0 hardware defect
+2026-09-13T13:24:02.067895 192.168.10.244:6666 [    0.671047] apple-admac 39b400000.dma-controller: Audio DMA Controller
+2026-09-13T13:24:02.067907 192.168.10.244:6666 [    0.738114] spi-hid-apple-of spi1.0: limiting the number of devices to mngt, kbd and mouse
+2026-09-13T13:24:02.067924 192.168.10.244:6666 [    0.746409] input: Apple SPI Keyboard as /devices/platform/soc/39b10c000.spi/spi_master/spi1/spi1.0/001C:05AC:0343.0001/input/input1
+2026-09-13T13:24:02.067941 192.168.10.244:6666 [    0.746689] hid-generic 001C:05AC:0343.0001: input,hidraw0: SPI HID v3.52 Keyboard [Apple SPI Keyboard] on spi1.0 (1)
+2026-09-13T13:24:02.067955 192.168.10.244:6666 [    0.748868] input: Apple SPI Trackpad Mouse as /devices/platform/soc/39b10c000.spi/spi_master/spi1/spi1.0/001C:05AC:0343.0002/input/input2
+2026-09-13T13:24:02.067973 192.168.10.244:6666 [    0.750717] hid-generic 001C:05AC:0343.0002: input,hidraw1: SPI HID v3.52 Mouse [Apple SPI Trackpad] on spi1.0 (2)
+2026-09-13T13:24:02.067985 192.168.10.244:6666 [    0.751028] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:24:02.067998 192.168.10.244:6666 [    0.751072] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:24:02.068019 192.168.10.244:6666 [    3.166603] systemd[1]: Created slice Slice /system/systemd-fsck.
+2026-09-13T13:24:02.068033 192.168.10.244:6666 [    3.166804] systemd[1]: Created slice User and Session Slice.
+2026-09-13T13:24:02.068045 192.168.10.244:6666 [    3.166845] systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+2026-09-13T13:24:02.068057 192.168.10.244:6666 [    3.166927] systemd[1]: Set up automount Arbitrary Executable File Formats File System Automount Point.
+2026-09-13T13:24:02.068075 192.168.10.244:6666 [    3.166936] systemd[1]: Expecting device /dev/disk/by-uuid/4F4D-5801...
+2026-09-13T13:24:02.068090 192.168.10.244:6666 [    3.166939] systemd[1]: Expecting device /dev/disk/by-uuid/4f4d5801-424f-4f54-8000-000000000001...
+2026-09-13T13:24:02.068105 192.168.10.244:6666 [    3.166942] systemd[1]: Expecting device /dev/disk/by-uuid/4f4d5801-524f-4f54-8000-000000000001...
+2026-09-13T13:24:02.068118 192.168.10.244:6666 [    3.166951] systemd[1]: Reached target Login Prompts.
+2026-09-13T13:24:02.068135 192.168.10.244:6666 [    3.166958] systemd[1]: Reached target Image Downloads.
+2026-09-13T13:24:02.068149 192.168.10.244:6666 [    3.166968] systemd[1]: Stopped target Switch Root.
+2026-09-13T13:24:02.068162 192.168.10.244:6666 [    3.166976] systemd[1]: Stopped target Initrd File Systems.
+2026-09-13T13:24:02.068179 192.168.10.244:6666 [    3.166983] systemd[1]: Stopped target Initrd Root File System.
+2026-09-13T13:24:02.068197 192.168.10.244:6666 [    3.166989] systemd[1]: Reached target Local Integrity Protected Volumes.
+2026-09-13T13:24:02.068210 192.168.10.244:6666 [    3.167001] systemd[1]: Reached target Preparation for Network.
+2026-09-13T13:24:02.068223 192.168.10.244:6666 [    3.167011] systemd[1]: Reached target Remote File Systems.
+2026-09-13T13:24:02.068235 192.168.10.244:6666 [    3.167018] systemd[1]: Reached target Slice Units.
+2026-09-13T13:24:02.068256 192.168.10.244:6666 [    3.167029] systemd[1]: Reached target Swaps.
+2026-09-13T13:24:02.068276 192.168.10.244:6666 [    3.167040] systemd[1]: Reached target Local Verity Protected Volumes.
+2026-09-13T13:24:02.068289 192.168.10.244:6666 [    3.167083] systemd[1]: Listening on Device-mapper event daemon FIFOs.
+2026-09-13T13:24:02.068301 192.168.10.244:6666 [    3.167778] systemd[1]: Listening on Query the User Interactively for a Password.
+2026-09-13T13:24:02.068314 192.168.10.244:6666 [    3.168520] systemd[1]: Listening on Process Core Dump Socket.
+2026-09-13T13:24:02.068336 192.168.10.244:6666 [    3.168949] systemd[1]: Listening on Credential Encryption/Decryption.
+2026-09-13T13:24:02.068349 192.168.10.244:6666 [    3.169579] systemd[1]: Listening on Factory Reset Management.
+2026-09-13T13:24:02.068362 192.168.10.244:6666 [    3.169607] systemd[1]: Listening on Hostname Service Socket.
+2026-09-13T13:24:02.068374 192.168.10.244:6666 [    4.406136] mc: Linux media interface: v0.10
+2026-09-13T13:24:02.068386 192.168.10.244:6666 [    4.420302] apple-display-crossbar 130304c000.mux: Switched dpphy to dispext0,0
+2026-09-13T13:24:02.068408 192.168.10.244:6666 [    4.420847] apple-dcp 289c00000.dcp: typec_mux_set() returned: 0
+2026-09-13T13:24:02.068423 192.168.10.244:6666 [    4.429489] apple-dcp 38bc00000.dcp: Detected display with notch of 74 pixel
+2026-09-13T13:24:02.068435 192.168.10.244:6666 [    4.444685] platform 38bc00000.dcp:piodma: Adding to iommu group 15
+2026-09-13T13:24:02.068447 192.168.10.244:6666 [    4.445770] apple-dcp 38bc00000.dcp: RTKit: Initializing (protocol version 12)
+2026-09-13T13:24:02.068465 192.168.10.244:6666 [    4.445908] apple-dcp 38bc00000.dcp: shmem_setup: iova: 1f000248000 -> pa: 10fc77e8000 -> iomem: ffff8000896d0000
+2026-09-13T13:24:02.068478 192.168.10.244:6666 [    4.445920] apple-dcp 38bc00000.dcp: shmem_setup: iova: 1f0fbffc000, buffer: ffff800083ecc000
+2026-09-13T13:24:02.068494 192.168.10.244:6666 [    4.446418] videodev: Linux video capture interface: v2.00
+2026-09-13T13:24:02.068507 192.168.10.244:6666 [    4.447613] apple-dcp 38bc00000.dcp: shmem_setup: iova: 1f0fbff8000, buffer: ffff800083ee4000
+2026-09-13T13:24:02.068525 192.168.10.244:6666 [    4.447824] apple-drm soc:display-subsystem: bound 38bc00000.dcp (ops dcp_comp_ops [appledrm])
+2026-09-13T13:24:02.068537 192.168.10.244:6666 [    4.447843] apple-dcp 289c00000.dcp: DCP index:1 dptx target phy: 3 dptx die: 0
+2026-09-13T13:24:02.068549 192.168.10.244:6666 [    4.447962] apple-dcp 38bc00000.dcp: RTKit: syslog message: ck_PCC2DBlm_v5.cpp:2611: IOMFB LACS_ERROR: DCP took too long to respond to LAS stats
+2026-09-13T13:24:02.068572 192.168.10.244:6666 [    4.448046] apple-dcp 38bc00000.dcp: RTKit: syslog message: ck_PCC2DBlm_v5.cpp:2646: IOMFB: BLM LTS data hasn't been read in more than 10 secs
+2026-09-13T13:24:02.068586 192.168.10.244:6666 [    4.465180] platform 289c00000.dcp:piodma: Adding to iommu group 16
+2026-09-13T13:24:02.068598 192.168.10.244:6666 [    4.465396] apple-dcp 289c00000.dcp: RTKit: Initializing (protocol version 12)
+2026-09-13T13:24:02.068629 192.168.10.244:6666 [    4.465629] apple-dcp 289c00000.dcp: shmem_setup: iova: 1f000248000 -> pa: 10fbee10000 -> iomem: ffff800089e20000
+2026-09-13T13:24:02.068648 192.168.10.244:6666 [    4.465644] apple-dcp 289c00000.dcp: shmem_setup: iova: 1f0fbffc000, buffer: ffff800083f74000
+2026-09-13T13:24:02.068661 192.168.10.244:6666 [    4.467516] apple-dcp 289c00000.dcp: shmem_setup: iova: 1f0fbff8000, buffer: ffff80008793c000
+2026-09-13T13:24:02.068674 192.168.10.244:6666 [    4.467624] apple-drm soc:display-subsystem: bound 289c00000.dcp (ops dcp_comp_ops [appledrm])
+2026-09-13T13:24:02.068694 192.168.10.244:6666 [    4.468252] apple-drm soc:display-subsystem: bound 39b540000.audio-controller (ops dcpaud_comp_ops [appledrm])
+2026-09-13T13:24:02.068712 192.168.10.244:6666 [    4.469061] apple-dcp 38bc00000.dcp: RTKit: syslog message: ck_PCC2DBlm_v5.cpp:2611: IOMFB LACS_ERROR: DCP took too long to respond to LAS stats
+2026-09-13T13:24:02.068729 192.168.10.244:6666 [    4.470255] apple_aop 293c00000.aop: RTKit: Initializing (protocol version 12)
+2026-09-13T13:24:02.068751 192.168.10.244:6666 [    4.472104] apple_aop 293c00000.aop: RTKit: syslog message: AOP_oslog_init.cpp:96: Start AOP OSLog init
+2026-09-13T13:24:02.068764 192.168.10.244:6666 [    4.475717] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:4191: IOMFB: Could not find Backlight service
+2026-09-13T13:24:02.068780 192.168.10.244:6666 [    4.475752] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:4199: IOMFB: Could not find nvram service
+2026-09-13T13:24:02.068802 192.168.10.244:6666 [    4.475759] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1838: virtual bool UnifiedPipeline::start_ios_gated(): Created AP Services
+2026-09-13T13:24:02.068815 192.168.10.244:6666 [    4.475784] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1864: start_ios_gated: trigger pending HPD notification
+2026-09-13T13:24:02.068827 192.168.10.244:6666 [    4.475787] apple-dcp 38bc00000.dcp: cb_hotplug() connected:1, valid_mode:0
+2026-09-13T13:24:02.068847 192.168.10.244:6666 [    4.475791] apple-dcp 38bc00000.dcp: dcp_hotplug() connected:1 valid_mode:0 nr_modes:0
+2026-09-13T13:24:02.068864 192.168.10.244:6666 [    4.478669] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1871: virtual bool UnifiedPipeline::start_ios_gated(): Flushed RTPs
+2026-09-13T13:24:02.068876 192.168.10.244:6666 [    4.479509] apple-dcp 38bc00000.dcp: RTKit: syslog message: ableCompensator.cpp:903: IOMFB setup_table: Could not find table 'display-backlight-compensation-v1' in registry. Using default table.
+2026-09-13T13:24:02.068900 192.168.10.244:6666 [    4.479714] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11092: IOMFB updateFrequencies: minimum-frequency property not found, using getClockFrequency(0) instead.
+2026-09-13T13:24:02.068921 192.168.10.244:6666 [    4.479776] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11109: IOMFB updateFrequencies EDT ERROR: getClockFrequency(0) (237333328) < videoClock 521064960! Giving up on frequencies.
+2026-09-13T13:24:02.068946 192.168.10.244:6666 [    4.479978] apple-dcp 38bc00000.dcp: RTKit: syslog message: UPPipeDCP_H13P.cpp:1532: IOMFB: videoClock is zero, defaulting to 521065000
+2026-09-13T13:24:02.068959 192.168.10.244:6666 [    4.480531] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1356: set_device_enabled_gated: current state: 1, requested state: 1
+2026-09-13T13:24:02.068974 192.168.10.244:6666 [    4.480660] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11092: IOMFB updateFrequencies: minimum-frequency property not found, using getClockFrequency(0) instead.
+2026-09-13T13:24:02.068998 192.168.10.244:6666 [    4.480726] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11109: IOMFB updateFrequencies EDT ERROR: getClockFrequency(0) (237333328) < videoClock 521064960! Giving up on frequencies.
+2026-09-13T13:24:02.069016 192.168.10.244:6666 [    4.480976] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:10490: set_run_mode_safe: deferring: 2 -> 4
+2026-09-13T13:24:02.069036 192.168.10.244:6666 [    4.483395] apple-isp 384000000.isp: ISP firmware-compat: 13.5 (FW: 13.5)
+2026-09-13T13:24:02.069049 192.168.10.244:6666 [    4.484166] apple-sio 39bc00000.sio: RTKit: Initializing (protocol version 12)
+2026-09-13T13:24:02.069061 192.168.10.244:6666 [    4.485183] apple-sio 39bc00000.sio: SIO protocol v9
+2026-09-13T13:24:02.069073 192.168.10.244:6666 [    4.485621] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:10395: virtual IOMFBStatus IOMFB::UPPipeDCP_H13P::ready_for_run_mode_change(IOMFB::AppleRegisterStream *): initiating deferred run mod
+2026-09-13T13:24:02.069098 192.168.10.244:6666 [    4.486133] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load APT M3 IMem : size 0x7960
+2026-09-13T13:24:02.069117 192.168.10.244:6666 [    4.486288] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load APT M3 DMem : size 0x70ac
+2026-09-13T13:24:02.069139 192.168.10.244:6666 [    4.486428] apple-dcp 38bc00000.dcp: RTKit: syslog message: CAHandler.cpp:188: IOMFB load_ca_data: Unrecognized data version 0 (expected 1 or 2)
+2026-09-13T13:24:02.069153 192.168.10.244:6666 [    4.486839] apple-dcp 38bc00000.dcp: AFK[ep:20]: new service system on channel 5
+2026-09-13T13:24:02.069170 192.168.10.244:6666 [    4.486843] apple-dcp 38bc00000.dcp: AFK[ep:20]: new service powerlog-service on channel 7
+2026-09-13T13:24:02.069184 192.168.10.244:6666 [    5.476299] apple-isp: ps: CISP_CMD_CH_CAMERA_CONFIG_GET: 1
+2026-09-13T13:24:02.069203 192.168.10.244:6666 [    5.476299] apple-isp: ps: 00000000 00000106 00000000 00000001 08700780 08700780 00000000 00001df8
+2026-09-13T13:24:02.069216 192.168.10.244:6666 [    5.476300] apple-isp: ps: 00000100 00000001 00000040 00000040 00000040 00000040 00000040 00000040
+2026-09-13T13:24:02.069229 192.168.10.244:6666 [    5.476300] apple-isp: ps: 00000003 00000040 00000040 00000005 00000000 0100041e 00000001 00000000
+2026-09-13T13:24:02.069251 192.168.10.244:6666 [    5.476301] apple-isp: ps: 0bdebefc 00000006 00000007 00000000 00000009 000f4240 00000012 00000000
+2026-09-13T13:24:02.069264 192.168.10.244:6666 [    5.476302] apple-isp: ps: 00008000 00000014 00000015 00000000 00000000 00000000 00000780 00000438
+2026-09-13T13:24:02.069277 192.168.10.244:6666 [    5.476302] apple-isp: ps: 00010001 00000000 d3e00000 00000040 0000001f 00000000 00000000 00000000
+2026-09-13T13:24:02.069289 192.168.10.244:6666 [    5.476303] apple-isp: ps: 00000780 00000870 00000100 00000000 00000000 00000780 00000438
+2026-09-13T13:24:02.069316 192.168.10.244:6666 [    5.476365] apple-isp: ps: CISP_CMD_CH_CAMERA_CONFIG_GET: 2
+2026-09-13T13:24:02.069337 192.168.10.244:6666 [    5.476367] apple-isp: ps: 00000000 00000106 00000000 00000002 0f000438 0f000438 00000000 00001df8
+2026-09-13T13:24:02.069357 192.168.10.244:6666 [    5.476367] apple-isp: ps: 00000100 00000001 00000040 00000040 00000040 00000040 00000040 00000040
+2026-09-13T13:24:02.069391 192.168.10.244:6666 [    5.476368] apple-isp: ps: 00000003 00000040 00000040 00000005 00000000 0100041e 00000001 00000000
+2026-09-13T13:24:02.069413 192.168.10.244:6666 [    5.476368] apple-isp: ps: 0bdebefc 00000006 00000007 00000000 00000009 000f4240 0000000d 00000000
+2026-09-13T13:24:02.069433 192.168.10.244:6666 [    5.476369] apple-isp: ps: 00008000 00000014 00000015 00000000 00000000 00000000 00000438 00000780
+2026-09-13T13:24:02.069454 192.168.10.244:6666 [    5.476370] apple-isp: ps: 00010001 00000000 d3e00000 00000040 0000001f 00000000 00000000 00000000
+2026-09-13T13:24:02.069483 192.168.10.244:6666 [    5.476370] apple-isp: ps: 00000438 00000f00 00000100 00000000 00000000 00000438 00000780
+2026-09-13T13:24:02.069500 192.168.10.244:6666 [    5.476427] apple-isp: ps: CISP_CMD_CH_CAMERA_CONFIG_GET: 3
+2026-09-13T13:24:02.069513 192.168.10.244:6666 [    5.476430] apple-isp: ps: 00000000 00000106 00000000 00000003 0a6006e0 0a6006e0 00000000 00001df8
+2026-09-13T13:24:02.069525 192.168.10.244:6666 [    5.476430] apple-isp: ps: 00000100 00000001 00000040 00000040 00000040 00000040 00000040 00000040
+2026-09-13T13:24:02.069544 192.168.10.244:6666 [    5.476431] apple-isp: ps: 00000003 00000040 00000040 00000005 00000000 0100041e 00000001 00000000
+2026-09-13T13:24:02.069557 192.168.10.244:6666 [    5.476432] apple-isp: ps: 0bdebefc 00000006 00000007 00000000 00000009 000f4240 00000010 00000000
+2026-09-13T13:24:02.069569 192.168.10.244:6666 [    5.476432] apple-isp: ps: 00008000 00000014 00000015 00000000 00000000 00000000 000006e0 00000530
+2026-09-13T13:24:02.069587 192.168.10.244:6666 [    5.476433] apple-isp: ps: 00010001 00000000 d3e00000 00000040 0000001f 00000000 00000000 00000000
+2026-09-13T13:24:02.069600 192.168.10.244:6666 [    5.476433] apple-isp: ps: 000006e0 00000a60 00000100 00000000 00000000 000006e0 00000530
+2026-09-13T13:24:02.069626 192.168.10.244:6666 [    6.371530] xhci-hcd xhci-hcd.3.auto: irq 130, io mem 0xf02280000
+2026-09-13T13:24:02.069644 192.168.10.244:6666 [    6.371570] xhci-hcd xhci-hcd.3.auto: xHCI Host Controller
+2026-09-13T13:24:02.069667 192.168.10.244:6666 [    6.371572] xhci-hcd xhci-hcd.3.auto: new USB bus registered, assigned bus number 2
+2026-09-13T13:24:02.069683 192.168.10.244:6666 [    6.371573] xhci-hcd xhci-hcd.3.auto: Host supports USB 3.1 Enhanced SuperSpeed
+2026-09-13T13:24:02.069696 192.168.10.244:6666 [    6.371611] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 7.01
+2026-09-13T13:24:02.069709 192.168.10.244:6666 [    6.371613] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+2026-09-13T13:24:02.069727 192.168.10.244:6666 [    6.371613] usb usb1: Product: xHCI Host Controller
+2026-09-13T13:24:02.069739 192.168.10.244:6666 [    6.371614] usb usb1: Manufacturer: Linux 7.1.6-1-1-ARCH xhci-hcd
+2026-09-13T13:24:02.069751 192.168.10.244:6666 [    6.371615] usb usb1: SerialNumber: xhci-hcd.3.auto
+2026-09-13T13:24:02.069763 192.168.10.244:6666 [    6.371683] hub 1-0:1.0: USB hub found
+2026-09-13T13:24:02.069775 192.168.10.244:6666 [    6.371687] hub 1-0:1.0: 1 port detected
+2026-09-13T13:24:02.069793 192.168.10.244:6666 [    6.371764] usb usb2: We don't know the algorithms for LPM for this host, disabling LPM.
+2026-09-13T13:24:02.069806 192.168.10.244:6666 [    6.371776] usb usb2: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 7.01
+2026-09-13T13:24:02.069818 192.168.10.244:6666 [    6.371777] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+2026-09-13T13:24:02.069830 192.168.10.244:6666 [    6.371778] usb usb2: Product: xHCI Host Controller
+2026-09-13T13:24:02.069847 192.168.10.244:6666 [    6.371778] usb usb2: Manufacturer: Linux 7.1.6-1-1-ARCH xhci-hcd
+2026-09-13T13:24:02.069860 192.168.10.244:6666 [    6.371779] usb usb2: SerialNumber: xhci-hcd.3.auto
+2026-09-13T13:24:02.069872 192.168.10.244:6666 [    6.371822] hub 2-0:1.0: USB hub found
+2026-09-13T13:24:02.069885 192.168.10.244:6666 [    6.371825] hub 2-0:1.0: 1 port detected
+2026-09-13T13:24:02.069898 192.168.10.244:6666 [    7.367576] ieee80211 phy0: brcmf_p2p_send_action_frame: Unknown Frame: category 0x5, action 0x4
+2026-09-13T13:24:02.069916 192.168.10.244:6666 [    9.617908] [UFW BLOCK] IN=wlan0 OUT= MAC=bc:d0:74:06:52:dd:00:05:cd:ca:93:1c:08:00 SRC=192.168.3.2 DST=192.168.3.91 LEN=585 TOS=0x00 PREC=0x00 TTL=64 ID=22555 DF PROTO=UDP SPT=54482 DPT=42212 LEN=565 
+2026-09-13T13:24:02.069929 192.168.10.244:6666 [    9.617924] [UFW BLOCK] IN=wlan0 OUT= MAC=bc:d0:74:06:52:dd:00:05:cd:ca:93:1c:08:00 SRC=192.168.3.2 DST=192.168.3.91 LEN=594 TOS=0x00 PREC=0x00 TTL=64 ID=22556 DF PROTO=UDP SPT=54482 DPT=42212 LEN=574 
+2026-09-13T13:24:02.069947 192.168.10.244:6666 [    9.617930] [UFW BLOCK] IN=wlan0 OUT= MAC=bc:d0:74:06:52:dd:00:05:cd:ca:93:1c:08:00 SRC=192.168.3.2 DST=192.168.3.91 LEN=637 TOS=0x00 PREC=0x00 TTL=64 ID=22557 DF PROTO=UDP SPT=54482 DPT=42212 LEN=617 
+2026-09-13T13:24:02.069960 192.168.10.244:6666 [    9.617934] [UFW BLOCK] IN=wlan0 OUT= MAC=bc:d0:74:06:52:dd:00:05:cd:ca:93:1c:08:00 SRC=192.168.3.2 DST=192.168.3.91 LEN=594 TOS=0x00 PREC=0x00 TTL=64 ID=22558 DF PROTO=UDP SPT=55505 DPT=42212 LEN=574 
+2026-09-13T13:24:02.069983 192.168.10.244:6666 [ 1575.505281] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=12005 DF PROTO=TCP SPT=47754 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.069999 192.168.10.244:6666 [ 1590.514224] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=2249 DF PROTO=TCP SPT=37122 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070019 192.168.10.244:6666 [ 1612.524720] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=44292 DF PROTO=TCP SPT=48302 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070036 192.168.10.244:6666 [ 1635.506816] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=23733 DF PROTO=TCP SPT=44140 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070057 192.168.10.244:6666 [ 1650.513984] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=7647 DF PROTO=TCP SPT=38470 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070071 192.168.10.244:6666 [ 1672.428573] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=11050 DF PROTO=TCP SPT=36590 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070089 192.168.10.244:6666 [ 1695.508619] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=281 DF PROTO=TCP SPT=44866 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070102 192.168.10.244:6666 [ 1710.511663] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=56712 DF PROTO=TCP SPT=43156 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070120 192.168.10.244:6666 [ 1732.332193] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=19002 DF PROTO=TCP SPT=58778 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070138 192.168.10.244:6666 [ 1755.504687] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=9704 DF PROTO=TCP SPT=46674 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070150 192.168.10.244:6666 [ 1770.510501] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=46314 DF PROTO=TCP SPT=46230 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070168 192.168.10.244:6666 [ 1792.747963] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=38188 DF PROTO=TCP SPT=33716 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070181 192.168.10.244:6666 [ 1815.504215] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=46450 DF PROTO=TCP SPT=59676 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070199 192.168.10.244:6666 [ 1830.504051] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=43961 DF PROTO=TCP SPT=39668 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070212 192.168.10.244:6666 [ 1852.651798] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=40057 DF PROTO=TCP SPT=34520 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070230 192.168.10.244:6666 [ 1875.508160] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=26549 DF PROTO=TCP SPT=39124 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070243 192.168.10.244:6666 [ 1890.506017] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=489 DF PROTO=TCP SPT=36996 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070261 192.168.10.244:6666 [ 1912.555565] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=51970 DF PROTO=TCP SPT=36400 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070276 192.168.10.244:6666 [ 1935.507890] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=35749 DF PROTO=TCP SPT=45198 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070298 192.168.10.244:6666 [ 1950.511710] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=17214 DF PROTO=TCP SPT=51252 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070311 192.168.10.244:6666 [ 1972.460395] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=7784 DF PROTO=TCP SPT=55394 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070330 192.168.10.244:6666 [ 1995.505410] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=39075 DF PROTO=TCP SPT=45778 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070349 192.168.10.244:6666 [ 2010.512564] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=25584 DF PROTO=TCP SPT=44730 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070367 192.168.10.244:6666 [ 2032.363318] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=24267 DF PROTO=TCP SPT=44454 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070387 192.168.10.244:6666 [ 4132.579345] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=39030 DF PROTO=TCP SPT=46040 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070401 192.168.10.244:6666 [ 4155.500016] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=27097 DF PROTO=TCP SPT=55828 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070420 192.168.10.244:6666 [ 4170.504889] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=14978 DF PROTO=TCP SPT=55524 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070433 192.168.10.244:6666 [ 4192.483110] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=21653 DF PROTO=TCP SPT=37866 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070451 192.168.10.244:6666 [ 4215.497722] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=31169 DF PROTO=TCP SPT=58356 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070464 192.168.10.244:6666 [ 4230.504727] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=52557 DF PROTO=TCP SPT=40862 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070482 192.168.10.244:6666 [ 4252.386777] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=5919 DF PROTO=TCP SPT=59970 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070495 192.168.10.244:6666 [ 4275.497518] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=52281 DF PROTO=TCP SPT=50626 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070513 192.168.10.244:6666 [ 4290.502589] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=9303 DF PROTO=TCP SPT=35378 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070531 192.168.10.244:6666 [ 4312.291588] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=13332 DF PROTO=TCP SPT=57834 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070547 192.168.10.244:6666 [ 4335.499310] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=51069 DF PROTO=TCP SPT=50410 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070565 192.168.10.244:6666 [ 4350.504329] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=35030 DF PROTO=TCP SPT=45312 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070578 192.168.10.244:6666 [ 4372.707589] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=1276 DF PROTO=TCP SPT=42806 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070597 192.168.10.244:6666 [ 4395.496960] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=14698 DF PROTO=TCP SPT=42254 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070617 192.168.10.244:6666 [ 4410.504259] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=8729 DF PROTO=TCP SPT=51838 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070643 192.168.10.244:6666 [ 4432.610091] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=50496 DF PROTO=TCP SPT=54734 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070656 192.168.10.244:6666 [ 4455.498961] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=6604 DF PROTO=TCP SPT=45544 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070678 192.168.10.244:6666 [ 4470.495840] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=3519 DF PROTO=TCP SPT=58812 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070690 192.168.10.244:6666 [ 4493.537852] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=3663 DF PROTO=TCP SPT=37896 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070708 192.168.10.244:6666 [ 4515.494569] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=5472 DF PROTO=TCP SPT=33798 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070721 192.168.10.244:6666 [ 4530.494844] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=56165 DF PROTO=TCP SPT=34616 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070739 192.168.10.244:6666 [ 4552.417743] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=45075 DF PROTO=TCP SPT=48304 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070757 192.168.10.244:6666 [ 4575.494246] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=29919 DF PROTO=TCP SPT=39888 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070770 192.168.10.244:6666 [ 4590.494876] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=7233 DF PROTO=TCP SPT=59312 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070787 192.168.10.244:6666 [ 6772.441055] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=65381 DF PROTO=TCP SPT=36634 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070813 192.168.10.244:6666 [ 6795.488135] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=42208 DF PROTO=TCP SPT=56428 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070834 192.168.10.244:6666 [ 6810.495290] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=64436 DF PROTO=TCP SPT=47758 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070848 192.168.10.244:6666 [ 6832.344829] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=16977 DF PROTO=TCP SPT=50888 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070865 192.168.10.244:6666 [ 6855.488830] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=37312 DF PROTO=TCP SPT=53580 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070878 192.168.10.244:6666 [ 6870.495104] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=54189 DF PROTO=TCP SPT=55062 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070896 192.168.10.244:6666 [ 6892.248605] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=48770 DF PROTO=TCP SPT=53630 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070909 192.168.10.244:6666 [ 6915.489013] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=6200 DF PROTO=TCP SPT=52746 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070926 192.168.10.244:6666 [ 6930.494894] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=57866 DF PROTO=TCP SPT=46302 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070945 192.168.10.244:6666 [ 6952.664298] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=40834 DF PROTO=TCP SPT=33040 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070957 192.168.10.244:6666 [ 6975.486345] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=51331 DF PROTO=TCP SPT=48984 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070975 192.168.10.244:6666 [ 6990.494407] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=37897 DF PROTO=TCP SPT=55106 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.070987 192.168.10.244:6666 [ 7012.568136] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=46190 DF PROTO=TCP SPT=39732 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071005 192.168.10.244:6666 [ 7035.486214] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=27861 DF PROTO=TCP SPT=39846 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071017 192.168.10.244:6666 [ 7050.500781] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=19710 DF PROTO=TCP SPT=51378 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071035 192.168.10.244:6666 [ 7072.472875] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=6792 DF PROTO=TCP SPT=53392 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071052 192.168.10.244:6666 [ 7095.489024] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=24762 DF PROTO=TCP SPT=60672 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071077 192.168.10.244:6666 [ 7110.494073] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=54038 DF PROTO=TCP SPT=40780 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071091 192.168.10.244:6666 [ 7132.375563] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=22170 DF PROTO=TCP SPT=54142 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071110 192.168.10.244:6666 [ 7155.484392] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=36553 DF PROTO=TCP SPT=43008 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071123 192.168.10.244:6666 [ 7170.493833] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=33654 DF PROTO=TCP SPT=47086 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071143 192.168.10.244:6666 [ 7192.279299] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=27464 DF PROTO=TCP SPT=33310 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071161 192.168.10.244:6666 [ 7215.488466] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=45413 DF PROTO=TCP SPT=48930 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.071174 192.168.10.244:6666 [ 7230.493383] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=10136 DF PROTO=TCP SPT=35802 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:02.085903 192.168.10.244:6666 [ 7290.201207] JW16_NETCONSOLE_TEST 2026-09-13T13:24:02-05:00 boot=0f968aa6-f19b-4da4-ad43-a76bbde67c82
+2026-09-13T13:24:02.378097 192.168.10.244:6666 [ 7290.493310] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=22229 DF PROTO=TCP SPT=48874 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:24.483762 192.168.10.244:6666 [ 7312.598856] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=7544 DF PROTO=TCP SPT=55524 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:24:29.217642 192.168.10.244:6666 [ 7317.332810] snd-soc-macaudio sound: Speaker volumes locked: Main control not locked
+2026-09-13T13:28:05.506465 192.168.10.244:6666 [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x612f0280]
+2026-09-13T13:28:05.506898 192.168.10.244:6666 [    0.000000] Linux version 7.1.6-1-1-ARCH (linux-asahi@archlinux) (gcc (GCC) 16.1.1 20260430, GNU ld (GNU Binutils) 2.46.0) #1 SMP PREEMPT_DYNAMIC Sat, 08 Aug 2026 17:14:04 +0000
+2026-09-13T13:28:05.506937 192.168.10.244:6666 [    0.000000] random: crng init done
+2026-09-13T13:28:05.506964 192.168.10.244:6666 [    0.000000] Machine model: Apple MacBook Pro (16-inch, M1 Max, 2021)
+2026-09-13T13:28:05.506990 192.168.10.244:6666 [    0.000000] efi: EFI v2.11 by Das U-Boot
+2026-09-13T13:28:05.507039 192.168.10.244:6666 [    0.000000] efi: RTPROP=0x10fb32b0040 SMBIOS 3.0=0x10fb4354000 INITRD=0x10fb3233040 MEMRESERVE=0x10fb3232040 
+2026-09-13T13:28:05.507071 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010001d70000..0x0000010002093fff (3216 KiB) nomap non-reusable asc-firmware@10001d70000
+2026-09-13T13:28:05.507099 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010000c68000..0x00000100015e7fff (9728 KiB) nomap non-reusable asc-firmware@10000c68000
+2026-09-13T13:28:05.507143 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb840c000..0x0000010fb840ffff (16 KiB) nomap non-reusable sio-firmware-data@10fb840c000
+2026-09-13T13:28:05.507173 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8410000..0x0000010fb8413fff (16 KiB) nomap non-reusable sio-firmware-data@10fb8410000
+2026-09-13T13:28:05.507201 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8414000..0x0000010fb8433fff (128 KiB) nomap non-reusable sio-firmware-data@10fb8414000
+2026-09-13T13:28:05.507236 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8434000..0x0000010fb8437fff (16 KiB) nomap non-reusable sio-firmware-data@10fb8434000
+2026-09-13T13:28:05.507261 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010002094000..0x000001000218bfff (992 KiB) nomap non-reusable asc-firmware@10002094000
+2026-09-13T13:28:05.507289 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x000001000163c000..0x0000010001657fff (112 KiB) nomap non-reusable asc-firmware@1000163c000
+2026-09-13T13:28:05.507327 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbeecc000..0x0000010fc618ffff (117520 KiB) nomap non-reusable framebuffer@10fbeecc000
+2026-09-13T13:28:05.507355 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbdbc8000..0x0000010fbebc7fff (16384 KiB) nomap non-reusable @10fbdbc8000
+2026-09-13T13:28:05.507381 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbebc8000..0x0000010fbeec7fff (3072 KiB) nomap non-reusable dcpext0_data@10fbebc8000
+2026-09-13T13:28:05.507419 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbeec8000..0x0000010fbeecbfff (16 KiB) nomap non-reusable region157@10fbeec8000
+2026-09-13T13:28:05.507446 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc6190000..0x0000010fc624ffff (768 KiB) nomap non-reusable region95@10fc6190000
+2026-09-13T13:28:05.507472 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc6250000..0x0000010fc659ffff (3392 KiB) nomap non-reusable region94@10fc6250000
+2026-09-13T13:28:05.507506 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc65a0000..0x0000010fc759ffff (16384 KiB) nomap non-reusable region57@10fc65a0000
+2026-09-13T13:28:05.507530 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc75a0000..0x0000010fc789ffff (3072 KiB) nomap non-reusable dcp_data@10fc75a0000
+2026-09-13T13:28:05.507551 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8458000..0x0000010fb845bfff (16 KiB) map non-reusable flash@10fb8458000
+2026-09-13T13:28:05.507583 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010005720000..0x000001000579bfff (496 KiB) map non-reusable flash@10005720000
+2026-09-13T13:28:05.507604 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8438000..0x0000010fb844bfff (80 KiB) map non-reusable globals
+2026-09-13T13:28:05.507636 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8450000..0x0000010fb8457fff (32 KiB) map non-reusable hw-cal-a
+2026-09-13T13:28:05.507659 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb844c000..0x0000010fb844ffff (16 KiB) map non-reusable hw-cal-b
+2026-09-13T13:28:05.507691 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffff70000..0x0000010ffff73fff (16 KiB) map non-reusable uat-handoff
+2026-09-13T13:28:05.507714 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffff78000..0x0000010ffffb7fff (256 KiB) map non-reusable uat-pagetables
+2026-09-13T13:28:05.507736 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffffb8000..0x0000010ffffbbfff (16 KiB) map non-reusable uat-ttbs
+2026-09-13T13:28:05.507767 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb845c000..0x0000010fb86b7fff (2416 KiB) nomap non-reusable isp-heap
+2026-09-13T13:28:05.507789 192.168.10.244:6666 [    0.000000] cma: Reserved 64 MiB at 0x000001000a000000
+2026-09-13T13:28:05.507816 192.168.10.244:6666 [    0.000000] Zone ranges:
+2026-09-13T13:28:05.507840 192.168.10.244:6666 [    0.000000]   DMA      [mem 0x0000010000c68000-0x0000010ffffbbfff]
+2026-09-13T13:28:05.507871 192.168.10.244:6666 [    0.000000]   DMA32    empty
+2026-09-13T13:28:05.507892 192.168.10.244:6666 [    0.000000]   Normal   empty
+2026-09-13T13:28:05.507910 192.168.10.244:6666 [    0.000000] Movable zone start for each node
+2026-09-13T13:28:05.507930 192.168.10.244:6666 [    0.000000] Early memory node ranges
+2026-09-13T13:28:05.507949 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010000c68000-0x00000100015e7fff]
+2026-09-13T13:28:05.507968 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000163c000-0x0000010001657fff]
+2026-09-13T13:28:05.507999 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010001d70000-0x000001000218bfff]
+2026-09-13T13:28:05.508020 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000218c000-0x00000100057f3fff]
+2026-09-13T13:28:05.508042 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100057f4000-0x0000010005903fff]
+2026-09-13T13:28:05.508065 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010005904000-0x000001000870ffff]
+2026-09-13T13:28:05.508097 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008710000-0x000001000871ffff]
+2026-09-13T13:28:05.508119 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008720000-0x0000010008723fff]
+2026-09-13T13:28:05.508140 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008724000-0x0000010008733fff]
+2026-09-13T13:28:05.508162 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008734000-0x0000010008737fff]
+2026-09-13T13:28:05.508194 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008738000-0x0000010008747fff]
+2026-09-13T13:28:05.508216 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008748000-0x000001000874bfff]
+2026-09-13T13:28:05.508237 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000874c000-0x000001000875bfff]
+2026-09-13T13:28:05.508258 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000875c000-0x000001000875ffff]
+2026-09-13T13:28:05.508278 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008760000-0x000001000876ffff]
+2026-09-13T13:28:05.508309 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008770000-0x0000010008773fff]
+2026-09-13T13:28:05.508330 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008774000-0x0000010008783fff]
+2026-09-13T13:28:05.508349 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008784000-0x0000010008787fff]
+2026-09-13T13:28:05.508368 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008788000-0x0000010008797fff]
+2026-09-13T13:28:05.508398 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008798000-0x000001000879bfff]
+2026-09-13T13:28:05.508419 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000879c000-0x00000100087abfff]
+2026-09-13T13:28:05.508441 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100087ac000-0x00000100087affff]
+2026-09-13T13:28:05.508462 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100087b0000-0x00000100087bffff]
+2026-09-13T13:28:05.508492 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100087c0000-0x00000100087c3fff]
+2026-09-13T13:28:05.508514 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100087c4000-0x00000100087f3fff]
+2026-09-13T13:28:05.508534 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x00000100087f4000-0x0000010f1a3fffff]
+2026-09-13T13:28:05.508555 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010f1a400000-0x0000010f1a403fff]
+2026-09-13T13:28:05.508575 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010f1a404000-0x0000010fb32affff]
+2026-09-13T13:28:05.508606 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb32b0000-0x0000010fb32d3fff]
+2026-09-13T13:28:05.508640 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb32d4000-0x0000010fb4353fff]
+2026-09-13T13:28:05.508660 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb4354000-0x0000010fb4357fff]
+2026-09-13T13:28:05.508681 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb4358000-0x0000010fb831ffff]
+2026-09-13T13:28:05.508717 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8320000-0x0000010fb832ffff]
+2026-09-13T13:28:05.508740 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8330000-0x0000010fb8407fff]
+2026-09-13T13:28:05.508760 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb840c000-0x0000010fb8437fff]
+2026-09-13T13:28:05.508779 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8438000-0x0000010fb845bfff]
+2026-09-13T13:28:05.508810 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb845c000-0x0000010fb86b7fff]
+2026-09-13T13:28:05.508831 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fbdbc8000-0x0000010fc789ffff]
+2026-09-13T13:28:05.508850 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010ffff70000-0x0000010ffff73fff]
+2026-09-13T13:28:05.508870 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010ffff78000-0x0000010ffffbbfff]
+2026-09-13T13:28:05.508889 192.168.10.244:6666 [    0.000000] Initmem setup node 0 [mem 0x0000010000c68000-0x0000010ffffbbfff]
+2026-09-13T13:28:05.508919 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 794 pages in unavailable ranges
+2026-09-13T13:28:05.508939 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 21 pages in unavailable ranges
+2026-09-13T13:28:05.508958 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 454 pages in unavailable ranges
+2026-09-13T13:28:05.508977 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 1 pages in unavailable ranges
+2026-09-13T13:28:05.509008 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 5444 pages in unavailable ranges
+2026-09-13T13:28:05.509031 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 8628 pages in unavailable ranges
+2026-09-13T13:28:05.509052 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 1 pages in unavailable ranges
+2026-09-13T13:28:05.509073 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 17 pages in unavailable ranges
+2026-09-13T13:28:05.509103 192.168.10.244:6666 [    0.000000] percpu: Embedded 9 pages/cpu s103320 r8192 d35944 u147456
+2026-09-13T13:28:05.509125 192.168.10.244:6666 [    0.000000] pcpu-alloc: s103320 r8192 d35944 u147456 alloc=9*16384
+2026-09-13T13:28:05.509146 192.168.10.244:6666 [    0.000000] pcpu-alloc: [0] 00 [0] 01 [0] 02 [0] 03 [0] 04 [0] 05 [0] 06 [0] 07 
+2026-09-13T13:28:05.509168 192.168.10.244:6666 [    0.000000] pcpu-alloc: [0] 08 [0] 09 
+2026-09-13T13:28:05.509187 192.168.10.244:6666 [    0.000000] Detected VIPT I-cache on CPU0
+2026-09-13T13:28:05.509217 192.168.10.244:6666 [    0.000000] CPU features: detected: Address authentication (IMP DEF algorithm)
+2026-09-13T13:28:05.509238 192.168.10.244:6666 [    0.027398] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3b/connector
+2026-09-13T13:28:05.509259 192.168.10.244:6666 [    0.027407] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:28:05.509279 192.168.10.244:6666 [    0.027564] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:28:05.509307 192.168.10.244:6666 [    0.027580] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:28:05.509326 192.168.10.244:6666 [    0.027600] /soc/phy@f03000000: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:28:05.509345 192.168.10.244:6666 [    0.027617] /soc/phy@f03000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3b/connector
+2026-09-13T13:28:05.509374 192.168.10.244:6666 [    0.027702] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/phy@1303000000
+2026-09-13T13:28:05.509394 192.168.10.244:6666 [    0.027719] /soc/phy@1303000000: Fixed dependency cycle(s) with /soc/dcp@289c00000
+2026-09-13T13:28:05.509415 192.168.10.244:6666 [    0.028397] HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+2026-09-13T13:28:05.509437 192.168.10.244:6666 [    0.028399] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+2026-09-13T13:28:05.509459 192.168.10.244:6666 [    0.028401] HugeTLB: registered 32.0 MiB page size, pre-allocated 0 pages
+2026-09-13T13:28:05.509495 192.168.10.244:6666 [    0.028401] HugeTLB: 0 KiB vmemmap can be freed for a 32.0 MiB page
+2026-09-13T13:28:05.509517 192.168.10.244:6666 [    0.028402] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+2026-09-13T13:28:05.509537 192.168.10.244:6666 [    0.028402] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+2026-09-13T13:28:05.509557 192.168.10.244:6666 [    0.028977] iommu: Default domain type: Translated
+2026-09-13T13:28:05.509587 192.168.10.244:6666 [    0.028978] iommu: DMA domain TLB invalidation policy: strict mode
+2026-09-13T13:28:05.512626 192.168.10.244:6666 [    0.032129] SCSI subsystem initialized
+2026-09-13T13:28:05.512668 192.168.10.244:6666 [    0.032159] usbcore: registered new interface driver usbfs
+2026-09-13T13:28:05.512695 192.168.10.244:6666 [    0.032164] usbcore: registered new interface driver hub
+2026-09-13T13:28:05.512719 192.168.10.244:6666 [    0.032170] usbcore: registered new device driver usb
+2026-09-13T13:28:05.512754 192.168.10.244:6666 [    0.032178] pps_core: LinuxPPS API ver. 1 registered
+2026-09-13T13:28:05.512775 192.168.10.244:6666 [    0.032178] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+2026-09-13T13:28:05.512796 192.168.10.244:6666 [    0.032259] efivars: Registered efivars operations
+2026-09-13T13:28:05.512818 192.168.10.244:6666 [    0.032319] Advanced Linux Sound Architecture Driver Initialized.
+2026-09-13T13:28:05.512850 192.168.10.244:6666 [    0.071295] apple-dart 38b30c000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 32 -> 42] initialized
+2026-09-13T13:28:05.512872 192.168.10.244:6666 [    0.071512] apple-dart 3952c0000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.512894 192.168.10.244:6666 [    0.071748] apple-dart 3860e8000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.512925 192.168.10.244:6666 [    0.071965] apple-dart 3860f4000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.512947 192.168.10.244:6666 [    0.072224] platform 384000000.isp: Adding to iommu group 4
+2026-09-13T13:28:05.512971 192.168.10.244:6666 [    0.072442] apple-dart 3860fc000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513015 192.168.10.244:6666 [    0.072664] apple-dart 581008000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513042 192.168.10.244:6666 [    0.072884] apple-dart 582008000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513067 192.168.10.244:6666 [    0.073033] platform 287080000.avd: Adding to iommu group 5
+2026-09-13T13:28:05.513102 192.168.10.244:6666 [    0.073164] apple-dart 287010000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 36 -> 42] initialized
+2026-09-13T13:28:05.513129 192.168.10.244:6666 [    0.073191] apple-dart 289304000.iommu: Limiting DMA range to 0x0000000000000000..0x00000000fbffffff
+2026-09-13T13:28:05.513154 192.168.10.244:6666 [    0.073272] platform soc:display-subsystem: Adding to iommu group 6
+2026-09-13T13:28:05.513189 192.168.10.244:6666 [    0.073619] apple-dart 289304000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513213 192.168.10.244:6666 [    0.073636] apple-dart 28930c000.iommu: Limiting DMA range to 0x000001f000000000..0x000001f0fbffffff
+2026-09-13T13:28:05.513236 192.168.10.244:6666 [    0.073715] platform 289c00000.dcp: Adding to iommu group 7
+2026-09-13T13:28:05.513259 192.168.10.244:6666 [    0.073889] apple-dart 28930c000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513297 192.168.10.244:6666 [    0.074213] apple-dart 702f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513321 192.168.10.244:6666 [    0.074495] platform 702280000.usb: Adding to iommu group 8
+2026-09-13T13:28:05.513344 192.168.10.244:6666 [    0.074551] apple-dart 702f80000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513377 192.168.10.244:6666 [    0.074802] apple-dart b02f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513400 192.168.10.244:6666 [    0.075083] platform b02280000.usb: Adding to iommu group 9
+2026-09-13T13:28:05.513423 192.168.10.244:6666 [    0.075131] apple-dart b02f80000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513455 192.168.10.244:6666 [    0.075363] apple-dart f02f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513479 192.168.10.244:6666 [    0.075670] platform f02280000.usb: Adding to iommu group 10
+2026-09-13T13:28:05.513502 192.168.10.244:6666 [    0.141851] NET: Registered PF_PACKET protocol family
+2026-09-13T13:28:05.513536 192.168.10.244:6666 [    0.141900] Key type dns_resolver registered
+2026-09-13T13:28:05.513560 192.168.10.244:6666 [    0.142911] registered taskstats version 1
+2026-09-13T13:28:05.513583 192.168.10.244:6666 [    0.143005] Loading compiled-in X.509 certificates
+2026-09-13T13:28:05.513606 192.168.10.244:6666 [    0.143955] Key type .fscrypt registered
+2026-09-13T13:28:05.513643 192.168.10.244:6666 [    0.143956] Key type fscrypt-provisioning registered
+2026-09-13T13:28:05.513677 192.168.10.244:6666 [    0.143975] Key type encrypted registered
+2026-09-13T13:28:05.513702 192.168.10.244:6666 [    0.143976] AppArmor: AppArmor sha256 policy hashing enabled
+2026-09-13T13:28:05.513727 192.168.10.244:6666 [    0.145706] leds_pwm led-controller: failed to read period for kbd_backlight, default to off
+2026-09-13T13:28:05.513750 192.168.10.244:6666 [    0.145834] apple-admac 293980000.dma-controller: Audio DMA Controller
+2026-09-13T13:28:05.513772 192.168.10.244:6666 [    0.146461] apple-dart 39b004000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513808 192.168.10.244:6666 [    0.146626] platform 39b400000.dma-controller: Adding to iommu group 11
+2026-09-13T13:28:05.513832 192.168.10.244:6666 [    0.146717] platform 39bc00000.sio: Adding to iommu group 12
+2026-09-13T13:28:05.513856 192.168.10.244:6666 [    0.146878] apple-dart 39b008000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:28:05.513893 192.168.10.244:6666 [    0.147305] nvme-apple 393cc0000.nvme: RTKit: Initializing (protocol version 12)
+2026-09-13T13:28:05.513918 192.168.10.244:6666 [    0.156610] macsmc-rtc macsmc-rtc: registered as rtc0
+2026-09-13T13:28:05.513942 192.168.10.244:6666 [    0.167209] macsmc-rtc macsmc-rtc: setting system clock to 2026-09-13T18:25:05 UTC (1789323905)
+2026-09-13T13:28:05.513966 192.168.10.244:6666 [    0.197329] macsmc-reboot macsmc-reboot: Handling reboot and poweroff requests via SMC
+2026-09-13T13:28:05.514002 192.168.10.244:6666 [    0.198596] pcie-apple 590000000.pcie: host bridge /soc/pcie@590000000 ranges:
+2026-09-13T13:28:05.514025 192.168.10.244:6666 [    0.198603] pcie-apple 590000000.pcie:      MEM 0x05a0000000..0x05bfffffff -> 0x05a0000000
+2026-09-13T13:28:05.514048 192.168.10.244:6666 [    0.198606] pcie-apple 590000000.pcie:      MEM 0x05c0000000..0x05ffffffff -> 0x00c0000000
+2026-09-13T13:28:05.514085 192.168.10.244:6666 [    0.198628] pcie-apple 590000000.pcie: Using 0 auxiliary PERST#
+2026-09-13T13:28:05.514110 192.168.10.244:6666 [    0.220377] Freeing initrd memory: 16448K
+2026-09-13T13:28:05.514131 192.168.10.244:6666 [    0.255285] nvme-apple 393cc0000.nvme: RTKit: syslog message: apcie.c:954: power up done[0]: PMU=Ocarina, PWR=0
+2026-09-13T13:28:05.514152 192.168.10.244:6666 [    0.630077] pcieport 0000:00:01.0: PME: Signaling with IRQ 109
+2026-09-13T13:28:05.514174 192.168.10.244:6666 [    0.630308] pcieport 0000:00:01.0: AER: enabled with IRQ 109
+2026-09-13T13:28:05.514206 192.168.10.244:6666 [    0.630794] pcieport 0000:00:01.0: mask Replay Timer Timeout Correctable Errors due to 0000:02:00.0 hardware defect
+2026-09-13T13:28:05.514229 192.168.10.244:6666 [    0.631588] apple-admac 39b400000.dma-controller: Audio DMA Controller
+2026-09-13T13:28:05.514250 192.168.10.244:6666 [    0.698795] spi-hid-apple-of spi1.0: limiting the number of devices to mngt, kbd and mouse
+2026-09-13T13:28:05.514284 192.168.10.244:6666 [    0.707002] input: Apple SPI Keyboard as /devices/platform/soc/39b10c000.spi/spi_master/spi1/spi1.0/001C:05AC:0343.0001/input/input1
+2026-09-13T13:28:05.514305 192.168.10.244:6666 [    0.707292] hid-generic 001C:05AC:0343.0001: input,hidraw0: SPI HID v3.52 Keyboard [Apple SPI Keyboard] on spi1.0 (1)
+2026-09-13T13:28:05.514324 192.168.10.244:6666 [    0.709423] input: Apple SPI Trackpad Mouse as /devices/platform/soc/39b10c000.spi/spi_master/spi1/spi1.0/001C:05AC:0343.0002/input/input2
+2026-09-13T13:28:05.514367 192.168.10.244:6666 [    0.711281] hid-generic 001C:05AC:0343.0002: input,hidraw1: SPI HID v3.52 Mouse [Apple SPI Trackpad] on spi1.0 (2)
+2026-09-13T13:28:05.514392 192.168.10.244:6666 [    0.711572] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:28:05.514413 192.168.10.244:6666 [    0.711641] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:28:05.514436 192.168.10.244:6666 [    0.711789] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:28:05.514469 192.168.10.244:6666 [    0.711839] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:28:05.514493 192.168.10.244:6666 [    0.711978] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:28:05.514514 192.168.10.244:6666 [    0.712021] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:28:05.514547 192.168.10.244:6666 [    0.713648] clk: Disabling unused clocks
+2026-09-13T13:28:05.514572 192.168.10.244:6666 [    0.713667] PM: genpd: Disabling unused power domains
+2026-09-13T13:28:05.514595 192.168.10.244:6666 [    0.714352] ALSA device list:
+2026-09-13T13:28:05.514630 192.168.10.244:6666 [    0.714356]   No soundcards found.
+2026-09-13T13:28:05.514656 192.168.10.244:6666 [    0.714486] Freeing unused kernel memory: 2048K
+2026-09-13T13:28:05.514690 192.168.10.244:6666 [    0.734148] Checked W+X mappings: passed, no W+X pages found
+2026-09-13T13:28:05.514714 192.168.10.244:6666 [    0.734152] Run /init as init process
+2026-09-13T13:28:05.514738 192.168.10.244:6666 [    0.734153]   with arguments:
+2026-09-13T13:28:05.514763 192.168.10.244:6666 [    0.734154]     /init
+2026-09-13T13:28:05.538649 192.168.10.244:6666 [  179.999655] JW16_NETCONSOLE_REARMED 2026-09-13T13:28:05-05:00 boot=65a53a16-1263-4c11-9e71-8f8662050fad
+2026-09-13T13:28:17.369858 192.168.10.244:6666 [  191.831763] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=2671 DF PROTO=TCP SPT=36154 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:28:47.372059 192.168.10.244:6666 [  221.833833] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=35600 DF PROTO=TCP SPT=50288 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:28:55.651583 192.168.10.244:6666 [  230.113303] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=33009 DF PROTO=TCP SPT=45186 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:29:17.370895 192.168.10.244:6666 [  251.832537] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=17919 DF PROTO=TCP SPT=34250 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:29:47.377097 192.168.10.244:6666 [  281.838607] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=43746 DF PROTO=TCP SPT=49142 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:29:55.619830 192.168.10.244:6666 [  290.081080] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=55179 DF PROTO=TCP SPT=39164 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:30:17.369962 192.168.10.244:6666 [  311.831357] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=39054 DF PROTO=TCP SPT=54406 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:30:47.371005 192.168.10.244:6666 [  341.832296] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=42609 DF PROTO=TCP SPT=55774 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:30:55.651490 192.168.10.244:6666 [  350.112739] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=61972 DF PROTO=TCP SPT=38634 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:31:17.376046 192.168.10.244:6666 [  371.837165] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=5294 DF PROTO=TCP SPT=36008 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:31:47.370851 192.168.10.244:6666 [  401.831867] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=45672 DF PROTO=TCP SPT=50236 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:31:55.619639 192.168.10.244:6666 [  410.080627] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=23855 DF PROTO=TCP SPT=35762 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:32:17.374674 192.168.10.244:6666 [  431.830882] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=49201 DF PROTO=TCP SPT=55000 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:32:47.368918 192.168.10.244:6666 [  461.829678] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=10856 DF PROTO=TCP SPT=41874 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:32:55.651571 192.168.10.244:6666 [  470.112294] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=24387 DF PROTO=TCP SPT=48264 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:33:17.370885 192.168.10.244:6666 [  491.831492] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=17736 DF PROTO=TCP SPT=35692 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:33:47.370946 192.168.10.244:6666 [  521.831438] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=8786 DF PROTO=TCP SPT=47996 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:33:55.619639 192.168.10.244:6666 [  530.080091] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=40137 DF PROTO=TCP SPT=46794 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:34:17.369957 192.168.10.244:6666 [  551.830312] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=56409 DF PROTO=TCP SPT=54176 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:34:47.372653 192.168.10.244:6666 [  581.832165] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=3759 DF PROTO=TCP SPT=45710 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:34:55.652600 192.168.10.244:6666 [  590.112764] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=47892 DF PROTO=TCP SPT=38726 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:35:17.370913 192.168.10.244:6666 [  611.831041] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=48078 DF PROTO=TCP SPT=41884 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:35:47.370889 192.168.10.244:6666 [  641.830834] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=57955 DF PROTO=TCP SPT=42098 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:35:55.619576 192.168.10.244:6666 [  650.079501] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=48530 DF PROTO=TCP SPT=33300 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:36:17.369884 192.168.10.244:6666 [  671.829731] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=51543 DF PROTO=TCP SPT=36256 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:36:47.369298 192.168.10.244:6666 [  701.829026] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=51022 DF PROTO=TCP SPT=47570 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:36:55.651582 192.168.10.244:6666 [  710.111274] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=30729 DF PROTO=TCP SPT=36976 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:37:17.369645 192.168.10.244:6666 [  731.828623] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=37666 DF PROTO=TCP SPT=37366 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:37:47.372892 192.168.10.244:6666 [  761.832343] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=55501 DF PROTO=TCP SPT=38824 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:37:55.619654 192.168.10.244:6666 [  770.079088] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=29184 DF PROTO=TCP SPT=35770 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:38:17.371224 192.168.10.244:6666 [  791.830266] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=20816 DF PROTO=TCP SPT=39830 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:38:47.369096 192.168.10.244:6666 [  821.828308] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=20656 DF PROTO=TCP SPT=53742 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:38:55.651802 192.168.10.244:6666 [  830.110999] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=37330 DF PROTO=TCP SPT=37968 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:39:17.369730 192.168.10.244:6666 [  851.828839] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=51690 DF PROTO=TCP SPT=58790 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:39:47.373649 192.168.10.244:6666 [  881.831866] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=7754 DF PROTO=TCP SPT=33562 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:39:55.619681 192.168.10.244:6666 [  890.078604] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=20156 DF PROTO=TCP SPT=49882 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:40:17.369734 192.168.10.244:6666 [  911.828610] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=15233 DF PROTO=TCP SPT=35334 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:40:47.370164 192.168.10.244:6666 [  941.828897] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=49129 DF PROTO=TCP SPT=49350 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:40:55.651716 192.168.10.244:6666 [  950.110433] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=54510 DF PROTO=TCP SPT=53586 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:41:17.369810 192.168.10.244:6666 [  971.828394] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=14391 DF PROTO=TCP SPT=56458 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:41:26.762273 192.168.10.244:6666 [  981.220886] JW16_STAGE2_PREPARE 2026-09-13T13:41:26-05:00
+2026-09-13T13:41:33.601549 192.168.10.244:6666 [  988.060147] JW16_STAGE2_INSMOD_BEGIN 2026-09-13T13:41:33-05:00 boot=65a53a16-1263-4c11-9e71-8f8662050fad
+2026-09-13T13:41:33.616776 192.168.10.244:6666 [  988.075435] ane 284000000.ane: irq: leaving dart irq 61 enabled
+2026-09-13T13:41:33.616817 192.168.10.244:6666 [  988.075453] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000
+2026-09-13T13:41:33.616835 192.168.10.244:6666 [  988.075455] ane 284000000.ane: res-dump: dart0 start=0x0000000285800000 size=0x4000
+2026-09-13T13:41:33.616849 192.168.10.244:6666 [  988.075456] ane 284000000.ane: res-dump: dart1 start=0x0000000285810000 size=0x4000
+2026-09-13T13:41:33.616885 192.168.10.244:6666 [  988.075457] ane 284000000.ane: res-dump: dart2 start=0x0000000285820000 size=0x4000
+2026-09-13T13:41:33.616900 192.168.10.244:6666 [  988.075458] ane 284000000.ane: res-dump: mapped engine=000000000243bbf7 dart0=000000001ea6fa4a dart1=000000004f511046 dart2=000000007c92b446
+2026-09-13T13:41:33.616915 192.168.10.244:6666 [  988.075460] ane 284000000.ane: res-dump: ttbr offset=0x200
+2026-09-13T13:41:33.616949 192.168.10.244:6666 [  988.075460] ane 284000000.ane: probe: iommu ok, powering domains
+2026-09-13T13:41:33.616969 192.168.10.244:6666 [  988.075521] ane 284000000.ane: power: ps@0x268 before 0x1f0003ff
+2026-09-13T13:41:33.616984 192.168.10.244:6666 [  988.075525] ane 284000000.ane: power: ps@0x268 active
+2026-09-13T13:41:33.616997 192.168.10.244:6666 [  988.075528] ane 284000000.ane: power: ps@0x2c8 before 0x3ff
+2026-09-13T13:41:33.617010 192.168.10.244:6666 [  988.075539] ane 284000000.ane: power: ps@0x2c8 active
+2026-09-13T13:41:33.617034 192.168.10.244:6666 [  988.075542] ane 284000000.ane: probe: domains on, remap ttbr
+2026-09-13T13:41:33.617052 192.168.10.244:6666 [  988.075543] ane 284000000.ane: probe: stage30 reading dart0 ttbr
+2026-09-13T13:41:33.617066 192.168.10.244:6666 [  988.075544] ane 284000000.ane: probe: stage30 dart0 ttbr = 0x90007e60
+2026-09-13T13:41:33.617079 192.168.10.244:6666 [  988.075546] ane 284000000.ane: probe with driver ane failed with error -22
+2026-09-13T13:41:33.632508 192.168.10.244:6666 [  988.091099] JW16_STAGE2_INSMOD_END 2026-09-13T13:41:33-05:00
+2026-09-13T13:41:47.370716 192.168.10.244:6666 [ 1001.829205] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=63198 DF PROTO=TCP SPT=56520 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:41:55.619584 192.168.10.244:6666 [ 1010.078046] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=26283 DF PROTO=TCP SPT=51100 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:42:17.370705 192.168.10.244:6666 [ 1031.829092] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=30660 DF PROTO=TCP SPT=39546 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:42:47.372883 192.168.10.244:6666 [ 1061.831131] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=13403 DF PROTO=TCP SPT=57042 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:42:55.651647 192.168.10.244:6666 [ 1070.109898] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=39514 DF PROTO=TCP SPT=54964 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:43:17.370646 192.168.10.244:6666 [ 1091.827815] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=4295 DF PROTO=TCP SPT=54592 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:43:47.372865 192.168.10.244:6666 [ 1121.830886] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=1337 DF PROTO=TCP SPT=59794 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:43:55.619546 192.168.10.244:6666 [ 1130.077539] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=6054 DF PROTO=TCP SPT=44632 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:44:17.369717 192.168.10.244:6666 [ 1151.827621] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=27713 DF PROTO=TCP SPT=38500 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:44:47.372953 192.168.10.244:6666 [ 1181.830712] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=58745 DF PROTO=TCP SPT=48000 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:44:55.651748 192.168.10.244:6666 [ 1190.109497] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=46377 DF PROTO=TCP SPT=53188 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:45:17.370798 192.168.10.244:6666 [ 1211.828400] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=9688 DF PROTO=TCP SPT=50264 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:45:47.372792 192.168.10.244:6666 [ 1241.830317] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=64416 DF PROTO=TCP SPT=33510 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:45:55.620507 192.168.10.244:6666 [ 1250.077051] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=27791 DF PROTO=TCP SPT=52464 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:46:17.370755 192.168.10.244:6666 [ 1271.828160] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=41725 DF PROTO=TCP SPT=36712 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:46:47.369705 192.168.10.244:6666 [ 1301.827005] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=62390 DF PROTO=TCP SPT=47724 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:46:55.651487 192.168.10.244:6666 [ 1310.108763] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=2270 DF PROTO=TCP SPT=43482 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:47:17.368348 192.168.10.244:6666 [ 1331.825516] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=3469 DF PROTO=TCP SPT=59004 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:47:47.370802 192.168.10.244:6666 [ 1361.827818] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=63703 DF PROTO=TCP SPT=56650 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:47:55.619574 192.168.10.244:6666 [ 1370.076571] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=65456 DF PROTO=TCP SPT=44964 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:48:17.370699 192.168.10.244:6666 [ 1391.827600] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=48396 DF PROTO=TCP SPT=43868 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:48:47.372650 192.168.10.244:6666 [ 1421.827778] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=37512 DF PROTO=TCP SPT=46044 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:48:55.651588 192.168.10.244:6666 [ 1430.108356] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=39384 DF PROTO=TCP SPT=35140 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:49:17.368846 192.168.10.244:6666 [ 1451.825543] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=52811 DF PROTO=TCP SPT=56434 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:49:47.371790 192.168.10.244:6666 [ 1481.828314] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=26434 DF PROTO=TCP SPT=56078 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:49:55.619926 192.168.10.244:6666 [ 1490.076467] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=49390 DF PROTO=TCP SPT=60794 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:50:17.370777 192.168.10.244:6666 [ 1511.827180] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=52607 DF PROTO=TCP SPT=44842 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:50:47.370708 192.168.10.244:6666 [ 1541.827003] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=9224 DF PROTO=TCP SPT=60326 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:50:55.651556 192.168.10.244:6666 [ 1550.107823] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=38258 DF PROTO=TCP SPT=53532 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:51:17.370665 192.168.10.244:6666 [ 1571.826857] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=61901 DF PROTO=TCP SPT=56838 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:51:47.372029 192.168.10.244:6666 [ 1601.828080] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=48249 DF PROTO=TCP SPT=49060 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:51:55.619626 192.168.10.244:6666 [ 1610.075652] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=59250 DF PROTO=TCP SPT=39466 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:52:17.368735 192.168.10.244:6666 [ 1631.824693] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=49139 DF PROTO=TCP SPT=60014 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:52:47.372693 192.168.10.244:6666 [ 1661.828494] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=11604 DF PROTO=TCP SPT=56034 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:52:55.651651 192.168.10.244:6666 [ 1670.107398] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=60517 DF PROTO=TCP SPT=59088 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:53:17.369657 192.168.10.244:6666 [ 1691.825352] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=19419 DF PROTO=TCP SPT=42372 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:53:47.370657 192.168.10.244:6666 [ 1721.826222] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=50891 DF PROTO=TCP SPT=54388 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:53:55.619547 192.168.10.244:6666 [ 1730.075081] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=60458 DF PROTO=TCP SPT=40912 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:54:17.368681 192.168.10.244:6666 [ 1751.824131] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=17401 DF PROTO=TCP SPT=45622 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:54:47.370486 192.168.10.244:6666 [ 1781.825802] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=27522 DF PROTO=TCP SPT=44256 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:54:55.651517 192.168.10.244:6666 [ 1790.106812] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=3303 DF PROTO=TCP SPT=59938 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:55:17.370658 192.168.10.244:6666 [ 1811.825860] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=18541 DF PROTO=TCP SPT=56072 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:55:47.372908 192.168.10.244:6666 [ 1841.827961] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=30941 DF PROTO=TCP SPT=42230 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:55:55.620507 192.168.10.244:6666 [ 1850.075555] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=33938 DF PROTO=TCP SPT=59398 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:56:17.370694 192.168.10.244:6666 [ 1871.825614] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=30854 DF PROTO=TCP SPT=37908 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:56:47.370827 192.168.10.244:6666 [ 1901.825631] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=18108 DF PROTO=TCP SPT=37170 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:56:55.651706 192.168.10.244:6666 [ 1910.106459] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.152 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=17467 DF PROTO=TCP SPT=33846 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:57:11.940741 192.168.10.244:6666 [ 1926.395495] JW16_STOCK_RESTORE 2026-09-13T13:57:11-05:00
+2026-09-13T13:57:15.625186 192.168.10.244:6666 [ 1930.079155] snd-soc-macaudio sound: Speaker volumes locked: Main control not locked
+2026-09-13T13:57:15.625295 192.168.10.244:6666 [ 1930.080113] printk: console [netcon0] disabled
+2026-09-13T13:58:07.302089 192.168.10.244:6666 [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x612f0280]
+2026-09-13T13:58:07.302183 192.168.10.244:6666 [    0.000000] Linux version 7.1.6-1-1-ARCH (linux-asahi@archlinux) (gcc (GCC) 16.1.1 20260430, GNU ld (GNU Binutils) 2.46.0) #1 SMP PREEMPT_DYNAMIC Sat, 08 Aug 2026 17:14:04 +0000
+2026-09-13T13:58:07.302230 192.168.10.244:6666 [    0.000000] random: crng init done
+2026-09-13T13:58:07.302247 192.168.10.244:6666 [    0.000000] Machine model: Apple MacBook Pro (16-inch, M1 Max, 2021)
+2026-09-13T13:58:07.302261 192.168.10.244:6666 [    0.000000] efi: EFI v2.11 by Das U-Boot
+2026-09-13T13:58:07.302275 192.168.10.244:6666 [    0.000000] efi: RTPROP=0x10fb32b0040 SMBIOS 3.0=0x10fb4354000 INITRD=0x10fb3233040 MEMRESERVE=0x10fb3232040 
+2026-09-13T13:58:07.302290 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010001d70000..0x0000010002093fff (3216 KiB) nomap non-reusable asc-firmware@10001d70000
+2026-09-13T13:58:07.302315 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010000c68000..0x00000100015e7fff (9728 KiB) nomap non-reusable asc-firmware@10000c68000
+2026-09-13T13:58:07.302329 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb840c000..0x0000010fb840ffff (16 KiB) nomap non-reusable sio-firmware-data@10fb840c000
+2026-09-13T13:58:07.302342 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8410000..0x0000010fb8413fff (16 KiB) nomap non-reusable sio-firmware-data@10fb8410000
+2026-09-13T13:58:07.302364 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8414000..0x0000010fb8433fff (128 KiB) nomap non-reusable sio-firmware-data@10fb8414000
+2026-09-13T13:58:07.302377 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8434000..0x0000010fb8437fff (16 KiB) nomap non-reusable sio-firmware-data@10fb8434000
+2026-09-13T13:58:07.302398 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010002094000..0x000001000218bfff (992 KiB) nomap non-reusable asc-firmware@10002094000
+2026-09-13T13:58:07.302412 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x000001000163c000..0x0000010001657fff (112 KiB) nomap non-reusable asc-firmware@1000163c000
+2026-09-13T13:58:07.302424 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbeecc000..0x0000010fc618ffff (117520 KiB) nomap non-reusable framebuffer@10fbeecc000
+2026-09-13T13:58:07.302445 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbdbc8000..0x0000010fbebc7fff (16384 KiB) nomap non-reusable @10fbdbc8000
+2026-09-13T13:58:07.302459 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbebc8000..0x0000010fbeec7fff (3072 KiB) nomap non-reusable dcpext0_data@10fbebc8000
+2026-09-13T13:58:07.302477 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fbeec8000..0x0000010fbeecbfff (16 KiB) nomap non-reusable region157@10fbeec8000
+2026-09-13T13:58:07.302499 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc6190000..0x0000010fc624ffff (768 KiB) nomap non-reusable region95@10fc6190000
+2026-09-13T13:58:07.302513 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc6250000..0x0000010fc659ffff (3392 KiB) nomap non-reusable region94@10fc6250000
+2026-09-13T13:58:07.302526 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc65a0000..0x0000010fc759ffff (16384 KiB) nomap non-reusable region57@10fc65a0000
+2026-09-13T13:58:07.302550 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fc75a0000..0x0000010fc789ffff (3072 KiB) nomap non-reusable dcp_data@10fc75a0000
+2026-09-13T13:58:07.302565 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8458000..0x0000010fb845bfff (16 KiB) map non-reusable flash@10fb8458000
+2026-09-13T13:58:07.302578 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010005d54000..0x0000010005dcffff (496 KiB) map non-reusable flash@10005d54000
+2026-09-13T13:58:07.302591 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8438000..0x0000010fb844bfff (80 KiB) map non-reusable globals
+2026-09-13T13:58:07.302604 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb8450000..0x0000010fb8457fff (32 KiB) map non-reusable hw-cal-a
+2026-09-13T13:58:07.302633 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb844c000..0x0000010fb844ffff (16 KiB) map non-reusable hw-cal-b
+2026-09-13T13:58:07.302648 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffff70000..0x0000010ffff73fff (16 KiB) map non-reusable uat-handoff
+2026-09-13T13:58:07.302661 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffff78000..0x0000010ffffb7fff (256 KiB) map non-reusable uat-pagetables
+2026-09-13T13:58:07.302674 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010ffffb8000..0x0000010ffffbbfff (16 KiB) map non-reusable uat-ttbs
+2026-09-13T13:58:07.302688 192.168.10.244:6666 [    0.000000] OF: reserved mem: 0x0000010fb845c000..0x0000010fb86b7fff (2416 KiB) nomap non-reusable isp-heap
+2026-09-13T13:58:07.302701 192.168.10.244:6666 [    0.000000] cma: Reserved 64 MiB at 0x000001000a000000
+2026-09-13T13:58:07.302714 192.168.10.244:6666 [    0.000000] Zone ranges:
+2026-09-13T13:58:07.302728 192.168.10.244:6666 [    0.000000]   DMA      [mem 0x0000010000c68000-0x0000010ffffbbfff]
+2026-09-13T13:58:07.302741 192.168.10.244:6666 [    0.000000]   DMA32    empty
+2026-09-13T13:58:07.302754 192.168.10.244:6666 [    0.000000]   Normal   empty
+2026-09-13T13:58:07.302767 192.168.10.244:6666 [    0.000000] Movable zone start for each node
+2026-09-13T13:58:07.302779 192.168.10.244:6666 [    0.000000] Early memory node ranges
+2026-09-13T13:58:07.302792 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010000c68000-0x00000100015e7fff]
+2026-09-13T13:58:07.302805 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000163c000-0x0000010001657fff]
+2026-09-13T13:58:07.302819 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010001d70000-0x000001000218bfff]
+2026-09-13T13:58:07.302832 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x000001000218c000-0x0000010005e27fff]
+2026-09-13T13:58:07.302845 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010005e28000-0x0000010005f37fff]
+2026-09-13T13:58:07.302858 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010005f38000-0x0000010008d0ffff]
+2026-09-13T13:58:07.302871 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d10000-0x0000010008d1ffff]
+2026-09-13T13:58:07.302884 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d20000-0x0000010008d23fff]
+2026-09-13T13:58:07.302897 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d24000-0x0000010008d33fff]
+2026-09-13T13:58:07.302913 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d34000-0x0000010008d37fff]
+2026-09-13T13:58:07.302935 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d38000-0x0000010008d47fff]
+2026-09-13T13:58:07.302954 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d48000-0x0000010008d4bfff]
+2026-09-13T13:58:07.302967 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d4c000-0x0000010008d5bfff]
+2026-09-13T13:58:07.302981 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d5c000-0x0000010008d5ffff]
+2026-09-13T13:58:07.302995 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d60000-0x0000010008d6ffff]
+2026-09-13T13:58:07.303013 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d70000-0x0000010008d73fff]
+2026-09-13T13:58:07.303028 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d74000-0x0000010008d83fff]
+2026-09-13T13:58:07.303042 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d84000-0x0000010008d87fff]
+2026-09-13T13:58:07.303055 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d88000-0x0000010008d97fff]
+2026-09-13T13:58:07.303068 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d98000-0x0000010008d9bfff]
+2026-09-13T13:58:07.303088 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008d9c000-0x0000010008dabfff]
+2026-09-13T13:58:07.303102 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008dac000-0x0000010008daffff]
+2026-09-13T13:58:07.303116 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008db0000-0x0000010008dbffff]
+2026-09-13T13:58:07.303129 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008dc0000-0x0000010008dc3fff]
+2026-09-13T13:58:07.303142 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008dc4000-0x0000010008df3fff]
+2026-09-13T13:58:07.303157 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010008df4000-0x0000010f1a3fffff]
+2026-09-13T13:58:07.303174 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010f1a400000-0x0000010f1a403fff]
+2026-09-13T13:58:07.303187 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010f1a404000-0x0000010fb32affff]
+2026-09-13T13:58:07.303201 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb32b0000-0x0000010fb32d3fff]
+2026-09-13T13:58:07.303214 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb32d4000-0x0000010fb4353fff]
+2026-09-13T13:58:07.303227 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb4354000-0x0000010fb4357fff]
+2026-09-13T13:58:07.303244 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb4358000-0x0000010fb831ffff]
+2026-09-13T13:58:07.303258 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8320000-0x0000010fb832ffff]
+2026-09-13T13:58:07.303272 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8330000-0x0000010fb8407fff]
+2026-09-13T13:58:07.303285 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb840c000-0x0000010fb8437fff]
+2026-09-13T13:58:07.303299 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb8438000-0x0000010fb845bfff]
+2026-09-13T13:58:07.303314 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fb845c000-0x0000010fb86b7fff]
+2026-09-13T13:58:07.303330 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010fbdbc8000-0x0000010fc789ffff]
+2026-09-13T13:58:07.303344 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010ffff70000-0x0000010ffff73fff]
+2026-09-13T13:58:07.303357 192.168.10.244:6666 [    0.000000]   node   0: [mem 0x0000010ffff78000-0x0000010ffffbbfff]
+2026-09-13T13:58:07.303370 192.168.10.244:6666 [    0.000000] Initmem setup node 0 [mem 0x0000010000c68000-0x0000010ffffbbfff]
+2026-09-13T13:58:07.303383 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 794 pages in unavailable ranges
+2026-09-13T13:58:07.303400 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 21 pages in unavailable ranges
+2026-09-13T13:58:07.303414 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 454 pages in unavailable ranges
+2026-09-13T13:58:07.303427 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 1 pages in unavailable ranges
+2026-09-13T13:58:07.303440 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 5444 pages in unavailable ranges
+2026-09-13T13:58:07.303475 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 8628 pages in unavailable ranges
+2026-09-13T13:58:07.303499 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 1 pages in unavailable ranges
+2026-09-13T13:58:07.303513 192.168.10.244:6666 [    0.000000] On node 0, zone DMA: 17 pages in unavailable ranges
+2026-09-13T13:58:07.303526 192.168.10.244:6666 [    0.000000] percpu: Embedded 9 pages/cpu s103320 r8192 d35944 u147456
+2026-09-13T13:58:07.303540 192.168.10.244:6666 [    0.000000] pcpu-alloc: s103320 r8192 d35944 u147456 alloc=9*16384
+2026-09-13T13:58:07.303559 192.168.10.244:6666 [    0.000000] pcpu-alloc: [0] 00 [0] 01 [0] 02 [0] 03 [0] 04 [0] 05 [0] 06 [0] 07 
+2026-09-13T13:58:07.303573 192.168.10.244:6666 [    0.000000] pcpu-alloc: [0] 08 [0] 09 
+2026-09-13T13:58:07.303587 192.168.10.244:6666 [    0.000000] Detected VIPT I-cache on CPU0
+2026-09-13T13:58:07.303600 192.168.10.244:6666 [    0.000000] CPU features: detected: Address authentication (IMP DEF algorithm)
+2026-09-13T13:58:07.303621 192.168.10.244:6666 [    0.000000] CPU features: detected: Virtualization Host Extensions
+2026-09-13T13:58:07.303636 192.168.10.244:6666 [    0.000000] CPU features: detected: Spectre-v4
+2026-09-13T13:58:07.303649 192.168.10.244:6666 [    0.000000] CPU features: detected: Spectre-BHB
+2026-09-13T13:58:07.303662 192.168.10.244:6666 [    0.000000] CPU features: detected: Apple IMPDEF PMUv3 Traps
+2026-09-13T13:58:07.303675 192.168.10.244:6666 [    0.000000] alternatives: applying boot alternatives
+2026-09-13T13:58:07.303688 192.168.10.244:6666 [    0.000000] Kernel command line: BOOT_IMAGE=/vmlinuz-linux-asahi root=UUID=4f4d5801-524f-4f54-8000-000000000001 rw rootflags=subvol=@ zswap.enabled=0 rootfstype=btrfs quiet loglevel=3 splash
+2026-09-13T13:58:07.303704 192.168.10.244:6666 [    0.000000] Unknown kernel command line parameters "splash", will be passed to user space.
+2026-09-13T13:58:07.303717 192.168.10.244:6666 [    0.000000] printk: log buffer data + meta data: 262144 + 1114112 = 1376256 bytes
+2026-09-13T13:58:07.303730 192.168.10.244:6666 [    0.000000] Dentry cache hash table entries: 8388608 (order: 12, 67108864 bytes, linear)
+2026-09-13T13:58:07.303743 192.168.10.244:6666 [    0.000000] Inode-cache hash table entries: 4194304 (order: 11, 33554432 bytes, linear)
+2026-09-13T13:58:07.303756 192.168.10.244:6666 [    0.000000] software IO TLB: SWIOTLB bounce buffer size adjusted to 63MB
+2026-09-13T13:58:07.303770 192.168.10.244:6666 [    0.000000] software IO TLB: area num 16.
+2026-09-13T13:58:07.303782 192.168.10.244:6666 [    0.000000] software IO TLB: SWIOTLB bounce buffer size roundup to 64MB
+2026-09-13T13:58:07.303795 192.168.10.244:6666 [    0.000000] software IO TLB: mapped [mem 0x0000010fa9230000-0x0000010fad230000] (64MB)
+2026-09-13T13:58:07.303809 192.168.10.244:6666 [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 4129792
+2026-09-13T13:58:07.303823 192.168.10.244:6666 [    0.000000] mem auto-init: stack:off, heap alloc:on, heap free:off
+2026-09-13T13:58:07.303836 192.168.10.244:6666 [    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=10, Nodes=1
+2026-09-13T13:58:07.303849 192.168.10.244:6666 [    0.000000] Dynamic Preempt: full
+2026-09-13T13:58:07.303863 192.168.10.244:6666 [    0.000000] rcu: Preemptible hierarchical RCU implementation.
+2026-09-13T13:58:07.303876 192.168.10.244:6666 [    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=10.
+2026-09-13T13:58:07.303889 192.168.10.244:6666 [    0.000000] 	Trampoline variant of Tasks RCU enabled.
+2026-09-13T13:58:07.303902 192.168.10.244:6666 [    0.000161] Console: colour dummy device 80x25
+2026-09-13T13:58:07.303915 192.168.10.244:6666 [    0.000165] printk: legacy console [tty0] enabled
+2026-09-13T13:58:07.303929 192.168.10.244:6666 [    0.000190] Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=24000)
+2026-09-13T13:58:07.303943 192.168.10.244:6666 [    0.000193] pid_max: default: 32768 minimum: 301
+2026-09-13T13:58:07.303956 192.168.10.244:6666 [    0.000360] landlock: Up and running.
+2026-09-13T13:58:07.303973 192.168.10.244:6666 [    0.000361] Yama: becoming mindful.
+2026-09-13T13:58:07.303987 192.168.10.244:6666 [    0.000456] AppArmor: AppArmor initialized
+2026-09-13T13:58:07.304000 192.168.10.244:6666 [    0.000520] Mount-cache hash table entries: 131072 (order: 6, 1048576 bytes, linear)
+2026-09-13T13:58:07.304013 192.168.10.244:6666 [    0.000536] Mountpoint-cache hash table entries: 131072 (order: 6, 1048576 bytes, linear)
+2026-09-13T13:58:07.304026 192.168.10.244:6666 [    0.000633] VFS: Finished mounting rootfs on nullfs
+2026-09-13T13:58:07.304040 192.168.10.244:6666 [    0.001342] rcu: Hierarchical SRCU implementation.
+2026-09-13T13:58:07.304053 192.168.10.244:6666 [    0.001344] rcu: 	Max phase no-delay instances is 400.
+2026-09-13T13:58:07.304066 192.168.10.244:6666 [    0.001389] Timer migration: 2 hierarchy levels; 8 children per group; 2 crossnode level
+2026-09-13T13:58:07.304079 192.168.10.244:6666 [    0.001612] Remapping and enabling EFI services.
+2026-09-13T13:58:07.304093 192.168.10.244:6666 [    0.001719] smp: Bringing up secondary CPUs ...
+2026-09-13T13:58:07.304106 192.168.10.244:6666 [    0.001820] Detected VIPT I-cache on CPU1
+2026-09-13T13:58:07.304119 192.168.10.244:6666 [    0.001857] CPU1: Booted secondary processor 0x0000000001 [0x612f0280]
+2026-09-13T13:58:07.304132 192.168.10.244:6666 [    0.001994] Detected VIPT I-cache on CPU2
+2026-09-13T13:58:07.304145 192.168.10.244:6666 [    0.002031] CPU2: Booted secondary processor 0x0000010100 [0x612f0290]
+2026-09-13T13:58:07.304158 192.168.10.244:6666 [    0.002179] Detected VIPT I-cache on CPU3
+2026-09-13T13:58:07.304170 192.168.10.244:6666 [    0.002204] CPU3: Booted secondary processor 0x0000010101 [0x612f0290]
+2026-09-13T13:58:07.304183 192.168.10.244:6666 [    0.002331] Detected VIPT I-cache on CPU4
+2026-09-13T13:58:07.304196 192.168.10.244:6666 [    0.002356] CPU4: Booted secondary processor 0x0000010102 [0x612f0290]
+2026-09-13T13:58:07.304208 192.168.10.244:6666 [    0.002494] Detected VIPT I-cache on CPU5
+2026-09-13T13:58:07.304222 192.168.10.244:6666 [    0.010201] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+2026-09-13T13:58:07.304235 192.168.10.244:6666 [    0.011289] DMA: preallocated 8192 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+2026-09-13T13:58:07.304249 192.168.10.244:6666 [    0.011302] audit: initializing netlink subsys (disabled)
+2026-09-13T13:58:07.304262 192.168.10.244:6666 [    0.011335] audit: type=2000 audit(0.011:1): state=initialized audit_enabled=0 res=1
+2026-09-13T13:58:07.304274 192.168.10.244:6666 [    0.011442] thermal_sys: Registered thermal governor 'fair_share'
+2026-09-13T13:58:07.304287 192.168.10.244:6666 [    0.011445] thermal_sys: Registered thermal governor 'bang_bang'
+2026-09-13T13:58:07.304301 192.168.10.244:6666 [    0.011446] thermal_sys: Registered thermal governor 'step_wise'
+2026-09-13T13:58:07.304314 192.168.10.244:6666 [    0.011447] thermal_sys: Registered thermal governor 'user_space'
+2026-09-13T13:58:07.304326 192.168.10.244:6666 [    0.011448] thermal_sys: Registered thermal governor 'power_allocator'
+2026-09-13T13:58:07.304339 192.168.10.244:6666 [    0.011459] cpuidle: using governor ladder
+2026-09-13T13:58:07.304352 192.168.10.244:6666 [    0.011466] cpuidle: using governor menu
+2026-09-13T13:58:07.304365 192.168.10.244:6666 [    0.011517] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+2026-09-13T13:58:07.304377 192.168.10.244:6666 [    0.011602] ASID allocator initialised with 256 entries
+2026-09-13T13:58:07.304390 192.168.10.244:6666 [    0.014703] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:58:07.304403 192.168.10.244:6666 [    0.014714] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:58:07.304416 192.168.10.244:6666 [    0.014730] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:58:07.304436 192.168.10.244:6666 [    0.014740] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:58:07.304456 192.168.10.244:6666 [    0.014755] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:58:07.304472 192.168.10.244:6666 [    0.014765] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:58:07.304486 192.168.10.244:6666 [    0.014888] /soc/pcie@590000000: Fixed dependency cycle(s) with /soc/pcie@590000000
+2026-09-13T13:58:07.304499 192.168.10.244:6666 [    0.014894] /soc/pcie@590000000/pci@0,0: Fixed dependency cycle(s) with /soc/pcie@590000000/pci@0,0
+2026-09-13T13:58:07.304512 192.168.10.244:6666 [    0.014905] /soc/pcie@590000000/pci@1,0: Fixed dependency cycle(s) with /soc/pcie@590000000/pci@1,0
+2026-09-13T13:58:07.304530 192.168.10.244:6666 [    0.014927] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/audio-controller@39b504000
+2026-09-13T13:58:07.304544 192.168.10.244:6666 [    0.014933] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/phy@1303000000
+2026-09-13T13:58:07.304558 192.168.10.244:6666 [    0.026814] /soc/i2c@39b040000/usb-pd@38/connector: Fixed dependency cycle(s) with /soc/phy@703000000
+2026-09-13T13:58:07.304571 192.168.10.244:6666 [    0.026833] /soc/phy@703000000: Fixed dependency cycle(s) with /soc/usb@702280000
+2026-09-13T13:58:07.304584 192.168.10.244:6666 [    0.026850] /soc/phy@703000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@38/connector
+2026-09-13T13:58:07.304599 192.168.10.244:6666 [    0.026911] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:58:07.304626 192.168.10.244:6666 [    0.026930] /soc/usb@b02280000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3f/connector
+2026-09-13T13:58:07.304645 192.168.10.244:6666 [    0.026940] /soc/usb@b02280000: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:58:07.304662 192.168.10.244:6666 [    0.027102] /soc/usb@b02280000: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:58:07.304679 192.168.10.244:6666 [    0.027119] /soc/i2c@39b040000/usb-pd@3f/connector: Fixed dependency cycle(s) with /soc/phy@b03000000
+2026-09-13T13:58:07.304696 192.168.10.244:6666 [    0.027138] /soc/phy@b03000000: Fixed dependency cycle(s) with /soc/usb@b02280000
+2026-09-13T13:58:07.304710 192.168.10.244:6666 [    0.027155] /soc/phy@b03000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3f/connector
+2026-09-13T13:58:07.304724 192.168.10.244:6666 [    0.027215] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:58:07.304737 192.168.10.244:6666 [    0.027234] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3b/connector
+2026-09-13T13:58:07.304750 192.168.10.244:6666 [    0.027244] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:58:07.304763 192.168.10.244:6666 [    0.027406] /soc/usb@f02280000: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:58:07.304775 192.168.10.244:6666 [    0.027422] /soc/i2c@39b040000/usb-pd@3b/connector: Fixed dependency cycle(s) with /soc/phy@f03000000
+2026-09-13T13:58:07.304788 192.168.10.244:6666 [    0.027440] /soc/phy@f03000000: Fixed dependency cycle(s) with /soc/usb@f02280000
+2026-09-13T13:58:07.304801 192.168.10.244:6666 [    0.027458] /soc/phy@f03000000: Fixed dependency cycle(s) with /soc/i2c@39b040000/usb-pd@3b/connector
+2026-09-13T13:58:07.304814 192.168.10.244:6666 [    0.027542] /soc/dcp@289c00000: Fixed dependency cycle(s) with /soc/phy@1303000000
+2026-09-13T13:58:07.304826 192.168.10.244:6666 [    0.027559] /soc/phy@1303000000: Fixed dependency cycle(s) with /soc/dcp@289c00000
+2026-09-13T13:58:07.304839 192.168.10.244:6666 [    0.028226] HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+2026-09-13T13:58:07.304856 192.168.10.244:6666 [    0.028228] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+2026-09-13T13:58:07.304869 192.168.10.244:6666 [    0.028230] HugeTLB: registered 32.0 MiB page size, pre-allocated 0 pages
+2026-09-13T13:58:07.304882 192.168.10.244:6666 [    0.028230] HugeTLB: 0 KiB vmemmap can be freed for a 32.0 MiB page
+2026-09-13T13:58:07.304895 192.168.10.244:6666 [    0.028231] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+2026-09-13T13:58:07.304908 192.168.10.244:6666 [    0.045739] MPTCP token hash table entries: 65536 (order: 7, 1572864 bytes, linear)
+2026-09-13T13:58:07.304921 192.168.10.244:6666 [    0.045856] UDP hash table entries: 32768 (order: 7, 2097152 bytes, linear)
+2026-09-13T13:58:07.304935 192.168.10.244:6666 [    0.046067] NET: Registered PF_UNIX/PF_LOCAL protocol family
+2026-09-13T13:58:07.304948 192.168.10.244:6666 [    0.046162] RPC: Registered named UNIX socket transport module.
+2026-09-13T13:58:07.304961 192.168.10.244:6666 [    0.046164] RPC: Registered udp transport module.
+2026-09-13T13:58:07.304974 192.168.10.244:6666 [    0.046164] RPC: Registered tcp transport module.
+2026-09-13T13:58:07.304986 192.168.10.244:6666 [    0.046165] RPC: Registered tcp-with-tls transport module.
+2026-09-13T13:58:07.305000 192.168.10.244:6666 [    0.046165] RPC: Registered tcp NFSv4.1 backchannel transport module.
+2026-09-13T13:58:07.305013 192.168.10.244:6666 [    0.046169] PCI: CLS 0 bytes, default 64
+2026-09-13T13:58:07.305026 192.168.10.244:6666 [    0.046229] Trying to unpack rootfs image as initramfs...
+2026-09-13T13:58:07.305038 192.168.10.244:6666 [    0.050555] kvm [1]: nv: 570 coarse grained trap handlers
+2026-09-13T13:58:07.305051 192.168.10.244:6666 [    0.050581] kvm [1]: nv: 710 fine grained trap handlers
+2026-09-13T13:58:07.305064 192.168.10.244:6666 [    0.050650] kvm [1]: IPA Size Limit: 42 bits
+2026-09-13T13:58:07.305077 192.168.10.244:6666 [    0.050657] kvm [1]: Non-architectural vgic, tainting kernel
+2026-09-13T13:58:07.305090 192.168.10.244:6666 [    0.050658] kvm [1]: GICv3: no GICV resource entry
+2026-09-13T13:58:07.305103 192.168.10.244:6666 [    0.050660] kvm [1]: disabling GICv2 emulation
+2026-09-13T13:58:07.305116 192.168.10.244:6666 [    0.050660] kvm [1]: GICv3 with broken locally generated SEI
+2026-09-13T13:58:07.305129 192.168.10.244:6666 [    0.050661] kvm [1]: GICv3 sysreg trapping enabled ([G0G1D], reduced performance)
+2026-09-13T13:58:07.305141 192.168.10.244:6666 [    0.050686] kvm [1]: GIC system register CPU interface enabled
+2026-09-13T13:58:07.305154 192.168.10.244:6666 [    0.050691] kvm [1]: vgic interrupt IRQ33
+2026-09-13T13:58:07.305167 192.168.10.244:6666 [    0.050710] kvm [1]: VHE mode initialized successfully
+2026-09-13T13:58:07.305180 192.168.10.244:6666 [    0.051081] Initialise system trusted keyrings
+2026-09-13T13:58:07.305193 192.168.10.244:6666 [    0.051119] workingset: timestamp_bits=46 (anon: 42) max_order=22 bucket_order=0 (anon: 0)
+2026-09-13T13:58:07.305206 192.168.10.244:6666 [    0.051413] NFS: Registering the id_resolver key type
+2026-09-13T13:58:07.305219 192.168.10.244:6666 [    0.051415] Key type id_resolver registered
+2026-09-13T13:58:07.305232 192.168.10.244:6666 [    0.051416] Key type id_legacy registered
+2026-09-13T13:58:07.305245 192.168.10.244:6666 [    0.051420] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+2026-09-13T13:58:07.305259 192.168.10.244:6666 [    0.051422] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+2026-09-13T13:58:07.305273 192.168.10.244:6666 [    0.051511] cryptd: max_cpu_qlen set to 1000
+2026-09-13T13:58:07.305286 192.168.10.244:6666 [    0.059036] NET: Registered PF_ALG protocol family
+2026-09-13T13:58:07.305298 192.168.10.244:6666 [    0.059039] Key type asymmetric registered
+2026-09-13T13:58:07.305311 192.168.10.244:6666 [    0.059039] Asymmetric key parser 'x509' registered
+2026-09-13T13:58:07.305324 192.168.10.244:6666 [    0.059040] Asymmetric key parser 'pkcs8' registered
+2026-09-13T13:58:07.305340 192.168.10.244:6666 [    0.059054] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 248)
+2026-09-13T13:58:07.305354 192.168.10.244:6666 [    0.059102] io scheduler mq-deadline registered
+2026-09-13T13:58:07.305367 192.168.10.244:6666 [    0.059103] io scheduler kyber registered
+2026-09-13T13:58:07.305380 192.168.10.244:6666 [    0.059110] io scheduler bfq registered
+2026-09-13T13:58:07.305392 192.168.10.244:6666 [    0.061351] ledtrig-cpu: registered to indicate activity on CPUs
+2026-09-13T13:58:07.305406 192.168.10.244:6666 [    0.068380] apple-pmgr-pwrstate 292280000.power-management:power-controller@78: always-on domain msg is not on at boot
+2026-09-13T13:58:07.305419 192.168.10.244:6666 [    0.068511] apple-pmgr-pwrstate 292280000.power-management:power-controller@a0: always-on domain atc3_usb_aon is not on at boot
+2026-09-13T13:58:07.305432 192.168.10.244:6666 [    0.069626] 39b200000.serial: ttySAC0 at MMIO 0x39b200000 (irq = 60, base_baud = 0) is a APPLE S5L
+2026-09-13T13:58:07.305445 192.168.10.244:6666 [    0.070296] apple-dart 28e300000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305459 192.168.10.244:6666 [    0.070430] platform 293980000.dma-controller: Adding to iommu group 0
+2026-09-13T13:58:07.305473 192.168.10.244:6666 [    0.070450] platform 293c00000.aop: Adding to iommu group 1
+2026-09-13T13:58:07.305486 192.168.10.244:6666 [    0.070657] apple-dart 293808000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305500 192.168.10.244:6666 [    0.070681] apple-dart 38b304000.iommu: Limiting DMA range to 0x0000000000000000..0x00000000fbffffff
+2026-09-13T13:58:07.305513 192.168.10.244:6666 [    0.070879] apple-dart 38b304000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305528 192.168.10.244:6666 [    0.070895] apple-dart 38b30c000.iommu: Limiting DMA range to 0x000001f000000000..0x000001f0fbffffff
+2026-09-13T13:58:07.305541 192.168.10.244:6666 [    0.070940] platform 38bc00000.dcp: Adding to iommu group 2
+2026-09-13T13:58:07.305554 192.168.10.244:6666 [    0.071359] apple-dart 38b30c000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305568 192.168.10.244:6666 [    0.071578] apple-dart 3952c0000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305582 192.168.10.244:6666 [    0.071808] apple-dart 3860e8000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305595 192.168.10.244:6666 [    0.072029] apple-dart 3860f4000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305625 192.168.10.244:6666 [    0.072284] platform 384000000.isp: Adding to iommu group 3
+2026-09-13T13:58:07.305640 192.168.10.244:6666 [    0.072494] apple-dart 3860fc000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305654 192.168.10.244:6666 [    0.072716] apple-dart 581008000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305667 192.168.10.244:6666 [    0.072936] apple-dart 582008000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305680 192.168.10.244:6666 [    0.073081] platform 287080000.avd: Adding to iommu group 4
+2026-09-13T13:58:07.305693 192.168.10.244:6666 [    0.073210] apple-dart 287010000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 36 -> 42] initialized
+2026-09-13T13:58:07.305706 192.168.10.244:6666 [    0.073231] apple-dart 289304000.iommu: Limiting DMA range to 0x0000000000000000..0x00000000fbffffff
+2026-09-13T13:58:07.305721 192.168.10.244:6666 [    0.073313] platform soc:display-subsystem: Adding to iommu group 5
+2026-09-13T13:58:07.305735 192.168.10.244:6666 [    0.073655] apple-dart 289304000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305748 192.168.10.244:6666 [    0.073675] apple-dart 28930c000.iommu: Limiting DMA range to 0x000001f000000000..0x000001f0fbffffff
+2026-09-13T13:58:07.305761 192.168.10.244:6666 [    0.073748] platform 289c00000.dcp: Adding to iommu group 6
+2026-09-13T13:58:07.305774 192.168.10.244:6666 [    0.073925] apple-dart 28930c000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305786 192.168.10.244:6666 [    0.074246] apple-dart 702f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305799 192.168.10.244:6666 [    0.074526] platform 702280000.usb: Adding to iommu group 7
+2026-09-13T13:58:07.305812 192.168.10.244:6666 [    0.074582] apple-dart 702f80000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305825 192.168.10.244:6666 [    0.074812] apple-dart b02f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305838 192.168.10.244:6666 [    0.075103] platform b02280000.usb: Adding to iommu group 8
+2026-09-13T13:58:07.305851 192.168.10.244:6666 [    0.075151] apple-dart b02f80000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305864 192.168.10.244:6666 [    0.075376] apple-dart f02f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.305877 192.168.10.244:6666 [    0.139021] hid: raw HID events driver (C) Jiri Kosina
+2026-09-13T13:58:07.305890 192.168.10.244:6666 [    0.139377] watchdog: NMI not fully supported
+2026-09-13T13:58:07.305903 192.168.10.244:6666 [    0.139377] watchdog: Hard watchdog permanently disabled
+2026-09-13T13:58:07.305916 192.168.10.244:6666 [    0.139502] hw perfevents: enabled with apple_icestorm_pmu PMU driver, 10 (0,000003ff) counters available
+2026-09-13T13:58:07.305929 192.168.10.244:6666 [    0.139668] hw perfevents: enabled with apple_firestorm_pmu PMU driver, 10 (0,000003ff) counters available
+2026-09-13T13:58:07.305942 192.168.10.244:6666 [    0.139934] Initializing XFRM netlink socket
+2026-09-13T13:58:07.305956 192.168.10.244:6666 [    0.139946] NET: Registered PF_INET6 protocol family
+2026-09-13T13:58:07.305969 192.168.10.244:6666 [    0.140091] Segment Routing with IPv6
+2026-09-13T13:58:07.305981 192.168.10.244:6666 [    0.140094] In-situ OAM (IOAM) with IPv6
+2026-09-13T13:58:07.305994 192.168.10.244:6666 [    0.140102] mip6: Mobile IPv6
+2026-09-13T13:58:07.306007 192.168.10.244:6666 [    0.140105] NET: Registered PF_PACKET protocol family
+2026-09-13T13:58:07.306020 192.168.10.244:6666 [    0.140133] Key type dns_resolver registered
+2026-09-13T13:58:07.306033 192.168.10.244:6666 [    0.141051] registered taskstats version 1
+2026-09-13T13:58:07.306046 192.168.10.244:6666 [    0.141148] Loading compiled-in X.509 certificates
+2026-09-13T13:58:07.306058 192.168.10.244:6666 [    0.142035] Key type .fscrypt registered
+2026-09-13T13:58:07.306071 192.168.10.244:6666 [    0.142036] Key type fscrypt-provisioning registered
+2026-09-13T13:58:07.306084 192.168.10.244:6666 [    0.142051] Key type encrypted registered
+2026-09-13T13:58:07.306097 192.168.10.244:6666 [    0.142053] AppArmor: AppArmor sha256 policy hashing enabled
+2026-09-13T13:58:07.306110 192.168.10.244:6666 [    0.143691] leds_pwm led-controller: failed to read period for kbd_backlight, default to off
+2026-09-13T13:58:07.306126 192.168.10.244:6666 [    0.143807] apple-admac 293980000.dma-controller: Audio DMA Controller
+2026-09-13T13:58:07.306139 192.168.10.244:6666 [    0.144380] apple-dart 39b004000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.306153 192.168.10.244:6666 [    0.144541] platform 39b400000.dma-controller: Adding to iommu group 10
+2026-09-13T13:58:07.306168 192.168.10.244:6666 [    0.144629] platform 39bc00000.sio: Adding to iommu group 11
+2026-09-13T13:58:07.306187 192.168.10.244:6666 [    0.144780] apple-dart 39b008000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 42] initialized
+2026-09-13T13:58:07.306202 192.168.10.244:6666 [    0.716821] Freeing unused kernel memory: 2048K
+2026-09-13T13:58:07.306215 192.168.10.244:6666 [    0.736466] Checked W+X mappings: passed, no W+X pages found
+2026-09-13T13:58:07.306229 192.168.10.244:6666 [    0.736470] Run /init as init process
+2026-09-13T13:58:07.306241 192.168.10.244:6666 [    0.736471]   with arguments:
+2026-09-13T13:58:07.306254 192.168.10.244:6666 [    0.736471]     /init
+2026-09-13T13:58:07.306267 192.168.10.244:6666 [    0.736472]     splash
+2026-09-13T13:58:07.306280 192.168.10.244:6666 [    0.736473]   with environment:
+2026-09-13T13:58:07.306294 192.168.10.244:6666 [    0.736473]     HOME=/
+2026-09-13T13:58:07.306307 192.168.10.244:6666 [    0.736473]     TERM=linux
+2026-09-13T13:58:07.306319 192.168.10.244:6666 [    0.746784] systemd[1]: Successfully made /usr/ read-only.
+2026-09-13T13:58:07.306332 192.168.10.244:6666 [    1.090379] systemd[1]: systemd 261.2-1-arch running in system mode (+PAM +AUDIT -SELINUX +APPARMOR -IMA +IPE +SMACK +SECCOMP +GCRYPT +GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 +KMOD +LIBCRYPTSETUP +LIBCRYPTSETUP_PLUGINS +LIBFDISK +PCRE2 +PWQUALITY +P11KIT +QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD +BPF_FRAMEWORK -BTF +XKBCOMMON +UTMP +LIBARCHIVE)
+2026-09-13T13:58:07.306347 192.168.10.244:6666 [    1.090416] systemd[1]: Detected architecture arm64.
+2026-09-13T13:58:07.306360 192.168.10.244:6666 [    1.090420] systemd[1]: Running in initrd.
+2026-09-13T13:58:07.306373 192.168.10.244:6666 [    1.090765] systemd[1]: Initializing machine ID from random generator.
+2026-09-13T13:58:07.306386 192.168.10.244:6666 [    1.093863] systemd[1]: No hostname configured, using default hostname.
+2026-09-13T13:58:07.306399 192.168.10.244:6666 [    1.093920] systemd[1]: Hostname set to <archlinux>.
+2026-09-13T13:58:07.306412 192.168.10.244:6666 [    1.150709] systemd[1]: Queued start job for default target Initrd Default Target.
+2026-09-13T13:58:07.306426 192.168.10.244:6666 [    1.156387] systemd[1]: Expecting device /dev/disk/by-uuid/4f4d5801-524f-4f54-8000-000000000001...
+2026-09-13T13:58:07.306439 192.168.10.244:6666 [    1.156448] systemd[1]: Reached target Path Units.
+2026-09-13T13:58:07.306451 192.168.10.244:6666 [    1.156465] systemd[1]: Reached target Slice Units.
+2026-09-13T13:58:07.306464 192.168.10.244:6666 [    1.156481] systemd[1]: Reached target Swaps.
+2026-09-13T13:58:07.306477 192.168.10.244:6666 [    1.156497] systemd[1]: Reached target Timer Units.
+2026-09-13T13:58:07.306490 192.168.10.244:6666 [    1.156585] systemd[1]: Listening on Journal Socket (/dev/log).
+2026-09-13T13:58:07.306503 192.168.10.244:6666 [    1.156661] systemd[1]: Listening on Journal Sockets.
+2026-09-13T13:58:07.306516 192.168.10.244:6666 [    3.090373] systemd[1]: Created slice Slice /system/getty.
+2026-09-13T13:58:07.306528 192.168.10.244:6666 [    3.090602] systemd[1]: Created slice Slice /system/gpg-agent.
+2026-09-13T13:58:07.306542 192.168.10.244:6666 [    3.090815] systemd[1]: Created slice Slice /system/gpg-agent-browser.
+2026-09-13T13:58:07.306555 192.168.10.244:6666 [    3.091050] systemd[1]: Created slice Slice /system/gpg-agent-extra.
+2026-09-13T13:58:07.306568 192.168.10.244:6666 [    3.091289] systemd[1]: Created slice Slice /system/gpg-agent-ssh.
+2026-09-13T13:58:07.306584 192.168.10.244:6666 [    3.091522] systemd[1]: Created slice Slice /system/keyboxd.
+2026-09-13T13:58:07.306598 192.168.10.244:6666 [    3.091744] systemd[1]: Created slice Slice /system/modprobe.
+2026-09-13T13:58:07.306619 192.168.10.244:6666 [    3.091963] systemd[1]: Created slice Slice /system/systemd-fsck.
+2026-09-13T13:58:07.306633 192.168.10.244:6666 [    3.092104] systemd[1]: Created slice User and Session Slice.
+2026-09-13T13:58:07.306646 192.168.10.244:6666 [    3.092131] systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+2026-09-13T13:58:07.306659 192.168.10.244:6666 [    3.092210] systemd[1]: Set up automount Arbitrary Executable File Formats File System Automount Point.
+2026-09-13T13:58:07.306673 192.168.10.244:6666 [    3.092216] systemd[1]: Expecting device /dev/disk/by-uuid/4F4D-5801...
+2026-09-13T13:58:07.306690 192.168.10.244:6666 [    3.092218] systemd[1]: Expecting device /dev/disk/by-uuid/4f4d5801-424f-4f54-8000-000000000001...
+2026-09-13T13:58:07.306706 192.168.10.244:6666 [    3.092221] systemd[1]: Expecting device /dev/disk/by-uuid/4f4d5801-524f-4f54-8000-000000000001...
+2026-09-13T13:58:07.306720 192.168.10.244:6666 [    3.092228] systemd[1]: Reached target Login Prompts.
+2026-09-13T13:58:07.306733 192.168.10.244:6666 [    3.092235] systemd[1]: Reached target Image Downloads.
+2026-09-13T13:58:07.306746 192.168.10.244:6666 [    3.092241] systemd[1]: Stopped target Switch Root.
+2026-09-13T13:58:07.306759 192.168.10.244:6666 [    3.092249] systemd[1]: Stopped target Initrd File Systems.
+2026-09-13T13:58:07.306777 192.168.10.244:6666 [    3.092253] systemd[1]: Stopped target Initrd Root File System.
+2026-09-13T13:58:07.306791 192.168.10.244:6666 [    3.092258] systemd[1]: Reached target Local Integrity Protected Volumes.
+2026-09-13T13:58:07.306804 192.168.10.244:6666 [    3.092268] systemd[1]: Reached target Preparation for Network.
+2026-09-13T13:58:07.306818 192.168.10.244:6666 [    3.092275] systemd[1]: Reached target Remote File Systems.
+2026-09-13T13:58:07.306830 192.168.10.244:6666 [    3.092281] systemd[1]: Reached target Slice Units.
+2026-09-13T13:58:07.306843 192.168.10.244:6666 [    3.092289] systemd[1]: Reached target Swaps.
+2026-09-13T13:58:07.306856 192.168.10.244:6666 [    4.400828] spi-nor spi0.0: supply vcc not found, using dummy regulator
+2026-09-13T13:58:07.306875 192.168.10.244:6666 [    4.400892] apple-dcp 38bc00000.dcp: RTKit: syslog message: ap_link.c:299: shared memory dva: 0x1f0fbe00000 0xffffffff00654000
+2026-09-13T13:58:07.306889 192.168.10.244:6666 [    4.400939] apple-dcp 38bc00000.dcp: RTKit: syslog message: ap_link.c:276: ap_link: IOMFB: DCP heap size: 0x1030000 [iBoot:0x1030000] [LinkService:0x0]
+2026-09-13T13:58:07.306903 192.168.10.244:6666 [    4.401897] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:4191: IOMFB: Could not find Backlight service
+2026-09-13T13:58:07.306916 192.168.10.244:6666 [    4.401933] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:4199: IOMFB: Could not find nvram service
+2026-09-13T13:58:07.306929 192.168.10.244:6666 [    4.401940] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1838: virtual bool UnifiedPipeline::start_ios_gated(): Created AP Services
+2026-09-13T13:58:07.306942 192.168.10.244:6666 [    4.401961] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1864: start_ios_gated: trigger pending HPD notification
+2026-09-13T13:58:07.306955 192.168.10.244:6666 [    4.401968] apple-dcp 38bc00000.dcp: cb_hotplug() connected:1, valid_mode:0
+2026-09-13T13:58:07.306968 192.168.10.244:6666 [    4.401971] apple-dcp 38bc00000.dcp: dcp_hotplug() connected:1 valid_mode:0 nr_modes:0
+2026-09-13T13:58:07.306981 192.168.10.244:6666 [    4.403229] 1 fixed-partitions partitions found on MTD device spi0.0
+2026-09-13T13:58:07.306994 192.168.10.244:6666 [    4.403232] Creating 1 MTD partitions on "spi0.0":
+2026-09-13T13:58:07.307007 192.168.10.244:6666 [    4.403236] 0x000000700000-0x000000800000 : "nvram"
+2026-09-13T13:58:07.307023 192.168.10.244:6666 [    4.404076] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1871: virtual bool UnifiedPipeline::start_ios_gated(): Flushed RTPs
+2026-09-13T13:58:07.307037 192.168.10.244:6666 [    4.404435] apple-dcp 38bc00000.dcp: RTKit: syslog message: ableCompensator.cpp:903: IOMFB setup_table: Could not find table 'display-backlight-compensation-v1' in registry. Using default table.
+2026-09-13T13:58:07.307051 192.168.10.244:6666 [    4.404614] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11092: IOMFB updateFrequencies: minimum-frequency property not found, using getClockFrequency(0) instead.
+2026-09-13T13:58:07.307064 192.168.10.244:6666 [    4.404671] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11109: IOMFB updateFrequencies EDT ERROR: getClockFrequency(0) (237333328) < videoClock 521064960! Giving up on frequencies.
+2026-09-13T13:58:07.307077 192.168.10.244:6666 [    4.404868] apple-dcp 38bc00000.dcp: RTKit: syslog message: UPPipeDCP_H13P.cpp:1532: IOMFB: videoClock is zero, defaulting to 521065000
+2026-09-13T13:58:07.307090 192.168.10.244:6666 [    4.405312] apple-dcp 38bc00000.dcp: RTKit: syslog message: nifiedPipeline.cpp:1356: set_device_enabled_gated: current state: 1, requested state: 1
+2026-09-13T13:58:07.307103 192.168.10.244:6666 [    4.405437] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11092: IOMFB updateFrequencies: minimum-frequency property not found, using getClockFrequency(0) instead.
+2026-09-13T13:58:07.307115 192.168.10.244:6666 [    4.405491] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:11109: IOMFB updateFrequencies EDT ERROR: getClockFrequency(0) (237333328) < videoClock 521064960! Giving up on frequencies.
+2026-09-13T13:58:07.307129 192.168.10.244:6666 [    4.405750] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:10490: set_run_mode_safe: deferring: 2 -> 4
+2026-09-13T13:58:07.307142 192.168.10.244:6666 [    4.405773] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:10395: virtual IOMFBStatus IOMFB::UPPipeDCP_H13P::ready_for_run_mode_change(IOMFB::AppleRegisterStream *): initiating deferred run mod
+2026-09-13T13:58:07.307155 192.168.10.244:6666 [    4.406722] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load APT M3 IMem : size 0x7960
+2026-09-13T13:58:07.307168 192.168.10.244:6666 [    4.407080] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load APT M3 DMem : size 0x70ac
+2026-09-13T13:58:07.307181 192.168.10.244:6666 [    5.382103] apple-isp: ch: 00000c00 00000000 0000001c 00000680 00000004 00000004 00000000 00000000
+2026-09-13T13:58:07.307194 192.168.10.244:6666 [    5.382106] apple-isp: ch: 00000000 00000000 00000000 00000000 07800000 00000780
+2026-09-13T13:58:07.307207 192.168.10.244:6666 [    5.382205] apple-isp: ps: CISP_CMD_CH_CAMERA_CONFIG_GET: 0
+2026-09-13T13:58:07.307220 192.168.10.244:6666 [    5.382208] apple-isp: ps: 00000000 00000106 00000000 00000000 07800780 07800780 00000000 00001df8
+2026-09-13T13:58:07.307233 192.168.10.244:6666 [    5.382209] apple-isp: ps: 00000100 00000001 00000040 00000040 00000040 00000040 00000040 00000040
+2026-09-13T13:58:07.307246 192.168.10.244:6666 [    5.382209] apple-isp: ps: 00000003 00000040 00000040 00000005 00000000 0100041e 00000001 00000000
+2026-09-13T13:58:07.307259 192.168.10.244:6666 [    5.382210] apple-isp: ps: 0bdebefc 00000006 00000007 00000000 00000009 000f4240 00000012 00000000
+2026-09-13T13:58:07.307273 192.168.10.244:6666 [    5.382211] apple-isp: ps: 00008000 00000014 00000015 00000000 00000000 00000000 00000780 00000780
+2026-09-13T13:58:07.307285 192.168.10.244:6666 [    5.382212] apple-isp: ps: 00010000 00000000 d3e00000 00000040 0000001f 00000000 00000000 00000000
+2026-09-13T13:58:07.307298 192.168.10.244:6666 [    5.382212] apple-isp: ps: 00000780 00000780 00000100 00000000 00000000 00000780 00000780
+2026-09-13T13:58:07.307311 192.168.10.244:6666 [    5.382282] apple-isp: ps: CISP_CMD_CH_CAMERA_CONFIG_GET: 1
+2026-09-13T13:58:07.307326 192.168.10.244:6666 [    5.382285] apple-isp: ps: 00000000 00000106 00000000 00000001 08700780 08700780 00000000 00001df8
+2026-09-13T13:58:07.307340 192.168.10.244:6666 [    5.382287] apple-isp: ps: 00000100 00000001 00000040 00000040 00000040 00000040 00000040 00000040
+2026-09-13T13:58:07.307353 192.168.10.244:6666 [    5.382288] apple-isp: ps: 00000003 00000040 00000040 00000005 00000000 0100041e 00000001 00000000
+2026-09-13T13:58:07.307365 192.168.10.244:6666 [    5.382289] apple-isp: ps: 0bdebefc 00000006 00000007 00000000 00000009 000f4240 00000012 00000000
+2026-09-13T13:58:07.307378 192.168.10.244:6666 [    5.382289] apple-isp: ps: 00008000 00000014 00000015 00000000 00000000 00000000 00000780 00000438
+2026-09-13T13:58:07.307391 192.168.10.244:6666 [    5.382290] apple-isp: ps: 00010001 00000000 d3e00000 00000040 0000001f 00000000 00000000 00000000
+2026-09-13T13:58:07.307404 192.168.10.244:6666 [    5.382291] apple-isp: ps: 00000780 00000870 00000100 00000000 00000000 00000780 00000438
+2026-09-13T13:58:07.307416 192.168.10.244:6666 [    5.382374] apple-isp: ps: CISP_CMD_CH_CAMERA_CONFIG_GET: 2
+2026-09-13T13:58:07.307429 192.168.10.244:6666 [    5.382375] apple-isp: ps: 00000000 00000106 00000000 00000002 0f000438 0f000438 00000000 00001df8
+2026-09-13T13:58:07.307442 192.168.10.244:6666 [    5.382376] apple-isp: ps: 00000100 00000001 00000040 00000040 00000040 00000040 00000040 00000040
+2026-09-13T13:58:07.307454 192.168.10.244:6666 [    5.382377] apple-isp: ps: 00000003 00000040 00000040 00000005 00000000 0100041e 00000001 00000000
+2026-09-13T13:58:07.307467 192.168.10.244:6666 [    5.382378] apple-isp: ps: 0bdebefc 00000006 00000007 00000000 00000009 000f4240 0000000d 00000000
+2026-09-13T13:58:07.307480 192.168.10.244:6666 [    5.382378] apple-isp: ps: 00008000 00000014 00000015 00000000 00000000 00000000 00000438 00000780
+2026-09-13T13:58:07.307493 192.168.10.244:6666 [    5.713720] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load LTM M3 IMem : size 0x73b4
+2026-09-13T13:58:07.307506 192.168.10.244:6666 [    5.714054] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load LTM M3 DMem : size 0xd194
+2026-09-13T13:58:07.307519 192.168.10.244:6666 [    5.714489] apple-dcp 38bc00000.dcp: RTKit: syslog message: ck_PCC2DBlm_v5.cpp:4938: [set_lts_buffer] buffer 0x1f001680000 Add_lo = 0x1680000, Add_hi = 0x1f0, size 0x2900 stride 0x100
+2026-09-13T13:58:07.307532 192.168.10.244:6666 [    5.715910] ieee80211 phy0: brcmf_dongle_roam: WLC_SET_ROAM_DELTA error (-52)
+2026-09-13T13:58:07.307545 192.168.10.244:6666 [    5.721778] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:10468: set_run_mode_safe: no need to defer: 1 -> 2
+2026-09-13T13:58:07.307558 192.168.10.244:6666 [    5.722089] apple-dcp 38bc00000.dcp: RTKit: syslog message: UPPipeDCP_H13P.cpp:1532: IOMFB: videoClock is zero, defaulting to 521065000
+2026-09-13T13:58:07.307571 192.168.10.244:6666 [    5.722185] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load BLM M3 IMem : size 0x7598
+2026-09-13T13:58:07.307584 192.168.10.244:6666 [    5.722591] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load BLM M3 DMem : size 0xaf5c
+2026-09-13T13:58:07.307597 192.168.10.244:6666 [    5.722851] apple-dcp 38bc00000.dcp: RTKit: syslog message: FBPropertyManager.h:189: value_t<P> IOMFB::PropMgr::getVal(IOMFB::RuntimeProperty) [P = IOMFB::RuntimePropertyType::boolean]: WARNING - type mismatch on
+2026-09-13T13:58:07.307621 192.168.10.244:6666 [    5.723234] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:10490: set_run_mode_safe: deferring: 2 -> 4
+2026-09-13T13:58:07.307635 192.168.10.244:6666 [    5.723259] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:10395: virtual IOMFBStatus IOMFB::UPPipeDCP_H13P::ready_for_run_mode_change(IOMFB::AppleRegisterStream *): initiating deferred run mod
+2026-09-13T13:58:07.307648 192.168.10.244:6666 [    5.723305] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load APT M3 IMem : size 0x7960
+2026-09-13T13:58:07.307664 192.168.10.244:6666 [    5.723656] apple-dcp 38bc00000.dcp: RTKit: syslog message: M3Hal_v1.cpp:197: IOMFB: load APT M3 DMem : size 0x70ac
+2026-09-13T13:58:07.307678 192.168.10.244:6666 [    5.723797] apple-dcp 38bc00000.dcp: RTKit: syslog message: CAHandler.cpp:188: IOMFB load_ca_data: Unrecognized data version 0 (expected 1 or 2)
+2026-09-13T13:58:07.307691 192.168.10.244:6666 [    5.724537] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:14085: IOMFB Int RTBandwidth: program_M3_rt_config: Using Dashboard 28e3d0988
+2026-09-13T13:58:07.307704 192.168.10.244:6666 [    5.724615] apple-dcp 38bc00000.dcp: RTKit: syslog message: UPTSQManager.cpp:133: IOMFB: clearing M3 reset
+2026-09-13T13:58:07.307717 192.168.10.244:6666 [    5.724690] apple-dcp 38bc00000.dcp: RTKit: syslog message: UPTSQ_Hal_v1.cpp:349: IOMFB: timebase_offset = 4
+2026-09-13T13:58:07.307731 192.168.10.244:6666 [    5.738370] apple-dcp 38bc00000.dcp: RTKit: syslog message: UPTSQManager.cpp:105: IOMFB: switch to normal mode succeeded
+2026-09-13T13:58:07.307744 192.168.10.244:6666 [    5.738782] apple-dcp 38bc00000.dcp: RTKit: syslog message: eoInterfaceIOAV.cpp:296: IOMFB: VideoInterfaceIOAV::power_on: m_power_ctrl->setPower( 1 )
+2026-09-13T13:58:07.307757 192.168.10.244:6666 [    5.744526] apple-dcp 38bc00000.dcp: RTKit: syslog message: MMailboxHandler.cpp:214: pcc firmware: MailBox Printf is enabled in BLM Pipe Line Init
+2026-09-13T13:58:07.307770 192.168.10.244:6666 [    5.744747] apple-dcp 38bc00000.dcp: RTKit: syslog message: PPipeDCP_H13P.cpp:17179: handle_stage1_enable blm_en 1 ltm_en 0
+2026-09-13T13:58:07.307783 192.168.10.244:6666 [    5.744783] apple-dcp 38bc00000.dcp: set_digital_out_mode finished:8363
+2026-09-13T13:58:07.307796 192.168.10.244:6666 [    5.744826] Console: switching to colour frame buffer device 216x67
+2026-09-13T13:58:07.307809 192.168.10.244:6666 [    5.768768] apple-drm soc:display-subsystem: [drm] fb0: appledrmfb frame buffer device
+2026-09-13T13:58:13.347321 192.168.10.244:6666 [   21.473247] apple-pmgr-pwrstate 28e080000.power-management:power-controller@270: sync_state() pending due to 287080000.avd
+2026-09-13T13:58:32.370595 192.168.10.244:6666 [   40.496434] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=3498 DF PROTO=TCP SPT=49286 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:58:47.370691 192.168.10.244:6666 [   55.496451] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=24690 DF PROTO=TCP SPT=54904 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:59:02.377742 192.168.10.244:6666 [   70.503431] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:04:f4:1c:92:4c:d7:08:00 SRC=192.168.2.80 DST=192.168.10.244 LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=64901 DF PROTO=TCP SPT=43446 DPT=5001 WINDOW=64240 RES=0x00 SYN URGP=0 
+2026-09-13T13:59:22.088831 192.168.10.244:6666 [   90.214473] [UFW BLOCK] IN=enu1 OUT= MAC=f4:4d:ad:07:c6:64:90:09:d0:99:52:cc:08:00 SRC=192.168.10.249 DST=192.168.10.244 LEN=371 TOS=0x00 PREC=0x00 TTL=64 ID=35329 DF PROTO=UDP SPT=1900 DPT=43241 LEN=351 
