@@ -1,0 +1,175 @@
+{
+  "full_table_counts": {
+    "devices": 430,
+    "ps_regs": 19,
+    "power_domains": 77
+  },
+  "pmgr_phandle": "0x99",
+  "pmgr_compatible": [
+    "pmgr1,t6001"
+  ],
+  "ane_named_devices": [
+    {
+      "id1": "0xb",
+      "id2": "0x37",
+      "name": "ANE_SYS",
+      "psidx": "0xd",
+      "psreg": "0x5",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([39, 0]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([39, 0])))",
+      "flags": "Container(b7=True, b6=False, perf=True, no_ps=False, critical=False, b2=False, notify_pmp=True, on=False)",
+      "m1n1_selected_device_id": "0x37",
+      "m1n1_static_control_address": "0x28e080268"
+    },
+    {
+      "id1": "0x0",
+      "id2": "0x43",
+      "name": "ANE_SYS_CPU",
+      "psidx": "0x19",
+      "psreg": "0x5",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([55, 0]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([55, 0])))",
+      "flags": "Container(b7=False, b6=False, perf=False, no_ps=False, critical=False, b2=False, notify_pmp=False, on=False)",
+      "m1n1_selected_device_id": "0x43",
+      "m1n1_static_control_address": "0x28e0802c8"
+    },
+    {
+      "id1": "0x20",
+      "id2": "0x16d",
+      "name": "ANE1_SYS",
+      "psidx": "0xd",
+      "psreg": "0xf",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([89, 1]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([345, 0])))",
+      "flags": "Container(b7=False, b6=False, perf=True, no_ps=False, critical=False, b2=False, notify_pmp=True, on=False)",
+      "m1n1_selected_device_id": "0x16d",
+      "m1n1_static_control_address": "0x28e680268"
+    },
+    {
+      "id1": "0x0",
+      "id2": "0x16e",
+      "name": "ANE1_SYS_CPU",
+      "psidx": "0xe",
+      "psreg": "0xf",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([109, 1]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([365, 0])))",
+      "flags": "Container(b7=False, b6=False, perf=False, no_ps=False, critical=False, b2=False, notify_pmp=False, on=False)",
+      "m1n1_selected_device_id": "0x16e",
+      "m1n1_static_control_address": "0x28e680270"
+    },
+    {
+      "id1": "0x0",
+      "id2": "0x1cf",
+      "name": "ANE-SYS-V",
+      "psidx": "0x0",
+      "psreg": "0x0",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([67, 0]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([67, 0])))",
+      "flags": "Container(b7=False, b6=False, perf=False, no_ps=True, critical=False, b2=False, notify_pmp=False, on=False)",
+      "m1n1_selected_device_id": "0x1cf",
+      "m1n1_static_control_address": "0x292280000"
+    },
+    {
+      "id1": "0x0",
+      "id2": "0x1ea",
+      "name": "ANE1-SYS-V",
+      "psidx": "0x0",
+      "psreg": "0x0",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([110, 1]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([366, 0])))",
+      "flags": "Container(b7=False, b6=False, perf=False, no_ps=True, critical=False, b2=False, notify_pmp=False, on=False)",
+      "m1n1_selected_device_id": "0x1ea",
+      "m1n1_static_control_address": "0x292280000"
+    },
+    {
+      "id1": "0x0",
+      "id2": "0x1f7",
+      "name": "ANE-SYS-DART",
+      "psidx": "0x0",
+      "psreg": "0x0",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([55, 0]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([55, 0])))",
+      "flags": "Container(b7=False, b6=False, perf=False, no_ps=True, critical=False, b2=False, notify_pmp=False, on=False)",
+      "m1n1_selected_device_id": "0x1f7",
+      "m1n1_static_control_address": "0x292280000"
+    },
+    {
+      "id1": "0x0",
+      "id2": "0x1fd",
+      "name": "ANE1-SYS-DART",
+      "psidx": "0x0",
+      "psreg": "0x0",
+      "pd": "0x0",
+      "offset": "0x0",
+      "group": "0x0",
+      "parents_un": "Container(u8id=Container(parents=ListContainer([109, 1]), unk_u8id=ListContainer([0, 0])), u16id=Container(parents=ListContainer([365, 0])))",
+      "flags": "Container(b7=False, b6=False, perf=False, no_ps=True, critical=False, b2=False, notify_pmp=False, on=False)",
+      "m1n1_selected_device_id": "0x1fd",
+      "m1n1_static_control_address": "0x292280000"
+    }
+  ],
+  "referenced_ps_regs": [
+    {
+      "reg": "0x1",
+      "offset": "0x0",
+      "mask": "0x3ffff800"
+    },
+    {
+      "reg": "0x0",
+      "offset": "0x200",
+      "mask": "0xfa217fff"
+    },
+    {
+      "reg": "0x3",
+      "offset": "0x200",
+      "mask": "0x7c24"
+    }
+  ],
+  "ane_named_power_domains": [
+    {
+      "id": "0x1a",
+      "name": "ANE_SYS",
+      "flags": "0x0",
+      "perf_idx": "0x47",
+      "perf_block": "0x1"
+    },
+    {
+      "id": "0x56",
+      "name": "ANE1_SYS",
+      "flags": "0x0",
+      "perf_idx": "0x3c",
+      "perf_block": "0xa"
+    }
+  ],
+  "arm_io_ranges": [
+    {
+      "bus_addr": "0x0",
+      "parent_addr": "0x200000000",
+      "size": "0x400000000"
+    },
+    {
+      "bus_addr": "0x580000000",
+      "parent_addr": "0x580000000",
+      "size": "0x180000000"
+    },
+    {
+      "bus_addr": "0x700000000",
+      "parent_addr": "0x700000000",
+      "size": "0xf80000000"
+    }
+  ]
+}

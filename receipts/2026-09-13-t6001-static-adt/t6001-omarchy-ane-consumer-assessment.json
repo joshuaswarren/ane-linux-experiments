@@ -1,0 +1,184 @@
+{
+  "schema_version": 2,
+  "date": "2026-09-13",
+  "supersedes": {
+    "path": "receipts/2026-09-13-t6001-static-adt/t6001-omarchy-ane-consumer-assessment.json",
+    "schema_version": 1,
+    "correction": "Restores the original five required fields. Compatible-string evidence is reported separately and is not substituted for memory_or_reservation_binding."
+  },
+  "scope": "Offline comparison of the private live T6001 ADT capture with pinned m1n1, omarchy-ane, and omarchy-linux source. No host operation, DTS/driver edit, loading, or application authorization.",
+  "source_revisions": {
+    "original_field_contract": {
+      "path": "receipts/2026-09-12-t6000-ane-source-evidence.json",
+      "lines": "28-59"
+    },
+    "live_facts": {
+      "path": "receipts/2026-09-13-t6001-static-adt/jw16mbp1-linux-live-scoped-facts.json",
+      "sha256": "6e02a6ba52d3b2a188221a807ce92afaa4121a0787c617a34922b20d5c1cac37"
+    },
+    "m1n1": {
+      "commit": "b4654b32941d51afdb77579d63e7cb1aa6c03ecc",
+      "files": {
+        "adt": "proxyclient/m1n1/adt.py",
+        "dart": "proxyclient/m1n1/hw/dart.py",
+        "pmgr_adt2dt": "proxyclient/tools/pmgr_adt2dt.py"
+      },
+      "downloaded_sha256": {
+        "dart": "a7fbb5771b77128a16ea7eced4bc4058c02d8f1c1838ed9359f2e2ba37fe5387",
+        "pmgr_adt2dt": "58dc05821d9078f528ff026cce4a9fff60a827f925aa3112f5c4b71b8b357f89"
+      }
+    },
+    "omarchy_ane": {
+      "commit": "b66ca80f3b0c06d1839f6bbc7a74a9fc72baaa9c",
+      "driver_path": "ane/src/ane_drv.c",
+      "sha256": "3156583dae8e75ac7928abed41638d8980c08b437d337be29129441e9e43c1c4"
+    },
+    "omarchy_linux": {
+      "commit": "945766977286778643c6149d86eb46d1f473a0e5",
+      "paths": [
+        "drivers/base/platform.c",
+        "drivers/of/irq.c",
+        "drivers/iommu/apple-dart.c",
+        "drivers/pmdomain/core.c"
+      ]
+    },
+    "known_base_m1_analogue": {
+      "repository": "/home/joshuawarren/src/omarchy-linux",
+      "commit": "326d6033",
+      "status": "unbooted proposal; it is an analogy only, not T6000 mapping evidence"
+    }
+  },
+  "live_adt_observations": {
+    "topology": [
+      "arm-io/ane0",
+      "arm-io/dart-ane0"
+    ],
+    "ane0": {
+      "compatible": "ane,t8020",
+      "mmio_translated": [
+        [
+          "0x284000000",
+          "0x2000000"
+        ],
+        [
+          "0x28e080000",
+          "0xc02c"
+        ]
+      ],
+      "interrupt_raw": "0x302",
+      "interrupt_parent_raw": "0x7e",
+      "power_gate_raw": "0x1cf",
+      "iommu_parent_raw": "0x14b",
+      "pre_loaded_raw": "0x1",
+      "memory_related_properties": {
+        "asc_dram_mask": "0x1f000000000",
+        "segment_names": "__TEXT;__DATA",
+        "segment_ranges_present": true,
+        "function_mcc_dataset": {
+          "phandle": "0x7d",
+          "name": "M$DS",
+          "args": []
+        }
+      }
+    },
+    "dart_ane0": {
+      "compatible": "dart,t6000",
+      "mmio_translated": [
+        [
+          "0x285800000",
+          "0x4000"
+        ],
+        [
+          "0x285810000",
+          "0x4000"
+        ],
+        [
+          "0x285820000",
+          "0x4000"
+        ],
+        [
+          "0x285804000",
+          "0x4000"
+        ]
+      ],
+      "interrupt_raw": "0x303",
+      "interrupt_parent_raw": "0x7e",
+      "power_gate_raw": "0x1f7",
+      "sid_raw": "0xa001"
+    },
+    "pmgr": {
+      "device_for_ane_gate": {
+        "id2": "0x1cf",
+        "name": "ANE-SYS-V",
+        "parent": {
+          "id": "0x43",
+          "name": "ANE_SYS_CPU"
+        }
+      }
+    }
+  },
+  "translation_trace": {
+    "raw_to_physical": "m1n1 ADTNode.get_reg() applies parent ranges. It yields the translated MMIO values recorded above; raw cells alone are not Linux resources.",
+    "pmgr": "pmgr_adt2dt.py turns each PMGR device into a power-controller node and attaches parents. Its literal node template is `ps_` plus lower-cased PMGR name. For `ANE-SYS-V` that would be `ps_ane-sys-v`, which is not a valid DTS label; a sanitizing naming policy is therefore required before a Linux label can be authored.",
+    "dart": "m1n1 DART.from_adt reads a selected register instance and compatible. It does not read `sids` or `iommu-parent`; those raw ADT values are not a Linux IOMMU relationship.",
+    "linux_consumers": "omarchy-ane requests named engine MMIO and named ane IRQ, traverses Linux power-domains, and requires a provider-attached IOMMU domain. Linux apple_dart_of_xlate requires one phandle argument, interpreted as SID. These are Linux DT contracts that an FDT author must construct; they are not Apple ADT properties."
+  },
+  "required_fields": {
+    "engine_mmio_resource": {
+      "status": "physical candidate observed; Linux consumer binding not resolved",
+      "direct_evidence": [
+        "Live ANE range 0 translated to 0x284000000 size 0x2000000."
+      ],
+      "derivable": "An FDT author can assign a reg entry the label engine.",
+      "not_derivable": "The live ADT does not establish the hardware semantic of range index 0 as the driver engine resource. The unbooted M1 proposal has a different resource shape and cannot prove T6000 semantics.",
+      "missing_evidence": "A source-authoritative T6000 ANE binding or a reviewed translation rule that assigns this range to engine."
+    },
+    "ane_irq": {
+      "status": "raw interrupt observed; Linux consumer binding not resolved",
+      "direct_evidence": [
+        "ANE has raw interrupt 0x302 with raw parent 0x7e."
+      ],
+      "derivable": "An FDT author can name an IRQ ane only after supplying a valid AIC interrupt specifier.",
+      "not_derivable": "The raw value lacks the AIC translation, trigger/type, and semantic assignment required by platform_get_irq_byname.",
+      "missing_evidence": "T6000 AIC/FDT translation evidence for the raw interrupt and a source-backed ANE IRQ role."
+    },
+    "memory_or_reservation_binding": {
+      "status": "explicitly unresolved",
+      "direct_evidence": [
+        "The live ANE node has asc-dram-mask, segment-ranges, __TEXT/__DATA segment names, function-mcc_dataset M$DS, and pre-loaded=1."
+      ],
+      "driver_consumer_status": "The current driver has no memory-region, reserved-memory, dma-ranges, or dma-coherent consumer.",
+      "not_derivable": "None of the observed properties establishes Linux reserved memory, an IOMMU aperture, firmware-owned reservation, or that no reservation is required. The M$DS function phandle did not resolve to a node phandle during offline traversal; no namespace meaning is inferred.",
+      "missing_evidence": "A T6000 firmware/ADT-to-FDT rule or runtime contract explaining the memory and pre-loaded/function dataset path."
+    },
+    "power_domains": {
+      "status": "PMGR ancestry derived; Linux phandle list unresolved",
+      "direct_evidence": [
+        "ANE gate 0x1cf is PMGR device ANE-SYS-V; its PMGR parent is ANE_SYS_CPU."
+      ],
+      "derivable": "m1n1's PMGR translator deterministically supplies a power-controller node and parent edge, but its literal generated symbol requires DTS-safe sanitization for this PMGR name.",
+      "not_derivable": "Neither exact driver-facing power-domains list nor ordering follows from the gate alone.",
+      "missing_evidence": "The T6000 ANE node-to-PMGR provider mapping and ordered supplier list."
+    },
+    "dart_iommu_relationship": {
+      "status": "DART and raw SID candidates observed; Linux relationship unresolved",
+      "direct_evidence": [
+        "dart-ane0 is dart,t6000 with four translated 0x4000 windows and raw SID 0xa001; ANE has raw iommu-parent 0x14b."
+      ],
+      "derivable": "A Linux apple,t6000-dart provider would consume one SID phandle argument, and 0xa001 is a candidate argument value.",
+      "not_derivable": "m1n1's DART loader does not consume sids/iommu-parent, so it does not establish which DART provider/instance owns ANE or that the raw SID is the Linux phandle argument.",
+      "missing_evidence": "A reviewed T6000 ADT-to-FDT rule linking ANE to a particular DART provider and power topology."
+    }
+  },
+  "compatible_string_evidence": {
+    "status": "separate, insufficient",
+    "observed_adt": "ane,t8020",
+    "driver_match": "apple,t6000-ane",
+    "conclusion": "No source-authoritative mapping converts the observed Apple ADT compatible to the Linux driver compatible."
+  },
+  "conclusion": {
+    "resolved_required_fields": 0,
+    "application_authorization": false,
+    "no_dts_or_driver_edits": true
+  }
+}

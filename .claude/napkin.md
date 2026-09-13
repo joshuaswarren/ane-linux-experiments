@@ -4,6 +4,10 @@
 
 | Date | Source | What Went Wrong | What To Do Instead |
 |------|--------|-----------------|-------------------|
+| 2026-09-13 | user | Stopped after ANE-on-Max findings and parked ANE/CoreML/parity | Keep all three plans plus jw16 ANE bind running. Findings are not a stop. |
+| 2026-09-13 | review | Accepted eager constant snapshots after two hashes of mutable source paths; a flip/read/restore sequence returned wrong cached bits while both hashes passed | Hash the exact immutable byte buffer used for parsing/decoding; before/after path hashes do not authenticate consumed bytes. |
+| 2026-09-13 | self | Used established HTTP socket counts as an empty-queue gate, delaying real readiness probes | Keepalive sockets are not active requests; use a bounded completion and correlated engine lifecycle evidence. A client timeout does not prove server cancellation. |
+| 2026-09-13 | self | Left trailing commas on final JSON fields and tried an inverted edit range for insertion | Preserve whole object boundaries, use valid replacement ranges, and parse JSON before commit. Failed validation blocks publication. |
 | 2026-09-13 | self | Assumed test bootstrap _TOOLS was a Path and guessed compiler target directories | Inspect exported types and the repo root first; _TOOLS is a string and H13 lives under plugins/H13. A wrong test setup is not a regression reproduction. |
 | 2026-09-13 | self | Treated grep skip as an exclusion list and assumed a pinned receipt existed in the current checkout | skip is pagination, not exclusions; resolve the actual file or read its pinned source URL instead of guessing local paths. |
 | 2026-09-13 | review | A typed ADT export labeled node.reg as translated addresses; the low addresses exposed the mistake | Preserve raw cells separately and invoke node.get_reg() for bus-range translation; typed parsing alone does not translate addresses or establish live Linux bindings. |

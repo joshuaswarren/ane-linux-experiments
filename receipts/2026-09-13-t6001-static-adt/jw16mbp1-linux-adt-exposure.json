@@ -1,0 +1,55 @@
+{
+  "schema_version": 4,
+  "date": "2026-09-13",
+  "scope": {
+    "target_alias": "jw16mbp1-linux",
+    "method": "passive preflight only",
+    "forbidden_until_new_approval": ["external build", "insmod", "rmmod", "live ADT read", "reboot", "proxy", "device-memory alternatives"]
+  },
+  "live_fdt_phram_nodes": [
+    {"label": "adt", "address": "0x10004f70000", "size": "0x7c000"},
+    {"label": "m1n1_stage2.log", "address": "0x10fb8458000", "size": "0x4000"}
+  ],
+  "current_state": {
+    "hostname": "jw16mbp1-linux",
+    "kernel_release": "7.1.6-1-1-ARCH",
+    "kernel_package": "linux-asahi 7.1.6.asahi1-1",
+    "existing_mtd": [{"device": "mtd0", "name": "nvram", "size_hex": "0x100000"}],
+    "adt_mtd_present": false,
+    "phram_module_loaded": false,
+    "CONFIG_MODULES": "y",
+    "CONFIG_MTD_PHRAM": "not set",
+    "CONFIG_MODVERSIONS": "not set",
+    "CONFIG_MODULE_SIG": "not set",
+    "modules_disabled": 0,
+    "lockdown": "absent",
+    "kernel_tainted_before": 4
+  },
+  "external_module_preflight": {
+    "result": "supported in principle; not exercised",
+    "headers": "/usr/lib/modules/7.1.6-1-1-ARCH/build has Makefile and Module.symvers",
+    "toolchain_present": ["make", "gcc", "clang", "ld", "objcopy", "strip", "pahole", "modpost"],
+    "required_exports": ["__platform_driver_register", "platform_driver_unregister", "memremap", "memunmap", "iounmap", "mtd_device_parse_register", "mtd_device_unregister"],
+    "source": {
+      "tag": "asahi-7.1.6-1",
+      "commit": "e2e1930a9595bffafad92cec2b5504525efb9cd4",
+      "url": "https://raw.githubusercontent.com/AsahiLinux/linux/e2e1930a9595bffafad92cec2b5504525efb9cd4/drivers/mtd/devices/phram.c",
+      "sha256": "7f0e2077fd2c6c6d883f9266c1e3065e0b7912e84df5eb9dd84d2483ee2b766b"
+    },
+    "driver_scope": "The platform driver binds both phram nodes; it cannot bind only adt. Its probe maps and MTD-registers each resource using the FDT label. Its remove path MTD-unregisters and unmaps. It also exposes erase/write callbacks; the plan below invokes neither."
+  },
+  "conditional_build_capture_unload_plan": {
+    "status": "PLAN ONLY: wait for router lifecycle release and a distinct root mutation approval.",
+    "taint_limit": "An out-of-tree module can add a kernel-taint bit. Its later unload does not promise to restore /proc/sys/kernel/tainted to the pre-load value (currently 4), so only module/MTD restoration is asserted.",
+    "commands": [
+      "set -euo pipefail; umask 077; work=$(mktemp -d /tmp/ane-phram.XXXXXX); capture_dir=$(mktemp -d \"$HOME/.cache/ane-live-adt.XXXXXX\"); chmod 700 \"$capture_dir\"; cat /proc/mtd >\"$capture_dir/mtd.before\"; cat /proc/sys/kernel/tainted >\"$capture_dir/tainted.before\"; test ! -d /sys/module/phram; test -z \"$(for d in /sys/class/mtd/mtd*; do [[ $(basename \"$d\") =~ ^mtd[0-9]+$ ]] && test \"$(cat \"$d/name\")\" = adt && basename \"$d\"; done)\"; sudo -n true",
+      "module_attempted=0; restoration_failed=0; cleanup() { rc=$?; trap - EXIT HUP INT TERM; if test \"$module_attempted\" = 1 && test -d /sys/module/phram; then if ! sudo -n rmmod phram; then restoration_failed=1; printf '%s\\n' 'RESTORATION FAILED: phram remains loaded; preserving work and capture artifacts.' >&2; fi; fi; if test -d /sys/module/phram; then restoration_failed=1; fi; cat /proc/mtd >\"$capture_dir/mtd.after\"; cat /proc/sys/kernel/tainted >\"$capture_dir/tainted.after\"; if ! cmp \"$capture_dir/mtd.before\" \"$capture_dir/mtd.after\"; then restoration_failed=1; fi; if test \"$restoration_failed\" = 1; then printf '%s\\n' \"RESTORATION FAILED; artifacts preserved at $work and $capture_dir\" >&2; exit 125; fi; rm -rf \"$work\"; exit \"$rc\"; }; trap cleanup EXIT HUP INT TERM",
+      "curl --fail --silent --show-error --max-time 30 https://raw.githubusercontent.com/AsahiLinux/linux/e2e1930a9595bffafad92cec2b5504525efb9cd4/drivers/mtd/devices/phram.c -o \"$work/phram.c\"; printf '%s  %s\\n' 7f0e2077fd2c6c6d883f9266c1e3065e0b7912e84df5eb9dd84d2483ee2b766b \"$work/phram.c\" | sha256sum -c -; printf 'obj-m += phram.o\\n' >\"$work/Makefile\"; make -C /usr/lib/modules/$(uname -r)/build M=\"$work\" modules; case \"$(modinfo -F vermagic \"$work/phram.ko\")\" in \"$(uname -r)\"*) ;; *) exit 1;; esac",
+      "module_attempted=1; sudo -n insmod \"$work/phram.ko\"; test -d /sys/module/phram",
+      "adt_mtd=$(for d in /sys/class/mtd/mtd*; do [[ $(basename \"$d\") =~ ^mtd[0-9]+$ ]] && test \"$(cat \"$d/name\")\" = adt && test \"$(cat \"$d/size\")\" = 507904 && basename \"$d\"; done); test \"$(printf %s \"$adt_mtd\" | wc -w)\" = 1; sudo -n dd if=\"/dev/$adt_mtd\" bs=4096 iflag=fullblock count=124 status=none >\"$capture_dir/adt.bin\"; test \"$(stat -c %s \"$capture_dir/adt.bin\")\" = 507904; chmod 600 \"$capture_dir/adt.bin\"; sha256sum \"$capture_dir/adt.bin\" >\"$capture_dir/adt.bin.sha256\"",
+      "sudo -n rmmod phram; module_attempted=0; test ! -d /sys/module/phram; cat /proc/mtd >\"$capture_dir/mtd.after.manual\"; cmp \"$capture_dir/mtd.before\" \"$capture_dir/mtd.after.manual\""
+    ],
+    "capture_bound": "124 × 4096 = 507904 bytes = 0x7c000. Raw capture remains private, mode 0600, and uncommitted."
+  },
+  "limits": {"live_adt_captured": false, "raw_blob_committed": false, "unique_identifiers_collected": false, "application_authorization": false}
+}

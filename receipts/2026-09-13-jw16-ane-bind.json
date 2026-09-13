@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-13",
+  "target": {
+    "ssh_alias": "jw16mbp1-linux",
+    "hostname": "jw16mbp1-linux",
+    "address_from_ssh_config": "192.168.10.244",
+    "kernel": "7.1.6-1-1-ARCH",
+    "architecture": "aarch64",
+    "agent_model": "openai-codex/gpt-5.6-sol",
+    "agent_model_fallback": false
+  },
+  "outcome": {
+    "status": "probe_failed_rolled_back",
+    "ane_fdt_live_during_test_boot": true,
+    "module_insert_return_code": 0,
+    "driver_bound": false,
+    "accel0_created": false,
+    "exact_failure_errno": -16,
+    "exact_failure_name": "EBUSY",
+    "exact_failure": "ane 284000000.ane could not request [mem 0x284000000-0x285ffffff]",
+    "failing_consumer": "285800000.iommu bound to apple-dart already owns 0x285800000-0x285803fff, which lies inside the ANE engine resource 0x284000000-0x285ffffff",
+    "second_probe_attempted": false,
+    "workload_submitted": false,
+    "encoder_claim_made": false,
+    "reboot_count": 1,
+    "rollback_completed": true,
+    "live_fdt_note": "The test-boot ANE nodes remain in the immutable live FDT until the next boot. The module is removed and the next-boot DTB and boot.bin are restored to their exact pre-change hashes. A second reboot was prohibited and was not performed."
+  },
+  "source": {
+    "omarchy_linux_commit": "dd84b5f11deefd03a55e0c009e9d4f827dcb54f1",
+    "omarchy_ane_commit": "3946f76f82f1040c9f20b84692159ceb6aee31b9",
+    "omarchy_ane_subject": "Support T6000 ANE power states",
+    "source_base_path": "/home/joshuawarren/src/omarchy-linux/arch/arm64/boot/dts/apple/t6001-j316c.dtb",
+    "source_base_sha256": "9070cf3e39256b8e481f3d48db66acb435e573b020bf194ce268feb6f20eeb8a",
+    "overlay_source_path": "/home/joshuawarren/src/omarchy-linux/arch/arm64/boot/dts/apple/t6001-j316c-ane.dtso",
+    "enabled_overlay_sha256": "14a0042f6331e139158a893be7c7c213f4ca096631240cb134889ae07e16ff77",
+    "stock_compatible_overlay_sha256": "1f248c7b4687a855dca1fd25b13917d7160931ebf5c8e72956cb78e3620c9f32",
+    "enabled_stock_based_dtb_sha256": "3d2a35a429ed2ea03519afbecfe5e70a8d394f7a83db673f8b65373d20c1b611"
+  },
+  "preconditions": {
+    "stock_dtbs": [
+      {
+        "path": "/usr/lib/asahi-boot/dtb/t6001-j316c.dtb",
+        "sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+        "backup": "/root/t6001-j316c.asahi-boot.dtb.pre-ane",
+        "backup_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806"
+      },
+      {
+        "requested_path": "/usr/lib/modules/7.1.6-1-1-ARCH/dtbs/apple/t6001-j316c.dtb",
+        "requested_path_state": "absent",
+        "actual_path": "/usr/lib/modules/7.1.6-1-1-ARCH/dtbs/t6001-j316c.dtb",
+        "sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+        "backup": "/root/t6001-j316c.modules.dtb.pre-ane",
+        "backup_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05"
+      }
+    ],
+    "source_vs_asahi_stock_diff": {
+      "lines": 6139,
+      "bytes": 181646,
+      "non_ane_proof": ["chassis-type", "dwc3_0", "sound"],
+      "artifact_on_host": "/tmp/source-vs-asahi.diff"
+    },
+    "source_vs_modules_stock_diff": {
+      "lines": 4829,
+      "bytes": 139686,
+      "non_ane_proof": ["__symbols__", "dwc3_0"],
+      "artifact_on_host": "/tmp/source-vs-modules.diff"
+    },
+    "decision": "The source-built base differed from both installed stock DTBs outside ANE, so it was rejected. Only the ANE, DART, and required ANE CPU power-domain phandle were transplanted onto the stock DTB consumed by update-m1n1.",
+    "stock_to_enabled_semantic_diff": [
+      "added /soc/ane@284000000",
+      "added /soc/iommu@285800000",
+      "added phandle 0x109 to existing ANE power-controller /soc/power-management@28e080000/power-controller@2c8"
+    ],
+    "stock_to_enabled_diff_artifact_on_host": "/tmp/modules-stock-to-ane-clean.diff"
+  },
+  "update_m1n1": {
+    "binary": "/usr/bin/update-m1n1",
+    "package": "asahi-scripts 20260127.1-1",
+    "default_config": "/etc/default/update-m1n1 absent",
+    "discovery_expression": "$(/bin/ls -d /lib/modules/*-ARCH | sort -rV | head -1)/dtbs/*.dtb",
+    "resolved_kernel_dtb_dir": "/lib/modules/7.1.6-1-1-ARCH/dtbs",
+    "resolved_board_dtb": "/lib/modules/7.1.6-1-1-ARCH/dtbs/t6001-j316c.dtb",
+    "boot_image_construction": "cat m1n1.bin and resolved DTBs, gzip u-boot-nodtb.bin, append filtered m1n1.conf",
+    "target_mount": "/dev/nvme0n1p4 mounted at /run/.system-efi",
+    "target": "/run/.system-efi/m1n1/boot.bin",
+    "pre_change_boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+    "pre_change_boot_bin_backup": "/root/boot.bin.pre-ane",
+    "enabled_boot_bin_sha256": "8d0db3a78abba6cc7265e3375fa2e1d93eb06bd1a5bd807a428d688eb5b6aa46",
+    "update_output": [
+      "Mounted System ESP /dev/nvme0n1p4 at /run/.system-efi",
+      "m1n1 updated at /run/.system-efi/m1n1/boot.bin"
+    ]
+  },
+  "boot": {
+    "uptime_start_before": "2026-09-12 18:42:23",
+    "boot_id_before": "88ab2d2e-d141-4660-b90a-4881394432a7",
+    "uptime_start_after": "2026-09-13 10:12:24",
+    "boot_id_after": "d7ecb7b1-2e69-4998-8a16-ae302b00018f",
+    "ssh_return_seconds": 42.24,
+    "nproc_before": 10,
+    "nproc_after": 10
+  },
+  "live_fdt": {
+    "dart": {
+      "path": "/soc/iommu@285800000",
+      "compatible": ["apple,t6000-dart"],
+      "status": "okay",
+      "reg_hex_cells": ["2", "85800000", "0", "4000"],
+      "interrupts_hex_cells": ["0", "0", "303", "4"],
+      "power_domains_hex_cells": ["18"],
+      "phandle_hex": "108"
+    },
+    "ane": {
+      "path": "/soc/ane@284000000",
+      "compatible": ["apple,t6000-ane"],
+      "status": "okay",
+      "reg_hex_cells": ["2", "84000000", "0", "2000000", "2", "85800000", "0", "4000", "2", "85810000", "0", "4000", "2", "85820000", "0", "4000"],
+      "interrupts_hex_cells": ["0", "0", "302", "4", "0", "0", "303", "4"],
+      "iommus_hex_cells": ["108", "0"],
+      "power_domains_hex_cells": ["109"]
+    },
+    "providers": {
+      "ane_sys_path": "/soc/power-management@28e080000/power-controller@268",
+      "ane_sys_phandle_hex": "18",
+      "ane_sys_cpu_path": "/soc/power-management@28e080000/power-controller@2c8",
+      "ane_sys_cpu_phandle_hex": "109"
+    }
+  },
+  "module": {
+    "path_used": "/tmp/Jw16AneBind-3946f76.XbpC3S/ane/ane.ko",
+    "sha256": "624c69d718edd116b644d462245f88d5adc529fc821868f314107130539a5b88",
+    "vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64",
+    "source_commit": "3946f76f82f1040c9f20b84692159ceb6aee31b9",
+    "rebuild_receipt": "EXACT_MODULE_REPRODUCED",
+    "preflight_mistake": "The first post-reboot insmod command named the pre-reboot /tmp module path before checking that the file survived reboot. It failed in userspace with ENOENT and did not reach a kernel consumer or probe. The exact source commit was then archived, rebuilt at the original path, hash-checked, and inserted once for the only kernel probe.",
+    "kernel_probe_count": 1,
+    "actual_insmod_return_code": 0,
+    "lsmod_during_probe": "ane 65536 0",
+    "dmesg": [
+      "[  155.460829] ane: loading out-of-tree module taints kernel.",
+      "[  155.463029] ane 284000000.ane: irq: leaving dart irq 61 enabled",
+      "[  155.463034] ane 284000000.ane: error -EBUSY: can't request region for resource [mem 0x284000000-0x285ffffff]",
+      "[  155.463037] ane 284000000.ane: probe with driver ane failed with error -16"
+    ],
+    "conflicting_consumer_evidence": {
+      "platform_device": "/sys/bus/platform/devices/285800000.iommu",
+      "driver": "/sys/bus/platform/drivers/apple-dart",
+      "proc_iomem": "285800000-285803fff : 285800000.iommu iommu@285800000",
+      "overlap_math": "ANE [0x284000000,0x285ffffff] contains DART [0x285800000,0x285803fff]"
+    }
+  },
+  "rollback": {
+    "module_removed": true,
+    "accel0_absent": true,
+    "stock_asahi_dtb_restored_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
+    "stock_modules_dtb_restored_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
+    "boot_bin_restored_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
+    "llm_benchmark_recovery_timer": "inactive",
+    "llm_inference_service": "inactive",
+    "llama_server_process": "absent",
+    "verified_at": "2026-09-13T10:16:37-05:00",
+    "verification_marker": "ROLLBACK_VERIFIED",
+    "commands": [
+      "sudo rmmod ane",
+      "sudo install -m 0644 /root/t6001-j316c.modules.dtb.pre-ane /usr/lib/modules/7.1.6-1-1-ARCH/dtbs/t6001-j316c.dtb",
+      "sudo update-m1n1",
+      "sudo install -m 0600 /root/boot.bin.pre-ane /boot/efi/m1n1/boot.bin"
+    ],
+    "future_manual_rollback_if_needed": [
+      "sudo rmmod ane 2>/dev/null || true",
+      "sudo install -m 0644 /root/t6001-j316c.modules.dtb.pre-ane /usr/lib/modules/7.1.6-1-1-ARCH/dtbs/t6001-j316c.dtb",
+      "sudo install -m 0644 /root/t6001-j316c.asahi-boot.dtb.pre-ane /usr/lib/asahi-boot/dtb/t6001-j316c.dtb",
+      "sudo install -m 0600 /root/boot.bin.pre-ane /boot/efi/m1n1/boot.bin",
+      "sha256sum /usr/lib/asahi-boot/dtb/t6001-j316c.dtb /usr/lib/modules/7.1.6-1-1-ARCH/dtbs/t6001-j316c.dtb",
+      "sudo sha256sum /boot/efi/m1n1/boot.bin"
+    ]
+  },
+  "command_log": [
+    {
+      "title": "baseline",
+      "command": "ssh -o ConnectTimeout=8 -o BatchMode=yes jw16mbp1-linux 'hostname; uname -r; uptime -s; nproc; sudo -n true; systemctl is-active llama; test live ANE node; test accel0'",
+      "result": "jw16mbp1-linux; 7.1.6-1-1-ARCH; uptime 2026-09-12 18:42:23; nproc 10; sudo noninteractive; llama inactive; ANE and accel0 absent"
+    },
+    {
+      "title": "stock inventory and backup",
+      "command": "sha256sum both installed t6001-j316c.dtb files; sudo install each to /root/*.pre-ane; sha256sum backups",
+      "result": "both backup hashes matched their sources; requested modules dtbs/apple path was absent and actual dtbs/t6001-j316c.dtb was found"
+    },
+    {
+      "title": "source base comparison",
+      "command": "dtdiff each installed stock DTB against /tmp/t6001-j316c.source.dtb",
+      "result": "6139-line and 4829-line diffs contained non-ANE differences, forcing stock-base transplantation"
+    },
+    {
+      "title": "update-m1n1 discovery",
+      "command": "read /usr/bin/update-m1n1, /usr/share/asahi-scripts/functions.sh, and 95-m1n1-install.hook; resolve default DTBS glob and ESP",
+      "result": "update-m1n1 consumes latest /lib/modules/*-ARCH/dtbs/*.dtb and writes /run/.system-efi/m1n1/boot.bin on /dev/nvme0n1p4"
+    },
+    {
+      "title": "first symbolic overlay application",
+      "command": "fdtoverlay -i /usr/lib/asahi-boot/dtb/t6001-j316c.dtb -o /tmp/t6001-j316c.asahi-ane-enabled.dtb /tmp/t6001-j316c-ane-enabled.dtbo",
+      "result": "failed FDT_ERR_BADOFFSET because the stock base has no /__symbols__; no installed file changed"
+    },
+    {
+      "title": "stock-compatible enabled artifact",
+      "command": "compile target-path/local-fixup overlay; fdtoverlay onto stock modules DTB; remove generated /__symbols__; dtdiff; fdtget all ANE/DART/provider fields",
+      "result": "enabled DTB 3d2a35a... differed only by ANE, DART, and the required phandle on ane_sys_cpu"
+    },
+    {
+      "title": "install and update boot",
+      "command": "backup boot.bin; install enabled DTB to /usr/lib/modules/7.1.6-1-1-ARCH/dtbs/t6001-j316c.dtb; sudo update-m1n1; sha256sum boot.bin",
+      "result": "m1n1 updated; enabled boot.bin 8d0db3a78abba6cc7265e3375fa2e1d93eb06bd1a5bd807a428d688eb5b6aa46"
+    },
+    {
+      "title": "single reboot",
+      "command": "sudo systemctl reboot; bounded SSH wait requiring a changed boot ID",
+      "result": "SSH returned in 42.24 seconds with changed boot ID and uptime 2026-09-13 10:12:24"
+    },
+    {
+      "title": "live FDT verification",
+      "command": "fdtget fields from /sys/firmware/fdt for /soc/ane@284000000, /soc/iommu@285800000, and ANE power providers",
+      "result": "both nodes live and okay; compatible/reg/interrupt/iommu/power-domain fields matched the enabled artifact"
+    },
+    {
+      "title": "llama stop",
+      "command": "sudo systemctl stop llm-benchmark-recovery.timer llm-inference.service; verify pgrep -x llama-server absent",
+      "result": "timer inactive, inference inactive, process absent"
+    },
+    {
+      "title": "module reconstruction",
+      "command": "git archive exact omarchy-ane commit; build against /lib/modules/7.1.6-1-1-ARCH/build at the original build path; verify sha256 and vermagic",
+      "result": "ane.ko 624c69d718edd116b644d462245f88d5adc529fc821868f314107130539a5b88; vermagic 7.1.6-1-1-ARCH SMP preempt mod_unload aarch64"
+    },
+    {
+      "title": "only kernel probe",
+      "command": "sudo insmod /tmp/Jw16AneBind-3946f76.XbpC3S/ane/ane.ko; capture new dmesg lines, lsmod, and /dev/accel/accel0",
+      "result": "insmod returned 0 but platform probe failed -EBUSY/-16; module listed; accel0 absent"
+    },
+    {
+      "title": "consumer identification",
+      "command": "read platform-driver bindings and /proc/iomem for 284000000/285800000",
+      "result": "apple-dart bound 285800000.iommu and owned the overlapping 0x285800000-0x285803fff range"
+    },
+    {
+      "title": "rollback",
+      "command": "rmmod; restore stock modules DTB; run update-m1n1; restore exact pre-change boot.bin backup; verify hashes, module/device absence, and llama state",
+      "result": "ROLLBACK_VERIFIED"
+    }
+  ]
+}

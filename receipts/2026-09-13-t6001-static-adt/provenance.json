@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-13",
+  "scope": {
+    "method": "offline bounded Apple IPSW range extraction and local decode",
+    "excluded": [
+      "SSH",
+      "target/device access",
+      "m1n1 proxy",
+      "driver/DTS writes",
+      "hardware operation"
+    ]
+  },
+  "source": {
+    "archive_url": "https://updates.cdn-apple.com/2026SummerFCS/fullrestores/140-75212/A2A24B94-1FC1-45A3-93F7-C51B02AF1F4D/UniversalMac_26.6.2_25G83_Restore.ipsw",
+    "archive_size_bytes": 19772231540,
+    "build": "26.6.2 (25G83)",
+    "build_manifest": {
+      "member": "BuildManifest.plist",
+      "sha256": "e8ff2cdd3e8ab3a668132bf9453948b70f1863b849a6185914f54a9ec25356d3",
+      "bytes": 26535137,
+      "range": "bytes 18224896761-18226254567/19772231540"
+    },
+    "board_identity": {
+      "product_type": "MacBookPro18,2",
+      "target": "J316cAP",
+      "target_type": "j316c",
+      "board_id": "0x0A",
+      "chip_id": "0x6001"
+    }
+  },
+  "artifacts": {
+    "im4p": {
+      "path": "receipts/2026-09-13-t6001-static-adt/DeviceTree.j316cap.im4p",
+      "member": "Firmware/all_flash/DeviceTree.j316cap.im4p",
+      "sha256": "4e04c3822e83801d508d696455be5368b8fbd3abce849c3a14ecfe927f7cbeac",
+      "bytes": 56282,
+      "range": "bytes 18487278027-18487334883/19772231540"
+    },
+    "lzfse_payload": {
+      "path": "receipts/2026-09-13-t6001-static-adt/DeviceTree.j316cap.adt.lzfse",
+      "sha256": "4652c81c55876331e8a8674927f8a8c8d6c96238bb9f51780345eaaa978723a9",
+      "bytes": 56218,
+      "magic": "bvx2"
+    },
+    "static_adt": {
+      "path": "receipts/2026-09-13-t6001-static-adt/DeviceTree.j316cap.adt",
+      "sha256": "8f8929608982f111b66507eb544f19cecc6b3174c31ae47f0bccf6a86d5a4f5a",
+      "bytes": 341376,
+      "root_header": {
+        "property_count": 23,
+        "child_count": 26
+      }
+    }
+  },
+  "decoder": {
+    "source": "https://github.com/lzfse/lzfse/archive/refs/heads/master.tar.gz",
+    "source_sha256": "dba753951947af77bb7b2cbac25acecc3b4da90a0f801e854ebd9ba1f48299c9",
+    "isolated_path": "/tmp/t6001-static-adt-lzfse/build/bin/lzfse",
+    "command": "lzfse -decode -i DeviceTree.j316cap.adt.lzfse -o DeviceTree.j316cap.adt"
+  },
+  "static_nodes": {
+    "ane0": {
+      "compatible": "ane,t8020",
+      "interrupt_parent_phandle": "0x82",
+      "interrupt_raw_le": "0x302",
+      "iommu_parent_phandle": "0x14e",
+      "power_gate_raw_le": "0x1cf",
+      "reg_raw_le_words": [
+        "0x84000000",
+        "0x0",
+        "0x2000000",
+        "0x0",
+        "0x8e080000",
+        "0x0",
+        "0xc02c",
+        "0x0"
+      ]
+    },
+    "ane1": {
+      "compatible": "ane,t8020",
+      "interrupt_parent_phandle": "0x82",
+      "interrupt_raw_le": "0x31d",
+      "iommu_parent_phandle": "0x151",
+      "power_gate_raw_le": "0x1ea",
+      "reg_raw_le_words": [
+        "0x8000000",
+        "0x3",
+        "0x2000000",
+        "0x0",
+        "0x8e680100",
+        "0x0",
+        "0x3f2c",
+        "0x0"
+      ]
+    },
+    "dart_ane0": {
+      "compatible": "dart,t6000",
+      "phandle": "0x14d",
+      "mapper_phandle": "0x14e",
+      "sids_raw_le": "0xa001"
+    },
+    "dart_ane1": {
+      "compatible": "dart,t6000",
+      "phandle": "0x150",
+      "mapper_phandle": "0x151",
+      "sids_raw_le": "0xa001"
+    },
+    "pmgr": {
+      "compatible": "pmgr1,t6001",
+      "phandle": "0x99",
+      "power_domains_bytes": 1848,
+      "power_domains_sha256": "0f44f17327571dddf63f814014e8608711ee48cfc67a0733f7d7c13ce42ac77c"
+    },
+    "memory": {
+      "reservation_nodes": "chosen/memory-map has 16 generic MemoryMapReserved-* records, all 16-byte zero payloads; none contains ASCII ane"
+    }
+  },
+  "limits": {
+    "tree_kind": "firmware-shipped static ADT, not a live boot-modified ADT",
+    "binding_status": "Static raw facts now include PMGR table and ADT range relationships, but they still do not establish Linux named resources, interrupt naming/translation, memory-region/DMA contract, PMGR-to-genpd phandles, or Linux iommus tuples. All five Linux consumer bindings remain unresolved.",
+    "application_authorization": false
+  },
+  "parser": {
+    "used": "/home/joshuawarren/src/homelab-infra/scripts/jwm1-adt-parse.py",
+    "method": "offline ADT structural parser; it read the decoded blob and emitted the two ANE nodes and their DART mapper children",
+    "pinned_m1n1_status": {
+      "source": "https://github.com/AsahiLinux/m1n1/blob/b4654b32941d51afdb77579d63e7cb1aa6c03ecc/proxyclient/m1n1/adt.py",
+      "available": true,
+      "execution": "Temporary Python venv only; construct==2.10.70; staged exact adt.py SHA-256 b1d0c1af0ea83f73b9e6003efb9b42a4892cb35be8efb9c7566d3512c1846a3f and utils.py SHA-256 650a005253d116156b0097ec1be0308ea04c1d205fb08a178e003cecd6617c3e."
+    },
+    "crosscheck_artifact": "receipts/2026-09-13-t6001-static-adt/m1n1-typed-crosscheck.json",
+    "crosscheck": {
+      "raw_offsets_and_cells": "static_nodes and m1n1-typed-crosscheck.reg_raw_typed retain raw ADT little-endian property values and cell order.",
+      "range_translated_addresses": "m1n1-typed-crosscheck.reg_range_translated separately records ADT parent-range translations. The prior receipt label was corrected: node.reg is raw; node.get_reg() is translated.",
+      "agreement": "The independent parser agrees on raw ANE/DART values and produces the separately stored static translations."
+    }
+  },
+  "static_relationships": {
+    "arm_io_ranges": [
+      {
+        "bus_addr": "0x0",
+        "parent_addr": "0x200000000",
+        "size": "0x400000000"
+      },
+      {
+        "bus_addr": "0x580000000",
+        "parent_addr": "0x580000000",
+        "size": "0x180000000"
+      },
+      {
+        "bus_addr": "0x700000000",
+        "parent_addr": "0x700000000",
+        "size": "0xf80000000"
+      }
+    ],
+    "pmgr_power_gate_resolution": {
+      "method": "m1n1 ADT parser selected PMGR device ID and typed all 430 devices / 19 ps-regs / 77 power-domains.",
+      "direct_static_matches": [
+        {
+          "ane_node": "ane0",
+          "raw_power_gate": "0x1cf",
+          "pmgr_device_id2": "0x1cf",
+          "pmgr_device_name": "ANE-SYS-V",
+          "static_control_address": "0x292280000"
+        },
+        {
+          "ane_node": "ane1",
+          "raw_power_gate": "0x1ea",
+          "pmgr_device_id2": "0x1ea",
+          "pmgr_device_name": "ANE1-SYS-V",
+          "static_control_address": "0x292280000"
+        }
+      ],
+      "limit": "This is an Apple static PMGR-table relation, not a Linux power-domains/genpd mapping or driver attachment order."
+    },
+    "dart_sids": {
+      "raw_values": [
+        "0xa001"
+      ],
+      "pinned_consumer": "proxyclient/m1n1/hw/dart.py DART.from_adt reads only get_reg(instance) and compatible; it does not read sids, iommu-parent, or mapper properties. Repository search found no .sids or [\"sids\" consumer under proxyclient.",
+      "limit": "No Linux stream-ID encoding was decoded or inferred."
+    },
+    "kboot_adt_handoff": {
+      "source": "src/kboot.c at pinned m1n1 commit b4654b32941d51afdb77579d63e7cb1aa6c03ecc",
+      "behavior": "dt_setup_mtd_phram reserves (u64)adt for ALIGN_UP(cur_boot_args.devtree_size, SZ_16K) and labels the phram node adt; kboot_prepare_dt calls dt_setup_mtd_phram before its FDT modifications.",
+      "mutation_check": "No adt_set, adt_delete, adt_add, adt_remove, or memcpy(adt pattern was found in kboot.c.",
+      "limit": "This establishes a source-level, no-proxy read route only for a machine booted through this kboot path and with Linux exposing that phram. It does not prove availability, contents, or liveness on the target without a separate read."
+    }
+  }
+}

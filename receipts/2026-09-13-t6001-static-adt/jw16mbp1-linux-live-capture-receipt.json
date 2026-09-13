@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-13",
+  "scope": "Approved standard phram diagnostic only",
+  "source": {
+    "tag": "asahi-7.1.6-1",
+    "commit": "e2e1930a9595bffafad92cec2b5504525efb9cd4",
+    "phram_c_sha256": "7f0e2077fd2c6c6d883f9266c1e3065e0b7912e84df5eb9dd84d2483ee2b766b"
+  },
+  "fresh_preflight": {
+    "kernel": "7.1.6-1-1-ARCH",
+    "phram_absent": true,
+    "mtd_baseline": "mtd0 nvram only",
+    "adt_fdt_region": "0x10004f70000 + 0x7c000",
+    "tainted_before": 4
+  },
+  "capture": {
+    "bytes": 507904,
+    "sha256": "08605987113442a01d7fe2446697e877831ab9dc82ca81d99e506dfc60f24eeb",
+    "storage": "private mode-0600 non-repository location",
+    "raw_blob_in_repository": false
+  },
+  "restoration": {
+    "phram_absent_after": true,
+    "mtd_baseline_restored": "mtd0 nvram only",
+    "tainted_after": 4100,
+    "taint_limit": "The out-of-tree module taint did not revert after unload. Full kernel state is not claimed reversible."
+  },
+  "scoped_export": "jw16mbp1-linux-live-scoped-facts.json",
+  "observed_script_defect": {
+    "detail": "The MTD discovery glob mtd* also visited mtdNro symlinks and emitted nonfatal missing-name diagnostics. The selected numeric adt MTD still passed the exact 507904-byte read and post-unload baseline checks.",
+    "future_fix": "Use /sys/class/mtd/mtd[0-9]* in any reuse; do not suppress discovery errors."
+  },
+  "limits": {
+    "no_gpu_or_inference_operation": true,
+    "no_driver_or_dts_change": true,
+    "application_authorization": false
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "parser": {
+    "m1n1_commit": "b4654b32941d51afdb77579d63e7cb1aa6c03ecc",
+    "construct": "2.10.70"
+  },
+  "nodes": {
+    "arm-io/ane0": {
+      "compatible": [
+        "ane,t8020"
+      ],
+      "reg_raw_typed": [
+        {
+          "addr": "0x84000000",
+          "size": "0x2000000"
+        },
+        {
+          "addr": "0x8e080000",
+          "size": "0xc02c"
+        }
+      ],
+      "reg_range_translated": [
+        {
+          "addr": "0x284000000",
+          "size": "0x2000000"
+        },
+        {
+          "addr": "0x28e080000",
+          "size": "0xc02c"
+        }
+      ],
+      "interrupts_raw_le": [
+        "0x302"
+      ],
+      "interrupt_parent_raw_le": "0x82",
+      "power_gates_raw_le": [
+        "0x1cf"
+      ],
+      "iommu_parent_raw_le": "0x14e"
+    },
+    "arm-io/ane1": {
+      "compatible": [
+        "ane,t8020"
+      ],
+      "reg_raw_typed": [
+        {
+          "addr": "0x308000000",
+          "size": "0x2000000"
+        },
+        {
+          "addr": "0x8e680100",
+          "size": "0x3f2c"
+        }
+      ],
+      "reg_range_translated": [
+        {
+          "addr": "0x508000000",
+          "size": "0x2000000"
+        },
+        {
+          "addr": "0x28e680100",
+          "size": "0x3f2c"
+        }
+      ],
+      "interrupts_raw_le": [
+        "0x31d"
+      ],
+      "interrupt_parent_raw_le": "0x82",
+      "power_gates_raw_le": [
+        "0x1ea"
+      ],
+      "iommu_parent_raw_le": "0x151"
+    },
+    "arm-io/dart-ane0": {
+      "compatible": [
+        "dart,t6000"
+      ],
+      "reg_raw_typed": [
+        {
+          "addr": "0x85800000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x85810000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x85820000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x85804000",
+          "size": "0x4000"
+        }
+      ],
+      "reg_range_translated": [
+        {
+          "addr": "0x285800000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x285810000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x285820000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x285804000",
+          "size": "0x4000"
+        }
+      ],
+      "interrupts_raw_le": [
+        "0x303"
+      ],
+      "interrupt_parent_raw_le": "0x82",
+      "power_gates_raw_le": [
+        "0x1f7"
+      ],
+      "sids_raw_le": "0xa001"
+    },
+    "arm-io/dart-ane1": {
+      "compatible": [
+        "dart,t6000"
+      ],
+      "reg_raw_typed": [
+        {
+          "addr": "0x309800000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x309810000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x309820000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x309804000",
+          "size": "0x4000"
+        }
+      ],
+      "reg_range_translated": [
+        {
+          "addr": "0x509800000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x509810000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x509820000",
+          "size": "0x4000"
+        },
+        {
+          "addr": "0x509804000",
+          "size": "0x4000"
+        }
+      ],
+      "interrupts_raw_le": [
+        "0x31e"
+      ],
+      "interrupt_parent_raw_le": "0x82",
+      "power_gates_raw_le": [
+        "0x1fd"
+      ],
+      "sids_raw_le": "0xa001"
+    }
+  },
+  "pmgr_ane_named_domains": [
+    {
+      "id": 26,
+      "name": "ANE_SYS",
+      "flags": 0
+    },
+    {
+      "id": 86,
+      "name": "ANE1_SYS",
+      "flags": 0
+    }
+  ]
+}

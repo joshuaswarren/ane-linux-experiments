@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-13",
+  "provenance": {
+    "capture_sha256": "08605987113442a01d7fe2446697e877831ab9dc82ca81d99e506dfc60f24eeb",
+    "capture_bytes": 507904,
+    "capture_storage": "private mode-0600 non-repository location",
+    "kernel_tainted_before": 4,
+    "kernel_tainted_after": 4100,
+    "post_unload": {
+      "phram_module": "absent",
+      "mtd_baseline": "nvram-only, restored"
+    }
+  },
+  "facts": {
+    "blob_bytes": 507904,
+    "available_ane_paths": [
+      "arm-io/ane0"
+    ],
+    "available_dart_paths": [
+      "arm-io/dart-ane0"
+    ],
+    "nodes": {
+      "arm-io/ane0": {
+        "compatible": [
+          "ane,t8020"
+        ],
+        "reg_raw_typed": [
+          {
+            "addr": "0x84000000",
+            "size": "0x2000000"
+          },
+          {
+            "addr": "0x8e080000",
+            "size": "0xc02c"
+          }
+        ],
+        "reg_range_translated": [
+          {
+            "addr": "0x284000000",
+            "size": "0x2000000"
+          },
+          {
+            "addr": "0x28e080000",
+            "size": "0xc02c"
+          }
+        ],
+        "interrupts_raw_le": [
+          "0x302"
+        ],
+        "interrupt_parent_raw_le": "0x7e",
+        "power_gates_raw_le": [
+          "0x1cf"
+        ],
+        "iommu_parent_raw_le": "0x14b",
+        "pre_loaded_raw_le": "0x1"
+      },
+      "arm-io/dart-ane0": {
+        "compatible": [
+          "dart,t6000"
+        ],
+        "reg_raw_typed": [
+          {
+            "addr": "0x85800000",
+            "size": "0x4000"
+          },
+          {
+            "addr": "0x85810000",
+            "size": "0x4000"
+          },
+          {
+            "addr": "0x85820000",
+            "size": "0x4000"
+          },
+          {
+            "addr": "0x85804000",
+            "size": "0x4000"
+          }
+        ],
+        "reg_range_translated": [
+          {
+            "addr": "0x285800000",
+            "size": "0x4000"
+          },
+          {
+            "addr": "0x285810000",
+            "size": "0x4000"
+          },
+          {
+            "addr": "0x285820000",
+            "size": "0x4000"
+          },
+          {
+            "addr": "0x285804000",
+            "size": "0x4000"
+          }
+        ],
+        "interrupts_raw_le": [
+          "0x303"
+        ],
+        "interrupt_parent_raw_le": "0x7e",
+        "power_gates_raw_le": [
+          "0x1f7"
+        ],
+        "sids_raw_le": "0xa001"
+      }
+    },
+    "pmgr": {
+      "compatible": [
+        "pmgr1,t6001"
+      ],
+      "matching_power_gate_devices": [
+        {
+          "id2": "0x1cf",
+          "name": "ANE-SYS-V",
+          "static_control_address": "0x292280000"
+        }
+      ],
+      "ane_named_power_domains": [
+        {
+          "id": "0x1a",
+          "name": "ANE_SYS",
+          "flags": "0x0"
+        },
+        {
+          "id": "0x56",
+          "name": "ANE1_SYS",
+          "flags": "0x0"
+        }
+      ]
+    },
+    "arm_io_ranges": [
+      {
+        "bus_addr": "0x0",
+        "parent_addr": "0x200000000",
+        "size": "0x400000000"
+      },
+      {
+        "bus_addr": "0x580000000",
+        "parent_addr": "0x580000000",
+        "size": "0x180000000"
+      },
+      {
+        "bus_addr": "0x700000000",
+        "parent_addr": "0x700000000",
+        "size": "0xf80000000"
+      }
+    ]
+  },
+  "limits": {
+    "static_vs_live": "This is a live boot ADT capture. Raw blob may contain identifiers and is not included in this repository.",
+    "linux_bindings": "Raw ADT facts do not by themselves establish Linux named resources, IRQ names, genpd phandles, memory-region contract, or iommus tuples.",
+    "application_authorization": false
+  }
+}
