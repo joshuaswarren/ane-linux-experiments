@@ -9,56 +9,13 @@ Every headline number has a matching receipt in `receipts/`.
 
 ## Current status
 
-The tied Qwen3.8-2B output head beats CPU numpy on Linux.
-It takes `791 ms` on the ANE and `1975 ms` on the CPU.
-The speedup is `2.50x`.
-The maximum error is `0.0010`.
-The argmax and top-10 results match.
+T8103 on m1-test-host has a bound ANE. Persistence is `m1-test-host-ane.service`. Schema-4 add-mul is exact fp16 through the mlx-omarchy v2 adapter. 1x896 times out with -110 and is forbidden.
 
-A sanitized macOS 26 HWX fixture reaches the Linux device.
-A real 64-channel fixture graph passes exact channel-level parity.
-The graph writes source channel 1 to output channel 3.
-Signed stress values also pass.
-See [fresh HWX usage](docs/fresh-hwx-usage.md).
+T6001 on t6001-test-host has a fully sourced DTS. SID is 0, ANE-SYS-V is virtual, and the engine span is 0x1800000. Four driver bugs are fixed on omarchy-ane `feature/t6001-ane-bind`. Bind is blocked. T8103-style DART TTBR writes raise SError 0xbe000000. A no-op write-back also resets. ISP-pattern providers work. The remaining killer was force_power AUTO_ENABLE then engine-partition power. Cycle 7 died in a supposedly no-op gap, with GPU overlap as a candidate. Cycle 8 bounded that gap to the resume callback after domains-on. Capture evidence with netconsole. Serial is not required.
 
-Static ANEC graphs run and re-bind on Linux.
-The state loop uses `ane_exec_loop`.
-Runtime kernel swaps use `ane_bind_kernel`.
-See [static graphs](docs/static-graphs.md).
+The out-of-box install plan is [docs/omarchy-ane-out-of-box-plan.md](docs/omarchy-ane-out-of-box-plan.md). The kmod is SoC-gated. Do not GRUB a whole-tree DTB.
 
-The full Linux token path is not faster than CPU.
-One token still needs `5,376` serialized GEMM submissions.
-A captured production HWX converts to ANEC, and the complete `3,072`-descriptor
-graph executes in one Linux submit with finite output.
-The production probe copies the full content payload into the command BO.
-The production graph matches its int8 weight reference with
-`max_err=0.0004772`, `mean_err=0.00004533`, and matching argmax.
-
-ANEForge also compiles and runs a Qwen-shaped SwiGLU block as one ANE program.
-The graph has eight operations and matches a deterministic CPU reference.
-It reports `max_err=0.018799` and matching argmax.
-See [crossover results](docs/crossover-results.md) and [fresh HWX usage](docs/fresh-hwx-usage.md).
-The probe is [tools/aneforge-qwen-graph.py](tools/aneforge-qwen-graph.py).
-The run receipt is `receipts/aneforge-qwen-graph.log`.
-
-The Linux Qwen path now uses only the ANE for tensor work.
-Pass `--recurrent-anec <ANEC>` to start the ANE tensor runtime.
-The command stops if that runtime is missing.
-
-All model math runs on the ANE.
-This includes norms, gates, convolution, state, attention, RoPE, residuals,
-and projections. The ANE also adds partial projection tiles.
-The host loads weights and looks up embeddings.
-It builds constants, packs buffers, and picks output tokens.
-
-A complete hardware run produced 248,320 finite logits and selected token `220`.
-Decoder layers took `86.342` seconds. Logits took `11.893` seconds.
-The ANE control passed before and after the run.
-See `receipts/qwen-linux-ane-only-validation.json` for commands and hashes.
-
-The explicit `--backend cpu` path remains a reference.
-There is no GPU or automatic tensor fallback.
-Numeric parity across the fixed corpus is the next milestone.
+Older Qwen speed and parity numbers are in `receipts/` and [crossover results](docs/crossover-results.md).
 
 ## Qwen reference workflow
 
@@ -118,6 +75,7 @@ The 100-prompt attempt and ten-prompt checksums are in `receipts/`.
 - [Fresh HWX usage](docs/fresh-hwx-usage.md): conversion and device parity.
 - [Static graphs](docs/static-graphs.md): reusable graphs and submissions.
 - [Crossover results](docs/crossover-results.md): speed and model results.
+- [Out-of-box ANE install](docs/omarchy-ane-out-of-box-plan.md): SoC-gated kmod, no whole-tree DTB.
 - [Apple Core AI reference](docs/apple-coreai-reference.md): export guidance.
 
 ## Main tools
