@@ -658,9 +658,9 @@
     {
       "order": 4,
       "cycle": 4,
-      "bug": "OPEN: insmod of the PMGR-fixed module hard-reset the machine (~96 s into boot, external abort, no oops, no pstore). Cause not yet isolated: either the two PS states (ane_sys/ane_sys_cpu) did not actually power the partition on T6001, or the engine/dart MMIO path aborts for a different gating reason (additional PS states, clock/dap enable, or dart ttbr sequencing).",
-      "evidence": "Cycle-4 SSH death during full probe. Ladder: power-on and dart0 read did not reset. Netconsole captured stage-2 force_power and dart0 read.",
-      "next_debug_path": "Stage ladder 2026-09-13: ane_stop_stage=1 stable 900s (no force_power on T6001); ane_stop_stage=30 stable 900s (force_power ACTIVE on ps@268 and ps@2c8, dart0 ttbr=0x90007e60, no TTBR writes). 96s reset is post-dart0-read: remap_ttbr dart1/dart2 writes and/or tm_enable. Netconsole log /tmp/jw16-netconsole-2026-09-13.log."
+      "bug": "CLOSED isolation: insmod of the PMGR-fixed module hard-resets because ane_iommu_remap_ttbr writes dart1/dart2 TTBR. SError 0xbe000000 on CPU during insmod immediately after 'probe: domains on, remap ttbr'.",
+      "evidence": "Netconsole /tmp/jw16-netconsole-2026-09-13.log stage 3: power ps@268 and ps@2c8 active, then SError 0xbe000000. Stage 2 dart0 read 0x90007e60 was stable 900s.",
+      "next_debug_path": "Do not call ane_iommu_remap_ttbr on T6001 until dart1/dart2 are proven writable. Next isolation would be ane_stop_stage=31 (dart1 write only) with netconsole; not run (reset rule)."
     }
   ],
   "stage_ladder": {
@@ -763,32 +763,86 @@
         "accel0": false,
         "observe_s": 900,
         "result": "stable"
+      },
+      {
+        "stage": 3,
+        "ane_stop_stage": 2,
+        "boot_id": "17e0a359-6e02-475a-8196-ec4e91f37878",
+        "uptime_after": "2026-09-13 14:01:47",
+        "enabled_dtb_sha256": "9222df50862200a78427bf0bf8328fcfb3d49b82f34549494c4310e321918a7d",
+        "enabled_boot_bin_sha256": "c7b33b1094dadaac0cb84c11543f5010084f0240063da65e6f26029eb312674e",
+        "insmod": "sudo insmod /home/joshuawarren/ane-build-ladder/ane.ko ane_stop_stage=2",
+        "module_hash_verified_before_insert": "8c19ce81d6747c095b0157e5cfa4a97272902c8fcfb9cd1d7914880c9dc900e4",
+        "result": "serror_hard_reset",
+        "crash_boot_id_after": "bb9bb517-6e1b-48bd-a1f9-933648b437df",
+        "crash_uptime_after": "2026-09-13 14:03:23",
+        "ttbr_write": true,
+        "tm_enable": false,
+        "netconsole_verbatim": [
+          "[   41.143897] JW16_STAGE3_INSMOD_BEGIN 2026-09-13T14:02:28-05:00 boot=17e0a359-6e02-475a-8196-ec4e91f37878",
+          "[   41.158694] ane: loading out-of-tree module taints kernel.",
+          "[   41.160856] ane 284000000.ane: irq: leaving dart irq 61 enabled",
+          "[   41.160875] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000",
+          "[   41.160878] ane 284000000.ane: res-dump: dart0 start=0x0000000285800000 size=0x4000",
+          "[   41.160879] ane 284000000.ane: res-dump: dart1 start=0x0000000285810000 size=0x4000",
+          "[   41.160881] ane 284000000.ane: res-dump: dart2 start=0x0000000285820000 size=0x4000",
+          "[   41.160884] ane 284000000.ane: res-dump: ttbr offset=0x200",
+          "[   41.160886] ane 284000000.ane: probe: iommu ok, powering domains",
+          "[   41.160918] ane 284000000.ane: power: ps@0x268 before 0x1f0003ff",
+          "[   41.160923] ane 284000000.ane: power: ps@0x268 active",
+          "[   41.160926] ane 284000000.ane: power: ps@0x2c8 before 0x3ff",
+          "[   41.160930] ane 284000000.ane: power: ps@0x2c8 active",
+          "[   41.160932] ane 284000000.ane: probe: domains on, remap ttbr",
+          "[   41.160936] SError Interrupt on CPU9, code 0x00000000be000000 -- SError",
+          "[   41.160939] CPU: 9 UID: 0 PID: 1079 Comm: insmod Tainted: G S M       O        7.1.6-1-1-ARCH #1 PREEMPT(full)",
+          "[   41.160942] Tainted: [S]=CPU_OUT_OF_SPEC, [M]=MACHINE_CHECK, [O]=OOT_MODULE",
+          "[   41.160943] Hardware name: Apple Inc. MacBookPro18,2/J316c, BIOS 2026.04 04/01/2026"
+        ],
+        "last_line_before_reset": "SError Interrupt on CPU9, code 0x00000000be000000 -- SError",
+        "note": "Died inside ane_iommu_remap_ttbr before stop-after-ttbr readback. dart0 TTBR read was already proven safe at stage 2; first new MMIO is writel to dart1+ttbr."
+      },
+      {
+        "stage": 4,
+        "ane_stop_stage": 3,
+        "result": "not_run",
+        "reason": "Stage 3 SError/hard-reset. Parent rule: do not advance; rollback stock."
       }
     ],
     "stock_restore": {
       "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
       "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
       "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
-      "stock_boot_id": "911fa2a8-2061-46b5-a89d-2af3cab5f5e0",
-      "stock_uptime": "2026-09-13 13:57:51",
+      "stock_boot_id": "d328a7f6-49e0-44ff-b871-376367e0ed92",
+      "stock_uptime": "2026-09-13 14:05:14",
       "live_ane_nodes": "none",
       "nproc": 10,
       "llama_stopped": true,
-      "verification_marker": "STAGE_LADDER_STOCK_VERIFIED"
+      "verification_marker": "STAGE3_SERROR_STOCK_VERIFIED"
     },
     "narrowed_cause": {
-      "acceptance": "b",
-      "summary": "Power-on itself is proven stable. Both PMGR ANE power states reached ACTIVE and a dart0 TTBR read returned 0x90007e60 with no SoC reset over 15 minutes. The cycle-4 ~96s hard reset is narrowed to post-dart0-read probe activity that this run was forbidden to execute: ane_iommu_remap_ttbr dart1/dart2 TTBR writes and/or ane_tm_enable engine MMIO.",
+      "acceptance": "a",
+      "summary": "The cycle-4 hard reset is ane_iommu_remap_ttbr dart1/dart2 TTBR writes. Force-power of ane_sys@268 and ane_sys_cpu@2c8 plus dart0 TTBR read are stable. The first writel to dart1+0x200 after 'probe: domains on, remap ttbr' produces SError 0xbe000000 (MACHINE_CHECK) and a hard reset. ane_tm_enable was never reached.",
+      "exact_write": "ane_iommu_remap_ttbr: writel_relaxed(dart0.ttbr, dart1+ttbr) at dart.ttbr offset 0x200 (dart1 phys 0x285810000)",
+      "serror": "0x00000000be000000",
       "ruled_out": [
-        "ioremap of engine/dart0/dart1/dart2 plus iommu_domain_init without PMGR force_power",
-        "ane_force_power of ane_sys@268 and ane_sys_cpu@2c8",
-        "dart0 TTBR read-only"
+        "ioremap+iommu_domain_init without force_power",
+        "ane_force_power ane_sys@268 and ane_sys_cpu@2c8",
+        "dart0 TTBR read-only",
+        "ane_tm_enable (not reached)"
       ],
       "still_open": [
-        "ane_iommu_remap_ttbr writel to dart1/dart2 TTBR",
-        "ane_tm_enable engine MMIO"
-      ],
-      "next_safe_step": "With netconsole armed (wait-for-enu1 script), one insmod ane_stop_stage=31 (dart1 TTBR write only) or ane_stop_stage=2 is the next isolation. Do not run default probe."
-    }
+        "Whether dart1 vs dart2 is the first aborting write (no surviving readback)",
+        "Whether dart1 needs a different power/clock/DART init sequence before TTBR is writable"
+      ]
+    },
+    "continuation": "stages_3_4",
+    "module_stage34": {
+      "path": "/home/joshuawarren/ane-build-ladder/ane.ko",
+      "sha256": "8c19ce81d6747c095b0157e5cfa4a97272902c8fcfb9cd1d7914880c9dc900e4",
+      "ane_drv_c_sha256": "fda6e6b4d6135a3291ea3075738561bc8fbf04982252375ac98e4a616f024c37",
+      "patch": "ane_stop_stage=2 logs dart0/1/2 TTBR readback after ane_iommu_remap_ttbr; ane_stop_stage=3 stops after ane_tm_enable. Patch lived only on jw16 build tree.",
+      "vermagic": "7.1.6-1-1-ARCH SMP preempt mod_unload aarch64"
+    },
+    "reboots_used_continuation": 2
   }
 }
