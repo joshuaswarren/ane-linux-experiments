@@ -860,32 +860,57 @@
           "[   37.369153] ane 284000000.ane: probe with driver ane failed with error -22"
         ],
         "conclusion": "dart1@0x285810000 and dart2@0x285820000 are live and readable after force_power. Windows are not dead/unmapped. Stage 3 SError is a WRITE-sequencing bug."
+      },
+      {
+        "stage": "3c",
+        "ane_stop_stage": 34,
+        "same_boot_as_3b": true,
+        "boot_id_before": "9d7553fb-aa25-4480-b9c6-0d0ce5f27409",
+        "crash_boot_id_after": "f453f1e7-1835-40a4-9789-54fa9b6388e0",
+        "crash_uptime_after": "2026-09-13 15:20:59",
+        "module_sha256": "32e692750116d673ef370817338d4b0255134f46ae874329fd40092ecb09746b",
+        "ane_drv_c_sha256": "08fa222fce2f8ad9ea74d46494c5c4f20c8437dd254a65fb960359ed5ce12512",
+        "insmod": "sudo insmod /home/joshuawarren/ane-build-ladder/ane.ko ane_stop_stage=34",
+        "result": "hard_reset",
+        "planned_order": "dart0 identical TTBR write-back (control), then dart1, then dart2",
+        "netconsole_last_lines": [
+          "[ 1507.000572] JW16_STAGE3C_INSMOD_BEGIN 2026-09-13T15:20:00-05:00 boot=9d7553fb-aa25-4480-b9c6-0d0ce5f27409",
+          "[ 1507.016667] ane 284000000.ane: irq: leaving dart irq 61 enabled",
+          "[ 1507.016691] ane 284000000.ane: res-dump: engine start=0x0000000284000000 size=0x1800000",
+          "[ 1507.016694] ane 284000000.ane: res-dump: dart0 start=0x0000000285800000 size=0x4000",
+          "[ 1507.016695] ane 284000000.ane: res-dump: dart1 start=0x0000000285810000 size=0x4000",
+          "[ 1507.016697] ane 284000000.ane: res-dump: dart2 start=0x0000000285820000 size=0x4000"
+        ],
+        "note": "Hard reset ~16 ms after insmod. Stage34 dart0/dart1 write breadcrumbs did not survive netconsole; the printk burst after dart2 res-dump was lost. The only new operation vs stable stage 3b on this same boot is identical TTBR write-back. dart0 control vs dart1 is not line-proven. SSH dropped; post-crash boot is stock (files were already restored after 3b).",
+        "params1_revision_candidates_from_3b": {
+          "dart0": "0x1eef1020",
+          "dart1": "0x2ed01044",
+          "dart2": "0x2ed01044"
+        }
       }
     ],
     "stock_restore": {
       "asahi_dtb_sha256": "623c096a224d1c3a2ef28bb49bcd408d713d35f34bd212b14910035aa23e0806",
       "modules_dtb_sha256": "28c3ebd137ab497218afc52f367173964964e06a5f01b39a0f80f11e890f9f05",
       "boot_bin_sha256": "28c76ee3eb046a903db81277ad8f7ab887059b2fa522eacb47445c7f8868288b",
-      "live_boot_id_still_enabled_fdt": "9d7553fb-aa25-4480-b9c6-0d0ce5f27409",
-      "next_boot_is_stock": true,
+      "stock_boot_id": "f453f1e7-1835-40a4-9789-54fa9b6388e0",
+      "stock_uptime": "2026-09-13 15:20:59",
+      "live_ane_nodes": "none",
       "nproc": 10,
       "llama_stopped": true,
-      "reboot_used": 1,
-      "verification_marker": "STAGE3B_STOCK_FILES_NEXT_BOOT"
+      "verification_marker": "STAGE3C_RESET_STOCK_VERIFIED"
     },
     "narrowed_cause": {
       "acceptance": "a",
-      "summary": "SError 0xbe000000 is the dart1/dart2 TTBR WRITE, not a dead window. After force_power, dart1 and dart2 PARAMS1/CONFIG/TTBR all read successfully and the host stayed up 900s. The ANE remap path writes dart0's TTBR word into dart1/dart2 with none of the T8103 apple-dart sequence (disable_dma, enable_streams, VALID construction, TCR, invalidate).",
-      "exact_write": "ane_iommu_remap_ttbr writel_relaxed(dart0.ttbr, dart1+0x200) at phys 0x285810000",
-      "serror": "0x00000000be000000",
+      "summary": "TTBR offset writes are fatal on T6001 ANE dart1/dart2. Reads of PARAMS1/CONFIG/TTBR succeed (3b, 900s). Identical write-back of the just-read dart TTBR (3c) hard-resets. That favors register-layout / write-hostile offset over a bad table-phys value. dart0 vs dart1 control lines did not survive the 3c reset. dart1/dart2 params1 0x2ed01044 differs from dart0 0x1eef1020 (revision-id candidate). Next is a layout fix or treating dart1/2 as apple-dart providers, not copying dart0's TTBR word.",
+      "decision": "layout_or_write_hostile_offset_not_value",
+      "serror_stage3": "0x00000000be000000 at ane_iommu_remap_ttbr write",
       "ruled_out": [
-        "dead/unmapped dart1/dart2 after power-on",
-        "force_power of ane_sys@268 and ane_sys_cpu@2c8",
-        "dart0/dart1/dart2 PARAMS1, CONFIG, TTBR reads",
-        "ane_tm_enable (not reached in the crashing probe)"
+        "dead/unmapped dart1/dart2 windows (3b reads succeeded)",
+        "bad dart0 TTBR value as the sole cause (3c writes the dart's own current TTBR)"
       ],
-      "still_open": [
-        "Whether STREAM_SELECT+invalidate-before-TTBR, or TCR disable, or VALID-bit/SID programming is the missing unlock that makes the dart1 TTBR write legal"
+      "unconfirmed": [
+        "whether dart0 TTBR no-op at 0x200 is itself fatal (control breadcrumbs lost)"
       ]
     },
     "continuation": "stages_3_4",
