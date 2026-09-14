@@ -7,6 +7,10 @@ import sys
 from dataclasses import dataclass
 
 TILE_SIZE = 0x4000
+# The first record header of a task is a register write to 0x01f800. Its top
+# byte carries the record's word count, which differs between macOS build
+# versions (0xf401f800 and 0x4401f800 both seen), so match the register only.
+TD_RECORD_REGISTER = 0x01F800
 TD_MAGIC = 0xF401F800
 TD_SIZE = 0x274
 TASK_HEADER_SIZE = 0x2C
@@ -16,6 +20,10 @@ LC_SEGMENT_64 = 0x19
 ANEC_HEADER_SIZE = 0x1000
 
 
+
+def is_task_record(word: int) -> bool:
+    """True when a header word is the task's leading 0x01f800 register write."""
+    return word & 0xFFFFFF == TD_RECORD_REGISTER
 
 @dataclass(frozen=True)
 class Section:
@@ -91,11 +99,10 @@ def find_task_offsets(
     end = content_offset + content_size
     if end > len(data):
         raise ValueError("task search range exceeds the HWX")
-    magic = struct.pack("<I", TD_MAGIC)
     seeds = {
         offset - content_offset - 0x28
         for offset in range(content_offset + 0x28, end - 3, 4)
-        if data[offset:offset + 4] == magic
+        if is_task_record(struct.unpack_from("<I", data, offset)[0])
         and (offset - content_offset - 0x28) % 0x100 == 0
     }
     tasks: set[int] = set()
@@ -234,8 +241,9 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     kdma_offset = next(
         offset
         for offset in task_offsets
-        if struct.unpack_from("<I", data, text_segment_offset + offset + 0x28)[0]
-        == TD_MAGIC
+        if is_task_record(
+            struct.unpack_from("<I", data, text_segment_offset + offset + 0x28)[0]
+        )
     )
     td = data[
         text_segment_offset + kdma_offset:

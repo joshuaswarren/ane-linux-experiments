@@ -56,6 +56,13 @@ class FreshHWXParserTests(unittest.TestCase):
             text = image.sections[('__TEXT', '__text')]
             self.assertEqual(image.td_size, text.size, name)
 
+    def test_task_record_ignores_the_record_word_count(self):
+        # macOS builds differ in the header's top byte: 0xf401f800 and
+        # 0x4401f800 are the same 0x01f800 register write.
+        self.assertTrue(MODULE.is_task_record(0xF401F800))
+        self.assertTrue(MODULE.is_task_record(0x4401F800))
+        self.assertFalse(MODULE.is_task_record(0x4401F804))
+
 
     def test_macho_sections_are_parsed(self):
         text = self.image.sections[('__TEXT', '__text')]
