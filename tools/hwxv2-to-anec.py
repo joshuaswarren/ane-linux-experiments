@@ -12,7 +12,7 @@ TILE_SIZE = 0x4000
 # versions (0xf401f800 and 0x4401f800 both seen), so match the register only.
 TD_RECORD_REGISTER = 0x01F800
 TD_MAGIC = 0xF401F800
-TD_SIZE = 0x274
+H13_HEADER_SIZE = 40
 TASK_HEADER_SIZE = 0x2C
 MACHO_MAGIC_64 = 0xFEEDFACF
 FIXTURE_MAGIC_64 = 0xBEEFFACE
@@ -82,6 +82,17 @@ def decode_kdma(td: bytes) -> KDMALayout:
                            for lane in range(KDMA_LANES)),
     )
 
+def extra_header_bytes(td: bytes) -> int:
+    """One extra word precedes the first record when header[9] low bits are 0b11.
+
+    Bit 1 alone is not the predicate: 0x26 has bit 1 set and no extra word.
+    """
+    if len(td) < H13_HEADER_SIZE:
+        raise ValueError("task descriptor is shorter than the H13 header")
+    last = struct.unpack_from("<I", td, H13_HEADER_SIZE - 4)[0]
+    return 4 if last & 0x3 == 0x3 else 0
+
+
 def walk_registers(td: bytes) -> dict[int, int]:
     """Return {register byte address: value} for one task descriptor.
 
@@ -91,7 +102,7 @@ def walk_registers(td: bytes) -> dict[int, int]:
     so it is an error rather than a partial decode.
     """
     registers: dict[int, int] = {}
-    offset = TASK_HEADER_SIZE - 4
+    offset = H13_HEADER_SIZE + extra_header_bytes(td)
     while offset + 4 <= len(td):
         header = struct.unpack_from("<I", td, offset)[0]
         if not header:
@@ -248,7 +259,7 @@ def find_task_offsets(
             current = next_pointer
 
     predecessors: dict[int, list[int]] = {}
-    for current in range(0, content_size - TD_SIZE + 1, 0x100):
+    for current in range(0, content_size - TASK_HEADER_SIZE + 1, 0x100):
         next_pointer = struct.unpack_from(
             "<I", data, content_offset + current + 0x1C
         )[0]
