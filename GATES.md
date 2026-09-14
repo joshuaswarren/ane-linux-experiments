@@ -17,4 +17,4 @@ Scope: Bind ANE on t6001-test-host with a written procedure, keep ANE/CoreML/par
   EVIDENCE: mlx-omarchy receipts/2026-09-13-m1-test-host-t6001-test-host-gpu-parity.md + 2026-09-13-m1-test-host-perf-parity.md (94f94242 on main)
 
 - [x] G5: Next unblocked Parakeet/CoreML and ANE-plan leaves are in flight, not parked
-  EVIDENCE: mlx-omarchy `e8779f17` (attn+select 2-program island). mil-hwx-compiler `738ce0a` names leftover holes. T6001 100/100 exact. Packaged DTS `9247b41f4` on linux `feature/t6001-ane-bind`. Encoder full ANEC still blocked on concat/linear/silu/norm/conv.
+  EVIDENCE: T8103 tiny select exact vs MIL (`472940d2`). T6001 idle-resume add-mul exact (`478203e6`). mil-hwx-compiler `37fb29e` polarity + `8f97f50` DMA. Encoder 375-select leftover L2 hole. Full encoder still concat/linear/silu/norm/conv.
