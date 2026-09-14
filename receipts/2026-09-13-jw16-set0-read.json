@@ -1,0 +1,82 @@
+{
+  "schema": "jw16-set0-read/1",
+  "date": "2026-09-13",
+  "host": "jw16mbp1-linux",
+  "ssh_alias": "jw16mbp1-linux",
+  "kernel": "7.1.6-1-1-ARCH",
+  "resolved_model": {
+    "configured": "openai-codex/gpt-5.6-sol",
+    "actual": "openai-codex/gpt-5.6-sol",
+    "fallback": false
+  },
+  "probe": {
+    "op": "readl",
+    "phys": "0x28e08c000",
+    "name": "ane0 SET0 / m1n1 ps_map[ane0]",
+    "map_len_bytes": 4,
+    "prot": "PROT_READ",
+    "open_flags": "O_RDONLY|O_SYNC",
+    "page_size": 16384,
+    "via": "/dev/mem mmap",
+    "writes": 0
+  },
+  "preflight": {
+    "fabric": "quiet",
+    "gpu_lock": "/tmp/m1-gpu.lock flock -n rc=0 not acquired",
+    "llama": "none",
+    "llm-inference.service": "inactive",
+    "netconsole": "armed",
+    "netconsole_arm": "JW16_SET0_NETCONSOLE_ARM 2026-09-13T21:59:11-05:00 boot=54c0b95d-0d46-421b-a17e-f58e4ccbeee2"
+  },
+  "result": {
+    "abort": false,
+    "raw": "0x00000300",
+    "ACTUAL": "0x0",
+    "TARGET": "0x0",
+    "PS_ACTIVE": "0xf",
+    "decode": {
+      "APPLE_PMGR_PS_ACTUAL": 0,
+      "APPLE_PMGR_PS_TARGET": 0,
+      "APPLE_PMGR_PS_PWRGATE": 0,
+      "APPLE_PMGR_WAS_CLKGATED": true,
+      "APPLE_PMGR_WAS_PWRGATED": true,
+      "APPLE_PMGR_AUTO_ENABLE": false
+    },
+    "meaning": "SET gated. Explains doorbell-ok / TM -110."
+  },
+  "tm_tq_en": {
+    "read": false,
+    "reason": "ACTUAL!=0xf; procedure stops"
+  },
+  "device_after": {
+    "path": "/dev/accel/accel0",
+    "stat": "crw-rw-rw- root:render 261,0",
+    "bound": "285c04000.ane",
+    "module": "live",
+    "refcnt": 0,
+    "boot_id": "54c0b95d-0d46-421b-a17e-f58e4ccbeee2",
+    "boot_id_unchanged": true
+  },
+  "prohibited_actions_observed": {
+    "wrote_0xf": false,
+    "treated_range1_as_tm": false,
+    "add_mul_submit": false,
+    "unloaded_ane": false,
+    "rebooted": false,
+    "took_gpu_lock": false,
+    "executed_1x896": false,
+    "retried_as_write": false
+  },
+  "netconsole": [
+    "2026-09-13T21:59:11.624919 192.168.10.244:6666 [14640.871241] JW16_SET0_NETCONSOLE_ARM 2026-09-13T21:59:11-05:00 boot=54c0b95d-0d46-421b-a17e-f58e4ccbeee2",
+    "2026-09-13T22:00:45.273861 192.168.10.244:6666 [14734.519809] JW16_SET0_PRE_MAP phys=0x28e08c000 page=16384 prot=READ len=4",
+    "2026-09-13T22:00:45.528005 192.168.10.244:6666 [14734.773978] JW16_SET0_MAP_OK map_len=4 about_to_readl",
+    "2026-09-13T22:00:45.781259 192.168.10.244:6666 [14735.027227] JW16_SET0_READ_OK raw=0x00000300 ACTUAL=0x0 TARGET=0x0"
+  ],
+  "sources": {
+    "handshake": "receipts/2026-09-13-t6001-tm-handshake.md",
+    "pwrstate_bits": "omarchy-linux drivers/pmdomain/apple/pmgr-pwrstate.c APPLE_PMGR_PS_ACTUAL GENMASK(7,4) APPLE_PMGR_PS_TARGET GENMASK(3,0) APPLE_PMGR_PS_ACTIVE 0xf APPLE_PMGR_PS_PWRGATE 0x0",
+    "linux_pmgr_window": "0x28e080000+0x4000 (excludes SET0)",
+    "iomem_set0": "unclaimed; 4-byte map required"
+  }
+}
