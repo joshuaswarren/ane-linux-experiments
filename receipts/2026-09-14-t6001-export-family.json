@@ -1,0 +1,178 @@
+{
+  "title": "The fixed export family is exact on T6001 as well as T8103, from byte-identical bits on both hosts",
+  "date": "2026-09-14",
+  "host": "jw16mbp1-linux",
+  "soc": "apple,t6001 (apple,j316c)",
+  "verdict": "The three programs proven on jwm1 (T8103) in receipts/2026-09-14-1x896-export-fix.json are now proven on jw16 (T6001): the device-qualified 64-element add-mul control, the re-exported 1x512 add and the re-exported 1x896 add all returned exact, worker status 0, one iteration each, no -110. ANE op coverage for this family matches on both SoCs. The comparison is stronger than a re-run: every submitted byte is identical across the two hosts -- worker binary, libane shared object, both manifests, both ANECs, both weight blobs and all seven input/expected vectors -- so the only variable between the two results is the silicon.",
+
+  "cross_soc_identity": {
+    "claim": "Byte-identical submitted stack, independently reproduced on this side rather than copied from jwm1. Nothing was read from or run on jwm1: that host was not handed over, and the artifacts were re-derived here from in-repo sources.",
+    "worker_tool_sha256": "762dd1de868b52e4d6ffa30e18d842d9341db463b06aef2355f18fb1eb248929",
+    "worker_tool_note": "Already present on jw16 at /var/tmp/jw16-tiny-linear/mlx-omarchy-ane-worker and byte-identical to the binary ExportGeometryFix ran on jwm1. Not rebuilt.",
+    "libane_sha256": "bf4dbe5482d9eefd137108b88c3cb807f8cf3fdb32e02d6ed5314fea52201d95",
+    "libane_note": "Byte-identical to the jwm1 build. This was PREDICTED WRONG in advance and the prediction is recorded here because it was made loudly: the expectation was that jw16's compiler would produce a different digest from jwm1's. It did not. Both hosts are the same distribution at gcc 16.1.1 20260430, so the build is reproducible and the digest is a property of the toolchain, not of the host. The pin is still the source commit; the matching digest is a consequence, and it makes the cross-SoC claim stronger than the one this slice set out to make.",
+    "artifacts": {
+      "1x512_manifest_sha256": "d70abcf27610a1e5a5f5b2b1afa111704bc4cdbb8cd85fc078d084ca54472700",
+      "1x512_anec_sha256": "4a063cf46cb8b27979eabc6eab8b020239a29adab7590fab5ccbd7f2f9d23b91",
+      "1x512_weights_sha256": "9436a9563e7e7c17767424814e9d418774cad1a507715a75891a15c24c6c6143",
+      "1x896_manifest_sha256": "d799d42f51baf884cd0e8ab02f80d744241d84c94e2ed28a333cc43ceb1313b0",
+      "1x896_anec_sha256": "06f272c9ec7b1a03165123e56eef59f086a11986d735be1f79841f01612bbc83",
+      "1x896_weights_sha256": "41aa2b92c429c8790c55c37015e02d719c28eb7aa4ca26064fec95fae40dc0bb",
+      "control_manifest_sha256": "4a9ba2298b45dc439c0713b0772ffbaa624c76b34a04e7bb621c4aca10b0e5b7",
+      "control_program_0_sha256": "9a6a6a9a701ce207d4a8ea80ee1ca6d5ade076be2115b73a9aed6f4236aa56ab",
+      "control_program_1_sha256": "62595e4a61db24066b83a4f7c077d459c69a6a740109098ee0122b4b46dcd3cc",
+      "control_a_sha256": "89f3acad0033b537b3927e9d49dfe3c0e28a4f0a52a0820092b8ae638766e2d0",
+      "control_b_sha256": "0b61cf1534cf853b4171777680699809d08ffe93d580b58f0814dcd51cd7f42c",
+      "control_y_expected_sha256": "abd3b8c9f1439c1fa508b42aa229c4b1688e06271d2bf7b823d71cd730200054",
+      "t1_1x512_sha256": "aacc3a5507f223eaa76dcf389a19fbdd997ba700a8e6750973380d82a6cfe84c",
+      "t2_1x512_expected_sha256": "ad367dfea76ff961d1ffa60c4bf5225965c5ce8df5a39ea43701042af6eeb31a",
+      "t1_1x896_sha256": "8604acde013b349d4764ca15ecab2b7bb6803eb54897841851e9c718fc9e4f5b",
+      "t2_1x896_expected_sha256": "4767878ff0264fa99b5e68066df3c35dda3b8790b44987338a3fbb8f8eb2c5d4"
+    },
+    "every_digest_matches_jwm1": "The two ANECs, the two manifests and the four t1/t2 vectors match receipts/2026-09-14-1x896-export-fix/execute.log lines 21-28. The control bundle's three files were already on jw16 and match lines 18-20. The control's a/b/y digests were not in the jwm1 log; ExportGeometryFix digested them on request and reported the same three values, with the provenance labelled honestly as digested after the run rather than during it."
+  },
+
+  "reproduction_on_this_side": {
+    "converter": "ane-linux-experiments 52a3211, tools/hwxv2-to-anec.py, run locally on x86_64.",
+    "1x512": "python3 tools/hwxv2-to-anec.py mlx-omarchy/receipts/fixtures/mil-oneop/model.hwx model-1x512.anec 512 512 --weights .../mil-oneop/weights.bin -> 4a063cf4...",
+    "1x896": "receipts/2026-09-14-1x896-export-fix/reconstruct-1x896-hwx.py rebuilt the HWX to 11e976666fb9cac0a02cdd107bd923ab469f042ede20d1a4ea3a98898fd700c0 with its EQUIVALENCE assertion passing (only td_size, tiles[4,5], nchw[4][4..5], nchw[5][4..5] and the kernel section differ from the shipped ANEC), then the converter emitted 06f272c9...",
+    "schema_4_base": "receipts/2026-09-14-1x896-export-fix/adapt-v1-to-schema4.py (ExportGeometryFix, 8d48890), which derives the schema-4 manifest from the in-repo manifest_version 1 fixture plus the emitted ANEC. This removed the last jwm1-only dependency in the staging path: the previous procedure required /var/tmp/Jwm1AneMoreFixtures-a9f14124/adapted, which no other host can reach.",
+    "independent_adapter_agreement": "An adapter was written here independently before that commit landed. It reproduced the same payload collection hashes (f93b34400d039a1cda9417200f6e5a17ee31628d12a3e41c6ada4cb0f3859abc for 512 and 86203b99cb4d530d6bb99986e4d2b3351d3b04afb3253c7655e2f8b6ce9e1919 for 896) but not the same manifest bytes. The only divergence was in the three fields neither input states -- compiler.target, programs[0].operation and the encoder claim -- which is precisely what the schema labels declared provenance. The duplicate was deleted rather than kept; two scripts that disagree on three undeducible fields is worse than one.",
+    "vectors": "t1 and t2 were regenerated as plain fp16 fills (1.0 and 1.25 over N channels), not copied, and all four digests matched jwm1 on the first attempt. t2 = t1 + 0.25 against the const_value in receipts/fixtures/exported/desc-add-1x512.json and -1x896.json.",
+    "schema_4_provenance": "The schema-4 field allow-lists were read out of mlx-omarchy a9f14124 overlay/mlx/backend/omarchy/ane/manifest.cpp, the commit the worker binary was built from, NOT out of the local mlx-omarchy working tree, whose manifest.cpp is on a branch that still accepts only manifest_version 1 and rejects dispatch_plan and programs outright.",
+    "collection_hash_check": "The payload collection digest implementation was validated against a known-good schema-4 manifest before being trusted: recomputing it over the control bundle's payloads reproduces its declared release_asset.model_sha256 eddf1f251990ee72d24f53f9bf72eb1e8f71966af5551118fe4c2d0c1e32a5a5, matching bundle.cpp:194-215."
+  },
+
+  "offline_gate": {
+    "tool": "receipts/2026-09-14-1x896-export-fix/stage-export-fix.py",
+    "artifacts": ["receipts/2026-09-14-t6001-export-family/offline-1x512.json", "receipts/2026-09-14-t6001-export-family/offline-1x896.json"],
+    "result": "PASS for both. Register walk terminates exactly at 0x1f8 = td_size = tsk_size; kernel section at 0x1200 = 0x1000 + align16(tsk_size) is found in weights.bin at 0x80, does not carry the blob header, and reads as exactly one distinct fp16 value, 0.25.",
+    "idempotence": "Re-running the stager over the already-adapted bundle reproduces its manifest byte-for-byte, so the adapter and the stager's restamp agree on every derived field rather than merely not conflicting."
+  },
+
+  "channel_derivation": {
+    "library": "omarchy-ane libane sources at ane-parity 20d24ad. The exported family needs the derived-channel build: its task puts the destination on channel 5 and the source on channel 4, the reverse of the positional layout.",
+    "source_digests": {
+      "libane/ane.c": "09c68349bb51a1939a2f5f12eefb4ffd0330add8b8d3a7054d3cf13e8f86b031",
+      "libane/ane_bind.h": "27dfc977a1da0566a3ceba8175b9f66940d874d414b0024550fe581fa2581685",
+      "libane/ane.h": "ca633e82855ba75e9a21a237ed56ca9a44e9b8c150b83f4d0e4c4b1f80d85274",
+      "ane/src/uapi/drm/ane_accel.h": "6d8c68937c696b3d7d25bd9d4313d04cb9504b66dc702c3fdc7810ad013bdea7"
+    },
+    "self_test": "omarchy-ane test/bind: 6 of 6 ok on aarch64 (jw16) and 6 of 6 ok on x86_64 (workstation). The derivation is header-only and device-free, so it is not architecture-sensitive.",
+    "derived_map_for_every_submitted_program": [
+      {"program": "control/bundle/program-0.anec", "derived": "src=5,6 dst=4", "positional": "src=5,6 dst=4", "reading": "identical, so the derived library is a measured no-op on the qualified class"},
+      {"program": "control/bundle/program-1.anec", "derived": "src=5,6 dst=4", "positional": "src=5,6 dst=4", "reading": "identical"},
+      {"program": "staged/ane-add-fp16-1x512/model.anec", "derived": "src=4 dst=5", "positional": "src=5 dst=4", "reading": "inverted; needs the derived map"},
+      {"program": "staged/ane-add-fp16-1x896/model.anec", "derived": "src=4 dst=5", "positional": "src=5 dst=4", "reading": "inverted; needs the derived map"}
+    ],
+    "new_relative_to_the_jwm1_receipts": "The polarity receipt asserts the inversion for the 1x896. It holds for the 1x512 as well, which was not previously stated.",
+    "negative_result_on_verifying_the_loaded_library": "The plan for this run included an `nm` check for ane_bind_init as evidence that the worker loaded the derived build. That check is USELESS and was removed: the entire derivation is `static inline` in ane_bind.h (ane_bind_word, ane_bind_task_dma, ane_bind_walk, ane_bind_positional, ane_bind_init), so it exports no symbol and nm cannot distinguish a derived build from a positional one. Recorded so nobody reaches for it again. What stands in its place is the source digests above plus the behavioural argument: with a positional-binding libane this family completes and returns a wrong element 0 rather than an error (jwm1, 2026-09-14), so an exact result is itself proof the derived map took effect.",
+    "branch_scope_correction": "The pin is the libane SOURCES at 20d24ad, not the branch. ane-parity does not contain omarchy-ane main 8554583, and that is the only main commit it lacks: main changes the kernel module only (ane/src/ane_drv.c by 929 lines, ane/src/ane.h, ane/src/ane_tm.c) and adds ane/t6001-j316c-set-domains.dts, which ane-parity does not carry at all. Anyone building the MODULE from ane-parity on a T6001 would lose the SET domains outright. Neither this run nor the jwm1 run is affected: neither rebuilt the module, jw16's was already loaded and bound, and ane/src/uapi/drm/ane_accel.h is byte-identical between 8554583 and 20d24ad, so the userspace ABI is the same object either way. Corroborated independently by ExportGeometryFix at d63d666."
+  },
+
+  "device": {
+    "host": "jw16mbp1-linux",
+    "kernel": "7.1.6-1-1-ARCH",
+    "machine": "aarch64",
+    "soc_compatible": "apple,j316c apple,t6001 apple,arm-platform",
+    "boot_id": "f6ad865b-b85e-499e-8308-28b57b24f0c8",
+    "uptime_start": "2026-09-13 22:19:50",
+    "gcc": "gcc (GCC) 16.1.1 20260430",
+    "module": "ane, bound to /soc/ane@284000000, refs=0 before and after",
+    "module_identity_note": "/sys/module/ane/version does not exist on this build, so the module is identified by its sysfs binding and its parameter set (ane_bo_stop_stage, ane_disable_dart_irq, ane_np_map, ane_skip_dart_invalidate, ane_skip_genpd, ane_skip_power, ane_stop_stage). modinfo cannot find it either: it was inserted from a path outside /lib/modules. This is a debug-instrumented build, not the jwm1 f2a3e5e+lifecycle6 module.",
+    "device_node": "crw-rw-rw- root:render 105,0 (hex 105 = 261 decimal)",
+    "runner": "receipts/2026-09-14-t6001-export-family/run-t6001-export-family.sh",
+    "builder": "receipts/2026-09-14-t6001-export-family/build-libane.sh",
+    "log": "receipts/2026-09-14-t6001-export-family/execute.log",
+    "guards": "one iteration each, 5000 ms deadline, timeout --kill-after=5s 25s outer, stop before the next program on any failure. No loop, no retry.",
+
+    "results": [
+      {
+        "program": "control-64el (schema4-add-mul-worker, 2 programs)",
+        "graph_hash": "5584d0fd8d40027229890408e924e6f7930cd5f02516466a442193408482ce76",
+        "submitted_header": "td_size=0x1f8 tsk_size=0x1f8 krn_size=0x4000 tiles[4,5]=(1,1) nchw[4]=nchw[5]=(1,64,1,1,64,64)",
+        "result": "verified output y exact, worker status=0, iterations=1, released=2, elapsed_ms=203, exit 0, wall 206 ms",
+        "jwm1": "verified output y exact, status=0, released=2, elapsed_ms=2, wall 6 ms",
+        "timing_attribution": "The 203 ms is the cold genpd resume, not a T6001 execution penalty and not a comparable number. SET0 read 0x300 with ACTUAL 0x0 (gated) before the run and runtime_status was suspended; the worker's device open resumed the domain. The two submits that follow, on an already-resumed engine, cost 1 ms of device time each, the same as jwm1. Separated explicitly because a bare 203 ms next to jwm1's 2 ms invites a 100x-slower reading that the evidence does not support."
+      },
+      {
+        "program": "reexport-1x512 (ane-add-fp16-1x512)",
+        "graph_hash": "0417bba9b253e8ada7ab60357aaa7cd05d0000dde58d2c578e6174c310ad3151",
+        "submitted_header": "td_size=0x1f8 tsk_size=0x1f8 krn_size=0x400 tiles[4,5]=(1,1) nchw[4]=nchw[5]=(1,512,1,1,2,2)",
+        "result": "verified output t2 exact, worker status=0, iterations=1, released=1, elapsed_ms=1, exit 0, wall 5 ms",
+        "jwm1": "verified output t2 exact, status=0, released=1, elapsed_ms=2, wall 6 ms"
+      },
+      {
+        "program": "reexport-1x896 (ane-add-fp16-1x896)",
+        "graph_hash": "9048326d6335b6bec29296d0ce521fa528c09c4558d93e15bf1830d7ec777da1",
+        "submitted_header": "td_size=0x1f8 tsk_size=0x1f8 krn_size=0x700 tiles[4,5]=(1,1) nchw[4]=nchw[5]=(1,896,1,1,2,2)",
+        "result": "verified output t2 exact, worker status=0, iterations=1, released=1, elapsed_ms=1, exit 0, wall 7 ms",
+        "jwm1": "verified output t2 exact, status=0, released=1, elapsed_ms=1, wall 6 ms",
+        "reading": "The same graph identity that returned -110 on 2026-09-13 and a wrong element 0 on 2026-09-14 is exact on T6001 too, from a converter run with no byte-level correction of the artifact."
+      }
+    ],
+
+    "y_hashes_versus_jwm1": {
+      "method_and_its_one_limit": "The worker has no output digest of its own. It compares the produced buffer to the --expect file with fp16_values_equal (worker tool main.cpp:44-55), which is bit equality with exactly one exception: +0 and -0 compare equal. So `verified output NAME exact` means bit-identical except for signed zero.",
+      "1x512": "y is bit-identical to t2_1x512_expected.bin, sha256 ad367dfea76ff961d1ffa60c4bf5225965c5ce8df5a39ea43701042af6eeb31a, on jw16 (this run) and on jwm1 (receipts/2026-09-14-1x896-export-fix/execute.log:46), against the same expected bytes. The expected buffer is 1.25 in every lane, so it contains no zero for the tolerance to act on and value-equality here IS byte-equality. y_jw16 == y_jwm1, bit for bit.",
+      "1x896": "Same, sha256 4767878ff0264fa99b5e68066df3c35dda3b8790b44987338a3fbb8f8eb2c5d4, exact on both hosts, no zeros in the expected buffer. y_jw16 == y_jwm1, bit for bit.",
+      "control_64el": "Value-equal, NOT byte-equal, and identically so on both hosts. Measured on jw16: the expected y.bin (abd3b8c9...) and the bytes the device actually wrote (bade941d7d8f1e1097b9ce0298ff05617d85a9928de0e8c7eead5743f3f24352) differ in exactly 5 of 128 bytes, at fp16 slots 3, 10, 17, 24 and 31, where y.bin holds raw 0x8000 (-0.0) and the device wrote 0x0000 (+0.0); zero fp16 values differ. This is the signed-zero behaviour already noted in mlx-omarchy receipts/2026-09-13-jw16-ane-set-exec.json, now confirmed slot by slot.",
+      "control_y_provenance": "LABELED: those device-written bytes come from an earlier jw16 run of this identical bundle and inputs (/var/tmp/jw16-ane-first-exec/y.after-idle.bin), not from this run. This run did not pass --save, so it captured no output buffer of its own.",
+      "honest_scope": "For the two re-exports the cross-SoC y equality is transitive through a byte-identical expected file under a comparison proven to be bit-exact on zero-free data. That is sound, but it is not two digests of two captured buffers, because neither host captured one. See residuals."
+    },
+
+    "set_state": {
+      "method": "receipts/2026-09-14-t6001-export-family/set0-read.py, a PROT_READ mmap of /dev/mem at physical 0x28e08c000 (m1n1 ps_map[ane0]), the address and method already established on this host in receipts/2026-09-13-jw16-set0-read.json. Zero writes.",
+      "before": "raw 0x00000300, ACTUAL 0x0, TARGET 0x0, powered false -- gated. runtime_status suspended, runtime_control auto.",
+      "after": "raw 0x000003ff, ACTUAL 0xf, TARGET 0xf, powered true. runtime_status active.",
+      "reading": "The worker's open of /dev/accel/accel0 resumed the domain through genpd, exactly as receipts/2026-09-13-jw16-set0-after-resume.json established. No userspace write of SET, and specifically never 0xf. runtime_control is auto, so the domain autosuspends on its own; `active` immediately after the run is the expected tail of a genpd-owned resume, not a leaked reference -- the module reports refs=0 and no process holds a descriptor."
+    },
+
+    "post_state": {
+      "device": "character special file",
+      "module": "ane refs=0",
+      "boot_id": "f6ad865b-b85e-499e-8308-28b57b24f0c8 unchanged",
+      "uptime_start": "2026-09-13 22:19:50 unchanged",
+      "workers_after": "none; worker_count 0 and device_holders empty, by mlx-omarchy tools/ane_worker_liveness.py (ps -ww on basename(argv[0]) plus /proc/<pid>/fd device identity), not pgrep",
+      "errno110_this_boot": 0,
+      "tm_execution_failed_this_boot": 0,
+      "gpu_lock": "/tmp/m1-gpu.lock never acquired. Reported free before and after with a non-blocking flock probe; never taken, never unlinked.",
+      "jwm1_lock_convention": "absent on this host. /run/lock/mlx-omarchy-ane/{device.lock,quarantine} does not exist here, and nothing in the mlx-omarchy runtime sources creates or reads it -- it is an agent convention on jwm1, not a worker artifact. Its absence is recorded rather than manufactured; clearance on this host rests on the liveness snapshot."
+    },
+
+    "prohibited_actions": {
+      "reboot": "no",
+      "module_unload": "no",
+      "module_rebuild": "no",
+      "set_write": "no; SET was read only, PROT_READ, and 0xf was never written",
+      "gpu_lock_acquired": "no",
+      "loops_or_retries": "no; three single-iteration submits, no retry after any result",
+      "commands_on_jwm1": "no; jwm1 was never handed over, and nothing was read from or run on it. Every artifact was re-derived locally from in-repo sources.",
+      "edits_to_mlx_omarchy": "no; read-only, and tools/ane_worker_liveness.py was copied not modified",
+      "edits_to_omarchy_ane": "no; the libane sources were exported with git archive at 20d24ad and built out of tree"
+    },
+
+    "coordination": {
+      "jw16_gpu": "QmmOccupancyTileM held /tmp/m1-gpu.lock for digest-gated dispatch medians and asked that even a one-second gcc be held, because a sub-second scheduler event landing inside an unknown measured window cannot be attributed after the fact. The build and all three submits were held until they released and named this agent explicitly. All staging in the meantime was file copies and digest reads, which cost no measurable CPU.",
+      "cross_compile_declined": "aarch64-linux-gnu-gcc is available on the workstation and libane references no libdrm functions at all -- it drives the driver through raw ioctl on uapi headers -- so a cross build would have linked trivially and unblocked the slice immediately. Declined because it would have built against Debian's aarch64 glibc for an Arch host, trading a qualified configuration for an untested one to save one second of another agent's CPU.",
+      "tdt_stack_integration": "Asked whether the four host-side ANE ctest suites could contend for accel0. Answered that the sharper check is the worker binary name, not accel0, because the pre-submit clearance gate refuses to start if any process named mlx-omarchy-ane-worker is alive or holds a device descriptor. They then verified from source that none of the four spawns a worker (test_worker.cpp injects a FakeDevice through a factory lambda; test_runtime.cpp's references to the worker are path derivation only; the targets link no -DMLX_OMARCHY_ANE_DEVICE) and ran them without holding."
+    }
+  },
+
+  "residuals": [
+    "Neither host saved an output buffer. The worker does support --save NAME=FILE alongside --expect (worker tool main.cpp:111, 180-197) and neither runner used it, so for the 1x512 and 1x896 there is no y digest on either host and the cross-SoC y equality is established transitively through byte-identical expected files. Sound, but weaker than two digests of two captured buffers. Any future two-host comparison of this family should pass --save on both sides.",
+    "The worker's fp16 comparator never checks a trailing odd byte: fp16_values_equal loops on `i + 1 < size` (worker tool main.cpp:45), so an output buffer of odd length has its last byte silently unverified while the run still prints `exact`. Inert for every program either host submitted -- 128, 1024 and 1792 bytes are all even -- and reported against the comparator rather than against these results. Found by ExportGeometryFix while checking the signed-zero claim.",
+    "The 1x896 re-export still rests on a reconstructed HWX, not on the Mac exporter's own object, exactly as receipts/2026-09-14-1x896-export-fix.json labels it. This slice did not change that and reached for no Mac host. When a Mac exporter host is reachable, re-run ane_export.py for desc-add-1x896 with the fixed converter and confirm the emitted ANEC matches 06f272c9...",
+    "The Mac-side exporter's own converter copy still needs the 52a3211 change and the --weights argument, or the next export carries the truncated coefficient stream and the padded header again. Named in the jwm1 receipt; unchanged here and not this slice's to fix.",
+    "The vacuous binding validator (mlx-omarchy bundle.cpp output_bdx/input_bdx) is unchanged. Both staged manifests declare output channel 4 and input channel 5, the formula-derived values, while the task's real map for both re-exports is input 4 / output 5. The check compares a number to the formula that produced it and cannot notice. The runtime is unaffected because it binds by role index through libane, which is why an exact result is compatible with a wrong declared channel -- and why this receipt does not treat the manifest's channel field as evidence of anything.",
+    "jw16's ane module is a debug-instrumented build with stop-stage and skip parameters, inserted from outside /lib/modules and exposing no version attribute, so it is NOT the same module build as jwm1's f2a3e5e+lifecycle6. The submitted userspace stack is byte-identical across the two hosts; the kernel module is not, and this receipt does not claim it is. The parameters were left at their defaults and none was written.",
+    "One timing number on this host has no jwm1 counterpart worth comparing: the control's 203 ms cold resume. A same-state comparison would need either a pre-warmed engine on jw16 or a cold first submit on jwm1, and neither was measured."
+  ],
+
+  "pins": {
+    "ane-linux-experiments": "52a3211 (converter fixes), 8d48890 (schema-4 adapter)",
+    "omarchy-ane": "libane sources at 20d24ad on ane-parity; jw16's loaded module is not from this branch",
+    "mlx-omarchy": "a9f14124 for the schema-4 manifest parser and the worker binary; b79a4b68 for the worker tool's comparison and --save",
+    "mil-hwx-compiler": "83d486b1"
+  }
+}

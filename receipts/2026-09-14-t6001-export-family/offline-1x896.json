@@ -1,0 +1,97 @@
+{
+  "bundle": "/tmp/T6001ExportFamily-20260914/gated/ane-add-fp16-1x896",
+  "anec_sha256": "06f272c9ec7b1a03165123e56eef59f086a11986d735be1f79841f01612bbc83",
+  "model_sha256": "f1a0a391d35f4eab28c713870a8b39e3f020c89738c4746cf55001a0bf2c75ef",
+  "weights_sha256": "41aa2b92c429c8790c55c37015e02d719c28eb7aa4ca26064fec95fae40dc0bb",
+  "header": {
+    "content_size": 16384,
+    "td_size": 504,
+    "td_count": 1,
+    "tsk_size": 504,
+    "krn_size": 1792,
+    "source_count": 1,
+    "destination_count": 1
+  },
+  "geometry": {
+    "output": {
+      "nchw": [
+        1,
+        896,
+        1,
+        1,
+        2,
+        2
+      ],
+      "tiles": 1,
+      "allocation_bytes": 16384
+    },
+    "input": {
+      "nchw": [
+        1,
+        896,
+        1,
+        1,
+        2,
+        2
+      ],
+      "tiles": 1,
+      "allocation_bytes": 16384
+    }
+  },
+  "register_walk": {
+    "terminates_exactly": true,
+    "walk_ends": 504,
+    "records": [
+      [
+        40,
+        129024,
+        18
+      ],
+      [
+        116,
+        129224,
+        12
+      ],
+      [
+        168,
+        0,
+        16
+      ],
+      [
+        236,
+        79872,
+        28
+      ],
+      [
+        352,
+        18432,
+        18
+      ],
+      [
+        428,
+        34816,
+        4
+      ],
+      [
+        448,
+        51200,
+        5
+      ],
+      [
+        472,
+        96256,
+        7
+      ]
+    ]
+  },
+  "kernel_section": {
+    "at": 4608,
+    "size": 1792,
+    "found_in_weights_at": 128,
+    "is_the_blob_payload": true,
+    "carries_the_blob_header": false,
+    "distinct_coefficients": [
+      0.25
+    ]
+  }
+}
