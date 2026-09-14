@@ -1,0 +1,87 @@
+{
+  "schema": "jwm1-bmm-envelope-probe/1",
+  "date": "2026-09-14",
+  "agent": "Jwm1Bmm864",
+  "target": {
+    "op": "H13 batched matmul, scaled-down attention form",
+    "batch": 8,
+    "rows": 64,
+    "reduction": 64,
+    "columns": 64,
+    "operands": "runtime per-batch y (x [8,64,64] x y [8,64,64], tx=0, ty=0)"
+  },
+  "resolved_model": {
+    "configured": "openai-codex/gpt-5.6-sol",
+    "actual": "openai-codex/gpt-5.6-sol",
+    "fallback": false
+  },
+  "verdict": "REJECT — outside decoded envelope; NO jwm1 execute; zero jwm1 commands issued",
+  "compiler": {
+    "repo": "/home/joshuawarren/src/mil-hwx-compiler",
+    "pinned_commit": "37fb29ed1688a22e2b2ff2dfbf032c10ba879c16",
+    "checkout_head": "83d486b178e83e602ab894f1154004bb7f2600b9",
+    "head_vs_pinned": "code-identical: git diff 37fb29e touches only receipts/2026-09-14-h13-linear-32-k.md and working-tree THEORY.MD; no change under plugins/lib/include/tools/tests/Makefile",
+    "binary": "build/mil-hwxc rebuilt from pinned source 2026-09-14T07:20:54-0500, make -j8 clean, -Wall -Wextra -Werror, 0 errors"
+  },
+  "envelope_evidence": {
+    "source": "plugins/H13/H13BatchedMatmulTemplates.inc kBatchedTasks[]",
+    "entries": 26,
+    "geometries_rows_reduction_columns": [
+      [375, 128, 375],
+      [375, 128, 749],
+      [375, 375, 128]
+    ],
+    "batches": [2, 4, 8, 16],
+    "contains_64_64_64": false
+  },
+  "probes": [
+    {
+      "name": "rank3-tx0-ty0",
+      "mil": "x tensor<fp16,[8,64,64]>, y tensor<fp16,[8,64,64]>, matmul(transpose_x=tx false, transpose_y=ty false)",
+      "command": "./build/mil-hwxc --mil /tmp/bmm864/bmm.mil --model-root /tmp/bmm864 --output /tmp/bmm864/out-r3 --target H13 --format anec",
+      "exit": 65,
+      "stderr": "7:5: error [h13.matmul-outside-envelope]: H13 batched matmul (B=8, rows=64, reduction=64, columns=64, tx=0, ty=0, runtime y) is outside the decoded batched envelope, which covers B in {2,4,8,16} at the attention geometries (375,128,749), (375,375,128), and (375,128,375) with their captured flag forms"
+    },
+    {
+      "name": "rank4-tx0-ty0",
+      "mil": "x tensor<fp16,[1,8,64,64]>, y tensor<fp16,[1,8,64,64]>",
+      "command": "./build/mil-hwxc --mil /tmp/bmm864/bmm-r4.mil --model-root /tmp/bmm864 --output /tmp/bmm864/out-r4 --target H13 --format anec",
+      "exit": 65,
+      "stderr": "same h13.matmul-outside-envelope error naming (B=8, rows=64, reduction=64, columns=64, tx=0, ty=0, runtime y)"
+    },
+    {
+      "name": "rank3-tx0-ty1",
+      "mil": "x tensor<fp16,[8,64,64]>, y tensor<fp16,[8,64,64]>, transpose_y=true",
+      "command": "./build/mil-hwxc --mil /tmp/bmm864/bmm-ty1.mil --model-root /tmp/bmm864 --output /tmp/bmm864/out-ty1 --target H13 --format anec",
+      "exit": 65,
+      "stderr": "same h13.matmul-outside-envelope error naming (B=8, rows=64, reduction=64, columns=64, tx=0, ty=1, runtime y)"
+    }
+  ],
+  "control": {
+    "purpose": "prove the probe MIL pattern is well-formed so the reject is geometric, not syntactic",
+    "mil": "research/oracles/h13/batched/bmm_r3rr_m375_k128_n749_tx0_ty0_b8.json (Apple-decoded capture, same op/flag structure at captured geometry)",
+    "command": "./build/mil-hwxc --mil /tmp/bmm864/control.mil --model-root /tmp/bmm864 --output /tmp/bmm864/out-ctl --target H13 --format anec",
+    "exit": 0,
+    "manifest": {
+      "programs": 1,
+      "taskDescriptors": 208,
+      "encoder": "apple-parity-batched-matmul"
+    }
+  },
+  "execute_gate": {
+    "rule": "jwm1 execute only if programs == 1 and taskDescriptors <= 16",
+    "evaluation": "unreachable: (64,64,64) rejects at compile (no package emitted); the only in-envelope B=8 forms are 375-wide with 26*8=208 TDs, outside the execute window and in the forbidden 208-TD class",
+    "jwm1_commands_issued": 0
+  },
+  "forbidden_list_honored": {
+    "375-wide execute": false,
+    "T6001 touch": false,
+    "208-TD execute": false,
+    "1x896": false,
+    "reboot": false,
+    "unload": false,
+    "GPU lock": false,
+    "retry on -110": false
+  },
+  "boundary": "Host-only. All work in mil-hwx-compiler (rebuild) and /tmp/bmm864 (MIL, outputs). No ane-linux-experiments file edited or executed; this receipt is the only write and is the assigned acceptance path. No SSH, no ANE command, no router or model pin change."
+}
