@@ -347,6 +347,36 @@ class DerivedGeometryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             MODULE.walk_registers(bytes(td))
 
+    def test_an_extra_header_word_is_not_a_register_record(self):
+        # header[9] & 0x3 == 0x3: one extra word at 0x28, first record at 0x2c.
+        td = bytearray(0x38)
+        struct.pack_into('<I', td, 36, 0x23)
+        struct.pack_into('<I', td, 40, 0)
+        struct.pack_into('<I', td, 44, MODULE.TILE_DMA_SOURCE_RUN)
+        struct.pack_into('<I', td, 48, 1792)
+        self.assertEqual(MODULE.walk_registers(bytes(td)), {0x13810: 1792})
+
+    def test_header_bit1_alone_does_not_skip_a_word(self):
+        # 0x26 has bit 1 set and no extra word (corpus: H13 header[9]).
+        td = bytearray(0x34)
+        struct.pack_into('<I', td, 36, 0x26)
+        struct.pack_into('<I', td, 40, MODULE.TILE_DMA_SOURCE_RUN)
+        struct.pack_into('<I', td, 44, 4096)
+        self.assertEqual(MODULE.walk_registers(bytes(td)), {0x13810: 4096})
+
+    def test_predecessor_scan_reaches_a_short_last_task(self):
+        # A 0x274 floor stopped before 0x200 when the section is 0x400.
+        data = bytearray(0x400)
+        struct.pack_into('<I', data, 0x328, MODULE.TD_MAGIC)
+        struct.pack_into('<I', data, 0x200, 0x10)
+        struct.pack_into('<I', data, 0x21C, 0x300)
+        struct.pack_into('<I', data, 0x300, 0x11)
+        self.assertEqual(
+            MODULE.find_task_offsets(bytes(data), 0, len(data)),
+            (0x200, 0x300),
+        )
+
+
 
 if __name__ == '__main__':
     unittest.main()
