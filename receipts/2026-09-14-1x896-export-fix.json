@@ -91,7 +91,7 @@
     },
     "staging": {
       "script": "receipts/2026-09-14-1x896-export-fix/stage-export-fix.py",
-      "base_bundles": "/var/tmp/Jwm1AneMoreFixtures-a9f14124/adapted/ane-add-fp16-1x512 and -1x896, schema 4",
+      "base_bundles": "The submitted run used /var/tmp/Jwm1AneMoreFixtures-a9f14124/adapted/ane-add-fp16-1x512 and -1x896 (schema 4) on jwm1. That was a jwm1-only dependency and is now removed: receipts/2026-09-14-1x896-export-fix/adapt-v1-to-schema4.py rebuilds those schema-4 manifests from the in-repo mlx-omarchy manifest_version 1 fixtures, and reproduces both byte-for-byte, collection hashes included (f93b34400d039a1cda9417200f6e5a17ee31628d12a3e41c6ada4cb0f3859abc for 512 and 86203b99cb4d530d6bb99986e4d2b3351d3b04afb3253c7655e2f8b6ce9e1919 for 896). Everything geometric comes out of the ANEC header; only the compiler target, the program operation and the encoder claim are carried as declared provenance because neither input states them. Requested by T6001ExportFamily, who could not stage on jw16 without it.",
       "method": "Every manifest field the worker validates is taken from the emitted ANEC header, so the manifest cannot disagree with the artifact: per-binding allocation_bytes = tiles[channel] * 0x4000, nchw = header nchw[channel], scratch_bytes = tiles[3] * 0x4000, top-level stride = the binding's allocation. Payload sha256 and release_asset.model_sha256 are re-stamped with the payload-collection hash, self-checked against the untouched manifest first.",
       "manifest_channels": "left at the binding-order formula (output 4, input 5) that validate_binding requires. The polarity work established the task's real map is input 4 / output 5 and that this check is vacuous; correcting it is the queued mlx-omarchy validator lane, not a converter change, and the runtime binds by role index through libane regardless."
     },
@@ -120,7 +120,8 @@
     "results": [
       {
         "program": "control-64el (schema4-add-mul-worker, 2 programs)",
-        "bundle": "/var/tmp/AneWorkerValidation-c05ba1df/receipts/2026-09-13-ane-worker-validation/bundle",
+        "bundle": "/var/tmp/AneWorkerValidation-c05ba1df/receipts/2026-09-13-ane-worker-validation/bundle (manifest 4a9ba2298b45dc439c0713b0772ffbaa624c76b34a04e7bb621c4aca10b0e5b7, program-0 9a6a6a9a701ce207d4a8ea80ee1ca6d5ade076be2115b73a9aed6f4236aa56ab, program-1 62595e4a61db24066b83a4f7c077d459c69a6a740109098ee0122b4b46dcd3cc)",
+        "submitted_vectors": "a.bin 89f3acad0033b537b3927e9d49dfe3c0e28a4f0a52a0820092b8ae638766e2d0, b.bin 0b61cf1534cf853b4171777680699809d08ffe93d580b58f0814dcd51cd7f42c, y.bin abd3b8c9f1439c1fa508b42aa229c4b1688e06271d2bf7b823d71cd730200054, 128 bytes each. The runner hashed the bundle but not these three; digested afterwards so a second SoC can compare the same y rather than make an independent exactness claim. T6001ExportFamily reports byte-identical a/b/y on jw16mbp1-linux.",
         "submitted_header": "td_size=0x1f8 tsk_size=0x1f8 krn_size=0x4000 tiles[4,5]=(1,1) nchw[4]=nchw[5]=(1,64,1,1,64,64)",
         "result": "verified output y exact, worker status=0, iterations=1, released=2, elapsed_ms=2, exit 0, wall 6 ms",
         "reading": "The qualified class is unaffected. Its geometry is the derived geometry, so the change is a no-op here by construction as well as by measurement."
@@ -163,6 +164,19 @@
       "commands_on_jw16_or_16m1mbp": "no; the 16m1mbp read-only copy attempt failed at TCP connect and nothing ran there",
       "commands_on_macstudio": "read-only ls and find for the 896 object, nothing else"
     }
+  },
+
+  "reproduction_without_jwm1": {
+    "claim": "The whole staging path reproduces the exact bundles that were submitted, from in-repo fixtures only.",
+    "steps": [
+      "python3 receipts/2026-09-14-1x896-export-fix/reconstruct-1x896-hwx.py <mlx-omarchy>/receipts/fixtures /tmp/model-1x896.hwx   # 896 only; 512 uses the retained object directly",
+      "python3 tools/hwxv2-to-anec.py <fixtures>/mil-oneop/model.hwx /tmp/model-1x512.anec 512 512 --weights <fixtures>/mil-oneop/weights.bin",
+      "python3 tools/hwxv2-to-anec.py /tmp/model-1x896.hwx /tmp/model-1x896.anec 896 896 --weights <fixtures>/exported/ane-add-fp16-1x896/weights.bin",
+      "python3 receipts/2026-09-14-1x896-export-fix/adapt-v1-to-schema4.py <fixtures>/exported/ane-add-fp16-1xN <fixtures>/exported/ane-add-fp16-1xN/model.anec /tmp/base-N.json   # then copy the v1 bundle and drop this manifest in",
+      "python3 receipts/2026-09-14-1x896-export-fix/stage-export-fix.py /tmp/base-N /tmp/model-1xN.anec /tmp/staged-N /tmp/offline-N.json"
+    ],
+    "verified": "Run end to end on omp-studio-local: offline gate PASS for both, and the staged bundles match the digests in execute.log exactly -- 1x512 manifest d70abcf27610a1e5a5f5b2b1afa111704bc4cdbb8cd85fc078d084ca54472700 with anec 4a063cf46cb8b27979eabc6eab8b020239a29adab7590fab5ccbd7f2f9d23b91, and 1x896 manifest d799d42f51baf884cd0e8ab02f80d744241d84c94e2ed28a333cc43ceb1313b0 with anec 06f272c9ec7b1a03165123e56eef59f086a11986d735be1f79841f01612bbc83.",
+    "cross_soc": "T6001ExportFamily independently re-emitted both ANECs and the reconstructed HWX on jw16mbp1-linux (T6001) at the same digests, with the equivalence assertion passing."
   },
 
   "residuals": [
