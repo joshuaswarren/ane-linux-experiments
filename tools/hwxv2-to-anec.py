@@ -219,7 +219,12 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     if not task_offsets:
         raise ValueError("expected at least one task descriptor in __TEXT")
     td_offset = task_offsets[0] + text.file_offset - text_segment_offset
-    if td_offset + TD_SIZE > text_segment_size:
+    # The engine treats td_size as the task word count. A hardcoded 0x274
+    # over-fetched 124 bytes past a 0x1f8 task and decoded the CoreML weight
+    # blob as register writes, so TM never went idle (-110).
+    td_end = task_offsets[1] if task_offsets[1:] else text.size
+    td_size = td_end - task_offsets[0]
+    if td_offset + td_size > text_segment_size:
         raise ValueError("task descriptor exceeds the __TEXT payload")
     kernel_offset = kernel.file_offset - text_segment_offset
     if kernel_offset < 0 or kernel_offset + kernel.size > text_segment_size:
@@ -234,7 +239,7 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     )
     td = data[
         text_segment_offset + kdma_offset:
-        text_segment_offset + kdma_offset + TD_SIZE
+        text_segment_offset + kdma_offset + td_size
     ]
     return HWXImage(
         sections=sections,
@@ -243,7 +248,7 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
         task_stream_size=text.size,
         td_offset=td_offset,
         td_count=len(task_offsets),
-        td_size=TD_SIZE,
+        td_size=td_size,
         kernel_offset=kernel_offset,
         kernel_size=kernel.size,
         workspace_size=workspace_size,
