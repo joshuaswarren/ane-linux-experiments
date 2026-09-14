@@ -3,6 +3,13 @@
   "date": "2026-09-14",
   "host": "jwm1-linux",
   "verdict": "Both export-path residuals named in receipts/2026-09-14-1x896-channel-polarity.json are fixed in source, derived from the artifacts rather than stamped from a convention, and proven on device. The coefficient stream comes from the weight blob's own declared payload offset instead of byte 0 of the blob file, and the nchw plane and row bytes come from the task's own tile-DMA byte counts instead of the 64-byte-padded convention. Three guarded single-iteration executes on jwm1: the device-qualified 64-element control, the re-exported 1x512 and the re-exported 1x896 all returned exact, status 0, 6 ms wall each. The 64-element class is untouched, by construction and by measurement.",
+  "resolved_model": {
+    "lane": "ExportGeometryFix",
+    "model": "anthropic/claude-opus-5",
+    "thinking_level": "high",
+    "fallback": false,
+    "source": "session model_change record, session 01a0a090-9118-75f1-bb7a-7b96cd52998f, 2026-09-14T15:37:04Z; added by StatusDocSync from history://ExportGeometryFix"
+  },
 
   "change": {
     "repo": "ane-linux-experiments",

@@ -3,6 +3,13 @@
   "date": "2026-09-14",
   "host": "jwm1-linux",
   "verdict": "The ANEC header never states which tile channel carries input 0 or output 0. libane assumed a positional order (dst = 4 + i, src = 4 + dst_count + i), which is the order mil-hwxc normalizes Apple's selectors into, not a property of the format. The task descriptor carries the real map in its own selector word. Deriving it from there fixes the 1x896 destination polarity on hardware and is a proven no-op on the already-qualified 64-element class. Two further defects in the same exported family still stood between a correct engine result and a correct host result; both are now named, byte-level located, and each individually proven on device.",
+  "resolved_model": {
+    "lane": "AneChannelPolarity",
+    "model": "anthropic/claude-opus-5",
+    "thinking_level": "high",
+    "fallback": false,
+    "source": "session model_change record, session 01a0a071-d6b8-74f4-8ca6-5e611f6c45ae, 2026-09-14T15:03:30Z; added by StatusDocSync from history://AneChannelPolarity"
+  },
 
   "decision": {
     "question": "Apple's task bytes select src1 = ch 4, src2 = ch 1, dst = ch 5. libane hardcodes dst = 4, src = 5. Which side is authoritative?",

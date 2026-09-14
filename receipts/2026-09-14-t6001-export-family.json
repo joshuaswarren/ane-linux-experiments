@@ -125,7 +125,8 @@
       "method": "receipts/2026-09-14-t6001-export-family/set0-read.py, a PROT_READ mmap of /dev/mem at physical 0x28e08c000 (m1n1 ps_map[ane0]), the address and method already established on this host in receipts/2026-09-13-jw16-set0-read.json. Zero writes.",
       "before": "raw 0x00000300, ACTUAL 0x0, TARGET 0x0, powered false -- gated. runtime_status suspended, runtime_control auto.",
       "after": "raw 0x000003ff, ACTUAL 0xf, TARGET 0xf, powered true. runtime_status active.",
-      "reading": "The worker's open of /dev/accel/accel0 resumed the domain through genpd, exactly as receipts/2026-09-13-jw16-set0-after-resume.json established. No userspace write of SET, and specifically never 0xf. runtime_control is auto, so the domain autosuspends on its own; `active` immediately after the run is the expected tail of a genpd-owned resume, not a leaked reference -- the module reports refs=0 and no process holds a descriptor."
+      "reading": "The worker's open of /dev/accel/accel0 resumed the domain through genpd, exactly as receipts/2026-09-13-jw16-set0-after-resume.json established. No userspace write of SET, and specifically never 0xf. runtime_control is auto, so the domain autosuspends on its own; `active` immediately after the run is the expected tail of a genpd-owned resume, not a leaked reference -- the module reports refs=0 and no process holds a descriptor.",
+      "autosuspend_confirmed": "Re-read after the run rather than argued: runtime_status is back to `suspended`, with the device still a live character special file, ane refs=0, zero workers and zero descriptor holders. So the post-run `active` was the resume tail and the domain released itself, which is the claim the sentence above would otherwise be making on inference alone."
     },
 
     "post_state": {

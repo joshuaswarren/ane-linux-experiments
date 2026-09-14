@@ -3,6 +3,13 @@
   "date": "2026-09-14",
   "status": "td-size-cause-confirmed-on-device",
   "verdict": "The re-exported 1x896 program executed on the ANE. ane_exec returned success in a 44 ms window, the driver's TM idle poll never timed out, and dmesg carries zero \"tm execution failed\" and zero errno=110 this boot. The -110 was the 124-byte task-descriptor over-run named in receipts/2026-09-14-1x896-diff.md, not a shape limit. exact_fp16 was NOT reached: the run failed the value comparison at element 0, which is the separately-diagnosed channel-polarity defect in the same exported family.",
+  "resolved_model": {
+    "lane": "Ane1x896Execute",
+    "model": "anthropic/claude-opus-5",
+    "thinking_level": "high",
+    "fallback": false,
+    "source": "session model_change record, session 01a0a066-872e-764c-9d20-66956a19de25, 2026-09-14T14:51:09Z; added by StatusDocSync from history://Ane1x896Execute"
+  },
 
   "pins": {
     "ane_linux_experiments": "8e899366b099df9c5100c5c8eb4304edb16a409d",
