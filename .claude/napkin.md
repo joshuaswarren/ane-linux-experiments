@@ -205,3 +205,40 @@
 - 2026-08-30: ANEForge exposes final decoder chunk output after output RMS normalization. Match that checkpoint only; keep the recurrent hidden state raw.
 - 2026-08-30: Exact-input full-attention layers match the macOS reference within 0.0135 relative L2. DeltaNet layer 0 already differs by 0.2217 on its first token, so diagnose the DeltaNet path first.
 - 2026-08-30: A second macOS M1 can clear ANECompiler resource exhaustion without rebooting the reference host. A precomputed prompt-to-token map removes the local tokenizer prerequisite.
+- 2026-09-14: The 2026-08-30 Monterey buffer-index warning came true again on
+  Linux/H13. libane bound roles positionally (`dst = 4 + i`,
+  `src = 4 + dst_count + i`); that is only the order mil-hwxc normalizes
+  Apple's selectors into, and Apple's own exports reverse it. The map lives in
+  task word 8: three 5-bit selectors at shifts 0/6/12 for `0x13800`/`0x13804`/
+  `0x17800`. Derive it; never assume a role order the header does not state.
+- 2026-09-14: Order roles by ascending channel number, not by selector field
+  position. Two proven artifacts carry the fields in opposite order
+  (`0x00024966` and `0x000249a5`) and both put the destination on channel 4.
+- 2026-09-14: A destination selector names the real output when its channel is
+  an allocated surface, not when its config word takes some particular value.
+  `0x000000c0`, `0x000000c1` and `0x040000c1` all appear on real output writes;
+  a chain's in-flight result keeps its destination selector on channel 0.
+  Gating on `0x040000c1` alone wrongly rejected `tile_r`, `reduce_mean`,
+  `reduce_probe_max` and `select_rrb`.
+- 2026-09-14: In a linked task stream, the NEXT descriptor's word count lives
+  in bits 16:24 of word 1 of the CURRENT descriptor, and word 7 is its offset.
+  Reading the count from the next descriptor degraded silently to the fallback
+  path on all 60 multi-task programs instead of failing, so validate a decode
+  against a corpus, not against one artifact.
+- 2026-09-14: `td_size` must be truthful before any task-stream decode is
+  possible. With the stale `0x274` the record walk runs into the CoreML weight
+  blob and every exported bundle falls back. Two "independent" fixes were
+  ordered.
+- 2026-09-14: A check that compares a value to the formula that produced it
+  cannot fail. `bundle.cpp` validates a manifest's declared channel against
+  `4 + i`, and the adapter computed the declaration from `4 + i`, so a wrong
+  channel passes. Look for the producer of a value before trusting its
+  validator.
+- 2026-09-14: Sentinel-seed every allocated channel before an execute. A
+  per-channel tag in unwritten memory is what proves which surface the engine
+  actually wrote, and it separated the destination-polarity fix from two
+  further defects in the same artifact.
+- 2026-09-14: Surface geometry is per-program, not a convention. The exported
+  1x896 sets every tile-DMA byte count to `1792 = 896 * 2` (dense) while its
+  header claims 64-byte planes; the proven 64-element program really does use
+  `4096 = 64 * 64`. Read `0x13810`/`0x13814`/`0x17810` rather than assuming.
