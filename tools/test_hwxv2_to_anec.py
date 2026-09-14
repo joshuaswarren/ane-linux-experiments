@@ -48,6 +48,15 @@ class FreshHWXParserTests(unittest.TestCase):
         self.assertEqual(image.input_size, 0x1000)
         self.assertEqual(image.output_size, 0x1000)
 
+    def test_td_size_follows_the_real_task_stream(self):
+        # A hardcoded 0x274 over-fetched past a 0x1f8 task and decoded the
+        # weight blob as register writes, so TM never went idle (-110).
+        for name in ('tools/fresh-64.hwx.sample', 'tools/fresh-w4.hwx.sample'):
+            image = MODULE.parse_hwx((ROOT / name).read_bytes())
+            text = image.sections[('__TEXT', '__text')]
+            self.assertEqual(image.td_size, text.size, name)
+
+
     def test_macho_sections_are_parsed(self):
         text = self.image.sections[('__TEXT', '__text')]
         kernel = self.image.sections[('__TEXT', '__const')]
