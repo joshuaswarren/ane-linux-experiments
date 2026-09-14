@@ -6,6 +6,8 @@
 |------|--------|-----------------|-------------------|
 | 2026-09-13 | user | Stopped after ANE-on-Max findings and parked ANE/CoreML/parity | Keep all three plans plus jw16 ANE bind running. Findings are not a stop. |
 | 2026-09-13 | self | Left GATES G1 on power-reset after cycle 11 bound `/dev/accel/accel0` | Update the gate when the device node exists. Bind is not execute: T6001 still TM `-110` on the T8103-exact 64-el program. |
+| 2026-09-14 | self | T6001 SET0 read ACTUAL=0 while accel0 still live | Idle runtime suspend gates SET. open(accel0) restores 0xf via genpd. Not a lost bind. Never write 0xf. |
+| 2026-09-13 | self | Conv-as-matmul compiled (375,1024,2048) as 15000 programs / 1.6GB | rc=0 is not an envelope. Do not land that rewrite. |
 | 2026-09-13 | review | Accepted eager constant snapshots after two hashes of mutable source paths; a flip/read/restore sequence returned wrong cached bits while both hashes passed | Hash the exact immutable byte buffer used for parsing/decoding; before/after path hashes do not authenticate consumed bytes. |
 | 2026-09-13 | self | Used established HTTP socket counts as an empty-queue gate, delaying real readiness probes | Keepalive sockets are not active requests; use a bounded completion and correlated engine lifecycle evidence. A client timeout does not prove server cancellation. |
 | 2026-09-13 | self | Left trailing commas on final JSON fields and tried an inverted edit range for insertion | Preserve whole object boundaries, use valid replacement ranges, and parse JSON before commit. Failed validation blocks publication. |
