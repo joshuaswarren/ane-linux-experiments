@@ -1,0 +1,182 @@
+{
+  "title": "1x896 channel-selector polarity: the task stream is authoritative, and libane was guessing",
+  "date": "2026-09-14",
+  "host": "jwm1-linux",
+  "verdict": "The ANEC header never states which tile channel carries input 0 or output 0. libane assumed a positional order (dst = 4 + i, src = 4 + dst_count + i), which is the order mil-hwxc normalizes Apple's selectors into, not a property of the format. The task descriptor carries the real map in its own selector word. Deriving it from there fixes the 1x896 destination polarity on hardware and is a proven no-op on the already-qualified 64-element class. Two further defects in the same exported family still stood between a correct engine result and a correct host result; both are now named, byte-level located, and each individually proven on device.",
+
+  "decision": {
+    "question": "Apple's task bytes select src1 = ch 4, src2 = ch 1, dst = ch 5. libane hardcodes dst = 4, src = 5. Which side is authoritative?",
+    "answer": "The task descriptor. The engine reads and writes the channels its own task names; the ANEC header's tiles[] and nchw[] are indexed by the same channel number and the driver binds handles[bdx] to channel bdx, so the numbering is shared end to end. The only free variable is the role order, and the header does not carry it. libane's positional formula was therefore an unsourced assumption, and it is the defect.",
+    "why_libane_and_not_the_converter": "libane owns the host-facing ane_send(nn, x, idx) / ane_read(nn, y, idx) API and is the only layer that sees both the task bytes and the caller's role index. Fixing it corrects every already-exported artifact with no re-export. Fixing the converter would only correct future exports and would leave libane still asserting a convention nothing states.",
+    "ordering_rule": "Roles are ordered by ascending channel number, not by selector field position. The two proven H13 artifacts carry the three selector fields in opposite order (words[8] = 0x00024966 gives fields 6,5,4 and 0x000249a5 gives 5,6,4) while both place the destination on channel 4 with sources on 5 and 6. Field position therefore carries no role; the channel number does, and ascending order reproduces libane's previous behaviour exactly on every proven artifact."
+  },
+
+  "contract_decoded": {
+    "selector_word": "task word 8, three 5-bit fields",
+    "fields": [
+      {"register": "0x13800", "role": "tile-DMA source 1", "shift": 0},
+      {"register": "0x13804", "role": "tile-DMA source 2", "shift": 6},
+      {"register": "0x17800", "role": "tile-DMA destination", "shift": 12}
+    ],
+    "dma_disabled_value": "0x00008880",
+    "reserved_channels": "below 4: 0 is the command channel, 1 is the kernel BAR a folded constant blob reads through, 3 is scratch",
+    "destination_discriminator": "the channel, not the configuration word. A fused chain's in-flight result keeps its destination selector on channel 0 and stays in L2, so only a destination naming an allocated surface channel is the model's output. 0x000000c0, 0x000000c1 and 0x040000c1 all appear on real output writes across the decoded encoders; an earlier draft that accepted only 0x040000c1 wrongly rejected the real output write of tile_r, reduce_mean, reduce_probe_max and select_rrb.",
+    "multi_task_walk": "word 7 of each descriptor is the next descriptor's stream offset; bits 16:24 of word 1 of the CURRENT descriptor are the NEXT descriptor's word count less one. Reading the word count from the next descriptor instead of the current one silently broke every multi-task program (60 of 25,087 fell back), which is how the bug was caught.",
+    "provenance": [
+      "mil-hwx-compiler plugins/H13/H13ANEC.cpp:118-131 (bindTasks writes the same three fields)",
+      "mil-hwx-compiler research/inspect_anec.py:28-56 (H13_DMA_SELECTORS, record walk, destination_channel)",
+      "mil-hwx-compiler plugins/H13/H13Program.cpp:108-110 (streamHeader = ((words - 1) << 26) | address)"
+    ]
+  },
+
+  "change": {
+    "repo": "omarchy-ane",
+    "branch": "ane-parity",
+    "parent": "f261a6cb537aca62f267ad3d01beda0d6877544c",
+    "commit": "20d24ad",
+    "files": {
+      "libane/ane_bind.h": "new; the derivation, header-only and device-free",
+      "libane/ane.h": "struct ane_bind added to struct ane_nn",
+      "libane/ane.c": "src_bdx/dst_bdx now index the derived map; ane_bind_init called in ane_model_init",
+      "test/bind/main.c": "new; host-only self-test plus a per-artifact derived-vs-positional reporter",
+      "test/bind/Makefile": "new; builds and runs on any host"
+    },
+    "fallback": "When the task stream does not account for exactly src_count sources and dst_count destinations, the positional layout stands. A partial decode never becomes a new guess."
+  },
+
+  "static_regression": {
+    "corpus": "25087 ANEC files from 164 programs compiled locally with mil-hwx-compiler 83d486b1 (build/mil-hwxc), spanning 122 oracle families plus a hand-authored elementwise spread",
+    "tool": "omarchy-ane test/bind/main.out, the shipped derivation itself, not a reimplementation",
+    "derived": 25085,
+    "fell_back_to_positional": 2,
+    "identical_to_positional": 25085,
+    "differs_from_positional": 2,
+    "differences": [
+      {
+        "program": "floor_div_native_1_rr/program-0.anec",
+        "derived": "src=4,5 dst=6",
+        "positional": "src=5,6 dst=4",
+        "task_evidence": "6 descriptors; t0 reads ch4 (0x13800 = 0x00033881), t1 reads ch5, t5 writes ch6 (0x17800 = 0x040000c1). No other tile DMA is enabled.",
+        "reading": "A genuine second instance of the same defect, found by the derivation. floor_div_native is Apple's own captured task stream replayed verbatim (mil-hwx-compiler receipts/2026-09-13-batched-oracle-mint-round2/RECEIPT.md:134-142) and was never normalized into the positional order, so it is mis-bound on device today: the host would feed its output tile and read a tile the engine never wrote. It has no device receipt claiming exactness.",
+        "residual": "Which of ch4 and ch5 is operand x versus operand y is not established. floor_div is not commutative, so the ascending-order assignment is unverified for this family. Needs a device check with distinguishable operands."
+      },
+      {
+        "program": "floor_div_native_1x64x1x1_rr/program-0.anec",
+        "derived": "src=4,5 dst=6",
+        "positional": "src=5,6 dst=4",
+        "reading": "same as above"
+      }
+    ],
+    "fallbacks": [
+      {
+        "programs": ["bmm_r3rr_m375_k128_n375_tx0_ty0_b8/program-0.anec", "bmm_r3rr_m375_k375_n128_tx0_ty0_b2/program-0.anec"],
+        "cause": "Batched matmul with two runtime operands reads its second operand through the coefficient DMA (0x1f800), not the tile DMA, so the three tile selectors name only one of the two sources the header counts. Channel 6 is allocated (tiles[6] = 36) and never appears in an enabled tile selector.",
+        "effect": "The count check fails and the positional layout stands, which is the binding these device-proven artifacts already use. Mapping a coefficient-DMA base address back to a channel index would require the driver's BAR assignment, which the host does not have at bind time."
+      }
+    ]
+  },
+
+  "coupling_to_the_td_size_fix": {
+    "observation": "Run the derivation over the exported bundles as shipped, with the stale td_size = 0x274, and all four fall back to the positional layout.",
+    "cause": "The declared descriptor length is the walk's bound for task 0. At 0x274 the register-record walk runs 124 bytes past the 0x1f8 task into the CoreML weight-blob header and hits the guard, exactly as the engine did when it returned -110.",
+    "consequence": "The channel derivation only works once td_size is truthful. The two fixes are ordered, not independent: ane-linux-experiments 8e89936 first, then this one."
+  },
+
+  "device": {
+    "host": "jwm1-linux",
+    "kernel": "7.1.6-1-1-ARCH",
+    "machine": "aarch64",
+    "module_version": "f2a3e5e+lifecycle6",
+    "driver_abi": 1,
+    "boot_id": "95872130-fd28-4d67-8247-03a0e8b61202",
+    "uptime_start": "2026-09-13 09:43:25",
+    "worker_tool_sha256": "762dd1de868b52e4d6ffa30e18d842d9341db463b06aef2355f18fb1eb248929",
+    "libane_derived_sha256": "bf4dbe5482d9eefd137108b88c3cb807f8cf3fdb32e02d6ed5314fea52201d95",
+    "libane_baseline_sha256": "1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49",
+    "libane_injection": "mlx-omarchy-ane-worker --libane PATH; libane is loaded dynamically, so both builds ran against one worker binary in one session",
+    "host_only_self_test": "omarchy-ane test/bind: 6 of 6 ok on x86_64 and on jwm1 aarch64",
+
+    "control_64_element_add_mul": {
+      "bundle": "AneWorkerValidation-c05ba1df/receipts/2026-09-13-ane-worker-validation/bundle (schema4-add-mul-worker, 2 programs)",
+      "derived_map": "src=5,6 dst=4 for both programs, identical to positional",
+      "baseline_libane": "verified output y exact, worker status=0, iterations=1, released=2, elapsed_ms=2",
+      "derived_libane": "verified output y exact, worker status=0, iterations=1, released=2, elapsed_ms=2",
+      "reading": "A/B in one session on one worker binary. The change is a measured no-op on the qualified class."
+    },
+
+    "fix_1x896": {
+      "bundle": "/var/tmp/Ane1x896TdFix-20260914/ane-add-fp16-1x896 (td_size-corrected, anec sha256 c90366a9882332b5e2a3da2fdc621e6e0a6753455f6aa2f4a8de7a05a021b978)",
+      "submitted_header": "td_size = tsk_size = 0x1f8",
+      "derived_map": "src=4 dst=5; positional was src=5 dst=4",
+      "result": "No -110. ane_exec = 0, elapsed_ms = 2. The engine wrote channel 5, the derived destination: every runtime surface was pre-seeded with a per-channel sentinel and the 896 words of channel 5 came back written while the rest of its 64 KiB tile kept the sentinel. Channel 4, the derived source, came back holding exactly the input the host wrote. The destination polarity is fixed.",
+      "values_still_wrong_and_exactly_explained": "Output was 1.0 for elements 0-63 and 1.25 for elements 64-895. That is bit-for-bit equal to 1.0 + kernel_section[i] over all 896 elements, including the two odd values -0.7333984375 and -426.25 produced by the 0xDEADBEEF record at words 32-33. Nothing in the result is unexplained."
+    },
+
+    "residual_1_kernel_section_offset": {
+      "defect": "The ANEC's kernel section is weights.bin[0x00:0x700], byte-identical. The CoreML blob payload starts at 0x80 (a 0x40 header plus a 0x40 0xDEADBEEF blob record), so the first 64 fp16 coefficients the engine reads are the blob header and the last 64 real coefficients are truncated.",
+      "located": "kernel section at ANEC offset 0x1000 + align16(tsk_size) = 0x1200, krn_size = 0x700. The converter sources it from the HWX __TEXT,__const, which for a BLOBFILE constant carries the blob file bytes including that header (tools/hwxv2-to-anec.py:207,236-238,259).",
+      "proof": "Relocating the section to weights.bin[0x80:0x780], same size, no other byte changed: all 896 outputs became 0x3d00 = 1.25 exactly. anec sha256 3adeb990bdbd9ad5e023cde5113f79c48287ada548849c2cba6631f7e60d5f52.",
+      "owner": "The export path. Coefficients must come from the blob payload offset, not from byte 0 of the blob file. Not fixed here: it is a distinct defect requiring the blob-header format work, and the durable fix belongs with whoever owns the exporter."
+    },
+
+    "residual_2_header_geometry": {
+      "defect": "The exported ANEC declares nchw[4] = nchw[5] = (1,896,1,1,64,64), the 64-byte-padded plane convention. Its own task DMA is configured for a dense surface: registers 0x13810, 0x13814, 0x13818, 0x17810 and 0x17814 all read 1792 = 896 x 2.",
+      "measured_contrast": "The proven mil-hwxc 64-element program reads 0x13810 = 64 with 0x13814 = 0x13818 = 4096 = 64 x 64, which does match its (1,64,1,1,64,64) header. So the convention is per-program and the task is again authoritative.",
+      "effect": "mlx-omarchy packs and unpacks at a plane stride taken from nchw[4] (overlay/mlx/backend/omarchy/ane/runtime_detail.h:158-186), so it scattered the input across 64-byte rows and gathered the output from 64-byte rows, while the engine moved 1792 contiguous bytes. Measured directly: the engine wrote exactly words 0-895 of the destination tile and nothing beyond.",
+      "proof": "Correcting nchw[4] and nchw[5] to (1,896,1,1,2,2) and the matching manifest bindings, on top of residual 1: mlx-omarchy-ane-worker reported \"verified output t2 exact\", status 0, iterations 1, elapsed_ms 1. anec sha256 1a6953527033997aaa45ba91c65db00d2a76858b3418df8ced369682502fc620.",
+      "owner": "The export path, same as residual 1. nchw must be derived from the task's tile-DMA byte counts rather than stamped from a convention."
+    },
+
+    "end_to_end": "With the derived channel binding plus both named residuals corrected, the 1x896 add is exact end to end through the real runtime: verified output t2 exact, 1 ms. Only the channel binding is fixed in source here; the two residuals were proven by byte-level correction of the artifact."
+  },
+
+  "vacuous_validator": {
+    "finding": "mlx-omarchy overlay/mlx/backend/omarchy/ane/bundle.cpp:274-280 defines output_bdx(i) = 4 + i and input_bdx(header, i) = 4 + destination_count + i, and validate_binding rejects a manifest whose declared channel differs. The adapted schema-4 manifest for 1x896 declares input channel 5 and output channel 4 -- those same formulas -- so the check compares a number to the formula that produced it and cannot fail.",
+    "consequence": "The manifest's declared channels are wrong for this artifact (the truth is input 4, output 5) and the validator cannot notice. The runtime is unaffected because it drives libane purely by role index (runtime_worker.cpp:207-215,300-335), which is why the libane fix alone corrected the device behaviour.",
+    "required_follow_up": "Point output_bdx/input_bdx at the derived map so the manifest's declaration is checked against the task stream. This cannot land alone: every existing schema-4 manifest declares formula-derived channels and would be rejected until re-adapted. Not attempted here -- mlx-omarchy was under concurrent edit by three peers during this slice and no source file in it was touched."
+  },
+
+  "prohibited_actions": {
+    "reboot": "no",
+    "module_unload": "no",
+    "gpu_lock_acquired": "no, /tmp/m1-gpu.lock left free for MesaWaitsPatch",
+    "loops_or_retries": "no; every submit was a single iteration with a 5000 ms deadline and a 25 s outer timeout",
+    "edits_to_mlx_omarchy": "no",
+    "edits_to_the_qualified_libane_tree": "no; ~/src/omarchy-ane-h13-f261a6c on jwm1 was copied, never modified",
+    "commands_on_jw16": "no"
+  },
+
+  "post_state": {
+    "device": "character special file",
+    "module": "ane refs=0",
+    "boot_id": "95872130-fd28-4d67-8247-03a0e8b61202 unchanged",
+    "uptime_start": "2026-09-13 09:43:25 unchanged",
+    "quarantine_bytes": 0,
+    "device_lock": "reacquirable",
+    "leftover_workers": "none; pgrep -a mlx-omarchy empty",
+    "errno110_this_boot": 0,
+    "gpu_lock": "free"
+  },
+
+  "cross_agent": {
+    "select_island_ruled_out": "IslandsExecJwm1 and IslandsExecJw16 both reported the 8-head select island returning corrupted passthrough lanes (1341 and 1337 per head, H rows 0-8, cond all-false). select_rrb_1x8x375x375 derives src=5,6,7 dst=4, identical to the positional map, so its binding is correct today and unchanged by this fix. That defect is the already-named h13.select-first-l2-tile hole, not channel polarity.",
+    "select_bypass_correction": "EncoderParityAne planned to justify skipping the select island on the grounds that the clip's cond is all-false. That premise is wrong on its own: the corruption is in the passthrough and is independent of cond content. The bypass is valid only because the select runs on the GPU in that plan, so the hole is outside the execution path. Agreed and recorded with the agent."
+  },
+
+  "artifacts": {
+    "jwm1_workspace": "/var/tmp/AneChannelPolarity-20260914",
+    "run_log": "/var/tmp/AneChannelPolarity-20260914/execute.log",
+    "probe_source": "/var/tmp/AneChannelPolarity-20260914/probe.c (dumps every allocated tile channel after one execute; sentinel-seeds each channel so an unwritten surface is visible)",
+    "probe_sha256": "418a6e5d8b4875366680886e94cd9450ecece12e01c27f6690d913df273fec94",
+    "channel_dumps": "/var/tmp/AneChannelPolarity-20260914/dump-1x896 and dump-krnfix",
+    "corrected_bundles": "/var/tmp/AneChannelPolarity-20260914/krnfix (residual 1) and geomfix (residuals 1 and 2)",
+    "staged_libane": "~/src/omarchy-ane-h13-polarity-20260914 on jwm1, a copy of the qualified tree with this change applied"
+  },
+
+  "pins": {
+    "omarchy-ane": "20d24ad on ane-parity, parent f261a6cb",
+    "ane-linux-experiments": "8e89936",
+    "mil-hwx-compiler": "83d486b1",
+    "mlx-omarchy": "a9f14124 (the checkout the worker tool was built from)"
+  }
+}
