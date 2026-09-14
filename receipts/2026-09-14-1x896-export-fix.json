@@ -116,7 +116,7 @@
     "runner": "receipts/2026-09-14-1x896-export-fix/run-export-fix.sh",
     "log": "receipts/2026-09-14-1x896-export-fix/execute.log",
     "guards": "one iteration each, 5000 ms deadline, timeout --kill-after=5s 25s outer, stop before the next program on any failure",
-    "worker_liveness_method": "mlx-omarchy tools/ane_worker_liveness.py (ps -ww matched on basename(argv[0]) plus /proc/<pid>/fd holders of /dev/accel/accel0), copied to the box. NOT pgrep -af, which matches the naming shell itself and would have self-tripped the pre-submit clearance gate on a clean box; the channel-polarity runner this one was cloned from carries that pattern. Reported by WorkerLivenessFix, verified in the log: worker_count 0 and no device_holders before and after.",
+    "worker_liveness_method": "mlx-omarchy tools/ane_worker_liveness.py (ps -ww matched on basename(argv[0]) plus /proc/<pid>/fd holders of /dev/accel/accel0), copied to the box at /var/tmp/ExportGeometryFix-20260914/ane_worker_liveness.py, sha256 361d8e8caf7a3690b6b50e5892bac0f828d1885c33a70a488b7bc9ed338c1870 verified equal on both ends after the copy. It was uncommitted in the local worktree when used; EncoderParity3Islands reports the same digest for the file now on mlx-omarchy origin/main at 4ded332c, so the bytes that ran here are the canonical helper. NOT pgrep -af, which matches the naming shell itself and would have self-tripped the pre-submit clearance gate on a clean box, and not pgrep -x, which cannot match the 22-character name at all; the channel-polarity runner this one was cloned from carries the -af pattern. Reported by WorkerLivenessFix, verified in the log: worker_count 0 and no device_holders before and after.",
 
     "results": [
       {
