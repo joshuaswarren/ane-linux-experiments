@@ -17,4 +17,4 @@ Scope: Bind ANE on jw16 with a written procedure, keep ANE/CoreML/parity lanes r
   EVIDENCE: mlx-omarchy receipts/2026-09-13-jwm1-jw16-gpu-parity.md + 2026-09-13-jwm1-perf-parity.md (94f94242 on main)
 
 - [x] G5: Next unblocked Parakeet/CoreML and ANE-plan leaves are in flight, not parked
-  EVIDENCE: T8103 tiny select exact vs MIL (`472940d2`). T6001 idle-resume add-mul exact (`478203e6`). mil-hwx-compiler `37fb29e` polarity + `8f97f50` DMA. Encoder 375-select leftover L2 hole. Full encoder still concat/linear/silu/norm/conv.
+  EVIDENCE: T8103+T6001 exact: add-mul, tiny select, 1x1 conv, (1,256,128) linear. LUT ops execute with table contract. Encoder 375-select L2 hole. Full encoder still concat/linear/silu/norm/conv. mlx-omarchy `35ddbf34`.

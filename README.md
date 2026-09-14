@@ -9,9 +9,9 @@ Every headline number has a matching receipt in `receipts/`.
 
 ## Current status
 
-T8103 on jwm1 has a bound ANE. Persistence is `jwm1-ane.service`. Schema-4 add-mul is exact fp16 through the mlx-omarchy v2 adapter. 1x896 times out with -110 and is forbidden.
+T8103 on jwm1 has a bound ANE. Persistence is `jwm1-ane.service`. Schema-4 add-mul, tiny select, 1x1 conv, and `(1,256,128)` linear are exact fp16. 1x896 times out with -110 and is forbidden.
 
-T6001 on jw16 has `/dev/accel/accel0` live. SET0 at `0x28e08c000` was gated (`receipts/2026-09-13-jw16-set0-read.json`); T8103-shaped SET genpd raised ACTUAL=0xf without a userspace `0xf` write (`receipts/2026-09-13-t6001-set-domains.json`). The same 64-el schema-4 add-mul is then exact fp16 in 2 ms (`mlx-omarchy/receipts/2026-09-13-jw16-ane-set-exec.json`, y `bade941d` matching T8103). 1x896 remains forbidden. Do not write SET registers from userspace.
+T6001 on jw16 has `/dev/accel/accel0` live. SET0 gates on runtime suspend and returns `0xf` on `open(accel0)` via genpd. Do not write SET `0xf`. The same add-mul, tiny select, 1x1 conv, and `(1,256,128)` linear are exact and match T8103. 1x896 remains forbidden. A live overlay is not the packaged DTB.
 
 The out-of-box install plan is [docs/omarchy-ane-out-of-box-plan.md](docs/omarchy-ane-out-of-box-plan.md). The kmod is SoC-gated. Do not GRUB a whole-tree DTB.
 
