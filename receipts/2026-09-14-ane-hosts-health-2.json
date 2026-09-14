@@ -1,0 +1,128 @@
+{
+  "schema": "ane-hosts-health/1",
+  "date": "2026-09-14",
+  "captured_at": "2026-09-14T06:34:01-05:00",
+  "agent": "AneHostsHealth2",
+  "mode": "read_only",
+  "source_commit": "ab576725f1e3c6e4ce47787d064a778b5e0567eb",
+  "resolved_model": {
+    "configured": "openai-codex/gpt-5.6-sol",
+    "actual": "openai-codex/gpt-5.6-sol",
+    "fallback": false
+  },
+  "jwm1-linux": {
+    "ssh_alias": "jwm1-linux",
+    "hostname": "jwm1-linux",
+    "kernel": "7.1.6-1-1-ARCH",
+    "boot_id": "95872130-fd28-4d67-8247-03a0e8b61202",
+    "model": "Apple MacBook Pro (13-inch, M1, 2020)",
+    "compatible": ["apple,j293", "apple,t8103", "apple,arm-platform"],
+    "accel0": {
+      "path": "/dev/accel/accel0",
+      "live": true,
+      "stat": "crw-rw-rw- root:render 261,0",
+      "stat_note": "105 hex = 261 decimal",
+      "bound": "26bc04000.ane",
+      "sysfs": "/sys/devices/platform/soc/26bc04000.ane",
+      "driver": "ane",
+      "runtime_status": "active",
+      "runtime_control": "on",
+      "runtime_error": null
+    },
+    "jwm1-ane.service": {
+      "active": true,
+      "LoadState": "loaded",
+      "ActiveState": "active",
+      "SubState": "exited",
+      "UnitFileState": "enabled",
+      "Result": "success",
+      "ExecMainStatus": 0,
+      "MainPID": 0,
+      "InactiveExitTimestamp": "Sun 2026-09-13 09:52:59 CDT",
+      "FragmentPath": "/etc/systemd/system/jwm1-ane.service",
+      "Description": "Load out-of-tree ANE KMD and keep power on"
+    },
+    "module": "live",
+    "refcnt": 0
+  },
+  "jw16mbp1-linux": {
+    "ssh_alias": "jw16mbp1-linux",
+    "hostname": "jw16mbp1-linux",
+    "kernel": "7.1.6-1-1-ARCH",
+    "nproc": 10,
+    "boot_id": "f6ad865b-b85e-499e-8308-28b57b24f0c8",
+    "model": "Apple MacBook Pro (16-inch, M1 Max, 2021)",
+    "compatible": ["apple,j316c", "apple,t6001", "apple,arm-platform"],
+    "accel0": {
+      "path": "/dev/accel/accel0",
+      "live": true,
+      "stat": "crw-rw-rw- root:render 261,0",
+      "stat_note": "105 hex = 261 decimal",
+      "bound": "285c04000.ane",
+      "sysfs": "/sys/devices/platform/soc/285c04000.ane",
+      "driver": "ane",
+      "runtime_status": "suspended",
+      "runtime_control": "auto",
+      "runtime_error": null
+    },
+    "set0": {
+      "op": "readl",
+      "phys": "0x28e08c000",
+      "name": "ane0 SET0 / m1n1 ps_map[ane0]",
+      "map_len_bytes": 4,
+      "prot": "PROT_READ",
+      "open_flags": "O_RDONLY|O_SYNC",
+      "page_size": 16384,
+      "off": 0,
+      "via": "/dev/mem mmap",
+      "writes": 0,
+      "command": "sudo -n python3 mmap PROT_READ /dev/mem PHYS=0x28E08C000 length=off+4",
+      "raw": "0x00000300",
+      "ACTUAL": "0x0",
+      "TARGET": "0x0",
+      "PS_ACTIVE": "0xf",
+      "decode": {
+        "APPLE_PMGR_PS_ACTUAL": 0,
+        "APPLE_PMGR_PS_TARGET": 0,
+        "APPLE_PMGR_PS_PWRGATE": 0,
+        "APPLE_PMGR_WAS_CLKGATED": true,
+        "APPLE_PMGR_WAS_PWRGATED": true,
+        "APPLE_PMGR_AUTO_ENABLE": false
+      },
+      "meaning": "SET gated. Expected at runtime_status=suspended / refcnt 0. Not a lost bind. Do not write 0xf."
+    },
+    "module": "live",
+    "refcnt": 0,
+    "llm-inference.service": "inactive",
+    "llama": "none"
+  },
+  "summary": {
+    "jwm1_accel0_live": true,
+    "jwm1_ane_service_active": true,
+    "jw16_accel0_live": true,
+    "jw16_set0_actual": "0x0",
+    "jw16_runtime_status": "suspended",
+    "healthy": true,
+    "note": "jw16 idle suspend gates SET0; jwm1-ane.service keeps T8103 runtime active."
+  },
+  "commands": [
+    "git -C /home/joshuawarren/src/ane-linux-experiments rev-parse HEAD",
+    "ssh -o BatchMode=yes -o ConnectTimeout=8 jwm1-linux 'hostname'",
+    "ssh -o BatchMode=yes -o ConnectTimeout=8 jw16mbp1-linux 'hostname'",
+    "ssh -o BatchMode=yes -o ConnectTimeout=8 jwm1-linux 'stat /dev/accel/accel0; systemctl is-active jwm1-ane.service; systemctl show jwm1-ane.service; /sys/module/ane'",
+    "ssh -o BatchMode=yes -o ConnectTimeout=8 jw16mbp1-linux 'stat /dev/accel/accel0; cat /sys/devices/platform/soc/285c04000.ane/power/runtime_status; /sys/module/ane'",
+    "ssh -o BatchMode=yes -o ConnectTimeout=8 jw16mbp1-linux 'sudo -n python3 PROT_READ mmap /dev/mem 0x28E08C000 len=4'"
+  ],
+  "prohibited_actions_observed": {
+    "executed_anec": false,
+    "opened_accel0": false,
+    "wrote_0xf": false,
+    "unloaded_ane": false,
+    "rebooted": false,
+    "insmod": false,
+    "rmmod": false,
+    "took_gpu_lock": false,
+    "resumed_device": false,
+    "executed_1x896": false
+  }
+}
