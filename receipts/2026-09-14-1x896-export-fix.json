@@ -177,7 +177,8 @@
       "python3 receipts/2026-09-14-1x896-export-fix/stage-export-fix.py /tmp/base-N /tmp/model-1xN.anec /tmp/staged-N /tmp/offline-N.json"
     ],
     "verified": "Run end to end on omp-studio-local: offline gate PASS for both, and the staged bundles match the digests in execute.log exactly -- 1x512 manifest d70abcf27610a1e5a5f5b2b1afa111704bc4cdbb8cd85fc078d084ca54472700 with anec 4a063cf46cb8b27979eabc6eab8b020239a29adab7590fab5ccbd7f2f9d23b91, and 1x896 manifest d799d42f51baf884cd0e8ab02f80d744241d84c94e2ed28a333cc43ceb1313b0 with anec 06f272c9ec7b1a03165123e56eef59f086a11986d735be1f79841f01612bbc83.",
-    "cross_soc": "T6001ExportFamily independently re-emitted both ANECs and the reconstructed HWX on jw16mbp1-linux (T6001) at the same digests, with the equivalence assertion passing."
+    "cross_soc": "T6001ExportFamily independently re-emitted both ANECs and the reconstructed HWX on jw16mbp1-linux (T6001) at the same digests, with the equivalence assertion passing, and staged both bundles there to byte-identical manifests and vectors with the offline gate PASS.",
+    "cross_soc_is_not_a_device_result": "T6001 is STAGED AND GATED, NOT SUBMITTED. Nothing has executed on jw16mbp1-linux: its submits are held while QmmOccupancyTileM owns that box for digest-gated dispatch medians. Every device claim in this receipt is T8103 (jwm1-linux) only. Byte-identical staging plus an offline gate is a precondition, not a result, and must not be read as a second-SoC proof. Correction supplied by T6001ExportFamily against an overclaim of mine; their result will land in their own receipt, pass or fail."
   },
 
   "residuals": [
