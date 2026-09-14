@@ -24,7 +24,7 @@ The board-matched T6001 firmware DeviceTree and a private live ADT capture were 
 
 Correct old-format execution links five contracts: target-compatible task descriptors; preserved task order; buffer indices mapped to the expected virtual spans; exact compiled tensor address, dtype, shape, and value; and kernel content starting at the command-buffer boundary. Monterey ANECompiler 5.5.0 emits this contract from legacy Espresso XML.
 
-A successful compiler return is insufficient. Espresso pruned dynamic transpose, dynamic matrix multiplication, and complete manual softmax chains in prior experiments. Inspect the exported graph and its named final output before hardware execution. Textual MIL still preserves the pinned Parakeet encoder through parsing and import. Compiler source `b12b03f` plus `600dc3e` now emit ordered identity views, including differently shaped or reordered splits over one physical output. The next encoder stop is mixed-type terminal conversion, not missing split order. The private compiler HWX-extraction regression remains a release gate.
+A successful compiler return is insufficient. Inspect the exported graph and its named final output before hardware execution. Parakeet encoder MIL still parses. After 2026-09-13 peels, all 72 encoder matmuls compile as one-program batched matmul and bool-cond runtime-a select compiles; concat, (375,1024,128) linear, GLU silu, affine layer_norm, 375-softmax, and encoder convs remain named H13 holes (`mlx-omarchy` `receipts/2026-09-13-encoder-leftover-now.md`). The private compiler HWX-extraction regression remains a release gate.
 
 ## Resident state and numerical contracts
 
