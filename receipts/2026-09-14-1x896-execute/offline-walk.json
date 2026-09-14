@@ -1,0 +1,120 @@
+{
+  "shipped": {
+    "td_size": 628,
+    "td_count": 1,
+    "tsk_size": 504,
+    "walk_ends": 804,
+    "terminates_exactly": false,
+    "tq_size1_words": 156,
+    "records": [
+      [
+        40,
+        129024,
+        18
+      ],
+      [
+        116,
+        129224,
+        12
+      ],
+      [
+        168,
+        0,
+        16
+      ],
+      [
+        236,
+        79872,
+        28
+      ],
+      [
+        352,
+        18432,
+        18
+      ],
+      [
+        428,
+        34816,
+        4
+      ],
+      [
+        448,
+        51200,
+        5
+      ],
+      [
+        472,
+        96256,
+        7
+      ],
+      [
+        512,
+        1,
+        1
+      ],
+      [
+        576,
+        44941039,
+        56
+      ]
+    ]
+  },
+  "reexport": {
+    "td_size": 504,
+    "td_count": 1,
+    "tsk_size": 504,
+    "walk_ends": 504,
+    "terminates_exactly": true,
+    "tq_size1_words": 125,
+    "records": [
+      [
+        40,
+        129024,
+        18
+      ],
+      [
+        116,
+        129224,
+        12
+      ],
+      [
+        168,
+        0,
+        16
+      ],
+      [
+        236,
+        79872,
+        28
+      ],
+      [
+        352,
+        18432,
+        18
+      ],
+      [
+        428,
+        34816,
+        4
+      ],
+      [
+        448,
+        51200,
+        5
+      ],
+      [
+        472,
+        96256,
+        7
+      ]
+    ]
+  },
+  "changed_offsets": [
+    8,
+    9
+  ],
+  "anec_sha256_before": "79d307207318285d9e2aa8a52b9ac06a3460c09c6628c26dfa14a9acd01a8271",
+  "anec_sha256_after": "c90366a9882332b5e2a3da2fdc621e6e0a6753455f6aa2f4a8de7a05a021b978",
+  "model_sha256_before": "86203b99cb4d530d6bb99986e4d2b3351d3b04afb3253c7655e2f8b6ce9e1919",
+  "model_sha256_after": "abc481316abf5c9b44876f2e7574e5ccaa3a27c0ca15a868e9d1c4de91b43ea7"
+}

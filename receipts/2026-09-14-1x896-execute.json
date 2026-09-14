@@ -1,0 +1,185 @@
+{
+  "schema": "ane-1x896-tdsize-reexport-execute/1",
+  "date": "2026-09-14",
+  "status": "td-size-cause-confirmed-on-device",
+  "verdict": "The re-exported 1x896 program executed on the ANE. ane_exec returned success in a 44 ms window, the driver's TM idle poll never timed out, and dmesg carries zero \"tm execution failed\" and zero errno=110 this boot. The -110 was the 124-byte task-descriptor over-run named in receipts/2026-09-14-1x896-diff.md, not a shape limit. exact_fp16 was NOT reached: the run failed the value comparison at element 0, which is the separately-diagnosed channel-polarity defect in the same exported family.",
+
+  "pins": {
+    "ane_linux_experiments": "8e899366b099df9c5100c5c8eb4304edb16a409d",
+    "converter_fix": "tools/hwxv2-to-anec.py, td_size derived from the real task stream",
+    "mlx_omarchy_local": "b28deb1cbf7899cab71df08d432dd47cb31862ce",
+    "mlx_omarchy_on_jwm1": "a9f14124e3e23b3eb5c538a1b99e9a72b74fa892",
+    "mil_hwx_compiler": "83d486b178e83e602ab894f1154004bb7f2600b9",
+    "libane_commit": "f261a6cb537aca62f267ad3d01beda0d6877544c",
+    "driver_version": "f2a3e5e+lifecycle6",
+    "driver_srcversion": "DD43701FCB506056A340587",
+    "driver_abi": 1
+  },
+
+  "reexport": {
+    "claim": "For this family a fixed-converter re-export differs from the shipped export in exactly the td_size word, so the corrected artifact is produced by writing that one word.",
+    "evidence": [
+      "tools/hwxv2-to-anec.py:313 feeds td_size into the 0x1000 header only; convert_hwx returns header + zero padding + the __TEXT payload copied verbatim, so no task byte depends on td_size.",
+      "Empirical: running the fixed converter over the retained macOS 26 objects mlx-omarchy/receipts/fixtures/mil-oneop/model.hwx and model-2048.hwx and byte-diffing against the shipped ANECs yields differing offsets [0x8, 0x9] and nothing else, with derived td_size=0x1f8 against the shipped 0x274.",
+      "The 896 object itself is not retained on any host I hold (only the 512 and 2048 hwx are in receipts/fixtures), so the 896 ANEC was corrected by writing 0x000001f8 at file offset 0x08 of model.anec. That is byte-identical to what the fixed converter emits for this family, per the two diffs above; it is not a converter run over an 896 hwx, and is not reported as one."
+    ],
+    "converter_caveat": "tools/hwxv2-to-anec.py cannot parse these macOS 26 objects as shipped: TD_MAGIC is the exact constant 0xF401F800, but the first register record of this family is 0x4401F800 (same register 0x1f800, count 18 instead of 62). The magic is a count-bearing record header, so the exact compare is build-version specific. For the diffs above TD_MAGIC was overridden in memory only; no repo source was edited. Masking the count field is a real converter defect, separate from td_size, and is not fixed by 8e89936.",
+    "bundle_restamp": {
+      "source": "/var/tmp/Jwm1AneMoreFixtures-a9f14124/adapted/ane-add-fp16-1x896 (schema 4)",
+      "staged": "/var/tmp/Ane1x896TdFix-20260914/ane-add-fp16-1x896",
+      "changed_offsets": [8, 9],
+      "anec_sha256_before": "79d307207318285d9e2aa8a52b9ac06a3460c09c6628c26dfa14a9acd01a8271",
+      "anec_sha256_after": "c90366a9882332b5e2a3da2fdc621e6e0a6753455f6aa2f4a8de7a05a021b978",
+      "model_sha256_before": "86203b99cb4d530d6bb99986e4d2b3351d3b04afb3253c7655e2f8b6ce9e1919",
+      "model_sha256_after": "abc481316abf5c9b44876f2e7574e5ccaa3a27c0ca15a868e9d1c4de91b43ea7",
+      "manifest_sha256_after": "6b7c72d43637c0d024bd07a9a07b8ba7ecb23a5824f629631aade44fac743349",
+      "weights_sha256_unchanged": "41aa2b92c429c8790c55c37015e02d719c28eb7aa4ca26064fec95fae40dc0bb",
+      "restamp_validated": "The payload_collection_sha256 reimplementation was proven against the untouched manifest first: it reproduces the declared 86203b99... exactly, so the re-stamped abc48131... is computed the same way bundle.cpp:194 computes it."
+    }
+  },
+
+  "offline_gate": {
+    "rule": "The H13 register-record walk over data[0 : td_size] must terminate at exactly td_size before any submit. Record header: count-1 in bits 26..31, register byte address in bits 0..25.",
+    "artifacts": "receipts/2026-09-14-1x896-execute/offline-walk.json, run on jwm1 against the exact bytes that were submitted",
+    "shipped_1x896": {
+      "td_size": "0x274",
+      "tsk_size": "0x1f8",
+      "walk_ends": "0x324",
+      "terminates_exactly": false,
+      "tq_size1_words": 156,
+      "over_run_records": [
+        "@0x200 reg 0x000001 x1",
+        "@0x240 reg 0x2adbeef x56  (the 0xDEADBEEF weight-blob word decoded as a register write)"
+      ]
+    },
+    "reexport_1x896": {
+      "td_size": "0x1f8",
+      "tsk_size": "0x1f8",
+      "walk_ends": "0x1f8",
+      "terminates_exactly": true,
+      "tq_size1_words": 125,
+      "tq_size1_register": "125<<16 = 0x7d0000",
+      "records": "@0x028 reg 0x01f800 x18  @0x074 reg 0x01f8c8 x12  @0x0a8 reg 0x000000 x16  @0x0ec reg 0x013800 x28  @0x160 reg 0x004800 x18  @0x1ac reg 0x008800 x4  @0x1c0 reg 0x00c800 x5  @0x1d8 reg 0x017800 x7"
+    },
+    "reexport_1x512": {
+      "td_size": "0x1f8",
+      "walk_ends": "0x1f8",
+      "terminates_exactly": true,
+      "tq_size1_words": 125,
+      "note": "verified offline on omp-studio-local; not submitted"
+    },
+    "result": "PASS (shipped fails, re-export terminates exactly, TQ_SIZE1 becomes 125<<16 as predicted)"
+  },
+
+  "channel_polarity_decision": {
+    "question": "Must the re-export also swap the channel selector, given the export puts dst on channel 5 while both proven programs put dst on channel 4?",
+    "decision": "No. The swap is not a re-export change and was deliberately not made for this submit.",
+    "why": [
+      "The selector is inside Apple's compiled task stream at content+0x20 (task words[8]), which the converter copies verbatim. The byte-diff proves the td_size fix touches only header offsets 0x8..0x9, so a re-export cannot change it; swapping would mean mutating Apple's task bytes, which nothing here has proven safe.",
+      "The host side cannot express the swap either: overlay/mlx/backend/omarchy/ane/bundle.cpp validate_binding requires manifest channel == output_bdx(i)=4+i for outputs and input_bdx=4+dst_count+i=5 for inputs, i.e. it hard-codes libane's own dst_bdx/src_bdx macros (patches/libane-ane.c:35-36). The adapted manifest therefore declares output t2 channel 4 and input t1 channel 5, and a swapped manifest is rejected before the device is touched. The `channel` field is otherwise unused: worker.cpp binds by libane index via __ane_send/__ane_read(i).",
+      "A polarity swap therefore lives in libane's bdx mapping plus that validator, and would move the destination for every program including the proven 64-element and parity-512 corpus that depends on dst=4. Out of scope for a converter fix.",
+      "It also cannot produce -110: it mis-binds host buffers to correct, well-formed DMA channels. Changing it in the same submit would have confounded the single-variable timeout test."
+    ],
+    "evidence": {
+      "task_words_8": {
+        "export_1x896": "0x025864, nibbles(lo..hi) [4, 6, 8, 5, 2]",
+        "export_1x512": "0x025864 (identical)",
+        "export_mul_1x512": "0x025864 (identical)",
+        "fixture_2048": "0x025864 (identical)",
+        "proven_64_element": "0x024966, nibbles [6, 6, 9, 4, 2]",
+        "proven_parity_512": "0x0249a5, nibbles [5, 10, 9, 4, 2]",
+        "proven_896_lowered_p0_and_p13": "0x024966 (identical to the 64-element program)"
+      },
+      "field_semantics": "[INFERENCE] The per-slot nibble layout is inferred, not documented: every exported artifact carries dst nibble 5 with 4 in the low slot, and every mil-hwx-compiler artifact carries dst nibble 4 with sources in 5/6. The polarity reversal is consistent across all eight artifacts inspected.",
+      "corroboration": "Independent of the nibbles, the object's own address order agrees: in the exported 512 hwx __FVMLIB,__const (input) is at 0x30000000 and __FVMLIB,__data (output) at 0x30004000, one tile higher, the reverse of the role order libane assigns (dst first at channel 4)."
+    },
+    "consequence_observed": "The submit completed and then failed the value check at element 0 — the predicted outcome of reading back the channel the program treats as its input. [INFERENCE] the returned buffer was the untouched destination BO; the harness does not print the bytes, so its exact contents were not observed, and no second execute was spent to look."
+  },
+
+  "execute": {
+    "authorization": "Main granted jwm1 for exactly one execute; IslandsExecJwm1 held off and was handed the post-state on completion.",
+    "host": "jwm1-linux",
+    "device": "/dev/accel/accel0",
+    "iterations": 1,
+    "deadline_ms": 5000,
+    "wall_clock_guard": "timeout --signal=TERM --kill-after=5s 25s",
+    "command": "/var/tmp/AnePlanJwm1-shape-aware/ane-shape-aware-smoke /var/tmp/Ane1x896TdFix-20260914/ane-add-fp16-1x896 0x3c00 0x3d00 5000",
+    "harness_sha256": "3067424d8db3887b50a68f36bcdba75e541a0d3bb84bffcd0cb6538566c36466",
+    "runner": "receipts/2026-09-14-1x896-execute/run-1x896-tdfix.sh",
+    "preflight": {
+      "submitted_td_size": "0x1f8",
+      "submitted_tsk_size": "0x1f8",
+      "weights_exact_fp16": "PASS, 896 elements all 0x3400",
+      "worker_clearance_before": true,
+      "ane_lock_free_before": true,
+      "quarantine_before_bytes": 0,
+      "gpu_lock": "not_acquired"
+    },
+    "result": {
+      "host_validation": "pass",
+      "worker_pid": 130728,
+      "ane_exec": "returned success; no errno=110, no -ETIMEDOUT",
+      "execute_window": "kmsg 87494.968070 (ANE1X896-TDFIX-BEGIN) to 87495.012140 (ANE1X896-TDFIX-END) = 44 ms, against a 1 s driver TM idle poll and a 5 s host deadline",
+      "exact_fp16": "no",
+      "failure": "shape-aware ANE smoke failed: wrong fp16 output at element 0",
+      "failure_class": "value correctness (channel polarity), not a device timeout",
+      "harness_exit": 1,
+      "diagnostic": "runtime_load_graph_hash=9048326d6335b6bec29296d0ce521fa528c09c4558d93e15bf1830d7ec777da1",
+      "log": "receipts/2026-09-14-1x896-execute/execute-1x896-tdfix.log"
+    },
+    "device_post_state": {
+      "device_live": true,
+      "device": "character special file, crw-rw-rw- root:render",
+      "ane_module": "loaded, refs=0",
+      "boot_id": "95872130-fd28-4d67-8247-03a0e8b61202 (unchanged)",
+      "uptime_start": "2026-09-13 09:43:25 (unchanged, no reboot)",
+      "runtime_pm": "active",
+      "workers_after": "none",
+      "ane_lock_reacquire": "PASS",
+      "quarantine_after_bytes": 0,
+      "tm_execution_failed_this_boot": 0,
+      "errno_110_this_boot": 0
+    }
+  },
+
+  "comparison_with_the_failing_submit": {
+    "prior": "mlx-omarchy receipts/2026-09-13-jwm1-schema4-shape-aware-submit.json: same host, same harness binary, same weights, td_size=0x274 -> ane_exec failed for program 0 with result -1 errno=110, runtime marked unusable, quarantine 37 bytes, reboot required.",
+    "now": "td_size=0x1f8, one byte-range changed -> execute returns, quarantine 0 bytes, no reboot, no quarantine text, device reusable immediately.",
+    "isolation": "The two runs differ in exactly two bytes of model.anec (offsets 0x8, 0x9) plus the two digests that describe them. Nothing else changed: same harness sha256, same weights sha256, same driver version and srcversion, same boot."
+  },
+
+  "disclosures": [
+    "netconsole was armed but does not deliver on this host. The jwm1-netconsole.service unit is enabled and active and the netconsole module is loaded (both verified before the submit), but jwm1's wld0 is 192.168.3.66/23 while the configured receiver 192.168.10.235 routes only via tailscale0, so netconsole's L2 target is off-link. Zero lines from 192.168.3.66 appear in the receiver log, and the ANE1X896-TDFIX markers reached on-host dmesg only. No hang occurred, so on-host dmesg captured the full window, but the off-box crash channel on jwm1 must be treated as non-functional until it is retargeted to a same-subnet receiver.",
+    "The receiver log /tmp/jw16-netconsole-2026-09-13.log on omp-studio-local is a two-host sink despite its name; its lines carry a source address, and 192.168.10.244 is jw16mbp1-linux.",
+    "The 896 corrected ANEC was produced by the one-word header write, not by running the converter over an 896 hwx; that object exists only on the Mac exporter host.",
+    "The returned output bytes were not observed, only that they failed the equality check at element 0.",
+    "The staged bundle and its offline-walk receipt live on jwm1 at /var/tmp/Ane1x896TdFix-20260914/; the corrected 20 KB model.anec is pinned here by sha256 rather than duplicated into this repository."
+  ],
+
+  "follow_ups": [
+    "Mask the count field in the converter's task-descriptor magic: TD_MAGIC is compared exactly as 0xF401F800, but this macOS 26 family's first record header is 0x4401F800, so tools/hwxv2-to-anec.py refuses objects it should convert. Only the register address (bits 0..25) should be matched.",
+    "Make the register-record walk a host-side gate. parse_anec_header (bundle.cpp:337) validates td_size against alignment, payload size and driver limits but never against the real task stream, so it admitted the 0x274/0x1f8 mismatch that cost a device timeout and a reboot. An invariant that the walk terminates exactly at td_size would have rejected this bundle offline.",
+    "Re-export the 1x512 and 2048 bundles from the Mac with the fixed converter and re-stamp them; their offline walk already passes with the derived td_size but they have not been submitted.",
+    "The channel-polarity defect needs a decision at the libane/validator layer before this exported family can produce exact values; the ANEC re-export cannot reach it.",
+    "Retarget jwm1's netconsole to a receiver on 192.168.3.0/23 before any submit whose failure mode could hang the SoC."
+  ],
+
+  "prohibited_actions": {
+    "1x896_loop": "no, exactly one submit",
+    "retry_after_failure": "no",
+    "reboot": "no",
+    "module_unload": "no",
+    "gpu_lock": "no",
+    "ane_linux_experiments_source_edits": "no (receipts only)",
+    "mlx_omarchy_edits": "no (read-only; shipped fixtures untouched)",
+    "commands_on_16m1mbp_or_jw16": "no"
+  },
+
+  "reproduction": {
+    "offline": [
+      "python3 receipts/2026-09-14-1x896-execute/stage-tdfix.py <shipped-bundle> <staged-bundle> <offline-walk.json>",
+      "converter equivalence: import tools/hwxv2-to-anec.py, set TD_MAGIC=0x4401F800 in memory, convert_hwx(mil-oneop/model.hwx, 512, 512) and convert_hwx(mil-oneop/model-2048.hwx, 2048, 2048), then byte-diff against mil-oneop/model-512.anec and model-2048.anec -> differing offsets [0x8, 0x9]"
+    ],
+    "on_device": "bash receipts/2026-09-14-1x896-execute/run-1x896-tdfix.sh   # one submit, 5 s deadline, no retry"
+  }
+}
