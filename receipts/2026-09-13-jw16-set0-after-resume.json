@@ -1,0 +1,132 @@
+{
+  "schema": "jw16-set0-after-resume/1",
+  "date": "2026-09-13",
+  "captured_at": "2026-09-14T01:18:32-05:00",
+  "host": "jw16mbp1-linux",
+  "ssh_alias": "jw16mbp1-linux",
+  "kernel": "7.1.6-1-1-ARCH",
+  "nproc": 10,
+  "agent": "Jw16Set0Resume",
+  "resolved_model": {
+    "configured": "openai-codex/gpt-5.6-sol",
+    "actual": "openai-codex/gpt-5.6-sol",
+    "fallback": false
+  },
+  "probe": {
+    "op": "open_accel0_then_readl",
+    "phys": "0x28e08c000",
+    "name": "ane0 SET0 / m1n1 ps_map[ane0]",
+    "map_len_bytes": 4,
+    "prot": "PROT_READ",
+    "open_flags": "O_RDONLY|O_SYNC",
+    "accel0_open_flags": "O_RDWR",
+    "accel0_ioctl": false,
+    "page_size": 16384,
+    "via": "/dev/accel/accel0 open + /dev/mem mmap",
+    "writes": 0,
+    "held_fd_during_readl": true,
+    "probe_sha256": "1962e89d5f3cf6a63c117dec135e2f8a47b12d59e541ed6a191ebf2f4663440c",
+    "command": "sudo -n python3 open /dev/accel/accel0 O_RDWR (no ioctl); PROT_READ mmap /dev/mem PHYS=0x28E08C000 length=off+4"
+  },
+  "expect": {
+    "ACTUAL": "0xf",
+    "boot_id_prefix": "f6ad865b",
+    "accel0": "live",
+    "meaning": "If genpd is wired, SET0 returns ACTUAL=0xf on runtime resume."
+  },
+  "before_open": {
+    "raw": "0x00000300",
+    "ACTUAL": "0x0",
+    "TARGET": "0x0",
+    "runtime_status": "suspended",
+    "runtime_control": "auto",
+    "refcnt": 0
+  },
+  "result": {
+    "abort": false,
+    "raw": "0x000003ff",
+    "ACTUAL": "0xf",
+    "TARGET": "0xf",
+    "PS_ACTIVE": "0xf",
+    "genpd_wired": true,
+    "decode": {
+      "APPLE_PMGR_PS_ACTUAL": 15,
+      "APPLE_PMGR_PS_TARGET": 15,
+      "APPLE_PMGR_PS_PWRGATE": 0,
+      "APPLE_PMGR_WAS_CLKGATED": true,
+      "APPLE_PMGR_WAS_PWRGATED": true,
+      "APPLE_PMGR_AUTO_ENABLE": false
+    },
+    "meaning": "Open /dev/accel/accel0 resumed ANE. SET0 0x300/ACTUAL=0x0 became 0x3ff/ACTUAL=0xf while fd held. genpd-owned. No userspace write of 0xf. No program submit."
+  },
+  "after_close": {
+    "runtime_status": "suspended",
+    "refcnt": 0,
+    "accel0": "live",
+    "note": "Idle autosuspend after close. Device node remained."
+  },
+  "tm_tq_en": {
+    "read": false,
+    "reason": "procedure stops after SET0 readl; no TM, no submit"
+  },
+  "device_after": {
+    "path": "/dev/accel/accel0",
+    "stat": "crw-rw-rw- root:render 105,0",
+    "stat_note": "105 hex = 261 decimal",
+    "bound": "285c04000.ane",
+    "sysfs": "/sys/devices/platform/soc/285c04000.ane",
+    "runtime_status_while_held": "active",
+    "runtime_control": "auto",
+    "module": "live",
+    "refcnt_while_held": 1,
+    "boot_id": "f6ad865b-b85e-499e-8308-28b57b24f0c8",
+    "boot_id_unchanged": true,
+    "uptime_s": 10722.06
+  },
+  "dmesg_resume": [
+    "ane 285c04000.ane: ane_drm_open called",
+    "ane 285c04000.ane: pm_runtime_resume_and_get returned 0",
+    "ane 285c04000.ane: ane_drm_open called",
+    "ane 285c04000.ane: resume: entry",
+    "ane 285c04000.ane: power: genpd-owned on this SoC",
+    "ane 285c04000.ane: resume: force_power done",
+    "ane 285c04000.ane: resume: pre tm_enable",
+    "ane 285c04000.ane: resume: tm_enable done",
+    "ane 285c04000.ane: pm_runtime_resume_and_get returned 0"
+  ],
+  "preflight": {
+    "llm-inference.service": "inactive",
+    "llama": "none",
+    "workers": "none",
+    "gpu_lock_file": "/tmp/m1-gpu.lock exists mtime=2026-09-13T22:19 ino=12; not in /proc/locks",
+    "took_gpu_lock": false
+  },
+  "iomem": {
+    "engine": "285c04000-285c27fff : 285c04000.ane engine",
+    "set0_claimed": false,
+    "has_28e08c": false,
+    "has_28e080": false,
+    "has_pmgr": false
+  },
+  "prohibited_actions_observed": {
+    "wrote_0xf": false,
+    "treated_range1_as_tm": false,
+    "add_mul_submit": false,
+    "unloaded_ane": false,
+    "rebooted": false,
+    "took_gpu_lock": false,
+    "executed_1x896": false,
+    "retried_as_write": false,
+    "opened_accel0": true,
+    "resumed_device": true,
+    "submitted_program": false
+  },
+  "sources": {
+    "prior_gated": "receipts/2026-09-13-jw16-set0-read.json",
+    "prior_still_on": "receipts/2026-09-13-jw16-set0-still-on.json",
+    "prior_on": "receipts/2026-09-13-t6001-set-domains.json",
+    "omarchy_ane": "0ab37586c479dd79ac36615f794ccf789ec99b2c",
+    "omarchy_linux": "8d13ef5e9c031cd4a8f79facaedf5dc66d993912",
+    "pwrstate_bits": "omarchy-linux drivers/pmdomain/apple/pmgr-pwrstate.c APPLE_PMGR_PS_ACTUAL GENMASK(7,4) APPLE_PMGR_PS_TARGET GENMASK(3,0) APPLE_PMGR_PS_ACTIVE 0xf APPLE_PMGR_PS_PWRGATE 0x0"
+  }
+}
