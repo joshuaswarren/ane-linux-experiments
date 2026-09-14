@@ -13,7 +13,7 @@ boot state, a device tree, or a module on a live host.
 - Stock `t8103-j293.dtb` contains no `apple,t8103-ane` node. The working M1
   (`m1-test-host`) instead uses a custom `/boot/efi/m1n1/boot.bin` whose packaged tree
   contains that node and an out-of-tree `ane.ko`.
-- T6001 on t6001-test-host now has a live `/dev/accel/accel0` (`apple,t6000-ane`), DRM 1.0.0, SET genpd (PMGR window `0x14000`, set1..4), and exact fp16 64-el add-mul (`receipts/2026-09-13-t6001-set-domains.json`, `mlx-omarchy/receipts/2026-09-13-t6001-test-host-ane-set-exec.json`). The live overlay is `omarchy-ane` `ane/t6001-j316c-set-domains.dts` (`eb7dfe7`). set5 stays unattached. Do not write SET `0xf` from userspace. Packaging still must put that node in the SoC/board DTS and `update-m1n1` path; a live overlay is not the product.
+- T6001 on t6001-test-host now has a live `/dev/accel/accel0` (`apple,t6000-ane`), DRM 1.0.0, SET genpd (PMGR window `0x14000`, set1..4), and exact fp16 64-el add-mul (`receipts/2026-09-13-t6001-set-domains.json`, `mlx-omarchy/receipts/2026-09-13-t6001-test-host-ane-set-exec.json`); on 2026-09-14 the re-exported 1x512 and 1x896 add family is exact there too (`receipts/2026-09-14-t6001-export-family.json`). The live overlay is `omarchy-ane` `ane/t6001-j316c-set-domains.dts`, on `main` at `8554583`. set5 stays unattached. Do not write SET `0xf` from userspace. The packaged form of that node is omarchy-linux `feature/t6001-ane-bind` `9247b41` (`arm64: dts: apple: package T6001 ANE bind on j316c`), unmerged; a live overlay is not the product. The `omarchy-ane` `main` `8554583` T6001 driver is a proven bring-up and is being rebuilt on the lifecycle-correct base (bring-up scaffolding, GEM/ref bugs) before it is a package input.
 - The installer already copies Apple firmware, including
   `h13_ane_fw_styx_j5x.im4p`; firmware alone does not create an ANE device.
   It currently installs neither an ANE kernel module nor an ANE-enabled DTB.
@@ -36,7 +36,7 @@ The source receipts are `parakeet-mel-exact/docs/boot-and-kernel.md`,
 | Repository | Change | Purpose |
 | --- | --- | --- |
 | `joshuaswarren/linux` / the linux-asahi or Borealis kernel packaging branch | `arch/arm64/boot/dts/apple/t8103.dtsi`, `arch/arm64/boot/dts/apple/t8103-j293.dts`, and the kernel package DTB install list | Put the T8103 ANE node in the SoC DTS, disabled by default; enable it only in board DTS files whose complete ANE binding is proven. Install the resulting board DTBs below `/usr/lib/modules/<kernel>/dtbs/`. |
-| `joshuaswarren/omarchy-ane` | `ane/src/ane_drv.c` and the package build inputs | Replace the hard-coded T8103 PMGR selection with a compatible-aware T600x/T8103 selection before advertising a non-T8103 package. Keep the driver and its supported DT bindings versioned together. |
+| `joshuaswarren/omarchy-ane` | `ane/src/ane_drv.c` and the package build inputs | Replace the hard-coded T8103 PMGR selection with a compatible-aware T600x/T8103 selection before advertising a non-T8103 package (`main` `8554583` binds T6001 but is being rebuilt on the lifecycle-correct base). Ship the derived-channel libane (`ane-parity` `20d24ad`, not on `main`): exported bundles bind source on channel 4 and destination on 5, which the positional libane gets backwards (`receipts/2026-09-14-1x896-channel-polarity.json`). Keep the driver and its supported DT bindings versioned together. |
 | `omarchy-mac/omarchy-pkgs-aarch64` | `pkgbuilds/kmod-ane/PKGBUILD` and its existing `source: local`, `category: compile` package-index entry | Build and publish a kernel-matched `kmod-ane` package. It owns `ane.ko`, modprobe policy, and the udev rule that exposes the accelerator device to the intended local group. It is not DKMS. |
 | `omarchy-mac` installer | the code that evaluates `omarchy-base.packages` and the Apple hardware probe | Add a conditional `kmod-ane` install after the packaged-DTB gate. Do not add it unconditionally to `omarchy-base.packages`. |
 | `mlx-omarchy` installer/smoke script | the existing install smoke path | Keep GPU smoke mandatory. Run ANE smoke only when `/dev/accel/accel0` exists after boot and module installation. |
@@ -64,7 +64,7 @@ without its matched DTB, is not a supported installation state.
    artifact. The only supported boot update is the normal `update-m1n1`
    payload rebuild from packaged DTBs.
 
-T6001 ANE execute is proven on t6001-test-host with the SET overlay. Product cutover still waits on a packaged board DTB (not a live FDT overlay), set5 policy, and the installer gate. A PMGR supplier name alone remains insufficient; the SET domains are part of the binding.
+T6001 ANE execute is proven on t6001-test-host with the SET overlay. Product cutover still waits on the packaged board DTB (omarchy-linux `feature/t6001-ane-bind` `9247b41`, unmerged; not a live FDT overlay), the rebuilt lifecycle-correct driver on `omarchy-ane` `main`, set5 policy, and the installer gate. A PMGR supplier name alone remains insufficient; the SET domains are part of the binding.
 
 ## Installer gate
 
