@@ -6,7 +6,7 @@ Supersedes the bind-only note in `receipts/2026-09-13-jw16-ane-procedure.md`.
 
 - Host: `jw16mbp1-linux` (J316c / T6001), kernel `7.1.6-1-1-ARCH`.
 - `/dev/accel/accel0` bound `285c04000.ane`, DRM 1.0.0.
-- SET0 `0x28e08c000` ACTUAL=`0xf` via genpd, not a userspace `0xf` write.
+- SET0 `0x28e08c000` ACTUAL=`0xf` while the device is runtime-active. Idle suspend gates it (`ACTUAL=0`); `open(/dev/accel/accel0)` restores `0xf` via genpd (`receipts/2026-09-13-jw16-set0-after-resume.json`). Do not write `0xf`.
 - 64-el schema-4 add-mul: exact fp16, y `bade941d…`, 100/100 soak.
 - 1x896 remains forbidden.
 
@@ -16,7 +16,7 @@ Supersedes the bind-only note in `receipts/2026-09-13-jw16-ane-procedure.md`.
 | --- | --- |
 | omarchy-ane | `feature/t6001-ane-bind` `eb7dfe7` (SET overlay) on `0ab3758` (DRM 1.0.0) |
 | overlay | `ane/t6001-j316c-set-domains.dts` |
-| omarchy-linux | `feature/t6001-ane-bind` `a86ea96a4` (PMGR `0x14000` + SET genpd) |
+| omarchy-linux | `feature/t6001-ane-bind` `9247b41f4` (j316c enables ANE+SET1..4) |
 | worker | `575e2acd…` graph `5584d0fd…` libane `1ab9d95d…` |
 
 ## After reboot
@@ -29,6 +29,11 @@ The live FDT overlay is not a packaged `update-m1n1` DTB. Expect SET0 gated (`AC
 4. One 64-el add-mul only. Stop on `-110`. Never 1x896.
 
 Product cutover is a packaged board DTB, not this overlay.
+
+## Idle
+
+`runtime_status=suspended` is normal at refcnt 0. That is not a lost bind.
+The next worker open resumes genpd and SET. Do not poke SET registers.
 
 ## Forbidden
 
