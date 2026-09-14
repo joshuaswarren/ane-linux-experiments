@@ -11,7 +11,7 @@ Every headline number has a matching receipt in `receipts/`.
 
 T8103 on m1-test-host has a bound ANE. Persistence is `m1-test-host-ane.service`. Schema-4 add-mul is exact fp16 through the mlx-omarchy v2 adapter. 1x896 times out with -110 and is forbidden.
 
-T6001 on t6001-test-host has a fully sourced DTS. SID is 0, ANE-SYS-V is virtual, and the engine span is 0x1800000. Four driver bugs are fixed on omarchy-ane `feature/t6001-ane-bind`. Bind is blocked. T8103-style DART TTBR writes raise SError 0xbe000000. A no-op write-back also resets. ISP-pattern providers work. The remaining killer was force_power AUTO_ENABLE then engine-partition power. Cycle 7 died in a supposedly no-op gap, with GPU overlap as a candidate. Cycle 8 bounded that gap to the resume callback after domains-on. Capture evidence with netconsole. Serial is not required.
+T6001 on t6001-test-host has `/dev/accel/accel0` live (`receipts/2026-09-13-t6001-test-host-ane-bind.json` cycle 11). Engine slice is `0x285c04000+0x24000`; TM is ADT range0+`0x1c24000` (`0x285c24000`), not T8103 `engine+0x20000`. DRM ABI is 1.0.0 (`omarchy-ane` `0ab3758`). The proven 64-el schema-4 add-mul submits, then TM times out `-110` (`receipts/2026-09-13-t6001-test-host-ane-abi1-exec.json`). Device stays up. Do not loop that execute. T8103-style DART TTBR writes still raise SError; ISP-pattern providers work. Capture evidence with netconsole.
 
 The out-of-box install plan is [docs/omarchy-ane-out-of-box-plan.md](docs/omarchy-ane-out-of-box-plan.md). The kmod is SoC-gated. Do not GRUB a whole-tree DTB.
 
