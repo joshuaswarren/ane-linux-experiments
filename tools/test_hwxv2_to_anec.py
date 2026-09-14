@@ -178,5 +178,175 @@ class FreshHWXParserTests(unittest.TestCase):
         np.testing.assert_array_equal(output_512, expected_512)
 
 
+class DerivedKernelSectionTests(unittest.TestCase):
+    """The kernel section must hold coefficients, not the blob's own header."""
+
+    KERNEL_SIZE = 0x80
+    PAYLOAD = struct.pack('<64H', *([0x3400] * 64))
+
+    @classmethod
+    def blob(cls, payload_offset=0x80, declared=None, records=1):
+        head = struct.pack('<II', records, 2) + bytes(0x38)
+        body = b''
+        for index in range(records):
+            body += struct.pack(
+                '<IIQQQ',
+                MODULE.BLOB_SENTINEL,
+                1,
+                declared if declared is not None else cls.KERNEL_SIZE,
+                0,
+                payload_offset + index * len(cls.PAYLOAD),
+            ) + bytes(0x20)
+        blob = bytearray(head + body)
+        blob += bytes(payload_offset - len(blob))
+        blob += cls.PAYLOAD * records
+        return bytes(blob)
+
+    @classmethod
+    def hwx_with_blob_kernel(cls):
+        """fresh-w4 with a weight blob file embedded from byte 0 of __const."""
+        data = bytearray((ROOT / 'tools/fresh-w4.hwx.sample').read_bytes())
+        kernel = MODULE.parse_hwx(bytes(data)).sections[('__TEXT', '__const')]
+        start = kernel.file_offset
+        data[start:start + cls.KERNEL_SIZE] = cls.blob()[:cls.KERNEL_SIZE]
+        return bytes(data)
+
+    def test_payload_offset_is_read_out_of_the_blob_record(self):
+        # MIL says BLOBFILE(offset = 64) and the writer adds a 0x40 record, so
+        # the payload offset is stated by the blob, never a constant.
+        self.assertEqual(MODULE.blob_payload_offset(self.blob(), 0x80), 0x80)
+        self.assertEqual(
+            MODULE.blob_payload_offset(self.blob(payload_offset=0x200), 0x80),
+            0x200,
+        )
+
+    def test_an_unaccounted_blob_is_refused(self):
+        with self.assertRaises(ValueError):
+            MODULE.blob_payload_offset(self.blob(declared=0x40), 0x80)
+        with self.assertRaises(ValueError):
+            MODULE.blob_payload_offset(self.blob(records=2), 0x80)
+        with self.assertRaises(ValueError):
+            MODULE.blob_payload_offset(self.blob(payload_offset=0x10), 0x80)
+
+    def test_blob_kernel_is_detected_and_relocated(self):
+        data = self.hwx_with_blob_kernel()
+        image = MODULE.parse_hwx(data)
+        self.assertTrue(image.kernel_is_blob)
+        result = MODULE.convert_hwx(data, 4, 4, blob=self.blob())
+        start = MODULE.ANEC_HEADER_SIZE + image.kernel_offset
+        # Copying __const through would put 64 header words where the first 64
+        # coefficients belong and truncate the real tail.
+        self.assertEqual(result[start:start + self.KERNEL_SIZE], self.PAYLOAD)
+        self.assertNotEqual(
+            result[start:start + self.KERNEL_SIZE],
+            data[image.content_offset + image.kernel_offset:][:self.KERNEL_SIZE],
+        )
+
+    def test_blob_kernel_without_the_blob_is_refused(self):
+        # Emitting the truncated, header-prefixed coefficient stream is the
+        # defect; refusing names the missing input instead.
+        with self.assertRaises(ValueError):
+            MODULE.convert_hwx(self.hwx_with_blob_kernel(), 4, 4)
+
+    def test_a_plain_kernel_section_is_copied_verbatim(self):
+        for name, channels in (('fresh-64', 64), ('fresh-w4', 4)):
+            data = (ROOT / f'tools/{name}.hwx.sample').read_bytes()
+            image = MODULE.parse_hwx(data)
+            self.assertFalse(image.kernel_is_blob, name)
+            result = MODULE.convert_hwx(data, channels, channels)
+            self.assertEqual(
+                result[MODULE.ANEC_HEADER_SIZE:],
+                data[image.content_offset:image.content_offset + image.content_size],
+                name,
+            )
+
+    def test_a_kernel_section_off_align16_is_refused(self):
+        # libane reads the kernel at 0x1000 + align16(tsk_size); a section
+        # anywhere else is read from the wrong bytes whatever it holds.
+        data = bytearray((ROOT / 'tools/fresh-w4.hwx.sample').read_bytes())
+        section = 0x230  # __TEXT,__const section_64 record
+        moved = struct.unpack_from('<I', data, section + 48)[0] + 0x40
+        struct.pack_into('<I', data, section + 48, moved)
+        with self.assertRaises(ValueError):
+            MODULE.parse_hwx(bytes(data))
+
+
+class DerivedGeometryTests(unittest.TestCase):
+    """nchw plane and row bytes are per-program and the task states them."""
+
+    def test_tile_dma_counts_are_decoded_from_the_task(self):
+        for name, expected in (
+            ('fresh-64', (64, 4096, 64, 4096)),
+            ('fresh-w4', (64, 192, 64, 128)),
+        ):
+            image = MODULE.parse_hwx(
+                (ROOT / f'tools/{name}.hwx.sample').read_bytes()
+            )
+            self.assertEqual(
+                (
+                    image.tile_dma.source_run,
+                    image.tile_dma.source_total,
+                    image.tile_dma.dest_run,
+                    image.tile_dma.dest_total,
+                ),
+                expected,
+                name,
+            )
+
+    def test_one_run_per_channel_is_the_padded_plane_layout(self):
+        # The proven mil-hwxc 64-element program: 0x13810 = 64 with
+        # 0x13814 = 4096, which is exactly its (1,64,1,1,64,64) header.
+        self.assertEqual(MODULE.derive_strides((1, 64, 1, 1), 4096, 64), (64, 64))
+
+    def test_a_single_run_is_a_dense_surface(self):
+        # The exported 1x896 add: every tile-DMA count reads 1792 = 896 * 2,
+        # so the engine moves one contiguous run and the plane stride is 2.
+        self.assertEqual(MODULE.derive_strides((1, 896, 1, 1), 1792, 1792), (2, 2))
+        self.assertEqual(MODULE.derive_strides((1, 512, 1, 1), 1024, 1024), (2, 2))
+
+    def test_counts_the_task_does_not_account_for_fall_back(self):
+        # fresh-w4 moves 3 runs of 64 against 4 declared channels: neither the
+        # padded nor the dense reading holds, so the convention stands.
+        self.assertEqual(MODULE.derive_strides((1, 4, 1, 1), 192, 64), (64, 64))
+        self.assertEqual(MODULE.derive_strides((1, 4, 1, 1), 0, 0), (64, 64))
+        self.assertEqual(MODULE.derive_strides((1, 4, 1, 1), 100, 7), (64, 64))
+
+    def test_a_dense_task_moves_the_header_off_the_padding_convention(self):
+        image = MODULE.parse_hwx((ROOT / 'tools/fresh-64.hwx.sample').read_bytes())
+        dense = replace(
+            image, tile_dma=MODULE.TileDMA(0x1000, 0x1000, 0x1000, 0x1000)
+        )
+        header = struct.unpack_from(
+            '<QIIQQII32I192Q',
+            MODULE._build_header(dense, (1, 2048, 1, 1), (1, 2048, 1, 1)),
+        )
+        nchw = header[39:]
+        self.assertEqual(tuple(nchw[4 * 6:4 * 6 + 6]), (1, 2048, 1, 1, 2, 2))
+        self.assertEqual(tuple(nchw[5 * 6:5 * 6 + 6]), (1, 2048, 1, 1, 2, 2))
+        self.assertEqual(header[7 + 4], 1)
+        self.assertEqual(header[7 + 5], 1)
+
+    def test_the_qualified_64_element_geometry_is_unchanged(self):
+        # The regression bar: the device-qualified 64-element class must keep
+        # (1,64,1,1,64,64) and its one-tile surfaces.
+        data = (ROOT / 'tools/fresh-64.hwx.sample').read_bytes()
+        header = struct.unpack_from(
+            '<QIIQQII32I192Q', MODULE.convert_hwx(data, 64, 64), 0
+        )
+        nchw = header[39:]
+        self.assertEqual(tuple(nchw[4 * 6:4 * 6 + 6]), (1, 64, 1, 1, 64, 64))
+        self.assertEqual(tuple(nchw[5 * 6:5 * 6 + 6]), (1, 64, 1, 1, 64, 64))
+        self.assertEqual(header[7 + 4], 1)
+        self.assertEqual(header[7 + 5], 1)
+
+    def test_a_record_running_past_the_descriptor_is_rejected(self):
+        # This over-run is the -110 defect class: the walk must not decode
+        # bytes the task does not own.
+        td = bytearray(0x40)
+        struct.pack_into('<I', td, 0x28, (0x3F << 26) | 0x13800)
+        with self.assertRaises(ValueError):
+            MODULE.walk_registers(bytes(td))
+
+
 if __name__ == '__main__':
     unittest.main()

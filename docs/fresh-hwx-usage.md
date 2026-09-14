@@ -6,6 +6,20 @@
   extracts the `__TEXT` payload, task descriptor, kernel section, command
   window, and the fresh coefficient-DMA register fields. It also accepts the
   repository's sanitized fixture header (`tools/fresh-w4.hwx.sample`).
+- Two things the header does not state truthfully are derived from the object
+  instead, because both were measured wrong on device:
+  - **Kernel section.** For a MIL `BLOBFILE` constant, `__TEXT,__const`
+    carries the CoreML weight blob *file* from byte 0, so copying it through
+    puts the blob header where the first coefficients belong and truncates the
+    real tail. The converter reads the payload offset out of the blob's own
+    metadata record, so `--weights` is required for such an object and
+    refused-on-absence rather than silently truncated.
+  - **nchw plane and row bytes.** Geometry is per-program and the task states
+    it: the tile-DMA registers give the whole surface and the contiguous run
+    the engine moves, and their ratio is the row count. One run per channel is
+    the 64-byte-padded plane layout; a single run is a dense surface. Counts
+    the task does not account for fall back to the padding convention.
+  Both were proven on m1-test-host: `receipts/2026-09-14-1x896-export-fix.json`.
 - The converted fixture reaches the Linux device with the fresh TD bank
   mapping and returns both NCHW output planes. Output is channel-major
   (NCHW): each plane is one output channel.
@@ -74,6 +88,13 @@ Convert a fresh HWX artifact to an ANEC graph:
 
 ```sh
 python3 tools/hwxv2-to-anec.py tools/fresh-64.hwx.sample tools/fresh-64.anec 64 64
+```
+
+Convert an exported MIL object whose constant is a `BLOBFILE` (the bundle's
+`weights.bin` holds the coefficients; the HWX holds only its truncated head):
+
+```sh
+python3 tools/hwxv2-to-anec.py model.hwx model.anec 896 896 --weights weights.bin
 ```
 
 Device parity probe on the converted graph (`anec` is a positional path):

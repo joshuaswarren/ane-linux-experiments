@@ -18,7 +18,23 @@ MACHO_MAGIC_64 = 0xFEEDFACF
 FIXTURE_MAGIC_64 = 0xBEEFFACE
 LC_SEGMENT_64 = 0x19
 ANEC_HEADER_SIZE = 0x1000
-
+# A CoreML weight blob file is a 0x40 header, then 0x40-byte metadata records
+# each opening with this sentinel. The record carries the coefficient payload's
+# own offset, which is the only place that offset is stated: the MIL declares
+# BLOBFILE(offset = 64), the record it names sits there, and the payload starts
+# past it. Nothing in the format fixes the distance, so it is read, not assumed.
+BLOB_HEADER_SIZE = 0x40
+BLOB_RECORD_SIZE = 0x40
+BLOB_SENTINEL = 0xDEADBEEF
+BLOB_RECORD_BYTES_OFFSET = 0x08
+BLOB_RECORD_PAYLOAD_OFFSET = 0x18
+# Tile-DMA byte counts, per task. RUN is the contiguous run the engine moves,
+# TOTAL the whole surface. Their ratio is the row count, which is what says
+# whether a surface is dense or 64-byte-plane padded.
+TILE_DMA_SOURCE_RUN = 0x13810
+TILE_DMA_SOURCE_TOTAL = 0x13814
+TILE_DMA_DEST_RUN = 0x1780C
+TILE_DMA_DEST_TOTAL = 0x17810
 
 
 def is_task_record(word: int) -> bool:
@@ -66,6 +82,114 @@ def decode_kdma(td: bytes) -> KDMALayout:
                            for lane in range(KDMA_LANES)),
     )
 
+def walk_registers(td: bytes) -> dict[int, int]:
+    """Return {register byte address: value} for one task descriptor.
+
+    A record header carries the register byte address in bits 0..25 and the
+    word count less one in bits 26..31, then that many consecutive register
+    values. A record that runs past the descriptor is the -110 defect class,
+    so it is an error rather than a partial decode.
+    """
+    registers: dict[int, int] = {}
+    offset = TASK_HEADER_SIZE - 4
+    while offset + 4 <= len(td):
+        header = struct.unpack_from("<I", td, offset)[0]
+        if not header:
+            break
+        register = header & 0x3FFFFFF
+        count = (header >> 26) + 1
+        offset += 4
+        if offset + 4 * count > len(td):
+            raise ValueError(
+                f"register record at {offset - 4:#x} runs past the task descriptor"
+            )
+        for index in range(count):
+            registers[register + 4 * index] = struct.unpack_from(
+                "<I", td, offset + 4 * index
+            )[0]
+        offset += 4 * count
+    return registers
+
+
+@dataclass(frozen=True)
+class TileDMA:
+    """The task's own byte counts for the source and destination surfaces."""
+
+    source_run: int
+    source_total: int
+    dest_run: int
+    dest_total: int
+
+
+def decode_tile_dma(td: bytes) -> TileDMA:
+    """Read the tile-DMA byte counts one task states for its own surfaces."""
+    registers = walk_registers(td)
+    return TileDMA(
+        source_run=registers.get(TILE_DMA_SOURCE_RUN, 0),
+        source_total=registers.get(TILE_DMA_SOURCE_TOTAL, 0),
+        dest_run=registers.get(TILE_DMA_DEST_RUN, 0),
+        dest_total=registers.get(TILE_DMA_DEST_TOTAL, 0),
+    )
+
+
+def is_weight_blob(head: bytes) -> bool:
+    """True when a kernel section carries a CoreML weight blob file verbatim."""
+    if len(head) < BLOB_HEADER_SIZE + 4:
+        return False
+    return struct.unpack_from("<I", head, BLOB_HEADER_SIZE)[0] == BLOB_SENTINEL
+
+
+def blob_payload_offset(blob: bytes, size: int) -> int:
+    """Return the offset of the `size`-byte coefficient payload in a blob file.
+
+    The offset comes out of the blob's own metadata record. Every candidate is
+    checked against the record and the file, and an ambiguous or unaccounted
+    blob is an error: a coefficient stream is not something to guess at.
+    """
+    matches = []
+    offset = BLOB_HEADER_SIZE
+    while offset + BLOB_RECORD_SIZE <= len(blob):
+        if struct.unpack_from("<I", blob, offset)[0] != BLOB_SENTINEL:
+            break
+        declared = struct.unpack_from(
+            "<Q", blob, offset + BLOB_RECORD_BYTES_OFFSET
+        )[0]
+        payload = struct.unpack_from(
+            "<Q", blob, offset + BLOB_RECORD_PAYLOAD_OFFSET
+        )[0]
+        offset += BLOB_RECORD_SIZE
+        if (
+            declared == size
+            and payload >= offset
+            and payload + size <= len(blob)
+        ):
+            matches.append(payload)
+    if len(matches) != 1:
+        raise ValueError(
+            f"weight blob does not name exactly one {size}-byte payload "
+            f"(found {len(matches)})"
+        )
+    return matches[0]
+
+
+def kernel_payload(image: "HWXImage", blob: bytes | None) -> bytes | None:
+    """Return the coefficients the engine must read, or None to copy verbatim.
+
+    For a BLOBFILE constant the HWX embeds the blob file from byte 0, so the
+    section holds the blob header where coefficients belong and truncates the
+    real tail. The payload has to come from the blob itself.
+    """
+    if not image.kernel_is_blob:
+        return None
+    if blob is None:
+        raise ValueError(
+            "the kernel section is a CoreML weight blob file, so its "
+            "coefficients are offset by the blob header; pass the bundle's "
+            "weights.bin to source them from the blob payload"
+        )
+    offset = blob_payload_offset(blob, image.kernel_size)
+    return blob[offset:offset + image.kernel_size]
+
 @dataclass(frozen=True)
 class HWXImage:
     sections: dict[tuple[str, str], Section]
@@ -83,6 +207,8 @@ class HWXImage:
     input_sections: tuple[tuple[int, int], ...]
     output_sections: tuple[tuple[int, int], ...]
     kdma: KDMALayout
+    tile_dma: TileDMA
+    kernel_is_blob: bool
 
 
 
@@ -236,6 +362,13 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     kernel_offset = kernel.file_offset - text_segment_offset
     if kernel_offset < 0 or kernel_offset + kernel.size > text_segment_size:
         raise ValueError("kernel section exceeds the __TEXT payload")
+    # libane locates the kernel section at align16(tsk_size); a section that
+    # sits anywhere else is read from the wrong bytes no matter what it holds.
+    if kernel_offset != (text.size + 0xF) & -0x10:
+        raise ValueError(
+            f"kernel section at {kernel_offset:#x} is not at "
+            f"align16(tsk_size) = {(text.size + 0xF) & -0x10:#x}"
+        )
     if not input_size or not output_size:
         raise ValueError("empty input or output buffer span")
     kdma_offset = next(
@@ -265,14 +398,50 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
         input_sections=tuple(input_sections),
         output_sections=tuple(output_sections),
         kdma=decode_kdma(td),
+        tile_dma=decode_tile_dma(td),
+        kernel_is_blob=is_weight_blob(data[
+            text_segment_offset + kernel_offset:
+            text_segment_offset + kernel_offset + BLOB_HEADER_SIZE + 4
+        ]),
     )
 
 
 def _shape_strides(height: int, width: int) -> tuple[int, int]:
+    """The 64-byte-padded plane convention, used when the task is silent."""
     if height < 1 or width < 1:
         raise ValueError("tensor dimensions must be positive")
     row_stride = max(0x40, (width * 2 + 0x3F) & -0x40)
     return height * row_stride, row_stride
+
+
+def derive_strides(
+    shape: tuple[int, int, int, int], total: int, run: int
+) -> tuple[int, int]:
+    """Return (plane, row) bytes for one surface, from the task's byte counts.
+
+    Geometry is per-program, and the task states it: `total` is the whole
+    surface and `run` the contiguous stretch the engine moves, so total/run is
+    the row count. One run per channel is the 64-byte-padded plane layout and
+    the run stride is the plane stride; a single run is a dense surface whose
+    plane stride is just the surface divided among its channels. Anything the
+    task does not account for falls back to the padding convention rather than
+    becoming a new guess.
+    """
+    n, channels, height, width = shape
+    planes = n * channels
+    fallback = _shape_strides(height, width)
+    if total <= 0 or run <= 0 or planes <= 0 or height <= 0 or total % run:
+        return fallback
+    rows = total // run
+    if rows == planes:
+        plane = run
+    elif rows == 1 and total % planes == 0:
+        plane = total // planes
+    else:
+        return fallback
+    if plane % height or plane < width * 2:
+        return fallback
+    return plane, plane // height
 
 
 def _build_header(
@@ -282,8 +451,12 @@ def _build_header(
 ) -> bytes:
     in_n, in_ch, in_h, in_w = in_shape
     out_n, out_ch, out_h, out_w = out_shape
-    in_plane, in_row = _shape_strides(in_h, in_w)
-    out_plane, out_row = _shape_strides(out_h, out_w)
+    in_plane, in_row = derive_strides(
+        in_shape, image.tile_dma.source_total, image.tile_dma.source_run
+    )
+    out_plane, out_row = derive_strides(
+        out_shape, image.tile_dma.dest_total, image.tile_dma.dest_run
+    )
     input_sections = image.input_sections or ((0, image.input_size),)
     output_sections = image.output_sections or ((0, image.output_size),)
     if len(input_sections) + len(output_sections) > 28:
@@ -329,19 +502,47 @@ def _build_header(
     )
 
 
+def _write_content(
+    output,
+    data: bytes | mmap.mmap,
+    image: HWXImage,
+    payload: bytes | None,
+) -> None:
+    """Copy the __TEXT payload, substituting the kernel section when relocated."""
+    spans = [(0, image.content_size)]
+    if payload is not None:
+        kernel_end = image.kernel_offset + image.kernel_size
+        spans = [(0, image.kernel_offset), (kernel_end, image.content_size)]
+    for index, (start, end) in enumerate(spans):
+        if index == 1:
+            output.write(payload)
+        start += image.content_offset
+        end += image.content_offset
+        while start < end:
+            chunk_end = min(start + 16 * 1024 * 1024, end)
+            output.write(data[start:chunk_end])
+            start = chunk_end
+
+
 def convert_hwx(
     data: bytes,
     in_ch: int,
     out_ch: int,
     in_shape: tuple[int, int, int, int] | None = None,
     out_shape: tuple[int, int, int, int] | None = None,
+    blob: bytes | None = None,
 ) -> bytes:
     image = parse_hwx(data)
     in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
     out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
     header = _build_header(image, in_shape, out_shape)
-    content = data[image.content_offset:image.content_offset + image.content_size]
-    return header + b"\0" * (ANEC_HEADER_SIZE - len(header)) + content
+    content = bytearray(
+        data[image.content_offset:image.content_offset + image.content_size]
+    )
+    payload = kernel_payload(image, blob)
+    if payload is not None:
+        content[image.kernel_offset:image.kernel_offset + image.kernel_size] = payload
+    return header + b"\0" * (ANEC_HEADER_SIZE - len(header)) + bytes(content)
 
 
 def convert_hwx_file(
@@ -351,7 +552,12 @@ def convert_hwx_file(
     out_ch: int,
     in_shape: tuple[int, int, int, int] | None = None,
     out_shape: tuple[int, int, int, int] | None = None,
+    blob_path: str | None = None,
 ) -> HWXImage:
+    blob = None
+    if blob_path is not None:
+        with open(blob_path, "rb") as weights:
+            blob = weights.read()
     with open(src_path, "rb") as source, mmap.mmap(
         source.fileno(), 0, access=mmap.ACCESS_READ
     ) as data:
@@ -359,15 +565,11 @@ def convert_hwx_file(
         in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
         out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
         header = _build_header(image, in_shape, out_shape)
+        payload = kernel_payload(image, blob)
         with open(dst_path, "wb") as output:
             output.write(header)
             output.write(b"\0" * (ANEC_HEADER_SIZE - len(header)))
-            start = image.content_offset
-            end = start + image.content_size
-            while start < end:
-                chunk_end = min(start + 16 * 1024 * 1024, end)
-                output.write(data[start:chunk_end])
-                start = chunk_end
+            _write_content(output, data, image, payload)
         return image
 
 
@@ -381,6 +583,10 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--input-width", type=int, default=1)
     parser.add_argument("--output-height", type=int, default=1)
     parser.add_argument("--output-width", type=int, default=1)
+    parser.add_argument(
+        "--weights",
+        help="the bundle's weight blob file, required for a BLOBFILE constant",
+    )
     args = parser.parse_args(argv[1:])
     image = convert_hwx_file(
         args.src_path,
@@ -389,6 +595,17 @@ def main(argv: list[str]) -> int:
         args.output_channels,
         (1, args.input_channels, args.input_height, args.input_width),
         (1, args.output_channels, args.output_height, args.output_width),
+        args.weights,
+    )
+    in_strides = derive_strides(
+        (1, args.input_channels, args.input_height, args.input_width),
+        image.tile_dma.source_total,
+        image.tile_dma.source_run,
+    )
+    out_strides = derive_strides(
+        (1, args.output_channels, args.output_height, args.output_width),
+        image.tile_dma.dest_total,
+        image.tile_dma.dest_run,
     )
     enabled = [index for index, value in enumerate(image.kdma.enabled) if value]
     print(
@@ -399,6 +616,8 @@ def main(argv: list[str]) -> int:
         f"kernel@content+{image.kernel_offset:#x} ({image.kernel_size:#x}B) "
         f"kdma-enabled={enabled} kdma-bases={image.kdma.base_addresses} "
         f"kdma-sizes={image.kdma.buffer_sizes}"
+        f" tile-dma={image.tile_dma} kernel-blob={image.kernel_is_blob} "
+        f"in-plane/row={in_strides} out-plane/row={out_strides}"
     )
     return 0
 
