@@ -5,7 +5,7 @@ OWNS: GATES.md, receipts/2026-09-13-t6001-test-host-ane-procedure.md, docs/omarc
 Scope: Bind ANE on t6001-test-host with a written procedure, keep ANE/CoreML/parity lanes running, and write a SoC-gated Omarchy ANE install plan that does not break non-Apple or no-ANE machines.
 
 - [x] G1: t6001-test-host has a bound ANE platform device or a written sourced blocker with the exact remaining ADT-to-FDT field
-  EVIDENCE: LIVE `/dev/accel/accel0` cycle 11 (`receipts/2026-09-13-t6001-test-host-ane-bind.json`). First schema-4 submit then TM `-110` (`receipts/2026-09-13-t6001-test-host-ane-abi1-exec.json`). Remaining execute blocker is T6001 task-manager/firmware, not FDT.
+  EVIDENCE: LIVE `/dev/accel/accel0` plus exact fp16 64-el add-mul after SET genpd (`receipts/2026-09-13-t6001-set-domains.json`, `mlx-omarchy/receipts/2026-09-13-t6001-test-host-ane-set-exec.json`). set5 still unattached.
 
 - [x] G2: t6001-test-host ANE procedure is a receipt with commands, not a narrative
   EVIDENCE: receipts/2026-09-13-t6001-test-host-ane-procedure.md + 2026-09-13-t6001-test-host-ane-bind.json (four cycles, full command/hashes/dmesg chain)
@@ -17,4 +17,4 @@ Scope: Bind ANE on t6001-test-host with a written procedure, keep ANE/CoreML/par
   EVIDENCE: mlx-omarchy receipts/2026-09-13-m1-test-host-t6001-test-host-gpu-parity.md + 2026-09-13-m1-test-host-perf-parity.md (94f94242 on main)
 
 - [x] G5: Next unblocked Parakeet/CoreML and ANE-plan leaves are in flight, not parked
-  EVIDENCE: mlx-omarchy main through `5f7f0eb4` (peel, fold, mask_layout, heads_layout, slice_layout). mil-hwx-compiler concat is a named ISA hole (`feature/h13-concat` `c2cf32e4`). Encoder split wrote island ANECs; one `[1,375,128]` linear tiled to 1875 programs / 412MB (`mlx-omarchy` `receipts/2026-09-13-encoder-split-compile.md`). Tiling/envelope diagnosis in flight. T8103 ANE soak 200/200 exact.
+  EVIDENCE: mlx-omarchy main `f23921d1` (attention_layout one-program QK). H13 concat and (375,1024,128) linear remain named holes. T8103 soak 200/200. T6001 first exact exec PASS.
