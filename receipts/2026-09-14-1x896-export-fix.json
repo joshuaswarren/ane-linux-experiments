@@ -148,6 +148,8 @@
       "boot_id": "95872130-fd28-4d67-8247-03a0e8b61202 unchanged",
       "uptime_start": "2026-09-13 09:43:25 unchanged",
       "quarantine_bytes": 0,
+      "quarantine_source": "stat -c %s /run/lock/mlx-omarchy-ane/quarantine, a host state file, not a driver interface: nothing under /sys or debugfs exposes it, which is why a /sys search comes back empty. Provisioned by systemd-tmpfiles from /usr/lib/tmpfiles.d/mlx-omarchy-ane.conf (mlx/backend/omarchy/ane/mlx-omarchy-ane.conf in the worker tree) and written only by RuntimeOwnership (runtime_detail.h:30 kRuntimeQuarantinePath, used in runtime_ownership.h acquire/acquire_at), keyed on boot_id, cleared on clean release via clear_state_noexcept. It is demonstrably live rather than a stuck zero: receipts/2026-09-13-jwm1-schema4-shape-aware-submit.json recorded 37 bytes in this same file after the 1x896 -110.",
+      "quarantine_measurement_limit": "The file's mtime on jwm1 is 2026-09-14 10:01, which predates these 10:53 executes, so the honest reading is that nothing wrote it during this run -- unwritten and empty, not a zero this run produced. That is what a clean pass looks like, but the size alone cannot distinguish observed-clean from inherited-clean; the mtime is what distinguishes them and should be cited beside it. Prompted by EncoderParity3Islands asking where the number came from.",
       "device_lock": "reacquirable, ane_lock_reacquire=PASS",
       "workers_after": "none; worker_count 0 and device_holders empty",
       "errno110_this_boot": 0,
