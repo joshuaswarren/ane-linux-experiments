@@ -17,4 +17,4 @@ Scope: Bind ANE on jw16 with a written procedure, keep ANE/CoreML/parity lanes r
   EVIDENCE: mlx-omarchy receipts/2026-09-13-jwm1-jw16-gpu-parity.md + 2026-09-13-jwm1-perf-parity.md (94f94242 on main)
 
 - [x] G5: Next unblocked Parakeet/CoreML and ANE-plan leaves are in flight, not parked
-  EVIDENCE: mlx-omarchy main `f23921d1` (attention_layout one-program QK). H13 concat and (375,1024,128) linear remain named holes. T8103 soak 200/200. T6001 first exact exec PASS.
+  EVIDENCE: mlx-omarchy `e8779f17` (attn+select 2-program island). mil-hwx-compiler `738ce0a` names leftover holes. T6001 100/100 exact. Packaged DTS `9247b41f4` on linux `feature/t6001-ane-bind`. Encoder full ANEC still blocked on concat/linear/silu/norm/conv.
