@@ -1,6 +1,8 @@
 # jw16 M1 Max ANE procedure (2026-09-13)
 
 Host: `jw16mbp1-linux` (J316c / T6001). Kernel: `7.1.6-1-1-ARCH`.
+
+Superseded for live state: `receipts/2026-09-13-jw16-ane-current.md` (bound, SET genpd, exact fp16). This file remains the early bind-attempt log.
 llama-server and recovery timer: inactive. No reboot. No `insmod`.
 
 ## What was done
