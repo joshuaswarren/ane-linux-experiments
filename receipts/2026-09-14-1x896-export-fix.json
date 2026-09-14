@@ -1,0 +1,183 @@
+{
+  "title": "The export path now derives the kernel-section offset and the nchw geometry, and 1x896 is exact through the real runtime",
+  "date": "2026-09-14",
+  "host": "jwm1-linux",
+  "verdict": "Both export-path residuals named in receipts/2026-09-14-1x896-channel-polarity.json are fixed in source, derived from the artifacts rather than stamped from a convention, and proven on device. The coefficient stream comes from the weight blob's own declared payload offset instead of byte 0 of the blob file, and the nchw plane and row bytes come from the task's own tile-DMA byte counts instead of the 64-byte-padded convention. Three guarded single-iteration executes on jwm1: the device-qualified 64-element control, the re-exported 1x512 and the re-exported 1x896 all returned exact, status 0, 6 ms wall each. The 64-element class is untouched, by construction and by measurement.",
+
+  "change": {
+    "repo": "ane-linux-experiments",
+    "parent": "84abffaa53edaea784b37e6dd696aa2e588511d4",
+    "files": {
+      "tools/hwxv2-to-anec.py": "the two derivations plus a register-record walk",
+      "tools/test_hwxv2_to_anec.py": "two new test classes, 15 cases",
+      "docs/fresh-hwx-usage.md": "what is derived and the --weights invocation"
+    },
+    "diffstat": "3 files changed, 423 insertions(+), 11 deletions(-)",
+
+    "derivation_1_kernel_section_offset": {
+      "defect": "For a MIL BLOBFILE constant, __TEXT,__const carries the CoreML weight blob FILE from byte 0. The converter copied that section through, so the engine read the blob's 0x40 header plus its 0x40 0xDEADBEEF record as the first 64 fp16 coefficients and lost the last 64 real ones.",
+      "fix": "kernel_payload() sources the section from the blob payload. blob_payload_offset() walks the blob's 0x40-byte metadata records from 0x40, and for the record whose declared byte count equals krn_size returns the payload offset the record itself states. Every candidate is checked against the record end and the file length, and a blob that does not name exactly one matching payload is an error.",
+      "why_it_is_not_a_constant": "The MIL declares BLOBFILE(offset = uint64(64)) and the writer adds a further 0x40 record, so 0x80 is the sum of two independent facts, not a format constant. Both retained blobs state 0x80 in their record; the converter reads it.",
+      "new_input": "--weights PATH. A blob-backed object cannot be converted without it: the HWX embeds only weights.bin[0 : krn_size], so the real coefficient tail is not in the object at all. Measured on the 1x512 HWX: __TEXT,__const is byte-identical to weights.bin[0x0:0x400] and the remaining 0x80 bytes of payload are absent, the segment past the section being zero. The converter therefore refuses rather than emitting a truncated, header-prefixed coefficient stream.",
+      "verified_offline": "For the 1x512 and 1x896 objects the emitted section equals weights.bin[0x80 : 0x80+krn_size] exactly, and reads as one distinct fp16 value, 0.25, repeated 512 and 896 times. The shipped artifacts instead carry 8 distinct values including -427.25 and -1.733, the blob header decoded as fp16."
+    },
+
+    "derivation_2_header_geometry": {
+      "defect": "The exported header declared nchw[4] = nchw[5] = (1,C,1,1,64,64), the 64-byte-padded plane convention, while the task's own tile DMA was configured for a dense surface. mlx-omarchy packs at the nchw plane stride, so the host scattered input across 64-byte rows the engine never read.",
+      "fix": "derive_strides(shape, total, run) reads the task's whole-surface and contiguous-run byte counts and takes their ratio as the row count. One run per channel is the padded plane layout and the run stride is the plane stride; a single run is a dense surface whose plane stride is the surface divided among its channels. Counts the task does not account for fall back to the padding convention, which is never a new guess.",
+      "registers": {
+        "source_run": "0x13810",
+        "source_total": "0x13814",
+        "dest_run": "0x1780c",
+        "dest_total": "0x17810",
+        "walk": "count-1 in bits 26..31 of a record header, register byte address in bits 0..25. A record running past the descriptor is now an error, which is the -110 defect class rather than a partial decode."
+      },
+      "measured_per_program": [
+        {"program": "exported 1x896 add", "run": 1792, "total": 1792, "rows": 1, "derived": "(1,896,1,1,2,2)", "was": "(1,896,1,1,64,64)"},
+        {"program": "exported 1x512 add", "run": 1024, "total": 1024, "rows": 1, "derived": "(1,512,1,1,2,2)", "was": "(1,512,1,1,64,64)"},
+        {"program": "exported 2048 add", "run": 4096, "total": 4096, "rows": 1, "derived": "(1,2048,1,1,2,2)", "was": "(1,2048,1,1,64,64)"},
+        {"program": "fresh-64.hwx.sample, the qualified 64-element class", "run": 64, "total": 4096, "rows": 64, "derived": "(1,64,1,1,64,64)", "was": "(1,64,1,1,64,64)", "note": "unchanged; rows equals the channel count, so the padded reading is the derived one"},
+        {"program": "fresh-w4.hwx.sample", "run": 64, "total": 192, "rows": 3, "derived": "(1,4,1,1,64,64)", "was": "(1,4,1,1,64,64)", "note": "unchanged; 3 runs against 4 declared channels is unaccounted, so the convention stands"}
+      ],
+      "tile_consequence": "tiles[4] and tiles[5] follow the derived plane stride, so a dense 1792-byte surface now declares 1 tile (16384 bytes) instead of 4 (65536). This is the one field where the converter output differs from the hand-corrected artifact proven on 2026-09-14, and it is the truthful allocation: libane stages tiles[channel] * 0x4000 per channel (mlx-omarchy docs/ane-bundles.md:93-94). It was exercised on device below."
+    },
+
+    "also_added": {
+      "kernel_placement_invariant": "parse_hwx now rejects a kernel section that is not at align16(tsk_size). libane locates the section there, so a section anywhere else is read from the wrong bytes whatever it holds. It holds for every object inspected, including the two retained Qwen production exports (tsk 0xea2f8 with kernel at 0xea300, and 0xc36f8 with 0xc3700)."
+    }
+  },
+
+  "tests": {
+    "command": "python3 -m pytest tools/test_hwxv2_to_anec.py tools/test_production_anec_probe.py tools/test_hwxv2_old_format.py -q",
+    "result": "62 passed",
+    "lint": "ruff check tools/hwxv2-to-anec.py tools/test_hwxv2_to_anec.py -> All checks passed!",
+    "new_cases": [
+      "payload offset is read out of the blob record, at 0x80 and at a moved 0x200",
+      "an unaccounted blob is refused: wrong declared size, two matching records, a payload offset inside the record",
+      "a blob kernel is detected and relocated, and is not the verbatim section bytes",
+      "a blob kernel without the blob is refused",
+      "a plain kernel section is still copied verbatim, for both in-repo samples",
+      "a kernel section off align16(tsk_size) is refused",
+      "tile-DMA counts are decoded from the task for both in-repo samples",
+      "one run per channel is the padded plane layout",
+      "a single run is a dense surface, at 896 and 512 channels",
+      "counts the task does not account for fall back, including zero and non-divisible counts",
+      "a dense task moves the header off the padding convention, nchw and tiles together",
+      "the qualified 64-element geometry is unchanged: (1,64,1,1,64,64) and one-tile surfaces",
+      "a register record running past the descriptor is rejected"
+    ],
+    "regression_bar": "test_the_qualified_64_element_geometry_is_unchanged pins the device-qualified class end to end through convert_hwx, and test_a_plain_kernel_section_is_copied_verbatim pins that a non-blob object's payload is untouched."
+  },
+
+  "reexport_provenance": {
+    "1x512": "A true converter re-export from the retained macOS 26 object mlx-omarchy receipts/fixtures/mil-oneop/model.hwx with receipts/fixtures/mil-oneop/weights.bin. That object is the 1x512 add export: the converter as of 84abffa reproduces the shipped ane-add-fp16-1x512/model.anec from it byte-for-byte except the td_size word.",
+    "1x896": "LABELED: a converter re-export over a RECONSTRUCTED HWX, not over the exporter's own object. The 896 macOS 26 object exists only on the Mac exporter host and no Mac was reachable (16m1mbp and jw14m2 both time out; macstudio is up but has no ane-export tree and no 896 artifact). Per Main's instruction the read-only copy was attempted first and failed, so this is the labeled fallback. It is NOT a byte-patch of the shipped ANEC.",
+    "reconstruction": {
+      "script": "receipts/2026-09-14-1x896-export-fix/reconstruct-1x896-hwx.py",
+      "method": "The retained 1x512 Mach-O is the template -- same exporter, same compiler, same single-task add family, identical 0x1f8 task stream -- with the shipped 896 ANEC's content window written over its __TEXT payload and krn_size written into the __FVMLIB,__const, __FVMLIB,__data and __TEXT,__const section sizes.",
+      "sha256": "11e976666fb9cac0a02cdd107bd923ab469f042ede20d1a4ea3a98898fd700c0",
+      "equivalence_proof": "Asserted by the script and re-run: the rebuilt payload is byte-identical to the shipped content; parse_hwx reproduces every geometry field the shipped header states (content_size, td_count, tsk_size, krn_size, source and destination counts, input and output spans); and the emitted ANEC differs from the shipped one in exactly td_size, tiles[4], tiles[5], nchw[4][4..5], nchw[5][4..5] and the kernel section -- the four fixed fields and nothing else.",
+      "independent_corroboration": "The emitted 896 ANEC is byte-identical to /var/tmp/AneChannelPolarity-20260914/geomfix/model.anec, the hand-corrected artifact proven exact on device earlier today, except tiles[4] and tiles[5]. Everything the converter derived it derived to the proven value."
+    }
+  },
+
+  "artifacts": {
+    "converted": {
+      "1x512_anec_sha256": "4a063cf46cb8b27979eabc6eab8b020239a29adab7590fab5ccbd7f2f9d23b91",
+      "1x896_anec_sha256": "06f272c9ec7b1a03165123e56eef59f086a11986d735be1f79841f01612bbc83",
+      "1x512_model_sha256": "0eb0021f5951d209c04d8239636a26552f5eb089ea2a36ac4c1b4b491cab27c7",
+      "1x896_model_sha256": "f1a0a391d35f4eab28c713870a8b39e3f020c89738c4746cf55001a0bf2c75ef",
+      "weights_unchanged": "9436a9563e7e7c17767424814e9d418774cad1a507715a75891a15c24c6c6143 (512) and 41aa2b92c429c8790c55c37015e02d719c28eb7aa4ca26064fec95fae40dc0bb (896)"
+    },
+    "staging": {
+      "script": "receipts/2026-09-14-1x896-export-fix/stage-export-fix.py",
+      "base_bundles": "/var/tmp/Jwm1AneMoreFixtures-a9f14124/adapted/ane-add-fp16-1x512 and -1x896, schema 4",
+      "method": "Every manifest field the worker validates is taken from the emitted ANEC header, so the manifest cannot disagree with the artifact: per-binding allocation_bytes = tiles[channel] * 0x4000, nchw = header nchw[channel], scratch_bytes = tiles[3] * 0x4000, top-level stride = the binding's allocation. Payload sha256 and release_asset.model_sha256 are re-stamped with the payload-collection hash, self-checked against the untouched manifest first.",
+      "manifest_channels": "left at the binding-order formula (output 4, input 5) that validate_binding requires. The polarity work established the task's real map is input 4 / output 5 and that this check is vacuous; correcting it is the queued mlx-omarchy validator lane, not a converter change, and the runtime binds by role index through libane regardless."
+    },
+    "offline_gate": {
+      "artifacts": ["receipts/2026-09-14-1x896-export-fix/offline-1x512.json", "receipts/2026-09-14-1x896-export-fix/offline-1x896.json"],
+      "checks": "the register walk terminates exactly at td_size; the kernel section is found in weights.bin at 0x80 and does not carry the blob header; the coefficient stream has exactly one distinct value",
+      "result": "PASS for both, walk ends 0x1f8 = td_size = tsk_size"
+    }
+  },
+
+  "device": {
+    "host": "jwm1-linux",
+    "authorization": "Main handed jwm1 over outright after EncoderParityAne released it; ParakeetE2E and IslandsExecJwm1 are behind me and were notified on release.",
+    "kernel": "7.1.6-1-1-ARCH",
+    "module_version": "f2a3e5e+lifecycle6",
+    "driver_abi": 1,
+    "boot_id": "95872130-fd28-4d67-8247-03a0e8b61202",
+    "uptime_start": "2026-09-13 09:43:25",
+    "worker_tool_sha256": "762dd1de868b52e4d6ffa30e18d842d9341db463b06aef2355f18fb1eb248929",
+    "libane": "the derived-channel build from omarchy-ane ane-parity 20d24ad, /var/tmp/AneChannelPolarity-20260914/libane-polarity.so sha256 bf4dbe5482d9eefd137108b88c3cb807f8cf3fdb32e02d6ed5314fea52201d95, loaded with --libane. The exported family needs it: its task puts the destination on channel 5 and the source on channel 4, the reverse of the positional layout.",
+    "runner": "receipts/2026-09-14-1x896-export-fix/run-export-fix.sh",
+    "log": "receipts/2026-09-14-1x896-export-fix/execute.log",
+    "guards": "one iteration each, 5000 ms deadline, timeout --kill-after=5s 25s outer, stop before the next program on any failure",
+    "worker_liveness_method": "mlx-omarchy tools/ane_worker_liveness.py (ps -ww matched on basename(argv[0]) plus /proc/<pid>/fd holders of /dev/accel/accel0), copied to the box. NOT pgrep -af, which matches the naming shell itself and would have self-tripped the pre-submit clearance gate on a clean box; the channel-polarity runner this one was cloned from carries that pattern. Reported by WorkerLivenessFix, verified in the log: worker_count 0 and no device_holders before and after.",
+
+    "results": [
+      {
+        "program": "control-64el (schema4-add-mul-worker, 2 programs)",
+        "bundle": "/var/tmp/AneWorkerValidation-c05ba1df/receipts/2026-09-13-ane-worker-validation/bundle",
+        "submitted_header": "td_size=0x1f8 tsk_size=0x1f8 krn_size=0x4000 tiles[4,5]=(1,1) nchw[4]=nchw[5]=(1,64,1,1,64,64)",
+        "result": "verified output y exact, worker status=0, iterations=1, released=2, elapsed_ms=2, exit 0, wall 6 ms",
+        "reading": "The qualified class is unaffected. Its geometry is the derived geometry, so the change is a no-op here by construction as well as by measurement."
+      },
+      {
+        "program": "reexport-1x512 (ane-add-fp16-1x512)",
+        "submitted_header": "td_size=0x1f8 tsk_size=0x1f8 krn_size=0x400 tiles[4,5]=(1,1) nchw[4]=nchw[5]=(1,512,1,1,2,2)",
+        "result": "verified output t2 exact, worker status=0, iterations=1, released=1, elapsed_ms=2, exit 0, wall 6 ms",
+        "note": "First device submit of this program. t1 = 1.0 x 512, expected t2 = 1.25 x 512 against const_value 0.25 from receipts/fixtures/exported/desc-add-1x512.json."
+      },
+      {
+        "program": "reexport-1x896 (ane-add-fp16-1x896)",
+        "submitted_header": "td_size=0x1f8 tsk_size=0x1f8 krn_size=0x700 tiles[4,5]=(1,1) nchw[4]=nchw[5]=(1,896,1,1,2,2)",
+        "result": "verified output t2 exact, worker status=0, iterations=1, released=1, elapsed_ms=1, exit 0, wall 6 ms",
+        "graph_hash": "9048326d6335b6bec29296d0ce521fa528c09c4558d93e15bf1830d7ec777da1, the same graph identity that returned -110 on 2026-09-13 and a wrong value at element 0 on 2026-09-14",
+        "reading": "The program the whole chain was found on is now exact end to end from a converter run, with no byte-level correction of the artifact and with the one-tile derived allocation."
+      }
+    ],
+
+    "post_state": {
+      "device": "character special file",
+      "module": "ane refs=0",
+      "boot_id": "95872130-fd28-4d67-8247-03a0e8b61202 unchanged",
+      "uptime_start": "2026-09-13 09:43:25 unchanged",
+      "quarantine_bytes": 0,
+      "device_lock": "reacquirable, ane_lock_reacquire=PASS",
+      "workers_after": "none; worker_count 0 and device_holders empty",
+      "errno110_this_boot": 0,
+      "tm_execution_failed_this_boot": 0,
+      "gpu_lock": "never acquired; /tmp/m1-gpu.lock left free, and MesaWaitsPatch was cleared to use it during this slice"
+    },
+
+    "prohibited_actions": {
+      "reboot": "no",
+      "module_unload": "no",
+      "gpu_lock_acquired": "no",
+      "loops_or_retries": "no; three single-iteration submits, no retry after any result",
+      "edits_to_mlx_omarchy": "no; read-only, and tools/ane_worker_liveness.py was copied not modified",
+      "edits_to_the_qualified_libane_tree": "no",
+      "commands_on_jw16_or_16m1mbp": "no; the 16m1mbp read-only copy attempt failed at TCP connect and nothing ran there",
+      "commands_on_macstudio": "read-only ls and find for the 896 object, nothing else"
+    }
+  },
+
+  "residuals": [
+    "The Mac-side exporter carries its own converter copy, hwxv2-to-anec-patched.py (mlx-omarchy overlay/tools/ane-export/ane_export.py:169-174 invokes it). It needs this change and the --weights argument before the next export, or newly exported bundles will carry the truncated coefficient stream and the padded header again. ane_export.py already has weights.bin in hand at that point.",
+    "The 896 re-export rests on a reconstructed HWX. When a Mac exporter host is reachable, re-run ane_export.py for desc-add-1x896 with the fixed converter and confirm the emitted ANEC matches 06f272c9ec7b1a03165123e56eef59f086a11986d735be1f79841f01612bbc83.",
+    "mil-oneop/model-2048.hwx is now refused by the converter without its blob, and its bundle was not re-exported or submitted. The blob for it is receipts/fixtures/mil-oneop/weights.bin only for the 512; the 2048 blob is not retained in that fixture tree.",
+    "The vacuous binding validator (mlx-omarchy bundle.cpp output_bdx/input_bdx) is unchanged and still cannot notice a wrong declared channel. Named in the polarity receipt as a coordinated change; this slice kept the formula-derived channels so existing manifests stay loadable.",
+    "derive_strides covers a [1,C,H,W] fp16 surface. A program whose rows are neither one-per-channel nor a single contiguous run falls back to the padding convention, which is right for the two in-repo samples but is a fallback, not a derivation. A multi-run padded surface with H > 1 has not been observed and is untested on device."
+  ],
+
+  "pins": {
+    "ane-linux-experiments": "84abffa (parent of this change)",
+    "omarchy-ane": "20d24ad on ane-parity",
+    "mlx-omarchy-local": "b28deb1c",
+    "mlx-omarchy-on-jwm1": "a9f14124 (the checkout the worker tool was built from)",
+    "mil-hwx-compiler": "83d486b1"
+  }
+}

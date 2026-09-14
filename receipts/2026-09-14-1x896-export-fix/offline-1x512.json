@@ -1,0 +1,97 @@
+{
+  "bundle": "/var/tmp/ExportGeometryFix-20260914/ane-add-fp16-1x512",
+  "anec_sha256": "4a063cf46cb8b27979eabc6eab8b020239a29adab7590fab5ccbd7f2f9d23b91",
+  "model_sha256": "0eb0021f5951d209c04d8239636a26552f5eb089ea2a36ac4c1b4b491cab27c7",
+  "weights_sha256": "9436a9563e7e7c17767424814e9d418774cad1a507715a75891a15c24c6c6143",
+  "header": {
+    "content_size": 16384,
+    "td_size": 504,
+    "td_count": 1,
+    "tsk_size": 504,
+    "krn_size": 1024,
+    "source_count": 1,
+    "destination_count": 1
+  },
+  "geometry": {
+    "output": {
+      "nchw": [
+        1,
+        512,
+        1,
+        1,
+        2,
+        2
+      ],
+      "tiles": 1,
+      "allocation_bytes": 16384
+    },
+    "input": {
+      "nchw": [
+        1,
+        512,
+        1,
+        1,
+        2,
+        2
+      ],
+      "tiles": 1,
+      "allocation_bytes": 16384
+    }
+  },
+  "register_walk": {
+    "terminates_exactly": true,
+    "walk_ends": 504,
+    "records": [
+      [
+        40,
+        129024,
+        18
+      ],
+      [
+        116,
+        129224,
+        12
+      ],
+      [
+        168,
+        0,
+        16
+      ],
+      [
+        236,
+        79872,
+        28
+      ],
+      [
+        352,
+        18432,
+        18
+      ],
+      [
+        428,
+        34816,
+        4
+      ],
+      [
+        448,
+        51200,
+        5
+      ],
+      [
+        472,
+        96256,
+        7
+      ]
+    ]
+  },
+  "kernel_section": {
+    "at": 4608,
+    "size": 1024,
+    "found_in_weights_at": 128,
+    "is_the_blob_payload": true,
+    "carries_the_blob_header": false,
+    "distinct_coefficients": [
+      0.25
+    ]
+  }
+}

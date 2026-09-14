@@ -1,0 +1,71 @@
+host=jwm1-linux
+started=2026-09-14T10:53:21-05:00
+kernel=7.1.6-1-1-ARCH
+boot_id=95872130-fd28-4d67-8247-03a0e8b61202
+uptime_start=2026-09-13 09:43:25
+device_before=character special file
+module_version=f2a3e5e+lifecycle6
+runtime_status=unknown
+quarantine_before_bytes=0
+gpu_lock=not_acquired
+worker_liveness_before={"worker_name": "mlx-omarchy-ane-worker", "workers": [], "worker_count": 0, "device": "/dev/accel/accel0", "device_holders": [], "method": "ps -ww -eo pid=,args= matched on basename(argv[0]); /proc/<pid>/fd compared by device identity. pgrep -x cannot match a 22-character name and pgrep -f matches the caller's own shell."}
+worker_clearance_before=true
+ane_lock_free_before=true
+
+--- artifact identity ---
+762dd1de868b52e4d6ffa30e18d842d9341db463b06aef2355f18fb1eb248929  /var/tmp/AneWorkerValidation-c05ba1df/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
+bf4dbe5482d9eefd137108b88c3cb807f8cf3fdb32e02d6ed5314fea52201d95  /var/tmp/AneChannelPolarity-20260914/libane-polarity.so
+4a9ba2298b45dc439c0713b0772ffbaa624c76b34a04e7bb621c4aca10b0e5b7  /var/tmp/AneWorkerValidation-c05ba1df/receipts/2026-09-13-ane-worker-validation/bundle/manifest.json
+9a6a6a9a701ce207d4a8ea80ee1ca6d5ade076be2115b73a9aed6f4236aa56ab  /var/tmp/AneWorkerValidation-c05ba1df/receipts/2026-09-13-ane-worker-validation/bundle/program-0.anec
+62595e4a61db24066b83a4f7c077d459c69a6a740109098ee0122b4b46dcd3cc  /var/tmp/AneWorkerValidation-c05ba1df/receipts/2026-09-13-ane-worker-validation/bundle/program-1.anec
+d70abcf27610a1e5a5f5b2b1afa111704bc4cdbb8cd85fc078d084ca54472700  /var/tmp/ExportGeometryFix-20260914/ane-add-fp16-1x512/manifest.json
+4a063cf46cb8b27979eabc6eab8b020239a29adab7590fab5ccbd7f2f9d23b91  /var/tmp/ExportGeometryFix-20260914/ane-add-fp16-1x512/model.anec
+d799d42f51baf884cd0e8ab02f80d744241d84c94e2ed28a333cc43ceb1313b0  /var/tmp/ExportGeometryFix-20260914/ane-add-fp16-1x896/manifest.json
+06f272c9ec7b1a03165123e56eef59f086a11986d735be1f79841f01612bbc83  /var/tmp/ExportGeometryFix-20260914/ane-add-fp16-1x896/model.anec
+aacc3a5507f223eaa76dcf389a19fbdd997ba700a8e6750973380d82a6cfe84c  /var/tmp/ExportGeometryFix-20260914/t1_1x512.bin
+ad367dfea76ff961d1ffa60c4bf5225965c5ce8df5a39ea43701042af6eeb31a  /var/tmp/ExportGeometryFix-20260914/t2_1x512_expected.bin
+8604acde013b349d4764ca15ecab2b7bb6803eb54897841851e9c718fc9e4f5b  /var/tmp/ExportGeometryFix-20260914/t1_1x896.bin
+4767878ff0264fa99b5e68066df3c35dda3b8790b44987338a3fbb8f8eb2c5d4  /var/tmp/ExportGeometryFix-20260914/t2_1x896_expected.bin
+
+--- submitted headers ---
+bundle/program-0.anec: td_size=0x1f8 tsk_size=0x1f8 krn_size=0x4000 tiles[4,5]=(1, 1) nchw[4]=(1, 64, 1, 1, 64, 64) nchw[5]=(1, 64, 1, 1, 64, 64)
+ane-add-fp16-1x512/model.anec: td_size=0x1f8 tsk_size=0x1f8 krn_size=0x400 tiles[4,5]=(1, 1) nchw[4]=(1, 512, 1, 1, 2, 2) nchw[5]=(1, 512, 1, 1, 2, 2)
+ane-add-fp16-1x896/model.anec: td_size=0x1f8 tsk_size=0x1f8 krn_size=0x700 tiles[4,5]=(1, 1) nchw[4]=(1, 896, 1, 1, 2, 2) nchw[5]=(1, 896, 1, 1, 2, 2)
+
+=== control-64el ===
+bundle name=schema4-add-mul-worker programs=2 driver_abi=1 graph=5584d0fd8d40027229890408e924e6f7930cd5f02516466a442193408482ce76
+worker status=0 iterations=1 released=2 elapsed_ms=2
+worker detail=worker completed 1 iteration(s) and released its programs
+verified output y exact
+control-64el_exit=0 wall_ms=6
+
+=== reexport-1x512 ===
+bundle name=ane-add-fp16-1x512 programs=1 driver_abi=1 graph=0417bba9b253e8ada7ab60357aaa7cd05d0000dde58d2c578e6174c310ad3151
+worker status=0 iterations=1 released=1 elapsed_ms=2
+worker detail=worker completed 1 iteration(s) and released its programs
+verified output t2 exact
+reexport-1x512_exit=0 wall_ms=6
+
+=== reexport-1x896 ===
+bundle name=ane-add-fp16-1x896 programs=1 driver_abi=1 graph=9048326d6335b6bec29296d0ce521fa528c09c4558d93e15bf1830d7ec777da1
+worker status=0 iterations=1 released=1 elapsed_ms=1
+worker detail=worker completed 1 iteration(s) and released its programs
+verified output t2 exact
+reexport-1x896_exit=0 wall_ms=6
+
+--- post-state ---
+worker_liveness_after={"worker_name": "mlx-omarchy-ane-worker", "workers": [], "worker_count": 0, "device": "/dev/accel/accel0", "device_holders": [], "method": "ps -ww -eo pid=,args= matched on basename(argv[0]); /proc/<pid>/fd compared by device identity. pgrep -x cannot match a 22-character name and pgrep -f matches the caller's own shell."}
+ane_lock_reacquire=PASS
+quarantine_after_bytes=0
+device_after=character special file
+module_loaded_after=ane refs=0
+runtime_status_after=unknown
+boot_id_after=95872130-fd28-4d67-8247-03a0e8b61202
+uptime_start_after=2026-09-13 09:43:25
+errno110_this_boot=0
+--- dmesg tail since marker ---
+[90597.573931] ANE-EXPORTFIX reexport-1x512 END status=0 2026-09-14T10:53:21-05:00
+[90597.590326] ANE-EXPORTFIX reexport-1x896 BEGIN 2026-09-14T10:53:21-05:00
+[90597.613866] ANE-EXPORTFIX reexport-1x896 END status=0 2026-09-14T10:53:21-05:00
+finished=2026-09-14T10:53:21-05:00
+control_exit=0 reexport_512_exit=0 reexport_896_exit=0
