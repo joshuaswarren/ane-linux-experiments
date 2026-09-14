@@ -5,6 +5,7 @@
 | Date | Source | What Went Wrong | What To Do Instead |
 |------|--------|-----------------|-------------------|
 | 2026-09-13 | user | Stopped after ANE-on-Max findings and parked ANE/CoreML/parity | Keep all three plans plus jw16 ANE bind running. Findings are not a stop. |
+| 2026-09-13 | self | Left GATES G1 on power-reset after cycle 11 bound `/dev/accel/accel0` | Update the gate when the device node exists. Bind is not execute: T6001 still TM `-110` on the T8103-exact 64-el program. |
 | 2026-09-13 | review | Accepted eager constant snapshots after two hashes of mutable source paths; a flip/read/restore sequence returned wrong cached bits while both hashes passed | Hash the exact immutable byte buffer used for parsing/decoding; before/after path hashes do not authenticate consumed bytes. |
 | 2026-09-13 | self | Used established HTTP socket counts as an empty-queue gate, delaying real readiness probes | Keepalive sockets are not active requests; use a bounded completion and correlated engine lifecycle evidence. A client timeout does not prove server cancellation. |
 | 2026-09-13 | self | Left trailing commas on final JSON fields and tried an inverted edit range for insertion | Preserve whole object boundaries, use valid replacement ranges, and parse JSON before commit. Failed validation blocks publication. |
@@ -63,6 +64,7 @@
 ## User Preferences
 - Receipts first: every claim lands in `receipts/` with command output.
 - Ship small milestones. Update GitHub and README after each milestone.
+- README Current status leads with T8103 bound and T6001 blocked, not historic Qwen head speed.
 
 | 2026-08-28 | self | `tile_gemm` paired the 256-in packer (+6 fp16 channel shift) with an aligned blob: every logit shifted +6 token ids | Pack geometry and blob offset are ONE contract: 256-in blob sits 12 bytes before the kernel bar; 512-in sits on it. Test logits argmax after ANY layout change |
 | 2026-08-28 | self | Blob-swap cache keyed per tile (row0, col0): ENOSPC storm, 2 reboots | Shape-keyed caches for weight-swapped programs; identity-keyed only for true residency |
