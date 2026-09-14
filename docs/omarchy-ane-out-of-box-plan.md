@@ -13,13 +13,7 @@ boot state, a device tree, or a module on a live host.
 - Stock `t8103-j293.dtb` contains no `apple,t8103-ane` node. The working M1
   (`jwm1`) instead uses a custom `/boot/efi/m1n1/boot.bin` whose packaged tree
   contains that node and an out-of-tree `ane.ko`.
-- T6001's current Linux DTB has the `ane_sys` and `ane_sys_cpu` PMGR suppliers,
-  but no ANE node. The live ADT supplies candidates, not a complete Linux
-  binding: the ANE engine is at `0x284000000`, the raw ANE IRQ is `0x302`, the
-  DART windows begin at `0x285800000`, and raw SID `0xa001` is not yet a
-  verified Linux `iommus` cell. Do not ship a T600x ANE node until the engine,
-  interrupt flags, ordered PMGR domains, DART provider, and stream mapping are
-  proved together.
+- T6001 on jw16 now has a live `/dev/accel/accel0` (`apple,t6000-ane`), DRM 1.0.0, SET genpd (PMGR window `0x14000`, set1..4), and exact fp16 64-el add-mul (`receipts/2026-09-13-t6001-set-domains.json`, `mlx-omarchy/receipts/2026-09-13-jw16-ane-set-exec.json`). The live overlay is `omarchy-ane` `ane/t6001-j316c-set-domains.dts` (`eb7dfe7`). set5 stays unattached. Do not write SET `0xf` from userspace. Packaging still must put that node in the SoC/board DTS and `update-m1n1` path; a live overlay is not the product.
 - The installer already copies Apple firmware, including
   `h13_ane_fw_styx_j5x.im4p`; firmware alone does not create an ANE device.
   It currently installs neither an ANE kernel module nor an ANE-enabled DTB.
@@ -32,8 +26,10 @@ boot state, a device tree, or a module on a live host.
   from the matched SoC, not from that literal.
 
 The source receipts are `parakeet-mel-exact/docs/boot-and-kernel.md`,
-`receipts/2026-09-13-t6000-live-mapping.md`, and
-`receipts/2026-09-13-t6000-ane-pmgr-cells.md`.
+`receipts/2026-09-13-t6000-live-mapping.md`,
+`receipts/2026-09-13-t6000-ane-pmgr-cells.md`,
+`receipts/2026-09-13-t6001-set-domains.json`, and
+`mlx-omarchy/receipts/2026-09-13-jw16-ane-set-exec.json`.
 
 ## Package boundaries
 
@@ -68,9 +64,7 @@ without its matched DTB, is not a supported installation state.
    artifact. The only supported boot update is the normal `update-m1n1`
    payload rebuild from packaged DTBs.
 
-T6000/T6001 remains GPU-only until the evidence above closes. A PMGR supplier
-name alone is insufficient; the unresolved ANE-SYS-V leaf, IRQ flags, and
-DART stream mapping are explicit release blockers.
+T6001 ANE execute is proven on jw16 with the SET overlay. Product cutover still waits on a packaged board DTB (not a live FDT overlay), set5 policy, and the installer gate. A PMGR supplier name alone remains insufficient; the SET domains are part of the binding.
 
 ## Installer gate
 
