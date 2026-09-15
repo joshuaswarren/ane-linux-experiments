@@ -19,7 +19,7 @@
     the engine moves, and their ratio is the row count. One run per channel is
     the 64-byte-padded plane layout; a single run is a dense surface. Counts
     the task does not account for fall back to the padding convention.
-  Both were proven on jwm1: `receipts/2026-09-14-1x896-export-fix.json`.
+  Both were proven on T8103 hardware: `receipts/2026-09-14-1x896-export-fix.json`.
 - The converted fixture reaches the Linux device with the fresh TD bank
   mapping and returns both NCHW output planes. Output is channel-major
   (NCHW): each plane is one output channel.
