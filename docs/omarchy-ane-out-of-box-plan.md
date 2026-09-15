@@ -11,9 +11,9 @@ boot state, a device tree, or a module on a live host.
 ## Facts that constrain the design
 
 - Stock `t8103-j293.dtb` contains no `apple,t8103-ane` node. The working M1
-  (`m1-test-host`) instead uses a custom `/boot/efi/m1n1/boot.bin` whose packaged tree
+  (the M1 host) instead uses a custom `/boot/efi/m1n1/boot.bin` whose packaged tree
   contains that node and an out-of-tree `ane.ko`.
-- T6001 on t6001-test-host now has a live `/dev/accel/accel0` (`apple,t6000-ane`), DRM 1.0.0, SET genpd (PMGR window `0x14000`, set1..4), and exact fp16 64-el add-mul (`receipts/2026-09-13-t6001-set-domains.json`, `mlx-omarchy/receipts/2026-09-13-t6001-test-host-ane-set-exec.json`); on 2026-09-14 the re-exported 1x512 and 1x896 add family is exact there too (`receipts/2026-09-14-t6001-export-family.json`). The live overlay is `omarchy-ane` `ane/t6001-j316c-set-domains.dts`, on `main` at `8554583`. set5 stays unattached. Do not write SET `0xf` from userspace. The packaged form of that node is omarchy-linux `feature/t6001-ane-bind` `9247b41` (`arm64: dts: apple: package T6001 ANE bind on j316c`), unmerged; a live overlay is not the product. The `omarchy-ane` `main` `8554583` T6001 driver is a proven bring-up and is being rebuilt on the lifecycle-correct base (bring-up scaffolding, GEM/ref bugs) before it is a package input.
+- T6001 now has a live `/dev/accel/accel0` (`apple,t6000-ane`), DRM 1.0.0, SET genpd (PMGR window `0x14000`, set1..4), and exact fp16 64-el add-mul (`receipts/2026-09-13-t6001-set-domains.json`, the mlx-omarchy ANE SET execution receipt); on 2026-09-14 the re-exported 1x512 and 1x896 add family is exact there too (`receipts/2026-09-14-t6001-export-family.json`). The live overlay is `omarchy-ane` `ane/t6001-j316c-set-domains.dts`, on `main` at `8554583`. set5 stays unattached. Do not write SET `0xf` from userspace. The packaged form of that node is omarchy-linux `feature/t6001-ane-bind` `9247b41` (`arm64: dts: apple: package T6001 ANE bind on j316c`), unmerged; a live overlay is not the product. The `omarchy-ane` `main` `8554583` T6001 driver is a proven bring-up and is being rebuilt on the lifecycle-correct base (bring-up scaffolding, GEM/ref bugs) before it is a package input.
 - The installer already copies Apple firmware, including
   `h13_ane_fw_styx_j5x.im4p`; firmware alone does not create an ANE device.
   It currently installs neither an ANE kernel module nor an ANE-enabled DTB.
@@ -29,7 +29,7 @@ The source receipts are `parakeet-mel-exact/docs/boot-and-kernel.md`,
 `receipts/2026-09-13-t6000-live-mapping.md`,
 `receipts/2026-09-13-t6000-ane-pmgr-cells.md`,
 `receipts/2026-09-13-t6001-set-domains.json`, and
-`mlx-omarchy/receipts/2026-09-13-t6001-test-host-ane-set-exec.json`.
+the mlx-omarchy ANE SET execution receipt.
 
 ## Package boundaries
 
@@ -64,7 +64,7 @@ without its matched DTB, is not a supported installation state.
    artifact. The only supported boot update is the normal `update-m1n1`
    payload rebuild from packaged DTBs.
 
-T6001 ANE execute is proven on t6001-test-host with the SET overlay. Product cutover still waits on the packaged board DTB (omarchy-linux `feature/t6001-ane-bind` `9247b41`, unmerged; not a live FDT overlay), the rebuilt lifecycle-correct driver on `omarchy-ane` `main`, set5 policy, and the installer gate. A PMGR supplier name alone remains insufficient; the SET domains are part of the binding.
+T6001 ANE execute is proven on T6001 hardware with the SET overlay. Product cutover still waits on the packaged board DTB (omarchy-linux `feature/t6001-ane-bind` `9247b41`, unmerged; not a live FDT overlay), the rebuilt lifecycle-correct driver on `omarchy-ane` `main`, set5 policy, and the installer gate. A PMGR supplier name alone remains insufficient; the SET domains are part of the binding.
 
 ## Installer gate
 

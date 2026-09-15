@@ -9,9 +9,9 @@ Every headline number has a matching receipt in `receipts/`.
 
 ## Current status
 
-T8103 on m1-test-host has a bound ANE. Persistence is `m1-test-host-ane.service`. Schema-4 add-mul, tiny select, 1x1 conv, and `(1,256,128)` and `(32,256,128)` linear are exact fp16. The exported add family is exact too: re-exported 1x512 and 1x896 both returned exact, status 0, on 2026-09-14 (`receipts/2026-09-14-1x896-export-fix.json`). The earlier 1x896 `-110` was a converter defect chain, fixed on main: hardcoded td_size over-fetching the task (`8e89936`), the task record left unmasked (`a29a395`), the coefficient stream read from byte 0 of the weight blob instead of its declared payload offset, and the nchw header stamped at the 64-byte-padded convention instead of the task's own tile-DMA geometry (`52a3211`). The exported family's task puts its source on channel 4 and its destination on channel 5, the reverse of libane's positional layout, so it needs the derived-channel libane from omarchy-ane `ane-parity` `20d24ad` (`receipts/2026-09-14-1x896-channel-polarity.json`); that commit is not on omarchy-ane `main`.
+T8103 (M1) has a bound ANE. Persistence is a systemd unit that binds the device at boot. Schema-4 add-mul, tiny select, 1x1 conv, and `(1,256,128)` and `(32,256,128)` linear are exact fp16. The exported add family is exact too: re-exported 1x512 and 1x896 both returned exact, status 0, on 2026-09-14 (`receipts/2026-09-14-1x896-export-fix.json`). The earlier 1x896 `-110` was a converter defect chain, fixed on main: hardcoded td_size over-fetching the task (`8e89936`), the task record left unmasked (`a29a395`), the coefficient stream read from byte 0 of the weight blob instead of its declared payload offset, and the nchw header stamped at the 64-byte-padded convention instead of the task's own tile-DMA geometry (`52a3211`). The exported family's task puts its source on channel 4 and its destination on channel 5, the reverse of libane's positional layout, so it needs the derived-channel libane from omarchy-ane `ane-parity` `20d24ad` (`receipts/2026-09-14-1x896-channel-polarity.json`); that commit is not on omarchy-ane `main`.
 
-T6001 on t6001-test-host has `/dev/accel/accel0` live. SET follows runtime PM: SET0 reads `ACTUAL=0` while suspended and `0xf` after `open(accel0)` via genpd, no userspace write. Do not write SET `0xf`. The same add-mul, tiny select, 1x1 conv, and both linear shapes are exact and match T8103 (`mlx-omarchy/receipts/2026-09-14-t6001-test-host-linear-32-256-128.json`). The re-exported 1x512 and 1x896 also returned exact, status 0, on t6001-test-hostmbp1-linux at 11:19 on 2026-09-14 (`receipts/2026-09-14-t6001-export-family.json`). A live overlay is not the packaged DTB: the packaged T6001 DTS exists only on omarchy-linux `feature/t6001-ane-bind` `9247b41`, unmerged. The omarchy-ane `main` `8554583` T6001 driver is being rebuilt on the lifecycle-correct base (bring-up scaffolding and GEM/ref bugs); the T6001 bind on main is a proven bring-up, not the shipping driver.
+T6001 (M1 Max) has `/dev/accel/accel0` live. SET follows runtime PM: SET0 reads `ACTUAL=0` while suspended and `0xf` after `open(accel0)` via genpd, no userspace write. Do not write SET `0xf`. The same add-mul, tiny select, 1x1 conv, and both linear shapes are exact and match T8103. The re-exported 1x512 and 1x896 also returned exact, status 0 (`receipts/2026-09-14-t6001-export-family.json`). A live overlay is not the packaged DTB: the packaged T6001 DTS exists only on omarchy-linux `feature/t6001-ane-bind` `9247b41`, unmerged. The omarchy-ane `main` `8554583` T6001 driver is being rebuilt on the lifecycle-correct base (bring-up scaffolding and GEM/ref bugs); the T6001 bind on main is a proven bring-up, not the shipping driver.
 
 The out-of-box install plan is [docs/omarchy-ane-out-of-box-plan.md](docs/omarchy-ane-out-of-box-plan.md). The kmod is SoC-gated. Do not GRUB a whole-tree DTB.
 
@@ -38,13 +38,13 @@ uv run --with numpy python -m unittest \
 Run a bounded macOS reference capture:
 
 ```sh
-cd ~/src/ANEForge
-PYTHONPATH="$HOME/src/llama.cpp/gguf-py" \
-  ~/.local/bin/uv run --project . --with pyyaml python /tmp/aneforge-qwen-reference.py \
-  --model "$HOME/ane-models/Qwen3.8-2B-Q4_K_M.gguf" \
-  --prompt-corpus /tmp/qwen38-prompts-10.jsonl \
+# On the macOS reference machine, from the ANEForge checkout.
+PYTHONPATH="<llama.cpp checkout>/gguf-py" \
+  uv run --project . --with pyyaml python tools/aneforge-qwen-reference.py \
+  --model /path/to/Qwen3.8-2B-Q4_K_M.gguf \
+  --prompt-corpus qwen38-prompts-10.jsonl \
   --max-new-tokens 32 --warmup 1 --repetitions 1 \
-  --logits-output /tmp/qwen38-reference-10-logits.npz
+  --logits-output qwen38-reference-10-logits.npz
 ```
 
 The runner writes one JSON summary and one compressed logits archive.
