@@ -207,3 +207,31 @@ set) with ctx as the gate.
 
 jw16 artifacts: `packaged-jw16-ab.json`, `suite-packaged.log` (41-case),
 `rollback.log`, `deploy.log`.
+
+## 9. Correction (by MesaL2Policy's agxdecode finding): jw16 sweep/spot arms were one emission, not masks
+
+The `knob.so` relayed to jw16 was built from the `hk/cdm-barrier-trim`
+checkout (no knob code — the knob commit lives on `hk/app-barrier`),
+so every jw16 "mask" arm in addenda 2-3 — including 0xFFF8, 0xFF7F,
+0xFFFB, 0x168, 0x878 and the corrupted DEFAULT — measured the same
+d71c94e-designed emission ({4,5,6,8}), byte-verified by MesaL2Policy
+via ASAHI_MESA_DEBUG=trace agxdecode. Consequently:
+
+- The jw16 sweep/spot rows are noise samples of one emission; the
+  "short is bit-dependent {0,1,2}-region" inference and the paired-spot
+  mask medians (0x168 139.1, 0xFFFB 140.9, 0x878 125.9) are retracted
+  as mask attribution. The REAL jw16 comparison remains the 12-round
+  package pair: sink 190.66/142.12 vs designed 215.47/137.62, pins
+  48/48, suite 22694 green (matches the byte-verified emission).
+- The toolchain-hypothesis test (addendum 3, item 2) stands: hk5deac1c-2
+  (sink emission) parity with -1 (sink emission) — that comparison was
+  emission-matched and valid.
+- jwm1 lineage unaffected: the jwm1 mask sweep and 12-round decision
+  battery ran while build3 was the genuine knob build (hk/app-barrier
+  checkout; live mask response proven by the drop6 pin-break and
+  mask-0 fast/broken arms), and the landed G13G package contains the
+  hardcoded trim, not the knob.
+- Correction authority for the jw16 emission question: MesaL2Policy's
+  addendum 4 (per-mask PACKAGED builds, sink−bit2 and {4,5,7,8}).
+  jw16 currently runs hk5deac1c-2 (sink emission); llm-inference
+  active; no GPU work in flight from this lane.
