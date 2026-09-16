@@ -1,0 +1,53 @@
+== baselines ==
+sink-baseline mask=DEFAULT short_dg=OK ctx_dg=OK ctx_tps=141.8328
+none mask=0 short_dg=OK ctx_dg=OK ctx_tps=132.2595
+== supersets of designed 0x170 ==
+designed-4-5-6-8 mask=0x170 short_dg=OK ctx_dg=OK ctx_tps=135.2734
+plus-usc mask=0x178 short_dg=OK ctx_dg=OK ctx_tps=127.5347
+plus-b7 mask=0x1F0 short_dg=OK ctx_dg=OK ctx_tps=122.1319
+plus-usc-b7 mask=0x1F8 short_dg=OK ctx_dg=OK ctx_tps=140.0359
+plus-b0 mask=0x171 short_dg=OK ctx_dg=OK ctx_tps=118.5597
+plus-b1 mask=0x172 short_dg=OK ctx_dg=OK ctx_tps=129.4899
+plus-b2 mask=0x174 short_dg=OK ctx_dg=OK ctx_tps=129.4704
+plus-012 mask=0x177 short_dg=OK ctx_dg=OK ctx_tps=125.6318
+plus-0123 mask=0x17F short_dg=OK ctx_dg=OK ctx_tps=127.2146
+keep-4-6-8 mask=0x150 short_dg=OK ctx_dg=OK ctx_tps=138.1719
+keep-4-8 mask=0x110 short_dg=OK ctx_dg=OK ctx_tps=145.1536
+keep-4-5-8 mask=0x158 short_dg=OK ctx_dg=OK ctx_tps=135.4812
+keep-4-5-7-8 mask=0x168 short_dg=OK ctx_dg=OK ctx_tps=162.2197
+plus-b9 mask=0x378 short_dg=OK ctx_dg=OK ctx_tps=147.3172
+plus-b10 mask=0x578 short_dg=OK ctx_dg=OK ctx_tps=137.1432
+plus-b11 mask=0x878 short_dg=OK ctx_dg=OK ctx_tps=156.9635
+plus-b12 mask=0x1078 short_dg=OK ctx_dg=OK ctx_tps=130.0038
+plus-9-11 mask=0x1770 short_dg=OK ctx_dg=OK ctx_tps=137.7422
+plus-3-9-15 mask=0xFF78 short_dg=OK ctx_dg=OK ctx_tps=144.9864
+sink-minus-012 mask=0xFFF8 short_dg=OK ctx_dg=OK ctx_tps=140.6189
+sink-minus-19 mask=0xFF7F short_dg=OK ctx_dg=OK ctx_tps=120.8911
+sink-minus-2 mask=0xFFFB short_dg=OK ctx_dg=OK ctx_tps=150.7993
+SWEEP-DONE
+baselines: short=214.5 ctx=141.8
+0        short= 213.4 ( -0.5%) ctx= 132.3 ( -6.7%) digests=OK 
+0x1078   short= 214.1 ( -0.2%) ctx= 130.0 ( -8.3%) digests=OK 
+0x110    short= 214.4 ( -0.1%) ctx= 145.2 ( +2.3%) digests=OK 
+0x150    short= 214.1 ( -0.2%) ctx= 138.2 ( -2.6%) digests=OK 
+0x158    short= 214.2 ( -0.1%) ctx= 135.5 ( -4.5%) digests=OK 
+0x168    short= 215.0 ( +0.3%) ctx= 162.2 (+14.4%) digests=OK 
+0x170    short= 214.1 ( -0.2%) ctx= 135.3 ( -4.6%) digests=OK 
+0x171    short= 214.7 ( +0.1%) ctx= 118.6 (-16.4%) digests=OK 
+0x172    short= 214.8 ( +0.2%) ctx= 129.5 ( -8.7%) digests=OK 
+0x174    short= 212.1 ( -1.1%) ctx= 129.5 ( -8.7%) digests=OK 
+0x177    short= 213.5 ( -0.5%) ctx= 125.6 (-11.4%) digests=OK 
+0x1770   short= 214.9 ( +0.2%) ctx= 137.7 ( -2.9%) digests=OK 
+0x178    short= 210.4 ( -1.9%) ctx= 127.5 (-10.1%) digests=OK 
+0x17F    short= 209.8 ( -2.2%) ctx= 127.2 (-10.3%) digests=OK 
+0x1F0    short= 214.7 ( +0.1%) ctx= 122.1 (-13.9%) digests=OK 
+0x1F8    short= 213.0 ( -0.7%) ctx= 140.0 ( -1.3%) digests=OK 
+0x378    short= 213.9 ( -0.3%) ctx= 147.3 ( +3.9%) digests=OK 
+0x578    short= 214.4 ( -0.0%) ctx= 137.1 ( -3.3%) digests=OK 
+0x878    short= 210.0 ( -2.1%) ctx= 157.0 (+10.7%) digests=OK 
+0xFF78   short= 213.5 ( -0.5%) ctx= 145.0 ( +2.2%) digests=OK 
+0xFF7F   short= 214.0 ( -0.2%) ctx= 120.9 (-14.8%) digests=OK 
+0xFFF8   short= 214.7 ( +0.1%) ctx= 140.6 ( -0.9%) digests=OK 
+0xFFFB   short= 214.6 ( +0.0%) ctx= 150.8 ( +6.3%) digests=OK 
+DEFAULT  short= 214.5 ( +0.0%) ctx= 141.8 ( +0.0%) digests=OK 
+active
