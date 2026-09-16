@@ -1,0 +1,123 @@
+{
+ "schema": "mlx-omarchy.parakeet-100-run-stability/1",
+ "date": "2026-09-16",
+ "criterion": "14 (plan \u00a745, gate 10): 100 warm Parakeet E2E invocations stable",
+ "host": {
+  "hostname": "jwm1-linux",
+  "kernel": "7.1.6-1-1-ARCH",
+  "machine": "aarch64",
+  "soc": "Apple M1 (G13G B1) / T8103",
+  "battery_window_local": "2026-09-16T11:56:44-05:00 .. 2026-09-16T12:11:37-05:00",
+  "battery_window_uptime_s": [
+   20557.85,
+   21450.49
+  ],
+  "battery_wall_s": 893
+ },
+ "configuration": {
+  "wheel": "mlx_omarchy-0.32.2.dev202609161632+612eddc9-cp314-cp314-linux_aarch64.whl",
+  "wheel_sha256": "9c9f2835f601bf9f0b7d785312344cd782cf6f8034a20685a0ec3e39c4b2741f",
+  "site": "/var/tmp/V051E2E/site",
+  "harness_fused_e2e_sha256": "0e38e7b15a36d9a8244bd523ff6845f6b44cb7ad4a7444dc30e8177e97cabb97",
+  "runner_path": "/var/tmp/E2EREV/overlay/tools/coreml/vulkan_encoder.py",
+  "runner_sha256": "eedb7c4802ca678183deb3a55c134f2f9b11571e487d82f8d21c8b38316d851f",
+  "worker_sha256": "f171a61ecfc89942b009dc379d6636b17b0dda6f583841470a1d789853f5952e",
+  "libane_sha256": "56b462346128b04139cb7c9397b06ca8d513c680c972d8914395ddd3aa978ba7",
+  "libmlx_sha256": "a0bef352799b3ac57c3246829c3c5e4073e36739674e8cb32bed644be0151811",
+  "libane_source": "omarchy-ane 6fa243a strict-bind",
+  "island_mode": "resident-batch",
+  "gpu_lock": "/tmp/m1-gpu.lock flock -w 900 (inode 35 held->freed, LOCK-FREE-OK, never stolen/unlinked)",
+  "process_contract": "one fresh fused_e2e.py process per run (the runtime's own contract; ANE island worker spawned per run, 1 worker start per run); shared SPIR-V cache pre-seeded from the proven 3-run battery; same boot as that battery",
+  "battery_script_sha256": "506f54b2768ac1ab8c8bc5b6a33c27863b13a62234213540e0302ed93032d312",
+  "checker_sha256": "7a3518d8feea2937f043dfc730c58b60231719b0d601b870c41f78814d718816"
+ },
+ "pins": {
+  "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+  "encoder_hidden_sha256": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7"
+ },
+ "results": {
+  "runs": 100,
+  "runs_failed": 0,
+  "gate_fails": {
+   "status_match": [],
+   "emissions_104": [],
+   "sequence_exact": [],
+   "transcript_pin": [],
+   "encoder_hidden_pin": [],
+   "encoder_bounds": [],
+   "mel_bit_exact": [],
+   "island_health": [],
+   "gpu_loop": [],
+   "identity": []
+  },
+  "distinct_transcript_hashes": [
+   "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790"
+  ],
+  "distinct_encoder_hidden_hashes": [
+   "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7"
+  ],
+  "stats_all_100": {
+   "total_pipeline_ms": {
+    "n": 100,
+    "median": 8549.4,
+    "min": 7024.2,
+    "max": 8723.2,
+    "mean": 8497.8
+   },
+   "ane_exec_ms": {
+    "n": 100,
+    "median": 2625.9,
+    "min": 1898.0,
+    "max": 2737.4,
+    "mean": 2596.3
+   },
+   "wall_s_per_run": {
+    "n": 100,
+    "median": 8.9,
+    "min": 7.4,
+    "max": 9.1,
+    "mean": 8.9
+   }
+  },
+  "stats_warm_r2_r100": {
+   "total_pipeline_ms": {
+    "n": 99,
+    "median": 8549.6,
+    "min": 7024.2,
+    "max": 8723.2,
+    "mean": 8500.6
+   }
+  },
+  "run1_total_pipeline_ms": 8215.863,
+  "argmin_total_pipeline": 74,
+  "argmax_total_pipeline": 82,
+  "rss_mb": {
+   "_note": "4 Hz /proc sampling of the fused_e2e python process (flock wrapper incl., per-run island worker excl.); r1/r50/r100",
+   "trend": "flat, no growth: 1360.9 -> 1335.3 -> 1350.9 MB peak (spread 25.6 MB, ~1.9%)",
+   "run_1": {
+    "samples": 33,
+    "peak_python_rss_mb": 1360.9,
+    "last_sample_python_rss_mb": 1360.9
+   },
+   "run_50": {
+    "samples": 33,
+    "peak_python_rss_mb": 1335.3,
+    "last_sample_python_rss_mb": 153.9
+   },
+   "run_100": {
+    "samples": 32,
+    "peak_python_rss_mb": 1350.9,
+    "last_sample_python_rss_mb": 1335.1
+   }
+  },
+  "wedge": {
+   "dmesg_scan": "dmesg-after ring covers 07:26:59 onward; battery window fully inside",
+   "ane_tm_lines_during_battery_window_1156_1211": 0,
+   "last_ane_tm_line_in_ring": "Wed Sep 16 07:29:26 2026 (pre-battery AneTmRecoveryBisect testing, tm recovered 2/2)",
+   "tm_completion_failed_lines": 2,
+   "tm_completion_failed_when": "07:29:24 and 07:29:26, 4.4 h before battery start",
+   "preserving_resources_lines": 0,
+   "post_battery_lock": "LOCK-FREE-OK"
+  }
+ }
+}

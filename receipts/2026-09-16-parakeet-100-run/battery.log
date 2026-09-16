@@ -1,0 +1,1608 @@
+battery-start 2026-09-16T11:56:44-05:00 uptime_s=20557.85
+lock inode=35 held 2026-09-16T11:56:44-05:00
+--- E2E r1 2026-09-16T11:56:44-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8215.863,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r1 wall=8.76s
+--- E2E r2 2026-09-16T11:56:53-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8402.129,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r2 wall=8.79s
+--- E2E r3 2026-09-16T11:57:02-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8468.218,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r3 wall=8.85s
+--- E2E r4 2026-09-16T11:57:11-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8533.926,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r4 wall=8.93s
+--- E2E r5 2026-09-16T11:57:20-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8629.275,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r5 wall=9.02s
+--- E2E r6 2026-09-16T11:57:29-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8640.559,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r6 wall=9.03s
+--- E2E r7 2026-09-16T11:57:38-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8565.272,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r7 wall=8.95s
+--- E2E r8 2026-09-16T11:57:47-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8610.218,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r8 wall=9.01s
+--- E2E r9 2026-09-16T11:57:56-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8265.32,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r9 wall=8.65s
+--- E2E r10 2026-09-16T11:58:04-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8524.815,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r10 wall=8.90s
+--- E2E r11 2026-09-16T11:58:13-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8629.079,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r11 wall=9.02s
+--- E2E r12 2026-09-16T11:58:22-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8616.718,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r12 wall=9.01s
+--- E2E r13 2026-09-16T11:58:31-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8659.47,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r13 wall=9.05s
+--- E2E r14 2026-09-16T11:58:41-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8590.634,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r14 wall=8.98s
+--- E2E r15 2026-09-16T11:58:50-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8562.524,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r15 wall=8.96s
+--- E2E r16 2026-09-16T11:58:59-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8527.111,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r16 wall=8.92s
+--- E2E r17 2026-09-16T11:59:07-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8564.62,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r17 wall=8.96s
+--- E2E r18 2026-09-16T11:59:16-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8518.794,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r18 wall=8.91s
+--- E2E r19 2026-09-16T11:59:25-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8253.361,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r19 wall=8.65s
+--- E2E r20 2026-09-16T11:59:34-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8537.351,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r20 wall=8.97s
+--- E2E r21 2026-09-16T11:59:43-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8566.824,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r21 wall=8.96s
+--- E2E r22 2026-09-16T11:59:52-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8245.177,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r22 wall=8.63s
+--- E2E r23 2026-09-16T12:00:01-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8216.752,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r23 wall=8.61s
+--- E2E r24 2026-09-16T12:00:09-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8607.967,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r24 wall=8.99s
+--- E2E r25 2026-09-16T12:00:18-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8581.038,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r25 wall=8.97s
+--- E2E r26 2026-09-16T12:00:27-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8572.994,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r26 wall=8.95s
+--- E2E r27 2026-09-16T12:00:36-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8677.043,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r27 wall=9.07s
+--- E2E r28 2026-09-16T12:00:45-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8417.375,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r28 wall=8.81s
+--- E2E r29 2026-09-16T12:00:54-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8619.929,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r29 wall=9.01s
+--- E2E r30 2026-09-16T12:01:03-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8549.601,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r30 wall=8.93s
+--- E2E r31 2026-09-16T12:01:12-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8582.967,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r31 wall=8.98s
+--- E2E r32 2026-09-16T12:01:21-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8529.387,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r32 wall=8.93s
+--- E2E r33 2026-09-16T12:01:30-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8700.36,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r33 wall=9.09s
+--- E2E r34 2026-09-16T12:01:39-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8657.475,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r34 wall=9.04s
+--- E2E r35 2026-09-16T12:01:49-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8601.088,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r35 wall=9.00s
+--- E2E r36 2026-09-16T12:01:58-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8493.5,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r36 wall=8.89s
+--- E2E r37 2026-09-16T12:02:06-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8508.213,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r37 wall=8.89s
+--- E2E r38 2026-09-16T12:02:15-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8609.058,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r38 wall=9.00s
+--- E2E r39 2026-09-16T12:02:24-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8256.008,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r39 wall=8.63s
+--- E2E r40 2026-09-16T12:02:33-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8539.274,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r40 wall=8.93s
+--- E2E r41 2026-09-16T12:02:42-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8596.676,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r41 wall=8.99s
+--- E2E r42 2026-09-16T12:02:51-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8514.473,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r42 wall=8.91s
+--- E2E r43 2026-09-16T12:03:00-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8446.775,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r43 wall=8.84s
+--- E2E r44 2026-09-16T12:03:09-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8419.265,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r44 wall=8.81s
+--- E2E r45 2026-09-16T12:03:18-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8536.65,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r45 wall=8.91s
+--- E2E r46 2026-09-16T12:03:27-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8525.16,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r46 wall=8.92s
+--- E2E r47 2026-09-16T12:03:36-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8693.44,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r47 wall=9.06s
+--- E2E r48 2026-09-16T12:03:45-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8624.527,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r48 wall=9.01s
+--- E2E r49 2026-09-16T12:03:54-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8342.948,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r49 wall=8.72s
+--- E2E r50 2026-09-16T12:04:03-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8156.549,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r50 wall=8.76s
+--- E2E r51 2026-09-16T12:04:11-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8709.082,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r51 wall=9.09s
+--- E2E r52 2026-09-16T12:04:20-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8401.003,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r52 wall=8.79s
+--- E2E r53 2026-09-16T12:04:29-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8509.76,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r53 wall=8.89s
+--- E2E r54 2026-09-16T12:04:38-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8671.507,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r54 wall=9.04s
+--- E2E r55 2026-09-16T12:04:47-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8575.652,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r55 wall=9.00s
+--- E2E r56 2026-09-16T12:04:56-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8578.044,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r56 wall=8.95s
+--- E2E r57 2026-09-16T12:05:05-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8448.307,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r57 wall=8.82s
+--- E2E r58 2026-09-16T12:05:14-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8563.578,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r58 wall=8.95s
+--- E2E r59 2026-09-16T12:05:23-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8683.106,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r59 wall=9.08s
+--- E2E r60 2026-09-16T12:05:32-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8560.593,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r60 wall=8.95s
+--- E2E r61 2026-09-16T12:05:41-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8479.003,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r61 wall=8.87s
+--- E2E r62 2026-09-16T12:05:50-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8505.883,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r62 wall=8.90s
+--- E2E r63 2026-09-16T12:05:59-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8293.899,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r63 wall=8.69s
+--- E2E r64 2026-09-16T12:06:08-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8518.661,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r64 wall=8.91s
+--- E2E r65 2026-09-16T12:06:17-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8609.392,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r65 wall=9.00s
+--- E2E r66 2026-09-16T12:06:26-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8584.325,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r66 wall=8.97s
+--- E2E r67 2026-09-16T12:06:35-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8531.295,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r67 wall=8.92s
+--- E2E r68 2026-09-16T12:06:44-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8543.755,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r68 wall=8.93s
+--- E2E r69 2026-09-16T12:06:53-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8583.28,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r69 wall=9.01s
+--- E2E r70 2026-09-16T12:07:02-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8245.146,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r70 wall=8.63s
+--- E2E r71 2026-09-16T12:07:10-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8558.987,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r71 wall=8.96s
+--- E2E r72 2026-09-16T12:07:19-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8583.796,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r72 wall=8.97s
+--- E2E r73 2026-09-16T12:07:28-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8518.608,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r73 wall=8.94s
+--- E2E r74 2026-09-16T12:07:37-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 7024.233,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r74 wall=7.42s
+--- E2E r75 2026-09-16T12:07:45-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 7963.382,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r75 wall=8.35s
+--- E2E r76 2026-09-16T12:07:53-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 7681.72,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r76 wall=8.08s
+--- E2E r77 2026-09-16T12:08:01-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8520.045,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r77 wall=8.91s
+--- E2E r78 2026-09-16T12:08:10-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8255.834,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r78 wall=8.65s
+--- E2E r79 2026-09-16T12:08:19-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8587.094,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r79 wall=8.96s
+--- E2E r80 2026-09-16T12:08:28-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8612.566,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r80 wall=9.01s
+--- E2E r81 2026-09-16T12:08:37-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8421.8,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r81 wall=8.81s
+--- E2E r82 2026-09-16T12:08:46-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8723.21,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r82 wall=9.14s
+--- E2E r83 2026-09-16T12:08:55-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8512.375,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r83 wall=8.90s
+--- E2E r84 2026-09-16T12:09:04-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8581.963,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r84 wall=8.97s
+--- E2E r85 2026-09-16T12:09:13-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8584.792,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r85 wall=8.98s
+--- E2E r86 2026-09-16T12:09:22-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8620.883,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r86 wall=9.00s
+--- E2E r87 2026-09-16T12:09:31-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8606.341,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r87 wall=9.00s
+--- E2E r88 2026-09-16T12:09:40-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8538.195,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r88 wall=8.92s
+--- E2E r89 2026-09-16T12:09:49-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8617.779,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r89 wall=9.01s
+--- E2E r90 2026-09-16T12:09:58-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8505.752,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r90 wall=8.90s
+--- E2E r91 2026-09-16T12:10:07-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8538.324,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r91 wall=8.93s
+--- E2E r92 2026-09-16T12:10:16-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8663.403,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r92 wall=9.06s
+--- E2E r93 2026-09-16T12:10:25-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8538.569,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r93 wall=8.91s
+--- E2E r94 2026-09-16T12:10:34-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8553.351,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r94 wall=8.94s
+--- E2E r95 2026-09-16T12:10:43-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8621.701,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r95 wall=9.01s
+--- E2E r96 2026-09-16T12:10:52-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8549.147,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r96 wall=8.93s
+--- E2E r97 2026-09-16T12:11:01-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8601.376,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r97 wall=9.00s
+--- E2E r98 2026-09-16T12:11:10-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8540.277,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r98 wall=8.93s
+--- E2E r99 2026-09-16T12:11:19-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8645.533,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r99 wall=9.02s
+--- E2E r100 2026-09-16T12:11:28-05:00 ---
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 8209.626,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+r100 wall=8.60s
+lock inode=35 freed 2026-09-16T12:11:37-05:00
+LOCK-FREE-OK
+battery-end 2026-09-16T12:11:37-05:00 uptime_s=21450.49
+--- identity ---
+db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790  /var/tmp/V051E2E-battery100/out-1/transcript.txt
+db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790  /var/tmp/V051E2E-battery100/out-100/transcript.txt
