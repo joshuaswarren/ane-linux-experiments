@@ -1,0 +1,66 @@
+== pause llm-inference 2026-09-16T18:16:10-05:00 ==
+== mask FFFFF: 0 barrier fingerprint line(s)
+== mask FFFB: 0 barrier fingerprint line(s)
+== mask 170: 0 barrier fingerprint line(s)
+== mask 168: 0 barrier fingerprint line(s)
+== mask FFFC: 0 barrier fingerprint line(s)
+r0 sink     short   214.327 7fd25a869ff21678
+r0 sink     ctx1024 126.398 7da83f06ec9f001d
+r0 fffb     short   213.281 7fd25a869ff21678
+r0 fffb     ctx1024 142.213 7da83f06ec9f001d
+r0 des170   short   210.960 7fd25a869ff21678
+r0 des170   ctx1024 177.980 7da83f06ec9f001d
+r0 d68      short   213.474 7fd25a869ff21678
+r0 d68      ctx1024 130.090 7da83f06ec9f001d
+r0 fffc     short   211.963 7fd25a869ff21678
+r0 fffc     ctx1024 143.086 7da83f06ec9f001d
+r1 fffc     short   214.744 7fd25a869ff21678
+r1 fffc     ctx1024 138.455 7da83f06ec9f001d
+r1 d68      short   213.844 7fd25a869ff21678
+r1 d68      ctx1024 129.437 7da83f06ec9f001d
+r1 des170   short   213.779 7fd25a869ff21678
+r1 des170   ctx1024 115.279 7da83f06ec9f001d
+r1 fffb     short   214.761 7fd25a869ff21678
+r1 fffb     ctx1024 137.212 7da83f06ec9f001d
+r1 sink     short   214.086 7fd25a869ff21678
+r1 sink     ctx1024 137.396 7da83f06ec9f001d
+r2 sink     short   213.434 7fd25a869ff21678
+r2 sink     ctx1024 122.805 7da83f06ec9f001d
+r2 fffb     short   213.157 7fd25a869ff21678
+r2 fffb     ctx1024 128.876 7da83f06ec9f001d
+r2 des170   short   214.081 7fd25a869ff21678
+r2 des170   ctx1024 130.295 7da83f06ec9f001d
+r2 d68      short   214.274 7fd25a869ff21678
+r2 d68      ctx1024 128.324 7da83f06ec9f001d
+r2 fffc     short   213.854 7fd25a869ff21678
+r2 fffc     ctx1024 147.984 7da83f06ec9f001d
+r3 fffc     short   214.523 7fd25a869ff21678
+r3 fffc     ctx1024 126.192 7da83f06ec9f001d
+r3 d68      short   213.168 7fd25a869ff21678
+r3 d68      ctx1024 143.079 7da83f06ec9f001d
+r3 des170   short   211.046 7fd25a869ff21678
+r3 des170   ctx1024 132.750 7da83f06ec9f001d
+r3 fffb     short   214.427 7fd25a869ff21678
+r3 fffb     ctx1024 133.343 7da83f06ec9f001d
+r3 sink     short   212.933 7fd25a869ff21678
+r3 sink     ctx1024 136.382 7da83f06ec9f001d
+r4 sink     short   213.597 7fd25a869ff21678
+r4 sink     ctx1024 142.720 7da83f06ec9f001d
+r4 fffb     short   214.778 7fd25a869ff21678
+r4 fffb     ctx1024 126.784 7da83f06ec9f001d
+r4 des170   short   214.083 7fd25a869ff21678
+r4 des170   ctx1024 130.159 7da83f06ec9f001d
+r4 d68      short   212.528 7fd25a869ff21678
+r4 d68      ctx1024 157.576 7da83f06ec9f001d
+r4 fffc     short   214.700 7fd25a869ff21678
+r4 fffc     ctx1024 131.723 7da83f06ec9f001d
+
+== medians ==
+sink     short=213.60 (+0.00%) ctx1024=136.38 (+0.00%)
+fffb     short=214.43 (+0.39%) ctx1024=133.34 (-2.23%)
+des170   short=213.78 (+0.08%) ctx1024=130.30 (-4.46%)
+d68      short=213.47 (-0.06%) ctx1024=130.09 (-4.61%)
+fffc     short=214.52 (+0.43%) ctx1024=138.45 (+1.52%)
+== screen rc=0 2026-09-16T18:18:13-05:00 ==
+== restarting llm-inference 2026-09-16T18:18:13-05:00 ==
+active

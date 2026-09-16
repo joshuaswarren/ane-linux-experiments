@@ -1,0 +1,20 @@
+== pause llm-inference 2026-09-16T18:43:07-05:00 ==
+prepared sink: /var/tmp/MesaL2/pkg-sink/usr/lib/libvulkan_asahi.so
+prepared des: /var/tmp/MesaL2/pkg-des/usr/lib/libvulkan_asahi.so
+prepared p1f0: /var/tmp/MesaL2/pkg-p1f0/usr/lib/libvulkan_asahi.so
+== sink barrier fingerprint:
+      1   Unk 0: true|  Unk 1: true|  Unk 2: true|  USC cache inval: true|  Unk 4: true|  Unk 5: true|  Unk 6: true|  Unk 7: true|  Unk 8: true|  Unk 9: true|  Unk 10: true|  Unk 11: true|  Unk 12: true|  Unk 13: true|  Unk 14: true|  Unk 15: true|  Unk 16: true|  Unk 17: true|  Unk 18: true|  Unk 19: true|  Unk 20: false|  Unk 24: false|  Unk 26: false|  Returns: false|  Unk 0: true|  Unk 1: true
+== des barrier fingerprint:
+      1   Unk 0: false|  Unk 1: false|  Unk 2: false|  USC cache inval: false|  Unk 4: true|  Unk 5: true|  Unk 6: true|  Unk 7: false|  Unk 8: true|  Unk 9: false|  Unk 10: false|  Unk 11: false|  Unk 12: false|  Unk 13: false|  Unk 14: false|  Unk 15: false|  Unk 16: false|  Unk 17: false|  Unk 18: false|  Unk 19: false|  Unk 20: false|  Unk 24: false|  Unk 26: false|  Returns: false|  Unk 0: fa
+== p1f0 barrier fingerprint:
+      1   Unk 0: false|  Unk 1: false|  Unk 2: false|  USC cache inval: false|  Unk 4: true|  Unk 5: true|  Unk 6: true|  Unk 7: true|  Unk 8: true|  Unk 9: false|  Unk 10: false|  Unk 11: false|  Unk 12: false|  Unk 13: false|  Unk 14: false|  Unk 15: false|  Unk 16: false|  Unk 17: false|  Unk 18: false|  Unk 19: false|  Unk 20: false|  Unk 24: false|  Unk 26: false|  Returns: false|  Unk 0: fal
+== p178 barrier fingerprint:
+      1 
+r0 sink     short   190.657 7fd25a869ff21678
+r0 sink     ctx1024 139.862 7da83f06ec9f001d
+r0 p1f0     short   156.527 7fd25a869ff21678
+r0 p1f0     ctx1024 86.954 7da83f06ec9f001d
+r0 des      short   216.456 7fd25a869ff21678
+r0 des      ctx1024 132.443 7da83f06ec9f001d
+== decision2 rc=1 2026-09-16T18:43:37-05:00 ==
+== restarting llm-inference 2026-09-16T18:43:37-05:00 ==

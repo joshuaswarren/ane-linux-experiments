@@ -1,0 +1,17 @@
+== pause llm-inference 2026-09-16T18:30:54-05:00 ==
+prepared sink: /var/tmp/MesaL2/pkg-sink/usr/lib/libvulkan_asahi.so
+prepared des: /var/tmp/MesaL2/pkg-des/usr/lib/libvulkan_asahi.so
+prepared fffb: /var/tmp/MesaL2/pkg-fffb/usr/lib/libvulkan_asahi.so
+prepared p578: /var/tmp/MesaL2/pkg-p578/usr/lib/libvulkan_asahi.so
+== sink barrier field-set(s) observed:
+== des barrier field-set(s) observed:
+== fffb barrier field-set(s) observed:
+== p578 barrier field-set(s) observed:
+r0 sink     short   186.815 7fd25a869ff21678
+r0 sink     ctx1024 142.483 7da83f06ec9f001d
+r0 fffb     short   145.758 7fd25a869ff21678
+r0 fffb     ctx1024 84.341 7da83f06ec9f001d
+r0 des      short   213.712 7fd25a869ff21678
+r0 des      ctx1024 138.109 7da83f06ec9f001d
+== decision rc=1 2026-09-16T18:31:31-05:00 ==
+== restarting llm-inference 2026-09-16T18:31:31-05:00 ==
