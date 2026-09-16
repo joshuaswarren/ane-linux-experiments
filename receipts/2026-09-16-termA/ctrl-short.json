@@ -1,0 +1,7 @@
+provenance: mlx-omarchy 0.32.2.dev202609161852+2e252962 mx=0.32.2.dev202609161852+2e252962 verified=match harness=a9f14124-dirty core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:edf956df086d13d5
+decode 114.63 tok/s over 31 tokens (32 requested, EOS suppressed)
+prefill 0.078s (reported separately, excluded from decode)
+prompt_tokens 30
+decode mean per-token 8.7 ms
+generated_ids sha256:7fd25a869ff21678 n=32 first=9707,0,2585 last=646,387,7881
+{"decode_tps": 114.6299, "device": "Apple M1 (G13G B1)", "engine": "bench_decode", "generated": 32, "ids_first": [9707, 0, 2585], "ids_last": [646, 387, 7881], "ids_sha256_16": "7fd25a869ff21678", "prefill_s": 0.077654, "prefill_tps": 386.3309, "prompt_tokens": 30}

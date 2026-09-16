@@ -1,0 +1,195 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+# dso: libvulkan_asahi.so
+#
+# Total Lost Samples: 683
+#
+# Samples: 26K of event 'apple_firestorm_pmu/cycles/Pu'
+# Event count (approx.): 10696575481
+#
+# Overhead  Command        Symbol                
+# ........  .............  ......................
+#
+     0.41%  python         [.] 0x0000000000109cc4
+            |
+            ---0xfffebc459cc4
+               0xfffebc45a287
+               0xfffebc44294b
+
+     0.13%  python         [.] 0x00000000000dea68
+            |
+            ---0xfffebc42ea68
+               0xfffebc42cff3
+               0xfffebc3f7e7f
+
+     0.13%  python         [.] 0x0000000000190708
+            |
+            ---0xfffebc4e0708
+               0xfffebc46af83
+               0xfffebc45a8c3
+               |          
+                --0.08%--0xfffebc459e07
+                          0xfffebc45b16f
+                          0xfffebc442533
+                          0xfffebd10dc73
+                          vkDestroyDevice
+
+     0.10%  python         [.] 0x00000000000ef78c
+            |
+            ---0xfffebc43f78c
+
+     0.08%  python         [.] 0x00000000000dcd44
+            |
+            ---0xfffebc42cd44
+
+     0.07%  python         [.] 0x0000000000109c4c
+            |
+            ---0xfffebc459c4c
+               0xfffebc45a287
+               0xfffebc44294b
+
+     0.07%  python         [.] 0x00000000000dcd40
+            |
+            ---0xfffebc42cd40
+
+     0.07%  python         [.] 0x00000000000f0020
+            |
+            ---0xfffebc440020
+
+     0.06%  python         [.] 0x00000000000dee44
+            |
+            ---0xfffebc42ee44
+               0xfffebc42f0c7
+
+     0.06%  python         [.] 0x00000000000dd024
+            |
+            ---0xfffebc42d024
+               0xfffebc3f7e7f
+
+     0.06%  python         [.] 0x00000000000dc20c
+            |
+            ---0xfffebc42c20c
+               |          
+                --0.05%--0xfffebc42d853
+                          0xfffebc42ee87
+                          0xfffebc42f0c7
+
+     0.05%  python         [.] 0x00000000000dc928
+            |
+            ---0xfffebc42c928
+
+
+
+# Samples: 37K of event 'apple_icestorm_pmu/cycles/Pu'
+# Event count (approx.): 17423889817
+#
+# Overhead  Command  Symbol                
+# ........  .......  ......................
+#
+     0.60%  python   [.] 0x00000000000ef744
+            |
+            ---0xfffebc43f744
+
+     0.37%  python   [.] 0x00000000000ef73c
+            |
+            ---0xfffebc43f73c
+
+     0.21%  python   [.] 0x0000000000109f7c
+            |
+            ---0xfffebc459f7c
+               0xfffebc43e88f
+               0xfffebc42c4fb
+               0xfffebc42c783
+               0xfffebc42cb7b
+
+     0.14%  python   [.] 0x0000000000109f98
+            |
+            ---0xfffebc459f98
+               |          
+                --0.14%--0xfffebc43e88f
+                          0xfffebc42c4fb
+                          0xfffebc42c783
+                          0xfffebc42cb7b
+
+     0.14%  python   [.] 0x00000000000eeaa0
+            |
+            ---0xfffebc43eaa0
+               0xfffebc43f753
+
+     0.13%  python   [.] 0x0000000000109cc4
+            |
+            ---0xfffebc459cc4
+               0xfffebc45a287
+               |          
+                --0.11%--0xfffebc44294b
+
+     0.13%  python   [.] 0x00000000000db908
+            |
+            ---0xfffebc42b908
+               |          
+                --0.11%--0xfffebc43c227
+                          0xfffebc35d6ab
+
+     0.13%  python   [.] 0x0000000000109cac
+            |
+            ---0xfffebc459cac
+               0xfffebc45a287
+               0xfffebc43e76f
+               0xfffebc42c88f
+               0xfffebc42ef87
+               0xfffebc42f0c7
+
+     0.12%  python   [.] 0x00000000000eead0
+            |
+            ---0xfffebc43ead0
+               0xfffebc43f753
+
+     0.12%  python   [.] 0x000000000002f224
+            |
+            ---0xfffebc37f224
+
+     0.10%  python   [.] 0x0000000000109c40
+            |
+            ---0xfffebc459c40
+               0xfffebc45a287
+               |          
+                --0.10%--0xfffebc44294b
+
+     0.09%  python   [.] 0x00000000000dc9f0
+            |
+            ---0xfffebc42c9f0
+               |          
+                --0.08%--0xfffebc42ef87
+                          0xfffebc42f0c7
+
+     0.09%  python   [.] 0x00000000000e8d50
+            |
+            ---0xfffebc438d50
+               0xfffebc43c24f
+               0xfffebc35d6ab
+
+     0.07%  python   [.] 0x00000000000f0020
+            |
+            ---0xfffebc440020
+
+     0.07%  python   [.] 0x00000000000ef720
+            |
+            ---0xfffebc43f720
+
+     0.07%  python   [.] 0x00000000000deb68
+            |
+            ---0xfffebc42eb68
+               0xfffebc42db7b
+               0xfffebc438da3
+               0xfffebc43c24f
+               0xfffebc35d6ab
+
+     0.06%  python   [.] 0x00000000000a7e20
+            |
+            ---0xfffebc3f7e20
+
+
+
+#
+# (Tip: To see callchains in a more compact form: perf report -g folded)
+#
