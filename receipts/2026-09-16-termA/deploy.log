@@ -1,0 +1,67 @@
+== pause llm-inference ==
+service=inactive
+== install new package ==
+:: Running post-transaction hooks...
+(1/1) Arming ConditionNeedsUpdate...
+mesa-honeykrisp-omarchy 26.3.0.devel.hkd71c94e-2
+== extract old -1 package for the A/B baseline ==
+== 12-round interleaved packaged A/B ==
+r0 old      short   191.031 7fd25a869ff21678
+r0 old      ctx1024 151.487 7da83f06ec9f001d
+r0 new      short   215.486 7fd25a869ff21678
+r0 new      ctx1024 139.525 7da83f06ec9f001d
+r1 new      short   216.307 7fd25a869ff21678
+r1 new      ctx1024 180.008 7da83f06ec9f001d
+r1 old      short   190.467 7fd25a869ff21678
+r1 old      ctx1024 135.966 7da83f06ec9f001d
+r2 old      short   190.675 7fd25a869ff21678
+r2 old      ctx1024 148.710 7da83f06ec9f001d
+r2 new      short   215.970 7fd25a869ff21678
+r2 new      ctx1024 129.954 7da83f06ec9f001d
+r3 new      short   215.119 7fd25a869ff21678
+r3 new      ctx1024 132.141 7da83f06ec9f001d
+r3 old      short   185.822 7fd25a869ff21678
+r3 old      ctx1024 145.857 7da83f06ec9f001d
+r4 old      short   191.080 7fd25a869ff21678
+r4 old      ctx1024 141.415 7da83f06ec9f001d
+r4 new      short   214.897 7fd25a869ff21678
+r4 new      ctx1024 135.708 7da83f06ec9f001d
+r5 new      short   215.440 7fd25a869ff21678
+r5 new      ctx1024 146.164 7da83f06ec9f001d
+r5 old      short   190.699 7fd25a869ff21678
+r5 old      ctx1024 135.918 7da83f06ec9f001d
+r6 old      short   190.274 7fd25a869ff21678
+r6 old      ctx1024 143.336 7da83f06ec9f001d
+r6 new      short   215.852 7fd25a869ff21678
+r6 new      ctx1024 143.030 7da83f06ec9f001d
+r7 new      short   215.915 7fd25a869ff21678
+r7 new      ctx1024 132.830 7da83f06ec9f001d
+r7 old      short   190.422 7fd25a869ff21678
+r7 old      ctx1024 138.266 7da83f06ec9f001d
+r8 old      short   191.015 7fd25a869ff21678
+r8 old      ctx1024 122.103 7da83f06ec9f001d
+r8 new      short   215.230 7fd25a869ff21678
+r8 new      ctx1024 129.010 7da83f06ec9f001d
+r9 new      short   215.456 7fd25a869ff21678
+r9 new      ctx1024 135.080 7da83f06ec9f001d
+r9 old      short   190.756 7fd25a869ff21678
+r9 old      ctx1024 142.821 7da83f06ec9f001d
+r10 old      short   190.623 7fd25a869ff21678
+r10 old      ctx1024 129.101 7da83f06ec9f001d
+r10 new      short   215.700 7fd25a869ff21678
+r10 new      ctx1024 150.628 7da83f06ec9f001d
+r11 new      short   215.284 7fd25a869ff21678
+r11 new      ctx1024 161.985 7da83f06ec9f001d
+r11 old      short   190.635 7fd25a869ff21678
+r11 old      ctx1024 159.447 7da83f06ec9f001d
+
+== medians ==
+old      short=190.66 (+0.00%) ctx1024=142.12 (+0.00%)
+new      short=215.47 (+13.02%) ctx1024=137.62 (-3.17%)
+== suite on the packaged new driver ==
+suite rc=0
+[doctest] test cases:    41 |    41 passed | 0 failed | 0 skipped
+[doctest] assertions: 22694 | 22694 passed | 0 failed |
+[doctest] Status: SUCCESS!
+== restart llm-inference ==
+active

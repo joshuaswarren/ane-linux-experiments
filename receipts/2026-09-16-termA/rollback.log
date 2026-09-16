@@ -1,0 +1,8 @@
+== pause llm-inference ==
+== reinstall hk6f6afc8-1 ==
+(1/1) Arming ConditionNeedsUpdate...
+mesa-honeykrisp-omarchy 26.3.0.devel.hk6f6afc8-1
+== quick control: ctx1024 leg digest+rate ==
+{"decode_tps": 133.8176, "device": "Apple M1 Max (G13C C0)", "engine": "bench_decode", "generated": 32, "ids_first": [13060, 498, 369], "ids_last": [3897, 553, 279], "ids_sha256_16": "7da83f06ec9f001d", "prefill_s": 0.274366, "prefill_tps": 3837.9455, "prompt_tokens": 1053}
+== restart llm-inference ==
+active

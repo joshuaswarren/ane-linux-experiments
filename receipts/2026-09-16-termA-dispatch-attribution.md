@@ -158,3 +158,52 @@ Every GPU step ran under one hold of `/tmp/m1-gpu.lock` (never
 unlinked, nested `flock -n` refused while held); no reboot, no ANE
 command, `63c1d3cf` not merged, no mlx-omarchy source change (the wheel
 under test is the untouched v0.6.0 release artifact).
+
+## 6. Addendum: G13C (jw16, M1 Max) port — sourced, measured, NOT shipped
+
+Assignment follow-up: port the trim to jw16's G13C. **Sourcing (not
+analogy):** `agx_device.c:664-671` maps generation-13 multi-cluster dies
+to `AGX_CHIP_G13X` — exactly jw16 (t6001, "G13C C0", M1 Max) — while
+single-cluster t8103 is `AGX_CHIP_G13G` (jwm1). Honeykrisp's own
+pre-sink emission for G13X is unk_4 (explicitly under
+`chip == AGX_CHIP_G13X`) plus unk_5/6/8, i.e. the designed set
+**{4,5,6,8}**; that block is the G13C designed bits, taken from source,
+not analogy.
+
+Landed attempt: `d71c94ec4ec` gated the trim to G13X as well; package
+`mesa-honeykrisp-omarchy 26.3.0.devel.hkd71c94e-2` (same PKGBUILD
+recipe) built on jwm1 and installed on jw16 inside an
+llm-inference.service pause window (service stopped → installed →
+measured → restarted; `/tmp/m1-gpu.lock` held under `flock -w 900`,
+never stolen; rollback tarball staged before install).
+
+**jw16 A/B (12-round interleaved, packaged hkd71c94e-2 vs extracted
+hk6f6afc8-1; wheel v0.6.0 2e252962; pins fatal):**
+
+| arm | short med | ctx1053 med | pins |
+| --- | ---: | ---: | --- |
+| old (kitchen sink) | 190.66 tok/s | 142.12 tok/s | 24/24 |
+| new (designed {4,5,6,8}) | 215.47 tok/s | 137.62 tok/s | 24/24 |
+| delta | **+13.02%** | **−3.17%** | 48/48 held |
+
+Suite on the packaged driver (jw16): **41 cases / 22694 assertions,
+0 failed** — the sourced bits are deterministic and non-corrupting.
+
+**Decision: not shipped on G13X.** The ctx1053 regression is on the
+Max's weakest leg (47.8% of native per the boundary receipt); a
+short-for-ctx trade fails the project's both-legs land discipline
+(rmsnorm-qkv precedent). jw16 was rolled back to `hk6f6afc8-1`
+(installed, control ctx run held `7da83f06ec9f001d` at 133.8 tok/s
+cold, llm-inference restarted active). Mesa follow-up
+`5deac1c8068` restores the kitchen sink for G13X (documented with this
+measurement) and is merged to `honeykrisp-omarchy`; the trim ships
+**G13G-only**. jwm1's installed `hkd71c94e-2` package is unaffected by
+the revert (its G13G emission is identical to the reverted state).
+
+Open follow-up: on jw16 the sink's ctx cost is ~9 µs/dispatch like
+jwm1's; a G13X set that keeps both legs needs a targeted sweep
+(e.g. adding usc_cache_inval or the PBE/texture bits to the designed
+set) with ctx as the gate.
+
+jw16 artifacts: `packaged-jw16-ab.json`, `suite-packaged.log` (41-case),
+`rollback.log`, `deploy.log`.
