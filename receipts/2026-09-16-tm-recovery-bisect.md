@@ -1,11 +1,16 @@
-# TM -110 recovery bisect (2026-09-16): lethal writes named by netconsole, T8103 recovery proven twice, T6001 recovery is unfixable driver-side
+# TM -110 recovery bisect (2026-09-16): lethal writes named by netconsole, T8103 recovery proven twice and LANDED on main, T6001 recovery is unfixable driver-side (fails safe)
 
-Date: 2026-09-16 (window work 06:30 → 07:35 CDT)
+Date: 2026-09-16 (window work 06:30 → 07:35 CDT; main landing 07:38 CDT)
+
 Hosts: jwm1-linux (T8103, `ane@26bc04000`), jw16mbp1-linux (T6001, `ane@285c04000`)
 Agent: AneTmRecoveryBisect. Branches on `joshuaswarren/omarchy-ane`:
 `bisect/tm110` (evidence trail, tip `3d65ca7`) and `fix/tm-recovery-final`
 (deliverable, tip **`96d5a88`**, based on `b03f4b2` = held `fix/tm-recovery`).
-`origin/main` unchanged at **`6fa243ac7241`** — see Disposition.
+**LANDED:** `origin/main` = **`44dd9bf869f1`** (merge of `6fa243a` +
+`96d5a88`, tree identical to `96d5a88`) — disposition returned by Main
+via LandHostLeaves within the hour: land for the T8103 half, T6001
+fails safe.
+
 
 ## Outcome
 
@@ -172,10 +177,10 @@ controlled wedge-pin clear 07:31), both documented above; jwm1 zero.
 
 ## Branch / main state
 
-- `origin/main` = **`6fa243ac7241`** (unchanged — the both-hosts landing
-  bar is unmeatable on T6001, so per the standing rule I did not merge;
-  disposition needed from Main: land `fix/tm-recovery-final` for the
-  T8103 half with T6001 failing safe, or hold).
+- `origin/main` = **`44dd9bf869f1`** — LANDED 07:38 CDT by
+  LandHostLeaves on Main's disposition (merge `6fa243a` + `96d5a88`;
+  `git diff 96d5a88 origin/main` is empty). The T8103 no-reboot
+  recovery and the T6001 fail-safe are on main as of this SHA.
 - `origin/fix/tm-recovery-final` = `96d5a88` (deliverable, based on held
   `fix/tm-recovery` `b03f4b2`).
 - `origin/bisect/tm110` = `3d65ca7` (evidence trail; includes the
@@ -211,13 +216,13 @@ controlled wedge-pin clear 07:31), both documented above; jwm1 zero.
   s3 `59762ee8…` vs fixture `1d88236b…`; 104/128 bytes differ from the
   first byte (wholesale, not tail).
 
-## Not done / disposition asked
+## Disposition (resolved)
 
-- `main` not moved (rule: both-hosts bar; T6001 cannot meet it —
-  hardware/firmware boundary: locked set0/base hold the engine file in
-  retention across every driver-reachable cycle). Main decides: land
-  `fix/tm-recovery-final` as the T8103 no-reboot recovery with T6001
-  fail-safe, or hold both at current state.
+- LANDED: `origin/main` = `44dd9bf869f1` contains `96d5a88` (merge with
+  `6fa243a`), per Main's disposition returned via LandHostLeaves at
+  07:38 CDT — T8103 no-reboot recovery on main; T6001 fails safe, never
+  wrong data. jwm1 runs main's build; jw16 remains on `6fa243a`
+  (behavior-identical to main on T6001) until its next natural update.
 - T6001 exact-restore paths that would need new scope: full system
   suspend trigger from Linux (heavy, untested here) or a firmware/SMC
   reset handshake (no documented endpoint found in this lane).
