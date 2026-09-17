@@ -1,0 +1,6 @@
+ladder_exit=0
+micro_exit=0
+screens_exit=0
+ab_exit=0
+screensfix_exit=0
+ladderfix_exit=1

@@ -1,0 +1,224 @@
+{
+ "driver": "ladder_driver.py",
+ "pins": {
+  "libmlx": "06e43c203e85a16a",
+  "short": "7fd25a869ff21678",
+  "ctx1024": "7da83f06ec9f001d"
+ },
+ "rounds": [
+  {
+   "leg": "short",
+   "decode_tps": 191.1478,
+   "prefill_s": 0.065607,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 1.6,
+   "round": 0
+  },
+  {
+   "leg": "ctx256",
+   "decode_tps": 179.1806,
+   "prefill_s": 0.13195,
+   "prompt_tokens": 414,
+   "ids_sha16": "e8488554a9ff3d30",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 1.8,
+   "round": 0
+  },
+  {
+   "leg": "ctx512",
+   "decode_tps": 161.486,
+   "prefill_s": 0.201568,
+   "prompt_tokens": 653,
+   "ids_sha16": "296ad46feb95f62b",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 2.0,
+   "round": 0
+  },
+  {
+   "leg": "ctx1024",
+   "decode_tps": 160.5215,
+   "prefill_s": 0.267934,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 2.2,
+   "round": 0
+  },
+  {
+   "leg": "ctx256",
+   "decode_tps": 175.9754,
+   "prefill_s": 0.130125,
+   "prompt_tokens": 414,
+   "ids_sha16": "e8488554a9ff3d30",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 1.8,
+   "round": 1
+  },
+  {
+   "leg": "ctx512",
+   "decode_tps": 148.1945,
+   "prefill_s": 0.201784,
+   "prompt_tokens": 653,
+   "ids_sha16": "296ad46feb95f62b",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 2.0,
+   "round": 1
+  },
+  {
+   "leg": "ctx1024",
+   "decode_tps": 140.9079,
+   "prefill_s": 0.268034,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 2.3,
+   "round": 1
+  },
+  {
+   "leg": "short",
+   "decode_tps": 190.9532,
+   "prefill_s": 0.065343,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 1.6,
+   "round": 1
+  },
+  {
+   "leg": "ctx512",
+   "decode_tps": 175.5126,
+   "prefill_s": 0.199984,
+   "prompt_tokens": 653,
+   "ids_sha16": "296ad46feb95f62b",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 2.0,
+   "round": 2
+  },
+  {
+   "leg": "ctx1024",
+   "decode_tps": 150.0014,
+   "prefill_s": 0.270529,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 2.2,
+   "round": 2
+  },
+  {
+   "leg": "short",
+   "decode_tps": 190.7248,
+   "prefill_s": 0.065089,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 1.6,
+   "round": 2
+  },
+  {
+   "leg": "ctx256",
+   "decode_tps": 179.3665,
+   "prefill_s": 0.133027,
+   "prompt_tokens": 414,
+   "ids_sha16": "e8488554a9ff3d30",
+   "libmlx": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a",
+   "run_wall_s": 1.8,
+   "round": 2
+  }
+ ],
+ "medians": {
+  "short": {
+   "prompt_tokens": 30,
+   "decode_tps_median": 190.9532,
+   "decode_tps_all": [
+    191.1478,
+    190.9532,
+    190.7248
+   ],
+   "token_ms_median": 5.2369,
+   "digests": [
+    "7fd25a869ff21678"
+   ]
+  },
+  "ctx256": {
+   "prompt_tokens": 414,
+   "decode_tps_median": 179.1806,
+   "decode_tps_all": [
+    179.1806,
+    175.9754,
+    179.3665
+   ],
+   "token_ms_median": 5.581,
+   "digests": [
+    "e8488554a9ff3d30"
+   ]
+  },
+  "ctx512": {
+   "prompt_tokens": 653,
+   "decode_tps_median": 161.486,
+   "decode_tps_all": [
+    161.486,
+    148.1945,
+    175.5126
+   ],
+   "token_ms_median": 6.1925,
+   "digests": [
+    "296ad46feb95f62b"
+   ]
+  },
+  "ctx1024": {
+   "prompt_tokens": 1053,
+   "decode_tps_median": 150.0014,
+   "decode_tps_all": [
+    160.5215,
+    140.9079,
+    150.0014
+   ],
+   "token_ms_median": 6.6666,
+   "digests": [
+    "7da83f06ec9f001d"
+   ]
+  }
+ },
+ "fit": {
+  "points_N_ms": [
+   [
+    30,
+    5.2369
+   ],
+   [
+    414,
+    5.581
+   ],
+   [
+    653,
+    6.1925
+   ],
+   [
+    1053,
+    6.6666
+   ]
+  ],
+  "t0_ms": 5.1353,
+  "slope_us_per_kv_token": 1.4584,
+  "residual_ms": [
+   0.1015,
+   0.445,
+   1.0562,
+   1.5297
+  ]
+ }
+}
