@@ -168,3 +168,51 @@ Receipt refs: this file (ane-linux-experiments) and mlx-omarchy `agent/parakeet-
 at `a865fddd`. Locks respected: jwm1 inode unchanged, TAKE/RELEASE announced on
 the hub; jw16 untouched (held by FfnPaletteDecode for the ffn gate, cleanly
 released). `63c1d3cf` never merged, not touched.
+
+## 6. ADDENDUM 2 — 2026-09-17 17:35 CDT, ShmShmoutFix lane CLOSED: after-passes GREEN, lane complete
+
+**Root cause #2 found and fixed.** The L00-B SIGSEGV was NOT libane heap
+corruption — it was an index-space confusion in the landed shm code itself:
+`AneWorker::open` rewrites `AneValidatedProgram.manifest_index` into a
+device-wide program key (cumulative program count across bundles) in its
+`resident` copies, but the child's `shout` sink-reservation loop (worker.cpp:474)
+and the post-exec `shmout` header loop (worker.cpp:522) indexed
+`bundle.manifest.programs` with that global key. island-attn-a-kt is bundle 0
+(base 0, 2 programs ≥ its indices) so it passed by luck; island-select-8head
+(base 27, 1 program) read `manifest.programs[27]` — out-of-bounds heap that
+happened to hold island-oproj-L17 manifest records (the `L17/pro…` bytes and the
+`ptr=0x10` string the -g1 core showed). The inline path never dereferences
+those records (empty sinks map short-circuits the tree lookup), which is why
+inline was green while shm crashed. Fix: `manifest_index_local` field keeps the
+per-bundle index for manifest walks; `manifest_index` remains the device key.
+
+- Branch tip **`f87669b9`** (`df1f4df1` + `a671a4f9` + `f87669b9` on top of
+  `a865fddd`), pushed to `agent/parakeet-transport`.
+- Deployed on jwm1: wheel `cd63eec9…` (pt.f87669b9), **libmlx `f2101e75…`**,
+  worker `2615151d…`, libane `04a17653…` (certified, unchanged),
+  `expected-libmlx.sha256` = f2101e75, identity guard green.
+
+## 7. AFTER attribution (jwm1, T8103, resident-batch ABC, 72 rounds, shm transport, warm)
+
+Two passes, both **PASS, pins exact**: transcript `db501a8c` EXACT, hidden
+`38c73261`, 104/104, bounds PASS, mel bit-exact, timeouts 0,
+cpu_tensor_events 0, rel_l2 0.023043964058160782 (identical to certified arms).
+
+| metric (per pass) | before (inline) | after-1 (shm) | after-2 (shm) | delta |
+| --- | ---: | ---: | ---: | --- |
+| encoder_ane wall | 6882.0 ms | 5393.2 ms | 4279.7 ms | **-22% / -38%** |
+| round wall (ane_exec, 72 rounds) | 2525.6 ms | 425.6 ms | 419.3 ms | **-83%** |
+| client IPC write (stdin) | 666.1 ms | 3.9 ms | 3.6 ms | **-99%** |
+| client IPC read (stdout) | 1729.9 ms | 358.6 ms | 353.2 ms | **-79%** |
+| bytes crossing the boundary | 299.5 MB in + 234.3 MB out | same | same | unchanged (zero-copy via memfd) |
+| total_pipeline | 10232.2 ms | 8769.0 ms | 7657.3 ms | -14% / -25% |
+
+Child-side phase timers now live (previously zero): L00-A
+pack 950 µs / exec 881 µs / read 3416 µs / crecv 16 µs; per-round
+submit ≈ 5.0–5.4 ms. Worker starts per pass: 1. The remaining read-side
+cost is the device unpack + copy-back inside the child, not transport.
+
+Refs: this file (ane-linux-experiments) and mlx-omarchy
+`agent/parakeet-transport` at `f87669b9`. jwm1 lock released cleanly after the
+passes (flock -w 900 throughout, never stolen/unlinked); jw16 untouched by this
+lane. `63c1d3cf` never merged, not touched.
