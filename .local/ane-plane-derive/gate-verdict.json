@@ -1,0 +1,425 @@
+{
+ "mints": "/home/joshuawarren/.config/superpowers/worktrees/ane-linux-experiments/PlaneDerive/receipts/2026-09-17-t6021-h14g-oracle-mints",
+ "arch_invariance": {
+  "jw14m2-t6021-host/oproj": true,
+  "jw14m2-t6021-host/mm1": true,
+  "jw14m2-t6021-host/mm2": true,
+  "macstudio-t6000-host/oproj": true,
+  "macstudio-t6000-host/mm1": true,
+  "macstudio-t6000-host/mm2": true
+ },
+ "cross_host": {
+  "oproj": {
+   "aligned_shift": 24,
+   "differing": 158,
+   "ranges": [
+    [
+     "0x0",
+     "0x1"
+    ],
+    [
+     "0x4",
+     "0x10"
+    ],
+    [
+     "0x14",
+     "0x15"
+    ],
+    [
+     "0x18",
+     "0x19"
+    ],
+    [
+     "0x1c",
+     "0x1d"
+    ],
+    [
+     "0x24",
+     "0x29"
+    ],
+    [
+     "0x2c",
+     "0x2d"
+    ],
+    [
+     "0x30",
+     "0x30"
+    ],
+    [
+     "0x34",
+     "0x34"
+    ],
+    [
+     "0x38",
+     "0x41"
+    ],
+    [
+     "0x44",
+     "0x45"
+    ],
+    [
+     "0x48",
+     "0x48"
+    ],
+    [
+     "0x4c",
+     "0x54"
+    ],
+    [
+     "0x58",
+     "0x59"
+    ],
+    [
+     "0x5c",
+     "0x5c"
+    ],
+    [
+     "0x60",
+     "0x61"
+    ],
+    [
+     "0x64",
+     "0x68"
+    ],
+    [
+     "0x6c",
+     "0x6c"
+    ],
+    [
+     "0x70",
+     "0x70"
+    ],
+    [
+     "0x74",
+     "0x7c"
+    ],
+    [
+     "0x80",
+     "0xdd"
+    ],
+    [
+     "0x780",
+     "0x780"
+    ],
+    [
+     "0x908",
+     "0x908"
+    ]
+   ],
+   "chip_macstudio": "0x6002",
+   "chip_jw14m2": "0x6021"
+  },
+  "mm1": {
+   "aligned_shift": 16,
+   "differing": 154,
+   "ranges": [
+    [
+     "0x0",
+     "0x0"
+    ],
+    [
+     "0x4",
+     "0x10"
+    ],
+    [
+     "0x14",
+     "0x15"
+    ],
+    [
+     "0x18",
+     "0x19"
+    ],
+    [
+     "0x1c",
+     "0x1d"
+    ],
+    [
+     "0x20",
+     "0x21"
+    ],
+    [
+     "0x28",
+     "0x2d"
+    ],
+    [
+     "0x30",
+     "0x30"
+    ],
+    [
+     "0x34",
+     "0x35"
+    ],
+    [
+     "0x38",
+     "0x45"
+    ],
+    [
+     "0x48",
+     "0x48"
+    ],
+    [
+     "0x4c",
+     "0x54"
+    ],
+    [
+     "0x58",
+     "0x58"
+    ],
+    [
+     "0x5c",
+     "0x5d"
+    ],
+    [
+     "0x60",
+     "0x60"
+    ],
+    [
+     "0x64",
+     "0x65"
+    ],
+    [
+     "0x68",
+     "0x6c"
+    ],
+    [
+     "0x70",
+     "0x70"
+    ],
+    [
+     "0x74",
+     "0x75"
+    ],
+    [
+     "0x78",
+     "0x7c"
+    ],
+    [
+     "0x80",
+     "0x80"
+    ],
+    [
+     "0x84",
+     "0xdd"
+    ],
+    [
+     "0x780",
+     "0x780"
+    ],
+    [
+     "0x908",
+     "0x908"
+    ]
+   ],
+   "chip_macstudio": "0x6002",
+   "chip_jw14m2": "0x6021"
+  },
+  "mm2": {
+   "aligned_shift": 16,
+   "differing": 154,
+   "ranges": [
+    [
+     "0x0",
+     "0x0"
+    ],
+    [
+     "0x4",
+     "0x10"
+    ],
+    [
+     "0x14",
+     "0x15"
+    ],
+    [
+     "0x18",
+     "0x19"
+    ],
+    [
+     "0x1c",
+     "0x1d"
+    ],
+    [
+     "0x20",
+     "0x21"
+    ],
+    [
+     "0x28",
+     "0x2d"
+    ],
+    [
+     "0x30",
+     "0x30"
+    ],
+    [
+     "0x34",
+     "0x35"
+    ],
+    [
+     "0x38",
+     "0x45"
+    ],
+    [
+     "0x48",
+     "0x48"
+    ],
+    [
+     "0x4c",
+     "0x54"
+    ],
+    [
+     "0x58",
+     "0x58"
+    ],
+    [
+     "0x5c",
+     "0x5d"
+    ],
+    [
+     "0x60",
+     "0x60"
+    ],
+    [
+     "0x64",
+     "0x65"
+    ],
+    [
+     "0x68",
+     "0x6c"
+    ],
+    [
+     "0x70",
+     "0x70"
+    ],
+    [
+     "0x74",
+     "0x75"
+    ],
+    [
+     "0x78",
+     "0x7c"
+    ],
+    [
+     "0x80",
+     "0x80"
+    ],
+    [
+     "0x84",
+     "0xdd"
+    ],
+    [
+     "0x780",
+     "0x780"
+    ],
+    [
+     "0x908",
+     "0x908"
+    ]
+   ],
+   "chip_macstudio": "0x6002",
+   "chip_jw14m2": "0x6021"
+  }
+ },
+ "cross_geometry_accounting": {
+  "mm1-vs-oproj": {
+   "differing": 22,
+   "ranges": [
+    [
+     "0xb4",
+     "0xb4"
+    ],
+    [
+     "0xcf",
+     "0xdd"
+    ],
+    [
+     "0x3cd",
+     "0x3ce"
+    ],
+    [
+     "0x415",
+     "0x415"
+    ],
+    [
+     "0x435",
+     "0x435"
+    ],
+    [
+     "0x7c1",
+     "0x7c2"
+    ]
+   ]
+  },
+  "mm1-vs-mm2": {
+   "differing": 13,
+   "ranges": [
+    [
+     "0xd1",
+     "0xd1"
+    ],
+    [
+     "0x3cd",
+     "0x3ce"
+    ],
+    [
+     "0x415",
+     "0x415"
+    ],
+    [
+     "0x435",
+     "0x435"
+    ],
+    [
+     "0x475",
+     "0x476"
+    ],
+    [
+     "0x4bd",
+     "0x4bd"
+    ],
+    [
+     "0x4dd",
+     "0x4dd"
+    ],
+    [
+     "0x7c1",
+     "0x7c2"
+    ],
+    [
+     "0x801",
+     "0x802"
+    ]
+   ]
+  }
+ },
+ "watermark_at_rest": {
+  "oproj": {
+   "ok": 524288,
+   "total": 524288
+  },
+  "mm1": {
+   "ok": 2097152,
+   "total": 2097152
+  },
+  "mm2": {
+   "ok": 2097152,
+   "total": 2097152
+  }
+ },
+ "weight_descriptors": {
+  "geometry_scaled_fields_outside_accounted_ranges": [],
+  "weight_byte_count_fields": []
+ },
+ "known_answer_gate": {
+  "oproj": {
+   "map_size": 80896,
+   "verdict": "NOT REPRODUCIBLE FROM E5 \u2014 container embeds no weight payload and no weight descriptors; watermark matching has no emitted positions to match against"
+  },
+  "mm1": {
+   "map_size": 4194304,
+   "verdict": "NOT REPRODUCIBLE FROM E5 \u2014 container embeds no weight payload and no weight descriptors; watermark matching has no emitted positions to match against"
+  },
+  "mm2": {
+   "map_size": 4194304,
+   "verdict": "NOT REPRODUCIBLE FROM E5 \u2014 container embeds no weight payload and no weight descriptors; watermark matching has no emitted positions to match against"
+  }
+ }
+}

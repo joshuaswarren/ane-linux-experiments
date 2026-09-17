@@ -138,6 +138,11 @@ Final state after two same-day addenda (read that receipt for detail):
   off the LOCAL machine's ANE (H13D.bundle on M1-family hosts, H14C.bundle on t6021);
   oracles are host-SoC by construction. Compiled linear programs are family-invariant
   apart from bundle naming and a **single byte at 0x908** (family/chip id).
+  **Do NOT infer from this byte-parity that the H13 weight-plane maps transfer to
+  t6021**: the map is not a program property (see the corrected bullet below), so
+  program equality cannot transfer it. Verified offline-undecidable in
+  `receipts/2026-09-17-t6021-plane-derivation.md`; the t6021 weight map is open and
+  device-testable per `docs/t6021-weight-map-day-one-runbook.md`.
 - **RETRACTED within addendum 3**: addendum 2's "edge-k16 family-dependent
   segmentation" claim was a duplicate-cache-entry artifact (byte-identical `.e5`, two
   `anehash` values), not two programs. K=8..64 all compile single-program on both
