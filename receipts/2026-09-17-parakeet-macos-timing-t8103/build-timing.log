@@ -1,0 +1,12 @@
+warning: could not determine XCTest paths: terminated(1): /usr/bin/xcrun --sdk macosx --show-sdk-platform-path output:
+    xcrun: error: unable to lookup item 'PlatformPath' from command line tools installation
+    xcrun: error: unable to lookup item 'PlatformPath' in SDK '/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
+    
+Building for production...
+[0/5] Write sources
+[2/5] Write swift-version--1AB21518FC5DEDBE.txt
+[4/6] Compiling ParakeetTDT AudioLoader.swift
+[5/7] Compiling parakeet_timing main.swift
+[5/7] Write Objects.LinkFileList
+[6/7] Linking parakeet-timing
+Build complete! (38.74s)

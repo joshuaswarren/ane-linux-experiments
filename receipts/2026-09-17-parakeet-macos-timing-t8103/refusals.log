@@ -1,0 +1,9 @@
+== refusal-ane (stderr+stdout, 2026-09-17T23:19:36Z) ==
+Swift/ErrorType.swift:200: Fatal error: Error raised at top level: Failed to compile model at /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/encoder.mlpackage: Error Domain=com.apple.mlassetio Code=1 "Failed to parse the model specification. Error: Unable to parse ML Program: at unknown location: Unknown opset 'CoreML8'." UserInfo={NSLocalizedDescription=Failed to parse the model specification. Error: Unable to parse ML Program: at unknown location: Unknown opset 'CoreML8'.}
+exit=133
+== refusal-all ==
+Swift/ErrorType.swift:200: Fatal error: Error raised at top level: Failed to compile model at /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/encoder.mlpackage: Error Domain=com.apple.mlassetio Code=1 "Failed to parse the model specification. Error: Unable to parse ML Program: at unknown location: Unknown opset 'CoreML8'." UserInfo={NSLocalizedDescription=Failed to parse the model specification. Error: Unable to parse ML Program: at unknown location: Unknown opset 'CoreML8'.}
+exit=133
+== refusal-cpu ==
+Swift/ErrorType.swift:200: Fatal error: Error raised at top level: Failed to compile model at /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/encoder.mlpackage: Error Domain=com.apple.mlassetio Code=1 "Failed to parse the model specification. Error: Unable to parse ML Program: at unknown location: Unknown opset 'CoreML8'." UserInfo={NSLocalizedDescription=Failed to parse the model specification. Error: Unable to parse ML Program: at unknown location: Unknown opset 'CoreML8'.}
+exit=133

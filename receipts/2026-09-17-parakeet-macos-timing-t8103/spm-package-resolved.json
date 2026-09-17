@@ -1,0 +1,23 @@
+{
+  "originHash" : "abdff664cf5ae5e689ce58947da82445fe72023975132cb823356c362d0defaa",
+  "pins" : [
+    {
+      "identity" : "parakeet-coreml-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mweinbach/parakeet-coreml-swift",
+      "state" : {
+        "revision" : "75aec2a1c991319657ff4dec5f602c12da6c5012"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "957954da20c49873cde3ea56352448a2ec63fdaa",
+        "version" : "1.7.2"
+      }
+    }
+  ],
+  "version" : 3
+}
