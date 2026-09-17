@@ -127,7 +127,78 @@ silu row, but never established WHICH row. Consequences, all measured:
   m5_A.npy, H_A.npy, yz_A.npy) + on-host /tmp/ffnprobe/{batchC-out,gate2-out,
   gate3-out, gate2.log, gate3.log, repacked bundles}.
 
-## Disposition
+
+---
+
+# Addendum: mm1 row map CLOSED (identity, 8/8), root cause identified — the chain const section stores PALETTIZED weight data
+
+## The mm1 row map: IDENTITY (final window, random-fill match)
+
+Random-fill probe (seed 20260917, discriminative — the earlier m5 fill's
+period-5 pattern aliased candidate rows whose anchors differ by multiples of
+5 halves: cells (0,0,0)/(0,5,0) produced byte-identical outputs, row 16
+aliased row 1 via anchor offset 90 = 0 mod 5). With the random fill, all 8
+probed cells match their identity rows with rms 0.24-0.42:
+
+    (t=0,c=0)   -> row 0      (t=1,c=0)   -> row 16
+    (t=0,c=1)   -> row 1      (t=2,c=0)   -> row 32
+    (t=0,c=2)   -> row 2      (t=64,c=0)  -> row 1024
+    (t=0,c=5)   -> row 5      (t=255,c=15)-> row 4095
+
+    pi_row(t, c) = 16*t + c   — IDENTITY — alpha = 511.82-512.01 ~= silu(512)
+
+## Root cause of the gate failure: the const section is PALETTIZED
+
+With the row map closed, the repack failure (rel_l2 0.506) traces to the
+weight SOURCE, not the fetch map: the chain bundle's const section stores
+**palettized weight data** (palette + index stream for hardware-side
+dequantization), NOT plain fp16 matrices. Evidence:
+
+- The raw-read "W1"/"W2" from the encoder blobs share absmax 427.25 and their
+  "biases" duplicate the same values — a palette/index stream misread as fp16.
+- The matrices extracted from the bundle's const section (std 0.47, absmax
+  42.1) produce an fp32 reference whose outputs reach +-17,657 — real FFN
+  outputs at these shapes are O(+-5). Any gate against such a reference is
+  meaningless, in EITHER direction.
+- The bias-compensation calibration (corr(res_j, rowsum_j) = -0.005) is
+  equally uninterpretable: its row sums are sums of palette-stream garbage.
+
+The fetch-map result (XOR 0xF00) is UNAFFECTED: it was measured with
+isolation bundles whose payload content is probe-controlled (impulses, fills)
+and confirmed by position (the tap at exactly the predicted anchor), not by
+weight values.
+
+## What the composite kernel measurement establishes (device facts)
+
+- Main tap at the XOR-predicted anchor, response 511.75 ~= silu(512):
+  the main-path composite gain is ~1.0.
+- A flat signed sea: -3.4e-4 per lattice step, uniform over all 4095
+  non-anchor positions (sum -1.389 in ones-normalized units), no decay,
+  symmetric extent. Pattern-linear (per-j m5 fit corr 0.939; fill-class means
+  exactly linear at 2.23/fill-step).
+
+## Final disposition
+
+**The fused mm1->silu->mm2 chain program is NOT deployable in this iteration:
+the XOR+deconv repack gates at rel_l2 0.505-0.508 (rngs 11/33/57) vs budget
+0.05 — FAIL — and the residual traces to palettized-weight semantics, which
+are a compiler/mint-level problem (the chain mint must either emit
+dequantized fp16 const sections for this shape or the gate reference must be
+built from a trusted dequantization), not a payload-permutation problem.**
+
+Path to closure, in order:
+1. Re-mint the chain with dequantized (non-palettized) weights, or decode the
+   H13 palettized format for these blobs (the palette/indices layout is the
+   same class as the t6021 plane-derivation work — currently undecoded).
+2. Re-run this gate script unchanged against the re-minted bundle.
+3. If the gate then lands near the islands' 0.000208 class, proceed to the
+   48-bundle scale + engine wiring + the both-host matrix (the F-hunk wiring
+   from agent/ane-ffn-placement needs only the chain-bundle swap).
+
+FFN-on-ANE default: UNCHANGED (ABC). The gate never passed; the combined
+arm with digest caching is moot for this iteration.
+
+## Disposition (superseded section kept for the record)
 
 **FFN-on-ANE stays opt-in; the default remains ABC.** The fused chain lever is
 NOT dead on the fetch map (cracked: XOR 0xF00) but is BLOCKED on the mm1 row
