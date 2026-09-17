@@ -111,16 +111,22 @@ Full detail: `ane-compiler-provenance.txt` in this directory. Headlines:
   cache / boot kernel collection, so no compiler binary strings were extractable read-only
   within scope. No `ANECompilerService.framework` on this build.
 
-## 4. Parakeet macOS divisor — executed; guard fails; no number
+## 4. Parakeet macOS divisor — cross-pin fails; T6021 self-golden divisor TAKEN
 
 Owner lifted the no-install constraint mid-run (2026-09-17). The M1-Ultra-methodology
-battery ran on this host after the archive push: **the 104-token / `db501a8c` guard
-refused `.ane` and `.all` alike (107 tokens ≠ 104, both at warm0, 0/1 holds each)** —
-the divergence is universal across compute units on t6021 (first mismatch at token
-index 99; dot-run tail + junk token). Per the discipline, **no ANE or `.all` median is
-claimed from this host**. Full detail, divergence artifacts, and the exact machine
-footprint: `receipts/2026-09-17-jw14m2-t6021-parakeet-divisor.md`. The only comparable
-macOS divisor path remains jwm1 (T8103) in macOS.
+battery ran on this host after the archive push: **the M1-family 104-token / `db501a8c`
+guard refused `.ane` and `.all` alike (107 tokens ≠ 104, both at warm0, 0/1 holds
+each)** — divergence is universal across compute units on t6021 (first mismatch at
+token index 99; dot-run tail + junk token). Per discipline no cross-pin number was
+claimed. ADDENDUM (same day, appended to the divisor receipt): a **T6021 self-consistent
+golden was minted** (3× byte-identical runs; 107 tokens, transcript `344a28e1…`; `.all`
+mint identical), and both batteries then held it **13/13**:
+**`.ane` median 215.8 ms (runs 2–10; spread 9.1 ms, no drift), `.all` median 242.9 ms
+(runs 2–10; scheduler settles −22.6 ms over the window, thermal clean, AC 65 W)**.
+Label: **T6021-ONLY reference — NOT token-for-token comparable to the M1 Ultra
+292.2/305.8 ms numbers** (107- vs 104-token golden); does not substitute for the
+same-die T8103 divisor; purpose is the macOS reference for this machine's Linux run.
+Full detail: `receipts/2026-09-17-jw14m2-t6021-parakeet-divisor.md` (addendum section).
 
 ## Gaps — could NOT capture, with reasons
 
