@@ -1,0 +1,19 @@
+{
+ "records": {
+  "ASMINTED:island-ffn-L00-f1": {
+   "program_sha256": "e10db91639ab705509a0e586c017e7687ffb60f391289ace5605574d6382580b",
+   "rel_l2": {
+    "rng11": 0.9474306106567383,
+    "rng33": 0.9422472715377808,
+    "rng57": 0.9446455836296082
+   },
+   "gate_worst": 0.9474306106567383,
+   "asminted_control": true,
+   "expected": 0.947431
+  }
+ },
+ "gate_worst": 0.0,
+ "budget": 0.05,
+ "pass": true,
+ "wall_s": 0.2
+}

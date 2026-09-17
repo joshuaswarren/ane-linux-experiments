@@ -1,0 +1,782 @@
+{
+ "weights": {
+  "encoder_layers_0_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "c9b4539c2b1d13eee4d251de248aba02bae66578ed70dc76944eb6c9548fb54c",
+   "roundtrip": true
+  },
+  "encoder_layers_0_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "2f220ee1670ba4057bcb5109088dc3ce45071b6171767fb0064480271d95745c",
+   "roundtrip": true
+  },
+  "encoder_layers_0_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "5b37b8625ec0af1636baff9a181b51bef9c5ae000599e74dbf468af256b6871e",
+   "roundtrip": true
+  },
+  "encoder_layers_0_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "e4b32d2d55b13b14ba6bc290e38d7e36c3fed73f8a1806ca3d53487c62229422",
+   "roundtrip": true
+  },
+  "encoder_layers_1_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "b796f3f3be2e76707e7261d5ef9d803b69d678c1a8022022599d39fb336f6f09",
+   "roundtrip": true
+  },
+  "encoder_layers_1_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "4fc92e790a71ef33927046347516e64d12833d76ef6d791171b97e89c78a4f6f",
+   "roundtrip": true
+  },
+  "encoder_layers_1_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "b294dff177403925a60c6b441dc00456948b18c8c30bfcb2e6bbba8bcb4e8fe1",
+   "roundtrip": true
+  },
+  "encoder_layers_1_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "cb8916362299a31e077398e2d178568bc0248da6fde1768ef2de8c0584fc2350",
+   "roundtrip": true
+  },
+  "encoder_layers_2_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "06e4c3b1cb7f3cd569e847753593977b0ab977b6ed43ccd813d821a09f224497",
+   "roundtrip": true
+  },
+  "encoder_layers_2_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "ac64f3d3a2b26e318f79bacff1422f21de05fe730827d705feabeefd4d52b9dd",
+   "roundtrip": true
+  },
+  "encoder_layers_2_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "70f6aa48b5757d2cbff946321baa538240fdf4e309cf4bbc414dcf7298f82e99",
+   "roundtrip": true
+  },
+  "encoder_layers_2_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "ce2cc4d8103d0952ef9735a93eb62776b1c306f317530589b23d135dec7515f4",
+   "roundtrip": true
+  },
+  "encoder_layers_3_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "f6936d8ef58e4be3037817c5a2c323f393b4fb4e37695cf77ca99387ed3525d3",
+   "roundtrip": true
+  },
+  "encoder_layers_3_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "a3be07dd5fcb7c9c79cd7b1262553def413d34af7cb30b28d62618ab835bcdeb",
+   "roundtrip": true
+  },
+  "encoder_layers_3_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "86e816be0391148045f08e2b68a5416af82c929f4329056aeb3a42d5cf5208b8",
+   "roundtrip": true
+  },
+  "encoder_layers_3_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "9bdc60c3bc88f3072e01c5dc5eabb0dfbc2689232603fb05446e6c0879d8fd3a",
+   "roundtrip": true
+  },
+  "encoder_layers_4_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "1f6e5544b733866d4b0acdfd9498154b777f7f9d48b888462ef07646f188f449",
+   "roundtrip": true
+  },
+  "encoder_layers_4_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "fc503b60efb86ac30d15098f13ed599128235764fbcba21f1e90472d8bee6993",
+   "roundtrip": true
+  },
+  "encoder_layers_4_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "a44d899af2e18c619884e1c7fd44d98e38856aa79c8cb98c6348ec85cf6920f0",
+   "roundtrip": true
+  },
+  "encoder_layers_4_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "1c83c8648f9560e387adb7483b7aa5f40cac1407bc3c1a37565f2e7dd9506572",
+   "roundtrip": true
+  },
+  "encoder_layers_5_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "49c9011db41012e48732b5efc4501873d5fb8a1da43b742534a6d20972b4de49",
+   "roundtrip": true
+  },
+  "encoder_layers_5_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "a3662a8fae16b4d777a0d67963f45c33cee10a1d2dd396e256836bf6cb588bc3",
+   "roundtrip": true
+  },
+  "encoder_layers_5_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "6f0fdd437259462de68465c6dda65d1f83e781c20ffbb959c298aa793108d9e9",
+   "roundtrip": true
+  },
+  "encoder_layers_5_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "91cfc051e5e5f9b0b17dbc6d4c6a958246db254d90640d9b9dc97314b6a5ea04",
+   "roundtrip": true
+  },
+  "encoder_layers_6_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "dbf2122c4fa6e4ea27fb6dca34b8dfd7f3b7db41fd20edc07bf951b17344280b",
+   "roundtrip": true
+  },
+  "encoder_layers_6_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "db5f9b2cc38e63b23dd98a15bc46fac216d6b56e5dc4b4ab8a5783f34303b910",
+   "roundtrip": true
+  },
+  "encoder_layers_6_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "12057706b199b75d7a69d94cf6b5a6f139183990a384d6bb35ac80eb6d0b8077",
+   "roundtrip": true
+  },
+  "encoder_layers_6_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "31fc653d508129428ea6ff49916fc8a17e98c2400eddae9de77c2cc1c347ebba",
+   "roundtrip": true
+  },
+  "encoder_layers_7_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "f09f388c892fb95d062f3918e62e0adf0c77bb8df282d0dff860eeac2d3f9849",
+   "roundtrip": true
+  },
+  "encoder_layers_7_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "a5436b29ee1c897d57a032489866f042641d68841c3308ee5060a53eab300b54",
+   "roundtrip": true
+  },
+  "encoder_layers_7_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "96ebb5e52ff5b8541c6c196f46bdd9724d2dae26574beb3e873df62652cf3a46",
+   "roundtrip": true
+  },
+  "encoder_layers_7_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "bdf052ff55159d845cb922c5ef0bad6be76d2666f56cd0203f72ae2887e34509",
+   "roundtrip": true
+  },
+  "encoder_layers_8_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "dd8e244405b1fedd0acb11e99f5da2a8b6de12e677366977026d1f8045fcd9e5",
+   "roundtrip": true
+  },
+  "encoder_layers_8_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "93a09c651b1d94cf25db1f206d37a27084e5e70da82a8d86df2ae164dcbc29ec",
+   "roundtrip": true
+  },
+  "encoder_layers_8_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "b2ba50ab5c4f10c960a86ffbb9fd6bc55cbb839770609339239a191d63ecd272",
+   "roundtrip": true
+  },
+  "encoder_layers_8_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "20bae808bd9079c0c9a3a5ec2e4923bd24bdbef021a83370781b56a4e5a3f457",
+   "roundtrip": true
+  },
+  "encoder_layers_9_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "26952ea4d0395fe5504d8afbe6cbbcc8d13d279a08c2454bd47fb646b663f067",
+   "roundtrip": true
+  },
+  "encoder_layers_9_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "788da61d879ec9873d327e53560fe56b52e931559a827ae28fd343b71d9686c0",
+   "roundtrip": true
+  },
+  "encoder_layers_9_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "c47225b9ebc99aec71bdb2850a834d3368d989b8e2e097b79c6f290770f2cd72",
+   "roundtrip": true
+  },
+  "encoder_layers_9_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "46a4a383cb777e0c53943d9ad960b2536c6f9e07c29706095a31b7d8cda221c2",
+   "roundtrip": true
+  },
+  "encoder_layers_10_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "65b1464c4aebedd8474c843fb56258a11fe0166cbe757f9725299400c24be1df",
+   "roundtrip": true
+  },
+  "encoder_layers_10_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "38b578ce16591d503ce195f6bc3b5633800d6a778ed7fc13961f8642f207d64e",
+   "roundtrip": true
+  },
+  "encoder_layers_10_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "fab45f191d2d1d2e9b80c69069d1e8e546a979a8ae94118766f88234c5bca5e9",
+   "roundtrip": true
+  },
+  "encoder_layers_10_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "b2da0b3e728e016938dfa40fc01db8f5fcdb705402c967eb3d90de5615cb0046",
+   "roundtrip": true
+  },
+  "encoder_layers_11_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "e653c6b6ff8a901e3127c12d315904cabbd7ee81b6028421f2775969f432cddd",
+   "roundtrip": true
+  },
+  "encoder_layers_11_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "66cbc49a555178da325add876ce5609dbdffdd09722fa5b5cb8818574cbb0610",
+   "roundtrip": true
+  },
+  "encoder_layers_11_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "789e7802b0f1f789575798e2ad6c6d44e4916536ec22894835e69c6cfe6242b9",
+   "roundtrip": true
+  },
+  "encoder_layers_11_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "3066a9fd291b83bcf3ddb9b364314f90c02980e41d61f0512c75a4e701de3d29",
+   "roundtrip": true
+  },
+  "encoder_layers_12_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "9b0c82a021b01ee8c7416b930d4684c2cf501b47948f3246be1a56b528e5efcc",
+   "roundtrip": true
+  },
+  "encoder_layers_12_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "c09f3a362e0ae75dba662c988c8df6dac2974b3796de4012162ee7fddc89d4d9",
+   "roundtrip": true
+  },
+  "encoder_layers_12_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "24be3af82f6ac97a7ae7e68b0a266fac36de1df8330c54e8ecd3edf989a5753d",
+   "roundtrip": true
+  },
+  "encoder_layers_12_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "2f9dd3005b70feeb2a809833c75150d0e008115fd700eec45da44d99c587b4cd",
+   "roundtrip": true
+  },
+  "encoder_layers_13_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "94b307797ca697ef492a6c10f2a5ef95daa813d9f9c2e1643637cb401be29a39",
+   "roundtrip": true
+  },
+  "encoder_layers_13_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "c01e8b3b9b242bfff98c61b91c196cc34ec194575da492d41a51466d9ce72dc2",
+   "roundtrip": true
+  },
+  "encoder_layers_13_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "46e40f428ddef2bbca296fd4b808f604b48833f9101d37ba6e4335ec121e6fd0",
+   "roundtrip": true
+  },
+  "encoder_layers_13_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "f5d80e50123790c52c64465ff33f72031777ddd9fbc7adf6e9e1cb375bd7f961",
+   "roundtrip": true
+  },
+  "encoder_layers_14_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "3f0c6cfff80f530eb7160f5778500408172bc12a6fad6872ad5f48cc96b99a19",
+   "roundtrip": true
+  },
+  "encoder_layers_14_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "8d05b45caf75ef9ad6edc3d8a3013ceab3b11511b991f4764647c11dc728d27e",
+   "roundtrip": true
+  },
+  "encoder_layers_14_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "1c865e6b2d33a6e6f809fa6744718a8c99fede703aaa31cb45f5033f71becc4f",
+   "roundtrip": true
+  },
+  "encoder_layers_14_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "1f4716c1f83e3dda6bc8785feaa23eda7586af8ae0d6a45b1209521e5c317c49",
+   "roundtrip": true
+  },
+  "encoder_layers_15_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "ce36de130282240aed26742819fac2ddf7de3929ab7088048f418405df6ee07a",
+   "roundtrip": true
+  },
+  "encoder_layers_15_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "2b1931c75bdff0382fec3383ba60f6b96fdad707043665d06d0d3ed12ff25291",
+   "roundtrip": true
+  },
+  "encoder_layers_15_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "bd48e4c91e59ff3beecd1d07c9509e149301395f85570aa8a2d12deb25c0e2df",
+   "roundtrip": true
+  },
+  "encoder_layers_15_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "9c8e004cde8e554618c6bd5308821708a0dd879cb0744a86c1cb6e489b46e048",
+   "roundtrip": true
+  },
+  "encoder_layers_16_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "0e0d80090dbd11dfebee6ebe706e422dd67dbcbea5f29cf3f292769b776e1697",
+   "roundtrip": true
+  },
+  "encoder_layers_16_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "7a3267b9edd39ad1bfe2a4a6413c13bd4a874b94f90145ed49fd7797dc59294e",
+   "roundtrip": true
+  },
+  "encoder_layers_16_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "53b59eb8e168779a1adae9906cfaeb9330acfc36337bf5a58692970b04830e8c",
+   "roundtrip": true
+  },
+  "encoder_layers_16_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "07d33d6ba624a274242a533bfe98bf4e0c87ba976dd3c9da00e02682789faf6d",
+   "roundtrip": true
+  },
+  "encoder_layers_17_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "e7c6387e965b57e4593c4b177529dd747a2b6d1336953e8c7f7f6646fb6af957",
+   "roundtrip": true
+  },
+  "encoder_layers_17_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "88da22ee040435689bf5fef523e73cadc167917b933fa83a2f5cf6a8f7e75b2b",
+   "roundtrip": true
+  },
+  "encoder_layers_17_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "42ded05bcd67952c15a645ac76fd2c2da87d28a5afddd71982532c417c3eb20b",
+   "roundtrip": true
+  },
+  "encoder_layers_17_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "b4133d82a6c3d740d036288beb0077361048560f3a9d270eefbc9b9b9ddecd95",
+   "roundtrip": true
+  },
+  "encoder_layers_18_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "d95a965432ff6ac19b01fbc4dee36611d8bdfc224bcfdda44575440f5e8b4e6a",
+   "roundtrip": true
+  },
+  "encoder_layers_18_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "8d1f64b3f492e55d8f3a898d9a7a1ad8f993be3e6c06e064f3f8e828adb51664",
+   "roundtrip": true
+  },
+  "encoder_layers_18_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "9bba870e5672f8871b586b6eb9553da2ca46df464a96c6713f0af38d898731c3",
+   "roundtrip": true
+  },
+  "encoder_layers_18_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "d5e4c0bfd76d3df4902c8ba436ee415c69c386458b8eef863104f4194112fe8b",
+   "roundtrip": true
+  },
+  "encoder_layers_19_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "301e37e256c382c88d631d3f364677406552d88c09a361f4a6712650ec1a0ae4",
+   "roundtrip": true
+  },
+  "encoder_layers_19_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "0388bff91d5373e89ed17f0f0e66ccb1decc4e25e27a28154e2dad0c5a09b870",
+   "roundtrip": true
+  },
+  "encoder_layers_19_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "fb997ef8fc3ccd5b729c9909d583c0b151a75fe4095085423358b19e39e8afbb",
+   "roundtrip": true
+  },
+  "encoder_layers_19_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "5d7c5a25d83fe49febb55349ca3f6fd641cc45932e9ffd403e316b65ecc95901",
+   "roundtrip": true
+  },
+  "encoder_layers_20_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "2349e2d82c94e25db617b663dd71765dc7c9dfebcf9cc311ff131099273d5ef7",
+   "roundtrip": true
+  },
+  "encoder_layers_20_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "c245ce2ba9eddbc84940916862551125a22132a262d3ba2b0da816fc607dc1c8",
+   "roundtrip": true
+  },
+  "encoder_layers_20_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "e59a14e41093d1b44b2e00ba10184996cf7668a17b5a9c25394ecf1b32764d01",
+   "roundtrip": true
+  },
+  "encoder_layers_20_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "bc1c5d4e3160eccb5e96891040882a6d1a1f641f7b11abe1c7a1730bf3a863e7",
+   "roundtrip": true
+  },
+  "encoder_layers_21_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "360e7fb0c81440bb369f940ebc424705153a9bb023f55d13546cca6339f524f4",
+   "roundtrip": true
+  },
+  "encoder_layers_21_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "eafd9b3bfb67b135c1fcdba602a0216d45d84397b3b6c6b407c7ce1b246abebd",
+   "roundtrip": true
+  },
+  "encoder_layers_21_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "58072f4f0eb6570994073a30655f82feadecfe5a04aff7d91218dc5a0b3db036",
+   "roundtrip": true
+  },
+  "encoder_layers_21_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "af626cc7c815b8c9a0a38cffe06d3208ef840724cf2bac806ff5223f576d47d4",
+   "roundtrip": true
+  },
+  "encoder_layers_22_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "b1fd93872da95a8a160e0388205c327c5a02968e4ecb518d179d4f44bf876388",
+   "roundtrip": true
+  },
+  "encoder_layers_22_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "5fe404ac2c2b36a1154225a6d4bcc1c2c02ceb078474441697dbe130321a2a6a",
+   "roundtrip": true
+  },
+  "encoder_layers_22_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "21f63be52ade6aba42232811531d9e83ddbc49d306cffd0f352577195ea01b87",
+   "roundtrip": true
+  },
+  "encoder_layers_22_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "3a10ff76af0f75fd0fbe83f3df04c873b64a8cfd025b71063eeaf2c3a41ec1b7",
+   "roundtrip": true
+  },
+  "encoder_layers_23_feed_forward1_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "df767a69aea640c0e7280343e360357cbbef40b62db8d113e9868c5963c58b07",
+   "roundtrip": true
+  },
+  "encoder_layers_23_feed_forward1_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "41ca34009b9fadb85ef014f86abf9a2f22aceb6b59e0758a2acfb9e312aa8c18",
+   "roundtrip": true
+  },
+  "encoder_layers_23_feed_forward2_linear1_weight_to_fp16_palettized": {
+   "shape": [
+    4096,
+    1024
+   ],
+   "dense_sha256": "ab5a3fdcbd17a40a30f437902f7349c4729c65e6277337d29a8d21049e57243e",
+   "roundtrip": true
+  },
+  "encoder_layers_23_feed_forward2_linear2_weight_to_fp16_palettized": {
+   "shape": [
+    1024,
+    4096
+   ],
+   "dense_sha256": "8e895b636b4f5f87489496da08a917479827dfe3b124107da8ace1446538b954",
+   "roundtrip": true
+  }
+ },
+ "biases": {
+  "linear_1_bias_0_to_fp16": {
+   "absmax": 0.0,
+   "n": 4096
+  },
+  "linear_2_bias_0_to_fp16": {
+   "absmax": 0.0,
+   "n": 1024
+  }
+ }
+}
