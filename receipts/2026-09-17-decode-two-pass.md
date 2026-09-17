@@ -215,3 +215,68 @@ digest identity, not a behavior switch.
   (byte-identical on jw16 and jwm1, verified at deploy); fix
   `aa5615cea4e584f79297cfb52316482e74c142ec5e5b006387a5891705b61c92`
   (byte-identical on jw16 and jwm1, verified from both venvs).
+
+## Addendum: multi-window confirmation battery on jw16 (2026-09-17, DecodeTwoPassConfirm)
+
+Two additional independent A/B windows (w2, w3) on jw16, same harness bytes,
+same procedure as the original window: digest screen FIRST (pins fatal, any
+failure aborts before perf), then 6 interleaved rounds arms-alternating,
+`BATTERY_MODEL=/var/tmp/jw16gap-model`, flock on `/tmp/m1-gpu.lock`
+(inode 12, never stolen/unlinked), llm-inference stopped before and
+restarted + CONFIRMED ACTIVE after each window (`Active: active (running)`
+readback on both restores). One plumbing abort in w2 (missing
+`fix_libmlx16.txt` in the per-window output dir; then missing
+`BATTERY_MODEL`) — both aborted BEFORE any perf claim, service restored
+each time. Results in `/var/tmp/DecodeTwoPass/{w2,w3}/` on jw16.
+
+Window w2 (started 20:47:46Z, finished 20:49:04Z):
+
+| arm | short tok/s | ctx1024 tok/s | ctx19 tok/s | libmlx16 |
+| --- | ---: | ---: | ---: | --- |
+| base | 190.27 | 132.79 | 130.89 | `06e43c203e85a16a` |
+| fix | 191.26 | 150.48 | 138.50 | `aa5615cea4e584f7` |
+| delta | +0.5% | **+13.3%** | +5.8% | |
+
+Window w3 (started 20:49:44Z, finished 20:51:01Z):
+
+| arm | short tok/s | ctx1024 tok/s | ctx19 tok/s | libmlx16 |
+| --- | ---: | ---: | ---: | --- |
+| base | 190.41 | 138.14 | 137.46 | `06e43c203e85a16a` |
+| fix | 190.66 | 145.67 | 139.63 | `aa5615cea4e584f7` |
+| delta | +0.1% | **+5.5%** | +1.6% | |
+
+Integrity, every window: screens `screen_exit=0`, published pins
+`7fd25a869ff21678` (short) and `7da83f06ec9f001d` (ctx1024) exact on both
+arms; cross-fold ctx19 generated-ids digest `31267e7ed4c6d0dc` identical
+across arms (and identical to the original window) in both windows;
+libmlx sha256 pinned fatal both arms both windows; wheel provenance
+`verified=match` on `+283aa076`.
+
+Pooled across w2+w3 (12 interleaved rounds per arm, ctx1024): base median
+135.67, fix median 148.70 → **+9.6%**; paired per-round fix/base ratio
+median **+8.5%**, mean +9.3%, 10/12 rounds positive. Across the battery's
+three jw16 windows (original + w2 + w3): window medians +10.3% / +13.3% /
++5.5%, median-of-window-medians **+10.3%**; 3/3 windows positive in every
+leg. Short is flat in every window (−0.1% to +0.5%); ctx19 positive or
+flat (+1.6% to +9.9%), no regression anywhere.
+
+Absolute tok/s wandered between windows (base ctx1024 median 149.8 → 132.8
+→ 138.1) — that is the documented ±8% host wander and it moves BOTH arms;
+the within-window interleaved contrast is the statistic. The one soft spot,
+disclosed: w3's single-window ctx1024 delta (+5.5% all-round; +7.5%
+steady rounds 3-6) sits inside the ±8% single-window wander band, so w3
+alone cannot exclude wander. The pooled estimators (+8.5% paired median,
++9.6% pooled medians, +10.3% median-of-window-medians) all land at or
+above the band edge, and the effect direction is positive in 3/3 windows
+(10/12 pooled rounds).
+
+## Ship / no-ship (battery verdict)
+
+**SHIP.** Pins exact every window, short not regressed in any window, and
+the ctx1024 win holds outside wander when estimated across windows
+(+8.5% to +10.3% pooled; single windows +13.3%, +10.3%, +5.5%). With jwm1
+flat (original window) this is a clean cutover with digest identity and a
+real jw16-only gain — cleared for the release train. Boundary condition on
+record: no future single-window confirmation on jw16 can by itself
+distinguish the ~+9-10% effect from wander; any re-check must pool ≥2
+windows or use paired rounds.
