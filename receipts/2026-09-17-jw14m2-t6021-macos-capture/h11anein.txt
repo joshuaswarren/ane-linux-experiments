@@ -1,0 +1,24 @@
++-o H11ANE  <class H11ANEIn, id 0x1000004d7, registered, matched, active, busy 0 (530 ms), retain 15>
+  | {
+  |   "IOClass" = "H11ANEIn"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleH11ANEInterface"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPowerManagement" = {"DevicePowerState"=0,"CurrentPowerState"=0,"CapabilityFlags"=0,"MaxPowerState"=1}
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "ane,t8020"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOFunctionParent00000169" = <>
+  |   "IOGeneralInterest" = "IOCommand is not serializable"
+  |   "IONameMatched" = "ane,t8020"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleH11ANEInterface"
+  |   "DeviceProperties" = {"ANEDevicePropertyANECPUSubType"=5,"ANEDevicePropertyIsInternalBuild"=No,"ANEDevicePropertyANEVersion"=128,"ANEDevicePropertyANEMinorVersion"=17,"ANEDevicePropertyANEHWBoardType"=160,"ANEDevicePropertyANEHWBoardSubType"=0,"ANEDevicePropertyNumANECores"=16,"ANEDevicePropertyTypeANEArchitectureTypeStr"="h14g"}
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleH11ANEInterface"
+  |   "FirmwareLoaded" = Yes
+  | }
+  | 
+  +-o ANEClientHints  <class ANEClientHints, id 0x100000be6, registered, matched, active, busy 0 (531 ms), retain 6>
+      {
+      }
+      
+

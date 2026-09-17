@@ -1,0 +1,55 @@
+{
+  "archive": "t6021-deep.tar.gz",
+  "files": [
+    {
+      "bytes": 3304,
+      "path": "benchmark.json",
+      "sha256": "a973dcd25d0da2b74c0f25e745944cc1a206501afc798904c62d4f7e8857519c"
+    },
+    {
+      "bytes": 3514,
+      "path": "correctness.json",
+      "sha256": "93723b33ab48a568ed49f60b908765d1e3567a7188cf510bf80959ea3c004d14"
+    },
+    {
+      "bytes": 299,
+      "path": "environment.json",
+      "sha256": "6f044d5924ae7721d6968d346a38b398b62f2d0c0744dcc67fc758f73c14f857"
+    },
+    {
+      "bytes": 94,
+      "path": "profile.json",
+      "sha256": "cb405dc94842e0d0bdcb301f1ab1930735b643177b37b82b161be0cc76a5534a"
+    },
+    {
+      "bytes": 4697,
+      "path": "quick.json",
+      "sha256": "94e573924ab0e78406212008a9e29083ffd10602b6f2ce14babe6db0e3c4b07f"
+    },
+    {
+      "bytes": 98,
+      "path": "thermal.json",
+      "sha256": "451958d5e37439d97728086a52c4779e11425a8690a2be25203271ebcf6c5cb2"
+    }
+  ],
+  "manifest_version": 1,
+  "no_network": true,
+  "redaction_summary": {},
+  "repo_dirty": null,
+  "schema_note": "one file per section; probe records carry argv, exit code, capped redacted output; the schema does not change with the sharing path",
+  "schema_version": 1,
+  "sections_unavailable": [
+    "correctness",
+    "benchmark",
+    "profile",
+    "thermal"
+  ],
+  "source_commit": null,
+  "system": "Darwin",
+  "tool": "mlx-omarchy collect-deep",
+  "upload": "only after explicit --submit or SUBMIT confirmation"
+}
+[preview] archive: t6021-deep.tar.gz bytes=4648 sha256=a3e974f8e6f98febee4635fc8c381114d8ad0ecd979b0a29371e7e4bc3b07a0c
+[receipt] wrote /tmp/t6021-capture/t6021-deep.tar.gz (4648 bytes, sha256=a3e974f8e6f98febee4635fc8c381114d8ad0ecd979b0a29371e7e4bc3b07a0c)
+[receipt] wrote /tmp/t6021-capture/t6021-deep.submission.md (paste-ready cover text)
+[receipt] public URL: https://mlx-omarchy-community-data.joshua-s-warren.workers.dev/v1/results/a3e974f8e6f98febee4635fc8c381114d8ad0ecd979b0a29371e7e4bc3b07a0c (deduplicated=False)

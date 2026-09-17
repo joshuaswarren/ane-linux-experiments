@@ -1,0 +1,61 @@
+ANE compiler backend provenance — jw14m2 (Mac14,5, T6021/M2 Max, macOS 26.6.2 25G83), 2026-09-17
+All facts below were read live on the host (read-only plutil/ls/dyld_info); every line is a real command output.
+
+## Live ANE driver + generation string (from IORegistry, ioreg -rc H11ANEIn -l)
+  IOClass                = H11ANEIn
+  CFBundleIdentifier     = com.apple.driver.AppleH11ANEInterface
+  IONameMatch / Matched  = ane,t8020
+  FirmwareLoaded         = Yes
+  DeviceProperties:
+    ANEDevicePropertyTypeANEArchitectureTypeStr = "h14g"      <-- H-generation advertised by the live stack
+    ANEDevicePropertyNumANECores                = 16
+    ANEDevicePropertyANEVersion                 = 128 (0x80)
+    ANEDevicePropertyANEMinorVersion            = 17
+    ANEDevicePropertyANEHWBoardType             = 160
+    ANEDevicePropertyANEHWBoardSubType          = 0
+    ANEDevicePropertyANECPUSubType              = 5
+  Child: ANEClientHints (class ANEClientHints)
+  Also present in tree: AppleH11ANEInterface (nub class, 6 hits), H1xANELoadBalancer
+
+## Frameworks on disk (/System/Library/PrivateFrameworks/)
+  ANECompiler.framework          CFBundleIdentifier com.apple.ANECompiler
+                                 CFBundleShortVersionString 9.509.0, CFBundleVersion 9.509.0
+                                 DTPlatformVersion 26.6.1, LSMinimumSystemVersion 26.6
+                                 Bundle contains ONLY Resources + _CodeSignature (no binary on disk;
+                                 code lives in the dyld shared cache — read via cache only)
+  ANEServices.framework          present, also plist-only bundle (Versions/A = Resources + _CodeSignature)
+  ANEClientSignals.framework     present
+  DANECPWrapper.framework        present
+  ParavirtualizedANE.framework   present
+  NOTE: /System/Library/PrivateFrameworks/ANECompilerService.framework does NOT exist on this build;
+        no ANECompilerService launchd daemon either.
+
+## Kexts (/System/Library/Extensions/)
+  AppleH11ANEInterface.kext      CFBundleVersion 9.512.0, IONameMatch "ane,t8020"  <-- the driver instantiated for t6021
+  AppleH16ANEInterface.kext      present on disk, NOT instantiated for t6021 (ioreg -rc AppleH16ANEInterface = empty)
+  AppleH13ANEInterface           not present on disk; ioreg -rc AppleH13ANEInterface = empty
+  ANEHAL kexts present: AppleT6030ANEHAL v9.512.3, AppleT6031ANEHAL v9.512.3,
+    AppleT6041ANEHAL v9.512.3, AppleT6050ANEHAL v9.512.0, AppleT8132/8140/8142/8150/8310 ANEHAL.
+    None names t6021 in IOKitPersonalities greps; t6021 loads the H11 personality above.
+  Kext bundles are plist-only on disk (Info.plist + version.plist + _CodeSignature); binaries are in the
+  boot kernel collection: /System/Library/KernelCollections/BootKernelExtensions.kc (+ .elides).
+
+## User-space daemons (/usr/libexec/)
+  aned       592752 bytes, mode 0755, mtime Aug 12 (owner root:wheel)
+  aneuserd   591520 bytes
+  launchd: /System/Library/LaunchDaemons/com.apple.aned.plist -> ProgramArguments = /usr/libexec/aned
+           /System/Library/LaunchDaemons/com.apple.aneuserd.plist -> /usr/libexec/aneuserd
+  dyld_info -strings /usr/libexec/aned surfaced NO h1xg generation strings and no firmware paths
+  (strings live in cache-resident sections; the on-disk greps found nothing).
+
+## ANE firmware image
+  Not found under /usr/share/firmware/ (only bluetooth, hidfw, isp, multitouch, wifi, wpan there).
+  No *.fw or fw-named resource inside ANEServices.framework or AppleH11ANEInterface.kext.
+  Firmware state therefore recorded from IORegistry only: FirmwareLoaded=Yes, ANEVersion=128,
+  ANEMinorVersion=17. The firmware image itself ships inside the boot kernel collection
+  (BootKernelExtensions.kc); extracting it was out of scope for this read-only capture.
+
+## Implication for H-series oracle mints on t6021
+  The live driver + compiler stack self-identifies as generation "h14g" (16 cores) on t6021 —
+  same advertised generation family as T6020 community rows; mints should target h14g semantics,
+  NOT h13g/h16g, despite the AppleH16ANEInterface kext being present on disk.

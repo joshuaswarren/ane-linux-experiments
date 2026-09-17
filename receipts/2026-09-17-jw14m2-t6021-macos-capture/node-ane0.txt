@@ -1,0 +1,53 @@
+    | |   +-o ane0@84000000  <class AppleARMIODevice, id 0x1000003e8, registered, matched, active, busy 0 (2642 ms), retain 9>
+    | |   | | {
+    | |   | |   "segment-ranges" = <00c08f00000100000000000000000000000000000001000000400e000100000000c04c010001000000400e000000000000400e00000100000080280000000000>
+    | |   | |   "IOInterruptSpecifiers" = (<74030000>)
+    | |   | |   "clock-gates" = <d9010000>
+    | |   | |   "AAPL,phandle" = <69010000>
+    | |   | |   "IODeviceMemory" = (({"address"=10804527104,"length"=33554432}),({"address"=10972823552,"length"=16436}),({"address"=10972872704,"length"=16384}))
+    | |   | |   "IOReportLegendPublic" = Yes
+    | |   | |   "die-ane-id" = <00000000>
+    | |   | |   "ane-type" = <a0000000>
+    | |   | |   "segment-names" = <"__TEXT;__DATA">
+    | |   | |   "iommu-parent" = <6b010000>
+    | |   | |   "function-mcc_dataset" = <a30000005344244d>
+    | |   | |   "ane-subtype" = <00000000>
+    | |   | |   "uuid" = <"8782905F-39FA-361B-9884-E61379EBC67E">
+    | |   | |   "name" = <"ane0">
+    | |   | |   "IOInterruptControllers" = ("IOInterruptController000000A4")
+    | |   | |   "interrupt-parent" = <a4000000>
+    | |   | |   "die-id" = <00000000>
+    | |   | |   "compatible" = <"ane,t8020">
+    | |   | |   "clock-ids" = <3e0100003f0100004001000041010000>
+    | |   | |   "interrupts" = <74030000>
+    | |   | |   "pre-loaded" = <01000000>
+    | |   | |   "IOReportLegend" = ({"IOReportGroupName"="Interrupt Statistics (by index)","IOReportChannels"=((5291294645182005248,4295098369,"               First Level Interrupt Handler Count"),(5291294645182005249,4295098369,"              Second Level Interrupt Handler Count"),(5291294645182005250,4295098369,"        First Level Interrupt Handler Time (MATUs)"),(5291294645182005251,4295098369,"   Second Level Interrupt Handler CPU Time (MATUs)"),(5291294645182005252,4295098369,"Second Level Interrupt Handler System Time (MATUs)")),"IOReportChannelInfo"={"IOReportChannelUnit"=0},"IOReportSubGroupName"="ane0 0"})
+    | |   | |   "device_type" = <"ane">
+    | |   | |   "power-gates" = <d9010000>
+    | |   | |   "reg" = <000000840000000000000002000000000000088e00000000344000000000000000c0088e000000000040000000000000>
+    | |   | |   "ane-id" = <00000000>
+    | |   | | }
+    | |   | | 
+    | |   | +-o H11ANE  <class H11ANEIn, id 0x1000004d7, registered, matched, active, busy 0 (530 ms), retain 15>
+    | |   |   | {
+    | |   |   |   "IOClass" = "H11ANEIn"
+    | |   |   |   "CFBundleIdentifier" = "com.apple.driver.AppleH11ANEInterface"
+    | |   |   |   "IOProviderClass" = "AppleARMIODevice"
+    | |   |   |   "IOPowerManagement" = {"DevicePowerState"=0,"CurrentPowerState"=0,"CapabilityFlags"=0,"MaxPowerState"=1}
+    | |   |   |   "IOProbeScore" = 0
+    | |   |   |   "IONameMatch" = "ane,t8020"
+    | |   |   |   "IOMatchedAtBoot" = Yes
+    | |   |   |   "IOMatchCategory" = "IODefaultMatchCategory"
+    | |   |   |   "IOFunctionParent00000169" = <>
+    | |   |   |   "IOGeneralInterest" = "IOCommand is not serializable"
+    | |   |   |   "IONameMatched" = "ane,t8020"
+    | |   |   |   "IOPersonalityPublisher" = "com.apple.driver.AppleH11ANEInterface"
+    | |   |   |   "DeviceProperties" = {"ANEDevicePropertyANECPUSubType"=5,"ANEDevicePropertyIsInternalBuild"=No,"ANEDevicePropertyANEVersion"=128,"ANEDevicePropertyANEMinorVersion"=17,"ANEDevicePropertyANEHWBoardType"=160,"ANEDevicePropertyANEHWBoardSubType"=0,"ANEDevicePropertyNumANECores"=16,"ANEDevicePropertyTypeANEArchitectureTypeStr"="h14g"}
+    | |   |   |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleH11ANEInterface"
+    | |   |   |   "FirmwareLoaded" = Yes
+    | |   |   | }
+    | |   |   | 
+    | |   |   +-o ANEClientHints  <class ANEClientHints, id 0x100000be6, registered, matched, active, busy 0 (531 ms), retain 6>
+    | |   |       {
+    | |   |       }
+    | |   |       

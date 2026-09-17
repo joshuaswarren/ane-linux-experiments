@@ -1,0 +1,12 @@
+# hostname/sysctl identity, 2026-09-17
+JW14M2.local
+Mac14,5
+Apple M2 Max
+12
+103079215104
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+chip_type : Apple M2 Max
+machine_model : Mac14,5
+machine_name : MacBook Pro
