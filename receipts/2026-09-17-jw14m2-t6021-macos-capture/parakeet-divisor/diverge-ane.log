@@ -1,0 +1,7 @@
+waveform: 166960 samples @16kHz (10.44s)
+chunks: 1
+mel: 3001 frames x 128 bins
+encoder_hidden: [1, 375, 640] dtype=f32
+tokens: 107  transcript: He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce.............................................. ЮНЕН
+crosscheck: tokens_match=true transcript_match=true
+manifest written for 11 files

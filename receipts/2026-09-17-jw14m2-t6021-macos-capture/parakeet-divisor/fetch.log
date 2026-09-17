@@ -1,0 +1,14 @@
+fetching .gitattributes (1519 bytes)
+fetching README.md (8445 bytes)
+fetching decoder.mlpackage/Data/com.apple.CoreML/model.mlmodel (12897 bytes)
+fetching decoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin (24425600 bytes)
+fetching decoder.mlpackage/Manifest.json (617 bytes)
+fetching encoder.mlpackage/Data/com.apple.CoreML/model.mlmodel (625663 bytes)
+fetching encoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin (444016768 bytes)
+fetching encoder.mlpackage/Manifest.json (617 bytes)
+fetching joint.mlpackage/Data/com.apple.CoreML/model.mlmodel (4025 bytes)
+fetching joint.mlpackage/Data/com.apple.CoreML/weights/weight.bin (10510028 bytes)
+fetching joint.mlpackage/Manifest.json (617 bytes)
+fetching tokenizer.json (1159960 bytes)
+verified 12 files: /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+OK: 12 files verified in /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018

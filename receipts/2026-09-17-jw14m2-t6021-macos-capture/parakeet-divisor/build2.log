@@ -1,0 +1,18 @@
+Building for production...
+[Pre-planning 1 / 66]
+[Planning deferred tasks]
+[5 / 14]
+[6 / 11] parakeet-reference-capture-product
+[8 / 12] parakeet-reference-capture-product
+/private/tmp/t6021-parakeet/mel-stage/Sources/parakeet-reference-capture/main.swift:244:13: [1;33mwarning: [1;39mresult of call to 'withUnsafeBufferPointer' is unused[0;0m [#]8;;https://docs.swift.org/compiler/documentation/diagnostics/no-usage\NoUsage]8;;\]
+[0;36m242 |[0;0m     for ti in 0..<min(features.numFrames, 3000) {
+[0;36m243 |[0;0m         let row = features.mel[ti]
+[0;36m244 |[0;0m         row.withUnsafeBufferPointer [4;39m{ src in[0;0m
+    [0;36m|[0;0m             `- [1;33mwarning: [1;39mresult of call to 'withUnsafeBufferPointer' is unused[0;0m [#]8;;https://docs.swift.org/compiler/documentation/diagnostics/no-usage\NoUsage]8;;\]
+[0;36m245 |[0;0m             memcpy(fPtr.advanced(by: ti * 128), src.baseAddress!,
+[0;36m246 |[0;0m                    min(row.count, 128) * MemoryLayout<Float>.size)
+
+[#NoUsage]: <https://docs.swift.org/compiler/documentation/diagnostics/no-usage>
+[10 / 12] parakeet-reference-capture-product
+[11 / 12] parakeet-reference-capture-product
+Build complete! (5.47 sec)

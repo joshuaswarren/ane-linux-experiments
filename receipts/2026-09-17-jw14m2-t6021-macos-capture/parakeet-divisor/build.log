@@ -1,0 +1,44 @@
+Fetching https://github.com/mweinbach/parakeet-coreml-swift
+[1/84] Fetching parakeet-coreml-swift
+Fetched https://github.com/mweinbach/parakeet-coreml-swift (0.72s)
+Fetching https://github.com/apple/swift-argument-parser.git
+[1/18904] Fetching swift-argument-parser
+Fetched https://github.com/apple/swift-argument-parser.git (1.30s)
+Computing version for https://github.com/apple/swift-argument-parser.git
+Computed https://github.com/apple/swift-argument-parser.git at 1.8.2 (2.13s)
+Creating working copy for https://github.com/mweinbach/parakeet-coreml-swift
+Working copy of https://github.com/mweinbach/parakeet-coreml-swift resolved at 75aec2a1c991319657ff4dec5f602c12da6c5012
+Creating working copy for https://github.com/apple/swift-argument-parser.git
+Working copy of https://github.com/apple/swift-argument-parser.git resolved at 1.8.2
+Building for production...
+[Pre-planning 1 / 66]
+[Planning deferred tasks]
+[22 / 34]
+[23 / 35] ParakeetTDT
+[33 / 101]
+[34 / 101]
+[36 / 101]
+[44 / 101]
+[45 / 101]
+[47 / 101]
+[51 / 101]
+[52 / 101]
+[54 / 101]
+[55 / 101]
+[57 / 101]
+[63 / 101]
+[65 / 101]
+[68 / 101]
+[69 / 101]
+[75 / 101]
+[78 / 101]
+[79 / 101]
+[85 / 101]
+[88 / 101]
+[89 / 101]
+[90 / 101] ParakeetTDT
+[97 / 102] parakeet-timing-product
+[99 / 103] parakeet-timing-product
+[101 / 103] parakeet-timing-product
+[102 / 103] parakeet-timing-product
+Build complete! (18.19 sec)
