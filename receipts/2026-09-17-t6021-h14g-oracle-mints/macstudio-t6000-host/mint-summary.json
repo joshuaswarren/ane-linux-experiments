@@ -1,0 +1,95 @@
+{
+  "oproj": {
+    "geometry": "oproj",
+    "M": 375,
+    "K": 1024,
+    "N": 1024,
+    "weight_halves": 1048576,
+    "weight_source": "pair28 watermark (see module docstring)",
+    "linear_W_shape": [
+      1024,
+      1024
+    ],
+    "mil": "/tmp/anec-mint/oproj/model.mil",
+    "compiles": {
+      "h14g": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint/oproj/cache_h14g",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/4157DD7468DBCA79A927AE75BB579CDEA6C8B29134C7CE63FCB1052BF35B1ED0/4E5909B345F75961679EF8778C4BB73159D7E402C6E2F63A963D6726EEA96C62.bundle/H13D.bundle/H13D.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/4157DD7468DBCA79A927AE75BB579CDEA6C8B29134C7CE63FCB1052BF35B1ED0/4E5909B345F75961679EF8778C4BB73159D7E402C6E2F63A963D6726EEA96C62.bundle/H13D.bundle/main/main_ane/model.anehash"
+        ]
+      },
+      "h13": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint/oproj/cache_h13",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/4157DD7468DBCA79A927AE75BB579CDEA6C8B29134C7CE63FCB1052BF35B1ED0/726F760AFF743225E95704D60C9C80008785F7F8E256D1C9083596CC26DCCB87.bundle/H13D.bundle/H13D.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/4157DD7468DBCA79A927AE75BB579CDEA6C8B29134C7CE63FCB1052BF35B1ED0/726F760AFF743225E95704D60C9C80008785F7F8E256D1C9083596CC26DCCB87.bundle/H13D.bundle/main/main_ane/model.anehash"
+        ]
+      }
+    }
+  },
+  "mm1": {
+    "geometry": "mm1",
+    "M": 375,
+    "K": 1024,
+    "N": 4096,
+    "weight_halves": 4194304,
+    "weight_source": "pair28 watermark (see module docstring)",
+    "linear_W_shape": [
+      4096,
+      1024
+    ],
+    "mil": "/tmp/anec-mint/mm1/model.mil",
+    "compiles": {
+      "h14g": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint/mm1/cache_h14g",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/DF889C4848A41D8D1BD38C3D564A484EA54B05B2A345AA255729196CD9189DF4/28E5FEFEFDE4C442763A49373B162D6B4C7E769E4E846434913505AC101EB79D.bundle/H13D.bundle/H13D.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/DF889C4848A41D8D1BD38C3D564A484EA54B05B2A345AA255729196CD9189DF4/28E5FEFEFDE4C442763A49373B162D6B4C7E769E4E846434913505AC101EB79D.bundle/H13D.bundle/main/main_ane/model.anehash"
+        ]
+      },
+      "h13": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint/mm1/cache_h13",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/DF889C4848A41D8D1BD38C3D564A484EA54B05B2A345AA255729196CD9189DF4/49BACD5D06C926A209E4B545D361EF6FF625C41BFDBDA7D1EA7D95F950AFE3A8.bundle/H13D.bundle/H13D.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/DF889C4848A41D8D1BD38C3D564A484EA54B05B2A345AA255729196CD9189DF4/49BACD5D06C926A209E4B545D361EF6FF625C41BFDBDA7D1EA7D95F950AFE3A8.bundle/H13D.bundle/main/main_ane/model.anehash"
+        ]
+      }
+    }
+  },
+  "mm2": {
+    "geometry": "mm2",
+    "M": 375,
+    "K": 4096,
+    "N": 1024,
+    "weight_halves": 4194304,
+    "weight_source": "pair28 watermark (see module docstring)",
+    "linear_W_shape": [
+      1024,
+      4096
+    ],
+    "mil": "/tmp/anec-mint/mm2/model.mil",
+    "compiles": {
+      "h14g": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint/mm2/cache_h14g",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/FA7DC8A38BAF506E18B702DD8FD25108213C4110C3C75C4BB736DFA7733886CC/BF10C86AB2F01499CC761A32F8994027E2E2C71EA8CBCBB025E80783CB30098F.bundle/H13D.bundle/H13D.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/FA7DC8A38BAF506E18B702DD8FD25108213C4110C3C75C4BB736DFA7733886CC/BF10C86AB2F01499CC761A32F8994027E2E2C71EA8CBCBB025E80783CB30098F.bundle/H13D.bundle/main/main_ane/model.anehash"
+        ]
+      },
+      "h13": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint/mm2/cache_h13",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/FA7DC8A38BAF506E18B702DD8FD25108213C4110C3C75C4BB736DFA7733886CC/19C811EC2A32C9FE733F49650496AFD0F21509DCF661EA338C1E4352BC74F302.bundle/H13D.bundle/H13D.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/FA7DC8A38BAF506E18B702DD8FD25108213C4110C3C75C4BB736DFA7733886CC/19C811EC2A32C9FE733F49650496AFD0F21509DCF661EA338C1E4352BC74F302.bundle/H13D.bundle/main/main_ane/model.anehash"
+        ]
+      }
+    }
+  }
+}
