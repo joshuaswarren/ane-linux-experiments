@@ -1,0 +1,13 @@
+{"arm": 4, "shape": "30x896x128", "median_ms": 0.2702, "f16_digest": "63b678f90772022e", "tflops": 25.5}
+{"arm": 4, "shape": "262x896x128", "median_ms": 0.2808, "f16_digest": "a9df1c92c8965cb5", "tflops": 214.0}
+{"arm": 4, "shape": "1053x896x128", "median_ms": 0.404, "f16_digest": "ee3e5703ebdfdbd2", "tflops": 597.8}
+{"arm": 4, "shape": "30x896x896", "median_ms": 0.2881, "f16_digest": "b5b19ead02d37a33", "tflops": 167.2}
+{"arm": 4, "shape": "262x896x896", "median_ms": 0.5304, "f16_digest": "7d2562f6d8e726e8", "tflops": 793.2}
+{"arm": 4, "shape": "1053x896x896", "median_ms": 1.0018, "f16_digest": "d4e8a853e9193aee", "tflops": 1687.7}
+{"arm": 4, "shape": "30x4864x896", "median_ms": 0.3759, "f16_digest": "64d473f073c2280e", "tflops": 695.6}
+{"arm": 4, "shape": "262x4864x896", "median_ms": 0.899, "f16_digest": "934c5867ab5e624b", "tflops": 2540.2}
+{"arm": 4, "shape": "1053x4864x896", "median_ms": 1.7746, "f16_digest": "7055bf55c8a98245", "tflops": 5172.1}
+{"arm": 4, "shape": "30x896x9728", "median_ms": 0.4349, "f16_digest": "093ed872ca3b4b8c", "tflops": 1202.6}
+{"arm": 4, "shape": "262x896x9728", "median_ms": 1.1683, "f16_digest": "e2ca8f678deca22f", "tflops": 3909.4}
+{"arm": 4, "shape": "1053x896x9728", "median_ms": 4.4729, "f16_digest": "5da380ac014b69c1", "tflops": 4104.0}
+PROBE-DONE
