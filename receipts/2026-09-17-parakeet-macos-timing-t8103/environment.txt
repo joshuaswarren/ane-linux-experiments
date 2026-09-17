@@ -1,0 +1,19 @@
+ProductName:		macOS
+ProductVersion:		14.8.9
+BuildVersion:		23J631
+---
+Apple M1
+MacBookPro17,1
+17179869184
+14.8.9
+23J631
+---
+3304.7.1
+---
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+---
+Now drawing from 'AC Power'
+---
+host: JW-M1.local  date: 2026-09-17T23:19:51Z

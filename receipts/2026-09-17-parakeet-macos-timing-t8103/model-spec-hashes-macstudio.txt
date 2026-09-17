@@ -1,0 +1,20 @@
+# Byte-identity proof: pinned model specs identical on macstudio (M1 Ultra,
+# macOS 26.6.2, CoreML 3520.5.1) and jwm1 (T8103, macOS 14.8.9, CoreML 3304.7.1).
+# Both sides computed with `shasum -a 256` on each host over
+# $CACHE/<pkg>.mlpackage/Data/com.apple.CoreML/model.mlmodel where
+# CACHE=~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+# Captured from live ssh runs 2026-09-17.
+
+# macstudio (reference host, produced golden capture 20260912T154759Z-librispeech/ane
+# and the 292.2 ms ANE median):
+2e4e6b54f32029d7b2a69549c2cedf5cd9c6daa8e5274a2b357fc7911747204b  encoder.mlpackage/Data/com.apple.CoreML/model.mlmodel
+8d068618a9fd3a981d6cbc09ae9643a25b2e382f2c3e05d3b9412b9c25a4372e  decoder.mlpackage/Data/com.apple.CoreML/model.mlmodel
+cde4d7c509e8053ec7c90d04368f2d4bb5ad8db87a28b550de80541193100a39  joint.mlpackage/Data/com.apple.CoreML/model.mlmodel
+
+# jwm1 (T8103, this attempt; identical file model-spec-hashes-jwm1.txt pulled from host):
+2e4e6b54f32029d7b2a69549c2cedf5cd9c6daa8e5274a2b357fc7911747204b  encoder.mlpackage/Data/com.apple.CoreML/model.mlmodel
+8d068618a9fd3a981d6cbc09ae9643a25b2e382f2c3e05d3b9412b9c25a4372e  decoder.mlpackage/Data/com.apple.CoreML/model.mlmodel
+cde4d7c509e8053ec7c90d04368f2d4bb5ad8db87a28b550de80541193100a39  joint.mlpackage/Data/com.apple.CoreML/model.mlmodel
+
+# => All three model-spec bytes identical across hosts: jwm1's refusal is an OS/CoreML
+#    generation property, not a fetch or storage corruption.

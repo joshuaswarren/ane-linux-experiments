@@ -1,0 +1,12 @@
+# Fixture + golden pins re-verified ON jwm1 (shasum -a 256), captured from live ssh runs 2026-09-17.
+# Transfer path: macstudio -> workstation /tmp/t8103-stage -> jwm1 /tmp/t8103-parakeet.
+
+# Audio fixture (LibriSpeech 1089-134686-0000, 10.435 s; reference sha 30885601...):
+30885601173f96b0d8ddd020dc959b055c6c1582b85a33e3fcab8c4b08ed94c2  /tmp/t8103-parakeet/1089-134686-0000.flac
+
+# Golden token ids (golden capture 20260912T154759Z-librispeech/ane; reference sha a175a5f9...):
+a175a5f9ce8c1e91fc28f6e1fce9deee29c24c3ef49e62ce4b144cc44f8401c8  /tmp/t8103-parakeet/golden/token_ids.json
+
+# Transcript golden (pinned in every refusal battery invocation, never reached):
+# sha256(transcript utf8) == db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790
+# expect token count == 104
