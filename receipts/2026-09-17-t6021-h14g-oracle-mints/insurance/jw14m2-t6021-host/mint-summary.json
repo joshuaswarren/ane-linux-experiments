@@ -1,0 +1,95 @@
+{
+  "edge-n1000": {
+    "geometry": "edge-n1000",
+    "M": 375,
+    "K": 1024,
+    "N": 1000,
+    "weight_halves": 1024000,
+    "weight_source": "pair28 watermark (see module docstring)",
+    "linear_W_shape": [
+      1000,
+      1024
+    ],
+    "mil": "/tmp/anec-mint2/edge-n1000/model.mil",
+    "compiles": {
+      "h14g": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint2/edge-n1000/cache_h14g",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/A2C0F51269369DA8FDF9F7A8755B18ED7AA456992C1EAF528D8832936BFA72C1/6E7BA614C698671FCD7D98BB17DE539C149D7FF8A2200E5F9F2E57B48167416B.bundle/H14C.bundle/H14C.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/A2C0F51269369DA8FDF9F7A8755B18ED7AA456992C1EAF528D8832936BFA72C1/6E7BA614C698671FCD7D98BB17DE539C149D7FF8A2200E5F9F2E57B48167416B.bundle/H14C.bundle/main/main_ane/model.anehash"
+        ]
+      },
+      "h13": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint2/edge-n1000/cache_h13",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/A2C0F51269369DA8FDF9F7A8755B18ED7AA456992C1EAF528D8832936BFA72C1/F13F6EE1580A5DC50D33960ED1ACDAD5C261B1306A4DBB804B384BC12EAB3579.bundle/H14C.bundle/H14C.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/A2C0F51269369DA8FDF9F7A8755B18ED7AA456992C1EAF528D8832936BFA72C1/F13F6EE1580A5DC50D33960ED1ACDAD5C261B1306A4DBB804B384BC12EAB3579.bundle/H14C.bundle/main/main_ane/model.anehash"
+        ]
+      }
+    }
+  },
+  "edge-k64": {
+    "geometry": "edge-k64",
+    "M": 375,
+    "K": 64,
+    "N": 1024,
+    "weight_halves": 65536,
+    "weight_source": "pair28 watermark (see module docstring)",
+    "linear_W_shape": [
+      1024,
+      64
+    ],
+    "mil": "/tmp/anec-mint2/edge-k64/model.mil",
+    "compiles": {
+      "h14g": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint2/edge-k64/cache_h14g",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/6C922035449AF52217E5CA4C4CC1EFAE87D77A5CC1EED54A7B92834B092651AF/CB4A107EB850B48E041AC979CFE97E183BC72901B4C9D002EBD1EC9EA4713F73.bundle/H14C.bundle/H14C.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/6C922035449AF52217E5CA4C4CC1EFAE87D77A5CC1EED54A7B92834B092651AF/CB4A107EB850B48E041AC979CFE97E183BC72901B4C9D002EBD1EC9EA4713F73.bundle/H14C.bundle/main/main_ane/model.anehash"
+        ]
+      },
+      "h13": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint2/edge-k64/cache_h13",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/6C922035449AF52217E5CA4C4CC1EFAE87D77A5CC1EED54A7B92834B092651AF/AD3F20876628DAFA49B6A8AE7CBB9B445FA394CCFF9DB9610DD23CA11D06243F.bundle/H14C.bundle/H14C.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/6C922035449AF52217E5CA4C4CC1EFAE87D77A5CC1EED54A7B92834B092651AF/AD3F20876628DAFA49B6A8AE7CBB9B445FA394CCFF9DB9610DD23CA11D06243F.bundle/H14C.bundle/main/main_ane/model.anehash"
+        ]
+      }
+    }
+  },
+  "edge-k16": {
+    "geometry": "edge-k16",
+    "M": 375,
+    "K": 16,
+    "N": 1024,
+    "weight_halves": 16384,
+    "weight_source": "pair28 watermark (see module docstring)",
+    "linear_W_shape": [
+      1024,
+      16
+    ],
+    "mil": "/tmp/anec-mint2/edge-k16/model.mil",
+    "compiles": {
+      "h14g": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint2/edge-k16/cache_h14g",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/5EA8DE6DE96442467071013863CB2AA2AC1558456CF1FFEE995ACADAF0460DAF/6601EA571DBFF5DCCAF4C7FA34A8C5D0915CE2DAA189600BC61958E4FDD4E1CF.bundle/H14C.bundle/H14C.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/5EA8DE6DE96442467071013863CB2AA2AC1558456CF1FFEE995ACADAF0460DAF/6601EA571DBFF5DCCAF4C7FA34A8C5D0915CE2DAA189600BC61958E4FDD4E1CF.bundle/H14C.bundle/main/main_ane/model.anehash"
+        ]
+      },
+      "h13": {
+        "rc": 0,
+        "cache_dir": "/tmp/anec-mint2/edge-k16/cache_h13",
+        "files": [
+          "com.apple.e5rt.e5bundlecache/25G83/5EA8DE6DE96442467071013863CB2AA2AC1558456CF1FFEE995ACADAF0460DAF/11413A5FAC28DFFAEEF2F99E4DF92A6C5FEE81662086729AD7532D097E449472.bundle/H14C.bundle/H14C.e5",
+          "com.apple.e5rt.e5bundlecache/25G83/5EA8DE6DE96442467071013863CB2AA2AC1558456CF1FFEE995ACADAF0460DAF/11413A5FAC28DFFAEEF2F99E4DF92A6C5FEE81662086729AD7532D097E449472.bundle/H14C.bundle/main/main_ane/model.anehash"
+        ]
+      }
+    }
+  }
+}

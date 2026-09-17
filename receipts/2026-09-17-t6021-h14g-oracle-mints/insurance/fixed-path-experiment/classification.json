@@ -1,0 +1,22 @@
+{
+  "experiment": "TargetArchitecture classification via identical-path cross-host mint",
+  "method": "same MIL (sha a7a5895d764ca7e2) + same weights (8b4a1451cdb2dbfa) compiled at the SAME absolute path (/tmp/mintfix-x/oproj/model.mil) on macstudio (M1 Ultra -> H13D.bundle) and jw14m2 (M2 Max -> H14C.bundle)",
+  "same_path_same_host_rerun": "byte-identical (0 differing bytes) — compile is deterministic given identical inputs+path; earlier same-host churn (1117 bytes) was path-derived: the MIL source path is embedded verbatim ('input-file-path') and path changes re-salt the encoding (length deltas track path length exactly: 2320/2328/2344 bytes for 31/39/56-char paths)",
+  "cross_host_result": {
+    "differing_bytes": 1,
+    "offset": 2312,
+    "hex_offset": "0x908",
+    "macstudio_H13D_value": 2,
+    "jw14m2_H14C_value": 33,
+    "classification": "single-byte family/chip identifier field; entire task-stream program otherwise byte-identical across M1-Ultra and M2-Max hosted compiles"
+  },
+  "conclusions": [
+    "TargetArchitecture option does NOT steer the emitted family: bundle dirs are named H13D.bundle on macstudio and H14C.bundle on jw14m2 regardless of the option (h13 vs h14g); every oracle is host-SoC by construction",
+    "compiled linear programs are family-invariant apart from the one-byte family id at 0x908: the H13 program format and (by transitivity of byte-parity) the H13-derived weight-plane maps carry over to t6021/H14C program-side unchanged",
+    "t602x-specific ANE behavior, if any, lives in firmware interpretation at load/exec time, not in the compiled program bytes"
+  ],
+  "edge_findings": [
+    "edge-k16 (K=16): macstudio/H13D segmenter splits into TWO program bundles (both embedding the same .e5 content sha fb7eaeb5328f); jw14m2/H14C compiles ONE program (7dd8a040fb9b) — segmentation is family-dependent at the K=16 edge",
+    "edge-n1000 (N=1000, non-multiple-of-16) and edge-k64: single-program compiles, target-invariant on both hosts, same one-byte-family-only cross-host delta expected (not separately path-normalized)"
+  ]
+}
