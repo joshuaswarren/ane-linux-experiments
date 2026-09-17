@@ -227,3 +227,73 @@ pure win for the shipped default.**
 - Test fix: `b284e7fb` on `agent/ane-weight-residency` deletes the stale
   "positional channel map is refused" case; suite rebuilt and 27/27 green
   on jwm1.
+
+## Addendum (same day): jw16 reconciliation — the SHA fix is clean; two earlier jw16 numbers were harness artifacts
+
+Main flagged that my first jw16 table did not reconcile with the FfnPlacement
+matrix. Resolution below; every claim is backed by a run in this session.
+
+### 1. The first jw16 table was NOT comparable — and the wall regression it showed was a pre-existing harness artifact, not the fix
+
+- Metric: I quoted `stages[stage=="encoder_ane"].wall_ms`. The FfnPlacement
+  receipt quoted `total_pipeline_ms` (and used the FFN lane runner
+  `vulkan_encoder.py`+F hunks; `gpu_ops` 1206 there vs 1254 for my
+  `vk_erev_o.py` ABC). Different runner, different metric — not comparable.
+- Same-runner-pinned A/B then showed new-pair walls ~2× old (resident
+  5 331 → 9 188). Statement-level instrumentation located it: with the new
+  wheel deployed WITHOUT `LD_LIBRARY_PATH`, the RUNNER (fused_e2e python)
+  loaded the venv-cache libmlx `05015a76` (dev202609141626) instead of the
+  `044f297f` build, and that build's GPU matmul path is ~2.8× slower per
+  statement (stmt 347 matmul 90→260 ms across all 24 layers ≈ +3.9 s).
+  This is independent of the SHA change — it is a runner-libmlx-version
+  artifact that was silently present in the 12:02 matrix too.
+- Decisive split (worker resolves its own libmlx via RUNPATH; runner pinned
+  on `044f297f` via `LD_LIBRARY_PATH`, `LD_LIBRARY_PATH` stripped from the
+  child env; llama stopped; `flock -w 900` held; pins `38c73261` /
+  `db501a8c` EXACT on all four runs):
+
+| jw16 ABC, runner pinned 044f297f | wall | exec | subs |
+|---|---|---|---|
+| worker+lib OLD (scalar SHA) | 6 001.4 | 2 553.0 | 72 |
+| worker+lib NEW (crypto SHA) | 6 010.3 | 2 557.3 | 72 |
+| worker+lib OLD, resident | 5 075.4 | 2 442.5 | 1 |
+| worker+lib NEW, resident | 4 714.6 | 2 210.3 | 1 |
+
+- jw16 verdict: launch neutral on ABC (its per-submit bundles are small,
+  ~1.5–5 MB, so per-submit hashing was only a few ms); resident −360 ms
+  wall / −232 ms exec (session-open hashing 463→131 ms plus round
+  variance). Post-fix open probe (28 bundles, 51 MB): 461–488 → 128–137 ms
+  (110 → 390 MB/s). The jwm1 launch win (−66% of the launch−resident gap)
+  stands: those arms hash ~96 MB of FFN islands per submit-heavy pass.
+- jw16 scratch runner `vk_erev_o.py` now carries two durable fixes: the
+  `RESIDENT_BUNDLES` oproj extension and the `LD_LIBRARY_PATH` strip (runner
+  mlx loads before children; the worker must resolve its own wheel lib).
+  Final post-cleanup check: MATCH, wall 4 940, exec 2 373, `38c73261` /
+  `db501a8c`.
+
+### 2. The "+727 ms ABCO resident on jw16" published number is VALID — my "never runnable" claim was over-broad
+
+`receipts/2026-09-17-v0.6.2-release.md` measured ABCO resident
+(submissions=1, hidden `ef6afd13`) via WheelR4V062's own runner, which had a
+complete resident bundle set. What had never been runnable was ABCO resident
+through the `/var/tmp/ParakeetE2EJw16/vk_erev_o.py` scratch copy specifically
+(its `RESIDENT_BUNDLES` listed only the 3 non-oproj islands). The +727 ms
+figure stands; no correction needed. The number that DOES need a caveat is my
+earlier claim in this receipt — scope corrected here.
+
+### 3. Branch state confirmed
+
+`agent/ane-weight-residency` tip is exactly `b284e7fb` (parent `16835c0f`);
+verified via `git fetch origin` + log. The force-push incident replaced the
+tip for ~40 s with a same-content commit on the wrong parent (`1a79c130`,
+parent `112c32c4`); the wrong-parent commit was never referenced anywhere
+else and is now unreachable. Nothing else was on the branch between
+`16835c0f` and `b284e7fb` except the one test-file deletion.
+
+### 4. Landing implication unchanged
+
+`16835c0f` remains a pure win: jwm1 launch hashing −66%, resident open
+hashing 3.6–4.8×, zero digest movement anywhere, KATs 13/13 against the
+deployed libmlx on both hosts. jw16 launch-mode neutrality is expected (its
+ABC per-submit payloads are small); the win there is resident-open and any
+future FFN-island use, where 96×8.4 MB hashing per pass was the cost.
