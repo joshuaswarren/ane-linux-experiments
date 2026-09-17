@@ -1,0 +1,62 @@
+{
+  "8": {
+    "h14g": {
+      "rc": 0,
+      "program_bundles": 2
+    },
+    "h13": {
+      "rc": 0,
+      "program_bundles": 2
+    }
+  },
+  "16": {
+    "h14g": {
+      "rc": 0,
+      "program_bundles": 2
+    },
+    "h13": {
+      "rc": 0,
+      "program_bundles": 2
+    }
+  },
+  "24": {
+    "h14g": {
+      "rc": 0,
+      "program_bundles": 2
+    },
+    "h13": {
+      "rc": 0,
+      "program_bundles": 2
+    }
+  },
+  "32": {
+    "h14g": {
+      "rc": 0,
+      "program_bundles": 2
+    },
+    "h13": {
+      "rc": 0,
+      "program_bundles": 2
+    }
+  },
+  "48": {
+    "h14g": {
+      "rc": 0,
+      "program_bundles": 2
+    },
+    "h13": {
+      "rc": 0,
+      "program_bundles": 2
+    }
+  },
+  "64": {
+    "h14g": {
+      "rc": 0,
+      "program_bundles": 2
+    },
+    "h13": {
+      "rc": 0,
+      "program_bundles": 2
+    }
+  }
+}
