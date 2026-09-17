@@ -119,10 +119,10 @@ All 24 runs: status MATCH, prefix **104/104**, bounds PASS, `cpu_tensor_events`
 resident moved 4578→5419 with no code change on its path — its open is 3
 bundles ≈ 26 MB, cache win ~15 ms, invisible). The open-probe numbers in §4
 are the controlled measurement; treat single-run arm deltas smaller than
-~1 s as noise. Repeated interleaved ABCFO-resident pairs (99-bundle open,
-n=2 pairs so far): before 8746/8945 ms wall vs after 8363/6013 ms — mean
-−1.66 s wall, direction consistent with §4; third pair was mid-flight at
-budget stop.
+~1 s as noise. Repeated interleaved ABCFO-resident pairs, 3 complete
+(all MATCH, prefix 104): before 8746/8945/7413 ms (mean 8368) vs after
+8363/6013/8145 ms (mean 7507) — **−861 ms mean wall (−10.3%)**, direction
+consistent with §4.
 
 ## 6. ABCF re-pricing and default recommendation
 
