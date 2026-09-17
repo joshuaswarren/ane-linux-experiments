@@ -1,0 +1,7 @@
+QmmPrefillCoopmatF16: 115 timed dispatches, 32 GPU cores, m=1053
+      n       k  wgroups  wg/core  cnt    tot ms   mean us    GFLOP  TFLOP/s    rel
+   4864     896     5016    156.8   46   105.997    2304.3    9.178     3.98   1.00
+    896    4864      924     28.9   23    56.134    2440.6    9.178     3.76   0.94
+    896     896      924     28.9   46    22.348     485.8    1.691     3.48   0.87
+total 711.07 GFLOP in 184.480 ms = 3.854 TFLOP/s
+ideal-occupancy floor (every shape at the best observed rate): 178.522 ms

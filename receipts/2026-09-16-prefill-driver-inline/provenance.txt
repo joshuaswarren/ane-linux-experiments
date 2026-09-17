@@ -1,0 +1,7 @@
+commit=99b7104c14da7347240fbf19b7e1850149825027
+boot_id=8dae106c-0800-40ed-b4eb-ecda4a205e8f
+wheel=/var/tmp/mlx-omarchy-prof-main/dist-diag/mlx_omarchy-0.32.2.dev202609170303+99b7104c-cp314-cp314-linux_aarch64.whl
+wheel_sha256=26c5b93dbbfbfe05d2290cf7d6e5b5566288a0ee003f6ee4e1e3e49afa6b9f5c
+mesa=mesa-honeykrisp-omarchy 26.3.0.devel.hk5deac1c-2
+llm_inference=inactive
+load=0.28 1.18 0.75 1/311 91252

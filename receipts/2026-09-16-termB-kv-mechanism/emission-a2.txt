@@ -1,0 +1,21 @@
+-- stock: dump=/var/tmp/TermBTrace/out/trace-stock/agxdecode.dump.0000 --
+device_load lines: 617
+coherency text on load lines:
+byte4 values (chars 9-10 of word):
+    179 00
+    105 01
+     65 31
+     47 08
+     42 40
+     39 03
+-- coh7: dump=/var/tmp/TermBTrace/out/trace-coh7/agxdecode.dump.0000 --
+device_load lines: 617
+coherency text on load lines:
+    617 coherent
+byte4 values (chars 9-10 of word):
+    179 00
+    105 01
+     65 31
+     47 08
+     42 40
+     39 03

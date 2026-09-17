@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-16",
+  "ticket": "encoder-ane-full",
+  "agent": "EncoderAneFull",
+  "status": "STOPPED AT TRANSCRIPT-PIN GATE - divergence reported to Main; pin bump + integration fixes landed; FFN/oproj islands engage but compute wrong values",
+  "mil_hwx_compiler": {
+    "landed_main": "2d11b2a74c276af47b21afb3a7ef5c2888ef957f",
+    "chain": "encoder-leftover-oracles WIP squashed: 09b96c5+1744b40 tree-identical into 2d11b2a; parent 074324c on main b61de46",
+    "gates": {
+      "make_test_h13": "PASS exit 0 (15 CLI suites)",
+      "parity": "PASS 874 cases (11 linear, 1 bmm, 1 FFN chain over 861)"
+    },
+    "pushed": [
+      "main b61de46..2d11b2a",
+      "encoder-leftover-oracles",
+      "tag ane-parity-2d11b2a"
+    ],
+    "release": {
+      "url": "https://github.com/joshuaswarren/mil-hwx-compiler/releases/tag/ane-parity-2d11b2a",
+      "archive": "mil-hwx-compiler-2d11b2a.tar.gz",
+      "bytes": 84132567,
+      "sha256": "993d8dab83b87719fe20b7893134301dd979602338c22fa246be7b1230b2c3fc"
+    },
+    "integration_branch": {
+      "name": "ane-integration/input-first-channels",
+      "pushed": true,
+      "fixes": [
+        "encodeLinearParity/encodeFFNChain declare the channels the decoded streams select (input 4, output 5) instead of output-first",
+        "encodeANEC surface table follows each tensor's declared index; output==5 rule becomes a real collision check"
+      ],
+      "gates_after_fix": {
+        "make_test_h13": "PASS",
+        "parity": "PASS 874 (task/const bytes unchanged; tables swap between equal-sized channels)",
+        "adapter_derive": "ffn and oproj manifests now match derived (src=[4], dst=[5])"
+      }
+    }
+  },
+  "mlx_omarchy": {
+    "worktree": "/var/tmp/ANE-full (branch encoder-ane-full, local commit 0b53b189, NOT pushed)",
+    "base": "origin/main 99b7104c",
+    "pin_bump": {
+      "lock": "2d11b2a / release ane-parity-2d11b2a / sha256 993d8dab... / schema mil-hwxc.h13-anec-package.v2 unchanged",
+      "docs": "docs/dependency-licenses.md + docs/ane-bundles.md pin rows updated",
+      "verify_ane_compiler": "reject PASS, prepare PASS (binary sha256 474145617aaa4578bd255eaad8b848e1b49d7756798ebed3a6ddc1637a5bb850), h13 qualification PASS (tile program 3d73787c unchanged). GitHub asset CDN flapped 404 right after release upload; archive seeded from the identical local bytes, hash gate still enforced"
+    },
+    "new_tool": "overlay/tools/coreml/mint_encoder_islands.py - emits per-layer island MILs (oracle templates) with real weights from the staged encoder blobs, compiles with pinned mil-hwxc, structure-gates each manifest against the compiled qualified oracle record, adapts v2 to schema-4",
+    "island_template": "verified: chain_ffn_d1024_s375_matmul_silu lowers as ONE 28-task program with real distinct bias bytes (no uniform-payload specialization in the chain lowering)",
+    "commits": [
+      "0b53b189 pin bump (local)",
+      "a45e69ed planner+minter (local)",
+      "c804e5 WIP divergence halt (local)"
+    ]
+  },
+  "open_defects_blocking_e2e": [
+    {
+      "id": "ffn-chain-manifest-slice",
+      "symptom": "composed ffn-chain package manifest slices its program output record at elementCount 64 / shape [64] with physicalElements 384000; adapter refuses: 'output tensor y is not fully written'",
+      "evidence": "/tmp/chanprobe2/ffn/pkg/manifest.json (programs=1, taskDescriptors=28, tensors.y full and correct; only the program-record outputs[0] slice is wrong)",
+      "needed": "the ffn-chain record path must set outputSliceElements to the full 384000 like the rank-3 linear records"
+    },
+    {
+      "id": "packed-bmm-derive-failure",
+      "symptom": "packed B=8 bmm (375,1024,128) ty=1 task stream never marks its input surface as a source in the strict walk (derived src empty vs header source_count 1); derive_role_channels returns None; worker refuses bundles as positional",
+      "evidence": "/tmp/chanprobe2 full trace: 209 tasks walk clean, only dst channel 5 ever marked",
+      "needed": "decoded bmm template input binding analysis (DMA record or selector for the x read), then a manifest/table fix analogous to the linear one"
+    }
+  ],
+  "not_done": [
+    "qkv head-projection bmm placement (blocked by packed-bmm-derive-failure)",
+    "runner vulkan_encoder.py planner extension (F/P/O families, refuse-and-fallback)",
+    "strict worker rebuild + bundle staging on jwm1/jw16",
+    "E2E 6-run batteries on jwm1 and jw16, transcript pin db501a8c check, frozen bounds, before/after wall quote",
+    "receipts/2026-09-16-parakeet-* stage-time comparison and wheel pin manifest update"
+  ],
+  "e2e_pins_for_whoever_picks_up": {
+    "transcript": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790 (MUST hold)",
+    "encoder_hidden": "38c73261... EXPECTED to change (more ANE ops shift rounding); frozen bounds max_abs 0.3 / rel_l2 0.1 vs macOS golden MUST pass",
+    "e2e_mil": "/var/tmp/IslandsExecJwm1/encoder-source/model.mil sha256 ac8e9526154ac8b8d4c08b83e44dbc1a2208d7ec33e42a7838d57b698b14f133 (rank-3 linear + reshape/transpose spelling, NOT the all-peels concat form)",
+    "placement_scope": "48 ffn chains + 24 o_proj linear = 72 bundles, ~860 MB; names island-ffn-L{00..23}-f{1,2} / island-oproj-L{00..23}"
+  },
+  "jwm1_divergence": {
+    "emissions": "0/104 (native 104)",
+    "transcript": "empty; pin db501a8c broken",
+    "encoder_hidden": "302255aa4714549fd323c8f61f0e5d4ea928a1f2bdf277fe86caa0771193ce94",
+    "bounds": "fail",
+    "submits": "168 pass, 0 timeouts",
+    "unit_probe": "island-ffn-L00-f1 vs fp32 numpy chain: rel_l2 0.94 max_abs 4594; output finite/plausible-scale",
+    "probe_output_sha": "c48d6a29c7d2b97aabd6788f9f76299c7760c25c52514def6c92e2bf06270ce8",
+    "captured": "receipts/2026-09-16-encoder-ane-full-divergent-e2e-report.json",
+    "open_suspects": [
+      "input-first channel semantics at worker/driver boundary (equal-geometry swap passes all strict validation)",
+      "const packing with real uniform-bias payloads vs scalar-register fold"
+    ]
+  },
+  "compiler_fixes_pushed": [
+    "db8ffba",
+    "ee2fdec"
+  ],
+  "jw16": "untouched"
+}

@@ -297,3 +297,26 @@ hashing 3.6–4.8×, zero digest movement anywhere, KATs 13/13 against the
 deployed libmlx on both hosts. jw16 launch-mode neutrality is expected (its
 ABC per-submit payloads are small); the win there is resident-open and any
 future FFN-island use, where 96×8.4 MB hashing per pass was the cost.
+
+## Landing receipt (final)
+
+- `16835c0f` + `b284e7fb` **landed to mlx-omarchy main**: branch
+  `land-sha256-crypto` cut from current `origin/main` (`2da5e052`,
+  `63c1d3cf` asserted non-ancestor), cherry-picked, plus a third commit
+  `88a0bc71` "encoder: assert the loaded libmlx identity before
+  measuring" (the harness guard). Pushed fast-forward
+  `2da5e052..88a0bc71` on main.
+- Harness guard: `assert_mlx_binary_identity()` resolves the mapped
+  libmlx from `/proc/self/maps`, records path+sha256+dist version, and
+  hard-fails on `MLX_OMARCHY_EXPECTED_LIBMLX_SHA256`/`_PATH` mismatch.
+  Deployed to the live scratch runners too (jwm1 `vk_resid.py`, jw16
+  `vk_erev_o.py` + `vk_ffn.py`); mismatch smoke test exits non-zero on
+  both hosts.
+- Named finding: `receipts/2026-09-17-libmlx-identity-shadowing.md`
+  (defect, guard, per-receipt contamination table). Separate
+  observation: `receipts/2026-09-17-05015a76-gpu-matmul-regression.md`
+  (the ~2.8x matmul regression shipped in the venv-cache build).
+- Housekeeping: jw16 `vk_erev_o.py` diag instrumentation removed;
+  `RESIDENT_BUNDLES` fix and `LD_LIBRARY_PATH` strip retained;
+  llm-inference restarted and ACTIVE holding lock inode 12; jwm1 lock
+  inode 35 free; module `1fc2e02` map_mode 3 on both hosts.

@@ -1,0 +1,4 @@
+lock inode=12
+nested flock -n rc=1 (held)
+lock free after run
+lock inode after=12
