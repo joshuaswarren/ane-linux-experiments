@@ -1,0 +1,94 @@
+{
+  "receipt": "2026-09-16-parakeet-macos-timing-m1ultra",
+  "claim": "M1-Ultra-cross-chip macOS CoreML wall time of the pinned public Parakeet on the licensed LibriSpeech fixture; same-die T8103 divisor remains queued for jwm1-macbook",
+  "hardware": {
+    "chip": "Apple M1 Ultra",
+    "die": "T6000",
+    "hw_model": "Mac13,2",
+    "label": "M1-Ultra-cross-chip",
+    "memory_gb": 128
+  },
+  "software": {
+    "macos": "26.6.2 (25G83)",
+    "coreml_framework_version": "3520.5.1",
+    "reference_commit": "75aec2a1c991319657ff4dec5f602c12da6c5012",
+    "swift_package": "~/parakeet-mel-stage (Package.resolved pin verified)",
+    "construction": "ParakeetTranscriber(modelsRoot:computeUnits:decoderWorkers:1), transcribe(audioURL:) only"
+  },
+  "model": {
+    "repo": "mweinbach1/parakeet-tdt-0.6b-v3-coreml",
+    "revision": "b650695c2322ee5281dff48d7345b2f3a58ff018",
+    "fetch": "fetch_parakeet_reference.py download (12/12 files verified into ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c...)",
+    "staged_models_dir": "~/parakeet-ref-capture/models/mweinbach1 (all 12 lock files shasum -c OK)",
+    "key_hashes": {
+      "encoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin": "23867a834223ee6484d0b7b9b703530e8606546efa8e710535163d51ed9aac04",
+      "tokenizer.json": "bd321b096832a3f270bd3b2a88823957920f1a5c5ada71114a26ea729d0cbe91"
+    }
+  },
+  "fixture": {
+    "name": "LibriSpeech test-clean/1089/134686/1089-134686-0000.flac",
+    "license": "CC-BY-4.0 (OpenSLR SLR12)",
+    "duration_seconds": 10.435,
+    "sha256": "30885601173f96b0d8ddd020dc959b055c6c1582b85a33e3fcab8c4b08ed94c2",
+    "verified_on_host": true
+  },
+  "guard": {
+    "token_count": 104,
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "token_ids_sha256": "a175a5f9ce8c1e91fc28f6e1fce9deee29c24c3ef49e62ce4b144cc44f8401c8",
+    "enforcement": "every run (warm + measured, both configs) asserted 104 tokens + exact golden token ids + transcript sha256; harness exits non-zero on any mismatch",
+    "result": "22/22 runs guarded OK (1 warm + 10 measured x2 configs; plus 3 smoke runs before the service stop)"
+  },
+  "results": {
+    "ane": {
+      "median_all_10_ms": 293.32,
+      "median_runs_2_to_10_ms": 292.23,
+      "min_ms": 282.2,
+      "max_ms": 302.1,
+      "warm_run_ms": 421.5,
+      "model_load_ms": 257.4,
+      "per_run_wall_ms": [295.4, 288.2, 291.5, 294.4, 282.2, 292.2, 297.3, 291.0, 302.1, 296.5],
+      "per_run_encoder_ms": [139.6, 130.8, 135.8, 138.3, 128.1, 135.8, 138.3, 136.7, 128.3, 133.7],
+      "per_run_decoder_loop_ms": [138.5, 139.9, 137.7, 138.8, 136.7, 138.8, 141.6, 136.9, 156.2, 145.3],
+      "rtfx_vs_audio": 35.7
+    },
+    "all": {
+      "median_all_10_ms": 305.6,
+      "median_runs_2_to_10_ms": 305.81,
+      "min_ms": 297.5,
+      "max_ms": 326.3,
+      "warm_run_ms": 499.2,
+      "model_load_ms": 45201.8,
+      "per_run_wall_ms": [300.7, 305.4, 306.1, 320.2, 303.1, 305.8, 302.5, 297.5, 310.7, 326.3],
+      "note": "MLComputeUnits.all picked a slightly slower schedule than cpuAndNeuralEngine on this host; load includes a fresh 45.2 s Core ML compile for the .all configuration (the .ane compile cache was warm)"
+    }
+  },
+  "timing_definition": "wall = ContinuousClock around transcribe(audioURL:) only; model load timed separately and excluded. inference = library-reported mel+encoder+decoderLoop+detokenize (no audio load). NOT directly comparable to the Linux 'total_pipeline' stage (which includes audio_load + model load timing split differently) — match stage definitions before forming a divisor.",
+  "service_window": {
+    "macstudio_unit": "llm-inference.service equivalent on macOS = launchd label com.warren.omlx-advisor (omlx-server, :8002 router leg); com.warren.omlx-watchdog was NOT loaded pre-change (bootout: 'No such process'), nothing to restore",
+    "stopped_at": "19:03:43 local (launchctl bootout gui/501/com.warren.omlx-advisor)",
+    "confirmed_down": "pgrep empty, :8002 LISTEN count 0",
+    "restored_at": "19:05:17 local (launchctl bootstrap)",
+    "confirmed_up": "19:05:22 local: state running pid 98775, LISTEN *:8002, /v1/models answers with Qwen pool",
+    "stopped_seconds": 99
+  },
+  "mutations_on_macstudio": [
+    "~/parakeet-mel-stage: added Sources/parakeet-timing/main.swift + parakeet-timing target in Package.swift (extension of the capture package; .build dirs from swift build)",
+    "~/parakeet-ref-capture/fetch-tool/: fetch_parakeet_reference.py, reference.py, parakeet-reference.lock, pinned_files.txt (mandated same-download-path fetch/verify)",
+    "~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/...: pinned model cache downloaded + verified (12 files)",
+    "/tmp reports (smoke + battery JSONs, copied into the receipt dir)",
+    "Golden captures, 63c1d3cf, and all other state untouched"
+  ],
+  "artifacts": {
+    "raw_ane": "receipts/2026-09-16-parakeet-macos-timing-m1ultra/timing-ane.json",
+    "raw_all": "receipts/2026-09-16-parakeet-macos-timing-m1ultra/timing-all.json",
+    "harness_source": "~/parakeet-mel-stage/Sources/parakeet-timing/main.swift (macstudio)"
+  },
+  "not_claimed": [
+    "No T8103 (jwm1-macbook) numbers — queued, no confirmed remote path",
+    "No Linux ANE comparison or divisor arithmetic here",
+    "No cold-start claim (compile caches warm; .all load compiled fresh and is reported as load, not transcribe)",
+    "No claim on gpu/cpu compute-unit configurations"
+  ],
+  "timestamp_utc": "2026-09-16T19:10:00Z"
+}
