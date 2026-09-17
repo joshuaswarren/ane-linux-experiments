@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 .local/ane-ffn-wt
+
+# large re-derivable artifacts (see receipts for provenance)
+receipts/**/BuildManifest.plist
+receipts/**/*.dump
