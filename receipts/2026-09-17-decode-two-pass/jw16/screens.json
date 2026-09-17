@@ -1,0 +1,18 @@
+[
+ {
+  "leg": "short",
+  "decode_tps": 157.0891,
+  "prompt_tokens": 30,
+  "ids_sha16": "7fd25a869ff21678",
+  "libmlx16": "aa5615cea4e584f7",
+  "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+ },
+ {
+  "leg": "ctx1024",
+  "decode_tps": 143.5122,
+  "prompt_tokens": 1053,
+  "ids_sha16": "7da83f06ec9f001d",
+  "libmlx16": "aa5615cea4e584f7",
+  "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+ }
+]

@@ -1,0 +1,2 @@
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs            32G  1.3G   30G   4% /tmp

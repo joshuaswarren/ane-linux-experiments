@@ -1,0 +1,10 @@
+screen_exit=1
+DIGEST SCREEN FAILED - aborting before any perf run
+screen_exit=1
+DIGEST SCREEN FAILED - aborting before any perf run
+screen_exit=1
+DIGEST SCREEN FAILED - aborting before any perf run
+screen_exit=1
+DIGEST SCREEN FAILED - aborting before any perf run
+screen_exit=0
+ab_exit=0

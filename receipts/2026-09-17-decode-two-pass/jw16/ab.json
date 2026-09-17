@@ -1,0 +1,385 @@
+{
+ "summary": {
+  "base_short_tps": 192.46775,
+  "base_short_rounds": [
+   135.8506,
+   140.4085,
+   192.4715,
+   192.464,
+   192.6742,
+   193.2712
+  ],
+  "base_ctx1024_tps": 149.8336,
+  "base_ctx1024_rounds": [
+   53.6685,
+   57.6448,
+   165.4349,
+   150.6249,
+   153.3513,
+   149.0423
+  ],
+  "base_ctx19_tps": 141.59935000000002,
+  "base_ctx19_rounds": [
+   52.5274,
+   61.012,
+   144.3209,
+   146.7578,
+   138.8778,
+   153.3321
+  ],
+  "fix_short_tps": 192.23205000000002,
+  "fix_short_rounds": [
+   136.4211,
+   146.5509,
+   191.8254,
+   193.1348,
+   193.4243,
+   192.6387
+  ],
+  "fix_ctx1024_tps": 165.3056,
+  "fix_ctx1024_rounds": [
+   149.8169,
+   65.1599,
+   168.8405,
+   168.8946,
+   161.7707,
+   169.2037
+  ],
+  "fix_ctx19_tps": 152.70355,
+  "fix_ctx19_rounds": [
+   54.3004,
+   49.8882,
+   148.0846,
+   157.3225,
+   166.8438,
+   162.6518
+  ],
+  "ctx19_digest": "31267e7ed4c6d0dc"
+ },
+ "results": [
+  {
+   "arm": "base",
+   "leg": "short",
+   "decode_tps": 135.8506,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx1024",
+   "decode_tps": 53.6685,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx19",
+   "decode_tps": 52.5274,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "fix",
+   "leg": "short",
+   "decode_tps": 136.4211,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx1024",
+   "decode_tps": 149.8169,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx19",
+   "decode_tps": 54.3004,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx1024",
+   "decode_tps": 57.6448,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx19",
+   "decode_tps": 61.012,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "short",
+   "decode_tps": 140.4085,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx1024",
+   "decode_tps": 65.1599,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx19",
+   "decode_tps": 49.8882,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "short",
+   "decode_tps": 146.5509,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx19",
+   "decode_tps": 144.3209,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "short",
+   "decode_tps": 192.4715,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx1024",
+   "decode_tps": 165.4349,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx19",
+   "decode_tps": 148.0846,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "short",
+   "decode_tps": 191.8254,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx1024",
+   "decode_tps": 168.8405,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "base",
+   "leg": "short",
+   "decode_tps": 192.464,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx1024",
+   "decode_tps": 150.6249,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx19",
+   "decode_tps": 146.7578,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "fix",
+   "leg": "short",
+   "decode_tps": 193.1348,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx1024",
+   "decode_tps": 168.8946,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx19",
+   "decode_tps": 157.3225,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx1024",
+   "decode_tps": 153.3513,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx19",
+   "decode_tps": 138.8778,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "short",
+   "decode_tps": 192.6742,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx1024",
+   "decode_tps": 161.7707,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx19",
+   "decode_tps": 166.8438,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "short",
+   "decode_tps": 193.4243,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx19",
+   "decode_tps": 153.3321,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "short",
+   "decode_tps": 193.2712,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "base",
+   "leg": "ctx1024",
+   "decode_tps": 149.0423,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "06e43c203e85a16a",
+   "provenance": "mlx-omarchy 0.32.2.dev202609171827+2f58ead mx=0.32.2.dev202609171827+2f58ead verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:06e43c203e85a16a"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx19",
+   "decode_tps": 162.6518,
+   "prompt_tokens": 1013,
+   "ids_sha16": "31267e7ed4c6d0dc",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "short",
+   "decode_tps": 192.6387,
+   "prompt_tokens": 30,
+   "ids_sha16": "7fd25a869ff21678",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  },
+  {
+   "arm": "fix",
+   "leg": "ctx1024",
+   "decode_tps": 169.2037,
+   "prompt_tokens": 1053,
+   "ids_sha16": "7da83f06ec9f001d",
+   "libmlx16": "aa5615cea4e584f7",
+   "provenance": "mlx-omarchy 0.32.2.dev202609172006+283aa076 mx=0.32.2.dev202609172006+283aa076 verified=match harness=unknown core.cpython-314-aarch64-linux-gnu.so=sha256:4ad850da16c300ea libmlx.so=sha256:aa5615cea4e584f7"
+  }
+ ]
+}
