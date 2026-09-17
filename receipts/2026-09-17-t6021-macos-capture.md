@@ -145,6 +145,12 @@ Final state after two same-day addenda (read that receipt for detail):
 - `model.anehash` is not reproducible from the program bytes and is not a pure function
   of them; a synthesized H14C-from-H13 candidate is archived stale-hashed, explicitly
   NOT validated — acceptance testable only by libane on a t602x Linux host.
+- **CORRECTED after reconciliation (mints receipt addendum 4)**: the `.e5` programs
+  carry NO weight payload or weight descriptors (cross-geometry diff = shapes + extern
+  sizes + path only) — **no weight-plane map is derivable from these bundles**; the
+  0x908 byte is the low half of the `__sym_desc__` u16 chip id (0x6002 vs 0x6021).
+  Weight-layout oracles need a route that touches weight data (device execution or a
+  weight-bearing container), not these program files.
 - Methods rule now enforced in the mint tooling: byte-diff comparisons of minted
   artifacts require an **identical normalized absolute path on every host** (the
   compiler embeds the MIL source path verbatim; path changes re-salt the encoding).
