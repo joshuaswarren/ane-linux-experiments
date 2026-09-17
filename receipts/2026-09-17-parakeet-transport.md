@@ -119,3 +119,52 @@ the lane holding the lock — every observed hand-back CONFIRMED ACTIVE).
 My jwm1 passes: before-1 14:44:02–14:44:13 CDT (green), after-1 started
 14:47:42 CDT (failed on the pre-fix client ack bug, fixed in `f4945a9f`;
 re-run pending). Contended with LandDigestCache's quiet A/B — annotatable.
+
+## 5. ADDENDUM — 2026-09-17 ~17:30 CDT, ShmShmoutFix lane: serve-loop fix LANDED, after-pass STILL BLOCKED on a second defect
+
+**Fix landed and pushed.** Branch `agent/parakeet-transport` (mlx-omarchy) rebased onto
+unified main `23fc9a9a` (digest cache + decode two-pass) and force-pushed (lease
+`f4945a9f`), new tip **`a865fddd`**:
+
+- `9e365eea` / `52b5f603` / `0c60882f` — re-applied instrumentation + shm transport
+  (previous `a1b4b9ce` / `10a07872` / `290a0416`).
+- `d868dd5b` / `908d8593` — the previously unpushed client robustness (inline
+  fallback on old-worker argv refusal; buffered-ack consumption; also fixes the
+  repo client's `pass_fds` clobber that silently dropped the memfd regions).
+- `a865fddd` — **the serve-loop bug**: `AneWorker::submit_shm` passed
+  `kTokenShmOut` (`"shmout "`, with trailing space) to `parse_shm_header`, which
+  appends its own space → prefix `"shmout  "` never matched the child's
+  `"shmout NAME OFF LEN"` → every shm reply fell to unknown-frame quarantine.
+  Proof: gdb on the deployed libmlx showed `parse_shm_header` receiving
+  kw=`"shmout "` and building an 8-byte prefix `b'shmout  '`, bailing at the
+  memcmp-fail path on a clean 35-byte line. Fix: parse with the bare keyword
+  `"shmout"`.
+
+Deployed on jwm1 (`/var/tmp/pt-wheelx`): wheel `38d9c209…` (pt.a865fddd),
+**libmlx `d765121e…`** (fix included), worker `e5d4ce83…` (unchanged — the worker
+CLI was never the failing layer; `submit_shm` lives in libmlx).
+
+**Smoke result:** island-A (`island-attn-a-kt`, 4×`--shmin` + 2×`--shout`) is
+**GREEN** end-to-end over shm — outputs `attention_scores_1` 4494000 B +
+`matmul_0` 2250000 B returned via `shmout`, no quarantine.
+
+**After-passes: STILL BLOCKED — not run, no numbers fabricated.** First encoder
+island-A round now passes, but round **L00-B (`island-select-8head`) kills the
+worker with SIGSEGV** on the shm path (reproduced standalone; inline transport on
+the same bundle+inputs is GREEN, so the inline fallback and the rest of the E2E
+are unaffected). Debug backtrace (-g1 core): crash at `worker.cpp:474`,
+`if (binding.tensor == name)` inside the `shout` sink-reservation loop —
+`binding.tensor`'s data pointer is `0x10` (corrupt std::string), with
+`island-oproj-L17` heap content visible at the record. `load_bundle` on the same
+directory in a standalone -O0 probe parses the identical structures correctly
+(`manifest_index=0`, `tensor="attention_mask_9"`, `logical=2250000`), so the
+corruption happens at runtime in the device child — most plausibly the
+`device->load()` (libane program load) pass in `AneWorker::open`'s child trampling
+`bundle.manifest.programs[0].outputs` heap. The inline path never reads
+`manifest.programs[].outputs` post-load, which is why only the shm path trips it.
+Full-`-g` libmlx build (`rebuild-fullg.log`) is in flight on jwm1 to pin the
+writing frame with variable info; that diagnosis + fix is the next lane step.
+Receipt refs: this file (ane-linux-experiments) and mlx-omarchy `agent/parakeet-transport`
+at `a865fddd`. Locks respected: jwm1 inode unchanged, TAKE/RELEASE announced on
+the hub; jw16 untouched (held by FfnPaletteDecode for the ffn gate, cleanly
+released). `63c1d3cf` never merged, not touched.
