@@ -156,3 +156,30 @@ one and is now banked.
   directive (Jw16DecodeGap restores + confirms ACTIVE after).
 - Commit chain and per-run loaded-libmlx sha256 recorded above; no digest
   moved anywhere (transcript `db501a8c`, all hidden pins byte-exact).
+
+## 8. Land addendum (2026-09-17, LandDigestCache — LANDED)
+
+Merged `agent/ane-digest-cache` @ `c227d99a` onto origin/main (merge commit
+**`cb0f5d2c`**, pushed to mlx-omarchy main; merge brought only the v0.6.6
+receipt doc, so the after wheel `acda3b66` is byte-identical to the merged
+tree's libmlx). `63c1d3cf` verified NOT an ancestor. Quiet land check on jwm1
+(flock inode 35 held for the whole session, no parallel GPU lanes):
+
+- **KAT**: `kat_probe` on merged-tree lib → **13/13**, 1725.1 MB/s, digest
+  prefix `bf63d8a95fcc2e64`.
+- **Warm open probes** (96 ffn islands): before `06e43c20` 1445/1453/1450 ms →
+  after `acda3b66` 988/985/980 ms (−~460 ms, the hash+read term); kill-switch
+  `=0` → 1439 ms = before ✓. Absolute warm values are ~2× the §4 numbers
+  (machine state moved since the morning runs); the controlled A/B deltas and
+  the kill-switch restore are what the land criterion needs, and both hold.
+- **Quiet ABC arms**, all pin-guarded (`assert_mlx_binary_identity` on runner
+  lib `351df5c2`, worker lib pinned per side): before/after × launch/resident
+  all status MATCH, prefix **104/104**, bounds PASS, cpu_tensor_events 0,
+  hidden **`38c73261`**, transcript **`db501a8c`** — byte-exact on both sides.
+  Walls: before 7825/7842 ms, after 7969/7889 ms (+46/+144 ms, inside the
+  ±~900 ms single-run noise) — **no ABC regression, pins exact**.
+- Unit 30/30 unchanged (code identical to `c227d99a`).
+- First arm attempt FAILED correctly on the double-flock in the land-check
+  wrapper (session lock + per-arm lock), not on any product path.
+
+Land criteria met; digest cache is on main for the shipped ABC default.
