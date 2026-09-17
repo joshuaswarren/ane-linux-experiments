@@ -4,6 +4,10 @@
 
 | Date | Source | What Went Wrong | What To Do Instead |
 |------|--------|-----------------|-------------------|
+| 2026-09-17 | self | Double-flock deadlock on jw16: wrapped a script in `flock /tmp/m1-gpu.lock` while the script also took the same flock internally — the inner wait held the device window 5 min doing nothing | One acquisition point per lock: the outermost caller locks; inner stages assume it held |
+| 2026-09-17 | self | Probe matrix reported `[ok]` with zero data: gate checked only dmesg wedge counters while every verify2 had already died on `input read failed` (a `-` placeholder passed to fopen) | Gate on the artifact being present (`grep -q 'fnv1a='`) before declaring a step ok; a check that cannot fail on the failure mode it guards is a false pass |
+| 2026-09-17 | self | `systemctl is-active` exits 3 when inactive, silently breaking an `&&` launch chain — the orchestrator never started while the log said the stop succeeded | Use `;` sequencing or explicit exit-code handling for systemctl in launch chains |
+| 2026-09-17 | self | `--pkg` pointing at a stack with an INCOMPLETE `coreml/` package shadowed the complete package via the driver's `sys.path.insert(0, pkg)` — import failed only in script runs, and the `-c` smoke test passed because it ran before the insert | When a driver prepends paths, test the import AFTER the prepend and verify the package at the exact `--pkg` dir holds every imported module |
 | 2026-09-13 | user | Stopped after ANE-on-Max findings and parked ANE/CoreML/parity | Keep all three plans plus jw16 ANE bind running. Findings are not a stop. |
 | 2026-09-13 | self | Left GATES G1 on power-reset after cycle 11 bound `/dev/accel/accel0` | Update the gate when the device node exists. Bind is not execute: T6001 still TM `-110` on the T8103-exact 64-el program. |
 | 2026-09-14 | self | T6001 SET0 read ACTUAL=0 while accel0 still live | Idle runtime suspend gates SET. open(accel0) restores 0xf via genpd. Not a lost bind. Never write 0xf. |
@@ -225,7 +229,7 @@
   Reading the count from the next descriptor degraded silently to the fallback
   path on all 60 multi-task programs instead of failing, so validate a decode
   against a corpus, not against one artifact.
-- 2026-09-14: `td_size` must be truthful before any task-stream decode is
+| 2026-09-14: `td_size` must be truthful before any task-stream decode is
   possible. With the stale `0x274` the record walk runs into the CoreML weight
   blob and every exported bundle falls back. Two "independent" fixes were
   ordered.
