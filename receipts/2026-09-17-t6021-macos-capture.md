@@ -128,6 +128,29 @@ Label: **T6021-ONLY reference — NOT token-for-token comparable to the M1 Ultra
 same-die T8103 divisor; purpose is the macOS reference for this machine's Linux run.
 Full detail: `receipts/2026-09-17-jw14m2-t6021-parakeet-divisor.md` (addendum section).
 
+## 5. T6021/h14g oracle mints — see dedicated receipt (contains a RETRACTION)
+
+Oracle bundles for oproj/mm1/mm2 plus edge geometries were minted on this host
+(jw14m2/T6021) and macstudio the same day: `receipts/2026-09-17-t6021-h14g-oracle-mints.md`.
+Final state after two same-day addenda (read that receipt for detail):
+
+- `TargetArchitecture` is **ignored for family selection** — the emitted program keys
+  off the LOCAL machine's ANE (H13D.bundle on M1-family hosts, H14C.bundle on t6021);
+  oracles are host-SoC by construction. Compiled linear programs are family-invariant
+  apart from bundle naming and a **single byte at 0x908** (family/chip id).
+- **RETRACTED within addendum 3**: addendum 2's "edge-k16 family-dependent
+  segmentation" claim was a duplicate-cache-entry artifact (byte-identical `.e5`, two
+  `anehash` values), not two programs. K=8..64 all compile single-program on both
+  families. **Count programs by distinct `.e5` content, never by bundle-dir count.**
+- `model.anehash` is not reproducible from the program bytes and is not a pure function
+  of them; a synthesized H14C-from-H13 candidate is archived stale-hashed, explicitly
+  NOT validated — acceptance testable only by libane on a t602x Linux host.
+- Methods rule now enforced in the mint tooling: byte-diff comparisons of minted
+  artifacts require an **identical normalized absolute path on every host** (the
+  compiler embeds the MIL source path verbatim; path changes re-salt the encoding).
+- q/k/v at shipped shapes are D→D linears = **geometry (375,1024,1024), identical to
+  oproj** — covered by the oproj oracle; do not re-mint.
+
 ## Gaps — could NOT capture, with reasons
 
 1. **Pwrstate offsets / `ane_*` pwrstate cluster enumeration** — not exposed by macOS
