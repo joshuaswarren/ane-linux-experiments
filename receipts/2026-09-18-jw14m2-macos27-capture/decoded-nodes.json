@@ -1,0 +1,736 @@
+{
+  "machine": "Mac14,5 / J414cAP / Apple M2 Max",
+  "date": "2026-09-18T14:25:23Z",
+  "macos": {
+    "hw.model": "Mac14,5",
+    "machdep.cpu.brand_string": "Apple M2 Max",
+    "hw.ncpu": "12",
+    "hw.activecpu": "12",
+    "hw.memsize": "103079215104",
+    "hw.target": "J414cAP",
+    "hw.platform": null,
+    "kern.osproductversion": "27.0",
+    "kern.osversion": "26A428",
+    "sw_vers-productVersion": "27.0",
+    "sw_vers-buildVersion": "26A428"
+  },
+  "nodes": {
+    "ane0": {
+      "location": "84000000",
+      "IOClass": null,
+      "IOInterruptControllers": [
+        "IOInterruptController000000A4"
+      ],
+      "IOInterruptSpecifiers": [
+        "74030000"
+      ],
+      "compatible": {
+        "hex": "616e652c743830323000",
+        "u32le": [
+          744844897,
+          842020980
+        ]
+      },
+      "interrupts": {
+        "hex": "74030000",
+        "u32le": [
+          884
+        ]
+      },
+      "interrupt-parent": {
+        "hex": "a4000000",
+        "u32le": [
+          164
+        ]
+      },
+      "AAPL,phandle": {
+        "hex": "69010000",
+        "u32le": [
+          361
+        ]
+      },
+      "clock-gates": {
+        "hex": "d9010000",
+        "u32le": [
+          473
+        ]
+      },
+      "power-gates": {
+        "hex": "d9010000",
+        "u32le": [
+          473
+        ]
+      },
+      "clock-ids": {
+        "hex": "3e0100003f0100004001000041010000",
+        "u32le": [
+          318,
+          319,
+          320,
+          321
+        ]
+      },
+      "ane-id": {
+        "hex": "00000000",
+        "u32le": [
+          0
+        ]
+      },
+      "ane-subtype": {
+        "hex": "00000000",
+        "u32le": [
+          0
+        ]
+      },
+      "ane-type": {
+        "hex": "a0000000",
+        "u32le": [
+          160
+        ]
+      },
+      "die-id": {
+        "hex": "00000000",
+        "u32le": [
+          0
+        ]
+      },
+      "die-ane-id": {
+        "hex": "00000000",
+        "u32le": [
+          0
+        ]
+      },
+      "iommu-parent": {
+        "hex": "6b010000",
+        "u32le": [
+          363
+        ]
+      },
+      "pre-loaded": {
+        "hex": "01000000",
+        "u32le": [
+          1
+        ]
+      },
+      "compatible_text": [
+        "ane,t8020"
+      ],
+      "reg_ranges": [
+        [
+          "0x84000000",
+          "0x2000000"
+        ],
+        [
+          "0x8e080000",
+          "0x4034"
+        ],
+        [
+          "0x8e08c000",
+          "0x4000"
+        ]
+      ],
+      "reg_hex_full": "000000840000000000000002000000000000088e00000000344000000000000000c0088e000000000040000000000000",
+      "reg_bytes": 48
+    },
+    "dart-ane0": {
+      "location": "85800000",
+      "IOClass": null,
+      "IOInterruptControllers": [
+        "IOInterruptController000000A4"
+      ],
+      "IOInterruptSpecifiers": [
+        "75030000"
+      ],
+      "compatible": {
+        "hex": "646172742c743831313000",
+        "u32le": [
+          1953653092,
+          825783340
+        ]
+      },
+      "interrupts": {
+        "hex": "75030000",
+        "u32le": [
+          885
+        ]
+      },
+      "interrupt-parent": {
+        "hex": "a4000000",
+        "u32le": [
+          164
+        ]
+      },
+      "AAPL,phandle": {
+        "hex": "6a010000",
+        "u32le": [
+          362
+        ]
+      },
+      "clock-gates": {
+        "hex": "fb010000",
+        "u32le": [
+          507
+        ]
+      },
+      "power-gates": {
+        "hex": "fb010000",
+        "u32le": [
+          507
+        ]
+      },
+      "dart-id": {
+        "hex": "25000000",
+        "u32le": [
+          37
+        ]
+      },
+      "dart-options": {
+        "hex": "25000000",
+        "u32le": [
+          37
+        ]
+      },
+      "compatible_text": [
+        "dart,t8110"
+      ],
+      "reg_ranges": [
+        [
+          "0x85800000",
+          "0x4000"
+        ],
+        [
+          "0x85810000",
+          "0x4000"
+        ],
+        [
+          "0x85820000",
+          "0x4000"
+        ],
+        [
+          "0x85804000",
+          "0x4000"
+        ]
+      ],
+      "reg_hex_full": "00008085000000000040000000000000000081850000000000400000000000000000828500000000004000000000000000408085000000000040000000000000",
+      "reg_bytes": 64
+    },
+    "mapper-ane0": {
+      "location": "0",
+      "IOClass": null,
+      "IOInterruptControllers": null,
+      "IOInterruptSpecifiers": null,
+      "compatible": {
+        "hex": "696f6d6d752d6d617070657200",
+        "u32le": [
+          1835888489,
+          1634545013,
+          1919250544
+        ]
+      },
+      "AAPL,phandle": {
+        "hex": "6b010000",
+        "u32le": [
+          363
+        ]
+      },
+      "compatible_text": [
+        "iommu-mapper"
+      ],
+      "reg_ranges": [],
+      "reg_hex_full": "00000000",
+      "reg_bytes": 4
+    },
+    "pmgr": {
+      "location": "8E080000",
+      "IOClass": null,
+      "IOInterruptControllers": [
+        "IOInterruptController000000A4",
+        "IOInterruptController000000A4",
+        "IOInterruptController000000A4",
+        "IOInterruptController000000A4",
+        "IOInterruptController000000A4",
+        "IOInterruptController000000A4"
+      ],
+      "IOInterruptSpecifiers": [
+        "38010000",
+        "39010000",
+        "3a010000",
+        "3d010000",
+        "be010000",
+        "3c010000"
+      ],
+      "compatible": {
+        "hex": "706d6772312c743630323100",
+        "u32le": [
+          1919380848,
+          913583153,
+          3224112
+        ]
+      },
+      "interrupts": {
+        "hex": "38010000390100003a0100003d010000be0100003c010000",
+        "u32le": [
+          312,
+          313,
+          314,
+          317,
+          446,
+          316
+        ]
+      },
+      "interrupt-parent": {
+        "hex": "a4000000",
+        "u32le": [
+          164
+        ]
+      },
+      "AAPL,phandle": {
+        "hex": "bb000000",
+        "u32le": [
+          187
+        ]
+      },
+      "clock-gates": {
+        "hex": "c5000000c6000000c7000000c8000000",
+        "u32le": [
+          197,
+          198,
+          199,
+          200
+        ]
+      },
+      "clock-ids": {
+        "hex": "0101000005010000",
+        "u32le": [
+          257,
+          261
+        ]
+      },
+      "compatible_text": [
+        "pmgr1,t6021"
+      ],
+      "reg_ranges": [
+        [
+          "0x8e080000",
+          "0x80000"
+        ],
+        [
+          "0x9e280000",
+          "0x100000"
+        ],
+        [
+          "0x90280000",
+          "0x100000"
+        ],
+        [
+          "0x8e680000",
+          "0x2c000"
+        ],
+        [
+          "0x8e000000",
+          "0x80000"
+        ],
+        [
+          "0x9e200000",
+          "0x80000"
+        ],
+        [
+          "0x8e600000",
+          "0x78000"
+        ],
+        [
+          "0x9e004000",
+          "0x1000"
+        ],
+        [
+          "0x10e20000",
+          "0x15000"
+        ],
+        [
+          "0x10f00000",
+          "0x50000"
+        ],
+        [
+          "0x10e40000",
+          "0x10000"
+        ],
+        [
+          "0x10e50000",
+          "0x1000"
+        ],
+        [
+          "0x10e70000",
+          "0x90000"
+        ],
+        [
+          "0x10050000",
+          "0x10000"
+        ],
+        [
+          "0x10150000",
+          "0x10000"
+        ],
+        [
+          "0x10250000",
+          "0x10000"
+        ],
+        [
+          "0x10350000",
+          "0x10000"
+        ],
+        [
+          "0x11e20000",
+          "0x15000"
+        ],
+        [
+          "0x11f00000",
+          "0x50000"
+        ],
+        [
+          "0x11e40000",
+          "0x10000"
+        ],
+        [
+          "0x11e50000",
+          "0x1000"
+        ],
+        [
+          "0x11e70000",
+          "0x90000"
+        ],
+        [
+          "0x11050000",
+          "0x10000"
+        ],
+        [
+          "0x11150000",
+          "0x10000"
+        ],
+        [
+          "0x11250000",
+          "0x10000"
+        ],
+        [
+          "0x11350000",
+          "0x10000"
+        ],
+        [
+          "0x12e20000",
+          "0x15000"
+        ],
+        [
+          "0x12f00000",
+          "0x50000"
+        ],
+        [
+          "0x12e40000",
+          "0x10000"
+        ],
+        [
+          "0x12e50000",
+          "0x1000"
+        ],
+        [
+          "0x12e70000",
+          "0x90000"
+        ],
+        [
+          "0x12050000",
+          "0x10000"
+        ],
+        [
+          "0x12150000",
+          "0x10000"
+        ],
+        [
+          "0x12250000",
+          "0x10000"
+        ],
+        [
+          "0x12350000",
+          "0x10000"
+        ],
+        [
+          "0x8ec2c000",
+          "0x40000"
+        ],
+        [
+          "0x8e400000",
+          "0x90000"
+        ],
+        [
+          "0x9e500000",
+          "0x98000"
+        ],
+        [
+          "0x9e5c0000",
+          "0x14000"
+        ],
+        [
+          "0x8e210000",
+          "0xc000"
+        ],
+        [
+          "0x8e20c000",
+          "0x4000"
+        ],
+        [
+          "0x85868000",
+          "0x4000"
+        ],
+        [
+          "0x204ea8000",
+          "0x4000"
+        ],
+        [
+          "0x8e200000",
+          "0x8000"
+        ],
+        [
+          "0x204e80000",
+          "0x28000"
+        ],
+        [
+          "0x8e3c0000",
+          "0x20000"
+        ],
+        [
+          "0x8e224000",
+          "0x4000"
+        ],
+        [
+          "0x8e079000",
+          "0x4000"
+        ],
+        [
+          "0x20a000000",
+          "0x1000000"
+        ],
+        [
+          "0x18c000000",
+          "0x1000000"
+        ],
+        [
+          "0x20c000000",
+          "0x1000000"
+        ],
+        [
+          "0x86000000",
+          "0x1000000"
+        ],
+        [
+          "0x84000000",
+          "0x1000000"
+        ],
+        [
+          "0x184000000",
+          "0x1000000"
+        ],
+        [
+          "0x18a000000",
+          "0x1000000"
+        ],
+        [
+          "0x39c000000",
+          "0x1000000"
+        ],
+        [
+          "0x8a000000",
+          "0x1000000"
+        ],
+        [
+          "0x116000000",
+          "0x1000000"
+        ],
+        [
+          "0x110000000",
+          "0x1000000"
+        ],
+        [
+          "0x700000000",
+          "0x1000000"
+        ],
+        [
+          "0xb00000000",
+          "0x1000000"
+        ],
+        [
+          "0xf00000000",
+          "0x1000000"
+        ],
+        [
+          "0x1300000000",
+          "0x1000000"
+        ],
+        [
+          "0x149000000",
+          "0x1000000"
+        ],
+        [
+          "0x19a000000",
+          "0x1000000"
+        ],
+        [
+          "0x290000000",
+          "0x1000000"
+        ],
+        [
+          "0x306000000",
+          "0x1000000"
+        ],
+        [
+          "0x28e000000",
+          "0x1000000"
+        ],
+        [
+          "0x30e000000",
+          "0x1000000"
+        ],
+        [
+          "0x19b020000",
+          "0x4000"
+        ],
+        [
+          "0x19b024000",
+          "0x4000"
+        ],
+        [
+          "0x197000000",
+          "0x1000000"
+        ],
+        [
+          "0x208000000",
+          "0x1ffc000"
+        ]
+      ],
+      "reg_hex_full": "0000088e0000000000000800000000000000289e000000000000100000000000000028900000000000001000000000000000688e0000000000c00200000000000000008e0000000000000800000000000000209e0000000000000800000000000000608e0000000000800700000000000040009e0000000000100000000000000000e2100000000000500100000000000000f0100000000000000500000000000000e4100000000000000100000000000000e5100000000000100000000000000000e710000000000000090000000000000005100000000000000100000000000000151000000000000001000000000000002510000000000000010000000000000035100000000000000100000000000000e2110000000000500100000000000000f0110000000000000500000000000000e4110000000000000100000000000000e5110000000000100000000000000000e711000000000000090000000000000005110000000000000100000000000000151100000000000001000000000000002511000000000000010000000000000035110000000000000100000000000000e2120000000000500100000000000000f0120000000000000500000000000000e4120000000000000100000000000000e5120000000000100000000000000000e7120000000000000900000000000000051200000000000001000000000000001512000000000000010000000000000025120000000000000100000000000000351200000000000001000000000000c0c28e0000000000000400000000000000408e0000000000000900000000000000509e00000000008009000000000000005c9e0000000000400100000000000000218e0000000000c000000000000000c0208e000000000040000000000000008086850000000000400000000000000080ea040200000000400000000000000000208e0000000000800000000000000000e80402000000008002000000000000003c8e0000000000000200000000000040228e0000000000400000000000000090078e0000000000400000000000000000000a0200000000000001000000000000008c0100000000000001000000000000000c0200000000000001000000000000008600000000000000010000000000000084000000000000000100000000000000840100000000000001000000000000008a0100000000000001000000000000009c0300000000000001000000000000008a000000000000000100000000000000160100000000000001000000000000001001000000000000010000000000000000070000000000000100000000000000000b0000000000000100000000000000000f000000000000010000000000000000130000000000000100000000000000490100000000000001000000000000009a01000000000000010000000000000090020000000000000100000000000000060300000000000001000000000000008e0200000000000001000000000000000e0300000000000001000000000000029b0100000000400000000000000040029b01000000004000000000000000000097010000000000000100000000000000080200000000c0ff0100000000",
+      "reg_bytes": 1168
+    }
+  },
+  "h11anein": [
+    {
+      "IOClass": "H11ANEIn",
+      "CFBundleIdentifier": "com.apple.driver.AppleH11ANEInterface",
+      "IONameMatched": "ane,t8020",
+      "FirmwareLoaded": true,
+      "arch": "h14g",
+      "cores": 16,
+      "ANEVersion": 128,
+      "MinorVersion": 17,
+      "HWBoardType": 160,
+      "CPUSubType": 5,
+      "device_properties_raw": {
+        "ANEDevicePropertyANECPUSubType": 5,
+        "ANEDevicePropertyANEHWBoardSubType": 0,
+        "ANEDevicePropertyANEHWBoardType": 160,
+        "ANEDevicePropertyANEMinorVersion": 17,
+        "ANEDevicePropertyANEVersion": 128,
+        "ANEDevicePropertyBondedModeSupported": 0,
+        "ANEDevicePropertyIsInternalBuild": false,
+        "ANEDevicePropertyNumANECores": 16,
+        "ANEDevicePropertyTypeANEArchitectureTypeStr": "h14g"
+      }
+    }
+  ],
+  "pmgr_prop_names": [
+    "#bridges",
+    "AAPL,phandle",
+    "acc-cluster-power-gating",
+    "acc-harvesting",
+    "acc-notification-timeout",
+    "aes-domain-hack",
+    "afr-tvm",
+    "ane-dpe",
+    "ap-wake-sources",
+    "apsc-snooze",
+    "avemsr-tvm",
+    "boost-performance1",
+    "bridge-reg-index",
+    "bridge-settings-version",
+    "clock-gates",
+    "clock-ids",
+    "clocks",
+    "clpc",
+    "cluster-ctl-offset",
+    "clusters",
+    "compatible",
+    "cpu-apsc",
+    "cpu-fixed-freq-pll-relock",
+    "cpu-power-gate-latency-us",
+    "dcs-tvm",
+    "device-bridges",
+    "device_type",
+    "devices",
+    "die-stride",
+    "disp-tvm",
+    "disp2-tvm",
+    "dvd-factor",
+    "dvd-period-us",
+    "dvd-threshold-us",
+    "energy-counters",
+    "events",
+    "fab-tvm",
+    "first-acc-dvfm-map-state",
+    "frc-cpm-on-hack",
+    "function-mcc_ctrl",
+    "function-perf-boost",
+    "function-toggle_vdd_cio",
+    "gpu-pwc-win-size",
+    "hw-dpe-reg",
+    "interrupt-config",
+    "interrupt-parent",
+    "interrupts",
+    "mcx-fast-pcpu-frequency",
+    "misc-acg-offset",
+    "misc-cores-offset",
+    "mtr-polynom-fuse-agx",
+    "name",
+    "noise-hack",
+    "nominal-performance1",
+    "optional-bridge-mask",
+    "panic-nub-pg-wa",
+    "perf-domains",
+    "perf-regs",
+    "pmgr-dock-fifo-agent",
+    "pmgr-dock-fifo-channel",
+    "pmp",
+    "power-domains",
+    "ps-regs",
+    "ptd-ranges",
+    "pwrgate-regs",
+    "reg",
+    "reset-noaccess-poll",
+    "rosc-apply",
+    "soc-cluster-power-gating",
+    "soc-clusters",
+    "soc-dpe",
+    "soc-tvm",
+    "total-rails-leakage",
+    "vdd-cio-rail-pg",
+    "voltage-states0",
+    "voltage-states1",
+    "voltage-states1-sram",
+    "voltage-states11",
+    "voltage-states12",
+    "voltage-states13",
+    "voltage-states13-sram",
+    "voltage-states14",
+    "voltage-states14-sram",
+    "voltage-states15",
+    "voltage-states15-sram",
+    "voltage-states16",
+    "voltage-states16-sram",
+    "voltage-states2",
+    "voltage-states21",
+    "voltage-states31",
+    "voltage-states5",
+    "voltage-states5-sram",
+    "voltage-states8",
+    "voltage-states9",
+    "voltage-states9-sram",
+    "wake-time-events"
+  ],
+  "status": {
+    "truncated": []
+  }
+}

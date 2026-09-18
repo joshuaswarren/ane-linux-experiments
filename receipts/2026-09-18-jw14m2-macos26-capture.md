@@ -119,3 +119,60 @@ existing numpy-capable python on the host was reused), no writes outside
 
 Redaction: serial number / hardware UUID / provisioning UDID scrubbed from
 `system-profiler.txt` (repo practice — prior capture archived no serials).
+
+---
+
+# ADDENDUM: true macOS 27.0 (26A428) capture — same kit, 2026-09-18T14:25Z
+
+The upgrade landed hours after the 26.6.2 run above. Full kit re-run against
+**macOS 27.0 (26A428)**, kernel `xnu-13432.1.9~1/RELEASE_ARM64_T6020`; artifacts
+in `receipts/2026-09-18-jw14m2-macos27-capture/` (incl. the fetched fresh e5
+pair). `/tmp` was **wiped by the upgrade** (26.6.2 mint bytes and scratch gone;
+the surviving 26.6.2 record is the sha pair in this receipt + §4).
+
+## SET-block derivation inputs — VALID on 27, ZERO delta vs 26.6.2
+
+`set-block-validation.json` (baseline = the 26.6.2 capture, not just 2026-09-17):
+**11/11, delta {}**. pmgr base `0x8e080000`, ane0 windows
+`0x84000000/0x2000000` + `0x8e080000/0x4034` + `0x8e08c000/0x4000`, dart
+`0x858x0000` quartet, interrupts 0x374/0x375, phandles 0x169/0x16a/0x16b — the
+entire ANE/pmgr/DART address layout is **byte-for-byte stable across the OS
+upgrade**. The t6021 SET-base hypothesis inputs carry to 27 unchanged; Linux/
+m1n1 pwrstate-offset enumeration remains the confirming side (unchanged).
+
+## Oracle-mint capability on 27 + OS-stability answer
+
+- **ANECompiler bumped: 9.509.0 → 10.26.6** (kexts 9.512.x → 10.19.2/3,
+  `AppleH11ANEInterface` 10.19.2); CoreML.framework bundleVersion **3600.25.2**
+  (DTPlatformVersion 27.0); e5rt bundlecache keyed `26A428` (was `25G83`).
+- **Mint works on 27**: oproj h14g+h13 rc=0, bundle naming still `H14C.bundle`
+  on this t6021 host, and **h14g ≡ h13 still byte-identical**
+  (`39a8b696402e43d3`, 2336 B — pair archived in `e5-pair/`;
+  `model.anehash` differs per cache as provenance, program identical).
+- **NOT OS-stable byte-wise**: 27 sha16 `39a8b696402e43d3` ≠ 26.6.2
+  `f2e71fcf0a60936c` (same host, same canonical workroot path, same chip id
+  `0x6021` in the `__sym_desc__` trailer — the bump to 10.26.6 re-encoded the
+  program: 2336 B vs the 26.6.2 canonical-path expectation 2339 B). Consequence
+  recorded for the lane: **e5 oracles are OS-version-bound; re-mint per OS
+  before byte-comparing; cross-OS program equality must never be assumed.**
+  Functionally the toolchain is stable (compiles, same family invariance, same
+  container layout).
+- **Refused route unchanged on 27**: `bridge_exit=1`, `NO_HWX_EMitted`,
+  `callback_status=1`, empty `additional_weights.bin`, both targets — the
+  matmul-MIL dialect refusal survives the 10.26.6 compiler.
+- Bridge rebuild: 52336 B (third size-stable build), sha `926e100a…` — every
+  host/OS pair hashes differently; size parity is the lineage fingerprint.
+- Live driver on 27: arch still **`h14g`**, 16 cores, ANEVersion 128,
+  MinorVersion 17, BoardType 160, CPUSubType 5, FirmwareLoaded Yes.
+
+## 26.6.2 pending items — closed or re-scoped
+
+1. Fresh e5 pair fetch — **done on 27** (the 26.6.2 bytes themselves died with
+   `/tmp`; only their shas survive here).
+2. Clean `ane_probe.py` re-run — **done** (hex encoding verified live:
+   `IOInterruptSpecifiers: ["74030000"]`, no `b'...'` reprs).
+3. Host `/tmp` cleanup — **blocked by the local rm-rf safety guard**; the
+   scratch (`/tmp/ANEForge-scratch`, `/tmp/anec-mint-normalized`, kit stage)
+   is left for macOS periodic /tmp cleaning or a manual pass. No data risk.
+4. macOS-27 capture — **this addendum**. Kit proved OS-agnostic end to end.
+

@@ -1,0 +1,9 @@
+== host identity 2026-09-18T14:25:16Z ==
+ProductName:		macOS
+ProductVersion:		27.0
+BuildVersion:		26A428
+Darwin JW14M2.local 27.0.0 Darwin Kernel Version 27.0.0: Tue Aug 11 21:20:40 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T6020 arm64
+joshuawarren
+JW14M2.local
+probe_rc=0
+mint_rc=0

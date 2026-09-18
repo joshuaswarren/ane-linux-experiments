@@ -1,0 +1,10 @@
+=== geometry=oproj target=h14g 2026-09-18T14:25:26Z
+[mint-kit] oproj: capture dir capture-oproj (weights 2097280 bytes = 1048576 halves)
+callback_status=1
+ANECCompile=1 callback_status=1
+bridge_exit=1
+NO_HWX_EMitted
+total 0
+drwxr-xr-x  3 joshuawarren  wheel   96 Sep 18 09:25 .
+drwxr-xr-x  7 joshuawarren  wheel  224 Sep 18 09:25 ..
+-rw-r--r--  1 joshuawarren  wheel    0 Sep 18 09:25 model.hwx.additional_weights.bin
