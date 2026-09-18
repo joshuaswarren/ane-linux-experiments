@@ -66,3 +66,36 @@ the like-for-like baseline.
 
 Artifacts: `.local/spawn-attrib/{vk_conv.py,attrib_jw16.sh}`,
 jw16 `/var/tmp/jw16-spawn-attrib/{arms.jsonl,profile-*.json,arm-*.log}`.
+
+## Landing (Main-directed, same day)
+
+1. mlx-omarchy branch `agent/placed-ac-default` cut from `2da5e052`
+   (HEAD of the certified e93500d2 runner bytes worktree), both defaults
+   flipped ABC→AC (`MLX_OMARCHY_PLACED` fallback + `--islands`),
+   commit `af5394e0`, pushed to origin
+   (joshuaswarren/mlx-omarchy). `63c1d3cf` NOT-ANCESTOR asserted on
+   `2da5e052` before the push.
+2. Certified copy `/tmp/conv-lane/vk_conv.py` flipped the same way;
+   backup kept at `/tmp/conv-lane/vk_conv.py.pre-AC-20260918`
+   (sha `dbbd96fb…`); verified only the two default strings differ from
+   the backup. First flip attempt broke a quote (SyntaxError, zero runs
+   executed, no state touched); repaired and diff-verified before any run.
+3. Re-baseline on the flipped certified copy, one window, x3 interleaved,
+   all 12 arms: status match, 104/104, bounds PASS, 0 timeouts,
+   0 cpu_tensor_events, mel `5b54f4a9` bit-exact.
+
+| arm | mode | wall median (ms) | hidden |
+|---|---|---|---|
+| AC | launch | 8840 | `38c73261` EXACT |
+| AC | resident | 7992 | `38c73261` EXACT |
+| ACO | launch | 9457 | `ef6afd13` EXACT |
+| ACO | resident | 8087 | `ef6afd13` EXACT |
+
+New jw16 conv-lane baselines with B dropped: launch −2033 ms vs the
+certified ABC baseline (10873, prior section), resident −1057 ms
+(9049); ACO launch −1416 ms vs that ABC baseline. ACO resident per-arch
+note: single submit, oproj included, 8087 ms.
+
+llm-inference restarted after the window: ACTIVE, `/health` 200,
+lock inode 12.
+
