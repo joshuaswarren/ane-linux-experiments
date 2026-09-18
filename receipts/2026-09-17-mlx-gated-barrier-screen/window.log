@@ -1,0 +1,113 @@
+inode pre 12 2026-09-18T00:28:17Z
+inode pre 12 2026-09-18T00:31:48Z
+Failed to stop llm-inference.service: Access denied as the requested operation requires interactive authentication. However, interactive authentication has not been enabled by the calling program.
+See system logs and 'systemctl status llm-inference.service' for details.
+Failed to start llm-inference.service: Access denied as the requested operation requires interactive authentication. However, interactive authentication has not been enabled by the calling program.
+See system logs and 'systemctl status llm-inference.service' for details.
+Terminated                 flock -w 900 9
+inode pre 12 2026-09-18T00:34:13Z
+SCREEN {"arm": "base", "leg": "short", "decode_tps": 191.0879, "prefill_tps": 454.0653, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 1}
+SCREEN {"arm": "base", "leg": "short", "decode_tps": 190.594, "prefill_tps": 461.1513, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "rep": 2}
+SCREEN {"arm": "base", "leg": "ctx1024", "decode_tps": 158.7902, "prefill_tps": 3919.3865, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 1}
+SCREEN {"arm": "base", "leg": "ctx1024", "decode_tps": 151.3244, "prefill_tps": 3919.6205, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.1, "rep": 2}
+SCREEN {"arm": "cand", "leg": "short", "decode_tps": 186.8725, "prefill_tps": 454.5616, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "rep": 1}
+SCREEN {"arm": "cand", "leg": "short", "decode_tps": 191.4434, "prefill_tps": 458.5982, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "rep": 2}
+SCREEN {"arm": "cand", "leg": "ctx1024", "decode_tps": 149.3193, "prefill_tps": 3870.9101, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 1}
+SCREEN {"arm": "cand", "leg": "ctx1024", "decode_tps": 155.7514, "prefill_tps": 3607.8142, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 2}
+SCREEN digests_ok=True (8 rows)
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 190.8975, "prefill_tps": 459.8609, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 0}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 162.3066, "prefill_tps": 3964.179, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 0}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.4485, "prefill_tps": 451.2585, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 0}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 142.5191, "prefill_tps": 3847.0482, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 0}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.3397, "prefill_tps": 460.0025, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 1}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 149.4758, "prefill_tps": 3868.0739, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 1}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 189.2245, "prefill_tps": 452.2835, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 1}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 153.7898, "prefill_tps": 3912.5062, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 1}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 191.2229, "prefill_tps": 458.9543, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 2}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 135.239, "prefill_tps": 3864.8659, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 2}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.6269, "prefill_tps": 459.7332, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 2}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 138.7141, "prefill_tps": 3905.7417, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 2}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.3222, "prefill_tps": 460.6668, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 3}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 150.1281, "prefill_tps": 3867.8987, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.1, "round": 3}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 190.9792, "prefill_tps": 454.914, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 3}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 148.5912, "prefill_tps": 3854.2884, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 3}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 191.0307, "prefill_tps": 457.4188, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 4}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 138.4732, "prefill_tps": 3905.4429, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 4}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 189.244, "prefill_tps": 460.5445, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 4}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 162.5145, "prefill_tps": 3979.4004, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 4}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 190.7566, "prefill_tps": 459.9529, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 5}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 146.1493, "prefill_tps": 3622.4259, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 5}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 190.929, "prefill_tps": 459.6563, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 5}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 159.401, "prefill_tps": 3907.6706, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 5}
+MED base/short all=190.95 steady=191.00
+MED base/ctx1024 all=151.19 steady=143.53
+MED cand/short all=191.33 steady=191.04
+MED cand/ctx1024 all=147.81 steady=148.14
+PAIRED short {"median_ratio": 1.0019543623879028, "mean_ratio": 1.001286241103738, "n": 6, "positive": 4}
+PAIRED ctx1024 {"median_ratio": 0.9911459338075257, "mean_ratio": 0.9960926932578386, "n": 6, "positive": 3}
+Traceback (most recent call last):
+  File "/var/tmp/BarrierGateJw16/window1.py", line 162, in <module>
+    with open(pf) as f:
+         ~~~~^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/BarrierGateJw16/window1/profile-base.ndjson'
+window rc=1
+inode pre 12 2026-09-18T00:39:51Z
+inode pre 12 2026-09-18T00:39:51Z
+CDM {"arm": "base", "leg": "short", "n_cdm_cs": 44, "api_calls": 8768, "dispatches": 10732, "flushes": 10776, "merged": 10640, "digest": "7fd25a869ff21678", "tps": 191.3789}
+CDM {"arm": "base", "leg": "ctx1024", "n_cdm_cs": 82, "api_calls": 9680, "dispatches": 11682, "flushes": 11764, "merged": 11552, "digest": "7da83f06ec9f001d", "tps": 140.7064}
+CDM {"arm": "cand", "leg": "short", "n_cdm_cs": 44, "api_calls": 8768, "dispatches": 10732, "flushes": 10776, "merged": 8578, "digest": "7fd25a869ff21678", "tps": 191.2761}
+CDM {"arm": "cand", "leg": "ctx1024", "n_cdm_cs": 82, "api_calls": 9680, "dispatches": 11682, "flushes": 11764, "merged": 9490, "digest": "7da83f06ec9f001d", "tps": 126.6746}
+WINDOW2 COMPLETE
+window rc=0
+SCREEN {"arm": "base", "leg": "short", "decode_tps": 191.3595, "prefill_tps": 458.8265, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "rep": 1}
+SCREEN {"arm": "base", "leg": "short", "decode_tps": 191.838, "prefill_tps": 456.3033, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "rep": 2}
+SCREEN {"arm": "base", "leg": "ctx1024", "decode_tps": 155.5751, "prefill_tps": 3887.6112, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 1}
+SCREEN {"arm": "base", "leg": "ctx1024", "decode_tps": 153.2633, "prefill_tps": 3935.3595, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 2}
+SCREEN {"arm": "cand", "leg": "short", "decode_tps": 187.3418, "prefill_tps": 460.0343, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "rep": 1}
+SCREEN {"arm": "cand", "leg": "short", "decode_tps": 192.2509, "prefill_tps": 439.6987, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "rep": 2}
+SCREEN {"arm": "cand", "leg": "ctx1024", "decode_tps": 150.4526, "prefill_tps": 3609.491, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 1}
+SCREEN {"arm": "cand", "leg": "ctx1024", "decode_tps": 152.6265, "prefill_tps": 3642.1756, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "rep": 2}
+SCREEN digests_ok=True (8 rows)
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 191.4772, "prefill_tps": 459.5539, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 0}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 151.1443, "prefill_tps": 3930.9057, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 0}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.3354, "prefill_tps": 460.9201, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 0}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 138.6868, "prefill_tps": 3915.0671, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 0}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.9132, "prefill_tps": 453.5051, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 1}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 144.3205, "prefill_tps": 3878.6179, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 1}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 191.9446, "prefill_tps": 458.4875, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 1}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 148.6096, "prefill_tps": 3928.6588, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 1}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 191.1794, "prefill_tps": 458.9317, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 2}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 151.1098, "prefill_tps": 3911.5645, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 2}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.7103, "prefill_tps": 460.5124, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 2}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 154.6201, "prefill_tps": 3627.972, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 2}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.2431, "prefill_tps": 459.5249, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 3}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 150.3399, "prefill_tps": 3943.2728, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 3}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 190.5214, "prefill_tps": 453.3666, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 3}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 138.359, "prefill_tps": 3864.9204, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 3}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 191.5288, "prefill_tps": 460.2631, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 4}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 138.8532, "prefill_tps": 3901.2071, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 4}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.2746, "prefill_tps": 452.5968, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.6, "round": 4}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 152.247, "prefill_tps": 3925.7258, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 4}
+BATTERY {"arm": "cand", "leg": "short", "decode_tps": 191.3745, "prefill_tps": 460.3037, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 5}
+BATTERY {"arm": "cand", "leg": "ctx1024", "decode_tps": 148.9159, "prefill_tps": 3852.709, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 5}
+BATTERY {"arm": "base", "leg": "short", "decode_tps": 191.5153, "prefill_tps": 457.6258, "prompt_tokens": 30, "ids_sha16": "7fd25a869ff21678", "libmlx": "e9e709f38331ff10", "run_wall_s": 1.7, "round": 5}
+BATTERY {"arm": "base", "leg": "ctx1024", "decode_tps": 148.9129, "prefill_tps": 3890.6115, "prompt_tokens": 1053, "ids_sha16": "7da83f06ec9f001d", "libmlx": "e9e709f38331ff10", "run_wall_s": 2.2, "round": 5}
+MED base/short all=191.50 steady=191.35
+MED base/ctx1024 all=148.76 steady=143.88
+MED cand/short all=191.35 steady=191.32
+MED cand/ctx1024 all=149.63 steady=151.29
+PAIRED short {"median_ratio": 0.9995506109138574, "mean_ratio": 1.0005997411477259, "n": 6, "positive": 2}
+PAIRED ctx1024 {"median_ratio": 1.0116251370154616, "mean_ratio": 1.0158367510811868, "n": 6, "positive": 4}
+Traceback (most recent call last):
+  File "/var/tmp/BarrierGateJw16/window1.py", line 162, in <module>
+    with open(pf) as f:
+         ~~~~^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/BarrierGateJw16/window1/profile-base.ndjson'
+window rc=1
+inode pre 12 2026-09-18T00:45:27Z
+CDM {"arm": "base", "leg": "short", "n_cdm_cs": 44, "api_calls": 8768, "dispatches": 10732, "flushes": 10776, "merged": 10640, "digest": "7fd25a869ff21678", "tps": 191.0319}
+CDM {"arm": "base", "leg": "ctx1024", "n_cdm_cs": 82, "api_calls": 9680, "dispatches": 11682, "flushes": 11764, "merged": 11552, "digest": "7da83f06ec9f001d", "tps": 136.5131}
+CDM {"arm": "cand", "leg": "short", "n_cdm_cs": 44, "api_calls": 8768, "dispatches": 10732, "flushes": 10776, "merged": 8578, "digest": "7fd25a869ff21678", "tps": 191.0892}
+CDM {"arm": "cand", "leg": "ctx1024", "n_cdm_cs": 82, "api_calls": 9680, "dispatches": 11682, "flushes": 11764, "merged": 9490, "digest": "7da83f06ec9f001d", "tps": 134.6381}
+WINDOW2 COMPLETE
+window rc=0

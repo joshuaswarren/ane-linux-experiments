@@ -1,0 +1,46 @@
+{
+ "base/short": {
+  "arm": "base",
+  "leg": "short",
+  "n_cdm_cs": 44,
+  "api_calls": 8768,
+  "dispatches": 10732,
+  "flushes": 10776,
+  "merged": 10640,
+  "digest": "7fd25a869ff21678",
+  "tps": 191.0319
+ },
+ "base/ctx1024": {
+  "arm": "base",
+  "leg": "ctx1024",
+  "n_cdm_cs": 82,
+  "api_calls": 9680,
+  "dispatches": 11682,
+  "flushes": 11764,
+  "merged": 11552,
+  "digest": "7da83f06ec9f001d",
+  "tps": 136.5131
+ },
+ "cand/short": {
+  "arm": "cand",
+  "leg": "short",
+  "n_cdm_cs": 44,
+  "api_calls": 8768,
+  "dispatches": 10732,
+  "flushes": 10776,
+  "merged": 8578,
+  "digest": "7fd25a869ff21678",
+  "tps": 191.0892
+ },
+ "cand/ctx1024": {
+  "arm": "cand",
+  "leg": "ctx1024",
+  "n_cdm_cs": 82,
+  "api_calls": 9680,
+  "dispatches": 11682,
+  "flushes": 11764,
+  "merged": 9490,
+  "digest": "7da83f06ec9f001d",
+  "tps": 134.6381
+ }
+}
