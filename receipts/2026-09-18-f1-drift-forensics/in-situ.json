@@ -1,0 +1,547 @@
+{
+  "sites": {
+    "island-conv-dw-L00": {
+      "rel_ane_gpu": 3.7310037441784516e-05,
+      "rel_ane_ref": 0.00020434908219613135,
+      "rel_gpu_ref": 0.00020430999575182796,
+      "ulpflip": 0.04038541666666667,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-dw-L01": {
+      "rel_ane_gpu": 2.353793206566479e-05,
+      "rel_ane_ref": 0.0002185678604291752,
+      "rel_gpu_ref": 0.00021851684141438454,
+      "ulpflip": 0.2004453125,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-dw-L02": {
+      "rel_ane_gpu": 2.7194337235414423e-05,
+      "rel_ane_ref": 0.00020331033738330007,
+      "rel_gpu_ref": 0.00020322258933447301,
+      "ulpflip": 0.1746171875,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-dw-L03": {
+      "rel_ane_gpu": 4.4135278585599735e-05,
+      "rel_ane_ref": 0.00020762381609529257,
+      "rel_gpu_ref": 0.00020736976875923574,
+      "ulpflip": 0.18006770833333333,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-dw-L04": {
+      "rel_ane_gpu": 7.042250217637047e-05,
+      "rel_ane_ref": 0.00021316003403626382,
+      "rel_gpu_ref": 0.00021218365873210132,
+      "ulpflip": 0.20574479166666668,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L05": {
+      "rel_ane_gpu": 6.918618601048365e-05,
+      "rel_ane_ref": 0.00020636824774555862,
+      "rel_gpu_ref": 0.00020565172599162906,
+      "ulpflip": 0.16860677083333334,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L06": {
+      "rel_ane_gpu": 5.194397454033606e-05,
+      "rel_ane_ref": 0.00020710039825644344,
+      "rel_gpu_ref": 0.00020685190975200385,
+      "ulpflip": 0.14156510416666668,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L07": {
+      "rel_ane_gpu": 6.210662104422227e-05,
+      "rel_ane_ref": 0.0002058496029349044,
+      "rel_gpu_ref": 0.0002055288787232712,
+      "ulpflip": 0.13476302083333333,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L08": {
+      "rel_ane_gpu": 6.37038319837302e-05,
+      "rel_ane_ref": 0.00020859009237028658,
+      "rel_gpu_ref": 0.00020803377265110612,
+      "ulpflip": 0.14763541666666666,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L09": {
+      "rel_ane_gpu": 6.448139902204275e-05,
+      "rel_ane_ref": 0.0002069721813313663,
+      "rel_gpu_ref": 0.0002064700674964115,
+      "ulpflip": 0.15365104166666665,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L10": {
+      "rel_ane_gpu": 5.859566590515897e-05,
+      "rel_ane_ref": 0.00020845634571742266,
+      "rel_gpu_ref": 0.00020809713169001043,
+      "ulpflip": 0.15762239583333335,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L11": {
+      "rel_ane_gpu": 6.501022289739922e-05,
+      "rel_ane_ref": 0.000209913108847104,
+      "rel_gpu_ref": 0.00020957023662049323,
+      "ulpflip": 0.14545572916666666,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L12": {
+      "rel_ane_gpu": 7.189760071923956e-05,
+      "rel_ane_ref": 0.00020730166579596698,
+      "rel_gpu_ref": 0.00020681944442912936,
+      "ulpflip": 0.15220052083333332,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L13": {
+      "rel_ane_gpu": 8.13510050647892e-05,
+      "rel_ane_ref": 0.00020707891962956637,
+      "rel_gpu_ref": 0.0002059849794022739,
+      "ulpflip": 0.18516145833333333,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L14": {
+      "rel_ane_gpu": 7.648750033695251e-05,
+      "rel_ane_ref": 0.0002073940704576671,
+      "rel_gpu_ref": 0.00020650459919124842,
+      "ulpflip": 0.17773697916666667,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L15": {
+      "rel_ane_gpu": 7.647189340787008e-05,
+      "rel_ane_ref": 0.00020719169697258621,
+      "rel_gpu_ref": 0.0002064643776975572,
+      "ulpflip": 0.15597135416666666,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L16": {
+      "rel_ane_gpu": 4.652304050978273e-05,
+      "rel_ane_ref": 0.00020995869999751449,
+      "rel_gpu_ref": 0.00020973513892386109,
+      "ulpflip": 0.13793489583333332,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L17": {
+      "rel_ane_gpu": 6.55222320347093e-05,
+      "rel_ane_ref": 0.0002098120894515887,
+      "rel_gpu_ref": 0.00020932989718858153,
+      "ulpflip": 0.14122135416666667,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L18": {
+      "rel_ane_gpu": 5.5971864640014246e-05,
+      "rel_ane_ref": 0.0002069976762868464,
+      "rel_gpu_ref": 0.0002067168679786846,
+      "ulpflip": 0.118421875,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L19": {
+      "rel_ane_gpu": 6.119563477113843e-05,
+      "rel_ane_ref": 0.00020860598306171596,
+      "rel_gpu_ref": 0.00020833018061239272,
+      "ulpflip": 0.1117421875,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L20": {
+      "rel_ane_gpu": 7.037441537249833e-05,
+      "rel_ane_ref": 0.00020703593327198178,
+      "rel_gpu_ref": 0.00020659840083681047,
+      "ulpflip": 0.13458854166666667,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-dw-L21": {
+      "rel_ane_gpu": 6.749800377292559e-05,
+      "rel_ane_ref": 0.00020808943372685462,
+      "rel_gpu_ref": 0.00020764487271662802,
+      "ulpflip": 0.12508333333333332,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L22": {
+      "rel_ane_gpu": 5.825411426485516e-05,
+      "rel_ane_ref": 0.00019666992011480033,
+      "rel_gpu_ref": 0.00019628506561275572,
+      "ulpflip": 0.12597916666666667,
+      "maxabs_ane_gpu": 0.00390625
+    },
+    "island-conv-dw-L23": {
+      "rel_ane_gpu": 6.821261195000261e-05,
+      "rel_ane_ref": 0.00020720755856018513,
+      "rel_gpu_ref": 0.00020676905114669353,
+      "ulpflip": 0.10985677083333334,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L00": {
+      "rel_ane_gpu": 0.00012751756003126502,
+      "rel_ane_ref": 0.00021043623564764857,
+      "rel_gpu_ref": 0.0002071712660836056,
+      "ulpflip": 0.13692447916666667,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L01": {
+      "rel_ane_gpu": 0.00014039012603461742,
+      "rel_ane_ref": 0.00021286052651703358,
+      "rel_gpu_ref": 0.00020759808830916882,
+      "ulpflip": 0.177171875,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L02": {
+      "rel_ane_gpu": 0.0001504279935033992,
+      "rel_ane_ref": 0.0002135419490514323,
+      "rel_gpu_ref": 0.00020711451361421496,
+      "ulpflip": 0.18577213541666668,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L03": {
+      "rel_ane_gpu": 0.00014934642240405083,
+      "rel_ane_ref": 0.00021397758973762393,
+      "rel_gpu_ref": 0.00020772604329977185,
+      "ulpflip": 0.18262890625,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L04": {
+      "rel_ane_gpu": 0.00014758661563973874,
+      "rel_ane_ref": 0.0002126616018358618,
+      "rel_gpu_ref": 0.0002067810419248417,
+      "ulpflip": 0.17440364583333334,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L05": {
+      "rel_ane_gpu": 0.00014961810666136444,
+      "rel_ane_ref": 0.00021354218188207597,
+      "rel_gpu_ref": 0.00020746504014823586,
+      "ulpflip": 0.178953125,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L06": {
+      "rel_ane_gpu": 0.00014727447705809027,
+      "rel_ane_ref": 0.000213727806112729,
+      "rel_gpu_ref": 0.00020792506984435022,
+      "ulpflip": 0.172140625,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L07": {
+      "rel_ane_gpu": 0.00014290343096945435,
+      "rel_ane_ref": 0.00021013696095906198,
+      "rel_gpu_ref": 0.00020485626009758562,
+      "ulpflip": 0.16906770833333334,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L08": {
+      "rel_ane_gpu": 0.00015769086894579232,
+      "rel_ane_ref": 0.00021393172210082412,
+      "rel_gpu_ref": 0.00020655036496464163,
+      "ulpflip": 0.18572916666666667,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L09": {
+      "rel_ane_gpu": 0.00014151498908177018,
+      "rel_ane_ref": 0.00021096697309985757,
+      "rel_gpu_ref": 0.00020598202536348253,
+      "ulpflip": 0.16472786458333333,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L10": {
+      "rel_ane_gpu": 0.00013310843496583402,
+      "rel_ane_ref": 0.00020936786313541234,
+      "rel_gpu_ref": 0.00020556015078909695,
+      "ulpflip": 0.14040104166666667,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L11": {
+      "rel_ane_gpu": 0.0001237931865034625,
+      "rel_ane_ref": 0.00021015027596149594,
+      "rel_gpu_ref": 0.00020745109941344708,
+      "ulpflip": 0.12054427083333333,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L12": {
+      "rel_ane_gpu": 0.00013578415382653475,
+      "rel_ane_ref": 0.0002113522496074438,
+      "rel_gpu_ref": 0.00020737187878694385,
+      "ulpflip": 0.14144791666666667,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L13": {
+      "rel_ane_gpu": 0.00014415862096939236,
+      "rel_ane_ref": 0.00021160840697120875,
+      "rel_gpu_ref": 0.00020643879543058574,
+      "ulpflip": 0.16252864583333335,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L14": {
+      "rel_ane_gpu": 0.00014455038763117045,
+      "rel_ane_ref": 0.00021239409397821873,
+      "rel_gpu_ref": 0.00020710175158455968,
+      "ulpflip": 0.16509635416666665,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L15": {
+      "rel_ane_gpu": 0.0001392909762216732,
+      "rel_ane_ref": 0.0002114691014867276,
+      "rel_gpu_ref": 0.00020693402620963752,
+      "ulpflip": 0.153734375,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L16": {
+      "rel_ane_gpu": 0.00013547754497267306,
+      "rel_ane_ref": 0.0002119741984643042,
+      "rel_gpu_ref": 0.0002078112302115187,
+      "ulpflip": 0.15255338541666666,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L17": {
+      "rel_ane_gpu": 0.000142563963891007,
+      "rel_ane_ref": 0.0002129385684384033,
+      "rel_gpu_ref": 0.00020782116916961968,
+      "ulpflip": 0.16563541666666667,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L18": {
+      "rel_ane_gpu": 0.00013277326070237905,
+      "rel_ane_ref": 0.00021149385429453105,
+      "rel_gpu_ref": 0.0002074758376693353,
+      "ulpflip": 0.15547265625,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L19": {
+      "rel_ane_gpu": 0.0001365705393254757,
+      "rel_ane_ref": 0.00021268225100357085,
+      "rel_gpu_ref": 0.0002086263702949509,
+      "ulpflip": 0.1467109375,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw1-L20": {
+      "rel_ane_gpu": 0.00014991087664384395,
+      "rel_ane_ref": 0.0002130328066414222,
+      "rel_gpu_ref": 0.0002071332564810291,
+      "ulpflip": 0.16634635416666665,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L21": {
+      "rel_ane_gpu": 0.00015544107009191066,
+      "rel_ane_ref": 0.0002142394077964127,
+      "rel_gpu_ref": 0.0002074374060612172,
+      "ulpflip": 0.17412630208333332,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L22": {
+      "rel_ane_gpu": 0.00015620084013789892,
+      "rel_ane_ref": 0.000215186839341186,
+      "rel_gpu_ref": 0.00020825305546168238,
+      "ulpflip": 0.17747526041666667,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw1-L23": {
+      "rel_ane_gpu": 0.00015835386875551194,
+      "rel_ane_ref": 0.00021504519099835306,
+      "rel_gpu_ref": 0.00020768966351170093,
+      "ulpflip": 0.18516015625,
+      "maxabs_ane_gpu": 0.0078125
+    },
+    "island-conv-pw2-L00": {
+      "rel_ane_gpu": 2.4351396859856322e-05,
+      "rel_ane_ref": 0.00020816033065784723,
+      "rel_gpu_ref": 0.00020815404423046857,
+      "ulpflip": 0.013486979166666666,
+      "maxabs_ane_gpu": 0.25
+    },
+    "island-conv-pw2-L01": {
+      "rel_ane_gpu": 8.798603812465444e-05,
+      "rel_ane_ref": 0.0002109454944729805,
+      "rel_gpu_ref": 0.0002100796700688079,
+      "ulpflip": 0.10534114583333333,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L02": {
+      "rel_ane_gpu": 6.668544665444642e-05,
+      "rel_ane_ref": 0.00021246899268589914,
+      "rel_gpu_ref": 0.0002121714351233095,
+      "ulpflip": 0.08426822916666667,
+      "maxabs_ane_gpu": 0.125
+    },
+    "island-conv-pw2-L03": {
+      "rel_ane_gpu": 6.64774197502993e-05,
+      "rel_ane_ref": 0.00020653253886848688,
+      "rel_gpu_ref": 0.00020623589807655662,
+      "ulpflip": 0.08464583333333334,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L04": {
+      "rel_ane_gpu": 8.515732042724267e-05,
+      "rel_ane_ref": 0.00020617202972061932,
+      "rel_gpu_ref": 0.00020544319704640657,
+      "ulpflip": 0.09540885416666667,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L05": {
+      "rel_ane_gpu": 7.534408359788358e-05,
+      "rel_ane_ref": 0.00020579899137374014,
+      "rel_gpu_ref": 0.000205300297238864,
+      "ulpflip": 0.08375,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L06": {
+      "rel_ane_gpu": 4.1888473788276315e-05,
+      "rel_ane_ref": 0.0002031151670962572,
+      "rel_gpu_ref": 0.00020304678764659911,
+      "ulpflip": 0.06083854166666667,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L07": {
+      "rel_ane_gpu": 5.657020301441662e-05,
+      "rel_ane_ref": 0.00020651592058129609,
+      "rel_gpu_ref": 0.0002063606953015551,
+      "ulpflip": 0.06284114583333333,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L08": {
+      "rel_ane_gpu": 7.219710823846981e-05,
+      "rel_ane_ref": 0.0002090578927891329,
+      "rel_gpu_ref": 0.00020870647858828306,
+      "ulpflip": 0.0689765625,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L09": {
+      "rel_ane_gpu": 6.292335456237197e-05,
+      "rel_ane_ref": 0.00020726665388792753,
+      "rel_gpu_ref": 0.00020704221969936043,
+      "ulpflip": 0.06762760416666666,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L10": {
+      "rel_ane_gpu": 6.365272565744817e-05,
+      "rel_ane_ref": 0.00020823879458475858,
+      "rel_gpu_ref": 0.000207995341042988,
+      "ulpflip": 0.0714140625,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L11": {
+      "rel_ane_gpu": 6.169217522256076e-05,
+      "rel_ane_ref": 0.0002085398300550878,
+      "rel_gpu_ref": 0.0002083426370518282,
+      "ulpflip": 0.073765625,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L12": {
+      "rel_ane_gpu": 6.36375552858226e-05,
+      "rel_ane_ref": 0.00020719761960208416,
+      "rel_gpu_ref": 0.00020694511476904154,
+      "ulpflip": 0.07954947916666667,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L13": {
+      "rel_ane_gpu": 9.223548113368452e-05,
+      "rel_ane_ref": 0.00020813224546145648,
+      "rel_gpu_ref": 0.00020709777891170233,
+      "ulpflip": 0.10632552083333334,
+      "maxabs_ane_gpu": 0.015625
+    },
+    "island-conv-pw2-L14": {
+      "rel_ane_gpu": 8.217577124014497e-05,
+      "rel_ane_ref": 0.0002088828623527661,
+      "rel_gpu_ref": 0.00020828544802498072,
+      "ulpflip": 0.09676041666666667,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L15": {
+      "rel_ane_gpu": 7.160119275795296e-05,
+      "rel_ane_ref": 0.00020794247393496335,
+      "rel_gpu_ref": 0.0002075407246593386,
+      "ulpflip": 0.0876484375,
+      "maxabs_ane_gpu": 0.03125
+    },
+    "island-conv-pw2-L16": {
+      "rel_ane_gpu": 6.560170731972903e-05,
+      "rel_ane_ref": 0.00020831399888265878,
+      "rel_gpu_ref": 0.0002080496196867898,
+      "ulpflip": 0.0735390625,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L17": {
+      "rel_ane_gpu": 6.224762910278514e-05,
+      "rel_ane_ref": 0.00020895373017992824,
+      "rel_gpu_ref": 0.00020872775348834693,
+      "ulpflip": 0.07409375,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L18": {
+      "rel_ane_gpu": 4.806064680451527e-05,
+      "rel_ane_ref": 0.00020629104983527213,
+      "rel_gpu_ref": 0.00020618131384253502,
+      "ulpflip": 0.06424479166666666,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L19": {
+      "rel_ane_gpu": 5.220878301770426e-05,
+      "rel_ane_ref": 0.00020760796905960888,
+      "rel_gpu_ref": 0.0002074984076898545,
+      "ulpflip": 0.06372916666666667,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L20": {
+      "rel_ane_gpu": 6.465607293648645e-05,
+      "rel_ane_ref": 0.00020787162065971643,
+      "rel_gpu_ref": 0.0002076087985187769,
+      "ulpflip": 0.0827734375,
+      "maxabs_ane_gpu": 0.125
+    },
+    "island-conv-pw2-L21": {
+      "rel_ane_gpu": 5.9060028434032574e-05,
+      "rel_ane_ref": 0.0002115018287440762,
+      "rel_gpu_ref": 0.00021127137006260455,
+      "ulpflip": 0.0823359375,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L22": {
+      "rel_ane_gpu": 5.74945479456801e-05,
+      "rel_ane_ref": 0.00020618521375581622,
+      "rel_gpu_ref": 0.00020590994972735643,
+      "ulpflip": 0.09230208333333334,
+      "maxabs_ane_gpu": 0.0625
+    },
+    "island-conv-pw2-L23": {
+      "rel_ane_gpu": 3.0489294658764265e-05,
+      "rel_ane_ref": 0.00020321659394539893,
+      "rel_gpu_ref": 0.00020318511815275997,
+      "ulpflip": 0.07686979166666667,
+      "maxabs_ane_gpu": 0.5
+    }
+  },
+  "worst_rel_ane_gpu": 0.00015835386875551194,
+  "adversarial": {
+    "island-conv-pw1-L00": {
+      "ref_maxabs": 0.2427348494529724,
+      "ane_minus_ref_maxabs": 0.0005290508270263672,
+      "ane_minus_ref_l2": 0.1266551911830902,
+      "ref_l2": 57.263450622558594
+    },
+    "island-conv-pw2-L00": {
+      "ref_maxabs": 0.001046508550643921,
+      "ane_minus_ref_maxabs": 0.0004634857177734375,
+      "ane_minus_ref_l2": 0.09030556678771973,
+      "ref_l2": 0.21586915850639343
+    },
+    "island-conv-pw1-L11": {
+      "ref_maxabs": 0.35459470748901367,
+      "ane_minus_ref_maxabs": 0.0005086362361907959,
+      "ane_minus_ref_l2": 0.12820622324943542,
+      "ref_l2": 53.09294509887695
+    },
+    "island-conv-pw2-L11": {
+      "ref_maxabs": 0.0006876736879348755,
+      "ane_minus_ref_maxabs": 0.0004996955394744873,
+      "ane_minus_ref_l2": 0.08748269826173782,
+      "ref_l2": 0.10580122470855713
+    },
+    "island-conv-pw1-L23": {
+      "ref_maxabs": 0.15499809384346008,
+      "ane_minus_ref_maxabs": 0.0005408450961112976,
+      "ane_minus_ref_l2": 0.14315448701381683,
+      "ref_l2": 31.49428939819336
+    },
+    "island-conv-pw2-L23": {
+      "ref_maxabs": 0.0012150779366493225,
+      "ane_minus_ref_maxabs": 0.00045502185821533203,
+      "ane_minus_ref_l2": 0.08997756242752075,
+      "ref_l2": 0.15488074719905853
+    }
+  }
+}
