@@ -1,0 +1,19 @@
+=== T8103 divisor preflight — 2026-09-18T15:25:44Z ===
+host JW-M1.local  macOS 14.8.9 (23J631)  CoreML 3304.7.1
+BLOCKED OS-GATE macOS 14.8.9 < 26 (upgrade pending)
+BLOCKED COREML-GATE 3304.7.1 < 3520 — pinned model spec will NOT parse (proven on this host 2026-09-17)
+PASS    chip = Apple M1
+PASS    hw.model = MacBookPro17,1
+PASS    python3 Python 3.9.6
+NOTE    coremltools ABSENT — not required (Swift harness; proven on jw14m2 2026-09-17). No pip install planned.
+PASS    swift: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+PASS    model cache verifies: /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018 (OK: 12 files verified in /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018)
+PASS    audio fixture sha 30885601173f96b0d8ddd020dc959b055c6c1582b85a33e3fcab8c4b08ed94c2
+PASS    golden token_ids sha a175a5f9ce8c1e91fc28f6e1fce9deee29c24c3ef49e62ce4b144cc44f8401c8
+PASS    golden transcript.txt present
+PASS    staged tree matches stage-manifest.sha256 (14 files)
+PASS    AC power connected
+PASS    thermal clean
+PASS    disk free 99 GiB >= 10 GiB
+=== summary: 12 pass, 0 fail, 2 blocked ===
+PRE-UPGRADE: only the OS/COREML gates are blocked (expected on macOS 14.x). Staging intact.
