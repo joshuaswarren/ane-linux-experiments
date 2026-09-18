@@ -1,0 +1,19 @@
+=== T8103 divisor preflight — 2026-09-18T22:20:10Z ===
+host JW-M1.local  macOS 27.0 (26A428)  CoreML 3600.25.2
+PASS    OS-GATE macOS 27.0 >= 26
+PASS    COREML-GATE 3600.25.2 >= 3520 (CoreML8-opset capable)
+PASS    chip = Apple M1
+PASS    hw.model = MacBookPro17,1
+PASS    python3 Python 3.9.6
+NOTE    coremltools ABSENT — not required (Swift harness; proven on jw14m2 2026-09-17). No pip install planned.
+PASS    swift: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+PASS    model cache verifies: /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018 (OK: 12 files verified in /Users/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018)
+PASS    audio fixture sha 30885601173f96b0d8ddd020dc959b055c6c1582b85a33e3fcab8c4b08ed94c2
+PASS    golden token_ids sha a175a5f9ce8c1e91fc28f6e1fce9deee29c24c3ef49e62ce4b144cc44f8401c8
+PASS    golden transcript.txt present
+PASS    staged tree matches stage-manifest.sha256 (14 files)
+PASS    AC power connected
+PASS    thermal clean
+PASS    disk free 45 GiB >= 10 GiB
+=== summary: 14 pass, 0 fail, 0 blocked ===
+READY: run ./run.sh to take the battery.

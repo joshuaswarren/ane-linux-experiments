@@ -1,5 +1,21 @@
 # T8103 (jwm1) divisor harness STAGED on macOS 14.8.9 — dry-run verified, one command ready to fire the moment macOS 26.6.2 is up (2026-09-18)
 
+> **STATUS UPDATE 2026-09-18 (post-upgrade): RAN — see
+> `2026-09-18-t8103-divisor-macos27.md`.** The fleet upgraded jwm1 straight to
+> **macOS 27.0 (26A428), CoreML 3600.25.2** — not the 26.6.2/3520 this receipt
+> predicted. The upgrade wiped `/tmp` (as this receipt warned it might via the
+> 3-day cleaner; the upgrade did it immediately); the harness was re-staged from
+> the lane scratch `/tmp/t8103-stage/` (14/14 manifest-verified, manifest
+> byte-identical to the one committed here) and the model cache **survived**
+> (12/12 verify). Both hard gates passed unchanged on the actual env: OS-GATE
+> 27.0 ≥ 26, COREML-GATE 3600.25.2 ≥ 3520. Preflight went 14 pass / 0 fail /
+> 0 blocked (the two BLOCKED lines below cleared exactly as designed). Battery
+> ran with the 104-token guard holding 22/22; no self-pin. Divisors:
+> `.ane` 259.9 ms / `.all` 266.7 ms median all-10 — **cross-OS-generation
+> caveat applies** (27.0/3600 here vs the 292.2/305.8 reference at
+> 26.6.2/3520-era): indicative, not exact; 26.6.2-matched erase-install
+> re-run recorded as an owner call, not scheduled.
+
 Verdict: **STAGED — NOT RUN, by design.** The full M1-Ultra-methodology battery
 for the same-die T8103 Parakeet divisor is on jwm1 at `/tmp/t8103-divisor/`,
 manifest-verified, dry-run-proven, and gated so the **only** post-upgrade step

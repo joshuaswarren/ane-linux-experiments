@@ -1,0 +1,14 @@
+model load: 25110 ms
+warm0: guard ok, tokens 104, wall 332 ms
+run 1: wall 254.5 ms, inference 251.2 ms, encoder 114.1 ms, decode 121.2 ms, tokens 104, sha db501a8c
+run 2: wall 255.4 ms, inference 252.2 ms, encoder 113.2 ms, decode 123.3 ms, tokens 104, sha db501a8c
+run 3: wall 285.6 ms, inference 282.1 ms, encoder 141.7 ms, decode 123.7 ms, tokens 104, sha db501a8c
+run 4: wall 257.8 ms, inference 254.6 ms, encoder 112.8 ms, decode 125.8 ms, tokens 104, sha db501a8c
+run 5: wall 273.5 ms, inference 270.2 ms, encoder 112.8 ms, decode 141.5 ms, tokens 104, sha db501a8c
+run 6: wall 278.5 ms, inference 275.1 ms, encoder 125.9 ms, decode 132.3 ms, tokens 104, sha db501a8c
+run 7: wall 251.7 ms, inference 248.2 ms, encoder 112.6 ms, decode 119.5 ms, tokens 104, sha db501a8c
+run 8: wall 262.1 ms, inference 258.8 ms, encoder 112.7 ms, decode 130.2 ms, tokens 104, sha db501a8c
+run 9: wall 257.8 ms, inference 254.4 ms, encoder 112.7 ms, decode 125.8 ms, tokens 104, sha db501a8c
+run 10: wall 273.3 ms, inference 270.1 ms, encoder 112.8 ms, decode 141.4 ms, tokens 104, sha db501a8c
+report written: /tmp/t8103-divisor/out/timing-ane-m1ultra-reference.json
+median all 10 runs: 259.9 ms; median runs 2..10: 262.1 ms

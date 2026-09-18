@@ -1,0 +1,40 @@
+warning: could not determine XCTest paths: terminated(1): /usr/bin/xcrun --sdk macosx --show-sdk-platform-path output:
+    xcrun: error: unable to lookup item 'PlatformPath' from command line tools installation
+    xcrun: error: unable to lookup item 'PlatformPath' in SDK '/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
+    
+Fetching https://github.com/mweinbach/parakeet-coreml-swift from cache
+Fetched https://github.com/mweinbach/parakeet-coreml-swift from cache (0.44s)
+Fetching https://github.com/apple/swift-argument-parser.git from cache
+Fetched https://github.com/apple/swift-argument-parser.git from cache (0.65s)
+Computing version for https://github.com/apple/swift-argument-parser.git
+Computed https://github.com/apple/swift-argument-parser.git at 1.7.2 (0.23s)
+Creating working copy for https://github.com/apple/swift-argument-parser.git
+Working copy of https://github.com/apple/swift-argument-parser.git resolved at 1.7.2
+Creating working copy for https://github.com/mweinbach/parakeet-coreml-swift
+Working copy of https://github.com/mweinbach/parakeet-coreml-swift resolved at 75aec2a1c991319657ff4dec5f602c12da6c5012
+[1/1] Compiling plugin GenerateDoccReference
+[2/2] Compiling plugin GenerateManual
+Building for production...
+[2/13] Write sources
+[6/13] Write swift-version--1AB21518FC5DEDBE.txt
+[8/14] Compiling ParakeetTDT AudioLoader.swift
+[9/17] Compiling parakeet_timing main.swift
+[9/17] Write Objects.LinkFileList
+[10/17] Linking parakeet-timing
+[12/17] Compiling parakeet_reference_capture main.swift
+/private/tmp/t8103-divisor/parakeet-mel-stage/Sources/parakeet-reference-capture/main.swift:244:13: warning: result of call to 'withUnsafeBufferPointer' is unused
+        row.withUnsafeBufferPointer { src in
+            ^                       ~~~~~~~~
+[12/17] Write Objects.LinkFileList
+[13/17] Linking parakeet-reference-capture
+[15/17] Compiling mel_stage_capture main.swift
+/private/tmp/t8103-divisor/parakeet-mel-stage/Sources/mel-stage-capture/main.swift:185:1: warning: using '_' to ignore the result of a Void-returning function is redundant
+_ = waveform.withUnsafeMutableBufferPointer { dst in
+^~~~
+/private/tmp/t8103-divisor/parakeet-mel-stage/Sources/mel-stage-capture/main.swift:91:5: warning: using '_' to ignore the result of a Void-returning function is redundant
+    _ = out.withUnsafeMutableBufferPointer { dst in
+    ^~~~
+    
+[15/17] Write Objects.LinkFileList
+[16/17] Linking mel-stage-capture
+Build complete! (46.18s)
