@@ -732,6 +732,7 @@ class AneIsland:
         self.profile = os.environ.get("MLX_OMARCHY_LAUNCH_PROFILE") == "1"
         self.phase_ns = {"eval": 0, "write": 0, "spawn": 0, "read": 0, "convert": 0}
         self.per_bundle_ns: dict[str, list[int]] = {}
+        self.per_eval_ns: list[int] = []
         self._profile_out = os.environ.get("MLX_OMARCHY_LAUNCH_PROFILE_OUT")
         # MLX_OMARCHY_BATCH_EVAL=1: one mx.eval(*inputs) per submit instead of
         # per-input evals - collapses N GPU fence syncs per submit into one.
@@ -750,6 +751,7 @@ class AneIsland:
                             "exec_ns": island.exec_ns,
                             "phase_ns": island.phase_ns,
                             "per_bundle_ns": island.per_bundle_ns,
+                            "per_eval_ns": island.per_eval_ns,
                         },
                         f,
                         indent=2,
@@ -817,14 +819,16 @@ class AneIsland:
             t0 = time.monotonic_ns()
             mx.eval(*value_list)
             if self.profile:
-                self.phase_ns["eval"] += time.monotonic_ns() - t0
+                self.per_eval_ns.append(time.monotonic_ns() - t0)
         for name, value in inputs.items():
             if not self.batch_eval:
                 t0 = time.monotonic_ns()
                 mx.eval(value)
                 raw = np.ascontiguousarray(np.asarray(value)).tobytes()
                 if self.profile:
-                    self.phase_ns["eval"] += time.monotonic_ns() - t0
+                    _t = time.monotonic_ns() - t0
+                    self.phase_ns["eval"] += _t
+                    self.per_eval_ns.append(_t)
             else:
                 raw = np.ascontiguousarray(np.asarray(value)).tobytes()
             payload[name] = raw
@@ -895,7 +899,10 @@ class AneIsland:
                 t0 = time.monotonic_ns()
                 mx.eval(value)
                 raw = np.ascontiguousarray(np.asarray(value))
-                t_eval += time.monotonic_ns() - t0
+                _t = time.monotonic_ns() - t0
+                t_eval += _t
+                if self.profile:
+                    self.per_eval_ns.append(_t)
             else:
                 raw = np.ascontiguousarray(np.asarray(value))
             t0 = time.monotonic_ns()
@@ -993,6 +1000,10 @@ class EncoderRunner:
         self.ane_ops = 0
         self.cpu_tensor_events = 0
         self.cond_census: dict | None = None
+        # MLX_OMARCHY_PIPE=1: issue-only async_eval per GPU statement so the
+        # Vulkan queue stays saturated between island-boundary drains.
+        # Scheduling only - same graph, same values, no host sync.
+        self.pipe = os.environ.get("MLX_OMARCHY_PIPE") == "1"
         self.glu_fusions: dict[int, tuple[str, str]] = {}
         self.glu_sigmoid_done: set[int] = set()
         self.linear_silu: dict[int, int] = {}
@@ -1450,6 +1461,10 @@ class EncoderRunner:
 
     # --------------------------------------------------------------- dispatch
 
+    def _pipe(self, *values) -> None:
+        if self.pipe:
+            mx.async_eval(*[v for v in values if isinstance(v, mx.array)])
+
     def execute(self, stmt: Statement) -> None:
         if stmt.done:
             return
@@ -1516,6 +1531,7 @@ class EncoderRunner:
                 stream=mx.gpu,
             )[0]
             self.values[stmt.names[0]] = mx.reshape(out, a.shape)
+            self._pipe(self.values[stmt.names[0]])
             self.executed += 1
             self.gpu_ops += 1
             return
@@ -1526,12 +1542,14 @@ class EncoderRunner:
                     f"split produced {len(parts)} of {len(stmt.names)}"
                 )
             self.values.update(zip(stmt.names, parts))
+            self._pipe(*parts)
         else:
             self.values[stmt.names[0]] = self.apply(stmt)
             if stmt.index in self.linear_silu:
                 self.values[
                     self.statements[self.linear_silu[stmt.index]].names[0]
                 ] = self.values[stmt.names[0]]
+            self._pipe(self.values[stmt.names[0]])
         self.executed += 1
         self.gpu_ops += 1
 

@@ -133,4 +133,45 @@ mlx-omarchy landing, certified copy untouched. Gate code preserved in
 in jw16 `/var/tmp/jw16-spawn-attrib/{batcheval.jsonl,profile-be-ac-launch.json}`.
 llm-inference ACTIVE, `/health` 200, inode 12 after the window.
 
+## Pipe lane: issue-only async_eval — SHIPPED, default on
+
+Per-eval distribution first (AC launch, 144 evals): median 11 ms, max 318,
+one ~215 ms drain-chunk per layer carries ~5.2 s. The GPU idles through the
+CPU phases (write/spawn/read/build) between forced drains. Fix: keep the
+Vulkan queue saturated by issuing work per GPU statement —
+`mx.async_eval` at the three GPU-op exits of `EncoderRunner.execute`
+(glu, split, main). No threads, no locks: same thread, issue-only, same
+graph, same values, scheduling only. Numerics-neutral by construction and
+digest-verified.
+
+Land (branch `agent/placed-ac-default`, off `af5394e0`, commit `e4cba239`,
+pushed to origin joshuaswarren/mlx-omarchy; `63c1d3cf` NOT-ANCESTOR
+re-asserted): `MLX_OMARCHY_PIPE` default **on** (`=0` opts out), `_pipe()`
+helper + three hooks in `overlay/tools/coreml/vulkan_encoder.py`.
+
+Certified copy `/tmp/conv-lane/vk_conv.py` flipped identically; backup
+`/tmp/conv-lane/vk_conv.py.pre-PIPE-20260918`; diff vs backup = exactly 13
+added pipe lines.
+
+Re-baseline on the flipped certified copy, one window, AC/ACO ×
+launch/resident × 3, 12/12 ALL-GREEN (match, 104/104, bounds PASS,
+0 timeouts, 0 cpu_tensor_events, `38c73261`/`ef6afd13`, `db501a8c`,
+`5b54f4a9` bit-exact):
+
+| arm | walls (ms) | median | vs pre-pipe baseline |
+|---|---|---|---|
+| AC launch | 7702/7706/7790 | 7706 | **−1134** |
+| AC resident | 7020/7220/7289 | 7220 | **−772** |
+| ACO launch | 7868/7910/8000 | 7910 | **−1547** |
+| ACO resident | 6949/6959/7074 | 6959 | **−1128** |
+
+New jw16 conv-lane baselines: AC 7706/7220, ACO 7910/6959.
+Cumulative vs the certified ABC baseline (10873/9049): AC −3167 launch /
+−1829 resident.
+
+llm-inference ACTIVE, `/health` 200 after the window. Measured data in
+jw16 `/var/tmp/jw16-spawn-attrib/{batchpipe.jsonl,rebaseline2.jsonl,
+profile-pipe-on.json,profile-pe-ac-launch.json}`.
+
+
 
