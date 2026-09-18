@@ -733,6 +733,9 @@ class AneIsland:
         self.phase_ns = {"eval": 0, "write": 0, "spawn": 0, "read": 0, "convert": 0}
         self.per_bundle_ns: dict[str, list[int]] = {}
         self._profile_out = os.environ.get("MLX_OMARCHY_LAUNCH_PROFILE_OUT")
+        # MLX_OMARCHY_BATCH_EVAL=1: one mx.eval(*inputs) per submit instead of
+        # per-input evals - collapses N GPU fence syncs per submit into one.
+        self.batch_eval = os.environ.get("MLX_OMARCHY_BATCH_EVAL") == "1"
         if self.profile and self._profile_out:
             import atexit
 
@@ -809,12 +812,21 @@ class AneIsland:
         session = self._ensure_session()
         payload = {}
         in_bytes = 0
-        for name, value in inputs.items():
+        value_list = list(inputs.values())
+        if self.batch_eval:
             t0 = time.monotonic_ns()
-            mx.eval(value)
-            raw = np.ascontiguousarray(np.asarray(value)).tobytes()
+            mx.eval(*value_list)
             if self.profile:
                 self.phase_ns["eval"] += time.monotonic_ns() - t0
+        for name, value in inputs.items():
+            if not self.batch_eval:
+                t0 = time.monotonic_ns()
+                mx.eval(value)
+                raw = np.ascontiguousarray(np.asarray(value)).tobytes()
+                if self.profile:
+                    self.phase_ns["eval"] += time.monotonic_ns() - t0
+            else:
+                raw = np.ascontiguousarray(np.asarray(value)).tobytes()
             payload[name] = raw
             in_bytes += len(raw)
         out_names = list(outputs)
@@ -872,11 +884,20 @@ class AneIsland:
         ]
         in_bytes = 0
         t_eval = t_write = 0
-        for name, value in inputs.items():
+        value_list = list(inputs.values())
+        if self.batch_eval:
             t0 = time.monotonic_ns()
-            mx.eval(value)
-            raw = np.ascontiguousarray(np.asarray(value))
-            t_eval += time.monotonic_ns() - t0
+            mx.eval(*value_list)
+            if self.profile:
+                self.phase_ns["eval"] += time.monotonic_ns() - t0
+        for name, value in inputs.items():
+            if not self.batch_eval:
+                t0 = time.monotonic_ns()
+                mx.eval(value)
+                raw = np.ascontiguousarray(np.asarray(value))
+                t_eval += time.monotonic_ns() - t0
+            else:
+                raw = np.ascontiguousarray(np.asarray(value))
             t0 = time.monotonic_ns()
             path = run_dir / f"in_{name}.bin"
             path.write_bytes(raw.tobytes())

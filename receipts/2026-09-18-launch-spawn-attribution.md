@@ -99,3 +99,38 @@ note: single submit, oproj included, 8087 ms.
 llm-inference restarted after the window: ACTIVE, `/health` 200,
 lock inode 12.
 
+## Follow-on lane: the 63% eval phase — batch-eval screened, NO-SHIP
+
+Hypothesis: per-input `mx.eval` in the submit loop (island A has 4 inputs,
+PV 2 → 6 syncs/layer, 144 total) carries fence overhead; batching to one
+`mx.eval(*inputs)` per submit collapses it. Implemented env-gated
+(`MLX_OMARCHY_BATCH_EVAL=1`) in the jw16-spawn-attrib worktree runner.
+
+Measurement (AC/ACO × launch/resident × 3, one window, digests and gates
+ALL EXACT — `db501a8c`, `38c73261`/`ef6afd13`, `5b54f4a9`, 104/104,
+bounds PASS, 0 cpu_tensor_events):
+
+| arm | mode | batch-eval wall median | baseline | delta |
+|---|---|---|---|---|
+| AC | launch | 8491 | 8840 | **−349** |
+| AC | resident | 8538 | 7992 | **+546 WORSE** |
+| ACO | launch | 8881 | 9457 | **−576** |
+| ACO | resident | 8698 | 8087 | **+611 WORSE** |
+
+Profiled AC launch with batching: eval phase 6048 ms vs 6262 unbatched —
+batching removed only 214 ms. Verdict: the per-input evals are already
+near-free (most island inputs are shared/precomputed tensors; the cost is
+one dominant feeder chunk per submit), so the ~6 s eval phase is genuine
+chunked GPU feeder COMPUTE (48 chunks vs the pure-GPU encoder's single
+pipelined stream at 3591 ms). Cutting it requires run-ahead/pipelining the
+statement interpreter across island submits (overlap next-layer feeder
+build+eval with current ANE round) — an architectural change, not a
+staging tweak.
+
+DECISION per gate: not green+win in both modes → default stays OFF, no
+mlx-omarchy landing, certified copy untouched. Gate code preserved in
+`.local/spawn-attrib/vk_conv.py` (`MLX_OMARCHY_BATCH_EVAL`), measured data
+in jw16 `/var/tmp/jw16-spawn-attrib/{batcheval.jsonl,profile-be-ac-launch.json}`.
+llm-inference ACTIVE, `/health` 200, inode 12 after the window.
+
+
