@@ -95,3 +95,124 @@ abort is named, the safe-order candidate list is §3's (1)-(3); do not
   (runbook §3 executed verbatim), 2026-09-13-t6001-tm-offset.md,
   2026-09-13-t6000-live-mapping.md, 2026-09-18-jw14m2-macos26-capture.md (+27).
 - Post-abort boot state captured in repo: `receipts/2026-09-18-t6021-overlay-abort/jw14m2-postabort-state.txt`.
+
+---
+
+# Session 2 — console armed, kill named at register level, sys_mpm fix falsified — STOP (2026-09-18, later)
+
+Verdict: **CAPTURED-STOP, per the same discipline.** The persistent console was
+armed and verified, the bind was repeated under instrumentation, and the
+killing access is now named exactly: **the first engine MMIO read,
+`TM_TQ_EN` at `0x285c04000 + 0x20000 + 0xc = 0x285c2400c`, external-aborts
+the machine** — after a genpd raise that completes without error and after a
+SET-window probe that reads safely. The one capture-derivable refinement
+(consume `ane_sys_mpm@4000`) was applied and **falsified**: the kill is
+unchanged. No promotion; tier stays RECOGNIZED. The next datum has no capture
+source (§2.3) — any new constant would be a guess, so the lane stops here.
+
+## 1. Instruments armed (survive on the box; revert notes at §4)
+
+- **netconsole**: `/etc/modprobe.d/netconsole.conf`
+  `options netconsole netconsole=6668@192.168.3.103/wlan0,6666@192.168.10.235/04:f4:1c:92:4c:c8`
+  (remote MAC = the 192.168.2.1 gateway — the target is one routed hop
+  off-link, and an explicit gateway MAC makes netpoll deliver; round-trip
+  proven both directions, including the refusal-path insmod line).
+  `/etc/systemd/system/jw14m2-netconsole.service` (After=network-online,
+  oneshot modprobe) + `/etc/sysctl.d/90-netconsole-loglevel.conf`
+  `kernel.printk = 8 4 1 7`. Receiver = the standing fleet receiver on the
+  dev box (`fleet-netconsole-receiver.service`, port 6666, log
+  `/var/log/fleet-netconsole.log`, sender tag `192.168.3.103:6668`).
+- **ramoops**: the asahi kernel has `CONFIG_PSTORE_RAM=m` but **no
+  `CONFIG_PSTORE_CONSOLE`**, so the DT node arms dmesg records only
+  (`record-size` must be a single u32 cell — an 8-byte cell pair fails to
+  parse and the probe dies with -22). Reservation `0x10010000000 + 0x400000`
+  (DRAM base `0x10000000000` + 256 MiB; clear of the low asc-firmware
+  carves, which end at base+0x26b4000, and of the top m1n1/u-boot region).
+  Live proof: `ramoops: using 0x400000@0x10010000000, ecc: 0` + 16
+  dmesg-records. pstore stayed EMPTY after both kills — the reset strikes
+  below the kernel (no die()/panic() ever runs), so netconsole is the only
+  instrument that captured anything.
+- **driver instrumentation** (omarchy-ane `feat/t6021-soc-entry` **22c5314**):
+  first resume now names every stage before it runs — genpd raise complete →
+  per-word named SET-window probe (`ane_ps_act_probe`) → first engine access
+  (with the engine resource printed) → TM_STATUS — and runs `ane_tm_enable`
+  in `rec=true` mode on first enable. Built on-box at
+  `/var/tmp/t6021-bisect` vs the running 7.1.13-3 kernel.
+
+## 2. What the three bind attempts under console proved
+
+### 2.1 Bind A (pre-instrumentation, console-verified gate leg first)
+
+Last off-box line = the `UNQUALIFIED bind forced` banner, then silence, then
+a fresh boot. No ESR/FAR, no panic text: reset below the kernel. This
+cleared the ground for the instrumented retry.
+
+### 2.2 Bind B (instrumented, five-domain overlay)
+
+```
+ANE-resume: genpd raise complete; SET window probe next
+ps probe: SET window at 0x000000028e08c000, 6 words
+ps probe: word 0 -> 0x0          words 1..5 -> 0x80000000 each
+ANE-resume: SET window probed; first engine access next
+  (TM_TQ_EN tm+0x0c @ engine [mem 0x285c04000-0x285c27fff] + 0x2000c)
+<silence — machine reset>
+```
+
+Three candidates, two dead on the spot:
+
+1. **genpd pmgr writes — dead.** The raise callback chain completed (the
+   resume entry line printed; apple-pmgr-pwrstate polls ACTUAL and would
+   have errored otherwise).
+2. **SET-window read at 0x28e08c000 — dead as a kill.** All six words read
+   safely. The window decodes (the ADT gives ane0 exactly this range,
+   11/11-validated on 26.6.2 + 27.0), but the values (word0 0x0, words 1-5
+   0x80000000, ACTUAL nibbles all zero) do not look like live SET words —
+   the live SET-block location on t6021 is therefore ALSO unverified.
+3. **First engine MMIO — THE KILL.** `readl(0x285c2400c)` hard-reset the
+   machine.
+
+### 2.3 Bind C (sys_mpm fix, omarchy-ane d2e1d14) — falsified
+
+Rationale: `ane_sys_mpm@4000` is a *sibling* of `ane_td` under
+`ane_sys@260`, so the stock parent cascade (set4→…→set1→ane_base@4010→
+ane_td@4008→ane_sys) can never raise it; ane0's ADT pmgr window
+(`0x8e080000..+0x4034`) frames exactly the six-island chain
+4000/4008/4010/4018-4030, so the bound device should consume it. Applied
+(phandle 0x1f5 assigned in the merged DT; live tree verified: six
+power-domains on the ane node). Result: **identical kill line** —
+genpd raise complete (now six domains), same SET-window values, same engine
+read, same silence. The missing-consumer hypothesis is dead.
+
+## 3. Exact missing datum (blocker for the next attempt)
+
+**The t6021 ANE engine-internal layout inside ADT range0
+(`0x84000000/0x2000000` → translated `0x284000000/0x2000000`): which
+sub-offset is the TM/TQ block the driver must talk to (t8103/t600x say
+`+0x1c04000` with TM at `+0x20000`), and where the live SET block really
+sits (t600x: pmgr+0xc000; t6021's +0xc000 reads non-pwrstate values).**
+Neither is derivable from any capture in hand: macOS shows no engine
+sub-window for ane0 (the documented mined gap), m1n1's `fw/ane.py` constants
+never executed on t6021, and the ADT bounds only range0. Sources that would
+name it: a m1n1 boot on jw14m2 walking ANE.ps_map/engine probes
+(fallback listed in the driver receipt §2), or a macOS-side ANE runtime
+capture that surfaces the engine window. Do NOT re-derive by guessing
+another offset — two kill sites are now named and the base rule is
+three-chip-proven; only a real t6021 source moves this lane.
+
+## 4. State / revert (delta over session 1)
+
+- Overlay DTB now = session-1 merge + ramoops node + sys_mpm phandle 0x1f5
+  + six-domain ane power-domains (dtb sha `d0021300…`, boots healthy across
+  4 reboots). New backups on the box:
+  `/var/tmp/t6021-j414c.dtb.pre-ramoops-20260918` (session-1 DTB),
+  `/var/tmp/boot.bin.orig` (stock boot.bin, unchanged).
+- Instrumented driver: repo commits 22c5314 (naming) + d2e1d14 (overlay
+  sys_mpm); on-box source + .ko at `/var/tmp/t6021-bisect`. Module NOT
+  loaded; plain-insmod refusal gate green with this .ko on the final boot.
+- netconsole/ramoops arms automatically every boot; receiver on the dev box
+  is standing infrastructure (`fleet-netconsole-receiver.service`).
+- jwm1, jw16 untouched; no SET-block write by any agent at any point; no
+  promotion; tier RECOGNIZED.
+- Open-source exemption: no screenshots; dmesg/netconsole log + this
+  receipt are the artifacts. Full console stream: receiver log lines
+  14019-14022 (bind A), 14788-15207 (bind B, kill named), 15589+ (bind C).
