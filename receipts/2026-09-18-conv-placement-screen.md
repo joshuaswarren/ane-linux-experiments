@@ -160,7 +160,18 @@ branch (re-verified before push).
 - receipts/2026-09-18-conv-placement-screen/{arms.jsonl, conv-gate.json,
   mint-log.json, gate.log}
 - mlx-omarchy branch `agent/ane-conv-placement` (pushed): `486514b4`
-  runner hunks + `docs/ane-encoder-placement.md` V/P/T rows
+  runner hunks only. `docs/ane-encoder-placement.md` lives on origin/main
+  above this branch's base (`044f297f`), so the V/P/T family rows and the
+  disposition paragraph are carried HERE for the merge, not duplicated on
+  the branch: add one row per letter to the letter-to-family table --
+  `V` conv-module convs (`island-conv-{pw1,dw,pw2}-L{ll}`, 3/layer),
+  `P` rel-pos padconv+slice (`island-relpos-{pad,slice}`, 2/layer),
+  `T` proven-direction transposes (`island-tr-{r3-in,r3-out,r4-out}`,
+  3/layer) -- and one measured-disposition bullet: "V/P/T (2026-09-18
+  screen): opt-in, NOT default. V cuts the encoder wall (-11.0% launch,
+  -24.3% resident) but transcript-diverges at 101/104 in every arm --
+  no-ship under the digest contract; P/T are bit-exact and pure losses
+  (+64/+25 ms wall per island)."
 - lane tool `ane-linux-experiments/.local/conv_lane.py`, arm script
   `.local/conv_e2e_jw16.sh` (mirrored on jw16 `/tmp/conv-lane/`)
 - bundles on jw16: `/var/tmp/jw16-conv-place/bundles-new` (77 new) +
