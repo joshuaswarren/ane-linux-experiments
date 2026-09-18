@@ -1,0 +1,16 @@
+ANE compiler backend provenance — live reads, 2026-09-18T13:16:49Z
+ANECompiler.framework: version=9.509.0 bundleVersion=9.509.0 DTPlatformVersion=26.6.1 minSystem=26.6
+kext AppleANELoadBalancer.kext CFBundleVersion=9.512.0
+kext AppleH11ANEInterface.kext CFBundleVersion=9.512.0
+kext AppleH16ANEInterface.kext CFBundleVersion=9.512.0
+kext AppleT6030ANEHAL.kext CFBundleVersion=9.512.3
+kext AppleT6031ANEHAL.kext CFBundleVersion=9.512.3
+kext AppleT6041ANEHAL.kext CFBundleVersion=9.512.3
+kext AppleT6050ANEHAL.kext CFBundleVersion=9.512.0
+kext AppleT8132ANEHAL.kext CFBundleVersion=9.512.3
+kext AppleT8140ANEHAL.kext CFBundleVersion=9.512.3
+kext AppleT8142ANEHAL.kext CFBundleVersion=9.512.3
+kext AppleT8150ANEHAL.kext CFBundleVersion=9.512.0
+kext AppleT8310ANEHAL.kext CFBundleVersion=9.512.3
+daemon /usr/libexec/aned exists=True
+daemon /usr/libexec/aneuserd exists=True

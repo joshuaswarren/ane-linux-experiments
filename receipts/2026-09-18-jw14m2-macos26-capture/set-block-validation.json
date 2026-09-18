@@ -1,0 +1,86 @@
+{
+  "verdict": "SET_BLOCK_INPUTS_VALID",
+  "capture_date": "2026-09-18T13:16:49Z",
+  "capture_machine": "Mac14,5 / J414cAP / Apple M2 Max",
+  "capture_macos": {
+    "hw.model": "Mac14,5",
+    "machdep.cpu.brand_string": "Apple M2 Max",
+    "hw.ncpu": "12",
+    "hw.activecpu": "12",
+    "hw.memsize": "103079215104",
+    "hw.target": "J414cAP",
+    "hw.platform": null,
+    "kern.osproductversion": "26.6.2",
+    "kern.osversion": "25G83",
+    "sw_vers-productVersion": "26.6.2",
+    "sw_vers-buildVersion": "25G83"
+  },
+  "checks": [
+    {
+      "name": "ane0_three_ranges",
+      "pass": true,
+      "detail": "[(2214592512, 33554432), (2382888960, 16436), (2382938112, 16384)]"
+    },
+    {
+      "name": "ane0_mmio_window",
+      "pass": true,
+      "detail": "(2214592512, 33554432) == ((2214592512, 33554432),)"
+    },
+    {
+      "name": "ane0_pmgr_window",
+      "pass": true,
+      "detail": "(2382888960, 16436) == ((2382888960, 16436),)"
+    },
+    {
+      "name": "ane0_set_window",
+      "pass": true,
+      "detail": "(2382938112, 16384) == ((2382938112, 16384),)"
+    },
+    {
+      "name": "pmgr_base",
+      "pass": true,
+      "detail": "first range (2382888960, 524288)"
+    },
+    {
+      "name": "pmgr_range0_size_512k",
+      "pass": true,
+      "detail": "524288"
+    },
+    {
+      "name": "set_block_derivation",
+      "pass": true,
+      "detail": "pmgr_base(0x8e080000) + 0xc000 == 0x8e08c000 ; ane0 range3 base = 0x8e08c000"
+    },
+    {
+      "name": "rule_t8103_jwm1",
+      "pass": true,
+      "detail": "0x23b700000 + 0xc000 == 0x23b70c000"
+    },
+    {
+      "name": "rule_t6001_jw16",
+      "pass": true,
+      "detail": "0x28e080000 + 0xc000 == 0x28e08c000"
+    },
+    {
+      "name": "dart_ane0_ranges",
+      "pass": true,
+      "detail": "[(2239758336, 16384), (2239823872, 16384), (2239889408, 16384), (2239774720, 16384)]"
+    },
+    {
+      "name": "ane0_interrupt",
+      "pass": true,
+      "detail": "0x374 == 0x374"
+    }
+  ],
+  "baseline_delta": {
+    "pmgr:interrupts": {
+      "baseline": null,
+      "capture": 312
+    },
+    "dart-ane0:interrupts": {
+      "baseline": null,
+      "capture": 885
+    }
+  },
+  "note": "capture-only: SET base stays a hypothesis until the Linux/m1n1 pmgr probe confirms the ane_* cluster at pmgr_base+0xc000 (receipts/2026-09-17-t6021-macos-capture.md)"
+}

@@ -1,0 +1,31 @@
+Hardware:
+
+    Hardware Overview:
+
+      Model Name: MacBook Pro
+      Model Identifier: Mac14,5
+      Model Number: Z17J00166LL/A
+      Chip: Apple M2 Max
+      Total Number of Cores: 12 (8 Performance and 4 Efficiency)
+      Memory: 96 GB
+      System Firmware Version: 18000.161.10
+      OS Loader Version: 18000.161.10
+      Serial Number (system): [redacted]
+      Hardware UUID: [redacted]
+      Provisioning UDID: [redacted]
+      Activation Lock Status: Enabled
+
+Software:
+
+    System Software Overview:
+
+      System Version: macOS 26.6.2 (25G83)
+      Kernel Version: Darwin 25.6.0
+      Boot Volume: Macintosh HD
+      Boot Mode: Normal
+      Computer Name: JW14M2
+      User Name: Joshua Warren (joshuawarren)
+      Secure Virtual Memory: Enabled
+      System Integrity Protection: Enabled
+      Time since boot: 3 days, 11 hours, 28 minutes
+

@@ -1,0 +1,18 @@
+== mint probe 2026-09-18T13:16:49Z ==
+== bridge build ==
+bridge_build_rc=0
+bridge_sha256=2060776c98e385d091ca244a2083be25919ed0c340ba1c8c89840208473b05d5
+bridge_bytes=52336
+lineage_match=false expected_sha16=3d13fc85c2a6baa0
+== refused-route probe oproj h14g ==
+refused_route_h14g rc=0 (see refused-route-h14g.log;  2026-09-17 baseline: bridge_exit=1, NO_HWX_EMITTED)
+== refused-route probe oproj h13 ==
+refused_route_h13 rc=0 (see refused-route-h13.log;  2026-09-17 baseline: bridge_exit=1, NO_HWX_EMITTED)
+copying /Users/joshuawarren/src/ANEForge -> /tmp/ANEForge-scratch (no in-place patches)
+== e5rt mint oproj h14g+h13 (canonical workroot /tmp/anec-mint-normalized) ==
+e5rt_mint_rc=0
+h14g_equiv_h13=true
+h14g_e5_sha16=f2e71fcf0a60936c
+archived_oproj_sha16_2026-09-17=9351e29807fcaf34
+anecompiler_version=9.509.0
+== mint probe done ==

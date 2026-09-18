@@ -1,0 +1,23 @@
+== mint probe 2026-09-18T13:16:49Z ==
+== bridge build ==
+bridge_build_rc=0
+bridge_sha256=2060776c98e385d091ca244a2083be25919ed0c340ba1c8c89840208473b05d5
+bridge_bytes=52336
+lineage_match=false expected_sha16=3d13fc85c2a6baa0
+== refused-route probe oproj h14g ==
+refused_route_h14g rc=0 (see refused-route-h14g.log;  2026-09-17 baseline: bridge_exit=1, NO_HWX_EMITTED)
+== refused-route probe oproj h13 ==
+refused_route_h13 rc=0 (see refused-route-h13.log;  2026-09-17 baseline: bridge_exit=1, NO_HWX_EMITTED)
+copying /Users/joshuawarren/src/ANEForge -> /tmp/ANEForge-scratch (no in-place patches)
+== e5rt mint oproj h14g+h13 (canonical workroot /tmp/anec-mint-normalized) ==
+[mint] oproj h14g: rc=0 files=2
+[mint] oproj h13: rc=0 files=2
+wrote /tmp/anec-mint-normalized/mint-summary.json
+e5rt_mint_rc=0
+f2e71fcf0a60936c9b936784c3405e9c1ca98710d0af4bd2ed43708a951e93c8  /tmp/anec-mint-normalized/oproj/cache_h14g/com.apple.e5rt.e5bundlecache/25G83/4922445858DD98197EBDA3C0A1CDCE1D1BBAF213F18BC0CB43F1308EEAE2DDB7/ACB41B0FDB49866CEA4B6050725D847D749AA9B0078348E915D6EFDCC8D1F402.bundle/H14C.bundle/H14C.e5
+f2e71fcf0a60936c9b936784c3405e9c1ca98710d0af4bd2ed43708a951e93c8  /tmp/anec-mint-normalized/oproj/cache_h13/com.apple.e5rt.e5bundlecache/25G83/4922445858DD98197EBDA3C0A1CDCE1D1BBAF213F18BC0CB43F1308EEAE2DDB7/5A6F617C41EF1B4B3796D1D33BEF5587E1D132D34C91774AE5627CE82C9E3984.bundle/H14C.bundle/H14C.e5
+h14g_equiv_h13=true
+h14g_e5_sha16=f2e71fcf0a60936c
+archived_oproj_sha16_2026-09-17=9351e29807fcaf34
+anecompiler_version=9.509.0
+== mint probe done ==
