@@ -173,5 +173,63 @@ llm-inference ACTIVE, `/health` 200 after the window. Measured data in
 jw16 `/var/tmp/jw16-spawn-attrib/{batchpipe.jsonl,rebaseline2.jsonl,
 profile-pipe-on.json,profile-pe-ac-launch.json}`.
 
+## Re-attribution on the new baseline + conv-cadence cut — SHIPPED
+
+Re-attribution (AC launch 7748 profiled, statement-level instrumentation,
+pipe on): async_eval backpressure (GPU feeder compute) 5448 ms (70%);
+worker spawn+init+bundle+ANE exec 1780 ms (23%, A median 46 ms + PV 24 ms
+per layer); marshal write/read/convert 115 ms (1.5%); boundary eval 53 ms
+(0.7%). GPU is now the bottleneck, but per-statement async_eval (3496
+graph cuts) still wastes queue efficiency: all-ops pipe left ~2 s over the
+3591 ms pure-GPU floor.
+
+Granularity sweep (AC launch, single runs, digests EXACT): matmul-only
+8888; matmul,silu,add,mul 6733; matmul,conv 6518; conv-only **6485**;
+matmul,conv,silu 7592; matmul,conv,transpose 7429. Conv-statement cadence
+wins — few, well-placed issue points keep the queue saturated without
+per-statement cut overhead.
+
+Matrix (conv cadence, ×3, 12/12 ALL-GREEN — all pins EXACT as above):
+
+| arm | walls (ms) | median | vs pipe-all-ops |
+|---|---|---|---|
+| AC launch | 6462/6561/6567 | 6561 | −1145 |
+| AC resident | 5861/5867/5893 | 5867 | −1353 |
+| ACO launch | 6520/6628/6636 | 6628 | −1282 |
+| ACO resident | 5736/5744/5832 | 5744 | −1215 |
+
+Landed: mlx-omarchy commit `56f2ce0f` on `agent/placed-ac-default`
+(`MLX_OMARCHY_PIPE_OPS` default `conv`, op-filtered `_pipe`),
+`63c1d3cf` NOT-ANCESTOR asserted, pushed. Certified copy
+`/tmp/conv-lane/vk_conv.py` flipped identically; backup
+`vk_conv.py.pre-PIPEOPS-20260918`; diff = 6 added lines.
+
+Certified-copy re-baseline (defaults only, one window, 12/12 ALL-GREEN):
+
+| arm | walls (ms) | median | vs pipe-all | vs pre-pipe (8840/7992/9457/8087) |
+|---|---|---|---|---|
+| AC launch | 6495/6535/6550 | **6535** | −1171 | −2305 (−26%) |
+| AC resident | 5664/5805/5991 | **5805** | −1415 | −2187 (−27%) |
+| ACO launch | 6528/6616/6676 | **6616** | −1294 | −2841 (−30%) |
+| ACO resident | 5692/5782/5848 | **5782** | −1177 | −2305 (−29%) |
+
+New jw16 conv-lane baselines: **AC 6535/5805, ACO 6616/5782**.
+Cumulative vs certified ABC (10873/9049): AC −4338/−3244.
+
+Position vs floors: AC launch 6535 ms = 1.82× the pure-GPU encoder floor
+(3591 ms, GPU-only control, diverged digest — lower bound only) and
+22.4× the 292.2 ms macOS divisor; the remaining gap over the floor is
+ANE exec (~1.0–1.3 s) + spawn (~1.6 s launch) + residual feeder GPU time
+the islands save the GPU from... the GPU-only floor is not directly
+reachable because island placement is what produces the certified hidden
+bytes.
+
+Process notes: one mis-targeted re-baseline (rebaseline3) ran the
+worktree runner with defaults instead of the certified copy — caught by
+walls matching pipe-off levels; worktree copy still has pipe default OFF,
+certified copy default ON. All windows: flock held, llm-inference
+stopped before / restarted after, `/health` 200.
+
+
 
 

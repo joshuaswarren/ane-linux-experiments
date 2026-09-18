@@ -752,6 +752,7 @@ class AneIsland:
                             "phase_ns": island.phase_ns,
                             "per_bundle_ns": island.per_bundle_ns,
                             "per_eval_ns": island.per_eval_ns,
+
                         },
                         f,
                         indent=2,
@@ -1004,6 +1005,33 @@ class EncoderRunner:
         # Vulkan queue stays saturated between island-boundary drains.
         # Scheduling only - same graph, same values, no host sync.
         self.pipe = os.environ.get("MLX_OMARCHY_PIPE") == "1"
+        self.pipe_ops = frozenset(
+            os.environ.get("MLX_OMARCHY_PIPE_OPS", "").split(",")
+        ) - {""}
+        self.stmt_ns = 0
+        self.stmt_count = 0
+        self.pipe_ns = 0
+        self.stmt_top: list[tuple[int, str]] = []
+        _prof_on = os.environ.get("MLX_OMARCHY_LAUNCH_PROFILE") == "1"
+        _prof_out = os.environ.get("MLX_OMARCHY_LAUNCH_PROFILE_OUT")
+        if _prof_on and _prof_out:
+            import atexit
+
+            def _dump_stmt(runner=self):
+                import json as _json
+
+                with open(_prof_out + ".stmt", "w") as f:
+                    _json.dump(
+                        {
+                            "stmt_ns": runner.stmt_ns,
+                            "stmt_count": runner.stmt_count,
+                            "pipe_ns": runner.pipe_ns,
+                            "stmt_top": runner.stmt_top,
+                        },
+                        f,
+                    )
+
+            atexit.register(_dump_stmt)
         self.glu_fusions: dict[int, tuple[str, str]] = {}
         self.glu_sigmoid_done: set[int] = set()
         self.linear_silu: dict[int, int] = {}
@@ -1461,11 +1489,26 @@ class EncoderRunner:
 
     # --------------------------------------------------------------- dispatch
 
-    def _pipe(self, *values) -> None:
-        if self.pipe:
+    def _pipe(self, *values, op: str = "") -> None:
+        if self.pipe and (not self.pipe_ops or op in self.pipe_ops):
+            _p0 = time.monotonic_ns()
             mx.async_eval(*[v for v in values if isinstance(v, mx.array)])
+            self.pipe_ns += time.monotonic_ns() - _p0
 
     def execute(self, stmt: Statement) -> None:
+        _t0 = time.monotonic_ns()
+        try:
+            return self._execute(stmt)
+        finally:
+            _t = time.monotonic_ns() - _t0
+            self.stmt_ns += _t
+            self.stmt_count += 1
+            if len(self.stmt_top) < 12 or _t > self.stmt_top[-1][0]:
+                self.stmt_top.append((_t, f"{stmt.op}@{stmt.index}"))
+                self.stmt_top.sort(reverse=True)
+                del self.stmt_top[12:]
+
+    def _execute(self, stmt: Statement) -> None:
         if stmt.done:
             return
         stmt.done = True
@@ -1549,7 +1592,7 @@ class EncoderRunner:
                 self.values[
                     self.statements[self.linear_silu[stmt.index]].names[0]
                 ] = self.values[stmt.names[0]]
-            self._pipe(self.values[stmt.names[0]])
+            self._pipe(self.values[stmt.names[0]], op=stmt.op)
         self.executed += 1
         self.gpu_ops += 1
 
