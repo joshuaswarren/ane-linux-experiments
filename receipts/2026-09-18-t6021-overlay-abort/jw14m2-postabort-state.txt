@@ -1,0 +1,22 @@
+[    0.074987] apple-dart 285800000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized
+[    0.075238] apple-dart 285810000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized
+[    0.075484] platform 285c04000.ane: Adding to iommu group 6
+[    0.075620] apple-dart 285820000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized
+[    0.140596] watchdog: Hard watchdog permanently disabled
+[   15.328535] apple-pmgr-pwrstate 28e080000.power-management:power-controller@2e0: sync_state() pending due to 285c04000.ane
+[   15.328543] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4018: sync_state() pending due to 285c04000.ane
+[   15.328546] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4020: sync_state() pending due to 285c04000.ane
+[   15.328549] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4028: sync_state() pending due to 285c04000.ane
+[   15.328551] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4030: sync_state() pending due to 285c04000.ane
+===
+compatible
+interrupt-names
+interrupt-parent
+interrupts
+iommus
+name
+power-domains
+reg
+reg-names
+status
+d6a7b3a8a91cd90b86065dfcaea438bc37bcf4da6711821f83b8abe5a4a5394e  /sys/firmware/fdt
