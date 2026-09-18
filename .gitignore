@@ -5,3 +5,5 @@ __pycache__/
 # large re-derivable artifacts (see receipts for provenance)
 receipts/**/BuildManifest.plist
 receipts/**/*.dump
+
+.omp/
