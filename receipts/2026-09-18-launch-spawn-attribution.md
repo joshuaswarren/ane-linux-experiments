@@ -230,6 +230,51 @@ walls matching pipe-off levels; worktree copy still has pipe default OFF,
 certified copy default ON. All windows: flock held, llm-inference
 stopped before / restarted after, `/health` 200.
 
+## Spawn-side round: mode default flipped to the serve transport
+
+Pre-warm feasibility finding first: the per-submit spawn+init+bundle+ANE
+cost (1.78 s/pass, 23%) is structurally NOT hideable behind GPU feeder
+compute from the runner side. The submit chain is data-dependent serial —
+PV's feeder consumes A's ANE output bytes, next layer's feeder consumes
+PV's — so during a spawn window there is no independent GPU work to
+overlap; the GPU queue is empty exactly because the boundary eval drained
+it. Hiding would require an out-of-order interpreter running ahead past
+the host splices (high risk, low ceiling). The worker also has a `--serve`
+transport: spawn paid once. Resident-batch (the existing serve path) has
+been green with all pins EXACT in every window today and now BEATS launch:
+5805 vs 6535 (AC), 5782 vs 6616 (ACO).
+
+Cut shipped: `ANE_ISLAND_MODE` default flipped `launch` → `resident-batch`
+in the certified runner family. mlx-omarchy commit `3611cd59` on
+`agent/placed-ac-default` (off `56f2ce0f`), `63c1d3cf` NOT-ANCESTOR
+asserted, pushed. Certified copy `/tmp/conv-lane/vk_conv.py` flipped;
+backup `vk_conv.py.pre-MODE-20260918`; diff = the 4-line default change.
+`ANE_ISLAND_MODE=launch` restores the per-submit path.
+
+Mode-default re-baseline (certified copy, defaults only, one window,
+12/12 ALL-GREEN — all pins EXACT):
+
+| arm | mode | walls (ms) | median | vs pre-flip baseline |
+|---|---|---|---|---|
+| AC | serve (default) | 5817/5900/5957 | **5900** | +95 (parity) |
+| AC | launch (env) | 6404/6454/6599 | 6454 | −81 (parity) |
+| ACO | serve (default) | 5722/5738/5747 | **5738** | −44 (parity) |
+| ACO | launch (env) | 6513/6567/6606 | 6567 | −49 (parity) |
+
+New jw16 conv-lane default baselines: **AC 5900/—, ACO 5738/—** (serve
+default; explicit-launch 6454/6567). Cumulative vs certified ABC launch
+(10873): AC −4973 (−46%), ACO −4257 (−39%); vs certified ABC resident
+(9049): AC −3149, ACO −3311.
+
+Position vs floors: default AC 5900 ms = 1.64× the 3591 ms pure-GPU
+lower bound, 20.2× the 292.2 ms macOS divisor.
+
+Process note: one aborted window run — the row-dump script read a
+nonexistent report field (`ane.mode`), parse crashed per arm, run killed
+and script fixed before rerun; no partial data used.
+llm-inference ACTIVE, `/health` 200 after the window.
+
+
 
 
 
