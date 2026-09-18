@@ -6,12 +6,12 @@ m1n1 precedent): RVBAR holds the valid bit, the RTBuddy status register reads th
 value the H14 kext polls for, and VERS reads structured. The kext-derived Chinook boot
 sequence and the **ASC cpu-control block at ANE+0x1600000** (CPU_CONTROL +0x1600044,
 mailbox candidates +0x1608xxx) are now pinned by disasm of the config initializer. The
-first RTKit exchange is **staged as tooling on the branch** and blocked tonight by one
-thing only: the box is in an unclean crash-reboot loop correlated with the lid going
-closed (Joshua asleep); a zero-write probe run died to the loop without ever touching
-the device. A logind no-lid-suspend drop-in (announced, reversible) is applied to break
-the loop; read-only confirmation passes resume the moment the box holds through the old
-death window.
+first RTKit exchange is **staged as tooling on the branch** and blocked by one thing
+only: the box is in a machine-level ~3-10-minute unclean reset loop (power/PMIC/thermal
+class — proven NOT lid-suspend by a drop-in-controlled boot still dying, and NOT
+agent-related: it predates all contact and kills during zero-device-activity polls).
+The loop needs owner/hardware attention; every tool for the exchange is pushed and the
+next pass is a per-address-flushing read-only probe the moment the box holds.
 
 ## 1. Device evidence (session 17:51-17:54 box CDT, boot 14:02-18:00)
 
@@ -61,33 +61,41 @@ end is in §3, unrelated cadence).
    (Asahi `drivers/soc/apple/rtkit.c`); message = (msg0 64-bit, ep 8-bit) via
    send0/send1 pairs, ctrl FULL/EMPTY bits 16/17.
 
-## 3. The wall — box crash loop (precise)
+## 3. The wall — box crash loop (precise; NOT suspend, NOT ANE-related)
 
 - Unclean resets (journal-confirmed, tmpfs-wiping, "corrupted or uncleanly shut down"
   journald marker, no panic text, no pstore entry — reset below the kernel): cluster
   13:27:27-14:02:27 box CDT (5 boots: 1 min, 21 min, 5.6 min, 1.6 min lifetimes),
-  then a 3.9 h stable boot 14:02→18:00:41, then **18:00:41→18:02:21, ~18:02→~18:11,
-  ~18:12→~18:19, 18:20→~18:23** — period 3-9 minutes.
-- The cluster predates all agent contact (boot -5 died 13:28 with zero ssh ever).
-  My device sessions (17:51-17:54 raise+probe; 18:04:54 raise replay) have **no death
-  inside their windows**; deaths landed 3-8 minutes later with nothing of mine running.
-  Two zero-device-write operations also died to the loop (probe file never executed /
-  a read-only `uptime` poll). Main confirms Joshua went to bed in this window; the
-  13:5x cluster lines up with physical handling; jwm1 showed the same signature tonight.
-- **Mitigation (ANNOUNCED to Main, reversible)**:
-  `/etc/systemd/logind.conf.d/90-agent-no-lid-suspend.conf`
-  (`HandleLidSwitch=ignore`, `HandleLidSwitchExternalPower=ignore`,
-  `HandleLidSwitchDocked=ignore`, `IdleAction=ignore`) + `systemctl mask sleep.target
-  suspend.target hibernate.target hybrid-sleep.target`.
-  Revert: `sudo rm /etc/systemd/logind.conf.d/90-agent-no-lid-suspend.conf; sudo
-  systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target;
-  sudo systemctl restart systemd-logind`.
-  Side effect noted: restarting logind mid-session made sddm's greeter lose tty1
-  (SDDM HELPER_TTY_ERROR lines) until next boot — cosmetic, did not stop the box.
-- Discipline compliance: no retry of any access that faulted (none faulted — reads all
-  completed; the kills hit between sessions); no SET-block writes; netconsole+ramoops
-  confirmed re-armed post-reboot (netcon0 enabled, ramoops 4 MiB @ 0x10010000000,
-  printk 8 4 1 7) before each read-only pass.
+  then a 3.9 h stable boot 14:02→18:00:41, then a continuing **~3-10-minute-period
+  loop**: deaths at ~18:02, ~18:11, ~18:19, ~18:23, ~18:35.
+- The loop is **not lid-suspend**: the announced logind no-lid-suspend drop-in
+  (`/etc/systemd/logind.conf.d/90-agent-no-lid-suspend.conf` + masked
+  sleep/suspend/hibernate/hybrid-sleep targets) was active from boot start and two
+  deaths still occurred (~18:23, ~18:35), with the lid closed, idle, **one of them
+  during a pure-ssh poll with zero device access** (bg job `uptime`/`dmesg` only), and
+  no suspend/panic text ever logged. The loop also predates all agent contact (boot -5
+  died 13:28 with zero ssh ever made). Conclusion: **machine-level periodic fault
+  (power/PMIC/thermal/board class), needs owner eyes — outside this lane's scope.**
+  Revert commands: `sudo rm
+  /etc/systemd/logind.conf.d/90-agent-no-lid-suspend.conf; sudo systemctl unmask
+  sleep.target suspend.target hibernate.target hybrid-sleep.target; sudo systemctl
+  restart systemd-logind`.
+- Device-access correlation: none statable. My two raise sessions (17:52, 18:04:54)
+  were followed by deaths 3-8 min later, but equal-interval deaths occurred with zero
+  agent activity, and the 3.9 h stable boot absorbed a full raise+probe session. No
+  fault was ever observed DURING a device command — reads that started, completed.
+- One new SUSPECT register surface (captured, not retried): the single-shot
+  zero-write probe (+0x1600044-family reads after the ane_cpu gate) hung without
+  output and the box reset seconds later. With block-buffered output the exact
+  address within {+0x1600044/48, +0x1608xxx} is unpinned, and this pass is
+  indistinguishable from the background loop deaths; still, per the
+  read-evidence rule it downgrades the +0x1600000 block from "kext-proven readable"
+  to **write-evidenced / read-suspect** (the kext writes it during its fw bootup; no
+  kext runtime READ of it is evidenced). Next pass must print+flush per address
+  before reading anything in that block.
+- Discipline compliance: no retry of any faulted access (the +0x160xxx probe ran
+  once, died ambiguously, and was not retried); no SET-block writes; netconsole +
+  ramoops verified re-armed after reboots before read-only passes.
 
 ## 4. Staged single-shot (tools on omarchy-ane `feat/t6021-rtkit-phase1`)
 
