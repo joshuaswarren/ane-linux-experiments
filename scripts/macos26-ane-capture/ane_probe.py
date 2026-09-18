@@ -209,6 +209,21 @@ def main():
         ]
     except Exception as exc:
         prov.append("ANECompiler.framework Info.plist: MISS (%s)" % exc)
+    cml = Path("/System/Library/Frameworks/CoreML.framework"
+               "/Versions/A/Resources/Info.plist")
+    if not cml.exists():
+        cml = Path("/System/Library/Frameworks/CoreML.framework"
+                   "/Resources/Info.plist")
+    try:
+        pl = plistlib.loads(cml.read_bytes())
+        prov.append(
+            "CoreML.framework: version=%s bundleVersion=%s "
+            "DTPlatformVersion=%s minSystem=%s" % (
+                pl.get("CFBundleShortVersionString"),
+                pl.get("CFBundleVersion"), pl.get("DTPlatformVersion"),
+                pl.get("LSMinimumSystemVersion")))
+    except Exception as exc:
+        prov.append("CoreML.framework Info.plist: MISS (%s)" % exc)
     kdir = Path("/System/Library/Extensions")
     if kdir.is_dir():
         for kext in sorted(kdir.glob("Apple*ANE*.kext")):
