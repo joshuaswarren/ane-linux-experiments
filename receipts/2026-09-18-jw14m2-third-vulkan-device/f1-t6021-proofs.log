@@ -1,0 +1,84 @@
+=== S0-sanity ===
+[rtmod] GATE tid=11938 Sin enter
+[rtmod] FEW name=Abs count=4
+[rtmod] DISPATCH kernel=0 count=4 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=113 count=1 gx=1 gy=1 gz=1
+[rtmod] GATE tid=11938 Sin post-eval
+[rtmod] SUBMIT-ENTER tid=11938
+[rtmod] SUBMIT tid=11938 cv=1 waits=0 sigs=1 cmds=1
+[rtmod] JOIN tid=11938 reason=trig_argument_gate last=1
+[rtmod] FEW name=Sin count=4
+[rtmod] DISPATCH kernel=0 count=4 gx=1 gy=1 gz=1
+[rtmod] EV-SIGNAL tid=11938 ev=0xaaabdafa4000 val=1 st=0 host=0
+[rtmod] EV-SIGNAL path=queued
+[rtmod] SUBMIT-ENTER tid=11938
+[rtmod] SUBMIT tid=11938 cv=2 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+sin: [0.0, 0.47942548990249634, 0.8414708971977234, -0.6816385388374329]
+SIN-OK
+[rtmod] COMMIT-NOOP
+[rtmod] JOIN tid=11938 reason=explicit last=2
+--- rc=0
+=== S1-drop1 ===
+[rtmod] GATE tid=11943 Sin enter
+[rtmod] FEW name=Abs count=4
+[rtmod] DISPATCH kernel=0 count=4 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=113 count=1 gx=1 gy=1 gz=1
+[rtmod] GATE tid=11943 Sin post-eval
+[rtmod] SUBMIT-ENTER tid=11943
+[rtmod] TEST-DROP tid=11943 cv=1
+[rtmod] SUBMIT tid=11943 cv=1 waits=0 sigs=1 cmds=1
+[rtmod] JOIN tid=11943 reason=trig_argument_gate last=1
+[rtmod] STALL tid=11943 target=1 observed=0 round=0 recovery=1
+[rtmod] RECOVER-ENTER tid=11943 target=1 through=1 active=0
+[rtmod] SUBMIT-RECOVER tid=11943 resubmitted 1 stalled batch(es) through cv>=1 (round 1, fresh signals)
+[rtmod] FEW name=Sin count=4
+[rtmod] DISPATCH kernel=0 count=4 gx=1 gy=1 gz=1
+[rtmod] EV-SIGNAL tid=11943 ev=0xaaab08927e80 val=1 st=0 host=0
+[rtmod] EV-SIGNAL path=queued
+[rtmod] SUBMIT-ENTER tid=11943
+[rtmod] SUBMIT tid=11943 cv=3 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+sin: [0.0, 0.47942548990249634, 0.8414708971977234, -0.6816385388374329]
+SIN-OK
+[rtmod] COMMIT-NOOP
+[rtmod] JOIN tid=11943 reason=explicit last=3
+--- rc=0
+=== S2-drop12 ===
+[rtmod] FEW name=Exp count=2
+[rtmod] DISPATCH kernel=0 count=2 gx=1 gy=1 gz=1
+[rtmod] EV-SIGNAL tid=11954 ev=0xaaab5e126c00 val=1 st=0 host=0
+[rtmod] EV-SIGNAL path=queued
+[rtmod] SUBMIT-ENTER tid=11954
+[rtmod] TEST-DROP tid=11954 cv=1
+[rtmod] SUBMIT tid=11954 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+exp: [2.7182817459106445, 7.3890557289123535]
+[rtmod] STALL tid=11954 target=1 observed=0 round=0 recovery=1
+[rtmod] RECOVER-ENTER tid=11954 target=1 through=1 active=0
+[rtmod] SUBMIT-RECOVER tid=11954 resubmitted 1 stalled batch(es) through cv>=1 (round 1, fresh signals)
+[rtmod] GATE tid=11954 Sin enter
+[rtmod] FEW name=Abs count=4
+[rtmod] DISPATCH kernel=0 count=4 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=113 count=1 gx=1 gy=1 gz=1
+[rtmod] GATE tid=11954 Sin post-eval
+[rtmod] SUBMIT-ENTER tid=11954
+[rtmod] TEST-DROP tid=11954 cv=3
+[rtmod] SUBMIT tid=11954 cv=3 waits=1 sigs=1 cmds=1
+[rtmod] JOIN tid=11954 reason=trig_argument_gate last=3
+[rtmod] STALL tid=11954 target=3 observed=2 round=0 recovery=1
+[rtmod] RECOVER-ENTER tid=11954 target=3 through=3 active=0
+[rtmod] SUBMIT-RECOVER tid=11954 resubmitted 1 stalled batch(es) through cv>=3 (round 1, fresh signals)
+[rtmod] FEW name=Sin count=4
+[rtmod] DISPATCH kernel=0 count=4 gx=1 gy=1 gz=1
+[rtmod] EV-SIGNAL tid=11954 ev=0xaaab5e126c00 val=1 st=0 host=0
+[rtmod] EV-SIGNAL path=queued
+[rtmod] SUBMIT-ENTER tid=11954
+[rtmod] SUBMIT tid=11954 cv=5 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+sin: [0.0, 0.47942548990249634, 0.8414708971977234, -0.6816385388374329]
+TWOOP-OK
+[rtmod] COMMIT-NOOP
+[rtmod] JOIN tid=11954 reason=explicit last=5
+--- rc=0
+=== PROOFS DONE ===

@@ -1,0 +1,3603 @@
+{
+  "ane": {
+    "available": false,
+    "device_node": false,
+    "devicetree": {
+      "compatible": [
+        "apple,t6021-ane"
+      ],
+      "node": true
+    },
+    "libane": null,
+    "libane_probe": {
+      "argv": [
+        "sh",
+        "-c",
+        "ldconfig -p 2>/dev/null | grep -i libane"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 1,
+      "label": "ldconfig libane",
+      "stderr": "",
+      "stdout": ""
+    },
+    "libane_version": null,
+    "pkgconfig": {
+      "argv": [
+        "pkg-config",
+        "--modversion",
+        "libane"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 1,
+      "label": "pkg-config libane",
+      "stderr": "Package libane was not found in the pkg-config search path.\nPerhaps you should add the directory containing `libane.pc'\nto the PKG_CONFIG_PATH environment variable\nPackage 'libane' not found",
+      "stdout": ""
+    }
+  },
+  "ane_port": {
+    "available": true,
+    "devicetree": {
+      "adt": {
+        "found": false,
+        "path": null,
+        "sha256": null,
+        "source": null
+      },
+      "adt_nodes": null,
+      "aic": {
+        "compatible": [
+          "apple,t6020-aic",
+          "apple,aic2"
+        ],
+        "path": "soc/interrupt-controller@28e100000"
+      },
+      "ane_node_present": true,
+      "ane_nodes": {
+        "soc/ane@284000000": {
+          "compatible": "apple,t6021-ane",
+          "interrupt-names": "ane",
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            884,
+            4
+          ],
+          "iommus": [
+            498,
+            0,
+            499,
+            0,
+            500,
+            0
+          ],
+          "iommus_resolved": [
+            "soc/iommu@285800000",
+            "soc/iommu@285810000",
+            "soc/iommu@285820000"
+          ],
+          "name": "ane",
+          "power-domains": [
+            496,
+            183,
+            184,
+            185,
+            497,
+            501
+          ],
+          "reg": [
+            "0x285c04000/0x24000"
+          ],
+          "reg-names": "engine",
+          "status": "okay"
+        }
+      },
+      "ane_reg": [
+        "0x285c04000/0x24000"
+      ],
+      "boot": {
+        "chosen": {
+          "asahi,efi-system-partition": "[redacted-uuid]",
+          "asahi,iboot1-version": "mBoot-20457.1.29",
+          "asahi,iboot2-version": "iBoot-8422.141.2",
+          "asahi,kblang-code": "\u0005",
+          "asahi,m1n1-stage1-version": "v1.6.1-dirty",
+          "asahi,m1n1-stage2-version": "v1.6.1",
+          "asahi,os-fw-version": "13.5",
+          "asahi,system-fw-version": "unknown"
+        },
+        "compatible": [
+          "apple,j414c",
+          "apple,t6021",
+          "apple,arm-platform"
+        ],
+        "model": "Apple MacBook Pro (14-inch, M2 Max, 2023)"
+      },
+      "darts": {
+        "soc/iommu@1302f00000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1314,
+            4
+          ],
+          "name": "iommu",
+          "power-domains": [
+            263
+          ],
+          "reg": [
+            "0x1302f00000/0x4000"
+          ],
+          "status": "disabled"
+        },
+        "soc/iommu@1302f80000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1314,
+            4
+          ],
+          "name": "iommu",
+          "power-domains": [
+            263
+          ],
+          "reg": [
+            "0x1302f80000/0x4000"
+          ],
+          "status": "disabled"
+        },
+        "soc/iommu@285800000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            885,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            498
+          ],
+          "power-domains": [
+            24
+          ],
+          "reg": [
+            "0x285800000/0x4000"
+          ]
+        },
+        "soc/iommu@285810000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            885,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            499
+          ],
+          "power-domains": [
+            496
+          ],
+          "reg": [
+            "0x285810000/0x4000"
+          ]
+        },
+        "soc/iommu@285820000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            885,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            500
+          ],
+          "power-domains": [
+            496
+          ],
+          "reg": [
+            "0x285820000/0x4000"
+          ]
+        },
+        "soc/iommu@287010000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1095,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            147
+          ],
+          "power-domains": " ",
+          "reg": [
+            "0x287010000/0x4000"
+          ]
+        },
+        "soc/iommu@289304000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            16,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            950,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "O",
+          "power-domains": [
+            29
+          ],
+          "reg": [
+            "0x289304000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@28930c000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            16,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            950,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            149
+          ],
+          "power-domains": [
+            29
+          ],
+          "reg": [
+            "0x28930c000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@28e300000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1087,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "*",
+          "power-domains": [
+            24
+          ],
+          "reg": [
+            "0x28e300000/0x4000"
+          ]
+        },
+        "soc/iommu@2a6808000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            628,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "4",
+          "reg": [
+            "0x2a6808000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@2a9808000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            1,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            676,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "8",
+          "reg": [
+            "0x2a9808000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@315304000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            16,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            986,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            228
+          ],
+          "power-domains": [
+            30
+          ],
+          "reg": [
+            "0x315304000/0x4000"
+          ],
+          "status": "disabled"
+        },
+        "soc/iommu@31530c000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            16,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            986,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            225
+          ],
+          "power-domains": [
+            30
+          ],
+          "reg": [
+            "0x31530c000/0x4000"
+          ],
+          "status": "disabled"
+        },
+        "soc/iommu@3860e8000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            1,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            574,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "<",
+          "power-domains": [
+            27
+          ],
+          "reg": [
+            "0x3860e8000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@3860f4000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            1,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            574,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "=",
+          "power-domains": [
+            27
+          ],
+          "reg": [
+            "0x3860f4000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@3860fc000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            1,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            574,
+            4
+          ],
+          "name": "iommu",
+          "phandle": ">",
+          "power-domains": [
+            27
+          ],
+          "reg": [
+            "0x3860fc000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@389304000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            16,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            911,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "L",
+          "power-domains": [
+            28
+          ],
+          "reg": [
+            "0x389304000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@38930c000": {
+          "#iommu-cells": [
+            1
+          ],
+          "apple,dma-range": [
+            256,
+            0,
+            16,
+            0
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            911,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "H",
+          "power-domains": [
+            28
+          ],
+          "reg": [
+            "0x38930c000/0x4000"
+          ]
+        },
+        "soc/iommu@394ac0000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            582,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "R",
+          "reg": [
+            "0x394ac0000/0x4000"
+          ],
+          "status": "disabled"
+        },
+        "soc/iommu@39b008000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1231,
+            4
+          ],
+          "name": "iommu",
+          "phandle": "q",
+          "power-domains": [
+            157
+          ],
+          "reg": [
+            "0x39b008000/0x4000"
+          ]
+        },
+        "soc/iommu@594000000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1341,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            137
+          ],
+          "power-domains": [
+            141
+          ],
+          "reg": [
+            "0x594000000/0x4000"
+          ]
+        },
+        "soc/iommu@595000000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1345,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            138
+          ],
+          "power-domains": [
+            141
+          ],
+          "reg": [
+            "0x595000000/0x4000"
+          ],
+          "status": "okay"
+        },
+        "soc/iommu@596000000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1349,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            139
+          ],
+          "power-domains": [
+            141
+          ],
+          "reg": [
+            "0x596000000/0x4000"
+          ],
+          "status": "disabled"
+        },
+        "soc/iommu@597000000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1353,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            140
+          ],
+          "power-domains": [
+            141
+          ],
+          "reg": [
+            "0x597000000/0x4000"
+          ],
+          "status": "disabled"
+        },
+        "soc/iommu@702f00000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1260,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            239
+          ],
+          "power-domains": [
+            241
+          ],
+          "reg": [
+            "0x702f00000/0x4000"
+          ]
+        },
+        "soc/iommu@702f80000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1260,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            240
+          ],
+          "power-domains": [
+            241
+          ],
+          "reg": [
+            "0x702f80000/0x4000"
+          ]
+        },
+        "soc/iommu@b02f00000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1278,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            247
+          ],
+          "power-domains": [
+            249
+          ],
+          "reg": [
+            "0xb02f00000/0x4000"
+          ]
+        },
+        "soc/iommu@b02f80000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1278,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            248
+          ],
+          "power-domains": [
+            249
+          ],
+          "reg": [
+            "0xb02f80000/0x4000"
+          ]
+        },
+        "soc/iommu@f02f00000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1296,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            255
+          ],
+          "power-domains": [
+            257
+          ],
+          "reg": [
+            "0xf02f00000/0x4000"
+          ]
+        },
+        "soc/iommu@f02f80000": {
+          "#iommu-cells": [
+            1
+          ],
+          "compatible": [
+            "apple,t6020-dart",
+            "apple,t8110-dart"
+          ],
+          "interrupt-parent": [
+            21
+          ],
+          "interrupts": [
+            0,
+            0,
+            1296,
+            4
+          ],
+          "name": "iommu",
+          "phandle": [
+            256
+          ],
+          "power-domains": [
+            257
+          ],
+          "reg": [
+            "0xf02f80000/0x4000"
+          ]
+        }
+      },
+      "dtb_sha256": null,
+      "phandles": {
+        "141": "soc/power-management@290280000/power-controller@418",
+        "157": "soc/power-management@290280000/power-controller@1c0",
+        "183": "soc/power-management@28e080000/power-controller@4018",
+        "184": "soc/power-management@28e080000/power-controller@4020",
+        "185": "soc/power-management@28e080000/power-controller@4028",
+        "24": "soc/power-management@28e080000/power-controller@2c8",
+        "241": "soc/power-management@29e280000/power-controller@c8",
+        "249": "soc/power-management@29e280000/power-controller@d0",
+        "257": "soc/power-management@29e280000/power-controller@d8",
+        "263": "soc/power-management@29e280000/power-controller@e0",
+        "27": "soc/power-management@290280000/power-controller@1c8",
+        "28": "soc/power-management@290280000/power-controller@1d8",
+        "29": "soc/power-management@28e080000/power-controller@2d8",
+        "30": "soc/power-management@28e080000/power-controller@2b8",
+        "496": "soc/power-management@28e080000/power-controller@2e0",
+        "497": "soc/power-management@28e080000/power-controller@4030",
+        "498": "soc/iommu@285800000",
+        "499": "soc/iommu@285810000",
+        "500": "soc/iommu@285820000",
+        "501": "soc/power-management@28e080000/power-controller@4000"
+      },
+      "pmgr_blocks": [
+        {
+          "children": [
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afi",
+              "name": "power-controller@100"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "aic",
+              "name": "power-controller@108"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dwi",
+              "name": "power-controller@110"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "pms",
+              "name": "power-controller@118"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "gpio",
+              "name": "power-controller@120"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "soc_dpe",
+              "name": "power-controller@128"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "pms_c1ppt",
+              "name": "power-controller@130"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "pmgr_soc_ocla",
+              "name": "power-controller@138"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc0",
+              "name": "power-controller@168"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc2",
+              "name": "power-controller@170"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_00",
+              "name": "power-controller@178"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_01",
+              "name": "power-controller@180"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_02",
+              "name": "power-controller@188"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_03",
+              "name": "power-controller@190"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_08",
+              "name": "power-controller@198"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_09",
+              "name": "power-controller@1a0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_10",
+              "name": "power-controller@1a8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_11",
+              "name": "power-controller@1b0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc1_ioa",
+              "name": "power-controller@1b8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afc",
+              "name": "power-controller@1d0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc0_ioa",
+              "name": "power-controller@1e8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc1_ls",
+              "name": "power-controller@1f0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc0_ls",
+              "name": "power-controller@1f8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc1_lw0",
+              "name": "power-controller@200"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc1_lw1",
+              "name": "power-controller@208"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc1_lw2",
+              "name": "power-controller@210"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc0_lw0",
+              "name": "power-controller@218"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "scodec",
+              "name": "power-controller@220"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc0_common",
+              "name": "power-controller@228"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc1_common",
+              "name": "power-controller@230"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc2_common",
+              "name": "power-controller@238"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc3_common",
+              "name": "power-controller@240"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext1_sys",
+              "name": "power-controller@248"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "pms_bridge",
+              "name": "power-controller@250"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext0_sys",
+              "name": "power-controller@258"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_sys",
+              "name": "power-controller@260"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "avd_sys",
+              "name": "power-controller@268"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc0_cio",
+              "name": "power-controller@270"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc0_pcie",
+              "name": "power-controller@278"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc1_cio",
+              "name": "power-controller@280"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc1_pcie",
+              "name": "power-controller@288"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc2_cio",
+              "name": "power-controller@290"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc2_pcie",
+              "name": "power-controller@298"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc3_cio",
+              "name": "power-controller@2a0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc3_pcie",
+              "name": "power-controller@2a8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext1_fe",
+              "name": "power-controller@2b0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext1_cpu0",
+              "name": "power-controller@2b8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext0_fe",
+              "name": "power-controller@2c0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "pmp",
+              "name": "power-controller@2c8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "pms_sram",
+              "name": "power-controller@2d0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext0_cpu0",
+              "name": "power-controller@2d8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_cpu",
+              "name": "power-controller@2e0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc0_cio_pcie",
+              "name": "power-controller@2e8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc0_cio_usb",
+              "name": "power-controller@2f0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc1_cio_pcie",
+              "name": "power-controller@2f8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc1_cio_usb",
+              "name": "power-controller@300"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc2_cio_pcie",
+              "name": "power-controller@308"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc2_cio_usb",
+              "name": "power-controller@310"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc3_cio_pcie",
+              "name": "power-controller@318"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc3_cio_usb",
+              "name": "power-controller@320"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "trace_fab",
+              "name": "power-controller@390"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_sys_mpm",
+              "name": "power-controller@4000"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_td",
+              "name": "power-controller@4008"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_base",
+              "name": "power-controller@4010"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_set1",
+              "name": "power-controller@4018"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_set2",
+              "name": "power-controller@4020"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_set3",
+              "name": "power-controller@4028"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ane_set4",
+              "name": "power-controller@4030"
+            }
+          ],
+          "children_total": 68,
+          "path": "soc/power-management@28e080000",
+          "reg": [
+            "0x28e080000/0x8000"
+          ]
+        },
+        {
+          "children": [
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc4",
+              "name": "power-controller@100"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc5",
+              "name": "power-controller@108"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc6",
+              "name": "power-controller@110"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc7",
+              "name": "power-controller@118"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_16",
+              "name": "power-controller@120"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_17",
+              "name": "power-controller@128"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_18",
+              "name": "power-controller@130"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_19",
+              "name": "power-controller@138"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_20",
+              "name": "power-controller@140"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_21",
+              "name": "power-controller@148"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_22",
+              "name": "power-controller@150"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_23",
+              "name": "power-controller@158"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_24",
+              "name": "power-controller@160"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_25",
+              "name": "power-controller@168"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_26",
+              "name": "power-controller@170"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_27",
+              "name": "power-controller@178"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_28",
+              "name": "power-controller@180"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_29",
+              "name": "power-controller@188"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_30",
+              "name": "power-controller@190"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_31",
+              "name": "power-controller@198"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc4_ioa",
+              "name": "power-controller@1a0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc4_ls",
+              "name": "power-controller@1a8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc4_lw0",
+              "name": "power-controller@1b0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc5_ioa",
+              "name": "power-controller@1b8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc5_ls",
+              "name": "power-controller@1c0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc5_lw0",
+              "name": "power-controller@1c8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext2_sys",
+              "name": "power-controller@1d0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "msr1",
+              "name": "power-controller@1d8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext2_fe",
+              "name": "power-controller@1e0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext2_cpu0",
+              "name": "power-controller@1e8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "msr1_ase_core",
+              "name": "power-controller@1f0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext3_sys",
+              "name": "power-controller@220"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc1_sys",
+              "name": "power-controller@228"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext3_fe",
+              "name": "power-controller@230"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dispext3_cpu0",
+              "name": "power-controller@238"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc1_dma",
+              "name": "power-controller@4000"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc1_pipe4",
+              "name": "power-controller@4008"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc1_pipe5",
+              "name": "power-controller@4010"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc1_me0",
+              "name": "power-controller@4018"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc1_me1",
+              "name": "power-controller@4020"
+            }
+          ],
+          "children_total": 40,
+          "path": "soc/power-management@28e680000",
+          "reg": [
+            "0x28e680000/0x8000"
+          ]
+        },
+        {
+          "children": [
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "clvr_spmi0",
+              "name": "power-controller@100"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "clvr_spmi1",
+              "name": "power-controller@108"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "clvr_spmi2",
+              "name": "power-controller@110"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "clvr_spmi3",
+              "name": "power-controller@118"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "clvr_spmi4",
+              "name": "power-controller@120"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ispsens0",
+              "name": "power-controller@128"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ispsens1",
+              "name": "power-controller@130"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ispsens2",
+              "name": "power-controller@138"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ispsens3",
+              "name": "power-controller@140"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc6_ioa",
+              "name": "power-controller@148"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc6_ls",
+              "name": "power-controller@150"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc6_lw0",
+              "name": "power-controller@158"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc2_ioa",
+              "name": "power-controller@160"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc2_ls",
+              "name": "power-controller@168"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc2_lw0",
+              "name": "power-controller@170"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc2_lw1",
+              "name": "power-controller@178"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc3_ioa",
+              "name": "power-controller@180"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc3_ls",
+              "name": "power-controller@188"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afnc3_lw0",
+              "name": "power-controller@190"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_gp",
+              "name": "power-controller@198"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_st",
+              "name": "power-controller@1a0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "ans2",
+              "name": "power-controller@1a8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "disp0_sys",
+              "name": "power-controller@1b0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "jpg",
+              "name": "power-controller@1b8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "sio",
+              "name": "power-controller@1c0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "isp_sys",
+              "name": "power-controller@1c8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "disp0_fe",
+              "name": "power-controller@1d0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "disp0_cpu0",
+              "name": "power-controller@1d8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "sio_cpu",
+              "name": "power-controller@1e0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "fpwm0",
+              "name": "power-controller@1e8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "fpwm1",
+              "name": "power-controller@1f0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "fpwm2",
+              "name": "power-controller@1f8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c0",
+              "name": "power-controller@200"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c1",
+              "name": "power-controller@208"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c2",
+              "name": "power-controller@210"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c3",
+              "name": "power-controller@218"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c4",
+              "name": "power-controller@220"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c5",
+              "name": "power-controller@228"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c6",
+              "name": "power-controller@230"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c7",
+              "name": "power-controller@238"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "i2c8",
+              "name": "power-controller@240"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "spi_p",
+              "name": "power-controller@248"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "sio_spmi0",
+              "name": "power-controller@250"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "sio_spmi1",
+              "name": "power-controller@258"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "sio_spmi2",
+              "name": "power-controller@260"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart_p",
+              "name": "power-controller@268"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "audio_p",
+              "name": "power-controller@270"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "sio_adma",
+              "name": "power-controller@278"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "aes",
+              "name": "power-controller@280"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dptx_phy_ps",
+              "name": "power-controller@288"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "spi0",
+              "name": "power-controller@2d8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "spi1",
+              "name": "power-controller@2e0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "spi2",
+              "name": "power-controller@2e8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "spi3",
+              "name": "power-controller@2f0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "spi4",
+              "name": "power-controller@2f8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "spi5",
+              "name": "power-controller@300"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart_n",
+              "name": "power-controller@308"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart0",
+              "name": "power-controller@310"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc1",
+              "name": "power-controller@318"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "amcc3",
+              "name": "power-controller@320"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_04",
+              "name": "power-controller@328"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_05",
+              "name": "power-controller@330"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_06",
+              "name": "power-controller@338"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_07",
+              "name": "power-controller@340"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_12",
+              "name": "power-controller@348"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_13",
+              "name": "power-controller@350"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_14",
+              "name": "power-controller@358"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dcs_15",
+              "name": "power-controller@360"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart1",
+              "name": "power-controller@368"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart2",
+              "name": "power-controller@370"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart3",
+              "name": "power-controller@378"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart4",
+              "name": "power-controller@380"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart5",
+              "name": "power-controller@388"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "uart6",
+              "name": "power-controller@390"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "mca0",
+              "name": "power-controller@398"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "mca1",
+              "name": "power-controller@3a0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "mca2",
+              "name": "power-controller@3a8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "mca3",
+              "name": "power-controller@3b0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dpa0",
+              "name": "power-controller@3b8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dpa1",
+              "name": "power-controller@3c0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dpa2",
+              "name": "power-controller@3c8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dpa3",
+              "name": "power-controller@3d0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "msr0",
+              "name": "power-controller@3d8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc_sys",
+              "name": "power-controller@3e0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dpa4",
+              "name": "power-controller@3e8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "msr0_ase_core",
+              "name": "power-controller@3f0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_gpshr_sys",
+              "name": "power-controller@3f8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "isp_cpu",
+              "name": "power-controller@4000"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "isp_fe",
+              "name": "power-controller@4008"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "dprx",
+              "name": "power-controller@4010"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "isp_vis",
+              "name": "power-controller@4018"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "isp_be",
+              "name": "power-controller@4020"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "isp_raw",
+              "name": "power-controller@4028"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "isp_clr",
+              "name": "power-controller@4030"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_st_sys",
+              "name": "power-controller@408"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_st1_sys",
+              "name": "power-controller@410"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_gp_sys",
+              "name": "power-controller@418"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_ge_sys",
+              "name": "power-controller@420"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "apcie_phy_sw",
+              "name": "power-controller@428"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc_dma",
+              "name": "power-controller@8000"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc_pipe4",
+              "name": "power-controller@8008"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc_pipe5",
+              "name": "power-controller@8010"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc_me0",
+              "name": "power-controller@8018"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "venc_me1",
+              "name": "power-controller@8020"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "sep",
+              "name": "power-controller@c00"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "prores",
+              "name": "power-controller@c000"
+            }
+          ],
+          "children_total": 106,
+          "path": "soc/power-management@290280000",
+          "reg": [
+            "0x290280000/0xc000"
+          ]
+        },
+        {
+          "children": [
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "debug",
+              "name": "power-controller@58"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "nub_spmi0",
+              "name": "power-controller@60"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "nub_spmi1",
+              "name": "power-controller@68"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "nub_aon",
+              "name": "power-controller@70"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "msg",
+              "name": "power-controller@78"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "nub_gpio",
+              "name": "power-controller@80"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "nub_fabric",
+              "name": "power-controller@88"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc0_usb_aon",
+              "name": "power-controller@90"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc1_usb_aon",
+              "name": "power-controller@98"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc2_usb_aon",
+              "name": "power-controller@a0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc3_usb_aon",
+              "name": "power-controller@a8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "mtp_fabric",
+              "name": "power-controller@b0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "nub_sram",
+              "name": "power-controller@b8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "debug_switch",
+              "name": "power-controller@c0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc0_usb",
+              "name": "power-controller@c8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc1_usb",
+              "name": "power-controller@d0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc2_usb",
+              "name": "power-controller@d8"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "atc3_usb",
+              "name": "power-controller@e0"
+            }
+          ],
+          "children_total": 18,
+          "path": "soc/power-management@29e280000",
+          "reg": [
+            "0x29e280000/0x4000"
+          ]
+        },
+        {
+          "children": [
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "gpx",
+              "name": "power-controller@0"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "afr",
+              "name": "power-controller@100"
+            },
+            {
+              "compatible": [
+                "apple,t6020-pmgr-pwrstate",
+                "apple,t8103-pmgr-pwrstate",
+                "apple,pmgr-pwrstate"
+              ],
+              "label": "gfx",
+              "name": "power-controller@108"
+            }
+          ],
+          "children_total": 3,
+          "path": "soc/power-management@404e80000",
+          "reg": [
+            "0x404e80000/0x4000"
+          ]
+        }
+      ],
+      "pmgr_domains": [
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_sys",
+          "path": "soc/power-management@28e080000/power-controller@260"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_cpu",
+          "path": "soc/power-management@28e080000/power-controller@2e0"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_sys_mpm",
+          "path": "soc/power-management@28e080000/power-controller@4000"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_td",
+          "path": "soc/power-management@28e080000/power-controller@4008"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_base",
+          "path": "soc/power-management@28e080000/power-controller@4010"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_set1",
+          "path": "soc/power-management@28e080000/power-controller@4018"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_set2",
+          "path": "soc/power-management@28e080000/power-controller@4020"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_set3",
+          "path": "soc/power-management@28e080000/power-controller@4028"
+        },
+        {
+          "compatible": [
+            "apple,t6020-pmgr-pwrstate",
+            "apple,t8103-pmgr-pwrstate",
+            "apple,pmgr-pwrstate"
+          ],
+          "label": "ane_set4",
+          "path": "soc/power-management@28e080000/power-controller@4030"
+        }
+      ],
+      "set_base_candidate": {
+        "ane_pwrstate_cells": [
+          {
+            "label": "ane_sys",
+            "offset": 608
+          },
+          {
+            "label": "ane_cpu",
+            "offset": 736
+          },
+          {
+            "label": "ane_sys_mpm",
+            "offset": 16384
+          },
+          {
+            "label": "ane_td",
+            "offset": 16392
+          },
+          {
+            "label": "ane_base",
+            "offset": 16400
+          },
+          {
+            "label": "ane_set1",
+            "offset": 16408
+          },
+          {
+            "label": "ane_set2",
+            "offset": 16416
+          },
+          {
+            "label": "ane_set3",
+            "offset": 16424
+          },
+          {
+            "label": "ane_set4",
+            "offset": 16432
+          }
+        ],
+        "note": "ane_set* entries are 4-byte power-controller pwrstate cells, not the SET MMIO window; the SET base must come from a macOS set_base_candidate (driver_window_confirms) or m1n1 ANE.ps_map, never from these offsets",
+        "status": "not_available_from_device_tree"
+      }
+    },
+    "runtime": {
+      "dmesg": [
+        "[    0.064398] apple-pmgr-pwrstate 28e080000.power-management:power-controller@240: always-on domain atc3_common is not on at boot",
+        "[    0.069499] apple-pmgr-pwrstate 29e280000.power-management:power-controller@78: always-on domain msg is not on at boot",
+        "[    0.069665] apple-pmgr-pwrstate 29e280000.power-management:power-controller@a8: always-on domain atc3_usb_aon is not on at boot",
+        "[    0.071540] apple-dart 28e300000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 42 -> 42] initialized",
+        "[    0.071886] apple-dart 2a6808000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.071910] apple-dart 2a9808000.iommu: Limiting DMA range to 0x0000010000000000..0x00000100ffffffff",
+        "[    0.072319] apple-dart 2a9808000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.072345] apple-dart 3860e8000.iommu: Limiting DMA range to 0x0000010000000000..0x00000100ffffffff",
+        "[    0.072571] apple-dart 3860e8000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.072588] apple-dart 3860f4000.iommu: Limiting DMA range to 0x0000010000000000..0x00000100ffffffff",
+        "[    0.072811] apple-dart 3860f4000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.072829] apple-dart 3860fc000.iommu: Limiting DMA range to 0x0000010000000000..0x00000100ffffffff",
+        "[    0.073280] apple-dart 3860fc000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.073307] apple-dart 389304000.iommu: Limiting DMA range to 0x0000010000000000..0x0000010fffffffff",
+        "[    0.073495] apple-dart 389304000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 42 -> 42] initialized",
+        "[    0.073516] apple-dart 38930c000.iommu: Limiting DMA range to 0x0000010000000000..0x0000010fffffffff",
+        "[    0.073701] apple-dart 38930c000.iommu: Limited to ias=36 due to lock",
+        "[    0.074031] apple-dart 38930c000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 42 -> 42] initialized",
+        "[    0.074265] apple-dart 594000000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.074497] apple-dart 595000000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.074793] apple-dart 287010000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.075048] apple-dart 285800000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.075312] apple-dart 285810000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.075566] platform 285c04000.ane: Adding to iommu group 6",
+        "[    0.075711] apple-dart 285820000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.076254] apple-dart 39b008000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.076514] apple-dart 702f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.076837] apple-dart 702f80000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.077100] apple-dart b02f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.077430] apple-dart b02f80000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.077689] apple-dart f02f00000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.078019] apple-dart f02f80000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 42 -> 42] initialized",
+        "[    0.143416] watchdog: Hard watchdog permanently disabled",
+        "[    0.148963] apple-dart 289304000.iommu: Limiting DMA range to 0x0000010000000000..0x0000010fffffffff",
+        "[    0.149096] apple-dart 389304000.iommu: Limited to ias=36 due to lock",
+        "[    0.149237] apple-dart 289304000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 42 -> 42] initialized",
+        "[    0.149255] apple-dart 28930c000.iommu: Limiting DMA range to 0x0000010000000000..0x0000010fffffffff",
+        "[    0.149366] apple-dart 28930c000.iommu: Limited to ias=36 due to lock",
+        "[    0.149445] apple-dart 28930c000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 1, AS 42 -> 42] initialized",
+        "[    3.312912] apple-dart 389304000.iommu: Limited to ias=36 due to lock",
+        "[    3.326807] apple-dart 289304000.iommu: Limited to ias=36 due to lock",
+        "[   15.328547] apple-pmgr-pwrstate 28e080000.power-management:power-controller@268: sync_state() pending due to 287080000.avd",
+        "[   15.328577] apple-pmgr-pwrstate 28e080000.power-management:power-controller@2e0: sync_state() pending due to 285c04000.ane",
+        "[   15.328584] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4000: sync_state() pending due to 285c04000.ane",
+        "[   15.328589] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4018: sync_state() pending due to 285c04000.ane",
+        "[   15.328593] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4020: sync_state() pending due to 285c04000.ane",
+        "[   15.328608] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4028: sync_state() pending due to 285c04000.ane",
+        "[   15.328615] apple-pmgr-pwrstate 28e080000.power-management:power-controller@4030: sync_state() pending due to 285c04000.ane",
+        "[ 1484.771516] apple-dcp 389c00000.dcp: RTKit: syslog message: FBPropertyManager.h:189: value_t<P> IOMFB::PropMgr::getVal(IOMFB::RuntimeProperty) [P = IOMFB::RuntimePropertyType::boolean]: WARNING - type mismatch on",
+        "[ 2552.699139] apple-dcp 389c00000.dcp: RTKit: syslog message: FBPropertyManager.h:189: value_t<P> IOMFB::PropMgr::getVal(IOMFB::RuntimeProperty) [P = IOMFB::RuntimePropertyType::boolean]: WARNING - type mismatch on",
+        "[ 2571.691692] apple-dcp 389c00000.dcp: RTKit: syslog message: FBPropertyManager.h:189: value_t<P> IOMFB::PropMgr::getVal(IOMFB::RuntimeProperty) [P = IOMFB::RuntimePropertyType::boolean]: WARNING - type mismatch on",
+        "[ 4183.003887] apple-dcp 389c00000.dcp: RTKit: syslog message: FBPropertyManager.h:189: value_t<P> IOMFB::PropMgr::getVal(IOMFB::RuntimeProperty) [P = IOMFB::RuntimePropertyType::boolean]: WARNING - type mismatch on"
+      ],
+      "iomem": null,
+      "loaded": null,
+      "module_version": null,
+      "srcversion": null
+    }
+  },
+  "host": {
+    "arch": "aarch64",
+    "available": true,
+    "boot": {
+      "iboot1": "mBoot-20457.1.29",
+      "iboot2": "iBoot-8422.141.2",
+      "m1n1_stage1": "v1.6.1-dirty",
+      "m1n1_stage2": "v1.6.1",
+      "os_fw": "13.5",
+      "system_fw": "unknown"
+    },
+    "cmdline": "BOOT_IMAGE=/vmlinuz-linux-asahi root=UUID=[redacted-uuid] rw rootflags=subvol=@ zswap.enabled=0 rootfstype=btrfs quiet loglevel=3 splash",
+    "core_shortfall": null,
+    "cpu": {
+      "hotplug_control": false,
+      "offline": 0,
+      "offline_list": null,
+      "online": 12,
+      "online_list": "0-11",
+      "possible": 12,
+      "possible_list": "0-11",
+      "present": 12,
+      "present_list": "0-11"
+    },
+    "cpu_online": 12,
+    "devicetree": {
+      "compatible": [
+        "apple,j414c",
+        "apple,t6021",
+        "apple,arm-platform"
+      ],
+      "model": "Apple MacBook Pro (14-inch, M2 Max, 2023)"
+    },
+    "kernel_release": "7.1.13-3-1-ARCH",
+    "memory_total_mib": 96509,
+    "page_size_bytes": 16384
+  },
+  "mesa": {
+    "available": true,
+    "device_count": 2,
+    "devices": [
+      {
+        "apiVersion": "1.4.354",
+        "conformanceVersion": "1.4.0.0",
+        "deviceID": "0x0000",
+        "deviceName": "Apple M2 Max (G14C B1)",
+        "deviceType": "PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU",
+        "deviceUUID": "[redacted-uuid]",
+        "driverID": "DRIVER_ID_MESA_HONEYKRISP",
+        "driverInfo": "Mesa 26.2.3-arch1.1",
+        "driverName": "Honeykrisp",
+        "driverUUID": "[redacted-uuid]",
+        "driverVersion": "26.2.3",
+        "vendorID": "0x10005"
+      },
+      {
+        "apiVersion": "1.4.354",
+        "conformanceVersion": "1.3.1.1",
+        "deviceID": "0x0000",
+        "deviceName": "llvmpipe (LLVM 22.1.8, 128 bits)",
+        "deviceType": "PHYSICAL_DEVICE_TYPE_CPU",
+        "deviceUUID": "[redacted-uuid]",
+        "driverID": "DRIVER_ID_MESA_LLVMPIPE",
+        "driverInfo": "Mesa 26.2.3-arch1.1 (LLVM 22.1.8)",
+        "driverName": "llvmpipe",
+        "driverUUID": "[redacted-uuid]",
+        "driverVersion": "26.2.3",
+        "vendorID": "0x10005"
+      }
+    ],
+    "gpu": {
+      "apiVersion": "1.4.354",
+      "conformanceVersion": "1.4.0.0",
+      "deviceID": "0x0000",
+      "deviceName": "Apple M2 Max (G14C B1)",
+      "deviceType": "PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU",
+      "driverID": "DRIVER_ID_MESA_HONEYKRISP",
+      "driverInfo": "Mesa 26.2.3-arch1.1",
+      "driverName": "Honeykrisp",
+      "driverVersion": "26.2.3",
+      "vendorID": "0x10005"
+    },
+    "properties": {
+      "apiVersion": "1.4.354",
+      "conformanceVersion": "1.4.0.0",
+      "deviceID": "0x0000",
+      "deviceName": "Apple M2 Max (G14C B1)",
+      "deviceType": "PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU",
+      "deviceUUID": "[redacted-uuid]",
+      "driverID": "DRIVER_ID_MESA_HONEYKRISP",
+      "driverInfo": "Mesa 26.2.3-arch1.1",
+      "driverName": "Honeykrisp",
+      "driverUUID": "[redacted-uuid]",
+      "driverVersion": "26.2.3",
+      "vendorID": "0x10005"
+    },
+    "summary": null,
+    "vulkaninfo": {
+      "argv": [
+        "vulkaninfo",
+        "--summary"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 0,
+      "label": "vulkaninfo --summary",
+      "stderr": "'DISPLAY' environment variable not set... skipping surface info\nWARNING: [Loader Message] Code 0 : ICD for selected physical device does not export vkGetPhysicalDeviceDisplayPropertiesKHR!\nWARNING: [Loader Message] Code 0 : ICD for selected physical device does not export vkGetPhysicalDeviceDisplayPlanePropertiesKHR!\nWARNING: [Loader Message] Code 0 : ICD for selected physical device does not export vkGetPhysicalDeviceDisplayPropertiesKHR!",
+      "stdout": "==========\nVULKANINFO\n==========\n\nVulkan Instance Version: 1.4.357\n\n\nInstance Extensions: count = 26\n-------------------------------\nVK_EXT_acquire_drm_display             : extension revision 1\nVK_EXT_acquire_xlib_display            : extension revision 1\nVK_EXT_debug_report                    : extension revision 10\nVK_EXT_debug_utils                     : extension revision 2\nVK_EXT_direct_mode_display             : extension revision 1\nVK_EXT_display_surface_counter         : extension revision 1\nVK_EXT_headless_surface                : extension revision 1\nVK_EXT_layer_settings                  : extension revision 2\nVK_EXT_surface_maintenance1            : extension revision 1\nVK_EXT_swapchain_colorspace            : extension revision 5\nVK_KHR_device_group_creation           : extension revision 1\nVK_KHR_display                         : extension revision 23\nVK_KHR_external_fence_capabilities     : extension revision 1\nVK_KHR_external_memory_capabilities    : extension revision 1\nVK_KHR_external_semaphore_capabilities : extension revision 1\nVK_KHR_get_display_properties2         : extension revision 1\nVK_KHR_get_physical_device_properties2 : extension revision 2\nVK_KHR_get_surface_capabilities2       : extension revision 1\nVK_KHR_portability_enumeration         : extension revision 1\nVK_KHR_surface                         : extension revision 25\nVK_KHR_surface_maintenance1            : extension revision 1\nVK_KHR_surface_protected_capabilities  : extension revision 1\nVK_KHR_wayland_surface                 : extension revision 6\nVK_KHR_xcb_surface                     : extension revision 6\nVK_KHR_xlib_surface                    : extension revision 6\nVK_LUNARG_direct_driver_loading        : extension revision 1\n\nInstance Layers: count = 2\n--------------------------\nVK_LAYER_MESA_anti_lag      Open-source implementation of the VK_AMD_anti_lag extension. 1.4.303  version 1\nVK_LAYER_MESA_device_select Linux device selection layer                                 1.4.303  version 1\n\nDevices:\n========\nGPU0:\n\tapiVersion         = 1.4.354\n\tdriverVersion      = 26.2.3\n\tvendorID           = 0x10005\n\tdeviceID           = 0x0000\n\tdeviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU\n\tdeviceName         = Apple M2 Max (G14C B1)\n\tdriverID           = DRIVER_ID_MESA_HONEYKRISP\n\tdriverName         = Honeykrisp\n\tdriverInfo         = Mesa 26.2.3-arch1.1\n\tconformanceVersion = 1.4.0.0\n\tdeviceUUID         = [redacted-uuid]\n\tdriverUUID         = [redacted-uuid]\nGPU1:\n\tapiVersion         = 1.4.354\n\tdriverVersion      = 26.2.3\n\tvendorID           = 0x10005\n\tdeviceID           = 0x0000\n\tdeviceType         = PHYSICAL_DEVICE_TYPE_CPU\n\tdeviceName         = llvmpipe (LLVM 22.1.8, 128 bits)\n\tdriverID           = DRIVER_ID_MESA_LLVMPIPE\n\tdriverName         = llvmpipe\n\tdriverInfo         = Mesa 26.2.3-arch1.1 (LLVM 22.1.8)\n\tconformanceVersion = 1.3.1.1\n\tdeviceUUID         = [redacted-uuid]\n\tdriverUUID         = [redacted-uuid]"
+    }
+  },
+  "mesa_package": {
+    "dpkg": {
+      "argv": [
+        "dpkg-query",
+        "-W",
+        "-f=${Package} ${Version}\\n",
+        "mesa"
+      ],
+      "available": false,
+      "error": "not-found",
+      "exit_code": null,
+      "label": "dpkg-query mesa",
+      "stderr": "",
+      "stdout": ""
+    },
+    "pacman": {
+      "argv": [
+        "pacman",
+        "-Q",
+        "mesa"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 0,
+      "label": "pacman -Q mesa",
+      "stderr": "",
+      "stdout": "mesa 1:26.2.3-1"
+    }
+  },
+  "mlx": {
+    "available": true,
+    "capabilities": {
+      "ane": {
+        "accel0": 0,
+        "accel0_character_device": 0,
+        "available": 0,
+        "fdt_compatible": [
+          "apple,t6021-ane"
+        ],
+        "fdt_node": 1,
+        "module_present": 0,
+        "module_version": ""
+      },
+      "api_version": "1.4.354",
+      "coreml": {
+        "cache_entries": 0,
+        "cache_present": 0,
+        "cache_root": "[home]/.cache/mlx-omarchy/coreml",
+        "command_present": 0,
+        "frontend_present": 0
+      },
+      "device_id": 0,
+      "device_name": "Apple M2 Max (G14C B1)",
+      "driver_name": "Mesa Honeykrisp",
+      "driver_version_raw": "109060099",
+      "host_visible_coherent": 1,
+      "max_allocation_bytes": 0,
+      "max_buffer_bytes": 0,
+      "max_compute_shared_memory_bytes": 32768,
+      "max_compute_work_group_invocations": 1024,
+      "max_compute_work_group_size_x": 1024,
+      "max_descriptor_set_storage_buffers": 1048576,
+      "max_per_stage_descriptor_storage_buffers": 1048576,
+      "max_storage_buffer_range_bytes": 2147483647,
+      "non_apple_dev_override": 0,
+      "queue_count": 1,
+      "queue_family_index": 0,
+      "shader_float16": 1,
+      "shader_int16": 1,
+      "storage_buffer_16bit_access": 1,
+      "timeline_semaphore": 1,
+      "tool": "mlx-omarchy-info",
+      "total_memory_bytes": 50597986304,
+      "trace": {
+        "compiled_tape_dispatches": 0,
+        "compiled_tape_node_evaluations": 0,
+        "gpu_primitive_dispatches": 0,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 0,
+        "vk_submissions": 0
+      },
+      "unified_memory": 1,
+      "vendor_id": 65541
+    },
+    "default_device": "Device(gpu, 0)",
+    "distributions": {
+      "mlx-omarchy": "0.32.3.dev202609181953+b744f4dd"
+    },
+    "import_error": null,
+    "info": {
+      "argv": [
+        "/tmp/jw14-venv/lib/python3.14/site-packages/mlx/bin/mlx-omarchy-info",
+        "--json"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 0,
+      "label": "mlx-omarchy-info --json",
+      "stderr": "",
+      "stdout": "{\n  \"tool\": \"mlx-omarchy-info\",\n  \"device_name\": \"Apple M2 Max (G14C B1)\",\n  \"driver_name\": \"Mesa Honeykrisp\",\n  \"api_version\": \"1.4.354\",\n  \"driver_version_raw\": \"109060099\",\n  \"vendor_id\": 65541,\n  \"device_id\": 0,\n  \"queue_family_index\": 0,\n  \"queue_count\": 1,\n  \"total_memory_bytes\": 50597986304,\n  \"max_allocation_bytes\": 0,\n  \"max_buffer_bytes\": 0,\n  \"max_storage_buffer_range_bytes\": 2147483647,\n  \"max_compute_shared_memory_bytes\": 32768,\n  \"max_compute_work_group_invocations\": 1024,\n  \"max_compute_work_group_size_x\": 1024,\n  \"unified_memory\": 1,\n  \"host_visible_coherent\": 1,\n  \"timeline_semaphore\": 1,\n  \"shader_float16\": 1,\n  \"shader_int16\": 1,\n  \"storage_buffer_16bit_access\": 1,\n  \"max_per_stage_descriptor_storage_buffers\": 1048576,\n  \"max_descriptor_set_storage_buffers\": 1048576,\n  \"non_apple_dev_override\": 0,\n  \"trace\": {\n  \"gpu_primitive_dispatches\": 0,\n  \"vk_submissions\": 0,\n  \"vk_buffer_copies\": 0,\n  \"vk_buffer_fills\": 0,\n  \"vk_compute_dispatches\": 0,\n  \"compiled_tape_dispatches\": 0,\n  \"compiled_tape_node_evaluations\": 0\n  },\n  \"ane\": {\n    \"fdt_node\": 1,\n    \"fdt_compatible\": [\"apple,t6021-ane\"],\n    \"accel0\": 0,\n    \"accel0_character_device\": 0,\n    \"module_present\": 0,\n    \"module_version\": \"\",\n    \"available\": 0\n  },\n  \"coreml\": {\n    \"frontend_present\": 0,\n    \"command_present\": 0,\n    \"cache_root\": \"[home]/.cache/mlx-omarchy/coreml\",\n    \"cache_present\": 0,\n    \"cache_entries\": 0\n  }\n}"
+    },
+    "info_tool": "/tmp/jw14-venv/lib/python3.14/site-packages/mlx/bin/mlx-omarchy-info",
+    "metal_available": null,
+    "mlx_version": "0.32.3.dev202609181953+b744f4dd",
+    "probe": {
+      "argv": [
+        "/tmp/jw14-venv/bin/python",
+        "-c",
+        "\nimport json\nout = {\"distributions\": {}, \"import_ok\": False, \"import_error\": None,\n       \"info_tool\": None, \"default_device\": None, \"mlx_version\": None}\nimport importlib.metadata\nfor dist in (\"mlx-omarchy\", \"mlx\"):\n    try:\n        out[\"distributions\"][dist] = importlib.metadata.version(dist)\n    except Exception:\n        pass\nimport pathlib\ntry:\n    import mlx.core as mx\n    out[\"import_ok\"] = True\n    import platform\n    if platform.system() == \"Darwin\":\n        out[\"metal_available\"] = mx.metal.is_available()\n        if out[\"metal_available\"]:\n            mx.set_default_device(mx.gpu)\n    out[\"default_device\"] = str(mx.default_device())\n    out[\"mlx_version\"] = getattr(mx, \"__version__\", None)\n    # mlx is a namespace package (mlx.__file__ is None); anchor on the\n    # extension module, which lives beside the shipped bin/ directory.\n    cand = pathlib.Path(mx.__file__).resolve().parent / \"bin\" / \"mlx-omarchy-info\"\n    if cand.exists():\n        out[\"info_tool\"] = str(cand)\nexcept Exception as exc:\n    out[\"import_error\"] = f\"{type(exc).__name__}: {exc}\"\nprint(json.dumps(out))\n"
+      ],
+      "available": true,
+      "error": null,
+      "exit_code": 0,
+      "label": "mlx import probe",
+      "stderr": "",
+      "stdout": "{\"distributions\": {\"mlx-omarchy\": \"0.32.3.dev202609181953+b744f4dd\"}, \"import_ok\": true, \"import_error\": null, \"info_tool\": \"/tmp/jw14-venv/lib/python3.14/site-packages/mlx/bin/mlx-omarchy-info\", \"default_device\": \"Device(gpu, 0)\", \"mlx_version\": \"0.32.3.dev202609181953+b744f4dd\"}"
+    }
+  },
+  "report": "mlx-omarchy-quick",
+  "schema_version": 1
+}
