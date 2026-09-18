@@ -1,0 +1,6 @@
+9f7915c431d288a2  1720320  t602x_ane0_fw_selene_rc4x.macho
+204d4b08b2a109a0  5079040  h13_ane_fw_styx_j5x.macho
+96b03f8b4f9d7f12  5177344  t600x_ane0_fw_eos_jc3x.macho
+5fd9330dff31812e  1654784  h14_ane_fw_bia_j4xx.macho
+db30863ed0b24e39  2975776  com.apple.driver.AppleH11ANEInterface
+66c212c843edfb37  2160832  com.apple.driver.AppleH11ANEInterface

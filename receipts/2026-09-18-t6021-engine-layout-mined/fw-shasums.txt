@@ -1,0 +1,12 @@
+204d4b08b2a109a0  h13_ane_fw_styx_j5x.macho
+5fd9330dff31812e  h14_ane_fw_bia_j4xx.macho
+96b03f8b4f9d7f12  t600x_ane0_fw_eos_jc3x.macho
+9f7915c431d288a2  t602x_ane0_fw_selene_rc4x.macho
+19b6a49997ecf3eb  h15_ane_fw_themis_j51y.macho
+4b330c5fd3548fb5  h16_ane_fw_leto_j7x.macho
+97f08f91a533eeb9  h17_ane0_fw_hyperion_j71y.macho
+ddc97c20443013b8  h17_ane_fw_theia_d9x.macho
+4d6d70a9ae36dfd1  h17_ane_fw_theia_j73y.macho
+830505bc95786da1  h18_ane0_fw_kirkland_j8xx.macho
+43da9d566a880bab  t603x_ane0_fw_erebus_ls5x.macho
+8659271a3173ca1c  t604x_ane_fw_aether_brvx.macho

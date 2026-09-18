@@ -1,0 +1,8 @@
+0x20000 __TEXT_EXEC.__text 0xfffffe0009285d6c: add x9, x27, #0x20, lsl #12
+0x20000 __TEXT_EXEC.__text 0xfffffe000929bc10: add x23, x20, #0x20, lsl #12
+0x20000 __TEXT_EXEC.__text 0xfffffe000929bc70: add x8, x20, #0x20, lsl #12
+0x20000 __TEXT_EXEC.__text 0xfffffe000929bc7c: add x8, x20, #0x20, lsl #12
+0x20000 __TEXT_EXEC.__text 0xfffffe00092b3fe8: add x8, x20, #0x20, lsl #12
+0x20000 __TEXT_EXEC.__text 0xfffffe00092b4258: add x9, x20, #0x20, lsl #12
+0x20000 __TEXT_EXEC.__text 0xfffffe00092b4574: add x8, x8, #0x20, lsl #12
+0x20000 __TEXT_EXEC.__text 0xfffffe00092b5ca4: add x10, x10, #0x20, lsl #12
