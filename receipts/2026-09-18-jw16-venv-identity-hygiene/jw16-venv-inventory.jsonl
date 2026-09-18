@@ -1,0 +1,61 @@
+{"venv": "/home/joshuawarren/.local/share/mlx-omarchy-test-venv", "dist_version": "0.32.2.dev202609122106+b41e2b74", "libmlx16": "f2d45e601f05dd22", "libmlx_sha256": "f2d45e601f05dd22f8b5886d36f26eaae3755a1badb648ab555f8fa7c1880907", "core16": null}
+{"venv": "/home/joshuawarren/venv-agxgen", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/DecodeCompileAB/venv-ab", "dist_version": "0.32.2.dev202609122355+b41e2b74", "libmlx16": "03b3f4b9024927f9", "libmlx_sha256": "03b3f4b9024927f90ada96950579aec5c603f5d6ec08f2337f12f9379f3e5515", "core16": null}
+{"venv": "/var/tmp/DecodeEpilogueFold/venv-base", "dist_version": "0.32.2.dev202609141639+b79a4b68", "libmlx16": "fdfc6a6db21e4f23", "libmlx_sha256": "fdfc6a6db21e4f231ed52a5a4bda8455b9e9b1e019a5a11cba25fe05f63b1ad0", "core16": null}
+{"venv": "/var/tmp/DecodeEpilogueFold/venv-cand", "dist_version": "0.32.2.dev202609141752+52f73e4f", "libmlx16": "d3f23ef7d6fb0b3c", "libmlx_sha256": "d3f23ef7d6fb0b3c451e62f7307b28dc92e2254178ceda76d29b7b6159b19eac", "core16": null}
+{"venv": "/var/tmp/DecodeEpilogueFold/venv-gepin", "dist_version": "0.32.2.dev202609150054+6110078e", "libmlx16": "758f0d0ef81bc086", "libmlx_sha256": "758f0d0ef81bc086d7a5e6eb3ff360393c09008feb8618d7b78f3e1cd96cbd8c", "core16": null}
+{"venv": "/var/tmp/DecodeEpilogueFold/venv-probe", "dist_version": "0.32.2.dev202609142212+a3e9f486", "libmlx16": "8e6271bd38658c1f", "libmlx_sha256": "8e6271bd38658c1f66671087b6b51251f869beb1b7b3e158ea362ac8b6ae7c0c", "core16": null}
+{"venv": "/var/tmp/DecodeEpilogueFold/venv-rms", "dist_version": "0.32.2.dev202609142212+a3e9f486", "libmlx16": "2070c87f0bad4687", "libmlx_sha256": "2070c87f0bad46878ba36fc01c3ced74e245953eaa3266ad383ddbbe5ededfce", "core16": null}
+{"venv": "/var/tmp/DecodeTrioRun/venv-cross", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/DecodeTrioRun/venv-rp-arm", "dist_version": "0.32.2.dev202609151843+1c49674f", "libmlx16": "648af9bec65110ed", "libmlx_sha256": "648af9bec65110ede64234c4a919ef3a48384523f0f405e7ea918f863de5d7ac", "core16": null}
+{"venv": "/var/tmp/DecodeTrioRun/venv-rp-base", "dist_version": "0.32.2.dev202609151835+1014a76e", "libmlx16": "af9138141dcd98c3", "libmlx_sha256": "af9138141dcd98c34fd4f693587bf42eda2d1e9c4da2a8d84262ba86bc984c62", "core16": null}
+{"venv": "/var/tmp/DecodeTrioRun/venv-trio", "dist_version": "0.32.2.dev202609151800+14c6ca92", "libmlx16": "8c42a5e4e1593a66", "libmlx_sha256": "8c42a5e4e1593a66ddb5bf2cc634bc5e6f67f808f4e10455cfa7c9dd6a03d373", "core16": null}
+{"venv": "/var/tmp/DecodeTrioRun/venv-trio-diag", "dist_version": "0.32.2.dev202609150920+519d7336", "libmlx16": "1091c35e6b835aeb", "libmlx_sha256": "1091c35e6b835aebecfa9ec2bac1fa4ba865ccc5db5aecb3a4b9852d6709cc28", "core16": null}
+{"venv": "/var/tmp/DecodeTrioRun/venv-trio-diag2", "dist_version": "0.32.2.dev202609150907+519d7336", "libmlx16": "4ee867ad6a2a5baf", "libmlx_sha256": "4ee867ad6a2a5bafaec97350599ce586c6fbdebc88d14d67b7a19e77c4259554", "core16": null}
+{"venv": "/var/tmp/DecodeTrioRun/venv-trio-diag3", "dist_version": "0.32.2.dev202609151056+519d7336", "libmlx16": "963e6fa9339e7e5b", "libmlx_sha256": "963e6fa9339e7e5b0c0bca6b4d5e95511cbfdeb8fb662d12c6e48252b6718ea6", "core16": null}
+{"venv": "/var/tmp/E2E296/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/E2EREV/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/MelFrontendPerf/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/MelFrontendPerf/venv-cache", "dist_version": "0.32.2.dev202609141626+05015a76", "libmlx16": "65a641e4a9e69737", "libmlx_sha256": "65a641e4a9e6973734a6f25f810e62c7d9e60c4a4a0e44e4490fd9518a25f2e4", "core16": null}
+{"venv": "/var/tmp/SdpaBlockB/venv-cand", "dist_version": "0.32.2.dev202609170332+dfdb0efc", "libmlx16": "5eff33ac3b437d4c", "libmlx_sha256": "5eff33ac3b437d4c931fb748ac8bdd4928df208964c5c641f502c2ce1e7ded82", "core16": null}
+{"venv": "/var/tmp/SdpaKvJw16/venv-base", "dist_version": "0.32.2.dev202609161430+0101d673", "libmlx16": "8c074587ea72ffae", "libmlx_sha256": "8c074587ea72ffaea26ec6ab967d79747875084f1049ef64df8f03802ad982a9", "core16": null}
+{"venv": "/var/tmp/SdpaKvJw16/venv-cand", "dist_version": "0.32.2.dev202609161501+3ea2d3c7", "libmlx16": "92bc21d5fb6c3290", "libmlx_sha256": "92bc21d5fb6c3290c1b8a7bf05cfafc37cdb3318d7c994cf6ca13fc09919370d", "core16": null}
+{"venv": "/var/tmp/SdpaKvMajorJw16/venv-base", "dist_version": "0.32.2.dev202609161544+d28aa303", "libmlx16": "7b551e283fbc3c7c", "libmlx_sha256": "7b551e283fbc3c7c8cfdbdf8d70e246e4722a24a64ea38518ef99819ba046d46", "core16": null}
+{"venv": "/var/tmp/SdpaKvMajorJw16/venv-cand", "dist_version": "0.32.2.dev202609161621+aba82b49", "libmlx16": "f0bada5e71b41bf6", "libmlx_sha256": "f0bada5e71b41bf6bf7b0496d81c8d3d24ce35e5872184ba70d6e1a68b665010", "core16": null}
+{"venv": "/var/tmp/SwigluRmsJw16/venv-base", "dist_version": "0.32.2.dev202609152131+1deb70f1", "libmlx16": "6d61d44acbc51c3e", "libmlx_sha256": "6d61d44acbc51c3ea886a7732761be24a8d83b19b23c0c5786f4c77451d123db", "core16": null}
+{"venv": "/var/tmp/SwigluRmsJw16/venv-cand", "dist_version": "0.32.2.dev202609152134+a21b3c81", "libmlx16": "f256391d06bc6cd8", "libmlx_sha256": "f256391d06bc6cd89fe57a806c8999e8cc3aa1e542e9458fae6286c3e8b3b30b", "core16": null}
+{"venv": "/var/tmp/SwigluRmsJw16/venv-diag-cand", "dist_version": "0.32.2.dev202609152244+diag.a21b3c8", "libmlx16": "860d007163358829", "libmlx_sha256": "860d007163358829fb0bfb99f603a8a23bca3661ef32739301de82de3da3cd62", "core16": null}
+{"venv": "/var/tmp/SwigluRmsJw16/venv-diag-rms", "dist_version": "0.32.2.dev202609152310+diag.af332e7", "libmlx16": "f4704f98d9c340cf", "libmlx_sha256": "f4704f98d9c340cf441f3bd399cb31adc2958328b7324022664416a10acb825d", "core16": null}
+{"venv": "/var/tmp/SwigluRmsJw16/venv-rms", "dist_version": "0.32.2.dev202609152355+c2fc9246", "libmlx16": "79e5c0c14b02e390", "libmlx_sha256": "79e5c0c14b02e390ecb418a301139ba727d136d4ca92e9b9f1374aedfa863685", "core16": null}
+{"venv": "/var/tmp/TermAJW16/venv", "dist_version": "0.32.2.dev202609161852+2e252962", "libmlx16": "edf956df086d13d5", "libmlx_sha256": "edf956df086d13d528b59ff320672e0f62215fd9182570955306e9c785d269b5", "core16": null}
+{"venv": "/var/tmp/V063PIN-venv", "dist_version": "0.32.2.dev202609171159+1ed1dab", "libmlx16": "a10cebf540565ccf", "libmlx_sha256": "a10cebf540565ccf6d80a87bb5c35e6cf9c55f864f7dcfbef95ff858d2284ec9", "core16": null}
+{"venv": "/var/tmp/V063REL-venv", "dist_version": "0.32.2.dev202609171159+1ed1dab", "libmlx16": "a10cebf540565ccf", "libmlx_sha256": "a10cebf540565ccf6d80a87bb5c35e6cf9c55f864f7dcfbef95ff858d2284ec9", "core16": null}
+{"venv": "/var/tmp/V064REL-venv", "dist_version": "0.32.2.dev202609172230+fb649d8", "libmlx16": "e9e709f38331ff10", "libmlx_sha256": "e9e709f38331ff10cde82d404c8d6109af1f14bc4c8c7632ee69be92f1fc2f86", "core16": null}
+{"venv": "/var/tmp/decode-trio/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/decodetp-venv", "dist_version": "0.32.2.dev202609172006+283aa076", "libmlx16": "aa5615cea4e584f7", "libmlx_sha256": "aa5615cea4e584f79297cfb52316482e74c142ec5e5b006387a5891705b61c92", "core16": null}
+{"venv": "/var/tmp/decodetp-wt/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/gemv-rmsnorm/.work-stale-v1/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/gemv-rmsnorm/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/jw16-v061-parity/v061-venv", "dist_version": "0.32.2.dev202609170611+b8e5300", "libmlx16": "9a72c3b84c74e7b3", "libmlx_sha256": "9a72c3b84c74e7b3a32f894abccf1c2a0f1ff7e7b2030981a55b4b3e205eea78", "core16": null}
+{"venv": "/var/tmp/jw16gap-venv", "dist_version": "0.32.2.dev202609171916+266813b", "libmlx16": "846641408618cc9c", "libmlx_sha256": "846641408618cc9c432ba3fef8719ebe09698393324a1d6aecef43ea410e5284", "core16": null}
+{"venv": "/var/tmp/jw16gap-wt/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/main-base/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/mlx-omarchy-prof-b41e2b74/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/mlx-omarchy-prof-b41e2b74/venv-diag", "dist_version": "0.32.2.dev202609141516+b41e2b74", "libmlx16": "d92f6e7cb408fbbb", "libmlx_sha256": "d92f6e7cb408fbbb6f024be25ce4eb9e19471e29c57ea2b90337bee0e3f30887", "core16": null}
+{"venv": "/var/tmp/mlx-omarchy-prof-main/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/mlx-omarchy-prof-main/venv-diag", "dist_version": "0.32.2.dev202609170303+99b7104c", "libmlx16": "9da7017aec47edea", "libmlx_sha256": "9da7017aec47edea2483fdde029751505d9a164a4e4be1af911752d9aa137e96", "core16": null}
+{"venv": "/var/tmp/qmm-fat-jw16/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/qmm-fat-jw16/venv-run", "dist_version": "0.32.2.dev202609142107+fat.02b0a7f418f5e8239ade60960e394c50095d406c", "libmlx16": "a172fed8be7caf8d", "libmlx_sha256": "a172fed8be7caf8df96be0af423cc87787f5b6b571317f1af80b6a2ffaadb95b", "core16": null}
+{"venv": "/var/tmp/qmm-inline/venv-inline", "dist_version": "0.32.2.dev202609170801+11fe4725", "libmlx16": "56cca3427e09573f", "libmlx_sha256": "56cca3427e09573f5b7a013e3f57b1e1e53b8f48d6d11c22fc92c921f5e658a2", "core16": null}
+{"venv": "/var/tmp/qmm-tilem-ab-20260914/venv", "dist_version": "0.32.2.dev202609141611+23102851", "libmlx16": "b59c8b757da69da6", "libmlx_sha256": "b59c8b757da69da61d4c8b6648d37f894edcc1154814c826f098cbab569780d5", "core16": null}
+{"venv": "/var/tmp/qmm-tilem/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/qmmceil/venv", "dist_version": "0.32.2.dev202609171941+diag.6f70d4fa", "libmlx16": "83d20eefad8033ee", "libmlx_sha256": "83d20eefad8033eefb2b323c4de74124b50e306f917ed57ad69700d73a29f6f7", "core16": null}
+{"venv": "/var/tmp/qmmceil/work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/rmsnorm-epilogue/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/rmsnorm-epilogue/venv-test", "dist_version": "0.32.2.dev202609142212+a3e9f486", "libmlx16": "b1019bf60c1647c6", "libmlx_sha256": "b1019bf60c1647c64ab32a7870e46bc3cf903ad7384dfaababae7423167cd313", "core16": null}
+{"venv": "/var/tmp/rope-pair-land/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/tdt-control-fb4/venv-gate", "dist_version": "0.32.2.dev202609141801+fb4dfa86", "libmlx16": "6afd5bc8830634b3", "libmlx_sha256": "6afd5bc8830634b3940f1e69ff4e86efaf3a55a3046b7ef0062b374cf62d6c0e", "core16": null}
+{"venv": "/var/tmp/tdt-control/venv-ctl", "dist_version": "0.32.2.dev202609141629+5cf58f7c", "libmlx16": "18d8c65f192441fb", "libmlx_sha256": "18d8c65f192441fb89c5b0fd1a6a0cf551af0a2ea18a58de6fd54edb8a681cc7", "core16": null}
+{"venv": "/var/tmp/tdt-ctest/venv-gate", "dist_version": "0.32.2.dev202609141744+deb9c72b", "libmlx16": "2577ca973a4a6a81", "libmlx_sha256": "2577ca973a4a6a81f60c4891f9dbcbc7b5180457136e346a6b47a43351b1b345", "core16": null}
+{"venv": "/var/tmp/tdt-stack/.work/venv-build", "dist_version": null, "libmlx16": null, "core16": null}
+{"venv": "/var/tmp/tdt-stack/venv-gate", "dist_version": "0.32.2.dev202609141624+38d5ebfb", "libmlx16": "141090a7b2e0c92b", "libmlx_sha256": "141090a7b2e0c92b00bd09bea87eb1f0e66815ad89e9e71c05a9c9fb3fc80053", "core16": null}

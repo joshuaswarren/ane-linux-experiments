@@ -1,0 +1,11 @@
+# Certified libmlx identities for jw16 digest-pin lanes (2026-09-18).
+# The identity is sha256(libmlx.so), first 16 hex — the value bench_decode
+# prints as libmlx.so=sha256:... and the ladder/ab pre-gates pin.
+# Columns: libmlx16  build  wheel-version  evidence
+# A venv is certification-grade only when its installed identity appears here
+# AND nothing shadows it on PYTHONPATH. Enforced by venv-identity-guard.py.
+a10cebf540565ccf	V063REL	0.32.2.dev202609171159+1ed1dab	release gate GREEN, both pins exact (receipts/2026-09-17-v063-published.md)
+224a9597cf938424	V064REL	0.32.2.dev202609171442+112c32c	release gate GREEN, both pins exact (receipts/2026-09-17-v064-published.md)
+1a9a9206bcee4f21	V065REL	0.32.2.dev202609171729+7b05e93	gate GREEN, ctx1024 pin exact (jw16 /var/tmp/v065-release-jw16.status)
+06e43c203e85a16a	V066BASE	0.32.2.dev202609171827+2f58ead	gate GREEN (KAT); both pins exact as decode-two-pass base arm (receipts/2026-09-17-decode-two-pass.md)
+e9e709f38331ff10	V067REL	0.32.2.dev202609172230+fb649d8	gate GREEN (KAT); both pins exact as barrier-screen base arm (receipts/2026-09-17-mlx-gated-barrier-screen.md)
