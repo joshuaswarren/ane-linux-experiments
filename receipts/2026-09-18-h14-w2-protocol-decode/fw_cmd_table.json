@@ -1,0 +1,482 @@
+[
+ {
+  "id": "0x0000",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_START"
+ },
+ {
+  "id": "0x0001",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_STOP"
+ },
+ {
+  "id": "0x0002",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_RESET"
+ },
+ {
+  "id": "0x0003",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CONFIG_GET"
+ },
+ {
+  "id": "0x0004",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PRINT_ENABLE"
+ },
+ {
+  "id": "0x0005",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_REG_FILE_LOAD"
+ },
+ {
+  "id": "0x0006",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_BUILDINFO"
+ },
+ {
+  "id": "0x0007",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_TIMEPROFILE_START"
+ },
+ {
+  "id": "0x0008",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_TIMEPROFILE_STOP"
+ },
+ {
+  "id": "0x0009",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_TIMEPROFILE_SHOW"
+ },
+ {
+  "id": "0x000a",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_FW_RUN_MODE"
+ },
+ {
+  "id": "0x000b",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_POWER_DOWN"
+ },
+ {
+  "id": "0x000c",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SET_SNE_PMU_BASE"
+ },
+ {
+  "id": "0x000d",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SET_SNE_RPC_CHECK_CMD"
+ },
+ {
+  "id": "0x000e",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_RPC_ENABLE"
+ },
+ {
+  "id": "0x000f",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PLATFORM_INFO"
+ },
+ {
+  "id": "0x0010",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_BOOT"
+ },
+ {
+  "id": "0x0011",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PING"
+ },
+ {
+  "id": "0x0012",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CONFIG_GET_EXT"
+ },
+ {
+  "id": "0x0013",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_POWER_DEVICE_ON"
+ },
+ {
+  "id": "0x0014",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_POWER_DEVICE_OFF"
+ },
+ {
+  "id": "0x0015",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_IPC_ENDPOINT_SET"
+ },
+ {
+  "id": "0x0016",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_IPC_ENDPOINT_UNSET"
+ },
+ {
+  "id": "0x0017",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_INFO_GET"
+ },
+ {
+  "id": "0x0018",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_BUFFER_RECYCLE_MODE_SET"
+ },
+ {
+  "id": "0x0019",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_BUFFER_RECYCLE_START"
+ },
+ {
+  "id": "0x001a",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_BUFFER_RECYCLE_STOP"
+ },
+ {
+  "id": "0x001b",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_BUFFER_RETURN"
+ },
+ {
+  "id": "0x001c",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_BUFFER_POOL_CONFIG_GET"
+ },
+ {
+  "id": "0x001d",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_BUFFER_POOL_CONFIG_SET"
+ },
+ {
+  "id": "0x001e",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_DATA_FILE_LOAD"
+ },
+ {
+  "id": "0x001f",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_PROPERTY_WRITE"
+ },
+ {
+  "id": "0x0020",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_PROPERTY_READ"
+ },
+ {
+  "id": "0x0021",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_TRACE_ENABLE"
+ },
+ {
+  "id": "0x0022",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_RESOURCE_INFO_GET"
+ },
+ {
+  "id": "0x0023",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_STATS_BUFFER_SIZE_GET"
+ },
+ {
+  "id": "0x0024",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SUSPEND"
+ },
+ {
+  "id": "0x0025",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_DSID_SET"
+ },
+ {
+  "id": "0x0026",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_MCACHE_SIZE_GET"
+ },
+ {
+  "id": "0x0027",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SECURE_MODE_START"
+ },
+ {
+  "id": "0x0028",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SECURE_MODE_STOP"
+ },
+ {
+  "id": "0x0029",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SET_SNE_PMU_BASE2"
+ },
+ {
+  "id": "0x002a",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_IPC_ENDPOINT_SET2"
+ },
+ {
+  "id": "0x002b",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_IPC_ENDPOINT_UNSET2"
+ },
+ {
+  "id": "0x002c",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_DATA_FILE_LOAD2"
+ },
+ {
+  "id": "0x002d",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SET_DYNAMIC_POWERGATE"
+ },
+ {
+  "id": "0x002e",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_ANE_DEFAULT_SETTING_SET"
+ },
+ {
+  "id": "0x002f",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_INIT_SHARED_EVENT_INFO"
+ },
+ {
+  "id": "0x0030",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_EXCLAVE_MODE_START"
+ },
+ {
+  "id": "0x0031",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_EXCLAVE_MODE_STOP"
+ },
+ {
+  "id": "0x0032",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_QUIESCE_STATE"
+ },
+ {
+  "id": "0x0033",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CPU_LOAD_GET"
+ },
+ {
+  "id": "0x0034",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SECURE_MODE_RESUME_TRANSITION"
+ },
+ {
+  "id": "0x0035",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_RESUME"
+ },
+ {
+  "id": "0x0100",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_ERROR_NOTIFICATION"
+ },
+ {
+  "id": "0x0101",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_POWER_CONTROL"
+ },
+ {
+  "id": "0x0102",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_SIGNPOST_NOTIFICATION"
+ },
+ {
+  "id": "0x0103",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_SIGNPOST_NOTIFICATION_GROUP"
+ },
+ {
+  "id": "0x0104",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_RESET_NOTIFICATION"
+ },
+ {
+  "id": "0x0105",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_SIGNPOST64_NOTIFICATION"
+ },
+ {
+  "id": "0x0106",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CH_SIGNPOST64_NOTIFICATION_GROUP"
+ },
+ {
+  "id": "0x0107",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CPU_LOAD_NOTIFICATION"
+ },
+ {
+  "id": "0x0108",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_TM_SYNC_ERR_NOTIFICATION"
+ },
+ {
+  "id": "0x0200",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_LOAD_PROGRAM"
+ },
+ {
+  "id": "0x0201",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_UNLOAD_PROGRAM"
+ },
+ {
+  "id": "0x0202",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_CREATE_PROCESS"
+ },
+ {
+  "id": "0x0203",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_TERMINATE_PROCESS"
+ },
+ {
+  "id": "0x0204",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL"
+ },
+ {
+  "id": "0x0205",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_LOAD_AFPP"
+ },
+ {
+  "id": "0x0206",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_UNLOAD_AFPP"
+ },
+ {
+  "id": "0x0207",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROGRAM_INTERFACE_VERSION_CHECK"
+ },
+ {
+  "id": "0x0208",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_CACHE_REQUEST"
+ },
+ {
+  "id": "0x0209",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_TRIGGER_CACHE_REQUEST"
+ },
+ {
+  "id": "0x020a",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_RECYCLE_OUTPUT_BUFFER"
+ },
+ {
+  "id": "0x020b",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_INVALIDATE_CACHE_REQUEST"
+ },
+ {
+  "id": "0x020c",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_WITH_CUSTOM_BARS"
+ },
+ {
+  "id": "0x020d",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PREMAP_BUFFER"
+ },
+ {
+  "id": "0x020e",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_CACHE_REQUEST_WITH_CUSTOM_BARS"
+ },
+ {
+  "id": "0x020f",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_CACHE_REQUEST_WITH_SHARED_EVENTS"
+ },
+ {
+  "id": "0x0210",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_FORCE_DISABLE_CACHE_REQUESTS"
+ },
+ {
+  "id": "0x0211",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROCEDURE_CALL_WITH_SIGNAL_EVENTS"
+ },
+ {
+  "id": "0x0212",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SET_ACTIVE_CACHE_REQUEST_IN_GROUP"
+ },
+ {
+  "id": "0x0213",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SET_SIGNAL_EVENTS"
+ },
+ {
+  "id": "0x0300",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PROGRAM_EVENT"
+ },
+ {
+  "id": "0x0301",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_USER_EVENT"
+ },
+ {
+  "id": "0x0302",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_DBG_EVENT"
+ },
+ {
+  "id": "0x0303",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_DATA_CHAINING_EVENT"
+ },
+ {
+  "id": "0x0304",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_PREFETCH_DSID_EVENT"
+ },
+ {
+  "id": "0x0305",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_SECURE_MODE_EVENT"
+ },
+ {
+  "id": "0x0400",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_REQUEST_PROGRAM_ID"
+ },
+ {
+  "id": "0x0401",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_RETURN_PROGRAM_ID"
+ },
+ {
+  "id": "0x0402",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_REQUEST_PROCESS_ID"
+ },
+ {
+  "id": "0x0403",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_RETURN_PROCESS_ID"
+ },
+ {
+  "id": "0x0404",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_INFERENCE_CALL"
+ },
+ {
+  "id": "0x7000",
+  "tag": "0x200000",
+  "name": "CSNE_CMD_BACK_CHANNEL_RPC"
+ },
+ {
+  "id": "0xff00",
+  "tag": "0x300000",
+  "name": "CSNE_CMD_DEBUG_COMMAND_DATA_CHECK"
+ }
+]
