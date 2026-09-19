@@ -1,0 +1,69 @@
+== pause llm-inference 2026-09-19T09:29:24-05:00 ==
+pre: inactive
+12 /tmp/m1-gpu.lock
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs            32G   18G   15G  56% /tmp
+               total        used        free      shared  buff/cache   available
+Mem:              62          19          23          17          38          43
+Swap:              0           0           0
+-rwxr-xr-x 1 joshuawarren joshuawarren 14054192 Sep 19 07:20 /var/tmp/MesaL2/pkg-base/usr/lib/libvulkan_asahi.so
+-rwxr-xr-x 1 joshuawarren joshuawarren 14054192 Sep 19 09:25 /var/tmp/MesaL2/pkg-wb/usr/lib/libvulkan_asahi.so
+== warmup base/short rc=0 digest=7fd25a869ff21678
+== warmup base/ctx1024 rc=0 digest=7da83f06ec9f001d
+== warmup wb/short rc=0 digest=7fd25a869ff21678
+== warmup wb/ctx1024 rc=0 digest=7da83f06ec9f001d
+r0 base      short   141.440 pf=201.6385 7fd25a869ff21678
+r0 base      ctx1024 83.290 pf=2004.6514 7da83f06ec9f001d
+r0 wb        short   138.509 pf=199.941 7fd25a869ff21678
+r0 wb        ctx1024 83.397 pf=2001.5152 7da83f06ec9f001d
+r1 wb        short   133.199 pf=200.0174 7fd25a869ff21678
+r1 wb        ctx1024 82.501 pf=1969.8117 7da83f06ec9f001d
+r1 base      short   140.572 pf=202.6964 7fd25a869ff21678
+r1 base      ctx1024 82.152 pf=2002.1312 7da83f06ec9f001d
+r2 base      short   141.681 pf=201.9608 7fd25a869ff21678
+r2 base      ctx1024 81.557 pf=2024.4034 7da83f06ec9f001d
+r2 wb        short   137.727 pf=199.2477 7fd25a869ff21678
+r2 wb        ctx1024 82.235 pf=2020.7013 7da83f06ec9f001d
+r3 wb        short   141.543 pf=201.4995 7fd25a869ff21678
+r3 wb        ctx1024 82.822 pf=2006.8827 7da83f06ec9f001d
+r3 base      short   141.791 pf=202.5843 7fd25a869ff21678
+r3 base      ctx1024 83.275 pf=2005.1537 7da83f06ec9f001d
+r4 base      short   138.879 pf=201.4777 7fd25a869ff21678
+r4 base      ctx1024 81.959 pf=2001.2869 7da83f06ec9f001d
+r4 wb        short   141.751 pf=201.151 7fd25a869ff21678
+r4 wb        ctx1024 83.226 pf=2036.4528 7da83f06ec9f001d
+r5 wb        short   141.610 pf=200.2147 7fd25a869ff21678
+r5 wb        ctx1024 82.894 pf=2006.34 7da83f06ec9f001d
+r5 base      short   142.142 pf=201.4993 7fd25a869ff21678
+r5 base      ctx1024 82.270 pf=2028.2009 7da83f06ec9f001d
+r6 base      short   141.081 pf=195.1578 7fd25a869ff21678
+r6 base      ctx1024 82.091 pf=2023.7432 7da83f06ec9f001d
+r6 wb        short   141.880 pf=198.0832 7fd25a869ff21678
+r6 wb        ctx1024 79.049 pf=2010.3313 7da83f06ec9f001d
+r7 wb        short   141.972 pf=200.22 7fd25a869ff21678
+r7 wb        ctx1024 82.710 pf=2005.7299 7da83f06ec9f001d
+r7 base      short   142.221 pf=202.4858 7fd25a869ff21678
+r7 base      ctx1024 83.183 pf=2007.9269 7da83f06ec9f001d
+r8 base      short   141.656 pf=198.6658 7fd25a869ff21678
+r8 base      ctx1024 82.099 pf=2006.1535 7da83f06ec9f001d
+r8 wb        short   140.593 pf=199.9066 7fd25a869ff21678
+r8 wb        ctx1024 81.724 pf=1958.7662 7da83f06ec9f001d
+r9 wb        short   141.470 pf=202.2427 7fd25a869ff21678
+r9 wb        ctx1024 82.863 pf=2008.5893 7da83f06ec9f001d
+r9 base      short   138.411 pf=200.1566 7fd25a869ff21678
+r9 base      ctx1024 82.906 pf=2000.3727 7da83f06ec9f001d
+r10 base      short   134.921 pf=200.2492 7fd25a869ff21678
+r10 base      ctx1024 83.359 pf=2002.5595 7da83f06ec9f001d
+r10 wb        short   138.161 pf=202.5625 7fd25a869ff21678
+r10 wb        ctx1024 81.946 pf=2008.7046 7da83f06ec9f001d
+r11 wb        short   141.548 pf=197.308 7fd25a869ff21678
+r11 wb        ctx1024 82.840 pf=1999.3847 7da83f06ec9f001d
+r11 base      short   138.440 pf=200.1935 7fd25a869ff21678
+r11 base      ctx1024 83.067 pf=2006.4123 7da83f06ec9f001d
+
+== medians ==
+base      short=141.26 (+0.00%) ctx1024=82.59 (+0.00%) ctx-prefill=2006 (+0.00%)
+wb        short=141.51 (+0.17%) ctx1024=82.77 (+0.22%) ctx-prefill=2007 (+0.05%)
+== battery rc=0 2026-09-19T09:31:29-05:00
+== restarting llm-inference 2026-09-19T09:31:29-05:00 ==
+post: activating

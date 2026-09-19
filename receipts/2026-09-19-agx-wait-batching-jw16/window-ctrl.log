@@ -1,0 +1,20 @@
+pre: inactive
+12 /tmp/m1-gpu.lock
+2026-09-19T14:35:05Z
+Fan 1:                     0 RPM  (min = 1499 RPM, max = 5348 RPM)
+Fan 2:                     0 RPM  (min = 1499 RPM, max = 5776 RPM)
+decode 139.39 tok/s over 31 tokens (32 requested, EOS suppressed)
+prefill 0.174s (reported separately, excluded from decode)
+decode mean per-token 7.2 ms
+generated_ids sha256:7fd25a869ff21678 n=32 first=9707,0,2585 last=646,387,7881
+decode 140.42 tok/s over 31 tokens (32 requested, EOS suppressed)
+prefill 0.148s (reported separately, excluded from decode)
+decode mean per-token 7.1 ms
+generated_ids sha256:7fd25a869ff21678 n=32 first=9707,0,2585 last=646,387,7881
+decode 138.14 tok/s over 31 tokens (32 requested, EOS suppressed)
+prefill 0.151s (reported separately, excluded from decode)
+decode mean per-token 7.2 ms
+generated_ids sha256:7fd25a869ff21678 n=32 first=9707,0,2585 last=646,387,7881
+Fan 1:                     0 RPM  (min = 1499 RPM, max = 5348 RPM)
+Fan 2:                     0 RPM  (min = 1499 RPM, max = 5776 RPM)
+post: activating

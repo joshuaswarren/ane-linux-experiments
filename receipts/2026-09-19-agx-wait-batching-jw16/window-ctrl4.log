@@ -1,0 +1,12 @@
+== lock acquired 2026-09-19T15:10:31Z, inode: 12 /tmp/m1-gpu.lock ==
+pre: inactive
+decode 164.40 tok/s over 31 tokens (32 requested, EOS suppressed)
+decode mean per-token 6.1 ms
+generated_ids sha256:7fd25a869ff21678 n=32 first=9707,0,2585 last=646,387,7881
+decode 171.71 tok/s over 31 tokens (32 requested, EOS suppressed)
+decode mean per-token 5.8 ms
+generated_ids sha256:7fd25a869ff21678 n=32 first=9707,0,2585 last=646,387,7881
+decode 175.54 tok/s over 31 tokens (32 requested, EOS suppressed)
+decode mean per-token 5.7 ms
+generated_ids sha256:7fd25a869ff21678 n=32 first=9707,0,2585 last=646,387,7881
+post: activating

@@ -1,0 +1,2 @@
+pre: inactive
+post: activating

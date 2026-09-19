@@ -1,0 +1,36 @@
+== lock acquired 2026-09-19T15:21:59Z, inode: 12 /tmp/m1-gpu.lock ==
+pre: inactive
+== warmup base/short rc=0 digest=7fd25a869ff21678
+== warmup base/ctx1024 rc=0 digest=7da83f06ec9f001d
+== warmup wb/short rc=0 digest=7fd25a869ff21678
+== warmup wb/ctx1024 rc=0 digest=7da83f06ec9f001d
+r0 base      short   175.661 pf=440.363 7fd25a869ff21678
+r0 base      ctx1024 143.811 pf=3754.2048 7da83f06ec9f001d
+r0 wb        short   167.981 pf=444.3885 7fd25a869ff21678
+r0 wb        ctx1024 146.317 pf=3505.9923 7da83f06ec9f001d
+r1 wb        short   175.380 pf=438.8077 7fd25a869ff21678
+r1 wb        ctx1024 142.381 pf=3798.09 7da83f06ec9f001d
+r1 base      short   175.548 pf=441.6468 7fd25a869ff21678
+r1 base      ctx1024 140.762 pf=3807.1905 7da83f06ec9f001d
+r2 base      short   161.194 pf=442.0699 7fd25a869ff21678
+r2 base      ctx1024 146.670 pf=3493.0169 7da83f06ec9f001d
+r2 wb        short   175.325 pf=443.038 7fd25a869ff21678
+r2 wb        ctx1024 140.269 pf=3748.1118 7da83f06ec9f001d
+r3 wb        short   175.161 pf=442.6395 7fd25a869ff21678
+r3 wb        ctx1024 141.343 pf=3760.5996 7da83f06ec9f001d
+r3 base      short   171.349 pf=437.9533 7fd25a869ff21678
+r3 base      ctx1024 131.405 pf=3814.3204 7da83f06ec9f001d
+r4 base      short   175.020 pf=434.0574 7fd25a869ff21678
+r4 base      ctx1024 147.484 pf=3761.7583 7da83f06ec9f001d
+r4 wb        short   174.873 pf=441.642 7fd25a869ff21678
+r4 wb        ctx1024 143.766 pf=3796.0014 7da83f06ec9f001d
+r5 wb        short   174.388 pf=436.6558 7fd25a869ff21678
+r5 wb        ctx1024 146.493 pf=3417.9471 7da83f06ec9f001d
+r5 base      short   176.244 pf=440.5451 7fd25a869ff21678
+r5 base      ctx1024 141.003 pf=3809.1025 7da83f06ec9f001d
+
+== medians ==
+base      short=175.28 (+0.00%) ctx1024=142.41 (+0.00%) ctx-prefill=3784 (+0.00%)
+wb        short=175.02 (-0.15%) ctx1024=143.07 (+0.47%) ctx-prefill=3754 (-0.80%)
+== battery rc=0 2026-09-19T10:22:55-05:00
+post: activating
