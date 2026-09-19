@@ -76,6 +76,23 @@ observed remotely (no console). A manual power-cycle is safe: the ESP now
 contains a validated recovery boot path, and worst case it repeats the recovery
 entry rather than the truncated one.
 
+### Post-reboot evidence (02:32–02:45 CDT)
+
+`tailscale status --json`:
+- `jwm1-linux`: `Online: False`, `lastSeen 2026-09-17T22:56:22Z` — unchanged,
+  confirming Linux has not returned to the tailnet since Sep 17 22:56 UTC.
+- `JW-M1` (macOS node): `Online: False`, `lastSeen 2026-09-19T07:10:00Z`
+  (= 02:10 CDT, ~2 min after the reboot) — the Mac reached the tailnet **once**
+  on macOS at 02:10, then went dark; lastSeen frozen through 02:45 CDT. So the
+  one-shot did NOT produce a running Linux session, and after a brief macOS
+  appearance the box dropped off again (second reboot → dark boot, or boot
+  into a state without working networking). No reboot loop is visible in
+  lastSeen (it is frozen, not advancing).
+
+Read: the recovery kernel itself was never observed booting or failing — the
+box left the network at the macOS-fallback stage. A manual power-on is safe
+(ESP recovery entry is validated; truncated-kernel entry is no longer default).
+
 ## Contained artifacts
 
 - `tools/fat32-raw.py` — FAT32 parser (list/cat/extract) for raw partition images.
