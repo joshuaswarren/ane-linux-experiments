@@ -103,10 +103,26 @@ screening record.
 | hole | share | status after this lane |
 |---|---:|---|
 | fixed per-token overhead (G13X per-launch CDM_BARRIER + dispatch chain, ~29 µs/launch dependent-chain cost) | ~50 % of ctx1024 gap; ~64 % of short gap | **lever family CLOSED**: bit-trim dead (termA, coupled bits), chain-batch dead (this receipt, correctness). Load-bearing maintenance; not addressable in this driver generation |
-| KV-walk excess (structural, k/32 serial depth per workgroup) | ~43 % ctx1024 | two-pass with global-scratch plumbing remains the only named lever (ceiling ~+15-18 % ctx, runtime-side kernel + binding work — priced in `2026-09-17-jw16-decode-gap.md`, not attempted here) |
+| KV-walk excess (structural) | ~43 % ctx1024 | **Correction (KvTwoPass, `50852da`): the named global-scratch two-pass lever DID land** — `agent/decode-two-pass` @ `283aa076`, merged `23fc9a9a`, and this receipt's ctx1024 150.8 tok/s **is** the two-pass number (the v0.6.1 table's 130.7 predates it; post-two-pass receipt priced the landed win at 51–58 % of native across windows). The residual walk excess (k<1024 one-pass regime + two-pass residual, ~35 % of the ctx gap) is structural: insensitive to load restructuring (`266813b0` +2.46 %, inside wander) and to chain count (termB) |
 | ctx prefill | 48 % of native | QMM at 90.2 % of Honeykrisp's own coopmat ceiling (`2026-09-17-qmm-prefill-ceiling.md`); driver-emulation-bound |
 | short prefill | 30 % of native | m=30 latency-floored weight stream, fork-invariant (same receipt) |
 | AGX trig-lowering invariance | — | closed 2026-09-16 (`mlx-omarchy/receipts/2026-09-16-mesa-trig-invariance.md`): one FMA contraction, fixed at shader source on the wave branch; the folded kernel is not in the shipped decode path, so no invariance exposure on v0.7.1 legs |
+
+## Remaining decode levers after this lane
+
+With the global-scratch two-pass landed and the amortize-the-barrier family
+closed, the **remaining decode gap on jw16 is the union of two
+proven-irreducible costs at this driver generation**:
+
+1. The G13X per-launch CDM barrier maintenance (correctness, ~50 % ctx
+   gap) — closed in this receipt (chain-batch fails).
+2. The post-two-pass residual structural walk (~35 % ctx gap) — closed
+   by the prior screens (load-staging restructure inside noise; chain
+   count invariance; structural k/32 serial depth per workgroup). No
+   remaining named driver-side or runtime-side lever within this lane's
+   scope addresses it; the only further native-shape port (heads-grid
+   32-thread pass-2 over a per-block scratch) was the lever that DID land
+   as two-pass and is already in the measured numbers.
 
 ## Hardware safety / coordination
 
