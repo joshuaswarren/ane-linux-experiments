@@ -19,10 +19,10 @@ set -u
 m1-test-host_HOST="${m1-test-host_HOST:-m1-test-host}"          # ssh alias / [redacted-ip]
 t6001-test-host_HOST="${t6001-test-host_HOST:-t6001-test-host}"       # wheel + kit source (gate ran green here)
 MLX_REPO="${MLX_REPO:-$HOME/src/mlx-omarchy}"
-# Wheel provenance pin. Recert wheel (b283a16f): 2def345c... — the release
-# lane may stage a newer main build in t6001-test-host dist/; set EXPECT_WHEEL_SHA to
-# the shipping sha for a hard gate, otherwise the runner records provenance.
-EXPECT_WHEEL_SHA="${EXPECT_WHEEL_SHA:-}"
+# Wheel provenance pin: the PUBLISHED v0.7.0 aarch64 wheel (4ff560af build,
+# shipped 2026-09-19 05:42Z; x86_64 is 2f12ff88...). Override via env only if
+# a future lane re-stages and re-publishes.
+EXPECT_WHEEL_SHA="${EXPECT_WHEEL_SHA:-c3143a70162abad80d7c3e20fd6a7302a890bd41757a85ef83e60484a6f1278a}"
 ROOT_DEST=/var/tmp/v070-m1-test-host
 MODE=run; WAIT=0
 while [ $# -gt 0 ]; do
