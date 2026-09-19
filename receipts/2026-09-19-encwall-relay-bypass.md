@@ -120,4 +120,21 @@ delta.
   `test_worker 16/16 (198 assertions)` on `/tmp/relay-bypass-build/`.
 
 ## Post-Commit A/B Test Result
+
+**SUPERSEDED 2026-09-19 (second session, GoldenManatee): bug found, fixed, battery re-run — LANDED.** The original verdict below describes the pre-fix run. Three defects, all fixed in `mlx-omarchy` `agent/encwall-relay-bypass` `4ad257b2` (merged to main `e14752ff`):
+
+1. **Wire namespace mismatch (the original EPIPE).** The protocol switch (bundle index → bundle name) keyed the resident child's lookup by `bundle.manifest.name`, but every supervisor speaks the CLI/session key. Real bundles: dir/CLI `island-attn-a-kt` vs manifest `parakeet-encoder-island-attn-a-kt`. First submit → child `failed:unknown request` → child `_exit(1)` mid-payload → python EPIPE "closed its input before the job was sent". Unit tests missed it: their bundles' manifest names equal the CLI keys. Fix: `AneWorker::open(bundles, session_names)` — the caller's session keys are the wire namespace end to end (validated: size/empty/dup). Regression test `session names drive the wire, not manifest names` added; suite now 17/17, 219 assertions.
+2. **Pump truncation on half-close.** The two-thread splice pump killed both directions when either saw EOF; the relay's close is a half-close (last write `close`, release token still returns), so a response still in flight was truncated at exactly one pipe buffer (64,536… measured 65,536) — and concurrent `splice()`s in opposite directions on one socketpair stalled outright on this kernel. Fix: single-threaded `poll()` pump (protocol is strictly half-duplex), each direction runs to its own EOF, stdin EOF propagates as `shutdown(SHUT_WR)`.
+3. **Close-path teardown race + unbounded client wait.** `waitpid(WNOHANG)` raced the child's exit and fell into a doomed `worker.close()` (rc=1 after a clean session) — now a bounded 2 s reap loop. Client `close()` half-closes stdin right after `close\n` and bounds the final `wait()` (5 s, kill fallback) — `released` is the protocol completion.
+
+### Fixed 12-arm battery (jw16, take_release.sh, rc=0, llm-inference restarted, lock inode 12 unchanged, venv pin df3d4e74c597956c, worker cand 44a99528f79e7fd1)
+
+| cell | base median (ms) | cand median (ms) | delta |
+|---|---|---|---|
+| AC serve | 3440.5 | 2530.6 | **−909.9 (−26.4%)** |
+| ACO serve | 3904.9 | 3044.6 | **−860.3 (−22.0%)** |
+
+Transcript hash identical across all 12 rows (`db501a8c…`); 12/12 arms passed. Standalone client e2e (real bundles, session name ≠ manifest name): 2 submits + clean close in ~100 ms, 3/3. `rows.jsonl` + `window2.log` at jw16:`/var/tmp/encwall-relay/`.
+
+Original pre-fix result:
 The staged GPU A/B test was kicked off after the initial commit. The candidate `c-ac-serve1` (with `MLX_OMARCHY_ANE_RELAY_BYPASS=1`) RUN-FAILED with `phase7_encoder.EncoderRunError: ANE batch round L00-A (island-attn-a-kt) failed: resident worker closed its input before completing`. The C++ splice pump or the python client crashed or closed early during the multi-round batch. The baseline `b-ac-serve1` passed. Since the candidate failed to complete the serve, this lever is currently a NO-LAND (bug in the relay-bypass implementation).
