@@ -55,35 +55,41 @@ plan before any further load.
    (`:473` overwrites with 0 on success), and `device_initialize()`
    (`:1846` — fresh device only). `pm_runtime_enable()` does NOT clear
    it; rmmod/insmod does NOT clear it (the platform device object
-   persists across driver binds). Recovery implemented in the corrected
-   build (probe, before `pm_runtime_resume_and_get`):
-   `pm_runtime_disable(dev); pm_runtime_set_suspended(dev);
-   pm_runtime_enable(dev);` — set-status to SUSPENDED under disabled PM
-   clears runtime_error (documented for exactly the error case) and
-   reflects reality pre-resume, while leaving the device suspended so
-   the next resume INVOKES first_resume (a set-ACTIVE recovery was
-   rejected: rpm_resume would return 1 on already-active and skip the
-   whitelist). An earlier draft of this receipt claimed a
-   `pm_runtime_set_active()` fix "written" that was not in the source —
-   corrected.
+   persists across driver binds).
 
-## 3. Driver source corrections (Main review; applied, building clean)
+   **Final design (supersedes the intermediate set-suspended recovery):**
+   device runtime PM is REMOVED from the driver entirely. The probe
+   calls `ane_t6021_first_resume()` explicitly (deterministic single
+   execution; error → probe unwinds), the `.pm` ops and every
+   `pm_runtime_*` call are gone, and the pmgr islands stay held on by
+   the `DL_FLAG_RPM_ACTIVE` supplier links from `attach_genpd()`
+   (independent of consumer runtime state). With PM never enabled, no
+   `rpm_callback` run can ever cache an error that hides the whitelist —
+   the -22 trap class is structurally gone, and the whitelist always
+   executes before any engine-window use. An intermediate recovery
+   (disable/set-suspended/enable) was built and then removed: it
+   restored functionality but kept the fragile error-cache machinery,
+   and the SUSPENDED status rationale ("reflects reality") was contest-
+   able while the islands are physically on. Diff vs pristine W10
+   driver: 18 added / 43 removed lines (net −25).
 
-- `runtime_resume`: uninitialized `int err` on the booted+no-transport
-  path → initialized to 0.
+## 3. Driver source corrections (Main reviews; applied, building clean)
+
+- `runtime_resume`: uninitialized `int err` — MOOT: the callback and all
+  device runtime PM are removed (see §2 final design); first_resume
+  runs explicitly from probe.
 - mbi_boot knob DROPPED: the actual `ane_t6021_mbi_boot()` body is
   read-only (SCRATCH0-7 + message-register dumps + a latch; the
   SCRATCH-wake sideload mode its comment referenced is UNIMPLEMENTED —
   stale comment corrected), so no new opt-in was needed.
-  `rtkit_transport=1` performs no writes. Probe recovery added:
-  `pm_runtime_disable + pm_runtime_set_suspended + pm_runtime_enable`
-  per §2. Exact diff vs the pristine W10 tree: drv.c and header only
-  (`ane_t6021_rtkit.c` byte-identical; Makefile adds
-  `ane_t6021_fwload.o`).
-- Breadcrumbs removed; files: `ane_t6021_drv.c`, `ane_t6021.h`,
-  `ane_t6021_fwload.c`, `ane_fw_validate.h`,
-  `tools/h14_fwload_regression.c` in `/var/tmp/ane-t6021-w13/` on
-  jw14m2; module builds clean (LD + BTF).
+  `rtkit_transport=1` performs no writes.
+- fwload validator hardened per review: exact-image assertions,
+  bounded LC walk, u64 fileoff/filesize, thread-state byte validation,
+  shared header `ane_fw_validate.h` + offline regression
+  `tools/h14_fwload_regression.c` (7/7, host + target).
+- Exact diff vs pristine W10 driver: 18 added / 43 removed lines;
+  SHAs: drv `3a33c83a3c34…`, ko `e304cf70…` (834,000 B);
+  `ane_t6021_rtkit.c` byte-identical.
 
 ## 4. fwload validator — hardened per review + offline regression
 
@@ -121,15 +127,16 @@ Transitive-effect enumeration, step by step:
    write, poll ACTUAL=0xF and bit11 clear, 500 ms deadline, timeout =
    exit 2. (Earlier "single ps-word RMW" phrasing in this lane's plan
    was wrong — the script raises/refreshes the whole chain.)
-3. insmod (corrected build), params
-   `allow_unqualified=1 rtkit_transport=1 fw_load=1` and **NOT**
-   `mbi_handshake`: probe performs genpd attach (supplier links),
-   IRQ/resource parse, 3 ioremaps, 6 ring dma_allocs (dart-ane0 PTEs),
+3. insmod (corrected build — runtime PM removed, first_resume runs
+   explicitly in probe), params `allow_unqualified=1 rtkit_transport=1
+   fw_load=1`: probe performs genpd attach (supplier links hold islands
+   on), IRQ/resource parse, 3 ioremaps, EXPLICIT first_resume (read-only
+   whitelist, 17 registers), 6 ring dma_allocs (dart-ane0 PTEs),
    fwload: request_firmware (filesystem), sha256, validator, 4 MiB
-   coherent alloc (DART PTEs), segment copies. First_resume whitelist
-   reads (17 registers, read-only). NO SCRATCH/doorbell/RVBAR writes
-   (handshake split per §3). Expected: bound driver + "fwload: …
-   validated + DART-mapped" log; the iova value recorded as DATA.
+   coherent alloc (DART PTEs), segment copies. NO SCRATCH/doorbell/RVBAR
+   writes (no transport write path exists in the tree — mbi_boot is
+   read-only). Expected: bound driver + "fwload: … validated +
+   DART-mapped" log; the iova value recorded as DATA.
 4. reads: pm_genpd summary, dmesg capture, `/proc/iomem` — recording
    only.
 5. `rmmod`: frees ring + fw surface (DART PTEs torn down), detaches.
