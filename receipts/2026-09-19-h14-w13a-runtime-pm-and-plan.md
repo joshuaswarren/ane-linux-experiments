@@ -215,13 +215,17 @@ poll register is CPU_STATUS — both offsets come from the SoC config
 - Boot tail: `writeReg(cfg+0x4a0, 0)` then `(…, 0x10)` = clear RUN, set
   RUN — i.e. CPU_CONTROL 0x1400044 ← 0 then ← 0x10 for h14g (W10's live
   read CPU_CONTROL=0 at 0x285400044 = ANE+0x1400044 ✓).
-- Poll: `readReg(cfg+[dev+0x454]) == 0x08042006`, ≤1000 iters. The
-  `[dev+0x454]` offset value is template-loaded (no direct store found):
-  candidates are SCRATCH7 (0x1840064, per the W2-era decode where the fw
-  writes 0x08042006 = table-ready (K14 poll movz 0x2006+movk 0x804<<16, verified; the older 0x80402006 was a transcription error)) or CPU_STATUS (0x1400048). Identity
-  OPEN — flagged, not guessed.
-- Reset ordering at register level is therefore: SCRATCH7 mode write
-  (cold 0 / warm 1) → RVBAR gate → RVBAR ← entry → CPU_CONTROL 0 →
-  CPU_CONTROL 0x10 → poll. All names pinned except the poll-register
-  identity above; page-tables/boot-args/placement/stream-mapping remain
+- Poll: `readReg(cfg+[dev+0x454]) == 0x08042006`, ≤1000 iters.
+  RESOLVED (W13a review pass): the wake write immediately before the
+  loop targets the SAME `[dev+0x454]` register with `0xf7fbdff9`
+  (movz 0xdff9 + movk 0xf7fb lsl16 — verified bytes), and `[dev+0x454]`
+  = SCRATCH7 = **0x1840064**; the poll identity is therefore
+  SCRATCH7 == 0x08042006, not CPU_STATUS. The constant appears twice
+  more: the SCRATCH3 host-ack write is also 0x08042006 (site
+  0x…95eaee8-0x…95eaef0), and the older W2-era header/comment value
+  "0x80402006" is a TRANSCRIPTION ERROR (nibble swap) — corrected in
+  the driver header and this receipt. Reset ordering at register level
+  is therefore: SCRATCH7 mode write (cold 0 / warm 1) → RVBAR gate →
+  RVBAR ← entry → CPU_CONTROL 0 → CPU_CONTROL 0x10 → poll SCRATCH7 ==
+  0x08042006. Page-tables/boot-args/placement/stream-mapping remain
   open separately (§6).
