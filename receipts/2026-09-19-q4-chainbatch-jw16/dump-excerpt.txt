@@ -1,0 +1,60 @@
+flags = 0
+cdm_ctrl_stream_base = 0x2fecc6c000
+Encoder (2fecc6c000, handle 1452)
+Barrier
+  Unk 0: true
+  Unk 1: true
+  Unk 2: true
+  USC cache inval: true
+  Unk 4: true
+  Unk 5: true
+  Unk 6: true
+  Unk 7: true
+  Unk 8: true
+  Unk 9: true
+  Unk 10: true
+  Unk 11: true
+  Unk 12: true
+  Unk 13: true
+  Unk 14: true
+  Unk 15: true
+  Unk 16: true
+  Unk 17: true
+  Unk 18: true
+  Unk 19: true
+  Unk 20: false
+  Unk 24: false
+  Unk 26: false
+  Returns: false
+Pipeline (11fff88000, handle 1453)
+Uniform
+  Start (halfs): 0
+  Size (halfs): 6
+  Buffer: 0x2fecc7c000
+000000  00 40 D6 EC 2F 00 00 00 03 00 00 00 
+Shared
+  Uses shared memory: false
+  Layout: Vertex/compute
+  Sample count: 1
+  Sample stride in 8 bytes: 0
+  Bytes per threadgroup: 65536
+Shader
+  Loads varyings: false
+  Unk 1: false
+  Unk 2: 3
+  Code: 0xfffbc000
+
+   0: 7e0184098000           mov      r0, u2
+   6: 4501000d00c01200       store    r0, du0, 0, i32, x, a
+   e: 8800                   stop
+
+Registers
+  Register count: 8
+  Unk 1: false
+  Spill size: 0x0
+  Unk 4: 0x0
+No preshader
+Compute
+  Uniform register count: 64
+  Texture state register count: 8
+  Sampler state register count: 4 compact

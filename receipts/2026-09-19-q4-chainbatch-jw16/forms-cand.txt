@@ -1,0 +1,34 @@
+
+  Returns: false
+  USC cache inval: true
+  Unk 0: true
+  Unk 10: true
+  Unk 11: true
+  Unk 12: true
+  Unk 13: true
+  Unk 14: true
+  Unk 15: true
+  Unk 16: true
+  Unk 17: true
+  Unk 18: true
+  Unk 19: true
+  Unk 1: true
+  Unk 20: false
+  Unk 24: false
+  Unk 26: false
+  Unk 2: true
+  Unk 4: true
+  Unk 5: true
+  Unk 6: true
+  Unk 7: true
+  Unk 8: true
+  Unk 9: true
+Barrier
+Encoder (2fe8494000, handle 2050)
+Encoder (2fe8f70000, handle 1966)
+Encoder (2fecc6c000, handle 1452)
+Stream Terminate
+cdm_ctrl_stream_base = 0x2fe8494000
+cdm_ctrl_stream_base = 0x2fe8f70000
+cdm_ctrl_stream_base = 0x2fecc6c000
+flags = 0
