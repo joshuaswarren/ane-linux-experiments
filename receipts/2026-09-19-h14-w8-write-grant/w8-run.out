@@ -1,0 +1,48 @@
+H14W8 {"ev": "run.begin", "tunables": 12}
+H14W8 {"ev": "rvbar.read", "addr": "0x285050000", "val": "0x00000001", "bit0": 1}
+H14W8 {"ev": "ps.raise", "name": "ane_sys_mpm", "addr": "0x28e084000", "old": "0x000003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_sys_mpm", "val": "0x000003ff"}
+H14W8 {"ev": "ps.raise", "name": "ane_td", "addr": "0x28e084008", "old": "0x000003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_td", "val": "0x000003ff"}
+H14W8 {"ev": "ps.raise", "name": "ane_base", "addr": "0x28e084010", "old": "0x000003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_base", "val": "0x000003ff"}
+H14W8 {"ev": "ps.raise", "name": "ane_set1", "addr": "0x28e084018", "old": "0x000003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_set1", "val": "0x000003ff"}
+H14W8 {"ev": "ps.raise", "name": "ane_set2", "addr": "0x28e084020", "old": "0x000003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_set2", "val": "0x000003ff"}
+H14W8 {"ev": "ps.raise", "name": "ane_set3", "addr": "0x28e084028", "old": "0x000003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_set3", "val": "0x000003ff"}
+H14W8 {"ev": "ps.raise", "name": "ane_set4", "addr": "0x28e084030", "old": "0x000003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_set4", "val": "0x000003ff"}
+H14W8 {"ev": "ps.raise", "name": "ane_cpu", "addr": "0x28e0802e0", "old": "0x1f0003ff"}
+H14W8 {"ev": "ps.raise.already", "name": "ane_cpu", "val": "0x1f0003ff"}
+H14W8 {"ev": "tunable.pre", "i": 0, "addr": "0x284000000", "val": "0x00000010"}
+H14W8 {"ev": "tunable.post", "i": 0, "addr": "0x284000000", "readback": "0x00000010", "match": true}
+H14W8 {"ev": "tunable.pre", "i": 1, "addr": "0x284000038", "val": "0x00050020"}
+H14W8 {"ev": "tunable.post", "i": 1, "addr": "0x284000038", "readback": "0x00000020", "match": false}
+H14W8 {"ev": "tunable.pre", "i": 2, "addr": "0x28400003c", "val": "0x000a0030"}
+H14W8 {"ev": "tunable.post", "i": 2, "addr": "0x28400003c", "readback": "0x000a0030", "match": true}
+H14W8 {"ev": "tunable.pre", "i": 3, "addr": "0x284000400", "val": "0x40010001"}
+H14W8 {"ev": "tunable.post", "i": 3, "addr": "0x284000400", "readback": "0x40010001", "match": true}
+H14W8 {"ev": "tunable.pre", "i": 4, "addr": "0x284000600", "val": "0x01ffffff"}
+H14W8 {"ev": "tunable.post", "i": 4, "addr": "0x284000600", "readback": "0x00000000", "match": false}
+H14W8 {"ev": "tunable.pre", "i": 5, "addr": "0x284000738", "val": "0x00200020"}
+H14W8 {"ev": "tunable.post", "i": 5, "addr": "0x284000738", "readback": "0x00000000", "match": false}
+H14W8 {"ev": "tunable.pre", "i": 6, "addr": "0x284000798", "val": "0x00100030"}
+H14W8 {"ev": "tunable.post", "i": 6, "addr": "0x284000798", "readback": "0x00000000", "match": false}
+H14W8 {"ev": "tunable.pre", "i": 7, "addr": "0x2840007f8", "val": "0x0100000a"}
+H14W8 {"ev": "tunable.post", "i": 7, "addr": "0x2840007f8", "readback": "0x00000000", "match": false}
+H14W8 {"ev": "tunable.pre", "i": 8, "addr": "0x284000900", "val": "0x00000101"}
+H14W8 {"ev": "tunable.post", "i": 8, "addr": "0x284000900", "readback": "0x00000000", "match": false}
+H14W8 {"ev": "tunable.pre", "i": 9, "addr": "0x284000410", "val": "0x00001100"}
+H14W8 {"ev": "tunable.post", "i": 9, "addr": "0x284000410", "readback": "0x00001100", "match": true}
+H14W8 {"ev": "tunable.pre", "i": 10, "addr": "0x284000420", "val": "0x00001100"}
+H14W8 {"ev": "tunable.post", "i": 10, "addr": "0x284000420", "readback": "0x00001100", "match": true}
+H14W8 {"ev": "tunable.pre", "i": 11, "addr": "0x284000430", "val": "0x00001100"}
+H14W8 {"ev": "tunable.post", "i": 11, "addr": "0x284000430", "readback": "0x00001100", "match": true}
+H14W8 {"ev": "scratch.read.pre", "addr": "0x285840048"}
+H14W8 {"ev": "scratch.read.ok", "val": "0x00000000"}
+H14W8 {"ev": "scratch.write.pre", "addr": "0x285840048", "val": "0x00000000"}
+H14W8 {"ev": "scratch.write.ok", "readback": "0x00000000"}
+H14W8 {"ev": "verdict", "result": "APERTURE_UNLOCKED", "detail": "all tunable writes + SCRATCH write completed without abort"}
+VERDICT: APERTURE_UNLOCKED
