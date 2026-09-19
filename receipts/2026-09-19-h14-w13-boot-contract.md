@@ -29,10 +29,11 @@ bl    writeReg(map, 0x1050000, xENTRY)            ; the boot write
 
 Generation-stable H13→H14: same offset, same gate, same entry constant,
 same mask. This satisfies the "verify independently before any MMIO" gate
-for the entry encoding itself. K13 additionally polls after the write:
-`readReg(cfg+0x118) == 0x08042006` (config-driven register, likely
-CPU_STATUS; W10's live `CPU_STATUS.STOPPED` read aligns) — a ready-state
-handshake datum for the future boot lane.
+for the entry encoding itself. K13 additionally polls after the write
+until `readReg(cfg+0x118)` equals `0x08042006` — a config-driven register
+at cfg-field `+0x118`; its identity (and what the constant encodes) is
+unresolved. Only the read-compare handshake itself is pinned; it is a
+boot-lane datum, not a register-name claim.
 
 ## 2. Loader layering — who places the image
 
@@ -86,24 +87,55 @@ split, now also fixed in the W12 receipt text:
   writes there were attempted (W5-live, W9) and **SError'd** (0xbe000000,
   5–11 µs after the seam) — W9 showed the class still SErrors even behind
   the W8 aperture grant. The address is real and mapped (permission/write-
-  grant fault, not translation fault) but is **not safe** until the fw-CPU
-  is running. No claim of a safe write is made.
+  grant fault, not translation fault). This proves the writes are unsafe
+  **in the tested state**; it does not establish what state would make
+  them safe, and no such claim is made.
 
-## 5. Next implementable step
+## 5. Placement mechanics mined — the image lives in the DART-mapped shared surface (addendum)
 
-Two candidates, both read-only, either can be the next lane:
+Source-xref trace of the ANE kext's own fw load path (`ANE_LoadFirmware_gated`
+log tag; function `0xfffffe00095efe0c–0x95f0700`), all addresses in K14
+10.19.2:
 
-1. **iBoot relocation-aware descriptor trace** (pure offline): decode
-   iBoot's self-reloc table, find the fw-descriptor array entries for
-   `ANE0`/`ANE1`, follow the loader's placement (source img4 → destination
-   region → size/`_rtk_boot_l1` patching) and pin the ASC-physical load
-   address. Deliverable: the placement constant that makes a boot attempt
-   non-blind.
-2. **Live-ADT exposure on jw14m2** (jw16 phram method; needs approval +
-   module build/load + netconsole window): answers definitively whether
-   iBoot populated ane0 `segment-ranges` this boot, plus the m1n1 stage-2
-   log region for boot-chain context.
+1. **Image mapping** — `0x95f0310–0x95f0338`: the fw data object is mapped
+   via vtable+`0x228` → +`0x1000` (page) and kept in `x22`.
+2. **Placement write** — `0x95f0404–0x95f0464`:
+   `cfg = [dev+0x178]; w1 = [cfg+0x138]` (image byte-count from the SoC
+   config), `x0 = [[dev+0x978]+0x38]` (the `FirmwareLoaded` OSObject's
+   `+0x38` field = the ANE **shared-memory surface** pointer), then
+   `bl 0x964c2d8(x0, w1)`; the mapped image bytes are written into that
+   surface via `bl 0x964c528([surface], bytes, x23)`.
+3. **Cache clean** — `0x95f0688–0x95f06a4`:
+   `x8 = [[dev+0x978]+0x38]; x9 = [[dev+0x178]+0x138]; x1 = x8 + x9 -
+   0x4000; bl 0x95d92bc(x0=surface_obj, x1)` — cache maintenance over
+   `[surface, surface + size − 0x4000)`.
+4. **Handoff flag** — `0x95f0640–0x95f0668`: `setProperty("FirmwareLoaded",
+   true)` (vtable+`0x298`, cstring at `0x74c3f3d`). The boot sequence
+   (`…95e9850`) then reads this property (`+0x18` = OSBoolean value) to
+   compose the RVBAR write — image-in-surface strictly precedes CPU boot.
+5. `str w24, [dev+0x974]` stores the fw command id (`0x95f0468`).
 
-Until (1) or (2) yields the placement, the staged firmware in
-`/opt/ane/fw/` stays a staged artifact and no RVBAR/SCRATCH7 write is
-made. MMIO write table: none this lane.
+**Contract for a Linux loader (from kext evidence):** the ANE image is not
+placed at a fixed host-MMIO SRAM constant — it is copied into the ANE
+shared-memory surface (a runtime buffer made ASC-visible through
+dart-ane0/mapper-ane0), cache-cleaned, then RVBAR (`eng+0x1050000` ←
+`0x0081_0000_0000_0001`) + SCRATCH7 cold boot run. Still open before
+implementation: how the surface address reaches the ROM — the boot-args
+path is `SetupFWInitBootArgs(ANESharedMemorySurfaceParams*)`
+(`0x95ac8cc–0x95ac9d0` walks per-client blocks of stride `0x158`/`0x11c`
+plus variable sizes `8+0x24`/`0x158`, `0x58×n+8+0x24` — the struct layout
+is mineable next) and the register/field that publishes it.
+
+## 6. Next implementable step
+
+With placement resolved to "the DART-mapped shared surface" (§5), the
+remaining implementation datum is narrower: the `ANESharedMemorySurfaceParams`
+layout and the mechanism that publishes the surface address to the ROM
+(`SetupFWInitBootArgs` walk `0x95ac8cc–0x95ac9d0` is the first mine
+target, followed by whoever calls it with the surface base). Fallback
+route, unchanged: live-ADT exposure on jw14m2 (jw16 phram method; needs
+approval + module build/load + netconsole window) to check whether iBoot
+populated ane0 `segment-ranges` this boot. Until the surface-to-ROM
+contract is pinned, the staged firmware in `/opt/ane/fw/` stays a staged
+artifact and no RVBAR/SCRATCH7 write is made. MMIO write table: none this
+lane.
