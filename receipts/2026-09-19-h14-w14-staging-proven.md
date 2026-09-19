@@ -7,10 +7,12 @@ skipped — snapshot showed all words already on/clear), read-only ASC
 whitelist clean, firmware validated (sha256 + exact-image assertions)
 and loaded into a DART-mapped 4 MiB coherent surface, iova recorded as
 data. **No firmware boot, no SCRATCH/doorbell/RVBAR write, no retries,
-no reboot.** With `rtkit_transport=0 mbi_doorbell=0`, no write path is
-reachable in this build (doorbell/a2i fenced by params; SCRATCH
-handshake unimplemented; boot absent) — fenced write code exists in the
-tree and stays fenced.
+no reboot.** No direct ANE/PMGR MMIO writes occurred; the DART mapping
+(kernel iommu subsystem PTE programming for the coherent surface) and
+module load/unload lifecycle changes did occur. With
+`rtkit_transport=0 mbi_doorbell=0`, no write path is reachable in this
+build (doorbell/a2i fenced by params; SCRATCH handshake unimplemented;
+boot absent) — fenced write code exists in the tree and stays fenced.
 
 ## Execution (one pass, exact params)
 
@@ -43,8 +45,9 @@ tree and stays fenced.
 - `dma_alloc_coherent` on this device yields iova `0x3ffffc00000`
   (first data point for the DART stream-mapping question; NOT claimed
   to be the fw address space — stream mapping unverified).
-- RVBAR reads `0x1` with CPU stopped and all domains on — the bit0
-  released-latch interpretation holds on this boot too.
+- RVBAR reads `0x1` with CPU_CONTROL=0 and all domains on. The value-1
+  observation is pinned; any latch/kext-semantics interpretation is NOT
+  established (the kext skip-gate reading is kext-side only).
 
 ## Open bootstrap prerequisites (unchanged set, W13a §6)
 
@@ -55,6 +58,8 @@ set is evidenced.
 
 ## MMIO write table
 
-None. Zero device writes this lane (the DMA mapping is an allocator/
-iommu-subsystem action, unwound at rmmod; ps words were read, not
-written — stage-1 skipped by the approved rule).
+No direct ANE/PMGR MMIO writes. Device-observable changes that DID
+occur: dart-ane0 PTE programming for the coherent surface and the six
+probe rings (kernel iommu subsystem), torn down at rmmod; module
+load/unload lifecycle. PS words were read, not written — stage-1
+skipped by the approved rule.
