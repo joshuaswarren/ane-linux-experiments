@@ -1,0 +1,17 @@
+===DEATH-BOOT-TAIL===
+Sep 19 03:32:36 jw14m2-linux tailscaled[683]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::8429:e2ff:fe44:1ec8, outif=2, table=254
+Sep 19 03:32:36 jw14m2-linux tailscaled[683]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 03:32:36 jw14m2-linux tailscaled[683]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::1001:f4c7:86db:b7d6, outif=2, table=254
+Sep 19 03:32:36 jw14m2-linux tailscaled[683]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 03:32:50 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:74:38:b7:53:28:b5:08:00 SRC=192.168.3.104 DST=192.168.3.103 LEN=272 TOS=0x00 PREC=0x00 TTL=128 ID=7342 PROTO=UDP SPT=1900 DPT=45051 LEN=252 
+Sep 19 03:33:09 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:00:04:20:f6:5f:44:08:00 SRC=192.168.3.89 DST=192.168.3.103 LEN=358 TOS=0x00 PREC=0x00 TTL=64 ID=56064 DF PROTO=UDP SPT=43524 DPT=43178 LEN=338 
+===PROBE-WINDOW-SUDO===
+===PROBE-WINDOW-LAST5===
+Sep 19 03:33:09 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:00:04:20:f6:5f:44:08:00 SRC=192.168.3.89 DST=192.168.3.103 LEN=358 TOS=0x00 PREC=0x00 TTL=64 ID=56064 DF PROTO=UDP SPT=43524 DPT=43178 LEN=338 
+===PSTORE===
+total 0
+drwxr-x---  2 root root 0 Sep 19 03:34 .
+drwxr-xr-x 10 root root 0 Sep 19 03:34 ..
+===THISBOOT===
+ -1 5a72e74bcd8a4f2d83970e48deff94a0 Sat 2026-09-19 00:28:36 CDT Sat 2026-09-19 03:33:09 CDT
+  0 5c744ccea5c14c0db4a26477380a9904 Sat 2026-09-19 03:34:30 CDT Sat 2026-09-19 03:39:55 CDT
