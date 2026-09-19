@@ -168,19 +168,24 @@ within this protocol; the obvious attacks on it are closed here:
 bit-trim (termA coupled regression), chain-batch (digest corruption),
 app-barrier count (this A/B, no effect).
 
-**Attribution arms failed to initialize — root-caused, fix staged.**
+**Attribution arms failed to initialize — root cause LOADER-CONFIRMED
+locally, fix staged.**
 The extracted hk49edf69 package's ICD smoke returned rc=1 on every arm
-including default. Root cause identified post-window by diffing against
-the proven `pkg-base176` ICD: my minimal JSON stub
-(`{"ICD": {"library_path", "api_version": "1.3.0"}}`) lacked
-`library_arch`, the top-level `file_format_version`, and used a
-non-matching api_version; the proven arm carries
-`api_version 1.4.359, library_arch "64", file_format_version 1.0.1`.
-`attrib-screen.sh` on jw16 now replicates the proven shape exactly, adds
-a missing-library guard, proven 32-token smoke args, and
-`VK_LOADER_DEBUG=error` dump on failure. The ldd of the extracted
-`libvulkan_asahi.so` shows no unresolved dependencies. **The lane OWNS
-the sink-vs-turnaround attribution run** (next queue cycle after
+including default. Cause, now proven on the real loader (Vulkan Loader
+1.3.239, `VK_LOADER_DEBUG=all` + `vkEnumerateInstanceExtensionProperties`,
+x86 build of the same branch): the minimal JSON stub
+(`{"ICD": {"library_path", "api_version": "1.3.0"}}` — missing the
+top-level `file_format_version`) is SKIPPED outright:
+`loader_parse_icd_manifest: ICD JSON … does not have a 'file_format_version'
+field. Skipping ICD JSON.` — the ICD never loads, no device, mlx init
+fails, rc=1. The proven shape (`file_format_version "1.0.1"`,
+`library_arch "64"`, `api_version "1.4.359"`) is accepted by the same
+loader against the same library. `attrib-screen.sh` on jw16 now emits the
+proven shape, adds a missing-library guard, proven 32-token smoke args,
+and `VK_LOADER_DEBUG=error` dump on any future failure. Remaining risk
+(until run): driver-side init on the device is NOT covered by the loader
+proof — the smoke is the end-to-end confirmation. **The lane OWNS the
+sink-vs-turnaround attribution run** (next queue cycle after
 decoder/encoder windows).
 
 ## Hardware safety / coordination
