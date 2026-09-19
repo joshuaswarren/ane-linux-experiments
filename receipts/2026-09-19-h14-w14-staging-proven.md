@@ -49,6 +49,19 @@ boot absent) — fenced write code exists in the tree and stays fenced.
   observation is pinned; any latch/kext-semantics interpretation is NOT
   established (the kext skip-gate reading is kext-side only).
 
+## Driver source provenance (added post-probe)
+
+Committed: omarchy-ane branch `feat/t6021-ane-driver-w13` @ `475bff0`
+(push forced-update on own unmerged branch). Committed-source SHAs:
+drv `ee99e774d156…`, header `32290d07…`, rtkit `5de89d91` (d8ccac9
+byte-identical), fwload `faaa9dd4…`, validator `f102d93e…`,
+Makefile `3a0b5c28…`. Target rebuild from the committed sources: ko
+`39dc203523a5…` (LD+BTF clean). Provenance note: the probe-verified ko
+`30d6f990…` was built from the on-target tree whose rtkit.c/header
+carried pre-W10-correction comment text; the committed lineage rebases
+the identical functional edits onto d8ccac9 (comment-text delta only —
+code paths identical by construction of the applied patch set).
+
 ## Open bootstrap prerequisites (unchanged set, W13a §6)
 
 Image placement constant (iBoot loader trace — in progress), page-table
