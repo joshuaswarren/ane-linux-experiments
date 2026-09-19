@@ -55,21 +55,31 @@ plan before any further load.
    (`:473` overwrites with 0 on success), and `device_initialize()`
    (`:1846` — fresh device only). `pm_runtime_enable()` does NOT clear
    it; rmmod/insmod does NOT clear it (the platform device object
-   persists across driver binds). Recovery options for our case, in
-   order of preference: (a) driver-side `pm_runtime_set_active()` after
-   the stage-1 RMW — source-documented for exactly the error+real-state
-   case (the eight domains are verifiably on); (b) reboot. (a) is the
-   plan's choice; (b) needs no code but burns the boot state.
+   persists across driver binds). Recovery implemented in the corrected
+   build (probe, before `pm_runtime_resume_and_get`):
+   `pm_runtime_disable(dev); pm_runtime_set_suspended(dev);
+   pm_runtime_enable(dev);` — set-status to SUSPENDED under disabled PM
+   clears runtime_error (documented for exactly the error case) and
+   reflects reality pre-resume, while leaving the device suspended so
+   the next resume INVOKES first_resume (a set-ACTIVE recovery was
+   rejected: rpm_resume would return 1 on already-active and skip the
+   whitelist). An earlier draft of this receipt claimed a
+   `pm_runtime_set_active()` fix "written" that was not in the source —
+   corrected.
 
 ## 3. Driver source corrections (Main review; applied, building clean)
 
 - `runtime_resume`: uninitialized `int err` on the booted+no-transport
   path → initialized to 0.
-- SCRATCH handshake split: `ane_t6021_mbi_boot()` (SCRATCH0/1 + SCRATCH7
-  WRITES) no longer rides `rtkit_transport=1`; it runs only behind the
-  new `mbi_handshake=1`. `rtkit_transport=1` is now capture-only
-  (read-only drain). This removes the contradiction where a "no-write"
-  probe plan would still have issued SCRATCH writes via the resume path.
+- mbi_boot knob DROPPED: the actual `ane_t6021_mbi_boot()` body is
+  read-only (SCRATCH0-7 + message-register dumps + a latch; the
+  SCRATCH-wake sideload mode its comment referenced is UNIMPLEMENTED —
+  stale comment corrected), so no new opt-in was needed.
+  `rtkit_transport=1` performs no writes. Probe recovery added:
+  `pm_runtime_disable + pm_runtime_set_suspended + pm_runtime_enable`
+  per §2. Exact diff vs the pristine W10 tree: drv.c and header only
+  (`ane_t6021_rtkit.c` byte-identical; Makefile adds
+  `ane_t6021_fwload.o`).
 - Breadcrumbs removed; files: `ane_t6021_drv.c`, `ane_t6021.h`,
   `ane_t6021_fwload.c`, `ane_fw_validate.h`,
   `tools/h14_fwload_regression.c` in `/var/tmp/ane-t6021-w13/` on
@@ -102,11 +112,15 @@ Transitive-effect enumeration, step by step:
 1. `rmmod ane_t6021` (the inert loaded module): frees nothing (probe
    failed before allocation), unregisters driver. Effect: none beyond
    registry.
-2. `/var/tmp/h14_bringup.py --stage 1`: single ps-word RMW at
-   `pmgr+0x2e0` clearing AUTO_ENABLE (bit 28), ACTUAL already 0xf.
-   Transitive: ane_cpu island keeps hardware on; the kernel
-   apple-pmgr-pwrstate may re-set the bit on a later boot rescan (not a
-   runtime hazard). Proven W3/phase1.
+2. `/var/tmp/h14_bringup.py --stage 1` (sha256
+   764513db0e2d878be619708cb95e0e964df097e09516098bf86e5f3540df9cb6):
+   RMW loop over the FULL eight-word PS_CHAIN (sys_mpm 0x4000, td
+   0x4008, base 0x4010, set1-4 0x4018-0x4030, ane_cpu 0x2e0 last);
+   per word: `new = (v & ~PS_CLEAR) | 0xF` with
+   `PS_CLEAR = bit31|bit28|0xF<<24|0xF<<16|bit12|bit10|target`,
+   write, poll ACTUAL=0xF and bit11 clear, 500 ms deadline, timeout =
+   exit 2. (Earlier "single ps-word RMW" phrasing in this lane's plan
+   was wrong — the script raises/refreshes the whole chain.)
 3. insmod (corrected build), params
    `allow_unqualified=1 rtkit_transport=1 fw_load=1` and **NOT**
    `mbi_handshake`: probe performs genpd attach (supplier links),
