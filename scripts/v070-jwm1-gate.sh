@@ -54,10 +54,10 @@ EXPECT_TRANSCRIPT=db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a07
 EXPECT_HIDDEN_AC=38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7
 EXPECT_HIDDEN_ACO=ef6afd137f1610901c1bce9cf4c9e199edc430c37bd4aeb27caa4622692d5e88
 EXPECT_MEL=5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde
-# Wheel provenance pin. Recert wheel (b283a16f): 2def345c00a60c41d2f18018096720611d40ff5a3dc50845ae3e19dc59794e53.
-# Empty = record the sha as provenance without asserting it (the shipping
-# wheel may be a newer main build; pin it for a hard gate).
-EXPECT_WHEEL_SHA="${EXPECT_WHEEL_SHA:-}"
+# Wheel provenance pin: the PUBLISHED v0.7.0 aarch64 wheel (4ff560af build,
+# shipped 2026-09-19 05:42Z). The recert wheel (b283a16f) was
+# 2def345c00a60c41d2f18018096720611d40ff5a3dc50845ae3e19dc59794e53.
+EXPECT_WHEEL_SHA="${EXPECT_WHEEL_SHA:-c3143a70162abad80d7c3e20fd6a7302a890bd41757a85ef83e60484a6f1278a}"
 
 mkdir -p "$OUT"; : > "$STATUS"
 note() { echo "$* $(date -Iseconds)" >> "$STATUS"; }
