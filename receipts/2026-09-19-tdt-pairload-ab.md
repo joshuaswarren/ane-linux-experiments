@@ -57,13 +57,16 @@ The trace predicted the joint's k-major 16 KB-stride scalar walk was
 issue-slot-dominated and that contiguous per-thread u32 pair loads would
 cut slots per MAC. On this stack (Mesa Honeykrisp, Apple T6001) the
 opposite holds: the wave-coalesced k-major pattern — all 32 lanes of a
-wave consuming one 64 B line per k-step in lockstep — beats per-thread
-sequential streams plus `unpackHalf2x16` pairing. Layout levers against
-this memory system should start from the coalesced pattern as the
-measured optimum, not as an assumption to displace. The exactness result
-stands: any future candidate can be A/B'd with the same harness at this
-identity (`bbad05a26b32a8ee`, appended to
-`/var/tmp/v063-jw16/scripts/certified-libmlx-identities.txt` per the
+wave consuming one 64 B line per k-step in lockstep — beat the per-thread
+sequential streams plus `unpackHalf2x16` pairing in this A/B. Scope: this
+compares exactly two layouts; the k-major pattern is the better of the
+two COMPARED layouts on this host, not a measured optimum for this memory
+system, and the losing mechanism (unpack cost vs load-slot savings vs
+stream locality) is not attributed. Layout levers should treat the
+coalesced pattern as the incumbent to beat and price unpack work
+skeptically. The exactness result stands: any future candidate can be
+A/B'd with the same harness at this identity (`bbad05a26b32a8ee`, appended
+to `/var/tmp/v063-jw16/scripts/certified-libmlx-identities.txt` per the
 LOCAL-candidate-line convention).
 
 ## Window discipline
