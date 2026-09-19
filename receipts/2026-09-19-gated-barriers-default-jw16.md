@@ -1,4 +1,4 @@
-# 2026-09-19: decode t0 decomposed — host record 0.6 µs/node, per-dispatch cost is per-launch GPU machinery; TOP-1 gated-barriers default flip screened on jw16 and NO-LAND (+1.20% short, below the >3% rule); app-barrier count scoped out as the decode lever (protocol-scoped negative evidence); attribution ICD root-caused (loader-stub format) + fixed script staged; sink-vs-turnaround attribution OWNED next queue cycle
+# 2026-09-19: decode t0 decomposed + sink-vs-turnaround attribution RUN — per-dispatch fixed cost is 81% CDM_BARRIER sink/cache maintenance (20.4 of 25.1 µs/launch on real kernels), turnaround 4.7 µs; gated-barriers default flip NO-LAND (+1.20% short); next driver project named with measured payoff bound: state-keyed USC-inval reduction (up to 63% of per-launch cost) pending exactness battery
 
 Date: 2026-09-19. Lane: GpuDispatchParity. Hosts: dev box (local source/build
 only, lavapipe) and jw16mbp1-linux (M1 Max G13C C0, driver
@@ -188,19 +188,67 @@ proof — the smoke is the end-to-end confirmation. **The lane OWNS the
 sink-vs-turnaround attribution run** (next queue cycle after
 decoder/encoder windows).
 
+## Sink-vs-turnaround attribution — RUN (23:38Z, same window series), the decisive number
+
+The fixed ICD loads (default-arm smoke reproduces the canonical short pin
+`7fd25a869ff21678` EXACTLY on the extracted hk49edf69 driver — extraction
+and trunk-equivalence validated end-to-end). Chain micro, real kernels
+(mx.add 256-f32 chain, same protocol as the 09-17 micro), 5 reps per arm,
+one session, only `HK_PERFTEST` differing:
+
+| arm | chain µs/launch (median [range]) | digest (recorded, not asserted) |
+|---|---|---|
+| default (kitchen-sink CDM_BARRIER per launch) | **25.11** [23.8–27.7] | `7fd25a869ff21678` (exact pin) |
+| nocdmbarrier (no cache maintenance) | **4.72** [4.6–4.8] | `b1dbcfdbff00e29d` (shifted — timing-only arm) |
+| usccdmbarrier (USC inval only) | **9.34** [6.8–9.6] | `d1b6f77ac5a139de` (shifted — timing-only arm) |
+
+Attribution of the per-launch fixed cost on real kernels:
+
+- **Sink + cache maintenance: 20.39 µs/launch = 81%** of the 25.11 total.
+- Launch/turnaround remainder: 4.72 µs — independently consistent with
+  the dispatch-floor trivial-chain floor (4.5 µs, different lane/method).
+- **USC-inval-only recovers 15.77 µs/launch (63% of the total)** — the
+  USC invalidate dominates the sink.
+
+Arithmetic bound for decode (NOT a measured decode claim): 201 launches ×
+15.77 µs ≈ 3.2 ms/token of headroom IF the sink were USC-only — an upper
+bound; the in-decode realization is smaller (heavier kernels overlap the
+drain, launch mix differs) and must be measured on the decode legs before
+any perf claim.
+
+Correctness boundary (recorded, not gated): BOTH reduced-barrier arms
+shift the 32-token greedy digest on this micro — the sink is
+load-bearing beyond USC state on this path. A default-emission sink
+reduction is therefore NOT a knob flip; it requires (a) identifying WHICH
+digest-relevant dependency each sink bit covers (the termA bit-map work
+is the base), (b) keying the reduction on driver-known state — e.g. drop
+or shrink the USC invalidate only when the launch's uniform state is
+unchanged since the previous launch (`hk_cs` tracking), (c) a full
+exactness battery + the standing digest protocol. That is the named next
+driver project, now with a measured payoff bound (up to ~63% of the
+per-launch fixed cost, decode-realization TBD).
+
 ## Hardware safety / coordination
 
-- Window queued via hub with EncoderSubmitRepair; fired ONLY on their
+- A/B window queued via hub with EncoderSubmitRepair; fired ONLY on their
   explicit RELEASE ping (verified: lock free, service active with their
   real-completion receipt). Bf16RecertRepair acknowledged the chain.
   jwm1 untouched (hard-held, no access attempted).
+- Attribution window fired ONLY on ParakeetDecoderParity's explicit
+  RELEASE ping, per Main's queue (directly after decoder; encoder
+  candidate not yet ready). One control noted: the first launcher invoked
+  the previous window script, which blocked harmlessly on the held flock
+  (killed — my own PID, remote, no state touched, cleanup not yet armed);
+  relaunch followed an explicit timer+service stop.
 - No concurrent driver installs: the attribution package (hk49edf69,
   mesa-1 branch `hk/dispatch-attrib`) was EXTRACTED to
   `/var/tmp/gdb/attrib-arm` only, never installed.
-- jw16 steady state restored and verified: llm-inference **active**,
-  `llm-benchmark-recovery.timer` **active**, real completion
-  `chatcmpl-aJWcGIUIqY8iEyXNf3G9r4eqCXbF3IEf` (16 completion tokens,
-  qwen3.8-27b @ :8002; receipt `/var/tmp/gdb/service-completion.json`).
+- Final steady state verified after BOTH windows: llm-inference
+  **active**, `llm-benchmark-recovery.timer` **active**, real completions
+  `chatcmpl-aJWcGIUIqY8iEyXNf3G9r4eqCXbF3IEf` (A/B window) and
+  `chatcmpl-wYRO67dw95fvPFA9L7o5fTWo2uT6alJv` (attribution window, 16
+  completion tokens, qwen3.8-27b @ :8002; receipts in
+  `service-completion.json` / `service-completion-attrib.json`).
 
 ## Artifacts
 
