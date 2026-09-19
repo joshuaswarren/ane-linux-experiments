@@ -87,9 +87,18 @@ plan before any further load.
   bounded LC walk, u64 fileoff/filesize, thread-state byte validation,
   shared header `ane_fw_validate.h` + offline regression
   `tools/h14_fwload_regression.c` (7/7, host + target).
-- Exact diff vs pristine W10 driver: 18 added / 43 removed lines;
-  SHAs: drv `3a33c83a3c34…`, ko `e304cf70…` (834,000 B);
-  `ane_t6021_rtkit.c` byte-identical.
+- Exact diff vs pristine W10 driver (final): drv sha
+  `69c2b1ae82002689ca417abb550ffd7ff2488127de16e47f83cbdabfb8483dc0`,
+  ko `30d6f9908539e1cad6120a4aef32936f6e93a670c8483cd62c79ef5e94a95984`
+  (835,832 B → check ls), 21 added / 44 removed.
+- Failure-path audit (W13 review): probe gotos — pre-rtkit_init errors
+  (genpd attach return, irq parse, resource loop, ioremap) go to
+  detach_genpd (nothing to free beyond devm); every error AFTER
+  rtkit_init (first_resume gate, irq request) routes to `shutdown:`
+  which runs `ane_t6021_rtkit_shutdown()` (6-ring free) + genpd detach.
+  The ring leak Main flagged (first_resume err → detach_genpd,
+  bypassing shutdown) is fixed. remove(): fwload_remove → irq free →
+  shutdown → detach.
 
 ## 4. fwload validator — hardened per review + offline regression
 
