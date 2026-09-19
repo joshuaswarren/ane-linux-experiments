@@ -1,0 +1,9 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0
+rootdir: /tmp/ft
+collected 17 items
+
+tests/coreml/test_vulkan_encoder_fusion_placement.py .......             [ 41%]
+tests/coreml/test_ane_resident_wire.py ..........                        [100%]
+
+============================== 17 passed in 7.31s ==============================
