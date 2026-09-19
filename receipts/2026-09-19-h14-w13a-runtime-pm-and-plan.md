@@ -179,3 +179,26 @@ Status: 6 partially (W10: CPU stopped + STOPPED bit), others open.
 None this session. The only device-visible actions were the W3-proven
 probe loads (§1) — no engine-window writes, no SCRATCH writes, and the
 DMA mapping allocations that were unwound.
+
+## 8. Reset sequence — fully pinned (addendum 3, offline disasm)
+
+Complete Chinook boot flow (K14 0x95e9420–0x95e9d00; W13a + this pass):
+
+1. `readReg(eng+0x1050000)` — RVBAR; `bit0 == 1` → SKIP (released latch;
+   matches live reads 0x1).
+2. `writeReg(eng+0x1050000, 0x0081_0000_0000_0001)` — ROM entry (K13 ≡ K14).
+3. two config-driven writes with `w2=0` then `w2=0x10` on cfg field
+   `[dev+0x4a0]` (clock/PM asserts — identities not yet named).
+4. **Poll loop** `0x95e9adc–0x95e9b8c`: ≤1000 iterations of
+   `readReg(cfg+[dev+0x454])` until it equals **`0x08042006`** (the
+   fw-written "channel table ready" value — same constant the W2-era
+   header already recorded for the RTBuddy SCRATCH7 handshake).
+   Config flag `[cfg+0x163]` selects a logging variant.
+5. Success: state marker `0x0101` → `[dev+0x404]`, boot notify, flags
+   `[dev+0x407]/[dev+0x405]` cleared, event 6 raised; failure: error
+   path `0xe00002bc` family.
+
+Still the single open datum for a boot attempt: WHERE the image (and
+boot-args blob) must be placed before step 2 — iBoot's loader constant.
+Everything downstream (poll, doorbell registration, CSNE transport) is
+now pinned end-to-end and encoded in `ane/t6021/ane_t6021.h` comments.
