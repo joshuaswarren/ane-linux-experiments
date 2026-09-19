@@ -1,0 +1,42 @@
+Sep 19 07:09:00 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:83:20:72:08:00 SRC=192.168.3.242 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=18406 DF PROTO=UDP SPT=1900 DPT=38982 LEN=300 
+Sep 19 07:09:18 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:82:d2:9e:08:00 SRC=192.168.3.180 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=11039 DF PROTO=UDP SPT=1900 DPT=46978 LEN=300 
+Sep 19 07:09:49 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:83:20:72:08:00 SRC=192.168.3.242 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=21432 DF PROTO=UDP SPT=1900 DPT=33378 LEN=300 
+Sep 19 07:09:55 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:82:d2:9e:08:00 SRC=192.168.3.180 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=11363 DF PROTO=UDP SPT=1900 DPT=38982 LEN=300 
+Sep 19 07:10:15 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:00:04:20:f6:5f:44:08:00 SRC=192.168.3.89 DST=192.168.3.103 LEN=358 TOS=0x00 PREC=0x00 TTL=64 ID=35881 DF PROTO=UDP SPT=54510 DPT=46234 LEN=338 
+Sep 19 07:10:34 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:00:17:88:2c:1f:b1:08:00 SRC=192.168.3.170 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=38809 DF PROTO=UDP SPT=1900 DPT=33378 LEN=300 
+Sep 19 07:10:56 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::8429:e2ff:fe44:1ec8, outif=2, table=254
+Sep 19 07:10:56 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:10:56 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::1001:f4c7:86db:b7d6, outif=2, table=254
+Sep 19 07:10:56 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:00 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:00:05:cd:ca:93:1c:08:00 SRC=192.168.3.2 DST=192.168.3.103 LEN=585 TOS=0x00 PREC=0x00 TTL=64 ID=22208 DF PROTO=UDP SPT=56311 DPT=48834 LEN=565 
+Sep 19 07:11:07 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::8429:e2ff:fe44:1ec8, outif=2, table=254
+Sep 19 07:11:07 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:07 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::1001:f4c7:86db:b7d6, outif=2, table=254
+Sep 19 07:11:07 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:13 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:82:d2:9e:08:00 SRC=192.168.3.180 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=17898 DF PROTO=UDP SPT=1900 DPT=57463 LEN=300 
+Sep 19 07:11:19 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::8429:e2ff:fe44:1ec8, outif=2, table=254
+Sep 19 07:11:19 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:19 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::1001:f4c7:86db:b7d6, outif=2, table=254
+Sep 19 07:11:19 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:27 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::8429:e2ff:fe44:1ec8, outif=2, table=254
+Sep 19 07:11:27 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:27 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::1001:f4c7:86db:b7d6, outif=2, table=254
+Sep 19 07:11:27 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:41 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:00:17:88:2c:1f:b1:08:00 SRC=192.168.3.170 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=45188 DF PROTO=UDP SPT=1900 DPT=46234 LEN=300 
+Sep 19 07:11:53 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:83:20:72:08:00 SRC=192.168.3.242 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=25093 DF PROTO=UDP SPT=1900 DPT=57360 LEN=300 
+Sep 19 07:11:54 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::8429:e2ff:fe44:1ec8, outif=2, table=254
+Sep 19 07:11:54 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:11:54 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::1001:f4c7:86db:b7d6, outif=2, table=254
+Sep 19 07:11:54 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:12:20 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:83:20:72:08:00 SRC=192.168.3.242 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=26844 DF PROTO=UDP SPT=1900 DPT=48834 LEN=300 
+Sep 19 07:12:35 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::8429:e2ff:fe44:1ec8, outif=2, table=254
+Sep 19 07:12:35 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:12:35 jw14m2-linux tailscaled[692]: monitor: RTM_DELROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=fe80::1001:f4c7:86db:b7d6, outif=2, table=254
+Sep 19 07:12:35 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+Sep 19 07:12:48 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:82:d2:9e:08:00 SRC=192.168.3.180 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=23902 DF PROTO=UDP SPT=1900 DPT=33117 LEN=300 
+Sep 19 07:12:59 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:ec:b5:fa:83:20:72:08:00 SRC=192.168.3.242 DST=192.168.3.103 LEN=320 TOS=0x00 PREC=0x00 TTL=64 ID=29115 DF PROTO=UDP SPT=1900 DPT=33117 LEN=300 
+Sep 19 07:13:18 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:74:38:b7:53:28:b5:08:00 SRC=192.168.3.104 DST=192.168.3.103 LEN=272 TOS=0x00 PREC=0x00 TTL=128 ID=29354 PROTO=UDP SPT=1900 DPT=47250 LEN=252 
+Sep 19 07:13:36 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:f4:fe:fb:bc:d0:8b:08:00 SRC=192.168.2.89 DST=192.168.3.103 LEN=346 TOS=0x00 PREC=0x00 TTL=64 ID=64321 DF PROTO=UDP SPT=51818 DPT=52580 LEN=326 
+Sep 19 07:18:30 jw14m2-linux sudo[1355]: joshuawarren : PWD=/home/joshuawarren ; USER=root ; COMMAND=/usr/bin/journalctl -f -n 0 --no-pager
+Sep 19 07:18:30 jw14m2-linux sudo[1355]: pam_unix(sudo:session): session opened for user root(uid=0) by joshuawarren(uid=1000)
+Sep 19 07:18:33 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:f4:fe:fb:bc:d0:8b:08:00 SRC=192.168.2.89 DST=192.168.3.103 LEN=351 TOS=0x00 PREC=0x00 TTL=64 ID=34435 DF PROTO=UDP SPT=46046 DPT=58499 LEN=331 

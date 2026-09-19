@@ -1,0 +1,15 @@
+===LAST-LINE-BOOT-1===
+Sep 19 07:17:43 jw14m2-linux tailscaled[692]: monitor: RTM_NEWROUTE: src=, dst=fd1b:61c0:2d3d::/64, gw=, outif=0, table=254
+===LAST-KERNEL-BOOT-1===
+Sep 19 07:17:41 jw14m2-linux kernel: [UFW BLOCK] IN=wlan0 OUT= MAC=5c:e9:1e:7a:d0:17:f4:fe:fb:bc:d0:8b:08:00 SRC=192.168.2.89 DST=192.168.3.103 LEN=351 TOS=0x00 PREC=0x00 TTL=64 ID=28708 DF PROTO=UDP SPT=44151 DPT=60821 LEN=331 
+===SSHD-TRACE-1717-1720===
+4
+===BOOT0-RAMOOPS===
+[    0.000000] OF: reserved mem: 0x0000010010000000..0x00000100103fffff (4096 KiB) map non-reusable ramoops@1010000000
+[    3.103309] pstore: Registered ramoops as persistent store backend
+[    3.103326] ramoops: using 0x400000@0x10010000000, ecc: 0
+0
+===TMP-H14===
+ls: cannot access '/tmp/h14/': No such file or directory
+===UPTIME===
+ 07:23:18 up 3 min,  1 user,  load average: 0.11, 0.10, 0.04
