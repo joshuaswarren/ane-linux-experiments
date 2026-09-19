@@ -265,3 +265,34 @@ per-launch fixed cost, decode-realization TBD).
   the window artifacts.
 - Profiler evidence (pre-existing): `/var/tmp/qmmceil/out/profile-{short,ctx}.jsonl`
   on jw16; analyzed with the parse in this receipt's git history.
+
+## Bit-ownership derivation + safe candidate (source-side, mesa-1 `hk/dispatch-attrib` @ `ccad76a6160`)
+
+Trunk `agx_cdm_barrier` composition (read from `e1677564284`):
+
+- **G13X** (jw16): prefix `{unk_5, unk_6, unk_8}` ∪ G13X `{unk_4}` ∪ the
+  `chip != G13G` block `unk_0..unk_19 + usc_cache_inval` → effective
+  **unk_0–19 + usc_cache_inval** (full sink).
+- **G13G** (jwm1): `{unk_4, unk_5, unk_6, unk_7, unk_8}` — the trimmed
+  set already on trunk (measured +3.05% ctx1053 there, digests 48/48).
+- Packing comment (upstream): the unk_0..unk_19 block exists for PBE
+  flush + texture cache invalidation between dispatches ("blits");
+  usccdmbarrier's comment: compute→compute through the L2-backed storage
+  path does not require the PBE/texture maintenance.
+
+Measured attribution (previous section) assigns costs on real kernels:
+unk_0–19 block ≈ 15.8 µs/launch, usc_cache_inval ≈ 4.6 µs/launch, base
+turnaround ≈ 4.7 µs. Digest evidence: termA's designed set {4,5,6,8}
+held pinned digests 48/48 (without usc); usc-only shifts digests (missing
+the designed-set bits), full sink holds.
+
+**Safe candidate shape**: G13X emission = `{unk_4, unk_5, unk_6, unk_8} +
+usc_cache_inval` — the designed set covering the digest-relevant
+dependencies PLUS the USC invalidate covering uniform/texture-state
+changes. This is the previously-unmeasured quadrant. New perftest arm
+`HK_PERFTEST=designedusccdmbarrier` added (`ccad76a6160`, x86 compile
+green) so the next attribution window can cost it, followed by the
+standing digest protocol + both decode legs + the omarchy runtime suite
+before any landing discussion. State-keying (emit usc-inval only when the
+launch's uniform/texture-state actually changed, keyed on hk_cs) is the
+second-stage reduction once the static shape proves digest-clean.
