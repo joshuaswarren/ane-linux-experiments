@@ -1,4 +1,4 @@
-# 2026-09-19: decode t0 decomposed — host record 0.6 µs/node, per-dispatch cost is per-launch GPU machinery; TOP-1 gated-barriers default flip screened on jw16 and NO-LAND (+1.20% short, below the >3% rule); app-barrier count falsified as the lever; sink attribution ICD arms failed init (still unmeasured)
+# 2026-09-19: decode t0 decomposed — host record 0.6 µs/node, per-dispatch cost is per-launch GPU machinery; TOP-1 gated-barriers default flip screened on jw16 and NO-LAND (+1.20% short, below the >3% rule); app-barrier count scoped out as the decode lever (protocol-scoped negative evidence); attribution ICD root-caused (loader-stub format) + fixed script staged; sink-vs-turnaround attribution OWNED next queue cycle
 
 Date: 2026-09-19. Lane: GpuDispatchParity. Hosts: dev box (local source/build
 only, lavapipe) and jw16mbp1-linux (M1 Max G13C C0, driver
@@ -155,28 +155,33 @@ rebuilding the candidate wheel from corrected current bytes (main lineage
 ≥925cfa64) with the flip and rerunning this identical battery; moot for a
 NO-LAND verdict, required first if the mechanism is ever revisited.
 
-**Why the mechanism under-delivered (the real finding):** the A/B
-falsifies the reading that the ~12 µs/node inter-dispatch gap scales with
-APP barrier count. Halving app barriers moved nothing: each big-hammer
-split is ~free (dispatch-floor: +0.11 µs), and the gap is bound by
-per-LAUNCH costs the app cannot reduce — the kitchen-sink CDM_BARRIER
-drain on real kernels plus firmware launch turnaround, fired once per
-dispatch regardless of app synchronization. With host record measured at
-0.6 µs/node, the decode fixed cost is now cleanly attributed to
-per-launch GPU-side machinery, and the obvious attacks on it are closed:
+**Why the mechanism under-delivered (scoped finding):** the A/B
+falsifies, FOR THIS PROTOCOL (old bytes, jw16, pinned legs), the reading
+that the ~12 µs/node inter-dispatch gap scales with APP barrier count.
+Halving app barriers moved nothing: each big-hammer split is ~free
+(dispatch-floor: +0.11 µs), and the gap is bound by per-LAUNCH costs the
+app cannot reduce — the kitchen-sink CDM_BARRIER drain on real kernels
+plus firmware launch turnaround, fired once per dispatch regardless of
+app synchronization. With host record measured at 0.6 µs/node, the
+decode fixed cost is cleanly attributed to per-launch GPU-side machinery
+within this protocol; the obvious attacks on it are closed here:
 bit-trim (termA coupled regression), chain-batch (digest corruption),
 app-barrier count (this A/B, no effect).
 
-**Attribution arms failed to initialize**: the extracted hk49edf69
-package's ICD smoke returned rc=1 on every arm including default
-(ICD/loader init failure, not timing data), so the sink-vs-turnaround
-split on real kernels remains UNMEASURED. Timing-only scope; no
-functional claims carried. Named follow-ups: (1) fix extracted-ICD init
-and run the HK_PERFTEST attribution for the sink/turnaround split;
-(2) kernel-count reduction via fusion (the encoder lane's A+C candidate
-is the live path); (3) if the sink share is confirmed large, a
-precision-preserving sink replacement is the only remaining driver-side
-lever — new compiler work requiring its own exactness battery.
+**Attribution arms failed to initialize — root-caused, fix staged.**
+The extracted hk49edf69 package's ICD smoke returned rc=1 on every arm
+including default. Root cause identified post-window by diffing against
+the proven `pkg-base176` ICD: my minimal JSON stub
+(`{"ICD": {"library_path", "api_version": "1.3.0"}}`) lacked
+`library_arch`, the top-level `file_format_version`, and used a
+non-matching api_version; the proven arm carries
+`api_version 1.4.359, library_arch "64", file_format_version 1.0.1`.
+`attrib-screen.sh` on jw16 now replicates the proven shape exactly, adds
+a missing-library guard, proven 32-token smoke args, and
+`VK_LOADER_DEBUG=error` dump on failure. The ldd of the extracted
+`libvulkan_asahi.so` shows no unresolved dependencies. **The lane OWNS
+the sink-vs-turnaround attribution run** (next queue cycle after
+decoder/encoder windows).
 
 ## Hardware safety / coordination
 
