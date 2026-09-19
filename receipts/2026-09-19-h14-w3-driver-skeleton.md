@@ -59,12 +59,12 @@ from `drivers/soc/apple/mailbox.c` (ASC variant: ctrl 0x110/0x114, send
 - u64 msg0 as a full `writeq`/`readq` at SEND0/RECV0, ep at SEND1/RECV1
   (the 6ad26b7 u64-semantics fix is structural here, not a bug class to
   re-fix); FULL (bit 16) poll before send, EMPTY (bit 17) poll on recv.
-- MGMT dispatch = the py main loop: HELLO → HELLO_REPLY
-  `want = min(12, max)` in both 16-bit fields; EPMAP accumulate + reply
-  (LAST bit 51 echo / MORE bit 0), then STARTEP (ep bits 39:32, FLAG
-  bit 1) for announced system endpoints (crashlog/syslog/debug/ioreport/
-  oslog/tracekit); SET_IOP_PWR_STATE (selene initiates) → ACK echo;
-  SET_AP_PWR_STATE_ACK incoming → app EPs started, `booted = true`.
+- EPMAP accumulate + reply with the rtkit.c reply shape (LAST bit 51
+  echo when the fw says LAST, MORE bit 0 otherwise), then STARTEP (ep
+  bits 39:32, FLAG bit 1) for announced system endpoints (crashlog/
+  syslog/debug/ioreport/oslog/tracekit); SET_IOP_PWR_STATE (selene
+  initiates) → ACK echo; SET_AP_PWR_STATE_ACK incoming → app EPs
+  started, `booted = true`.
 - **App EP rings**: six `dma_alloc_coherent` rings at the kext config
   table sizes (INIT 64K, T2FC 256K, T2FH 256K, T2HS 64K, T2HC 128K,
   T2HT 64K), allocated at probe so STARTEP can fire from the MGMT path.
@@ -73,9 +73,10 @@ from `drivers/soc/apple/mailbox.c` (ASC variant: ctrl 0x110/0x114, send
 - **Doorbell codec**: `offset[43:0] | size_code[51:44] | unit[53:52]`
   (W2 §3); encode picks unit 1 (×4K) below 1 MiB / unit 2 (×1M) above —
   the K14 SetupEndpoints size-class encoder. Receive side enforces the
-  kext's `offset+size <= ring_size` bound. Round-trip self-check runs at
-  probe (unit-1 class for all three small ring sizes) and refuses to
-  bind on mismatch.
+  kext's `offset+size <= ring_size` bound in u64 (the 44-bit offset
+  field cannot wrap through the u32 ring size), and a round-trip
+  self-check runs at probe (unit-1 class for all three small ring
+  sizes), refusing to bind on mismatch.
 - **W4 stub, clearly marked**: `ane_t6021_csne_submit()` returns
   `-EOPNOTSUPP` with a dev_warn_once naming W4. CSNE_CMD ids needed by
   W4 (BOOT, PING, BUILDINFO, REG_FILE_LOAD, IPC_ENDPOINT_SET/UNSET,
