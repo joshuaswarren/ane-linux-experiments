@@ -218,7 +218,7 @@ poll register is CPU_STATUS — both offsets come from the SoC config
 - Poll: `readReg(cfg+[dev+0x454]) == 0x08042006`, ≤1000 iters. The
   `[dev+0x454]` offset value is template-loaded (no direct store found):
   candidates are SCRATCH7 (0x1840064, per the W2-era decode where the fw
-  writes 0x80402006 = table-ready) or CPU_STATUS (0x1400048). Identity
+  writes 0x08042006 = table-ready (K14 poll movz 0x2006+movk 0x804<<16, verified; the older 0x80402006 was a transcription error)) or CPU_STATUS (0x1400048). Identity
   OPEN — flagged, not guessed.
 - Reset ordering at register level is therefore: SCRATCH7 mode write
   (cold 0 / warm 1) → RVBAR gate → RVBAR ← entry → CPU_CONTROL 0 →
