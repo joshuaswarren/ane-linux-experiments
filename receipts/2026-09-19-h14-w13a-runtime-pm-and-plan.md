@@ -202,3 +202,26 @@ Still the single open datum for a boot attempt: WHERE the image (and
 boot-args blob) must be placed before step 2 — iBoot's loader constant.
 Everything downstream (poll, doorbell registration, CSNE transport) is
 now pinned end-to-end and encoded in `ane/t6021/ane_t6021.h` comments.
+
+### Addendum 3b: the config-driven asserts are now NAMED
+
+The two post-RVBAR "asserts" are CPU_CONTROL register writes, and the
+poll register is CPU_STATUS — both offsets come from the SoC config
+(object built by `initializeANESoCConfig` per-variant):
+
+- 22 sites store `movz w?,#0x44; movk w?,#0x140,lsl #16` → **0x1400044**
+  (h14g CPU_CONTROL) into `[dev+0x4a0]`; 6 sites add
+  `orr #0x200000` → **0x1600044** (h16g/h17/h18g variant builders).
+- Boot tail: `writeReg(cfg+0x4a0, 0)` then `(…, 0x10)` = clear RUN, set
+  RUN — i.e. CPU_CONTROL 0x1400044 ← 0 then ← 0x10 for h14g (W10's live
+  read CPU_CONTROL=0 at 0x285400044 = ANE+0x1400044 ✓).
+- Poll: `readReg(cfg+[dev+0x454]) == 0x08042006`, ≤1000 iters. The
+  `[dev+0x454]` offset value is template-loaded (no direct store found):
+  candidates are SCRATCH7 (0x1840064, per the W2-era decode where the fw
+  writes 0x80402006 = table-ready) or CPU_STATUS (0x1400048). Identity
+  OPEN — flagged, not guessed.
+- Reset ordering at register level is therefore: SCRATCH7 mode write
+  (cold 0 / warm 1) → RVBAR gate → RVBAR ← entry → CPU_CONTROL 0 →
+  CPU_CONTROL 0x10 → poll. All names pinned except the poll-register
+  identity above; page-tables/boot-args/placement/stream-mapping remain
+  open separately (§6).
