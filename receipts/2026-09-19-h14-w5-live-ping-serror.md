@@ -89,7 +89,14 @@ before any host write).
   2026-09-19T12:16:06–12:16:21 sender 192.168.3.103:6668 (safe load at
   4185.6, armed load at 4200.07, SError decode tail).
 
-## 6. Next lane (in order)
+## 6. Hardware follow-ups — blocked this lane by the park order
+
+All further device contact is blocked by the lane instruction "ANY
+SError/reset: capture evidence, just capture and park" (W5-live Work
+item 6): the machine already ate one machine-fatal reset this hour, and
+the stability runbook gates any second attempt. Nothing below is
+runnable in this lane; the items are recorded so the next authorized
+hardware lane runs them in this order:
 
 1. 32-bit write halves for the a2i msg word (kill candidate (a)
    cheaply) — still expect the session wall.
@@ -100,3 +107,7 @@ before any host write).
    semantics) but no sender.
 3. Only after a HELLO ACK: SetupEndpoints announce words, then EP1
    PING with the write-half fix.
+
+Driver doc commit 74e12ea (same branch) carries this wall into the
+module text (param desc + ping comment) so no future load discovers it
+the hard way.
