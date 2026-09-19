@@ -101,6 +101,8 @@ Code-gate status (c — removed by this fix): zero remaining bf16 refusals, work
 
 ## 11. Follow-up window 2026-09-19 (Bf16RecertRepair): sections 4/6/7 items closed
 
+Status precision (audit fix): sections 11.1–11.7 cover the C++ suites, mlx-lm matrix, Bonsai-2-27B, and Parakeet/AC/ACO gate — all GREEN on corrected bytes `1fbc9825`/wheel `dev202609192209+1fbc9825`. **Still open on lift bytes: section 9 item 4, upstream `test_compile.py` 68/68 — not yet run on any post-972c6ddb wheel; coordinated GPU slot pending (Main-directed). Do not treat this gate as closed until that run lands here.** The 9a793054 intermediate is superseded (unsafe guard removal, caught pre-integration); every GREEN result below is on `1fbc9825` bytes except where explicitly labeled `9a793054` (the two GATE GREEN lines: 16:59 on 9a793054 — superseded by 17:19 GREEN on 1fbc9825).
+
 Window: jw16 lock held 16:33:44–17:25 CDT (holder PID under `/tmp/bf16-window-holder.sh`; service + `llm-benchmark-recovery.timer` stopped under hold, both restored after: is-active, `/health` 200, real completion `chatcmpl-axDapGrNFqdxGtGjEeOfbiBz5uBbmMo3`, lock re-held by service).
 
 ### 11.1 fused_chain 33/34 root cause (was: `test_fused_chain.cpp:1025` "nonidentity broadcast keeps the per-node fallback (shapeless)", `CHECK_EQ(eager, 1)` got 2)
@@ -156,6 +158,7 @@ All five digests equal the section-5 pins from the 972c6dd wheel — compile ON 
 
 Ancestry: `git merge-base --is-ancestor 63c1d3cf HEAD` → exit 1 (NOT ancestor), re-verified at 1fbc9825 and 925cfa64.
 
-### 11.7 Open item (owned, test-scope only)
+### 11.7 Open items (owned, each with a named next action)
 
-None blocking. The strengthened regressions land with 925cfa64; test-only, byte-identical to the recerted wheel — no further GPU recert required for it (Main-approved scope).
+1. **Upstream `test_compile.py` on lift bytes — CLOSED.** Run on the corrected wheel (`1fbc9825` bytes, venv `/tmp/bf16-lift-venv`) in a short coordinated hold: **68/68 passed** (`rc=0`, "68 passed in 1.69s"), log `/var/tmp/bf16-lift/test_compile-1fbc9825.log` on jw16. The three formerly-named-refusal cases stay green through the fence lift + dispatch fix.
+2. Strengthened fused-chain regressions land with `925cfa64` (test-only, byte-identical to the recerted wheel — no further GPU recert required for it, Main-approved scope). Durable full-suite log pending a GPU slot; strengthened cases themselves ran green in-window.
