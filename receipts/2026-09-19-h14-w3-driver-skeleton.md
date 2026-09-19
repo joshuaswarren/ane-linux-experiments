@@ -1,10 +1,10 @@
 # H14/T6021 W3 — Linux driver skeleton (static, no device) (2026-09-19)
 
-Verdict: **SKELETON BUILT — `ane_t6021.ko` cross-compiles and links against the
-jw14m2 kernel tree on this box; every undefined symbol verified against the
-kernel's export list; overlay rebased to the W1 architecture and dtc-clean.**
-No device was touched. Compile status detail at §6 (built + linked + symbol
-audit; modpost CRC check pending a vmlinux build in this tree, see below).
+Verdict: **SKELETON BUILT AND MODPOST-VERIFIED — `ane_t6021.ko`
+cross-compiles, links and passes full modpost symbol verification
+against the jw14m2 kernel tree on this box; overlay rebased to the W1
+architecture and dtc-clean.**
+No device was touched. Build detail at §5.
 
 Branch: omarchy-ane `feat/t6021-ane-driver` (from `feat/t6021-rtkit-w2` @
 6ad26b7). Ancestry: 63c1d3cf **absent in omarchy-ane** (W2 receipt noted the
@@ -113,23 +113,21 @@ from `drivers/soc/apple/mailbox.c` (ASC variant: ctrl 0x110/0x114, send
   had no arm64 generated headers).
 - Build: `make KERNELDIR=.../omarchy-linux ARCH=arm64
   CROSS_COMPILE=aarch64-linux-gnu-` → both objects compile warning-free,
-  `LD [M] ane_t6021.ko` links (146,832 B).
-- Modpost note (honest status): this kernel tree has never had a vmlinux
-  build, so `Module.symvers` does not exist and stock modpost cannot
-  verify symbols (it flagged even in-tree modules the same way). Two
-  compensations:
-  1. **Full export audit**: all 31 undefined symbols in the `.ko` were
-     checked against the kernel tree's export list — 27 direct
-     EXPORT_SYMBOL matches, `_dev_err`/`_dev_info`/`_dev_warn` via the
-     `define_dev_printk_level` macro (drivers/base/core.c:5068, exports
-     `EXPORT_SYMBOL(func)` per level), `alt_cb_patch_nops`
-     (arch/arm64/kernel/alternative.c:305). **All 31 resolve.**
-  2. A `make vmlinux` (then `make modules`) was started in this tree to
-     produce a real `Module.symvers` and re-run the module build without
-     `KBUILD_MODPOST_WARN`; if it lands post-receipt, the follow-up run
-     is recorded in the session, not silently assumed.
-- Status line: **built + linked + export-audited**; modpost CRC
-  verification = recipe-verified (§6 tracks it).
+  `LD [M] ane_t6021.ko` links.
+- **Full modpost verification PASSED**: the kernel tree had never built
+  vmlinux (no `Module.symvers`, so stock modpost flagged even in-tree
+  modules), so a `make vmlinux` + `make modules` pass was run in-tree
+  (16-way, minutes) to produce a real `Module.symvers` (1,414,101 B),
+  then the module rebuilt clean: `MODPOST Module.symvers` with zero
+  unresolved-symbol errors, exit 0. An interim export audit (all 31
+  undefined symbols checked against the tree's EXPORT_SYMBOL list — 27
+  direct matches, `_dev_err`/`_dev_info`/`_dev_warn` via
+  `define_dev_printk_level` core.c:5068, `alt_cb_patch_nops`
+  alternative.c:305) had already come back green before the symvers
+  pass superseded it.
+- Status line: **built, linked, and modpost-verified against the
+  jw14m2 kernel tree** (out-of-tree module; not loaded anywhere — no
+  device in this lane).
 
 ## 6. What is NOT here (scope)
 
