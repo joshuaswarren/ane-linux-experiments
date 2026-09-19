@@ -118,3 +118,6 @@ delta.
   main.cpp, ane.h, libane/, doctest/, test_worker, test_sandbox/}`.
 - Test sandbox: `test_ane_resident.py 10/10`, `test_relay_bypass.py 3/3`,
   `test_worker 16/16 (198 assertions)` on `/tmp/relay-bypass-build/`.
+
+## Post-Commit A/B Test Result
+The staged GPU A/B test was kicked off after the initial commit. The candidate `c-ac-serve1` (with `MLX_OMARCHY_ANE_RELAY_BYPASS=1`) RUN-FAILED with `phase7_encoder.EncoderRunError: ANE batch round L00-A (island-attn-a-kt) failed: resident worker closed its input before completing`. The C++ splice pump or the python client crashed or closed early during the multi-round batch. The baseline `b-ac-serve1` passed. Since the candidate failed to complete the serve, this lever is currently a NO-LAND (bug in the relay-bypass implementation).

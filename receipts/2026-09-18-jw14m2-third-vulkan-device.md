@@ -76,10 +76,14 @@ Notes:
   measurement; wall 174.7 s for 24 steps).
 - **F7 NaN did NOT reproduce on T6021 in this configuration**: logits finite
   through all 24 steps (`nan_from_step: null`); decoded prefix is plausible
-  model reasoning text. Per F1Chain's standing F7 finding this is recorded as
-  a cross-silicon observation, NOT a text-trust claim and NOT a clean-room
-  contradiction (different probe, short horizon, greedy, short context). F7
-  remains the open lane on jw16.
+  model reasoning text. F1Chain's reply this session: their repro used full
+  mlx_vlm generate with KV cache (NaN at step 4+ of continuing steps), so this
+  no-cache probe differs; F7 narrows to {Honeykrisp driver path (jw16 M1 Max),
+  cache-bearing GDN state, longer-horizon interaction}. Canonical F7 citation:
+  `2026-09-18-runtime-modernize-source-bump.md` §15 on main (`bc2f1fc6`),
+  repro `/tmp/round14_probe.py` on jw16. Recorded as a cross-silicon
+  observation, NOT a text-trust claim and NOT a clean-room contradiction of
+  F7. F7 remains the open lane on jw16.
 
 ## 4. Qwen Q4 GPU baseline — third SoC (numbers only)
 
