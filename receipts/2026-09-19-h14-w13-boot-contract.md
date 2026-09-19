@@ -1,15 +1,16 @@
-# H14/T6021 W13 — boot-ROM entry independently verified (K13 ≡ K14, byte-identical contract); image-placement candidates narrowed; no device contact (2026-09-19)
+# H14/T6021 W13 — boot-ROM entry independently verified (K13 ≡ K14); image placement mechanism resolved to the DART-mapped shared surface (addendum §5); surface-address publication open; no device contact (2026-09-19)
 
-Verdict: **CONTRACT VERIFIED, PLACEMENT STILL OPEN.** The K14 boot sequence's
-RVBAR write value `0x0081_0000_0000_0001` is independently confirmed by the
-H13 kext (9.512.0, macstudio boot KC) executing the identical pattern, and
-Asahi's own t602x device trees contain no ane node (no independent IRQ
-source anywhere — the single-IRQ evidence stands). The one datum still
-missing for a boot attempt remains iBoot's image placement. **Zero device
-writes; no module load; no reboot** (jw14m2 untouched except reads;
-`/sys/firmware/fdt` pulled read-only — memreserve list is empty, so the
-live-ADT route on this box needs the jw16-style phram method and was NOT
-attempted).
+Verdict: **CONTRACT VERIFIED, PLACEMENT MECHANISM RESOLVED TO THE SHARED
+SURFACE, PUBLICATION OPEN.** The K14 boot sequence's RVBAR write value
+`0x0081_0000_0000_0001` is independently confirmed by the H13 kext (9.512.0,
+macstudio boot KC) executing the identical pattern, and Asahi's own t602x
+device trees contain no ane node (no independent IRQ source anywhere — the
+single-IRQ evidence stands). The addendum (§5) resolved *where* the image
+lives (the ANE shared-memory surface, a runtime buffer ASC-visible via
+dart-ane0/mapper-ane0 — not a fixed host-MMIO SRAM constant); §7 pins the
+SetupFWInitBootArgs call contract. The one datum still open is *how the
+surface address reaches the ROM*. **Zero device writes; no module load; no
+reboot.**
 
 ## 1. Boot-ROM entry encoding — independently verified
 
@@ -126,16 +127,47 @@ path is `SetupFWInitBootArgs(ANESharedMemorySurfaceParams*)`
 plus variable sizes `8+0x24`/`0x158`, `0x58×n+8+0x24` — the struct layout
 is mineable next) and the register/field that publishes it.
 
-## 6. Next implementable step
+## 6. SetupFWInitBootArgs call contract — pinned (addendum 2)
 
-With placement resolved to "the DART-mapped shared surface" (§5), the
-remaining implementation datum is narrower: the `ANESharedMemorySurfaceParams`
-layout and the mechanism that publishes the surface address to the ROM
-(`SetupFWInitBootArgs` walk `0x95ac8cc–0x95ac9d0` is the first mine
-target, followed by whoever calls it with the surface base). Fallback
-route, unchanged: live-ADT exposure on jw14m2 (jw16 phram method; needs
-approval + module build/load + netconsole window) to check whether iBoot
-populated ane0 `segment-ranges` this boot. Until the surface-to-ROM
-contract is pinned, the staged firmware in `/opt/ane/fw/` stays a staged
-artifact and no RVBAR/SCRATCH7 write is made. MMIO write table: none this
-lane.
+**Evidence (disassembly):**
+
+- True function start `0x95ac538` (located by backward `bti c; pacibsp`
+  scan; the `0x95ac938` symbol is a mid-function label). Exactly two
+  callers: `bl 0x95ac538` at `0x95395bc` and `0x9539c48`.
+- Both callers iterate a per-client table: base `dev+0x2750`, stride
+  `0x50` (`x21 = idx*5; x25 = base + x21<<4`), count from a flag word at
+  the client-context array `[dev+0x2898]` (checked non-null before the
+  loop; also gated by `bl 0x9542cbc(dev)` at the second site).
+- Per call, the client entry (`x1 = &table[idx]`) is filled, then the
+  caller rounds four size fields read from the returned buffer
+  (`[+0x28]`, `[+0xb8]`, `[+0xe8]`, `[+0x148]` — the same offsets the
+  walk inside SetupFWInitBootArgs fills) up to the granularity held at
+  `[dev+0x30]+8` (`udiv/mul` align-up), storing results at
+  `dev+0x2710/0x2718/0x2720/…`. Page-granularity size rounding before
+  the buffers are handed to the fw.
+- Inside SetupFWInitBootArgs (walk `0x95ac8cc–0x95ac9d0`), the boot-args
+  buffer itself is allocated with `bl 0x9629ed8(size, 8)` and stored at
+  `[surface+0xe8]`; a 16-byte template from `0x7503420` is stored at
+  `[+0xc]`; per-client blocks use strides `0x158`/`0x11c` and sizes
+  `n*0xc + 0x24` / `n*0x58 + 8 + 0x24` depending on type word 1 vs 4.
+
+**Inference (labeled as such):** the surface whose address the ROM needs
+is the same ANE shared-memory surface of §5 (`[[dev+0x978]+0x38]`), and
+publication happens either (a) via a fixed DART iova the ROM assumes
+(dart-ane0 `vm-base 0x10000000000` makes the first mapping deterministic
+in principle), or (b) via boot-args contents written into a
+ROM-known page. The kext binaries pin (from evidence) the write path,
+sizes, and call order; they do **not** pin which publication variant is
+real — that needs the ROM (not in any artifact here) or a live-oracle
+lane. Both variants keep the same loader shape; only the constant differs.
+
+## 7. Next implementable step
+
+Resolved this lane: placement mechanism (§5) and the boot-args call
+contract (§6). The remaining implementation prerequisite is the
+surface-address publication variant ((a) fixed-DART-iova vs (b) ROM-known
+page, §6) plus the exact `ANESharedMemorySurfaceParams` field layout
+(walk `0x95ac8cc–0x95ac9d0` is the first mine target — the block strides
+and allocation calls are already pinned in §6). Until that last datum is
+pinned, the staged firmware in `/opt/ane/fw/` stays a staged artifact and
+no RVBAR/SCRATCH7 write is made. MMIO write table: none this lane.
