@@ -17,6 +17,11 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
 - **c2f94b9** `ane/t6021: fail fw_boot before ANY MMIO write; shared
   acceptance predicate; template +0xC0=4 resolved` — Main review
   round 3 (see Corrections).
+- **d40e65c** `record resolved RVBAR lifecycle in boot state report`
+- **2f06caf** `no engine-aperture reads while ANE domain gated;
+  unambiguous skip-path note`
+- **5b0724e** `sourced init-suballocation fill per corrected audit
+  pass5b-5d/6`
 
 ### New files
 
@@ -42,7 +47,13 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
   write; `fw_boot=0` binds status-only. No force path exists. The
   pass5 "dev+0x784 bit0 has no writer" claim is itself under review
   (alias/indirect absence not definitive) and gates nothing.
-- `tools/h14_boot_regression.c` — shipped host regression, 39 checks:
+- `ane/t6021_boot.h` sourced fill (5b0724e): ane_t6021_init_sources
+  {fw_dva, ipc_dva, cfg_size, pool_dma, pool_word0} → [0x00]/[0x08]/
+  [0x10]/[0x18]/[0x58]/[0x60]/[0x68] + template[0x00]=0 +
+  template+0xC0=4; open [0x20]/[0x28]/[0x30]/[0x50] and gaps
+  [0x34-37]/[0x64-67] stay caller-zeroed; publication fenced.
+- `tools/h14_boot_regression.c` — shipped host regression, 39 checks
+  (independently generated golden init image):
   fold vectors (bit 9/10/11/47/48/55/56 algebra), latch decode,
   acceptance round-trips (`entry_bits(compose(x)) == x & mask` for
   clean iovas; explicit loss cases), scratch split/join, init-fill
@@ -84,6 +95,24 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
 - Push receipt: `4b48ce2..5f6892d feat/t6021-ane-boot-w15 ->
   origin` (GitHub joshuaswarren/omarchy-ane).
 
+## Pass5b-5d/6 incorporation (5b0724e)
+
+- Init field contract corrected: `[0x08]` = 'IPC ' surface DVA
+  (dev+0x988 = AllocateSharedMemorySurface out-param, tag 0x49504320);
+  `[0x10]` = config+0x138 image byte-count (u32 zext), NOT a dup;
+  `[0x18]` = 0x10000000 − size; `[0x50]` = zext u32 [x23+4] (object
+  open); `[0x58]` = pool DMA base; `[0x60]` = pool word0;
+  template+0xC0 = 4 (Main raw anchors, pass5 all-zero withdrawn).
+- Ack registers split: first-alive beacon = SCRATCH0 (selene fn 0x86EC
+  → index 0; host-side consumer OPEN); init-ack = SCRATCH7 (fn 0x71A4
+  0x77cc-0x77f0, the kext-polled register). fw_alive watches SCRATCH0;
+  booted requires the SCRATCH7 init ack.
+- Linux allocation map (legacy branch): FWIM = config+0x138 byte-count
+  (Linux fw_buf 0x400000 = documented superset covering vmsize
+  0x36c000 ZI tail); 'IPC ' = min(config+4, dev+0x3A70 cap) — cap
+  numeric open; suballoc 0x174 from a Linux pool (pool total size
+  open); RTBuddy sizes never referenced.
+
 ## Exact remaining source-backed hardware gates (owners named)
 
 1. **Provider first-enable equivalence** — kext
@@ -97,14 +126,11 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
    (b) programmed/latched state only a reset lifecycle reaches. Owner:
    M2ResetLifecycle (ANE_CleanupForColdReboot_gated, island
    power-cycle RVBAR semantics, dev+0x41f provenance).
-3. **Init publication** — fw consumes `[0x08]..[0x68]` (pass5):
-   `[0x08]` = `*(dev+0x988+0x18)` second-surface DVA (identity
-   undecoded), `[0x10]`/`[0x18]` = config-size terms
-   (`0x10000000-config.size` formula closed; config.size identity
-   unconfirmed on Linux), `[0x30]` = dev+0x990 load-progress word.
-   First-alive ack site unattributed (0x71A4 acks at 0x77c8; 0x86EC
-   also writes 0x08042006 via idx0 — SCRATCH0 vs SCRATCH7 depends on
-   accessor base at execution time, not dumped).
+3. **Init publication** — fw consumes `[0x08]..[0x68]`; remaining
+   Linux-source opens: IPC surface size numeric (min(config+4,
+   dev+0x3A70 cap) — cap needs the h14g config blob field map), pool
+   total size, `[0x30]`/`[0x50]` semantics, and the SCRATCH0
+   first-alive beacon's host-side consumer.
 
 ## Hardware step: NOT APPROVED (Main, 2026-09-20)
 
