@@ -1,0 +1,19 @@
+# Exact caller integration for candidate initrd 63e39dd8f3316c8d39c75caf9854fcf04eddd14b4f5e8378c43c8847b269b75b
+# (init uses /sysroot; verified init:65-66 mount, init:109 switch_root)
+#
+# Install the snippet as: /usr/bin/jwm1-firmware-late   (mode 0755, in the initramfs image)
+# Insert AFTER the existing init line:        "$mount_handler" /sysroot
+# Insert BEFORE the existing init line:       /usr/bin/switch_root /sysroot "$init" "$@"
+#
+# ---- exact caller lines ----
+if ! /usr/bin/jwm1-firmware-late /sysroot; then
+    echo "jwm1 vendorfw: persistence FAILED - stopping before switch_root"
+    exec /bin/sh
+fi
+#
+# Notes:
+# - /sysroot is passed EXPLICITLY (no directory-existence guessing; Main directive).
+# - Any snippet exit != 0 (mount failure, mount-not-ours, pre-existing mount/symlink,
+#   checked-copy mismatch, missing source) stops the caller BEFORE switch_root.
+# - The tmpfs mounted at /sysroot/lib/firmware/vendor persists across switch_root
+#   (mounted under the new root); kernel fw_path resolves /lib/firmware/vendor first.

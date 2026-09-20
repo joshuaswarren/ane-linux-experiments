@@ -1,0 +1,17 @@
+# early embed spec for the candidate initrd (source-only plan; builder: Jwm1RecoveryLive)
+# Image layout today: [early_cpio 0..1108][gzip cpio main @10240 .. end]
+# Phase E1 — append, verbatim, NO re-encoding:
+#   cat /tmp/jwm1-netfix.img  content-store/b1e15f13.../firmware.cpio  > netfix+vendorfw.img
+#   (kernel initramfs accepts concatenated archives; the b1e15f13 blob is plain newc;
+#    its 121 hardlink-encoded entries decode as-is; vendorfw/ prefix lands at /vendorfw)
+# Phase E2 — append one deterministic 3-entry cpio (built ONCE, hashed here):
+#   lib/firmware/vendor      symlink -> /vendorfw        (mirrors upstream add_symlink /lib/firmware/vendor /vendorfw)
+#   vendorfw/.vendorfw.sha256 file (this plan dir, 217 entries, busybox sha256sum -c format)
+#   vendorfw/.vendorfw.manifest file (b1e15f13 store manifest.txt, 38,548 B, sha b606915f...)
+# Phase E3 — invocation: snippet asahi-firmware-late.sh runs after /sysroot mount, before switch_root
+# Ordering: brcmfmac is a MODULES=(brcmfmac) modconf module -> loaded during coldplug AFTER early
+# hooks; /vendorfw + /lib/firmware/vendor must exist before coldplug — satisfied by embed (E1/E2 are
+# image content, present from unpack).
+# Kernel resolution: request brcm/brcmfmac4364b2-pcie.apple,ekans.* -> fw_path /lib/firmware/vendor
+# (first, verified patch in 7.1.6 binary and same asahi patch family in 7.1.13-3-1-ARCH,
+# CONFIG_NVME_CORE/BLK_DEV_NVME/NVME_APPLE all =y builtin) -> /vendorfw/brcm/...

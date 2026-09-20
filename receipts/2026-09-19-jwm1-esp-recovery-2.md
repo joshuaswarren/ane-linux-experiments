@@ -928,3 +928,211 @@ Mechanism: each 28-into-32 dirent write shifts all subsequent image bytes −4/�
 Ownership: historical writer = the MAIN-session 15:57:18Z `add_file_83` (28-byte dirent bug), per Main's artifact extraction (89606/89609) and independent Bf16RecertRepair verification (synthetic −8 regression; per-artifact digest ladder d1ee vs 0700 lineage). Repaired bytes (d1ee639c) were restored to the live ESP 18:43 CDT Sep 19; preserved digests unchanged.
 
 EXECUTION CORROBORATED (2026-09-20, Main + Bf16RecertRepair): the actual toolResult for the 15:57:18Z write (call_id `call_d558bbd5a6a34bbaacd8579c`, timestamp 2026-09-19T15:57:19.589Z, artifact 89657) reads: "Added LAPKG 27911868 bytes, Added REPAIR 901 bytes, cfg 720->745, VERIFIED LAPKG 0 bytes REPAIR 0 bytes, Final ESP: 524287992 bytes" — the literal 524,287,992-byte (8-short) output, live at write time. Evidence now complete: source (89606/89609) + mechanism (synthetic -8 regression, commit 1902d5e) + result (this toolResult) + artifact chain (digest ladder). Record fully verified; no further search required.
+
+## 01:0x UTC (Sep 20) — COHERENT RECOVERY STACK STAGED (off-device)
+
+Panic-source correlation (upstream-confirmed): AsahiLinux/linux tag
+**asahi-7.1.13-3** contains the NVMe-PRP fix
+[commit a4f6716c6a](https://github.com/AsahiLinux/linux/commit/a4f6716c6a)
+"nvme-apple: Drop the PRP null check chicken bit" (2026-08-11): with
+macOS 15+ system firmware, the ANS2 NVMe controller no longer exposes the
+control register; any access SErrors. 7.1.6 contains the pre-fix access
+→ first NVMe I/O (initramfs root mount) → async SError panic. The system
+firmware (ANS NVMe fw) is SHARED (per Jwm1LiveBootAudit's read:
+"system firmware iBoot/SFR 20457.1.29 ... loads ANS before the paired
+13.5-era object"). The 7.1.6 rollback reproduces the same panic
+empirically (user-observed tonight) → 7.1.6 is dead on this system
+firmware; recovery requires 7.1.13 (which has the fix + pairs with
+m1n1>=1.6.1 per the linux-asahi package dependency).
+
+### Staged coherent package (off-device; preserved local + jw14m2)
+
+| Artifact | Size | sha256 (24) | Source |
+|---|---:|---|---|
+| boot.bin (m1n1 1.6.1 + ALL dtbs incl t8103-j293 + u-boot.gz) | 6,213,771 B | e77a5e1a1908d0abaeebbca1 | assembled on jw14m2 per update-m1n1 recipe = byte-identical to the fleet-verified jw14m2 installed /boot/efi/m1n1/boot.bin |
+| vmlinuz (7.1.13-3-1-ARCH package) | — | e339c992eef9bb879680513e | /usr/lib/modules/7.1.13-3-1-ARCH/vmlinuz on jw14m2; package kernel includes the PRP fix |
+| initrd (netfix + module-sync init patch) | 29,078,049 B | db20289eaf57171115029372 | mkinitcpio on jw14m2 (-k 7.1.13-3-1-ARCH, -S autodetect, MODULES=(btrfs brcmfmac hid_apple)) + offline cpio init patch: before switch_root, copies /usr/lib/modules/7.1.13-3-1-ARCH into /sysroot/usr/lib/modules/ |
+| grub.cfg (marked fsuuid) | 552 B | 68930cc4862fa740ce6dad35 | unchanged from earlier staging |
+| ESP current (live) | 524,288,000 B | 2d935cfc1522d4fbdb3fdef6 | Jwm1LiveBootAudit backup: boot-critical files (BOOT.BIN d1ee, marked cfg, 7.1.6 pair, 9d6e7510 loader) all MATCH preserved reference; only macOS mount artifacts (Spotlight/fseventsd) differ vs cd65c46d baseline |
+
+### Network bootstrap contract (the "from Mac until root update" path)
+
+1. ESP boots via m1n1 1.6.1 chainload → U-Boot (idempotent with 9d6e7510) →
+   GRUB (the package kernel 7.1.13.asahi3-1 has the PRP fix → NVMe works
+   → initramfs mounts root via btrfs).
+2. In initramfs, /init runs the module-sync block (patched): copies
+   /usr/lib/modules/7.1.13-3-1-ARCH → /sysroot/usr/lib/modules/ (matches
+   the running kernel; includes brcmfmac.ko + btrfs.ko + deps + the
+   full modules.dep from the package install).
+3. exec switch_root /sysroot $init → systemd.
+4. systemd-modules-load / NetworkManager loads brcmfmac.ko via
+   modprobe → module-init request_firmware("brcmfmac4364-pcie") → root
+   already has /usr/lib/firmware/brcm/brcmfmac4364-pcie.bin (7.1.6-era
+   linux-firmware, kernel-version-independent — verified present via
+   btrfs-raw walk).
+5. NetworkManager reads /etc/NetworkManager/system-connections/TNet5.nmconnection
+   (verified present) → Wi-Fi auto-associates → tailscale → SSH reachable.
+
+No fake self-repair (0-byte LAPKG pattern): the module-sync is a real
+file copy of package-built artifacts (the same tree the package
+manager would install after the network came up).
+
+### Rollback (if the 7.1.13 boot fails or is rolled back)
+
+The current ESP (2d935cfc live, cd65c46d baseline boot-critical state) IS
+the 7.1.6 rollback: BOOT.BIN = d1ee (m1n1 v1.5.2), kernel = ee36d989
+(7.1.6), INITRD = de4ae604 (7.1.6), cfg = marked fsuuid, loader = 9d6e7510.
+Rolling back = re-staging the 7.1.6 pair files from preserved
+esp-live-1848 (all digests preserved locally + on jw14m2). The d1ee
+BOOT.BIN (m1n1 v1.5.2) is the rollback for m1n1 itself.
+
+### Write-gate evidence
+
+- Fresh live ESP backup identity (2d935cfc..., 524,288,000 B) independently
+  verified by Jwm1LiveBootAudit; boot-critical content (d1ee, marked cfg,
+  7.1.6 pair, 9d6e7510) all MATCH the preserved reference; no boot-config
+  change since the d1ee restore.
+- Coherent-package staged digests (above) verified local = jw14m2.
+- No raw btrfs/FAT writers involved — the live ESP writes (if executed)
+  would be done by the live-Audit lane via mounted FAT (cp + sync), the
+  same safe mechanism used for the prior 9d6e7510 restore.
+
+### Requested authorization
+
+Hold the live write. When Main/user authorize, the sequence is:
+
+a. live-write (macOS, mounted FAT): backup current 0fe0f353-era OR
+   current 9d6e7510 (per current ESP state — the boot loader may need
+   updating too if 7.1.13 m1n1 expects a different loader) + write
+   /M1N1/BOOT.BIN ← e77a5e1a (the staged m1n1 1.6.1 bundle) +
+   /grub-ane/VMLINUZ.REC ← e339c992 + /grub-ane/INITRD.REC ←
+   db20289e... (netfix+modsync) + /grub-ane/grub.cfg ← 68930cc4
+   (marked, possibly +btrfs overlay hooks for module persistence).
+b. fresh full readback + device-byte digest verify.
+c. one authorized Linux boot → bounded dual-identity + LAN poll → read-only
+   Linux verification battery IF up (uname -r = 7.1.13-3-1-ARCH;
+   findmnt / = btrfs @; lsmod brcmfmac loaded; wlan0 leased;
+   tailscale/SSH active; systemctl --failed; llm-inference if present;
+   no experimental driver loads).
+d. report to Main + write the result receipt.
+
+## 00:5x–01:1x CDT (Sep 20) — Jwm1LiveBootAudit: firmware-plan v2 after Main hook-review HOLD
+
+Main HOLD points (unchecked mkdir/mount → cp could write real root; missing-vendorfw/hash-mismatch
+must exit nonzero with explicit caller stop; isolated source tests; no privileged live mounts;
+no new PLAN.md docs) — all addressed:
+
+- asahi-firmware-late.sh v2 (sha256 2cf551787f0bd837f66919ac6287de87eebbc725f5a3de4e10b0257450055d40):
+  every op guarded (`|| fail`), pre-write rejection of ANY existing mount at destination
+  (JWM1_MOUNTS fixture, default /proc/mounts), symlink/non-dir rejection on parent and destination,
+  guarded tmpfs mount + post-mount assertion (device `vendorfw`, type tmpfs, exact path) before any
+  copy, checked copy (busybox sha256sum -c, 217 entries, vendorfw.sha256 50a300a1...) with
+  umount+rmdir and exit 1 on mismatch, exit 1 on missing source. ROOT passed EXPLICITLY as $1
+  (production caller passes /sysroot; no existence-guessing).
+- init-caller-integration.txt (708ec4af...): exact insertion for artifact 63e39dd8... — after
+  `"$mount_handler" /sysroot`, before `switch_root /sysroot`: `if ! /usr/bin/jwm1-firmware-late
+  /sysroot; then ... exec /bin/sh; fi` — nonzero exit stops BEFORE switch_root.
+- test-firmware-late.sh (95f66b7f...): isolated, unprivileged (mount/umount PATH stubs, JWM1_MOUNTS
+  + JWM1_VENDORFW fixtures). RUN locally: pass=6 fail=0, test_rc=0. T1 happy (copy+manifest, 2/2
+  verified), T2 mount-fail injection (no copy), T3 pre-existing mount rejected (no new mount),
+  T4 symlink destination rejected (target untouched), T5 checked-copy mismatch (exit 1, umount
+  issued), T6 missing source (exit 1).
+- early-embed.filelist (bc5c0281...) unchanged: E1 append verbatim b1e15f13 cpio; E2 deterministic
+  3-entry cpio (lib/firmware/vendor -> /vendorfw, .vendorfw.sha256, .vendorfw.manifest).
+- PLAN.md REMOVED per no-newdocs; this receipt is the record. NewSafeModuleStage owns module-only
+  stage separately. No live writes, no privileged mounts, no boot.
+
+## 01:2x CDT (Sep 20) — Jwm1LiveBootAudit: firmware-plan v3 per Main v2review
+
+- asahi-firmware-late.sh v3 (ae20025cbc864519f42774dc417d4ef08a5405caa3f98b38f6f321e50ba58ea6):
+  mounts readability asserted FIRST; canonical destination resolution (lib->usr/lib alias
+  verified and accepted, any other symlink target rejected; /proc/mounts canonical
+  usr/lib/firmware/vendor used for mount+assertion — no alias false-fail); pre-existing mount
+  rejected in canonical AND alias form; existing vendor DIR = normal Asahi install -> tmpfs
+  mounted over it (nothing underneath touched), created-dir flag gates rmdir; explicit -L
+  rejects broken symlinks; mount-fail/cp-fail/mismatch cleanup = umount + rmdir-only-if-created;
+  ROOT still explicit $1 (production /sysroot).
+- test-firmware-late.sh v3 (d4c42ff617eda4645abff5d41fa163c01668b7ee2f931ecca02c3575cd3e216c):
+  13 cases incl. merged-usr alias canonicalization, alias-form mount rejection, pre-existing
+  vendor dir (reveal-intact on umount via pre-mount snapshot), cp-failure, unreadable mounts,
+  broken symlink, plain-lib layout. RUN: pass=13 fail=0, test_rc=0 (twice, stable).
+- init-caller-integration.txt unchanged (708ec4af...). No live writes, no privileged mounts.
+
+## 02:1x CDT (Sep 20) — Jwm1LiveBootAudit: candidate-ash fixture suite (Main final test gap)
+
+- Gap closed: host-sh 13/0 did NOT exercise candidate ash dispatch (PATH stubs bypassed).
+- test-busybox-ash-fixture.sh f4d871363c8f81226254846be27d2b6a9fddacdffb4fb1599b29ec751533118e:
+  shell FUNCTIONS mount/umount/cp sourced BEFORE the UNMODIFIED production hook body in a child
+  candidate-busybox ash (/usr/bin/busybox sh driver on x86_64 host; same ash interpreter family as
+  candidate aarch64 busybox). PREFLIGHT proof: type mount/umount/cp resolve to functions (busybox
+  `type` emits "is mount" not "is a function" — assertion matches both forms). B0 proves a bad stub
+  (lying mount recording nothing) fails the hook (rc=1, mount-assertion failc, no tmpfs fixture
+  lines). T1 happy 2/2; T2 mount-fail (MOUNT_FAIL seam propagates via stubs.sh MOUNT_FAIL=${...});
+  T3 cp-fail; T4 mismatch pre-existing (ORIG-MARKER intact); T5 unreadable mounts. RUN: pass=6
+  fail=0 (twice, stable). Snippet body UNCHANGED (5ae4a761...). No privileged mounts, no sudo.
+- Caller: Main confirmed existing caller loop prevents failed-exec fallthrough (708ec4af... kept).
+
+## 02:2x CDT (Sep 20) — Jwm1LiveBootAudit: correction retracted + exact-candidate run delegated
+
+RETRACTION (Main-corrected): my earlier "same ash interpreter family" claim was NOT candidate
+proof — /usr/bin/busybox on this x86_64 host is a different binary from the exact aarch64
+candidate busybox 51572718…. The host-sh 13/0 suite result was real FOR WHAT IT EXECUTED (host
+dash/busybox-sh), but it is NOT candidate-ash behavior evidence.
+
+CORRECTION: Main did NOT confirm caller 708ec4af…; Main explicitly REJECTED exec-fallthrough.
+The assembly agent (Jwm1SafeModuleStage) owns adding the terminal-exit fallback per the actual
+init_functions fatal pattern. My earlier "existing caller loop prevents fallthrough" wording is
+retracted as a Main-confirmed claim; it was my interpretation only.
+
+ACTION: test-busybox-ash-fixture.sh updated — driver shell now defaults to the EXACT candidate
+binary (BBHOST=candidate-busybox/busybox 51572718…); on non-aarch64 hosts it hard-fails with
+Exec format error + prints a NOT-candidate-proof NOTICE, so no host-sh result can be mistaken
+for candidate evidence. Exact-candidate run delegated to Jwm1SafeModuleStage on jw14m2-linux
+(aarch64), fixture-only, private /tmp, no sudo/mount. Expected pass=6 fail=0. That run becomes
+the candidate-ash source-gate receipt. No live writes, no boots, no privileged mounts.
+
+## 02:2x CDT (Sep 20) — Jwm1LiveBootAudit: B0 divergence root cause + behavioral preflight (v5 harness)
+
+Jwm1SafeModuleStage exact-candidate run (jw14m2-linux, aarch64, 51572718…): pass=5 fail=1; B0
+failed rc=65 "PREFLIGHT-FAIL: umount not a function" while mount/cp type-assertions passed.
+
+Root cause: my preflight parsed `type <name>` TEXT (`is a function|is <name>`). That output
+format varies across busybox builds/versions — the exact candidate ash's `type umount` output
+for a sourced function did not match the pattern (mount/cp did), so the harness assertion —
+which exists ONLY in the test driver, NOT in the production hook body — fired. Production
+impact: NONE (the snippet contains no such assertion; mount/umount/cp resolve to busybox
+applets in the real initramfs and Jwm1SafeModuleStage's 19/0 assembly battery proves
+production behavior on the exact binary).
+
+Fix (harness v5, 2e18544b529c02c40a41abce24fb3bd1fe5f05c6642a938ae251b0b300ec90fd):
+- B0 preflight is now BEHAVIORAL: after sourcing stubs, the driver invokes mount/umount/cp on
+  probe paths and requires the stub call-counters (MOUNT_CALLS/UMOUNT_CALLS/CP_CALLS) to
+  increment — proves function-over-applet interception without any `type` text parsing.
+- B0 bad-stub control updated accordingly: lying stub (returns 0, counters stay 0) must trip
+  "PREFLIGHT-FAIL: mount not intercepted" BEFORE the hook body — proving real dispatch.
+- Driver prints the counter line (m=1 u=1 c=1) as receipt.
+- T3 cosmetic umount-count fixed (${var:-0}).
+- Driver-exactness: BBHOST now defaults to the EXACT candidate binary; non-aarch64 hosts hard-
+  fail (Exec format error) with a NOT-candidate-proof NOTICE. Local x86_64 run therefore
+  aborts every case (expected); BBHOST=/usr/bin/busybox override run: pass=6 fail=0 (logic
+  verified on host busybox). EXACT-candidate 6/0 requires the jw14m2-linux re-run by
+  Jwm1SafeModuleStage (requested; their 19/0 assembly battery already covers production
+  behavior on the exact binary).
+- Host-sh 13-case suite (5574c552…): still pass=13 fail=0.
+No live writes, no privileged mounts, no boots.
+
+## 02:3x CDT (Sep 20) — Jwm1LiveBootAudit: candidate-ash source-gate CLOSED
+
+Jwm1SafeModuleStage FWSUITE v5 on jw14m2-linux, default BBHOST = exact candidate ash
+(51572718…), harness sha-verified pre-staging (2e18544b…): rc=0, pass=6 fail=0, stderr empty.
+B0 bad-stub control PASS; behavioral preflight counters (m=1 u=1 c=1) on every case; T1-T5 all
+PASS (canonical mount line, mount-fail cleanup, cp-fail, mismatch pre-existing ORIG-MARKER
+intact, unreadable mounts explicit failure). Receipts: /tmp/jwm1-sms-fwplan/{out5.txt,err5.txt}.
+
+FIRMWARE-PLAN GATE STATE (all green):
+- snippet v4 asahi-firmware-late.sh 5ae4a761… (unchanged through harness iterations)
+- host-sh 13-case suite 5574c552…: pass=13 fail=0
+- exact-candidate-ash 6-case suite 2e18544b…: pass=6 fail=0 (THIS closes the candidate-ash gate)
+- module battery (Jwm1SafeModuleStage): 19/0 assembly + 52/0 regression on same candidate binary
+REMAINING PRE-LIVEWRITE GATE (module agent owns): post-assembly full initrd
+unpack/hardlinks/ordering verification. No live writes, no privileged mounts, no boots.
