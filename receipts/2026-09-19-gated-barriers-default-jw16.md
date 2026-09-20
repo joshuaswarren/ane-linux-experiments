@@ -631,25 +631,29 @@ What transfers to the G13C theory:
    stock and fork on G14S. The fork's coopmat/execution changes did not
    move pinned-leg results there — same contract my G13C profiles
    satisfy.
-2. **The mid-length leg is the sensitive one.** The ONLY digest drift
-   is the unpinned 262/128 leg (`55215e22…` → `f873dc2b…`), and prefill
-   regresses heavily at all lengths (227/1180/1286 → 405/1829/2266).
-   My G13C census shows the qmm prefill coopmat variant boundary
-   (QmmPrefillCoopmatM16F16 top at short, QmmPrefillCoopmatF16 top at
-   ctx) sits between the short and ctx legs — i.e. exactly across the
-   mid length where PR14's execution is driver-sensitive. Concrete
-   addition to the next G13C window: a 262-length census leg to locate
-   which qmm prefill variant fires at 262 and whether the M16 ↔ coopmat
-   selection boundary is near it. If it is, PR14's unpinned mid-leg
-   drift gets a candidate mechanism (selection boundary) that is
-   checkable per generation without claiming parity.
-3. **Risk note for G13C coopmat work**: on G14S this coopmat-flavored
-   fork roughly halves prefill speed (and 1053 decode 82.98 → 149.13)
-   while the f32 matmul micro improves (0.40 → 0.73 TFLOPS) — behavior
-   changes are large and not uniformly positive across kernels. Any
-   G13C coopmat variant work must A/B prefill and decode separately;
-   micro-level wins (their matmul row) did not predict end-to-end
-   direction on that die.
+2. **Mid-length sensitivity is a CANDIDATE hypothesis, not established.**
+   The only digest drift is the unpinned 262/128 leg (`55215e22…` →
+   `f873dc2b…`). My G13C census measured only the short and ctx
+   endpoints (M16F16 tops short, QmmPrefillCoopmatF16 tops ctx); where
+   — or whether — the variant boundary sits between them is UNKNOWN
+   from those endpoints. CORRECTION 2026-09-20: an earlier version of
+   this section placed the boundary "across the mid length"; that is
+   not established. The 262-length census leg added to the next G13C
+   window is the discriminating measurement that would locate it; until
+   then this is a candidate mechanism only, and nothing cross-generation
+   is claimed.
+3. **CORRECTED direction (earlier text inverted it).** The PR14 prefill
+   row is THROUGHPUT in tok/s: 227/1180/1286 → 405/1829/2266 tok/s
+   means prefill throughput RISES on the fork (latency falls), and the
+   f32 matmul micro also improves (0.40 → 0.73 TFLOPS). The regression
+   is in DECODE latency: 155.71 → 176.99 (short) and 82.98 → 149.13 ms
+   (1053/32) per token. So on G14S the fork's behavior changes move
+   end-to-end legs in OPPOSITE directions — prefill and the matmul
+   micro improve while decode regresses — and a micro-level win there
+   coincided with, not contradicted, a decode cost. Any G13C coopmat
+   work must A/B prefill and decode legs separately; this remains
+   behavior-level evidence on a different die with no qualification
+   claim.
 
 No merge action taken or proposed here (build-fix + axes-file contracts
 belong to the reviewer, ContributorPRReviewNow; the receipt is honest
