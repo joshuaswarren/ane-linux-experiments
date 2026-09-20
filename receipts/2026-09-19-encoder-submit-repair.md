@@ -561,3 +561,25 @@ compose (slice/select/matmul/add/softmax task chaining) or a remaining
 spelling delta not visible in the MIL. The per-program device
 differential (driver + arms staged, one hold) is the isolation path;
 services restored and verified (chatcmpl-FCYeab8pd6LUqTgLNMDhOv2GU9d2ilPP).
+
+## 17. ROOT CAUSE ISOLATED: the device softmax stage is the earliest wrong intermediate
+
+Per-intermediate matched comparison (identical captured layer-0 inputs,
+device vs GPU fp16 reference, bit-level + ULP + inf/nan masks):
+- softmax: 1,124,487 / 1,125,000 elements mismatch (99.95%), max_abs
+  0.211, ZERO inf/NaN on both sides — the device softmax output is
+  semantically wrong (layout/axis/data-path), not a rounding artifact.
+- attn-out: 103,664 mismatches, max_abs 0.0078 — downstream propagation
+  of the softmax error through the certified PV bundle.
+- The -inf datapath is EXONERATED for the divergence: the -65504
+  discriminator arm produced the IDENTICAL wrong hidden (3b9202cf) as the
+  0xFC00 arm — the softmax reads wrong data/layout regardless of the fill.
+
+This names the defect exactly: the softmax program (5 tasks) inside the
+ac-head package produces wrong output for this composition — compiler
+lane device-qualification defect #2 (the first, strided-slice binding
+crash, was already fixed by the bd-input respell). Everything else
+(handler, transport, registration, fallback) is proven working.
+
+Services restored and verified: active, /health ok, real completion
+chatcmpl-FCYeab8pd6LUqTgLNMDhOv2GU9d2ilPP. F stays branch-only NO-LAND.
