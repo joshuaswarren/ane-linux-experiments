@@ -440,3 +440,24 @@ No speculative writes; nothing executed since the approved staging probe.
 - OPEN next chunk: identify the provider class/method behind
   vtable+0x10 (walk the arg object to its vtable symbol), then the
   full ANESharedMemorySurfaceParams layout.
+
+### Addendum 3l: wrapper-vs-payload PARTIALLY resolved (with DartAudit)
+
+`OSValueObject<Params>::init` (0x957a2f0) zeroes the object at
++0x28, +0x38, +0x48, +0x58, +0x68 (16B strides), byte +0x78, qword
++0x80 — object span ≈0x88. Therefore:
+- loader-path `[[dev+0x978]+0x38]` IS a params payload field (zeroed
+  at init, later = shared-surface base).
+- boot-fn `[[dev+0x978]+0x18]` (64-bit LDR) reads a region BELOW the
+  zeroed payload — if [dev+0x978] were the OSValueObject, +0x18 would
+  be OSObject HEADER (libkern header ≈0x20 before the T value), which
+  makes a header-field-driven RVBAR compose implausible. CONCLUSION:
+  [dev+0x978] most likely resolves to a DIFFERENT object class than
+  OSValueObject<Params> (the resolver 0x95f6674(dev, "FirmwareLoaded",
+  &dev->x978) target class is the open piece — DartAudit item 3), OR
+  the compose intentionally reads a wrapper field. The two candidate
+  identities are now precisely characterized; the resolver tail
+  settles it. DartAudit also pinned: SCRATCH math uses the DIFFERENT
+  slot [dev+0x980] (reads [+0x18] w32 AND x64, [+0x38] x64) — 0x978
+  and 0x980 are distinct registry slots; my earlier conflation is
+  corrected.
