@@ -1,0 +1,84 @@
+{
+  "schema": "jwm1-gpu-v072rc1-restore/1",
+  "date": "2026-09-20",
+  "lane": "Jwm1GpuRestore",
+  "host": {
+    "name": "jwm1-linux",
+    "serial": "C02DP17UQ05P",
+    "serial_source": "/proc/device-tree/serial-number (read over pinned SSH; matches owner pin)",
+    "ssh": "ProxyJump macstudio, key id_rsa_2025, BatchMode, StrictHostKeyChecking=yes",
+    "hostkey_pin": "/tmp/jwm1-fresh-known-hosts ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMqC1Sh4PBkOUGLl0YYI23z1LFo80tHQwgSUvjRFWVxi (hashed entry; connection accepted with strict checking)",
+    "kernel": "7.1.13-3-2-ARCH aarch64 (linux-asahi 7.1.13.asahi3-2)",
+    "pid1": "systemd (stale init=/bin/bash remains in /proc/cmdline; owner-exec path, untouched)",
+    "services": {
+      "NetworkManager": "active",
+      "sshd": "active",
+      "sddm": "active before and after the window (GUI undisturbed)",
+      "llm-inference.service": "no such unit on the fresh image; zero llm/mlx unit files installed — nothing to stop, nothing restored"
+    },
+    "image": "fresh Asahi Alarm Minimal (BTRFS) installed 2026-09-20 per receipts/2026-09-20-jwm1-clean-install.json"
+  },
+  "runtime": {
+    "wheel": "mlx_omarchy-0.32.3.dev202609201440+5b18306-cp314-cp314-linux_aarch64.whl",
+    "wheel_sha256": "fe51534b1ed658f64f2e16f5ce4709c27cbb1c683388b50a2d04eacf6b362a01",
+    "wheel_verification": "three-way: GitHub release v0.7.2-rc.1 API digest, local /tmp/mlx-v072-rc1-assets sha256sum -c, remote sha256 after scp",
+    "venv": "/var/tmp/jwm1-v072rc1/venv (python 3.14.7, user-owned; pip bootstrapped via ensurepip 26.2.1 — image ships no pip/uv)",
+    "install": "pip install --no-deps <wheel> -r requirements.txt; requirements sha256 1c3c69b89c34dfa2870c1ff8638aa4fe0c33d722a9bfe7b51b7319754dda2833 (text-install receipt pin); upstream mlx NOT co-installed",
+    "prerequisite_added": "openblas 0.3.34-1 via 'sudo pacman -S --needed --noconfirm openblas' (genuinely absent; wheel links libopenblas.so.0; no -Sy/-u refresh)",
+    "compile": "enabled (MLX_DISABLE_COMPILE unset)"
+  },
+  "model": {
+    "repo": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+    "revision": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+    "weights": "model.safetensors",
+    "weights_sha256": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863",
+    "weights_verification": "sha256 after hf download at pinned revision; matches release qualification pin and receipts/2026-09-20-qwen38-distill2b-smoke.json",
+    "snapshot": "/home/joshuawarren/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/snapshots/0867d98bfb174b042d88461c0e7c97b86b34b381",
+    "offline": "HF_HUB_OFFLINE=1 during the window"
+  },
+  "gpu": {
+    "device": "Apple M1 (G13G B1)",
+    "architecture": "honeykrisp",
+    "vulkan_api": "1.4.354",
+    "packages": "mesa 1:26.2.3-1, vulkan-asahi 1:26.2.3-1, vulkan-icd-loader 1.4.357.0-1",
+    "render_node": "/dev/dri/renderD128"
+  },
+  "window": {
+    "lock": "/tmp/m1-gpu.lock (created root-owned 0666 via sudo before the window; single exclusive flock, fd 9)",
+    "lock_inode": 1384,
+    "service_handling": "no inference service exists on this image; nothing stopped; sddm active throughout",
+    "sdpa": {
+      "result": "PASS (3/3 float32 cases vs host float64, threshold 1e-4)",
+      "max_abs_error": [0.000000220087141426842, 0.000000574878757708675, 0.0],
+      "full_upstream_suite": "not covered"
+    },
+    "decode": {
+      "command": "bench_decode_vlm.py --model <snapshot> --prompt-id long --tokens 32 --warmup-tokens 4 --stop-policy ignore-eos --wheel <wheel>",
+      "prompt_chars": 1208,
+      "prompt_tokens": 245,
+      "generated_tokens": 32,
+      "warmup_tokens": 4,
+      "stop_policy": "ignore-eos",
+      "decode_tokens_per_second": 15.5882,
+      "prefill_seconds": 5.603949,
+      "prefill_tokens_per_second": 43.7192,
+      "ids_sha256_16": "24a65754f4a0d99a",
+      "ids_first": [2, 9988, 314],
+      "ids_last": [383, 829, 7320],
+      "provenance": "mlx-omarchy 0.32.3.dev202609201440+5b18306 verified=match; libmlx.so sha256-16 c28a485f98b55aad; core.cpython-314-aarch64-linux-gnu.so sha256-16 211710c72b767243"
+    },
+    "post_checks": "sha256sum -c of harness + weights all OK after the run; sddm active"
+  },
+  "limits": [
+    "One bounded smoke per leg; not a statistical benchmark",
+    "No performance-parity claim of any kind (no native-Metal, no cross-host); the 26.4057 tok/s and 233 prompt tokens recorded for jw16 in the release acceptance are that host's own record — jwm1 observed 15.5882 tok/s and 245 prompt tokens on the same 1208-char prompt; the prompt-token delta is an observed cross-host difference and is not reconciled here",
+    "No Linux ANE inference and no ANE device action in this lane (separate restoration plan)",
+    "Fresh image with a live GUI session; numbers are not comparable to prior jwm1 boots"
+  ],
+  "artifacts": {
+    "remote_root": "/var/tmp/jwm1-v072rc1 (wheel, venv, harness/, out/)",
+    "receipt_dir": "receipts/2026-09-20-jwm1-gpu-v072rc1-restore/",
+    "raw": ["sdpa.log", "decode.log", "sha256.pre"],
+    "harness_source": "mlx-omarchy receipts/2026-09-20-release-v0.7.2-rc.1 @5481252a and scripts/ @5b183060; sha256 recorded in receipt.md"
+  }
+}
