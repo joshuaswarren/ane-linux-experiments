@@ -443,3 +443,26 @@ GPU-computed masked input.
 
 Service restored and verified post-window: llm-inference active, timer
 active, real completion chatcmpl-6nsWHFAC9zH3PH7gQpPtqmV0dzyvuu4B.
+
+## 12. Isolation plan + preserved identities (per Main)
+
+- FAILING-RUN PRESERVED: bundle = immutable ac-head-014755b (manifest
+  e71a093d, programs 9515166f/0879c627/3d82c969/48465bf7/1f725233);
+  failing hidden 3b9202cf (diverged prefix 73, bounds FAIL); gate runner
+  = worktree agent/fusion-submit-lane @ b6975218+ (v3 handler).
+- INPUT CAPTURE: the next window's first arm dumps the identical captured
+  inputs (q/k/cond/relpos/a_fill) + per-program intermediates before any
+  new claim.
+- PROGRAM-BY-PROGRAM ISOLATION: emit truncated-dispatch variants of the
+  same package ([0], [0,1], [0,1,2], [0,1,2,3], [0..4]) with the prefix's
+  final tensor re-bound as output; identical captured inputs per variant;
+  GPU fp16 reference per prefix; the FIRST diverging prefix names the
+  program. Requires the compiler lane's adapter to emit the truncated
+  wraps (requested; CPU-side compile, no device needed for the wraps).
+- BOOKKEEPING/FIX SHAS: F placement v3 = worktree agent/fusion-submit-lane
+  (commit at b6975218+1, this receipt's companion); wire suite + placement
+  checks 17/17 at the same tip; mint provenance census d041417 lineage
+  (014755b binary 4e61eca8; contains base 389664f).
+- QUEUE: Decoder ILP2 counterbalanced confirmation next; then the jointly
+  staged differential window (my inputs capture + their --diag); GPU on
+  demand. My gate re-baselines B/O marginals only after exactness.

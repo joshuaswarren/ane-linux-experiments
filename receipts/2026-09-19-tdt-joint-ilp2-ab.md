@@ -98,3 +98,38 @@ structure to the prior two A/B receipts.
 - The −2.1 % is scoped to this fixture/host/wheel with overlapping
   ranges; per-run attribution (register pressure, scheduling) not
   decomposed.
+
+## COUNTERBALANCED REPEAT — NO-LAND (pre-registered rule, 2026-09-19 ~20:13)
+
+The pre-registered counterbalanced battery (schedule AB/BA/AB/BA/AB/BA,
+frozen at `040f456e` before execution; pins BASE `fabe6697…`, CAND
+`040f456e…`; exercised-file hashes recorded pre-run) **fails to confirm
+the win**:
+
+| arm | tdt_decode median (ms) | per-run (ms) |
+| --- | ---: | --- |
+| base | **844.8** | 843.9, 844.6, 853.8, 858.1, 845.0, 843.6 |
+| cand | **845.5** | 841.0, 827.5, 850.2, 827.2, 850.0, 875.7 |
+
+- Median delta **+0.7 ms** — no effect.
+- Paired deltas by round (cand − base): −2.9, −17.1, −3.6, −30.9, +5.0,
+  +32.1 (4/6 paired wins) — split by order: AB [−2.9, −3.6, +5.0],
+  BA [−17.1, −30.9, +32.1]. The largest pro-candidate deltas sit in
+  BA rounds where the candidate ran SECOND — consistent with the
+  order/warmup bias Main flagged on the first battery.
+- Gates 6/6 pins-EXACT both arms (correctness intact; the change is
+  exact, it just is not faster).
+
+**Verdict: ILP2 = NO-LAND.** The first battery's 6/6 A-then-B paired
+wins were order/warmup bias, not an effect. PR #13 closed as NO-LAND;
+branch `agent/tdt-joint-ilp2` preserved unmerged; kernel stays at the
+landed rebalance state (sequential per-thread chains). Next step:
+device phase attribution of the ~845 ms baseline before any further
+micro-bet.
+
+Window: dual-named consent (Main + Encoder explicit release) → both
+units stopped/verified → single flock hold (20:13:37–20:14:48) →
+restore: both units active, llama-server PIDs 597146/597148, real
+completion `chatcmpl-Y6XrU8llWNWoRZBp0OBJgJGwGDS4jUvf`. Artifacts:
+`summary-counterbalanced.json`, `schedule.txt` mirrored here; jw16
+`/var/tmp/tdt-pairload-ab-ilp2/`.

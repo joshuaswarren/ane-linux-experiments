@@ -126,10 +126,10 @@ tail; internal attribution not decomposed further).
   each fail). PR-tip run log: `pr-tip-tests.log` (5+8+3 tests OK, run at
   tip `3def32c0`, tree `84f2f068`).
 - glslangValidator compiles the rendered kernel clean.
-- Device: both arms 6/6 pins-EXACT above. `validate_loop` 5-seed
-  bit-exact at the candidate identity is a REQUIRED item of the
-  scheduled recert and is PENDING until run — it is not satisfied by the
-  file being unchanged.
+- Device: both arms 6/6 pins-EXACT above. `validate_loop` 5-seed at the
+  candidate identity: **DONE at the scheduled recert — 5/5 PASS,
+  FAILURES: 0** (raw mirror: `validate-loop-5seed.raw.txt`; full record
+  in the Recert section below).
 
 ## Window discipline
 
