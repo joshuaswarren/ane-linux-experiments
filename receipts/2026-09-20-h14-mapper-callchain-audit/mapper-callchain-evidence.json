@@ -1205,6 +1205,19 @@
   "result": "68->77 PASS (9 new anchors): word0 = gated size arg; value buffer = 32B copy of the sp+0x70 params struct into valueobj+0x10; OSValueObject ptr propagated to out-param; single-access scan proves no intervening store/load of the word0 slot",
   "SUPERSEDED": [
    "params layout inference 'value+0x00=SIZE, value+0x08=DVA; obj+0x10/obj+0x18' \u2014 corrected per Main: valueobj+0x10 = POINTER TO BUFFER; params buffer+0x18 = DVA; dev+0x980 IS the params buffer (0x40000 'DDM', out-param 0x960402c); dev+0x968 = different manager (0x96040d0). RAW anchors in pass6h all stand; only the layout inference is withdrawn"
-  ]
+  ],
+  "heap_floor_writer_decode": {
+   "site": "start+0x28a8 region (0x9602e68-0x9602e90)",
+   "decode": [
+    "0x9602e68 ldr x0,[x22,#2336] -> mapper (dev+0x920)",
+    "0x9602e6c-0x9602e78 vptr auth (salt 0xcda1)",
+    "0x9602e7c mov x17,#0x888 -> MAPPER vtable slot 0x888 = IODARTMapper::getPageSize",
+    "0x9602e80-0x9602e8c slot call (salt 0x5393)",
+    "0x9602e90 str x0,[x20,#14992] -> dev+0x3A90"
+   ],
+   "verdict": "heap floor = IODARTMapper::getPageSize() RETURN stored verbatim - there is NO movz/movk immediate. Whole-KC scan for movz w?,#0x4000 (encoding 0x52900000|rd): ZERO sites - the constant 0x4000 never exists as a code immediate anywhere in this kernel.",
+   "provenance": "0x4000 = ADT dart page-size property (dtree-j414c.txt:708-709 compatible dart,t8110 / page-size 0x4000, verified in-file), parsed at DART driver runtime into the spec object the getter reads indirectly (*(mapper+0x120)+0x30); getter raw: 0xabb0968 bti c / 0xabb096c f9409008 ldr x8,[x0,#288] / 0xabb0970 f9401900 ldr x0,[x8,#48] / 0xabb0974 d65f03c0 ret",
+   "linux_equivalent": "Linux t8110 dart driver hardcodes 16K pages equivalently - the constant's authority is the ADT property, byte value 0x4000 (16384)"
+  }
  }
 }
