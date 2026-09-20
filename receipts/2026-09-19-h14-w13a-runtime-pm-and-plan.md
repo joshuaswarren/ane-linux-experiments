@@ -538,3 +538,20 @@ source-pinned.
 - No loader prescription derives from the withdrawn status theory; the
   RVBAR compose is source-pinned as a def-use fact without a decoded
   bitfield.
+
+
+### Addendum 4 (chunk: 0x95f679c region = program bootargs builder)
+
+The post-completion continuation (0x95f679c–0x95f727c+, no named
+symbols — anonymous locals) calls ZinComputeProgram RT-graph
+descriptors: `ZinComputeProgramRTGetAllocOperationsDescription`,
+`ZinComputeProgramRTGetBufferMapOperationsDescription`,
+`ZinComputeProgramGetNumberOfKernelSectionsForProcedure` — i.e. it
+builds the boot-args buffer-descriptor list FROM THE PROGRAM'S OWN
+ALLOC/BUFFER-MAP OPERATIONS (the loaded firmware image is treated as a
+ZinComputeProgram whose RT graph defines its buffers). This names the
+bootargs-layout derivation route precisely: the field semantics come
+from the ZinCompute RT op descriptions in this kext region, not from
+selene string xrefs. The 0x104790/0x104544 keyed container stores the
+per-client result blocks. DART mapping is NOT in this region — it
+happens elsewhere (or the surface mapping is the W14 dma_alloc path).
