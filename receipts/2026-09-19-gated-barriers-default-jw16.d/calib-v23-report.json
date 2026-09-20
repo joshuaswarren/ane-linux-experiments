@@ -1,0 +1,53 @@
+{
+ "identity": {
+  "run_identity": "device-side identity block was not written (v2.3 identity crash after syncs); library sha + wheel version recorded in receipt from prior provenance checks",
+  "signature_check": {
+   "calibrated_enum": 397,
+   "decode_kernel": 412,
+   "decode_route": "fused multi-weight (QmmVecQ4MultiSubgroupF16)",
+   "verdict": "PROXY ROUTE - single-row python route selects a different kernel than the decode fused route; full curve through this route would measure the wrong kernel"
+  },
+  "profile_path": "receipts/2026-09-19-gated-barriers-default-jw16.d/calib-v23.ndjson",
+  "device": "Apple M1 Max (G13C C0)",
+  "period_ns": 1.0,
+  "valid_bits": 64,
+  "label": "calib-v23"
+ },
+ "calibration": {
+  "verdict": "strict (under source flush convention: j emitted before its flush work)",
+  "region_counts": {
+   "0": 66,
+   "1": 1,
+   "2": 1,
+   "3": 1,
+   "4": 1
+  },
+  "region_enums": {
+   "0": [
+    0,
+    8,
+    14,
+    101,
+    314,
+    397
+   ],
+   "1": [
+    397
+   ],
+   "2": [
+    397
+   ],
+   "3": [
+    397
+   ],
+   "4": [
+    397
+   ]
+  },
+  "join_reasons": [
+   "explicit"
+  ],
+  "j_count": 4
+ },
+ "note": "lifecycle diagnostic: establishes event layout and routing only; durations are bracketed instrument values and support NO performance conclusion"
+}
