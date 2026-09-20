@@ -53,9 +53,8 @@ def test_capture_regression():
     assert cal["region_enums"]["2"] == [397]
     assert cal["region_enums"]["3"] == [397]
     assert cal["region_enums"]["4"] == [397]
-    sig = r["identity"]["signature_check"]
-    assert sig["calibrated_enum"] == 397
-    assert "PROXY ROUTE" in sig["verdict"], sig["verdict"]
+    assert cal["calibrated_enum"] == 397
+    assert "PROXY ROUTE" in r["route"], r["route"]
 
 
 if __name__ == "__main__":

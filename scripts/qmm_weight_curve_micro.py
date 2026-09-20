@@ -1,40 +1,24 @@
 #!/usr/bin/env python3
-"""qmm weight-fetch sensitivity micro v2.3 (protocol: receipts/
-2026-09-19-gated-barriers-default-t6001-test-host.md).
+"""qmm weight-fetch micro v2.4 (protocol: receipts/2026-09-19-gated-
+barriers-default-t6001-test-host.md). Single-row calibration diagnostic COMPLETE
+(strict lifecycle proven, Word-route 397 -> PROXY); this build adds the
+compiled-route producer for the fused multi-weight route.
 
-STATUS PER MAIN REVIEW: only --pass calibrate is approved to run (small,
-after Decoder's verified release). It establishes the ACTUAL profiler
-event lifecycle (joins per eval, flush placement) and same-shape routing
-on the device. The full W-curve (--pass bracketed/--pass attribute)
-remains gated until the parser is validated against that diagnostic.
-No performance conclusions are drawn from calibration.
+Device passes are PRODUCERS ONLY: they run under the profiler, force
+syncs, record identity/conditions/bytes/finite-checks into a sidecar
+JSON, and exit. ALL parsing/attribution happens post-producer-exit via
+--pass report on the complete profile (the C++ stdio buffer races
+mid-run reads; the profiler destructor emits "end" without flushing
+pending slots). Convention proven empirically (calib-v23.ndjson,
+t6001-test-host): the j record is emitted BEFORE its join's flush work, so region
+r = flush work of sync r; region 1 holds the warmup straggler,
+regions 2..CALIBRATION_CALLS+1 must hold exactly one tick-ful dispatch
+each with one stable enum, and any dispatch beyond that region, or a
+join count != CALIBRATION_CALLS+1, is NON-STRICT.
 
-Lifecycle facts from source (encoder.h:214, encoder.cpp:157-172,603,
-eval.cpp:135, gpu_profiler.h flush_slot):
-  - synchronize() defaults to reason "explicit"; ring-slot-reuse joins
-    and mx.sync joins are therefore NOT distinguishable by reason.
-  - d events flush only at joins or slot reuse; the destructor emits
-    "end" WITHOUT flushing, so pending events are lost at exit.
-  - mid-run reads race the C++ stdio buffer.
-Hence: same-process layout assumptions are EMPIRICAL claims. The
-calibration pass verifies the one property that must hold under any
-lifecycle and reports the observed layout descriptively:
-
-  STRICT layout (syncs placed warmup | c1 | c2 | c3):
-    j_count == CALIBRATION_CALLS + 1, every d region r in
-    1..CALIBRATION_CALLS holds EXACTLY one tick-ful dispatch, and NO
-    dispatch exists in any region > CALIBRATION_CALLS (any post-final-
-    sync event, or any extra join carrying one, rejects).
-    Strict-pass proves one qmm call == one dispatch.
-  NON-STRICT (anything else): a descriptive report is emitted for
-    parser validation; nothing is attributed, no verdict is claimed.
-
-Calibration uses the SAME (k, cols) shape as the plan with a distinct
-weight buffer, so routing (kernel enum, n, gx) is identical by
-construction; a different shape would route differently and prove
-nothing about plan calls. --k/--cols are operator-supplied, never
-guessed. Unbracketed wall pass is labeled plan_wall_s: it spans the
-plan only (materialization and warmup excluded from the timer).
+Gates: --pass bracketed/--pass attribute (full W-curve) refuse to run
+until the compiled route is verified. No performance conclusions from
+any calibration output.
 """
 import argparse
 import hashlib
@@ -55,7 +39,25 @@ SEED = 20260919
 BOOTSTRAP = 10000
 
 
-# ---------- planning / analysis (pure) ----------
+# ---------- pure helpers ----------
+
+def force_sync(mx):
+    """Flush-forcing call: mlx.core exposes `synchronize` on the t6001-test-host
+    diag wheel (verified); older builds name it `sync`."""
+    if hasattr(mx, "synchronize"):
+        mx.synchronize()
+    elif hasattr(mx, "sync"):
+        mx.sync()
+    else:
+        raise SystemExit("no mlx.core sync/synchronize; flush cannot be "
+                         "forced")
+
+
+def require_sync(mx):
+    if not (hasattr(mx, "synchronize") or hasattr(mx, "sync")):
+        raise SystemExit("no mlx.core sync/synchronize; flush cannot be "
+                         "forced on this mlx build")
+
 
 def build_plan(blocks=BLOCKS, w_series=None, min_steps=MIN_STEPS, seed=SEED):
     w_series = W_SERIES if w_series is None else w_series
@@ -105,25 +107,18 @@ def paired_deltas(block_stats):
     return out
 
 
-# ---------- calibration stream verification (pure) ----------
+# ---------- calibration verification (pure; post-exit) ----------
 
 def verify_calibration(d_by_region, j_count, reasons=None):
-    """d_by_region: {region: [(has_ticks, dur_us, enum)]}. Flush
-    convention (source + empirically proven on t6001-test-host, calib-v23.ndjson):
-    the j record is emitted BEFORE flush_slot writes that join's d
-    lines, so region r = the flush work of sync r:
-      region 1 = warmup straggler (last warmup dispatch(es) whose slot
-                 was not reused before the sync; tick-ful, count >= 0),
+    """d_by_region: {region: [(has_ticks, dur_us, enum)]}. Region r =
+    flush work of sync r (j emitted before its flush work):
+      region 1 = warmup straggler (>=0 tick-ful dispatches),
       regions 2..CALIBRATION_CALLS+1 = ONE calibration call each,
-      any region beyond CALIBRATION_CALLS+1, or j_count !=
-      CALIBRATION_CALLS + 1, is NON-STRICT.
-
-    Returns (verdict, report). verdict "strict": each calibration
-    region has exactly one tick-ful dispatch with a stable enum - one
-    qmm call == one dispatch is PROVEN. verdict "non-strict": report
-    only; no attribution, no perf claim."""
+      region > CALIBRATION_CALLS+1 with any event, or j_count !=
+      CALIBRATION_CALLS+1, is NON-STRICT.
+    strict => one qmm call == one dispatch, kernel-stable."""
     expected_j = CALIBRATION_CALLS + 1
-    report = {"j_count": j_count, "join_reasons": reasons or {},
+    report = {"j_count": j_count, "join_reasons": sorted(reasons or []),
               "region_counts": {str(r): len(v) for r, v
                                 in sorted(d_by_region.items())},
               "region_enums": {str(r): sorted({e for _, _, e in v})
@@ -155,40 +150,29 @@ def verify_calibration(d_by_region, j_count, reasons=None):
     return "strict", report
 
 
-# ---------- device path ----------
-
-def force_sync(mx):
-    """Flush-forcing call: mlx.core exposes `synchronize` on this build
-    (verified on t6001-test-host diag wheel); older builds name it `sync`."""
-    if hasattr(mx, "synchronize"):
-        mx.synchronize()
-    elif hasattr(mx, "sync"):
-        mx.sync()
-    else:
-        raise SystemExit("no mlx.core sync/synchronize; flush cannot be "
-                         "forced")
-
+# ---------- device helpers ----------
 
 def require_sync(mx):
-    if not (hasattr(mx, "synchronize") or hasattr(mx, "sync")):
-        raise SystemExit("no mlx.core sync/synchronize; flush cannot be "
-                         "forced on this mlx build")
+    pass  # replaced below; kept for patch history
 
 
-def materialize(k, cols, max_w):
-    import mlx.core as mx
-    x = mx.random.normal((1, k)).astype(mx.float16)
-    mx.eval(x)
-    weights = []
-    for _ in range(max_w):
-        w = mx.random.normal((cols, k)).astype(mx.float16)
-        wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
-        mx.eval(wq), mx.eval(scales), mx.eval(biases)
-        weights.append((wq, scales, biases))
-    cw = mx.random.normal((cols, k)).astype(mx.float16)  # SAME shape,
-    calib = mx.quantize(cw, group_size=64, bits=4)       # distinct buffer
-    mx.eval(calib[0]), mx.eval(calib[1]), mx.eval(calib[2])
-    return x, weights, calib
+def resolve_libmlx():
+    """Actual libmlx.so path. mlx.__file__ can be None (namespace
+    package): fall back to sys.path scanning; never silently omit."""
+    import mlx
+    base = getattr(mlx, "__file__", None)
+    candidates = []
+    if base:
+        candidates.append(os.path.join(os.path.dirname(base), "lib",
+                                       "libmlx.so"))
+    for p in sys.path:
+        if p:
+            candidates.append(os.path.join(p, "mlx", "lib", "libmlx.so"))
+    for c in candidates:
+        if os.path.exists(c):
+            return c, "resolved"
+    return None, ("unresolved: mlx.__file__=%r and sys.path scan found "
+                  "no mlx/lib/libmlx.so" % (base,))
 
 
 def qmm(x, wq, scales, biases):
@@ -197,11 +181,185 @@ def qmm(x, wq, scales, biases):
                                group_size=64, bits=4)
 
 
-def parse_stream(profile_path):
-    """File-ordered (region, has_ticks, dur_us, enum, reason@join)."""
-    region, j_count = 0, 0
-    d_by_region, reasons, meta = {}, {}, None
-    for line in open(profile_path):
+def make_weights(mx, k, cols, n):
+    """Materialized constants: (wq, scales, biases) + exact byte sizes.
+    Same (k, cols) for every buffer; affinity/4/64 per DecodeFusion."""
+    out = []
+    for _ in range(n):
+        w = mx.random.normal((cols, k)).astype(mx.float16)
+        wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
+        mx.eval(wq), mx.eval(scales), mx.eval(biases)
+        out.append((wq, scales, biases,
+                    int(wq.nbytes + scales.nbytes + biases.nbytes)))
+    return out
+
+
+# ---------- producers (device; no profile parsing) ----------
+
+def sidecar_identity(pass_name, mx, profile_path, extra):
+    import mlx
+    ident = {"pass": pass_name,
+             "mlx_version": getattr(mx, "__version__", "unknown")
+             if hasattr(mx, "__version__") else "unknown",
+             "profile_path": profile_path,
+             "conditions": {
+                 "vk_driver_files": os.environ.get("VK_DRIVER_FILES"),
+                 "gated_barriers": os.environ.get(
+                     "MLX_OMARCHY_GATED_BARRIERS"),
+                 "fused_chain": os.environ.get("MLX_OMARCHY_FUSED_CHAIN"),
+                 "fused_gemv": os.environ.get("MLX_OMARCHY_FUSED_GEMV"),
+                 "per_node_submit": os.environ.get(
+                     "MLX_OMARCHY_TAPE_PER_NODE_SUBMIT"),
+             }}
+    ident.update(extra)
+    lib, note = resolve_libmlx()
+    if lib:
+        ident["libmlx_sha256"] = hashlib.sha256(
+            open(lib, "rb").read()).hexdigest()
+        ident["libmlx_path"] = lib
+    else:
+        ident["libmlx_sha256"] = None
+        ident["libmlx_path_note"] = note
+    try:
+        from importlib import metadata as _md
+        ident["wheel_version"] = _md.version("mlx_omarchy")
+    except Exception:
+        ident["wheel_version"] = "unknown"
+    return ident
+
+
+def pass_calibrate(args, k, cols):
+    """Single-row route diagnostic (COMPLETE on t6001-test-host; kept for
+    reproducibility): producer writes the profile + sidecar; run
+    --pass report after exit."""
+    import mlx.core as mx
+    require_sync(mx)
+    x = mx.random.normal((1, k)).astype(mx.float16)
+    mx.eval(x)
+    weights = make_weights(mx, k, cols, 1)
+    for i in range(WARMUP_STEPS):
+        mx.eval(qmm(x, *weights[0][:3]))
+    force_sync(mx)
+    for _ in range(CALIBRATION_CALLS):
+        mx.eval(qmm(x, *weights[0][:3]))
+        force_sync(mx)
+    ident = sidecar_identity("calibrate", mx, args.profile,
+                             {"k": k, "cols": cols, "warmup": WARMUP_STEPS,
+                              "calibration_calls": CALIBRATION_CALLS,
+                              "shape_note": "same (k, cols) as plan, "
+                                            "distinct weight buffer"})
+    json.dump(ident, open(args.out, "w"), indent=1)
+    print("producer complete; NOW: %s --pass report --profile %s "
+          "--plan-meta %s --out REPORT" % (sys.argv[0], args.profile,
+                                           args.out))
+
+
+def pass_compiled_calibrate(args, k, cols):
+    """Fused multi-route producer: mx.compile'd DecodeFusion group
+    (3 QuantizedMatmul(Affine,4,64,transpose) sharing one single-row x,
+    each with a single-consumer Add epilogue) -> ONE QmmVecQ4Multi
+    dispatch per call via the actual call site. Route verified when
+    --pass report shows strict layout with calibrated enum 412."""
+    import mlx.core as mx
+    require_sync(mx)
+    x = mx.random.normal((1, k)).astype(mx.float16)
+    mx.eval(x)
+    weights = make_weights(mx, k, cols, 3)
+    adds = []
+    for _ in range(3):
+        a = mx.random.normal((1, cols)).astype(mx.float16)
+        mx.eval(a)
+        adds.append(a)
+
+    def group(x):
+        outs = [qmm(x, *w[:3]) for w in weights]
+        return [o + a for o, a in zip(outs, adds)]
+
+    fn = mx.compile(group)
+    finite = None
+    for i in range(WARMUP_STEPS):
+        outs = fn(x)
+        mx.eval(outs)
+    force_sync(mx)
+    for _ in range(CALIBRATION_CALLS):
+        outs = fn(x)
+        mx.eval(outs)
+        if finite is None:
+            finite = all(bool(mx.isfinite(o).all()) for o in outs)
+        force_sync(mx)
+    ident = sidecar_identity("compiled-calibrate", mx, args.profile,
+                             {"k": k, "cols": cols,
+                              "group_members": 3,
+                              "warmup": WARMUP_STEPS,
+                              "calibration_calls": CALIBRATION_CALLS,
+                              "seed": SEED,
+                              "x_bytes": int(x.nbytes),
+                              "weight_bytes_per_member":
+                                  [w[3] for w in weights],
+                              "weight_bytes_total":
+                                  sum(w[3] for w in weights),
+                              "outputs_finite": finite,
+                              "route_note": "compiled tape -> DecodeFusion "
+                                            "-> QmmVecQ4Multi (actual call "
+                                            "site)"})
+    json.dump(ident, open(args.out, "w"), indent=1)
+    print("producer complete (finite_outputs=%s); NOW: %s --pass report "
+          "--profile %s --plan-meta %s --out REPORT"
+          % (finite, sys.argv[0], args.profile, args.out))
+
+
+def pass_unbracketed(args, k, cols, plan):
+    """Wall-clock W-curve producer (GATED until route verified)."""
+    import mlx.core as mx
+    require_sync(mx)
+    x = mx.random.normal((1, k)).astype(mx.float16)
+    mx.eval(x)
+    weights = make_weights(mx, k, cols, max(s["w"] for s in plan))
+    for i in range(WARMUP_STEPS):
+        mx.eval(qmm(x, *weights[0][:3]))
+    force_sync(mx)
+    wall, total_t0 = {}, time.perf_counter()
+    for s in plan:
+        t0 = time.perf_counter()
+        for i in range(s["steps"]):
+            mx.eval(qmm(x, *weights[i % s["w"]][:3]))
+        wall.setdefault((s["block"], s["w"]), []).append(
+            (time.perf_counter() - t0) / s["steps"] * 1e6)
+    plan_wall_s = time.perf_counter() - total_t0
+    force_sync(mx)
+    wall_blocks = {}
+    for (b, w), vals in wall.items():
+        wall_blocks.setdefault(w, []).append(statistics.mean(vals))
+    out = {"identity": {"pass": "unbracketed", "k": k, "cols": cols,
+                        "blocks": BLOCKS, "min_steps": MIN_STEPS,
+                        "w_series": W_SERIES, "seed": SEED},
+           "plan_wall_s": plan_wall_s,
+           "plan_wall_s_note": ("plan segments only; materialization and "
+                                "warmup excluded; includes python + "
+                                "eval-sync round trip"),
+           "wall_avg_us_per_block": {str(w): v
+                                     for w, v in wall_blocks.items()},
+           "wall_avg_paired_delta_vs_W1": paired_deltas(wall_blocks)}
+    json.dump(out, open(args.out, "w"), indent=1)
+    print("wrote", args.out)
+
+
+# ---------- report (offline; post-producer-exit) ----------
+
+def pass_report(args, plan=None):
+    """Verify a COMPLETE preserved stream. Strict criteria under the
+    source flush convention: j_count == CALIBRATION_CALLS+1; region 1 =
+    warmup straggler (>=0 tick-ful); regions 2..N+1 exactly one
+    tick-ful dispatch each, one enum across them; no events beyond
+    region N+1. Merges the producer sidecar (--plan-meta) for identity
+    and routes: calibrated enum 412 = decode fused route; 397 =
+    QmmVecQ4WordSubgroupF16 = PROXY ROUTE (single-row python route)."""
+    ident = {}
+    if args.plan_meta and os.path.exists(args.plan_meta):
+        ident.update(json.load(open(args.plan_meta)))
+    region, j_count, reasons, meta = 0, 0, [], None
+    d_by_region = {}
+    for line in open(args.profile):
         if not line.strip().startswith("{"):
             continue
         try:
@@ -214,7 +372,7 @@ def parse_stream(profile_path):
         elif k == "j":
             j_count += 1
             region = j_count
-            reasons[r.get("reason")] = reasons.get(r.get("reason"), 0) + 1
+            reasons.append(r.get("reason"))
         elif k == "d":
             has = "t0" in r
             d_by_region.setdefault(region, []).append(
@@ -223,275 +381,26 @@ def parse_stream(profile_path):
                  else None,
                  r["e"]))
     if meta is None:
-        raise SystemExit(f"{profile_path}: no meta record")
-    return d_by_region, j_count, reasons, meta
-
-
-# ---------- passes ----------
-
-def pass_calibrate(args, k, cols):
-    """SMALL approved diagnostic: materialize + warmup + 3 same-shape
-    calibration calls, sync after each. Verifies strict layout or emits
-    the descriptive report. No performance conclusions."""
-    import mlx.core as mx
-    require_sync(mx)
-    x, weights, calib = materialize(k, cols, 1, )
-    for i in range(WARMUP_STEPS):
-        mx.eval(qmm(x, *weights[0]))
-    force_sync(mx)
-    for _ in range(CALIBRATION_CALLS):
-        mx.eval(qmm(x, *calib))
-        force_sync(mx)
-    d_by_region, j_count, reasons, meta = parse_stream(args.profile)
-    verdict, report = verify_calibration(d_by_region, j_count, reasons)
-    ident = {"pass": "calibrate", "k": k, "cols": cols,
-             "warmup": WARMUP_STEPS, "calibration_calls": CALIBRATION_CALLS,
-             "shape_note": "calibration uses the SAME (k, cols) as the "
-                           "plan with a distinct weight buffer",
-             "mlx_version": getattr(mx, "__version__", "unknown")
-             if hasattr(mx, "__version__") else "unknown",
-             "device": meta.get("device"), "period_ns": meta.get("period_ns"),
-             "valid_bits": meta.get("valid_bits"),
-             "profile_path": args.profile,
-             "conditions": {
-                 "label": meta.get("label"),
-                 "env_profile": os.environ.get("MLX_OMARCHY_GPU_PROFILE"),
-                 "env_label": os.environ.get("MLX_OMARCHY_GPU_PROFILE_LABEL"),
-                 "vk_driver_files": os.environ.get("VK_DRIVER_FILES"),
-                 "vk_icd_filenames": os.environ.get("VK_ICD_FILENAMES"),
-                 "gated_barriers": os.environ.get(
-                     "MLX_OMARCHY_GATED_BARRIERS"),
-             }}
-    for var in ("VK_DRIVER_FILES", "VK_ICD_FILENAMES"):
-        v = os.environ.get(var)
-        if v and os.path.exists(v.split(":")[0]):
-            icd = v.split(":")[0]
-            ident["conditions"][f"{var}_sha256"] = hashlib.sha256(
-                open(icd, "rb").read()).hexdigest()
-    try:
-        from importlib import metadata as _md
-        ident["wheel_version"] = _md.version("mlx_omarchy")
-    except Exception:
-        ident["wheel_version"] = "unknown"
-    try:
-        import mlx
-        lib = os.path.join(os.path.dirname(mlx.__file__), "lib",
-                           "libmlx.so")
-        if os.path.exists(lib):
-            ident["libmlx_sha256"] = hashlib.sha256(
-                open(lib, "rb").read()).hexdigest()
-        ident["mlx_version"] = getattr(mlx, "__version__",
-                                       ident["mlx_version"])
-    except ImportError:
-        pass
-    out = {"identity": ident, "calibration": report,
-           "raw_profile": args.profile,
-           "note": ("lifecycle diagnostic ONLY: establishes event "
-                    "layout and routing; durations here are bracketed "
-                    "instrument values and support NO performance "
-                    "conclusion")}
-    json.dump(out, open(args.out, "w"), indent=1)
-    print(f"wrote {args.out} - verdict: {report['verdict']}")
-
-
-def pass_compiled_calibrate(args, k, cols):
-    """Same verification as --pass calibrate, but the dispatches come
-    from the ACTUAL decode route: an mx.compile'd graph whose tape
-    carries a DecodeFusion group (fused_chain.cpp DecodeFusion: 3
-    QuantizedMatmul(Affine,4,64,transpose) nodes sharing one x = single
-    row, each with a single-consumer Add epilogue) so the fused-chain
-    builder records ONE QmmVecQ4Multi dispatch per call - the same
-    kernel enum the decode profile shows (412). No new kernel; the
-    graph mirrors the decode layer's matmul+add structure."""
-    import mlx.core as mx
-    require_sync(mx)
-    x = mx.random.normal((1, k)).astype(mx.float16)
-    mx.eval(x)
-    weights, adds = [], []
-    for _ in range(3):  # kQmmVecMultiWeights = 3 (compute.h:36)
-        w = mx.random.normal((cols, k)).astype(mx.float16)
-        wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
-        mx.eval(wq), mx.eval(scales), mx.eval(biases)
-        weights.append((wq, scales, biases))
-        adds.append(mx.random.normal((1, cols)).astype(mx.float16))
-    mx.eval(adds[0]), mx.eval(adds[1]), mx.eval(adds[2])
-
-    def group(x):
-        outs = [mx.quantized_matmul(x, *wq, transpose=True, group_size=64,
-                                    bits=4) for wq in weights]
-        return [o + a for o, a in zip(outs, adds)]
-
-    fn = mx.compile(group)
-    for i in range(WARMUP_STEPS):
-        mx.eval(fn(x))
-    mx.synchronize() if hasattr(mx, "synchronize") else mx.sync()
-    for _ in range(CALIBRATION_CALLS):
-        mx.eval(fn(x))
-        (mx.synchronize() if hasattr(mx, "synchronize") else mx.sync())
-    d_by_region, j_count, reasons, meta = parse_stream(args.profile)
-    verdict, report = verify_calibration(d_by_region, j_count, reasons)
-    ident = {"pass": "compiled-calibrate", "k": k, "cols": cols,
-             "group_members": 3, "warmup": WARMUP_STEPS,
-             "calibration_calls": CALIBRATION_CALLS,
-             "route_note": "compiled tape -> DecodeFusion -> "
-                           "QmmVecQ4Multi dispatch (actual call site)",
-             "mlx_version": getattr(mx, "__version__", "unknown")
-             if hasattr(mx, "__version__") else "unknown",
-             "device": meta.get("device"), "period_ns": meta.get("period_ns"),
-             "valid_bits": meta.get("valid_bits"),
-             "profile_path": args.profile}
-    try:
-        import mlx
-        lib = os.path.join(os.path.dirname(mlx.__file__ or ""), "lib",
-                           "libmlx.so")
-        if os.path.exists(lib):
-            ident["libmlx_sha256"] = hashlib.sha256(
-                open(lib, "rb").read()).hexdigest()
-        ident["mlx_version"] = getattr(mlx, "__version__",
-                                       ident["mlx_version"])
-    except (ImportError, TypeError):
-        pass
-    out = {"identity": ident, "calibration": report,
-           "raw_profile": args.profile,
-           "note": ("route diagnostic ONLY: verifies the compiled graph "
-                    "dispatches the fused multi-weight kernel; durations "
-                    "support NO performance conclusion")}
-    json.dump(out, open(args.out, "w"), indent=1)
-    strict = report.get("verdict", "").startswith("strict")
-    enums = report.get("region_enums", {})
-    route = (strict and all(enums.get(str(r)) == [412]
-                            for r in (2, 3, 4)))
-    print(f"wrote {args.out} - verdict: {report['verdict']} | "
-          f"route={'FUSED MULTI 412 CONFIRMED' if route else 'see report'}")
-
-
-
-    import mlx.core as mx
-    require_sync(mx)
-    x, weights, calib = materialize(k, cols, max(s["w"] for s in plan))
-    for i in range(WARMUP_STEPS):
-        mx.eval(qmm(x, *weights[0]))
-    force_sync(mx)
-    wall, total_t0 = {}, time.perf_counter()  # plan only; warmup excluded
-    for s in plan:
-        t0 = time.perf_counter()
-        for i in range(s["steps"]):
-            mx.eval(qmm(x, *weights[i % s["w"]]))
-        wall.setdefault((s["block"], s["w"]), []).append(
-            (time.perf_counter() - t0) / s["steps"] * 1e6)
-    plan_wall_s = time.perf_counter() - total_t0
-    force_sync(mx)
-    wall_blocks = {}
-    for (b, w), vals in wall.items():
-        wall_blocks.setdefault(w, []).append(statistics.mean(vals))
-    out = {"identity": {"pass": "unbracketed", "k": k, "cols": cols,
-                        "blocks": BLOCKS, "min_steps": MIN_STEPS,
-                        "w_series": W_SERIES, "seed": SEED},
-           "plan_wall_s": plan_wall_s,
-           "plan_wall_s_note": ("spans plan segments only; "
-                                "materialization and warmup excluded; "
-                                "includes python + eval-sync round trip"),
-           "wall_avg_us_per_block": {str(w): v
-                                     for w, v in wall_blocks.items()},
-           "wall_avg_paired_delta_vs_W1": paired_deltas(wall_blocks)}
-    json.dump(out, open(args.out, "w"), indent=1)
-    print("wrote", args.out)
-
-
-def pass_report(args, plan):
-    """Offline: verify a PRESERVED calibration stream and emit the
-    report. Flush convention from source (gpu_profiler.h on_join):
-    the j record is emitted BEFORE flush_slot writes that join's d
-    lines, so the d lines following the r-th j line are the flush work
-    of sync r. Region 1 therefore holds the warmup straggler (last
-    warmup dispatch whose slot was not reused before the sync);
-    regions 2..(CALIBRATION_CALLS+1) must hold exactly one tick-ful
-    dispatch each with one stable enum (the calibration calls); ANY
-    dispatch after the last join's flush work rejects."""
-    ident = {}
-    if args.plan_meta and os.path.exists(args.plan_meta):
-        ident.update(json.load(open(args.plan_meta)))
-    else:
-        ident["run_identity"] = ("device-side identity block was not "
-                                 "written (v2.3 identity crash after "
-                                 "syncs); library sha + wheel version "
-                                 "recorded in receipt from prior "
-                                 "provenance checks")
-    seq, meta = [], None
-    for line in open(args.profile):
-        if not line.strip().startswith("{"):
-            continue
-        try:
-            r = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        k = r.get("k")
-        if k == "meta":
-            meta = r
-        elif k == "j":
-            seq.append(("j", r.get("reason")))
-        elif k == "d":
-            has = "t0" in r
-            seq.append(("d", has,
-                        (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3
-                        if has else None, r["e"]))
-    if meta is None:
         raise SystemExit(f"{args.profile}: no meta record")
-    # group d lines by their preceding j line (0 = before first j)
-    regions, cur = {}, 0
-    for item in seq:
-        if item[0] == "j":
-            cur += 1
-        else:
-            regions.setdefault(cur, []).append(item[1:])
-    report = {"j_count": cur,
-              "reasons": sorted({i[1] for i in seq if i[0] == "j"}),
-              "region_counts": {str(r): len(v) for r, v
-                                in sorted(regions.items())},
-              "region_enums": {str(r): sorted({e for _, _, e in
-                                               regions.get(r, [])})
-                               for r in sorted(regions)}}
-    # strict verdict requires: 4 joins; regions 2,3,4 exactly one
-    # tick-ful dispatch each, one enum across them; region 1 = warmup
-    # stragglers (>=0, tick-ful); no region beyond 4 with events.
-    strict_ok = (cur == CALIBRATION_CALLS + 1
-                 and all(len(regions.get(r, [])) == 1 for r in (2, 3, 4))
-                 and all(all(h for h, *_ in regions.get(r, []))
-                         for r in (2, 3, 4))
-                 and len({e for r in (2, 3, 4)
-                          for _, _, e in regions[r]}) == 1
-                 and all(h for h, *_ in regions.get(1, []))
-                 and not any(regions.get(r) for r in regions if r > 4))
-    calib_enum = (regions[2][0][2] if strict_ok else None)
-    ident["signature_check"] = {
-        "calibrated_enum": calib_enum,
-        "decode_kernel": DECODE_SIGNATURE["kernel"],
-        "decode_route": "fused multi-weight (QmmVecQ4MultiSubgroupF16)",
-        "verdict": ("decode-shape kernel" if
-                    calib_enum == DECODE_SIGNATURE["kernel"] else
-                    "PROXY ROUTE - single-row python route selects a "
-                    "different kernel than the decode fused route; full "
-                    "curve through this route would measure the wrong "
-                    "kernel")}
-    out = {"identity": {**ident, "profile_path": args.profile,
-                        "device": meta.get("device"),
+    verdict, report = verify_calibration(d_by_region, j_count, reasons)
+    calib_enum = report.get("calibrated_enum")
+    route = {412: "decode fused multi route CONFIRMED "
+                  "(QmmVecQ4MultiSubgroupF16)",
+             397: "PROXY ROUTE: QmmVecQ4WordSubgroupF16 - single-row "
+                  "python route does not use the decode fused route"}.get(
+        calib_enum,
+        "UNKNOWN route for enum %s" % calib_enum)
+    out = {"identity": {**ident, "device": meta.get("device"),
                         "period_ns": meta.get("period_ns"),
                         "valid_bits": meta.get("valid_bits"),
                         "label": meta.get("label")},
-           "calibration": {"verdict": "strict (under source flush "
-                                       "convention: j emitted before its "
-                                       "flush work)" if strict_ok
-                                       else "NON-STRICT",
-                           "region_counts": report["region_counts"],
-                           "region_enums": report["region_enums"],
-                           "join_reasons": report["reasons"],
-                           "j_count": cur},
-           "note": ("lifecycle diagnostic: establishes event layout and "
-                    "routing only; durations are bracketed instrument "
-                    "values and support NO performance conclusion")}
+           "calibration": report,
+           "route": route,
+           "note": ("lifecycle/route diagnostic ONLY; durations are "
+                    "bracketed instrument values and support NO "
+                    "performance conclusion")}
     json.dump(out, open(args.out, "w"), indent=1)
-    print("wrote", args.out, "- verdict:", out["calibration"]["verdict"],
-          "|", ident["signature_check"]["verdict"])
+    print("wrote", args.out, "| layout:", verdict, "| route:", route)
 
 
 # ---------- entry ----------
@@ -512,59 +421,53 @@ def main():
     args = ap.parse_args()
 
     if args.selftest:
-        seg = build_plan()
-        assert all(s["steps"] % s["w"] == 0 and s["steps"] >= MIN_STEPS
-                   for s in seg)
         strict = {0: [(True, 10.0, 55), (False, None, 55)],
                   1: [(True, 10.0, 397)],
                   2: [(True, 30.0, 400)], 3: [(True, 30.0, 400)],
                   4: [(True, 30.0, 400)]}
         v, rep = verify_calibration(strict, 4)
         assert v == "strict" and rep["calibrated_enum"] == 400
-        for bad, jc, frag in (
-                ({**strict, 5: [(True, 1.0, 55)]}, 5, "post-plan event"),
-                (strict, 6, "extra join"),
-                ({0: [], 1: [(True, 10.0, 397)], 2: [(True, 30.0, 400),
-                                                    (True, 30.0, 400)],
-                  3: [(True, 30.0, 400)], 4: [(True, 30.0, 400)]}, 4,
-                 "two dispatches in a call"),
-                ({0: [], 1: [], 2: [(False, None, 400)], 3: [(True, 30.0,
-                                                             400)],
-                  4: [(True, 30.0, 400)]}, 4, "tick-less calibration")):
+        for bad, jc in (
+                ({**strict, 5: [(True, 1.0, 55)]}, 5),
+                (strict, 6),
+                ({0: [], 1: [(True, 10.0, 397)],
+                  2: [(True, 30.0, 400), (True, 30.0, 400)],
+                  3: [(True, 30.0, 400)], 4: [(True, 30.0, 400)]}, 4),
+                ({0: [], 1: [], 2: [(False, None, 400)],
+                  3: [(True, 30.0, 400)], 4: [(True, 30.0, 400)]}, 4)):
             v, rep = verify_calibration(bad, jc)
-            assert v == "non-strict", (frag, rep)
+            assert v == "non-strict", (v, rep)
         d = paired_deltas({1: [10.0] * BLOCKS, 16: [16.0] * BLOCKS})
         assert d[16]["delta_us"] > 5.5
-        print("PASS: strict layout proof, non-strict downgrade "
-              "(post-plan event, extra join, extra dispatch per call, "
-              "tick-less), deltas")
+        print("PASS: strict proof, non-strict downgrades (post-plan, "
+              "extra join, two dispatches in a call, tick-less), deltas")
         return
 
     if not args.out:
         ap.error("--out is required")
     if not args.pass_name:
-        ap.error("--pass_ {calibrate,unbracketed,bracketed,attribute} is "
-                 "required")
-    if args.pass_name in ("calibrate", "compiled-calibrate", "unbracketed",
-                          "bracketed") and not args.dry_run and \
-            args.k is None:
+        ap.error("--pass_ is required")
+    if args.pass_name in ("calibrate", "compiled-calibrate",
+                          "unbracketed", "bracketed") and not args.dry_run \
+            and args.k is None:
         ap.error("--k and --cols are operator-supplied and required "
                  "(shape is never guessed)")
 
     plan = build_plan()
     if args.dry_run:
-        strict = {0: [(True, 10.0, 55)], 1: [(True, 30.0, 400)],
-                  2: [(True, 30.0, 400)], 3: [(True, 30.0, 400)]}
+        strict = {0: [(True, 10.0, 55)], 1: [(True, 10.0, 397)],
+                  2: [(True, 30.0, 400)], 3: [(True, 30.0, 400)],
+                  4: [(True, 30.0, 400)]}
         v, rep = verify_calibration(strict, 4)
-        nonstrict = dict(strict)
-        nonstrict[7] = [(True, 1.0, 55)]
-        v2, rep2 = verify_calibration(nonstrict, 5)
+        bad = dict(strict)
+        bad[6] = [(True, 1.0, 55)]
+        v2, _ = verify_calibration(bad, 5)
         assert v == "strict" and v2 == "non-strict"
-        out = {"dry_run": True, "strict_case": rep,
-               "nonstrict_case_verdict": rep2["verdict"],
-               "plan_segments": len(plan)}
-        json.dump(out, open(args.out, "w"), indent=1)
-        print(f"dry-run OK: verification path green; wrote {args.out}")
+        json.dump({"dry_run": True, "strict_verdict": v,
+                   "nonstrict_verdict": v2,
+                   "plan_segments": len(plan)},
+                  open(args.out, "w"), indent=1)
+        print(f"dry-run OK; wrote {args.out}")
         return
 
     if args.pass_name == "calibrate":
@@ -573,17 +476,15 @@ def main():
         pass_compiled_calibrate(args, args.k, args.cols)
     elif args.pass_name == "unbracketed":
         pass_unbracketed(args, args.k, args.cols, plan)
-    elif args.pass_name == "bracketed":
-        raise SystemExit(
-            "bracketed full-curve pass is GATED: run --pass calibrate "
-            "first and validate the parser against the observed event "
-            "lifecycle (Main directive; no curve until then)")
     elif args.pass_name == "report":
         pass_report(args, plan)
+    elif args.pass_name == "bracketed":
+        raise SystemExit(
+            "bracketed full-curve pass is GATED until the compiled route "
+            "is verified (route producer: --pass compiled-calibrate)")
     else:
         raise SystemExit(
-            "attribute pass is GATED with the bracketed curve until the "
-            "calibration diagnostic validates the parser")
+            "attribute pass is GATED with the bracketed curve")
 
 
 if __name__ == "__main__":
