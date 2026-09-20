@@ -520,22 +520,85 @@ Checked every claim in the section above against source and receipts:
   submission-context variance, direction inconsistent with a simple
   L2-pressure story; inconclusive.
 
-**Smallest discriminating candidate (proposed, NOT staged for hardware
-without a queue slot): L2-residency A/B on identical qmm_vec work.**
-Profiled micro, both arms under the same instrument bracketing so the
-per-dispatch overhead cancels in the DIFFERENCE: arm H dispatches the
-same layer shape (k=4096, group64, Q4→f16, one 8 MB weight) 200×
-back-to-back (weight set ≪ L2); arm C cycles 16 distinct 8 MB weight
-buffers (128 MB ≫ L2) in round-robin. If weight-fetch dominates the
-residual, median(C) ≫ median(H); if the serial k-chain compute
-dominates, medians are ≈ equal. The delta also yields a direct
-GB/s-effective weight-stream number for the decode shape without any
-new kernel — it uses the existing shader and dispatch site. Decision
-rule pre-registered: C/H ≥ 1.5 → weight-fetch-led (multi-step L2 fusion
-hypothesis advances to design); C/H < 1.2 → compute/latency-led
-(fusion hypothesis demoted; look at k-chain parallelism instead).
-Between 1.2 and 1.5 → split; run the batch-amortization arm
-(batch-2 rows through the existing multi-row path) before concluding.
-This is the source-side successor to the sink/turnaround attribution
-and does not reuse its 20.4/4.7 µs figures, which were microbench-
-specific.
+**Smallest discriminating candidate — SUPERSEDED by the hardened
+protocol below (Main review: ratio thresholds cannot uniquely classify;
+dispatch floor dilutes ratios; cache residency is not guaranteed by
+size alone; bracket overhead may interact, not just add).**
+
+## Hardened qmm weight-fetch micro protocol (pre-registered, NOT run; next GPU slot after Decoder)
+
+**Actual shapes and bytes (recovered from the dprof bindings, not
+assumed).** QmmVecQ4MultiSubgroupF16 fires in three shape classes per
+decode step; weight-binding bytes per dispatch (binding ranges > 8 KiB;
+x and output bindings are the ≤ 4 KiB entries):
+
+| shape (n=gx) | dispatches/2 legs | weight bytes | mean µs | p05 | p50 | p95 |
+|---|---:|---:|---:|---:|---:|---:|
+| n=112 | 3648 | 458,752 (0.46 MB) | 40.2 | 26.2 | 38.9 | 53.5 |
+| n=144 | 1824 | 458,752 (0.46 MB) | 34.6 | 26.6 | 33.6 | 42.6 |
+| n=608 | 1824 | 2,469,888 (2.47 MB) | 63.5 | 57.1 | 61.2 | 92.0 |
+
+**In-data constraint any fusion story must survive**: n=112 and n=144
+carry IDENTICAL weight bytes but differ 40.2 vs 34.6 µs; n=608 has
+5.4× the bytes at 1.6× the duration (byte-elasticity ≈ 0.36). Duration
+does not scale with weight bytes across shapes — parallelism scales
+with the shape too, so "weights streamed per dispatch ⇒ bytes ∝ time"
+is already falsified as a pure model in these bytes. Suggestive only
+(flagged, not claimed): 2.47 MB at the ceiling receipt's measured
+68 GB/s DRAM ≈ 36 µs, comparable to the n=608 duration above the small
+shapes' baseline; the micro below is what decides.
+
+**Design.**
+1. **Size-SERIES sensitivity curve, not two arms**: dispatch the same
+   recovered shape (k/cols/group64/Q4→f16, identity-checked against the
+   decode dispatch signature — same kernel enum, same (n, gx) — a micro
+   that cannot reproduce the signature is invalid and reports that) N=200
+   times per block, cycling through W distinct weight buffers,
+   W ∈ {1, 2, 4, 16, 64, 256} (total footprint 0.46 MB → 118 MB).
+   Readout is the CURVE of per-dispatch duration vs footprint; the knee
+   location is an empirical working-set bound. No a-priori "X ≪/≫ L2"
+   claim and no residency assertion from sizes — sizes only vary the
+   working set; what the curve shows is sensitivity, and "L2 residency"
+   stays unproven unless corroborated (e.g. by an independent
+   counter like cache counters if ever available).
+2. **Absolute differences with distributions, no ratio thresholds**:
+   report median/p05/p50/p90 and full ECDF per W, and Δ(W) =
+   median(W) − median(W=1) in µs with a block-paired bootstrap CI.
+   Pre-registered quantitative anchor (not a pass/fail band): full DRAM
+   re-stream per dispatch of the 0.46 MB shape at 68 GB/s ≈ 6.7 µs and
+   of the 2.47 MB shape ≈ 36 µs. Δ(W) near those anchors with the curve
+   knee near the decode step's layer working set supports
+   fetch-sensitivity; Δ(W) ≈ 0 at all W supports compute/latency-led.
+   Any classification states which anchor it matched and how closely;
+   "mixed" is a legal outcome.
+3. **Randomized, counterbalanced, paired**: per block, the W values run
+   in a pre-generated random permutation (seed recorded in output);
+   ≥ 6 blocks; analysis uses within-block paired differences (block
+   effects — thermal, residency history, host jitter — cancel). No
+   consecutive same-W blocks.
+4. **Bracket-interaction cross-check**: the same driver runs twice per
+   block — once under MLX_OMARCHY_GPU_PROFILE (bracketed) and once
+   unprofiled with wall-clock over the block (unbracketed). Report
+   Δ_bracketed and Δ_unbracketed side by side; if they disagree beyond
+   their CIs, the bracketed numbers are disqualified as
+   instrument-interacted and only the unbracketed curve is reported
+   (with its coarser resolution stated). Neither is silently mixed.
+5. **Identity/pins recorded in the output JSON**: installed wheel
+   filename + sha256, libmlx.so sha256, ICD json sha, mesa package id,
+   device name + timestamp valid_bits from the meta record, the
+   micro's own dispatch-signature check vs the dprof (n, gx) table
+   above, and the decode battery digest pins whenever a decode leg runs
+   in the same slot (short 7fd25a869ff21678, ctx 7da83f06ec9f001d).
+6. **Scope guard (no promise)**: multi-STEP autoregressive fusion has a
+   hard dependency — step t+1's input row is step t's output — so the
+   micro's outcome cannot by itself justify or size a fusion change; a
+   positive fetch-sensitivity result only advances the hypothesis to
+   DESIGN, where the dependency must be addressed (layer-internal
+   batching, speculative rows, or cross-step reuse under the in-order
+   stream) before any implementation claim. Negative result demotes the
+   fusion hypothesis in favor of k-chain parallelism work on the same
+   shader.
+
+Status: protocol pre-registered here; driver script staged at
+`scripts/qmm_weight_curve_micro.py` (syntax-checked, identity-check
+built in, not yet executed — requires the queue slot).
