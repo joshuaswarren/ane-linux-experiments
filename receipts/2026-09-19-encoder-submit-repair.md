@@ -530,3 +530,22 @@ discriminating ladder (which program crashes/numerics) executes in one
 short hold once the per-program bundles exist. F remains branch-only,
 unqualified. Transport exonerated: certified islands through the identical
 transport/session are clean.
+
+## 15. Cycle close: exact state, worktree branch-only, iteration path defined
+
+- F handler evolution on agent/fusion-submit-lane (branch-only): naive
+  slice (diverged prefix 73) → reblocking-chain attempt (diverged prefix
+  41, different signature — the reblocking semantics are NOT yet
+  element-exact) → -65504 discriminator arm (-inf-INDEPENDENT divergence:
+  identical wrong hidden with both fills — the -inf datapath is EXONERATED
+  for this defect; the mask-chain content itself is wrong).
+- Services restored and verified: active + real completion
+  chatcmpl-FtKFm2BgTtJhJim5m5ctvcIlhmk3F9r8. Lock released to the queue
+  (Decoder counterbalanced confirmation completed; GPU attribution
+  completed; CompilerCoverage --diag + head differential next window).
+- The bd reblocking (pad 749→750 → reshape [750,375] → slice [0:749] →
+  reshape [375,749] → slice [0:375]) must be derived element-exactly from
+  the certified chain (or captured from a certified GPU run and diffed
+  element-by-element against the handler's chain) before any further
+  device attempt. The per-program device differential tooling (driver,
+  arms, references) is staged and reusable for that derivation.
