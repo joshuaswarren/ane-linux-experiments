@@ -19,7 +19,7 @@ def main(path, out=None):
     strs = d[stroff:stroff+strsize]
     syms = []
     for i in range(nsyms):
-        n_strx, n_type, n_sect, n_desc, n_value = struct.unpack_from("<IBBQQ", d, symoff + i*16)
+        n_strx, n_type, n_sect, n_desc, n_value = struct.unpack_from("<IBBHQ", d, symoff + i*16)
         end = strs.find(b"\0", n_strx)
         name = strs[n_strx:end].decode(errors="replace")
         if name:
