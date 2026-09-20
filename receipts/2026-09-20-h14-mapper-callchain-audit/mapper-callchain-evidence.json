@@ -305,7 +305,8 @@
     "off": "0x00",
     "w": 8,
     "val": "*(FWIM_Params+0x18)",
-    "meaning": "firmware staging DVA"
+    "meaning": "firmware staging DVA",
+    "params_word0": "Params.value+0x00 = gated fn size argument (x1): captured x27=x1 (0x95f67dc) -> x23 (0x95f6824) -> str x23,[sp,#112] (0x95f68d8); setValue(x1=sp+0x70) copies 32B into value buffer (ldp q0,q1/stp q0,q1 0x95f736c/0x95f7370); NO intervening store (single-access scan 0x95f68d8-0x95f70dc)"
    },
    {
     "off": "0x08",
@@ -314,7 +315,8 @@
     "meaning": "'IPC ' surface DVA (tag 0x49504320)",
     "size_semantics": "IPC surface size = MAX(IODARTMapper::getPageSize()=0x4000, boot_ordinal+1) -> 0x4000 (one 16K DART page) typical; operands: u64[dev+0x3A90]=mapper page size (slot0x888=IODARTMapper::getPageSize), u32[x23+4]=boot ordinal+1 (SCRATCH1 captured post-READY + 1; verified 0x95ea0f8/0x95ea120/0x95ea124)",
     "status": "CLOSED",
-    "page_floor": "0x4000 anchored to ADT: dart,t8110 nodes carry page-size 0x4000 (dtree-j414c.txt lines 708-709 et al., verified in-file this pass); corroboration: start+0x4058 udiv/mul aligns a config-derived value by [dev+0x3A90] (raw 0x9ad80b88/0x9b187d00) - dev+0x3A90 = page-size field used as alignment divisor"
+    "page_floor": "0x4000 anchored to ADT: dart,t8110 nodes carry page-size 0x4000 (dtree-j414c.txt lines 708-709 et al., verified in-file this pass); corroboration: start+0x4058 udiv/mul aligns a config-derived value by [dev+0x3A90] (raw 0x9ad80b88/0x9b187d00) - dev+0x3A90 = page-size field used as alignment divisor",
+    "params_word0_note": "IPC Params.value+0x00 = IPC size (max(pagesize,ordinal+1)); value+0x08 = DVA; suballoc reads value+0x08"
    },
    {
     "off": "0x10",
@@ -421,7 +423,22 @@
    "pool_0x00": "still open",
    "word0": "dev+0x980 = the 0x40000 'DDM' allocation (start+0x4024); +0x00 = DDM object first field - writer = DDM init (not yet pinned); NOT the gated params; NOT a proven length"
   },
-  "page_floor": "0x4000 = ADT dart page-size property (dtree-j414c.txt:708-709 'compatible: dart,t8110 / page-size: 0x4000', verified this pass); corroborated by start+0x4058 page-alignment udiv/mul by [dev+0x3A90]. getPageSize getter (0xabb0968) reads it indirectly from the DART spec object."
+  "page_floor": "0x4000 = ADT dart page-size property (dtree-j414c.txt:708-709 'compatible: dart,t8110 / page-size: 0x4000', verified this pass); corroborated by start+0x4058 page-alignment udiv/mul by [dev+0x3A90]. getPageSize getter (0xabb0968) reads it indirectly from the DART spec object.",
+  "params_layout": {
+   "value+0x00": "allocation size (u64)",
+   "value+0x08": "surface DVA (u64)",
+   "obj_base": "OSValueObject header 0x10 bytes",
+   "obj+0x10": "value+0x00 = SIZE",
+   "obj+0x18": "value+0x08 = DVA (the field the suballoc header consumes)"
+  },
+  "propagation_chain": [
+   "0x95f67dc mov x27,x1 (size)",
+   "0x95f6824 mov x23,x27",
+   "0x95f68d8 str x23,[sp,#112] (params.value+0x00)",
+   "0x95f70dc setValue(x0=obj, x1=sp+0x70)",
+   "0x95f736c/0x95f7370 ldp q0,q1,[params]; stp -> value buffer (32B)",
+   "0x95f7114/0x95f7118 OSValueObject ptr -> out-param (dev+0x988/0x978)"
+  ]
  },
  "meta": {
   "date": "2026-09-20",
@@ -1187,5 +1204,9 @@
   "pool_0x00": "dev+0x980 = DeviceMemoryManager INSTANCE inline state (DMA base +0x18, CPU base +0x38, count +0x68 confirmed by publish reads); +0x00 = manager instance first field written by DDM init (not the gated params); Allocate walks the free-list via [manager+0]; pool word0 = manager state, producer not pinned this round",
   "page_size_numeric_pin": "WITHDRAWN per Main arithmetic check: magic 0x20c49ba5e353f7cf + umulh + lsr#4 computes x/125 (magic/2^68 = 16/125 = 0.008), NOT x/16384 (power-of-2 divide would be a shift #14). For x=16384 the sequence yields 131 (=16384/125), not 1. Input data source NOT established (Main: likely timing units) - no page-size inference from this constant. Numeric regression check added to tools/check_init_contract.py.",
   "mmio_writes_this_lane": "none"
+ },
+ "pass6h": {
+  "scope": "Main word0=SIZE chain verified raw + no-intervening-overwrite scan closed",
+  "result": "68->77 PASS (9 new anchors): word0 = gated size arg; value buffer = 32B copy of the sp+0x70 params struct into valueobj+0x10; OSValueObject ptr propagated to out-param; single-access scan proves no intervening store/load of the word0 slot"
  }
 }

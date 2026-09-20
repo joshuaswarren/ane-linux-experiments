@@ -27,6 +27,11 @@ Contract (corrected, pass5b/pass5c):
 """
 import struct, sys
 
+
+def kc32(vm):
+    vm = (0xFFFFFE0000000000 | vm) if vm < BASE else vm
+    return struct.unpack_from('<I', kc, vm - BASE)[0]
+
 KC = '/tmp/kernelcache.mac14j.raw'
 BASE = 0xFFFFFE0007004000
 SEL = '/tmp/h14-staged-selene.macho'
@@ -201,6 +206,36 @@ _x = 16384
 _r = ((_x * _M) >> 64) >> 4
 chk('gated magic semantics = div-by-125 (x=16384 -> 131, not 1)', _r == 131)
 chk('ADT page-size 0x4000 (dart,t8110) cited: dtree-j414c.txt:708-709', True)
+
+# ---- Params word0 = SIZE propagation chain (Main trace + raw verification) ----
+W = [
+ ('[0x00-word0] mov x27,x1 (size arg captured)', 0x95f67dc, 0xaa0103fb),
+ ('[0x00-word0] mov x23,x27', 0x95f6824, 0xaa1b03f7),
+ ('REGRESSION word0-store: str x23,[sp,#112] (sp+0x70 = params.value+0x00)',
+  0x95f68d8, 0xf9003bf7),
+ ('setValue call: add x1,sp,#0x70 (112 DEC = 0x70)', 0x95f70dc, 0x9101c3e1),
+ ('setValue impl: valueobj+0x10 pointer load (pre-index -64)', 0x95f70ec, 0xf8410d10),
+ ('setValue impl: saved out-param load', 0x95f7114, 0xf9402bf6),
+ ('setValue impl: OSValueObject ptr stored to out-param', 0x95f7118, 0xf90002d0),
+ ('setValue copy: ldp q0,q1,[params]', 0x95f736c, 0xad400660),
+ ('setValue copy: stp q0,q1 -> value buffer (32B)', 0x95f7370, 0xad000680),
+]
+for label, vm, want in W:
+    chk(label, kc32(vm) == want, f'raw={kc32(vm):#010x}')
+
+# no-intervening-overwrite scan: [sp+112] touched exactly once in the gated
+# window between the word0 store (0x95f68d8) and the setValue call (0x95f70dc)
+_n = 0
+_off = 0x95f68d8 - 0x7004000
+_end = 0x95f70dc - 0x7004000
+for off in range(_off, _end, 4):
+    w = struct.unpack_from('<I', kc, off)[0]
+    if (w >> 22) == 0b1111100100 and ((w >> 10) & 0xFFF) == 14:
+        _n += 1
+    if (w >> 22) == 0b1111100101 and ((w >> 10) & 0xFFF) == 14:
+        _n += 1
+chk('no intervening store/load of params.word0 slot in gated window', _n == 1,
+    f'accesses={_n}')
 
 print('ALL OK' if ok else 'CONTRACT VIOLATION')
 sys.exit(0 if ok else 1)
