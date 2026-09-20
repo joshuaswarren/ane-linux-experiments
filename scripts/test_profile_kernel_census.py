@@ -97,6 +97,68 @@ def test_census_groups_by_enum_e_with_period():
         assert top == "QmmVecQ4MultiSubgroupF16", out
 
 
+def run_census(*profiles):
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        header = Path(td) / "compute.h"
+        write_header(header)
+        paths = []
+        for i, recs in enumerate(profiles):
+            p = Path(td) / ("prof%d.ndjson" % i)
+            p.write_text("\n".join(recs) + "\n")
+            paths.append(p)
+        return subprocess.run(
+            [sys.executable, str(CENSUS), str(header)] + [str(p) for p in paths],
+            capture_output=True, text=True, timeout=60)
+
+
+META = json.dumps({"k": "meta", "device": "TestDevice", "period_ns": 2.0,
+                   "valid_bits": 64, "pool": 65536, "label": "regression",
+                   "host_t0": 1})
+
+
+def test_rejects_negative_enum():
+    bad = [META,
+           json.dumps({"k": "d", "s": 7, "e": -1, "op": 0, "n": 1, "gx": 1,
+                       "gy": 1, "gz": 1, "h": 5, "tp": 0, "bar": 1,
+                       "t0": 0, "t1": 1000})]
+    proc = run_census(bad)
+    # Negative enum is corrupt data (profiler emits uint32): must be
+    # rejected, never wrapped onto names[-1] (the LAST enum name).
+    assert proc.returncode != 0, proc.stdout
+    assert "enum" in (proc.stderr + proc.stdout).lower()
+
+
+def test_rejects_file_without_own_meta():
+    has_meta = [META,
+                json.dumps({"k": "d", "s": 7, "e": 412, "op": 4, "n": 1,
+                            "gx": 1, "gy": 1, "gz": 1, "h": 5, "tp": 0,
+                            "bar": 1, "t0": 0, "t1": 5000000})]
+    no_meta = [json.dumps({"k": "d", "s": 8, "e": 4, "op": 0, "n": 1,
+                           "gx": 1, "gy": 1, "gz": 1, "h": 5, "tp": 0,
+                           "bar": 1, "t0": 0, "t1": 100000})]
+    proc = run_census(has_meta, no_meta)
+    # A meta-less file must be rejected, not silently inherit the first
+    # file's period_ns.
+    assert proc.returncode != 0, proc.stdout
+    assert "meta" in (proc.stderr + proc.stdout).lower()
+
+
+def test_rejects_zero_total():
+    noticks = [META,
+               json.dumps({"k": "d", "s": 7, "e": 412, "op": 4, "n": 1,
+                           "gx": 1, "gy": 1, "gz": 1, "h": 5, "tp": 0,
+                           "bar": 1})]
+    proc = run_census(noticks)
+    # No timestamped dispatches: clear rejection, no ZeroDivisionError.
+    assert proc.returncode != 0, proc.stdout
+    assert "traceback" not in proc.stderr.lower()
+
+
 if __name__ == "__main__":
     test_census_groups_by_enum_e_with_period()
-    print("PASS: census groups by kernel enum e with period_ns conversion")
+    test_rejects_negative_enum()
+    test_rejects_file_without_own_meta()
+    test_rejects_zero_total()
+    print("PASS: census groups by kernel enum e with period_ns conversion;"
+          " rejects negative enum, meta-less file, zero total")
