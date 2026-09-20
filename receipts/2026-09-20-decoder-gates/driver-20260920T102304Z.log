@@ -1,0 +1,4 @@
+[rtmod] SUBMIT tid=608315 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+nonfinite or invalid decoder state; no accepted timing
+[rtmod] COMMIT-NOOP

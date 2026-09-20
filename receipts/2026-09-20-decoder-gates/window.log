@@ -1,0 +1,68 @@
+== pre-state
+PRE: chatcmpl-NzSIHMXCRWxPSzdxuJnsRormlf6JyJ2m
+== stop timer+service
+LOCK-HELD pid=608297
+== producer (decisive phase-split comparison)
+FAIL: driver rc=1
+[rtmod] SUBMIT tid=608315 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+nonfinite or invalid decoder state; no accepted timing
+[rtmod] COMMIT-NOOP
+== cleanup (rc=3)
+FD9-RELEASED
+curl: (7) Failed to connect to 127.0.0.1:8002 after 0 ms: Could not connect to server
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+curl: (22) The requested URL returned error: 503
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+curl: (22) The requested URL returned error: 503
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+RESTORE: units=active+timer completion=chatcmpl-T6e1vUd6QwwtCQDbOMOmo121gB5DZk22
+NOT_GREEN: state=RUN rc=3

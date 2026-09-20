@@ -1,0 +1,54 @@
+== pre-state
+PRE: chatcmpl-XRfvkuJEZAzgwR18PX7tXe77IfFzFbf1
+== stop timer+service
+LOCK-HELD pid=608397
+== producer (decisive phase-split comparison)
+FAIL: driver rc=1
+[rtmod] SUBMIT tid=608415 cv=3749 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=608415 cv=3750 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=608415 cv=3751 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+split loop exceeded frames*max_symbols bound 3750
+[rtmod] COMMIT-NOOP
+== cleanup (rc=3)
+FD9-RELEASED
+curl: (7) Failed to connect to 127.0.0.1:8002 after 0 ms: Could not connect to server
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+curl: (22) The requested URL returned error: 503
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+RESTORE: units=active+timer completion=chatcmpl-lGLq2BdBJAvPusd7r8LqctwbWywvPvig
+NOT_GREEN: state=RUN rc=3

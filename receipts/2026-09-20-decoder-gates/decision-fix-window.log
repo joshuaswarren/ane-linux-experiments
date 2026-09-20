@@ -1,0 +1,51 @@
+== pre-state
+PRE: chatcmpl-YVcgjJJXdJSOdT2E0XFH4f2d6O5pzdFg
+== stop timer+service
+LOCK-HELD pid=608487
+== producer (decisive phase-split comparison)
+rep 6 (order split-first): fused 848.6 ms  split 929.9 ms  emissions 104  full-state MATCH
+
+counterbalanced medians over 6 reps: fused 848.7 ms  split 929.8 ms  delta +81.0 ms
+both walls are whole-decision implementations (fused one-dispatch vs two-dispatch split); per-phase attribution still requires the diag-timestamp pass.
+FULL-STATE: MATCH all reps
+[rtmod] COMMIT-NOOP
+== cleanup (rc=0)
+FD9-RELEASED
+curl: (7) Failed to connect to 127.0.0.1:8002 after 0 ms: Could not connect to server
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+curl: (22) The requested URL returned error: 503
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+RESTORE: units=active+timer completion=chatcmpl-cDQKJ9GCMqYFxTKlrAlgUuUAdVXJWavY
+RELEASE: state=DONE
