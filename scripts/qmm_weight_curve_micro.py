@@ -1,185 +1,315 @@
 #!/usr/bin/env python3
-"""qmm weight-fetch sensitivity micro (pre-registered, protocol in
-receipts/2026-09-19-gated-barriers-default-jw16.md "Hardened qmm
-weight-fetch micro protocol").
+"""qmm weight-fetch sensitivity micro v2 (protocol: receipts/2026-09-19-
+gated-barriers-default-jw16.md "Hardened qmm weight-fetch micro
+protocol"; v1 defects fixed per Main review 2026-09-20).
 
 Measures per-dispatch duration of the decode-shape quantized single-row
-GEMV as the weight working set grows W ∈ {1,2,4,16,64,256} buffers,
-randomized and counterbalanced in paired blocks, once under the GPU
-profiler (bracketed) and once unprofiled (wall-clock), reporting
-absolute deltas with distributions - no ratio thresholds, no residency
-claims from sizes. Requires: mlx with the omarchy backend on the target
-device, MLX_OMARCHY_GPU_PROFILE set for the bracketed pass.
+GEMV as the weight working set grows, W ∈ {1,2,4,16,64,256} buffers,
+randomized counterbalanced blocks. Two passes per slot:
 
-Identity check: the micro's captured dispatches are compared against
-the decode signature table (kernel enum family, n, gx tuples); a
-mismatch downgrades the run to "proxy shape" - recorded, never silent.
+  unbracketed  wall-clock only -> per-block WALL AVERAGES (labeled
+               "wall_avg_us"; NOT per-dispatch durations).
+  bracketed    same driver under MLX_OMARCHY_GPU_PROFILE -> per-dispatch
+               durations parsed from the profiler ndjson in submission
+               order (labeled "dispatch_us"), plus the wall averages as
+               a cross-check. The ndjson dispatch count is asserted
+               against the plan; a mismatch disqualifies the pass.
 
---selftest runs the pure-python analysis path (no mlx, no GPU).
+Timing hygiene: all inputs (x, every weight buffer) are mx.eval()'d
+before timing; a warmup segment runs before any measured block; every
+segment performs COMPLETE cycles over all W buffers (a W=256 segment
+visits all 256 buffers), so the advertised working set is the touched
+working set.
+
+Identity/shapes: --k and --cols are REQUIRED for device runs - the
+fused multi-group shape recovered from the dprof bindings does not map
+to a clean single (k, cols) and is not guessed here. The signature
+check compares the micro's captured dispatches against the decode
+(n, gx) table; a mismatch records verdict "PROXY SHAPE".
+
+Fail-first without GPU: --dry-run executes the real main path (plan,
+segment/chunk arithmetic, attribution chunking, analysis) with device
+calls stubbed; --selftest checks the pure analysis functions.
 
 Usage (slot time):
-  python3 scripts/qmm_weight_curve_micro.py --bracketed \
-      --profile /tmp/qmm_micro.ndjson --out /tmp/qmm_micro_b.json
-  python3 scripts/qmm_weight_curve_micro.py --out /tmp/qmm_micro_u.json
+  python3 scripts/qmm_weight_curve_micro.py --k K --cols C \
+      --pass unbracketed --out /tmp/qmm_u.json
+  MLX_OMARCHY_GPU_PROFILE=/tmp/qmm.ndjson \
+      python3 scripts/qmm_weight_curve_micro.py --k K --cols C \
+      --pass bracketed --profile /tmp/qmm.ndjson --out /tmp/qmm_b.json
 """
 import argparse
+import hashlib
 import json
+import os
 import random
 import statistics
 import sys
 import time
 
-# Decode dispatch signature recovered from the dprof captures
-# (kernel enum 412, QmmVecQ4MultiSubgroupF16; see receipt table).
 DECODE_SIGNATURE = {"kernel": 412, "shapes": [(112, 112), (144, 144), (608, 608)]}
-WEIGHT_BYTES = {112: 458752, 144: 458752, 608: 2469888}
 W_SERIES = [1, 2, 4, 16, 64, 256]
 BLOCKS = 6
-STEPS = 200
+MIN_STEPS = 200
+WARMUP_STEPS = 32
 SEED = 20260919
+BOOTSTRAP = 10000
 
 
-def qmm_step(x, wq, scales, biases):
-    """One decode-shape quantized GEMV dispatch (single row)."""
-    import mlx.core as mx
-    return mx.quantized_matmul(x, wq, scales, biases, transpose=True,
-                               group_size=64, bits=4)
+# ---------- pure planning (exercised by --dry-run, no device) ----------
+
+def build_plan(blocks=BLOCKS, w_series=None, min_steps=MIN_STEPS, seed=SEED):
+    """Segment plan: per block a seeded permutation of W; per segment
+    enough steps for whole cycles over all W buffers (working set ==
+    touched set) and >= min_steps total dispatches."""
+    w_series = W_SERIES if w_series is None else w_series
+    segments = []
+    for b in range(blocks):
+        order = w_series[:]
+        random.Random(seed + b).shuffle(order)
+        for w in order:
+            cycles = -(-min_steps // w)  # ceil
+            segments.append({"block": b, "w": w, "cycles": cycles,
+                             "steps": cycles * w})
+    return segments
 
 
-def build_weights(k, cols, n_buffers):
-    import mlx.core as mx
-    ws = []
-    for _ in range(n_buffers):
-        w = mx.random.normal((cols, k)).astype(mx.float16)
-        wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
-        ws.append((wq, scales, biases))
-    return ws
+def chunk_attribution(plan, durations, expected_kernels=None):
+    """Split the in-order profiler dispatch-duration list into segments
+    per the plan. Fail-first: wrong count or a non-uniform kernel
+    stream raises rather than mislabeling."""
+    if expected_kernels is not None:
+        bad = len(durations) - sum(1 for d in durations if expected_kernels(d))
+        if bad:
+            raise SystemExit(
+                f"attribution: {bad} dispatches outside the expected kernel "
+                "stream; refusing to chunk by order")
+    need = sum(s["steps"] for s in plan)
+    if len(durations) != need:
+        raise SystemExit(
+            f"attribution: captured {len(durations)} dispatches, plan "
+            f"expects {need}; refusing to chunk by order")
+    out, i = [], 0
+    for s in plan:
+        out.append({"block": s["block"], "w": s["w"],
+                    "us": durations[i:i + s["steps"]]})
+        i += s["steps"]
+    return out
 
 
-def capture_signature(profile_path):
-    """Kernel enum + (n, gx) pairs seen in a profile stream."""
-    sig = set()
-    for line in open(profile_path):
-        if not line.strip().startswith("{"):
-            continue
-        r = json.loads(line)
-        if r.get("k") == "d":
-            sig.add((r["e"], r["n"], r["gx"]))
-    return sorted(sig)
-
+# ---------- analysis (pure) ----------
 
 def quantiles(vals):
     s = sorted(vals)
-    return {"n": len(s), "p05": s[int(0.05 * len(s))],
-            "p50": s[len(s) // 2], "p90": s[int(0.90 * len(s))],
-            "mean": statistics.mean(s)}
+    return {"n": len(s), "p05": s[int(0.05 * len(s))], "p50": s[len(s) // 2],
+            "p90": s[int(0.90 * len(s))], "mean": statistics.mean(s)}
 
 
-def paired_deltas(block_medians):
-    """block_medians: {W: [per-block median us]}. Returns absolute
-    deltas vs W=1 with a bootstrap CI over blocks."""
-    base = block_medians[1]
-    out = {}
+def paired_deltas(block_stats):
+    """block_stats: {W: [per-block stat]}. Absolute deltas vs W=1 with
+    a bootstrap CI over blocks."""
+    base = block_stats[1]
     rng = random.Random(SEED)
-    for w, vals in sorted(block_medians.items()):
+    out = {}
+    for w, vals in sorted(block_stats.items()):
         if w == 1:
             out[w] = {"delta_us": 0.0, "ci95": [0.0, 0.0]}
             continue
         diffs = [b - a for a, b in zip(base, vals)]
-        boots = sorted(
-            statistics.median(rng.choice(diffs) for _ in diffs)
-            for _ in range(10000))
+        boots = sorted(statistics.median(
+            rng.choice(diffs) for _ in diffs) for _ in range(BOOTSTRAP))
         out[w] = {"delta_us": statistics.median(diffs),
-                  "ci95": [boots[249], boots[9749]]}
+                  "ci95": [boots[BOOTSTRAP // 40], boots[-BOOTSTRAP // 40 - 1]]}
     return out
 
 
-def run_pass(bracketed, args):
-    import mlx.core as mx
-    k, cols = args.k, args.cols
-    x = mx.random.normal((1, k)).astype(mx.float16)
-    weights = build_weights(k, cols, max(W_SERIES))
-    blocks = {}
-    for b in range(BLOCKS):
-        order = W_SERIES[:]
-        random.Random(SEED + b).shuffle(order)
-        for w in order:
-            t0 = time.perf_counter()
-            for i in range(STEPS):
-                y = qmm_step(x, *weights[i % w])
-                mx.eval(y)
-            dt = (time.perf_counter() - t0) / STEPS * 1e6
-            blocks.setdefault(w, []).append(dt)
-    return blocks
+# ---------- device path ----------
 
+def materialize_weights(k, cols, max_w):
+    import mlx.core as mx
+    x = mx.random.normal((1, k)).astype(mx.float16)
+    mx.eval(x)
+    weights = []
+    for _ in range(max_w):
+        w = mx.random.normal((cols, k)).astype(mx.float16)
+        wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
+        mx.eval(wq), mx.eval(scales), mx.eval(biases)  # lazy -> real
+        weights.append((wq, scales, biases))
+    return x, weights
+
+
+def run_device_pass(plan, k, cols, profile_path):
+    """Returns (wall_blocks {(block,w): [wall avg per visit]}, meta)."""
+    import mlx.core as mx
+    max_w = max(s["w"] for s in plan)
+    x, weights = materialize_weights(k, cols, max_w)
+
+    def step(i, w):
+        return mx.quantized_matmul(x, *weights[i % w], transpose=True,
+                                   group_size=64, bits=4)
+
+    t0 = time.perf_counter()
+    for i in range(WARMUP_STEPS):  # shader compile, pool setup, caches
+        mx.eval(step(i, max_w))
+    wall = {}
+    for s in plan:
+        t0 = time.perf_counter()
+        for i in range(s["steps"]):
+            mx.eval(step(i, s["w"]))
+        wall.setdefault((s["block"], s["w"]), []).append(
+            (time.perf_counter() - t0) / s["steps"] * 1e6)
+    wall_s = time.perf_counter() - t0
+    return wall, {"wall_s": wall_s}
+
+
+def read_dispatch_us(profile_path):
+    """Per-dispatch durations (us) in file order + the dominant kernel
+    enum for the signature check."""
+    meta, kernel_counts, durs = None, {}, []
+    for line in open(profile_path):
+        if not line.strip().startswith("{"):
+            continue
+        r = json.loads(line)
+        if r.get("k") == "meta":
+            meta = r
+        elif r.get("k") == "d":
+            kernel_counts[r["e"]] = kernel_counts.get(r["e"], 0) + 1
+            if "t0" in r:
+                durs.append((r["t1"] - r["t0"]) * meta["period_ns"] / 1e3)
+    if not kernel_counts:
+        raise SystemExit(f"{profile_path}: no dispatch events")
+    dominant = max(kernel_counts, key=kernel_counts.get)
+    return durs, dominant, kernel_counts
+
+
+# ---------- driver ----------
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--k", type=int, default=2048,
-                    help="GEMV k dim (defaults approximate the recovered "
-                         "0.46 MB shape; the signature check validates)")
-    ap.add_argument("--cols", type=int, default=400)
-    ap.add_argument("--bracketed", action="store_true",
-                    help="run under MLX_OMARCHY_GPU_PROFILE (env must be "
-                         "set before process start)")
+    ap.add_argument("--k", type=int, default=None,
+                    help="REQUIRED for device passes; fused decode shape "
+                         "does not map to a clean default and is not guessed")
+    ap.add_argument("--cols", type=int, default=None, help="required with --k")
+    ap.add_argument("--pass_", choices=["unbracketed", "bracketed"],
+                    dest="pass_name")
     ap.add_argument("--profile", default="/tmp/qmm_micro.ndjson")
-    ap.add_argument("--out", default=None)
+    ap.add_argument("--out")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="execute the real plan/attribution/analysis path "
+                         "with device calls stubbed; no mlx, no GPU")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
-    if not args.out and not args.selftest:
-        ap.error("--out is required unless --selftest")
 
     if args.selftest:
-        bm = {1: [10.0, 10.2, 10.1, 10.0, 10.1, 10.0],
-              16: [16.0, 16.4, 16.2, 16.1, 16.3, 16.2],
-              256: [17.0, 17.1, 17.2, 16.9, 17.0, 17.1]}
-        d = paired_deltas(bm)
-        assert d[16]["delta_us"] > 5.5 and d[256]["delta_us"] > d[16]["delta_us"]
-        assert d[1] == {"delta_us": 0.0, "ci95": [0.0, 0.0]}
-        q = quantiles([1.0, 2.0, 3.0, 4.0, 100.0])
-        assert q["p50"] == 3.0 and q["n"] == 5
-        print("PASS: analysis path (paired deltas, bootstrap, quantiles)")
+        pass
+    elif not args.out:
+        ap.error("--out is required")
+    elif not args.pass_name:
+        ap.error("--pass_ {unbracketed,bracketed} is required")
+
+    if args.selftest:
+        seg = build_plan()
+        assert sum(s["steps"] for s in seg) >= BLOCKS * MIN_STEPS * len(W_SERIES)
+        for s in seg:
+            assert s["steps"] % s["w"] == 0 and s["steps"] >= MIN_STEPS, s
+            assert s["steps"] >= s["w"]  # complete coverage of the set
+        assert [s["w"] for s in seg if s["block"] == 0] != sorted(W_SERIES), \
+            "permutation collapsed"
+        fake = [1.0] * sum(s["steps"] for s in seg)
+        chunks = chunk_attribution(seg, fake)
+        assert len(chunks) == len(seg) and all(
+            len(c["us"]) == s["steps"] for c, s in zip(chunks, seg))
+        try:
+            chunk_attribution(seg, fake[:-1])
+            raise SystemExit("selftest: short stream must fail")
+        except SystemExit as e:
+            assert "refusing" in str(e)
+        d = paired_deltas({1: [10.0] * BLOCKS, 16: [16.0] * BLOCKS})
+        assert d[16]["delta_us"] > 5.5
+        print("PASS: plan, attribution chunking (incl. fail-short), deltas")
         return
 
-    import mlx.core as mx  # noqa: F401 - fail fast if mlx missing
+    if (args.pass_name == "bracketed" and not args.dry_run
+            and not os.environ.get("MLX_OMARCHY_GPU_PROFILE")):
+        ap.error("bracketed pass needs MLX_OMARCHY_GPU_PROFILE set before "
+                 "process start")
+    if (args.k is None) != (args.cols is None):
+        ap.error("--k and --cols go together")
+    if args.k is None:
+        if not args.dry_run:
+            ap.error("--k/--cols required for device passes (shape is not "
+                     "guessed; see receipt table)")
+        k = cols = 0
+    else:
+        k, cols = args.k, args.cols
 
-    import hashlib, os
-    import mlx
-    lib = os.path.join(os.path.dirname(mlx.__file__), "lib", "libmlx.so")
-    if os.path.exists(lib):
-        ident["libmlx_sha256"] = hashlib.sha256(open(lib, "rb").read()).hexdigest()
-    ident["mlx_version"] = getattr(mlx, "__version__", "unknown")
-    ident["bracketed"] = args.bracketed
-    ident["k"] = args.k
-    ident["cols"] = args.cols
-    ident["weight_series"] = W_SERIES
-    ident["blocks"] = BLOCKS
-    ident["steps"] = STEPS
-    ident["seed"] = SEED
+    plan = build_plan()
+    ident = {
+        "k": k, "cols": cols, "pass": args.pass_name,
+        "blocks": BLOCKS, "min_steps": MIN_STEPS, "warmup": WARMUP_STEPS,
+        "w_series": W_SERIES, "seed": SEED,
+        "total_dispatches": sum(s["steps"] for s in plan),
+    }
+    try:
+        import mlx
+        ident["mlx_version"] = getattr(mlx, "__version__", "unknown")
+        lib = os.path.join(os.path.dirname(mlx.__file__), "lib", "libmlx.so")
+        if os.path.exists(lib):
+            ident["libmlx_sha256"] = hashlib.sha256(
+                open(lib, "rb").read()).hexdigest()
+    except ImportError:
+        ident["mlx_version"] = "absent"
 
-    t0 = time.perf_counter()
-    blocks = run_pass(args.bracketed, args)
-    wall_s = time.perf_counter() - t0
+    if args.dry_run:
+        fake_durs = [40.0] * ident["total_dispatches"]
+        chunks = chunk_attribution(plan, fake_durs)
+        by_w = {}
+        for c in chunks:
+            by_w.setdefault(c["w"], []).append(quantiles(c["us"])["p50"])
+        ident["dry_run"] = True
+        out = {"identity": ident, "plan": plan,
+               "dispatch_us_p50_by_block": {str(w): v for w, v in by_w.items()},
+               "paired_delta_vs_W1": paired_deltas(by_w)}
+        json.dump(out, open(args.out, "w"), indent=1)
+        print(f"dry-run OK: {len(plan)} segments, "
+              f"{ident['total_dispatches']} dispatches planned; wrote {args.out}")
+        return
 
-    sig = None
-    if args.bracketed:
-        sig = capture_signature(args.profile)
-        matched = [t for t in sig
-                   if t[0] == DECODE_SIGNATURE["kernel"]
-                   and t[1:] in DECODE_SIGNATURE["shapes"]]
+    wall, meta = run_device_pass(plan, k, cols, args.profile)
+    ident.update(meta)
+
+    wall_blocks = {}
+    for (b, w), vals in wall.items():
+        wall_blocks.setdefault(w, []).append(statistics.mean(vals))
+
+    out = {"identity": ident,
+           "wall_avg_us_per_block": {str(w): v for w, v in wall_blocks.items()},
+           "wall_avg_paired_delta_vs_W1": paired_deltas(wall_blocks)}
+
+    if args.pass_name == "bracketed":
+        durs, dominant, counts = read_dispatch_us(args.profile)
+        chunks = chunk_attribution(plan, durs)  # fail-first on count
+        disp_blocks = {}
+        for c in chunks:
+            disp_blocks.setdefault(c["w"], []).append(
+                statistics.median(c["us"]))
         ident["signature_check"] = {
-            "seen": sig, "decode_match": matched,
-            "verdict": "decode-shape match" if matched else
-                       "PROXY SHAPE - dispatch signature differs from decode"}
+            "dominant_kernel": dominant,
+            "kernel_event_counts": counts,
+            "decode_match": dominant == DECODE_SIGNATURE["kernel"],
+            "verdict": "decode-shape kernel" if
+                       dominant == DECODE_SIGNATURE["kernel"] else "PROXY SHAPE"}
+        out["dispatch_us_p50_per_block"] = {
+            str(w): v for w, v in disp_blocks.items()}
+        out["dispatch_us_quantiles_by_w"] = {
+            str(w): quantiles([u for c in chunks if c["w"] == w
+                               for u in c["us"]]) for w in W_SERIES}
+        out["dispatch_paired_delta_vs_W1"] = paired_deltas(disp_blocks)
+        out["note"] = ("dispatch_us derive from profiler t0/t1 and include "
+                       "the instrument's per-dispatch overhead; compare "
+                       "against the unbracketed wall averages before any "
+                       "conclusion")
 
-    out = {"identity": ident, "wall_s": wall_s,
-           "per_w_us": {str(w): quantiles(v) for w, v in blocks.items()},
-           "block_medians_us": {str(w): v for w, v in blocks.items()},
-           "paired_delta_vs_W1": paired_deltas(blocks)}
-    if args.bracketed:
-        out["note"] = ("bracketed pass: durations include the profiler's "
-                       "per-dispatch overhead; compare against the "
-                       "unbracketed pass before any conclusion")
     json.dump(out, open(args.out, "w"), indent=1)
     print("wrote", args.out)
 

@@ -599,6 +599,16 @@ shapes' baseline; the micro below is what decides.
    fusion hypothesis in favor of k-chain parallelism work on the same
    shader.
 
-Status: protocol pre-registered here; driver script staged at
-`scripts/qmm_weight_curve_micro.py` (syntax-checked, identity-check
-built in, not yet executed — requires the queue slot).
+Status: protocol pre-registered here; driver
+`scripts/qmm_weight_curve_micro.py` **v2** rewritten per Main's v1
+review (v1 had: undefined `ident` NameError, lazy un-eval'd inputs, no
+warmup, wall averages mislabeled as dispatch distributions, W=256
+segments visiting only 200 of 256 buffers, and a guessed cols=400
+default). v2: --k/--cols required for device passes (shape never
+guessed; signature check is the validator), inputs materialized before
+timing, warmup segment, complete W cycles per segment, bracketed pass
+reads per-dispatch durations from the profiler ndjson with a fail-first
+count assert, wall averages always labeled `wall_avg_us` distinct from
+`dispatch_us`, and a `--dry-run` that executes the real plan/
+attribution/analysis path without mlx or GPU. Selftest + dry-run PASS
+locally; NOT executed on device — hardware held until Main reviews.
