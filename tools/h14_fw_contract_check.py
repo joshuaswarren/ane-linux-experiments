@@ -24,7 +24,6 @@ TUNABLES_HDR = 0x00240301
 MH_PRELOAD = 5
 RVBAR_OFF = 0x1050000
 ROM_ENTRY = 0x0081000000000001
-ENTRY_MASK = 0xFF7EFFFFFFFFFFF8
 POSTBOOT_POLL_CONST = 0x08042006
 RVBAR_COMPOSE_MASK = 0xFF7EFFFFFFFFF800
 RVBAR_OR_BITS = 0x0081000000000001
@@ -44,8 +43,9 @@ def check_rvbar_compose():
         # bit0, 48, 55 always forced
         if not ((rvbar >> 0) & 1 and (rvbar >> 48) & 1 and (rvbar >> 55) & 1):
             ok = False
-        # obj18 bits 11-47 survive verbatim
-        for b in list(range(11, 48)):
+        # obj18 bits 11-47, 49-54, 56-63 survive verbatim
+        # (48 and 55 are forced by the OR; 0 forced; 1-10 cleared)
+        for b in list(range(11, 48)) + list(range(49, 55)) + list(range(56, 64)):
             if ((rvbar >> b) & 1) != ((obj18 >> b) & 1):
                 ok = False
     print(f"[{'PASS' if ok else 'FAIL'}] RVBAR compose bit semantics "
