@@ -178,5 +178,21 @@ chk('vtable byte40 word (READ32, salt 0x78f7)',
 chk('vtable byte48 word (WRITE32, salt 0x5bdd)',
     s64(0xE8208) == 0x80315bdd000087f0)
 
+# H14g numeric contract: fw-heap size and the derived [0x18] value.
+# builder words at 0x9613da8-0x9613dac: movz w8,#0x0500 ; movk w8,#0x0050,lsl16
+mz = w32(0x9613da8)
+imm16 = (mz >> 5) & 0xFFFF
+hw = (mz >> 21) & 1
+rd = mz & 0x1F
+size = imm16 << (16 * hw)
+chk('H14g size builder: movz w8,#0x50,lsl16 (Rd=8)',
+    hw == 1 and imm16 == 0x50 and rd == 8)
+chk('H14g size store follows: str w8,[x20,#312]',
+    dec(w32(0x9613dac)) == ('str-w', 312))
+chk('H14g config.size numeric = 0x500000 (5 MiB)', size == 0x500000)
+derived = 0x10000000 - size
+chk('H14g derived suballoc[0x18] = 0x10000000 - 0x500000 = 0x0FB00000',
+    derived == 0x0FB00000, f'computed {derived:#x}')
+
 print('ALL OK' if ok else 'CONTRACT VIOLATION')
 sys.exit(0 if ok else 1)

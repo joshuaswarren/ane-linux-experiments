@@ -680,6 +680,8 @@
    "config+0x150": "pre-CPU table count = 3 (H14g) - stored per-type; config+0xA0 = table pointer 0xcb6c188",
    "dev+0x3A70_cap": "IPC cap field: no in-text writer found in this pass - OPEN"
   },
-  "mmio_writes_this_lane": "none"
+  "mmio_writes_this_lane": "none",
+  "implication": "FWIM allocation size = 0x500000 (5 MiB) for H14g; suballoc header [0x10] = 0x500000, [0x18] = 0x10000000 - 0x500000 = 0x0FB00000 (Main arithmetic correction; earlier 0xF5000000 was a hex-subtraction error, withdrawn)",
+  "fwim_alloc_note": "Linux FW alloc 0x400000 (4 MiB) is NOT a superset of the kext 0x500000 (5 MiB) - must be grown"
  }
 }
