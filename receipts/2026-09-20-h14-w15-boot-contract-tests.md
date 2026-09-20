@@ -164,23 +164,30 @@ UNAME-AUTHORITATIVE: uname -r on jw14m2 decides; my earlier
 "7.1.13.asahi3-1" claim is withdrawn (last-live record said
 7.1.13-3-1-ARCH — build against the running kernel's tree, whichever
 it is):
-  1. rsync the worktree (6be485f) to jw14m2:~/src/omarchy-ane
-  2. cd ane/t6021 && make -C /lib/modules/$(uname -r)/build M=$PWD
+  1. Provision into a NEW ISOLATED directory — NEVER over
+     ~/src/omarchy-ane (dirty-tree preservation, no rsync overwrite):
+       git -C ~/src/omarchy-ane archive 6be485f |
+         tar -x -C /var/tmp/ane-t6021-6be485f
+     (creates /var/tmp/ane-t6021-6be485f as the exact 6be485f tree)
+  2. cd /var/tmp/ane-t6021-6be485f/ane/t6021 &&
+     make -C /lib/modules/$(uname -r)/build M=$PWD
   3. CAPTURE AND RECORD (window receipt): uname -r; sha256sum
      ane_t6021.ko (full); modinfo ane_t6021.ko (vermagic, srcversion)
   4. REFUSE insmod unless modinfo vermagic prefix == $(uname -r)
 
-DEFAULTS PARAMETER LIST (exact; anything unlisted stays kernel
-default):
-  insmod ane_t6021.ko allow_unqualified=1 fw_load=1 fw_boot=1
+DEFAULTS PARAMETER LIST (exact; all parameters explicit — no shadow
+defaults):
+  insmod ane_t6021.ko allow_unqualified=1 fw_load=1 fw_boot=1 \
+         rtkit_transport=0 mbi_doorbell=0
   - allow_unqualified=1 : binds the unqualified T6021 skeleton
   - fw_load=1           : validate + stage selene, DART-map
   - fw_boot=1           : arms the resolved boot sequence
-  - rtkit_transport     : ABSENT (default 0 — transport off, no IRQ
-                          registration)
-  - mbi_doorbell        : ABSENT (default 0 — doorbell fenced)
-  - sessions            : ABSENT (code-fenced; response_validated
-                          false keeps CSNE gated past booted)
+  - rtkit_transport=0   : transport OFF, no IRQ registration
+                          (explicit, not default-implied)
+  - mbi_doorbell=0      : doorbell fenced (explicit, not
+                          default-implied)
+  - sessions            : code-fenced; response_validated false keeps
+                          CSNE gated past booted
 
 FIRMWARE: t602x_ane0_fw_selene_rc4x.macho, sha256
 9f7915c431d288a2bdc2132c399db8cf5574716a3b1e94af76be6a291c2e665b,
