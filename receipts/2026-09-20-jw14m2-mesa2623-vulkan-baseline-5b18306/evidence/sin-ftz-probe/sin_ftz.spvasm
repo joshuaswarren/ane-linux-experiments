@@ -1,0 +1,42 @@
+; sin(±subnormal) under DenormFlushToZero fp32 — probe module
+; GLSL.std.450 instruction 13 = Sin. outs[0]=sin(x), outs[1]=raw x echo.
+               OpCapability Shader
+               OpCapability DenormFlushToZero
+%glsl450 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint GLCompute %main "main" %outs %pc
+               OpExecutionMode %main LocalSize 1 1 1
+               OpExecutionMode %main DenormFlushToZero 32
+               OpMemberDecorate %OutBuf 0 Offset 0
+               OpDecorate %OutBuf Block
+               OpDecorate %outs DescriptorSet 0
+               OpDecorate %outs Binding 0
+               OpDecorate %f32arr ArrayStride 4
+               OpMemberDecorate %PC 0 Offset 0
+               OpDecorate %PC Block
+      %int = OpTypeInt 32 1
+    %int_0 = OpConstant %int 0
+    %int_1 = OpConstant %int 1
+    %float = OpTypeFloat 32
+   %f32arr = OpTypeRuntimeArray %float
+   %OutBuf = OpTypeStruct %f32arr
+       %PC = OpTypeStruct %float
+    %void = OpTypeVoid
+     %func = OpTypeFunction %void
+%ptr_ssbo = OpTypePointer StorageBuffer %OutBuf
+   %outs = OpVariable %ptr_ssbo StorageBuffer
+  %ptr_pc = OpTypePointer PushConstant %PC
+     %pc = OpVariable %ptr_pc PushConstant
+%ptr_pc_f = OpTypePointer PushConstant %float
+%ptr_ssbo_f = OpTypePointer StorageBuffer %float
+    %main = OpFunction %void None %func
+   %entry = OpLabel
+     %xp = OpAccessChain %ptr_pc_f %pc %int_0
+      %x = OpLoad %float %xp
+      %s = OpExtInst %float %glsl450 Sin %x
+     %o0 = OpAccessChain %ptr_ssbo_f %outs %int_0 %int_0
+               OpStore %o0 %s
+     %o1 = OpAccessChain %ptr_ssbo_f %outs %int_0 %int_1
+               OpStore %o1 %x
+               OpReturn
+               OpFunctionEnd
