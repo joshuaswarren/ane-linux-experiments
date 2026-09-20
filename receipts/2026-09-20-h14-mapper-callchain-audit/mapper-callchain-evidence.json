@@ -1141,5 +1141,19 @@
    "status": "call-order open-by-design; register distinction (SCRATCH0 vs SCRATCH7) stands"
   },
   "mmio_writes_this_lane": "none"
+ },
+ "pass6e": {
+  "scope": "H14g block reachability CLOSED + pool+0x00 semantics from Allocate decode",
+  "h14g_block_reachability": {
+   "method": "predecessor scan over initializeANESoCConfig including B.cond (0x54 family) which the first pass missed",
+   "result": "EXACTLY ONE predecessor: SoCConfig+0x63c (0x9613558) b.eq 0x9613d68 when dispatch value w8 == 2",
+   "dispatch_chain": "0x9613524 cbz w8 -> path; 0x9613528 cmp w8,#1 / b.ne; 0x9613530 movz w9,#0x40 + movk #0x1,lsl16 (value 0x10040); 0x961353c cmp w8,#0xEF b.gt; 0x9613544 cmp w8,#0x74 b.eq; 0x961354c cmp w8,#1 b.ne; 0x9613554 cmp w8,#2; 0x9613558 b.eq 0x9613d68",
+   "status": "reachable iff SoCConfig type selector w8 == 2; h14g -> 2 mapping inferred from unique-candidate logic (only variant block consistent with the observed legacy flow: sets dev+0x4A0=0x01400044 which rvbar-width receipt confirms as H14g selection) - the w8 producer (upstream type parse) not traced; branch-anchored, mapping soft-closed"
+  },
+  "pool_0x00_semantics": {
+   "Allocate_decode": "DeviceMemoryManager::Allocate(this=dev+0x968, size): want=(size+0x3F)&~0x3F (64B round); walks free-list via [manager+0] head: nodes {+0x00 next, +0x10 flag-byte, +0x14 offset u32, +0x18 size u32}; exact-size match -> node[0x10]=0, return node[0x14]; larger -> split (kalloc_type carve); no memset of the returned range",
+   "pool_0x00": "pool(dev+0x980)+0x00 = manager+0x18 - NOT touched by Allocate (Allocate walks [manager+0]); value/identity open; Main hypothesis 'likely length = pool total 0x40000' plausible but fw-side use of suballoc[0x60] unverified - implement as pool length 0x40000 behind a fence comment"
+  },
+  "mmio_writes_this_lane": "none"
  }
 }
