@@ -580,9 +580,8 @@ session+0x10. The session is the object built by the
 SetupFWInitBootArgs/program-setup machinery (0x95f7314 is the getter).
 The boot compose reads `[dev+0x978]+0x18` = `session_object+0x18`.
 
-If session_object = OSValueObject<Params> (libkern OSObject header
-0x18), then +0x18 = params payload field 0 — a u64 at the START of
-ANESharedMemorySurfaceParams. The producer of THAT field is inside
-the SetupFWInitBootArgs machinery (the code that fills the params
-value object before storing it at session+0x10) — which is the
-H14DartAudit lane's SetupFWInitBootArgs walk continuation.
+The object CLASS at session+0x10 is UNRESOLVED: the init zeroing
+starts at +0x28 (not +0x18), so +0x18 may be wrapper-header or
+payload depending on the actual class — which has NOT been proven.
+The producer of whatever value sits at obj+0x18 is inside the
+SetupFWInitBootArgs machinery (H14DartAudit walk continuation).
