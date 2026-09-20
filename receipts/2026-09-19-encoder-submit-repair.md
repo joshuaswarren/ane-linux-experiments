@@ -605,3 +605,18 @@ per-program ladder with per-program GPU references to name the earliest
 wrong intermediate with matched evidence; the -inf-independence and
 bd-reblocking statements remain WITHDRAWN pending that matched upstream
 evidence.
+
+## 17c. Ground-truth correction + ladder ready
+
+Ground truth on the pad axes: the committed handler (94a97518 lineage) was
+ALREADY MIL-exact (pad dim3-before +1) — the earlier "pad dim corrected"
+wording was wrong about there being a handler bug; what WAS wrong was the
+prefix ladder's own pad axes (dim2-after), now fixed (staged
+/tmp/prefix_ladder.py on jw16). Consequence: the prefix-41 divergence ran
+with the MIL-EXACT handler chain — the residual delta is confirmed INSIDE
+the package's device execution (slice/select/matmul/add/softmax task
+chain), not in the runner's input preparation. The per-program device
+differential (ladder ready, one short hold) is the sole remaining
+isolation step; the compiler lane owns any program defect it names.
+Ladder v3 staged: /var/tmp/encgate/ladder_v3.py (stride-exact decode,
+explicit copies, per-stage GPU references, report json).
