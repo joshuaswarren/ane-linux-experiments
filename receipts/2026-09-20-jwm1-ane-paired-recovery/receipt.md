@@ -70,3 +70,17 @@ qualification (+overflow case) → schema-4 add-mul → o-proj/attention islands
 E2E → 100-run soak → Parakeet/Qwen3.8 ANE work. No persistence was installed
 (module staged only); a reboot unloads it until the disposition says
 otherwise.
+
+## Erratum (same session): the smoke's "exact fp16" was float-exact, not bit-exact
+
+Main flagged that the runner's comparison (`h13_run_linux.py` `compare_fp16`
+via `decode_fp16` → Python floats) treats `+0.0 == -0.0`. Bit-level analysis
+of the preserved device output (`/tmp/dtbo-parse/device-output-smoke1.y.fp16`,
+the runner overwrote `pkg/expected/y.fp16` with it on pass): **1 differing
+byte vs the pristine reference — a single signed-zero pair; zero true
+numeric differences.** The pristine fixture was restored on jwm1 from the
+workstation repo copy, and Step-1 protocol now (a) never passes pristine
+references as `--output` targets (the runner overwrites them on pass),
+(b) adds a byte-level verdict per output (BIT-IDENTICAL / signed-zero-only /
+NUMERIC-MISMATCH, the last one stops the run). Also: `passing` the smoke
+retroactively is unaffected — zero numeric differences.
