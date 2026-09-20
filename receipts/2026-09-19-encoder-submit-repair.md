@@ -466,3 +466,18 @@ active, real completion chatcmpl-6nsWHFAC9zH3PH7gQpPtqmV0dzyvuu4B.
 - QUEUE: Decoder ILP2 counterbalanced confirmation next; then the jointly
   staged differential window (my inputs capture + their --diag); GPU on
   demand. My gate re-baselines B/O marginals only after exactness.
+
+## 10c. Differential read-out constraints (Main review)
+
+- A -65504 finite-fill variant is at most an explicitly scoped EXPERIMENTAL
+  DISCRIMINATOR. It is not an accepted handler fix or mitigation: -inf →
+  -65504 changes all-masked softmax semantics and can alter finite-score
+  interactions. Acceptance requires proved valid-domain equivalence AND
+  fatal pins (38c73261 bit-exact), or the finding stays root-caused as
+  "-inf datapath unproven on device".
+- The logical_not bool-output diag does not by itself establish the -inf
+  datapath root cause; it discriminates the dst anomaly only.
+- Truncated-prefix comparisons must materialize the correct intermediate
+  layout/output for each prefix AND compare against the same GPU fp16
+  reference — a first-diff label without layout-correct materialization is
+  not a program attribution.
