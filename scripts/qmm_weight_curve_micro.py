@@ -290,7 +290,78 @@ def pass_calibrate(args, k, cols):
     print(f"wrote {args.out} - verdict: {report['verdict']}")
 
 
-def pass_unbracketed(args, k, cols, plan):
+def pass_compiled_calibrate(args, k, cols):
+    """Same verification as --pass calibrate, but the dispatches come
+    from the ACTUAL decode route: an mx.compile'd graph whose tape
+    carries a DecodeFusion group (fused_chain.cpp DecodeFusion: 3
+    QuantizedMatmul(Affine,4,64,transpose) nodes sharing one x = single
+    row, each with a single-consumer Add epilogue) so the fused-chain
+    builder records ONE QmmVecQ4Multi dispatch per call - the same
+    kernel enum the decode profile shows (412). No new kernel; the
+    graph mirrors the decode layer's matmul+add structure."""
+    import mlx.core as mx
+    require_sync(mx)
+    x = mx.random.normal((1, k)).astype(mx.float16)
+    mx.eval(x)
+    weights, adds = [], []
+    for _ in range(3):  # kQmmVecMultiWeights = 3 (compute.h:36)
+        w = mx.random.normal((cols, k)).astype(mx.float16)
+        wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
+        mx.eval(wq), mx.eval(scales), mx.eval(biases)
+        weights.append((wq, scales, biases))
+        adds.append(mx.random.normal((1, cols)).astype(mx.float16))
+    mx.eval(adds[0]), mx.eval(adds[1]), mx.eval(adds[2])
+
+    def group(x):
+        outs = [mx.quantized_matmul(x, *wq, transpose=True, group_size=64,
+                                    bits=4) for wq in weights]
+        return [o + a for o, a in zip(outs, adds)]
+
+    fn = mx.compile(group)
+    for i in range(WARMUP_STEPS):
+        mx.eval(fn(x))
+    mx.synchronize() if hasattr(mx, "synchronize") else mx.sync()
+    for _ in range(CALIBRATION_CALLS):
+        mx.eval(fn(x))
+        (mx.synchronize() if hasattr(mx, "synchronize") else mx.sync())
+    d_by_region, j_count, reasons, meta = parse_stream(args.profile)
+    verdict, report = verify_calibration(d_by_region, j_count, reasons)
+    ident = {"pass": "compiled-calibrate", "k": k, "cols": cols,
+             "group_members": 3, "warmup": WARMUP_STEPS,
+             "calibration_calls": CALIBRATION_CALLS,
+             "route_note": "compiled tape -> DecodeFusion -> "
+                           "QmmVecQ4Multi dispatch (actual call site)",
+             "mlx_version": getattr(mx, "__version__", "unknown")
+             if hasattr(mx, "__version__") else "unknown",
+             "device": meta.get("device"), "period_ns": meta.get("period_ns"),
+             "valid_bits": meta.get("valid_bits"),
+             "profile_path": args.profile}
+    try:
+        import mlx
+        lib = os.path.join(os.path.dirname(mlx.__file__ or ""), "lib",
+                           "libmlx.so")
+        if os.path.exists(lib):
+            ident["libmlx_sha256"] = hashlib.sha256(
+                open(lib, "rb").read()).hexdigest()
+        ident["mlx_version"] = getattr(mlx, "__version__",
+                                       ident["mlx_version"])
+    except (ImportError, TypeError):
+        pass
+    out = {"identity": ident, "calibration": report,
+           "raw_profile": args.profile,
+           "note": ("route diagnostic ONLY: verifies the compiled graph "
+                    "dispatches the fused multi-weight kernel; durations "
+                    "support NO performance conclusion")}
+    json.dump(out, open(args.out, "w"), indent=1)
+    strict = report.get("verdict", "").startswith("strict")
+    enums = report.get("region_enums", {})
+    route = (strict and all(enums.get(str(r)) == [412]
+                            for r in (2, 3, 4)))
+    print(f"wrote {args.out} - verdict: {report['verdict']} | "
+          f"route={'FUSED MULTI 412 CONFIRMED' if route else 'see report'}")
+
+
+
     import mlx.core as mx
     require_sync(mx)
     x, weights, calib = materialize(k, cols, max(s["w"] for s in plan))
@@ -425,8 +496,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--k", type=int, default=None)
     ap.add_argument("--cols", type=int, default=None)
-    ap.add_argument("--pass_", choices=["calibrate", "unbracketed",
-                                        "bracketed", "attribute", "report"],
+    ap.add_argument("--pass_", choices=["calibrate", "compiled-calibrate",
+                                        "unbracketed", "bracketed",
+                                        "attribute", "report"],
                     dest="pass_name")
     ap.add_argument("--profile", default="/tmp/qmm_micro.ndjson")
     ap.add_argument("--plan-meta", dest="plan_meta")
@@ -466,8 +538,9 @@ def main():
     if not args.pass_name:
         ap.error("--pass_ {calibrate,unbracketed,bracketed,attribute} is "
                  "required")
-    if args.pass_name in ("calibrate", "unbracketed", "bracketed") and \
-            not args.dry_run and args.k is None:
+    if args.pass_name in ("calibrate", "compiled-calibrate", "unbracketed",
+                          "bracketed") and not args.dry_run and \
+            args.k is None:
         ap.error("--k and --cols are operator-supplied and required "
                  "(shape is never guessed)")
 
@@ -489,6 +562,8 @@ def main():
 
     if args.pass_name == "calibrate":
         pass_calibrate(args, args.k, args.cols)
+    elif args.pass_name == "compiled-calibrate":
+        pass_compiled_calibrate(args, args.k, args.cols)
     elif args.pass_name == "unbracketed":
         pass_unbracketed(args, args.k, args.cols, plan)
     elif args.pass_name == "bracketed":
