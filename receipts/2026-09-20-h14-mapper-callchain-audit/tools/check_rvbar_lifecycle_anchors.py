@@ -87,5 +87,26 @@ chk('E5 "pre-loaded" string @0x74c4968', None if d[s:s + 10] == b'pre-loaded\0' 
 print(('PASS' if d[s:s + 11] == b'pre-loaded\0' else 'FAIL'),
       'E5 "pre-loaded" cstring @0x74c4968'); ok &= d[s:s + 11] == b'pre-loaded\0'
 
+# --- F. ack handshake ordering (pass5): SCRATCH7 pulse/probe/wake/done ---
+chk('F1 InitASR entry bti', 0xFFFFFE000960F2A8, 0xD503245F)
+chk('F2 InitASR clears [dev+0x438]', 0xFFFFFE000960F2C4, 0xB9443A61)
+chk('F3 write32 [dev+0x450]=SCRATCH6off', 0xFFFFFE00095E9554, 0xB9445261)
+chk('F4 pulse w2=1 [dev+0x454]', 0xFFFFFE00095E9674, 0x52800022)
+chk('F5 pulse w2=0 [dev+0x454]', 0xFFFFFE00095E9704, 0x52800002)
+chk('F6 probe read1 [dev+0x454]', 0xFFFFFE00095E979C, 0xB9445661)
+chk('F7 probe read2 [dev+0x454]', 0xFFFFFE00095E97F8, 0xB9445661)
+chk('F8 attempt counter mov 0x230', 0xFFFFFE00095E9840, 0x52804608)
+chk('F9 pub SCRATCH0 field dev+0x438', 0xFFFFFE00095EAA98, 0xB9443A61)
+chk('F10 pub SCRATCH1 field dev+0x43C', 0xFFFFFE00095EAAD0, 0xB9443E61)
+chk('F11 wake movz 0xdff9', 0xFFFFFE00095EAB24, 0x529BFF22)
+chk('F12 wake movk 0xf7fb -> 0xF7FBDFF9', 0xFFFFFE00095EAB28, 0x72BEFF62)
+chk('F13 wake write32 [dev+0x454]', 0xFFFFFE00095EAB0C, 0xB9445661)
+chk('F14 done movz 0x2006', 0xFFFFFE00095EAA88, 0x528400D6)
+chk('F15 done movk 0x0804', 0xFFFFFE00095EAA8C, 0x72A10096)
+chk('F16 done cmp w0,w22', 0xFFFFFE00095EAB58, 0x6B16001F)
+chk('F17 loopA bound cmp 1000', 0xFFFFFE00095E9AF4, 0x710FA39F)
+chk('F18 loopB bound cmp 1000', 0xFFFFFE00095EAB94, 0x710FA37F)
+chk('F19 dsb st before publication', 0xFFFFFE00095EAA90, 0xD5033E9F)
+
 print('ALL OK' if ok else 'SOME FAILED')
 sys.exit(0 if ok else 1)

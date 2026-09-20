@@ -35,18 +35,37 @@
  "linux_first_boot_order": [
   "1. PMGR ps 0x2e0 (via pmgr-pwrctl power-controller@2e0) write32 0x0000000f; read-validate 0xff (pass4).",
   "2. MPM clocks/power per kext gating (selector=0 on H14g).",
-  "3. FWIM staging surface alloc + dartMap (pass3), Params+0x18 = DVA.",
-  "4. Publish pool DVA: SCRATCH0=low32 (0x285840048), SCRATCH1=high32 (0x28584004C).",
-  "5. RVBAR write64 0x85050000 = 0x0081000000000001 | (DVA & 0xff7efffffff800...) ONLY after read64OneShot bit0==0.",
-  "6. CPU_CONTROL 0x85400044 write32 0x00000000 then 0x00000010, in that order.",
-  "7. Poll SCRATCH7 (0x285840064) == 0x08042006.",
-  "Do not export any 'pre-loaded' analog: dev+0x41F must stay 0 so the full latch path runs. If bit0 reads 1 stale: lawful action is domain off (ps 0x2e0 <- 0) then on, never an RVBAR bit0=0 write."
+  "3. ANE_Init: InitANEScratchRegisters zeroes scratch cells (via dev+0x438..0x454 offset fields); write32 SCRATCH6=1; pulse SCRATCH7 1->0 (stale ack cleared); 2 logged reads; attempt counter dev+0x230++.",
+  "4. RVBAR write64 0x285050000 (ASC view; APG 0x85050000) = 0x0081000000000001 | (FWIM_DVA & 0xff7efffffffff800), only after read64OneShot bit0==0; skipped entirely if dev+0x41F bit0 or read bit0 set.",
+  "5. CPU_CONTROL write32 0x00000000 then 0x00000010 (0x28540044 ASC view), both paths, after latch-or-skip.",
+  "6. Poll A: read32 SCRATCH7 (dev+0x454 field) == 0x08042006 READY beacon, <=1000 x sleep(1ms); timeout -> power_off/power_on retry (lawful latch clear).",
+  "7. On success: drain endpoint queues, dev+0x404=0x0101, commandWakeup; boot counters++; suballoc header fill (Params DVA at [0x00], count 64, 256B template).",
+  "8. dsb st; publish pool DVA: write32 SCRATCH0=low32, SCRATCH1=high32 (dev+0x438/0x43C fields). PUBLICATION IS AFTER THE READY POLL, not before RVBAR.",
+  "9. write32 SCRATCH7 = 0xF7FBDFF9 (wake word) - releases fw wait loop.",
+  "10. Poll B: read32 SCRATCH7 == 0x08042006 DONE ack, <=1000 x sleep(1ms); then read-back SCRATCH0/1 reassembled u64.",
+  "Never export a 'pre-loaded' analog: dev+0x41F must stay 0. Stale bit0=1: the kext never infers alive from bit0 - it clears SCRATCH7 by pulse, kicks CPU_CONTROL, and demands a fresh beacon; failure -> domain power cycle."
  ],
  "unresolved_edge": "hardware proof that PMGR ps 0x2e0 <- 0 actually clears RVBAR bit0 (ASC reset semantics) is not statically derivable; the driver's retry design presupposes it, only in-driver evidence is behavioral. Verification constraint (Main, 2026-09-20): engine-aperture accesses while the ANE domain is gated were previously fatal on real hardware - do NOT read 0x85050000 while the domain is off. Lawful next operation: gated re-enable first (ps 0x2e0 <- 0x0000000f, read-validate 0xff), THEN read64 0x85050000 and check bit0==0; if cleared, the stale latch was domain-cleared and the normal ANE_Init latch path may proceed.",
  "main_corrections": [
   "2026-09-20 Main: no engine-aperture read while domain gated/off (previously fatal); any read-back requires gated re-enable before read. Supersedes this lane's initial 'read after domain off' suggestion.",
   "2026-09-20 Main: no hardware permission granted; this lane and downstream lanes remain static-only."
  ],
+ "pass5_ack_ordering": {
+  "scope": "Main task: distinguish initial fw-alive ack vs post-publication ack; total order; stale-ack handling; receipt order correction. Coordinated with M2mapperevidenceaudit (selene side, ae6ecc9).",
+  "scratch_offset_fields": "dev+0x438..dev+0x454 = ENGINE-relative scratch cell offsets idx0..idx7 (pass2 pinned 0x438/0x43C=SCRATCH0/1; write sites prove 0x450=SCRATCH6, 0x454=SCRATCH7). [dev+0x454] has 12 reader sites and NO direct store - family filled by config copy; InitANEScratchRegisters 0x960F2A8 consumes them to zero every cell (write32 value 0 each). SCRATCH7 cell = 0x1840064 engine-relative = 0x285840064 ASC view (matches selene accessor 0x285840048 + idx7*4).",
+  "two_phase_handshake": {
+   "phase0_clear": "pre-RVBAR, legacy path: InitANEScratchRegisters zeroes cells; write32(SCRATCH6,1) 0x95e9550; pulse write32(SCRATCH7,1) 0x95e9658 + write32(SCRATCH7,0) 0x95e96e8 -> stale 0x08042006 or stale wake word CLEARED; two further read32(SCRATCH7) are os_log-only, NO compare/branch (informational, 0x95e9798/0x95e97f4); attempt counter dev+0x230++ (0x95e9840-0x95e984c).",
+   "phaseA_ready": "after RVBAR-or-skip + CPU_CONTROL 0->0x10: first read32(SCRATCH7) 0x95e9a8c; loop A 0x95e9adc..0x95e9b8c: sleep(1ms) x <=1000 (cmp #0x3e8 0x95e9af4), re-read, cmp w0,0x08042006 (0x95e9ab0); success -> +0x764; timeout -> 0x95eb164 region -> power_off/power_on retry (0x95eb280/0x95eb3ac). This is the INITIAL FW-ALIVE ack: fw (selene fn 0x71A4 per mapper lane) writes 0x08042006 beacon BEFORE needing pool DVA, so poll-before-publish is correct.",
+   "publication": "success path: boot counters (SCRATCH0/1 reads +0xcac), dev+0x41F read +0x1318, suballoc header fill, then dsb st (0x95eaa90); write32(SCRATCH0=poolDVA low32) 0x95eaa98; write32(SCRATCH1=high32) 0x95eaad0.",
+   "wake": "write32(SCRATCH7, 0xF7FBDFF9) 0x95eab08-0x95eab30 (movz 0xdff9/movk 0xf7fb) - releases selene wait loop (mapper lane: fw polls idx7 for this wake word, sleep 1000us loop).",
+   "phaseB_done": "read32(SCRATCH7) 0x95eab38; cmp w0, 0x08042006 (w22 built 0x95eaa88/8c; cmp 0x95eab58); loop B <=1000 x sleep(1ms) (0x95eab94); timeout -> 0x25e7078 fail; success -> read-back SCRATCH0/1 u64 reassembly +0x18dc/+0x1904. This is the POST-PUBLICATION ack (DONE).",
+   "stale_ack_answer": "same magic 0x08042006 marks both READY (pre-payload) and DONE (post-payload). The kext never decides aliveness from bit0=1 or from a read: it CLEARS SCRATCH7 by the 1->0 pulse before boot, so loop A can only pass if the fw re-beacons; loop B only passes after wake+payload. A stale DONE from a dead fw is impossible to false-positive after the pulse."
+  },
+  "no_latch_write_flow": "readRVBAR bit0=1 (or dev+0x41F=1): RVBAR write skipped (single tbnz); CPU_CONTROL 0->0x10 still pulses (restart at latched entry); poll A still demands fresh beacon because phase0 cleared SCRATCH7; no alive inference from bit0; failure -> power-cycle retry which clears the latch via domain off. dev+0x780 (1920) bit0 and dev+0x781 (1921) bit0 are additional skip flags: 0x781 set bypasses RVBAR+poll entirely to the success join (fast path); 0x780 set (branch B) skips legacy pre-RVBAR block.",
+  "order_correction": "this receipt's earlier linux_first_boot_order placed SCRATCH0/1 publication before RVBAR - WRONG vs kext: publication (step 8) is after READY poll (step 6), which is after RVBAR+CPU_CONTROL. Corrected above. RVBAR full ASC-view address 0x285050000 (Main correction); APG view 0x85050000.",
+  "wake_word_not_in_host_elsewhere": "0xF7FBDFF9 occurs in ANE kext text exactly once (the wake write); absent from all KC data regions - the ONLY host->SCRATCH7 writes in the kext are: pulse 1, pulse 0, wake word. The kext never writes 0x08042006 anywhere.",
+  "anchors": "tools/check_rvbar_lifecycle_anchors.py sections F1-F19; 57/57 total PASS"
+ },
  "mmio_writes_this_lane": "none",
  "tools_added": ["tools/check_rvbar_lifecycle_anchors.py"]
 }
