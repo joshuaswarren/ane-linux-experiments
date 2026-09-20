@@ -340,5 +340,52 @@
    "honest_linux_fill": "header[0]=driver fw_params DVA, header[0x68]=64, template=zeroed 256B are structurally fillable; per-field template semantics on the fw side unresolved (selene fn 0x71A4 reads the template region via x28+0x6C at vm 0x7614; field meanings open)",
    "snippet": "disasm/ANE_Init_suballoc_header.txt"
   }
+ },
+ "pass4": {
+  "scope": "AppleARMIODevice enableDeviceClock/Power -> PMGR mapping; pre-CPU table accessor-resource proof; AUTO_ENABLE selector resolution; Linux genpd DT comparison; jw14m2-linux read-only inventory",
+  "accessor_resource_map": {
+   "ctor_binding": "ANERegisterControl::C2 (0x9622744): map = provider->IOService::mapDeviceMemoryWithIndex(regIndex, 0) via provider vtable slot +0x710 (word at 0x7fbba78 -> 0xc412994 = mapDeviceMemoryWithIndex, kernel fileset symbol); this+0x18 = map->getVirtualAddress() (slot +0x138, salt 0x34f6); this+8 = the map",
+   "fan_out": "ANEHWDevice::start: dev+0x188 = ctor(provider=dev+0x810, dev[0x8E8]+0); dev+0x190 = +1; dev+0x198 = +2; dev+0x1A0 = +3 (0x9601188/0x96011c8/0x96011fc/0x9601230); each gated by config-object bytes [dev+0x376]->+361/+363/+377",
+   "index_value": "dev[0x8E8] is ZEROED by ANEHWDevice::C2 (0x959b174 add x22,x19,#0x8e8 alias; power-branches receipt ctor zeroing) and the only other add-imm 0x8E8 sites in kext text (12) are READS (ld1r into config+0x118 in initializeANESoCConfig) -> statically dev[0x8E8]=0",
+   "consequence": "dev+0x188 = provider reg[0] = ADT ane0 ENGINE aperture (0x84000000/0x2000000); dev+0x190 = reg[1] = PMGR (0x8e080000/0x4034); dev+0x198 = reg[2] = SET (0x8e08c000/0x4000); dev+0x1A0 = reg[3] (ADT 4th entry, not enumerated in dart receipt)",
+   "pre_cpu_table_proof": "loop at 0x95d2038-0x95d2094: table=config+0xa0 (=0xcb6c188), count=config+0x150 (=3), value=rec[8] skip 0xffffffff, receiver = ldr x0,[x20,#392] = dev+0x188 = ENGINE accessor, write32 slot byte48 salt 0x1344 -> offsets 0xb38/0xb98/0xbf8 ARE ENGINE-aperture-relative; shadow u32s rec[4]=0xb3c/0xb9c/0xbfc, tail 0xff,0xff,0,0",
+   "gate": "dev+0x784 byte bit0 set skips the loop (ldrb [x20,#1924]; tbnz #0 at 0x95d2024/28)",
+   "wrong_aperture_warning": "CPU-power helper writes offset 0x2e0 through dev+0x190 (PMGR accessor) = PMGR+0x2e0 - an entirely different aperture from the engine table writes; a Linux implementation must NOT write 0xb38-family offsets through a PMGR-mapped range nor 0x2e0 through an engine range"
+  },
+  "auto_enable_selector": {
+   "field": "dev+0x3EA0 (u32)",
+   "writers": [
+    "initializeANEProperties 0x9612c00: str w8,[x19,#0x3EA0] with w8=3 (0x9612bfc movz)",
+    "initializeANESoCConfig H14g default block 0x9613e14: str wzr,[x19,#16032]"
+   ],
+   "order": "both called from ANEHWDeviceConfig::C2: Properties at C2+0x70 (0x9612810) FIRST, SoCConfig at C2+0x80 (0x9612820) SECOND -> effective value 0 (bit1 clear)",
+   "h14g_block_identity": "the zeroing block also stores dev+0x4A0 = 0x01400044 (0x9613d8c-0x9613d94), matching the H14g CPU_CONTROL selection in rvbar-width.json -> same config path",
+   "resolution": "EnableCPUClocksAndPower reads the selector as mov w8,#0x3ea0; ldrb w8,[x8]; tbnz #1 (0x95d0de0-0x95d0dec) -> on H14g the plain branch runs: write32(0x0000000f) to PMGR+0x2e0 via dev+0x190 with validate mask 0xff/expected 0xff; AUTO_ENABLE bit28 NOT set (the alternative 0x1000000f path with dev+0x198 RMW clearing 0x30000000 is NOT the H14g default)",
+   "correction": "power-branches.json 'alternative branch is the default' is corrected: its premise (initializeProperties=3 persists) is overturned by the later SoCConfig zero on the same H14g path"
+  },
+  "pmgr_domain_comparison": {
+   "macos_static": "CPU-power helper -> dev+0x190 (PMGR aperture 0x8e080000) offset 0x2e0; first-enable via provider.enableDeviceClock(1,dev+0x8F0)/enableDevicePower(1,&out,dev+0x8F0) (provider-power-calls.json, slot 0x8a8/0x8b0 of AppleARMIODevice vtable 0x7fbb368)",
+   "linux_live_dt_jw14m2": "ane@284000000 power-domains = 8 pmgr-pwrctl phandles resolving to power-controller@4000,@4008,@4010,@4018,@4020,@4028,@4030,@2e0 (pmgr tile offsets); iommus = <498 0><499 0><500 0>; ane device in iommu_group 6; compatible apple,t6021-ane",
+   "match": "kext PMGR accessor offset 0x2e0 == live-DT power-controller@2e0 (pmgr+0x2e0) - the ANE PS domain; the 0x4000-0x4030 series (7 more domains) has NO direct kext accessor in this chain (kext reaches them, if at all, through provider.enableDevicePower ID translation, which is runtime-table based)",
+   "open": "provider.enableDeviceClock/Power internal index->ID arrays are runtime-populated (from ADT clock-gates/power-gates) - macOS PMGR gate IDs for the 0x4000-series not statically extracted; Linux kernel source for pmgr-pwrctl semantics not re-derived (kernel 7.1.13.asahi3-1, apple_dart built-in, no ane module loaded - driver absent from this kernel build)"
+  },
+  "jw14m2_linux_inventory": {
+   "host": "jw14m2-linux (alias per Main; tailnet 100.98.81.36 authorized)",
+   "os": "Arch Linux ARM, linux-asahi 7.1.13.asahi3-1 (kernel 7.1.13-3-1-ARCH)",
+   "modules_loaded_apple": [
+    "dwc3_apple",
+    "apple_sio",
+    "snd_soc_apple_mca",
+    "apple_isp",
+    "apple_avd"
+   ],
+   "ane_module": "NOT present in kernel build or lsmod (no ane driver shipped in linux-asahi 7.1.13)",
+   "dart": "apple_dart built-in (modules.builtin)",
+   "dt_ane": "/soc/ane@284000000 compatible apple,t6021-ane; reg incl pmgr 0x8e080000; 8 power-domains as listed; 3 iommu tuples stream 0",
+   "iommu_group": 6,
+   "method": "read-only ssh (hostname/uname/pacman/lsmod/proc-device-tree/sysfs reads); no MMIO, no module loads, no writes"
+  },
+  "anchors": "tools/check_power_anchors.py - 33/33 PASS",
+  "mmio_writes_this_lane": "none"
  }
 }
