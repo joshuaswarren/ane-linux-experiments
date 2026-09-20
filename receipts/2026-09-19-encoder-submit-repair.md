@@ -620,3 +620,29 @@ differential (ladder ready, one short hold) is the sole remaining
 isolation step; the compiler lane owns any program defect it names.
 Ladder v3 staged: /var/tmp/encgate/ladder_v3.py (stride-exact decode,
 explicit copies, per-stage GPU references, report json).
+
+## 17d. Corrections (Main review): -inf exoneration withdrawn; variant hash reconciliation; shared routing is the acceptance gate
+
+- WITHDRAWN: "the -inf datapath is exonerated". The identical divergence
+  under the -65504 discriminator only shows the failure is not
+  fill-value-dependent — consistent with a masked-dominant failure mode;
+  it does not eliminate -inf contributions. Any -inf datapath conclusion
+  requires matched upstream per-intermediate evidence (the prefix ladder
+  with GPU references), which is staged and pending the queue.
+- VARIANT RECONCILIATION: the committed handler (94a97518 lineage) has
+  pad dim3-before +1 — verified MIL-exact by flat-index derivation. The
+  prefix-41 gate run USED that exact chain (the divergence persisted
+  after the pad fix), so the residual delta is attributable to the
+  softmax input routing (ch5 vs ch6, the confirmed cross-family conflict)
+  — with one caveat: the earlier prefix-73 run used the naive-slice bd
+  (different wrong values, different signature), so the two runs are not
+  directly comparable; the routing-fix gate run is the decisive test.
+- The certified runner GPU chain reuse is a DISCRIMINATOR for the
+  bd-input head variant, not a coverage statement: full coverage (head
+  consumes raw relpos with a qualified in-package gather lowering)
+  remains the open goal.
+- ACCEPTANCE GATE: corrected shared channel routing + layout (compiler
+  shared routing + composition regression) must land BEFORE the F gate
+  reruns; the per-program ladder remains valuable for arithmetic
+  isolation independent of routing. Source prep continues; no
+  unreviewed hardware.
