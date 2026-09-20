@@ -161,6 +161,126 @@ sizes, and call order; they do **not** pin which publication variant is
 real — that needs the ROM (not in any artifact here) or a live-oracle
 lane. Both variants keep the same loader shape; only the constant differs.
 
+## 8. Addendum 3 — symbol-identity corrections + Params+0x18 producer chain closed (2026-09-20, coordination session)
+
+All addresses below re-verified with an explicit `<IBBHQ>` nlist_64 parse
+of the same K14 binary (11022 symbols); prior parser labels that disagree
+are superseded.
+
+### 8.1 SetupFWInitBootArgs identity correction (§6 re-attributed)
+
+`0x95ac538` — which §6 analyzed as "true function start" of
+SetupFWInitBootArgs — is exactly `_ZinComputeInitSneProgram` (nlist
+exact). The true `ANEHWDevice::SetupFWInitBootArgs(ANESharedMemorySurfaceParams*)`
+is **`0x95fe440`** (nlist exact), called once, at `0x95fe8a0` inside
+`ANEHWDevice::SetupEndpoints(unsigned, ANESharedMemorySurfaceParams**)`.
+§6's caller/walk/stride evidence (0x95395bc/0x9539c48, strides
+0x158/0x11c, sizes 8+0x24 etc.) belongs to `_ZinComputeInitSneProgram`
+and is **not** the SetupFWInitBootArgs contract; re-derivation at the
+true address is future work. The §6 publication open-item is nevertheless
+closed by §8.3 below.
+
+### 8.2 Exact-symbol ledger for the mapping chain
+
+- `0x95daa38` `ANEHWDevice::dartMapMemoryDescriptor(IOMemoryDescriptor*,
+  IODMACommand**, uint64_t* iova_out, IOMapper*, bool,
+  ANEResourceUsageType, uint64_t, RTBuddyVisibleMemory**)`
+- `0x95db284` `makeMemoryVisible(IOMemoryDescriptor*, uint64_t*,
+  RTBuddyVisibleMemory**, bool, usage, uint64_t)`
+- `0x95db620` `dartMapMemoryDescriptorSharedMallocRegion(IOMemoryDescriptor*,
+  uint64_t*, bool)`
+- `0x95f7314` `OSValueObject<ANESharedMemorySurfaceParams>::setValue(const&)`
+  — bulk copy (q-register stores) of the caller's params struct into the
+  payload; confirmed producer of the persistent `params+0x18`
+- `0x95a9ac4` `createANESurface(...)`; `0x95e942c` `ANEHWDevice::ANE_Init()`;
+  `0x95f73cc` `ANEHWDevice::SharedMemorySurfaceTargetPhysicalAddressToHostVirtualAddress(ulong, ulong, ANESharedMemorySurfaceParams**)`
+- helpers: `DisableANEClocksAndPower` 0x95d2d00, `EnableANEClocksAndPower`
+  0x95d19c0, `takeAneSysClockAssertion` 0x95cd214,
+  `removeAneSysClockAssertion` 0x95cd2a8, `DeviceMemoryManager::Allocate`
+  0x9587700, `ANEResource::usageCodeToUsageType` 0x95569ac; imports:
+  `RTBuddyService::makeMemoryVisible` 0x964bc38, `getMapperOptions`
+  0x964bd38, `setMapperOptions` 0x964bd48.
+
+### 8.3 Params+0x18 = dart IOVA, producer pinned, T6021 branch proven
+
+**Producer chain (all instruction-pinned):**
+`SetupEndpoints` → `SetupFWInitBootArgs(params*)` → vtable+0x8a8 slot →
+`dartMapMemoryDescriptor(desc, &cmd, &params->f18, mapper, …)` (call site
+0x95f6b0c–0x95f6bf0 passes `x3 = out+0x18`) → inside
+dartMapMemoryDescriptor: IODMACommand acquire from `dev+0x930/0x938`
+pools (`dev+0x920` is the mapper), power on (`0x95dad44–58`), execute
+(vtable+0x178, auth 0x3968, `0x95dadc0–0x95dae04`) writing the mapped
+address to stack slots (`gen > 0x6f → sp+0x30` else `sp+0x58`), power
+off, then **`0x95db13c: str x8, [x19]`** — the IOVA stored through the
+`u64* iova_out` byref — and `0x95db140: str x25, [x22]` returning the
+IODMACommand. `setValue` then bulk-copies the struct so the persistent
+payload carries the same IOVA at `+0x18`.
+
+**Publication resolved:** the boot compose (`…95e9850`, §1) reads
+`[dev, "FirmwareLoaded"][+0x18]` = the params payload, and folds
+**`RVBAR = 0x0081_0000_0000_0001 | (IOVA & 0xff7e_ffff_ffff_f800)`** —
+the surface address is published *as the ROM entry point itself*, not via
+boot-args contents and not a fixed constant. §6 variants (a)/(b) are both
+moot.
+
+**T6021 branch determination — CORRECTED (2026-09-20, Main CBZ evidence;
+the earlier "DMA-always / RTBuddy-branch-dead" claim in this section was
+WRONG and is retracted):** `dev+0x780` bit0 is **runtime-initialized by
+`ANEHWDevice::InitializeProvider` (0x9600054)**, not fixed at 0:
+
+- `0x9600144` region: the provider (IOService*) is queried
+  (vtable+0x3b0) and prefix-matched against two strings:
+  **"RTBuddyService"** (0x74c408f6) → `bl InitializeRTBuddyClient`
+  (0x95ffd60) at `0x96001b8`; **"ane"** (0x74c40905) → legacy direct
+  lookup `bl 0x964bc58` → result stored `dev+0x810` (`0x960023c`),
+  bit0 **not** set.
+- `InitializeRTBuddyClient` (0x95ffd60..0x9600054) performs three service
+  lookups (import 0x964bc58): named service → `dev+0x5a8` (with
+  vtable+0x6b0 call), second → `dev+0x5b0` (vtable+0x20 call), third →
+  `dev+0x810`; all three non-null ⇒ returns 0.
+- `0x96001bc: cbz w0, #0x9600284` — **InitializeRTBuddyClient success
+  (w0==0) ⇒ `0x9600288: strb w22=1, [dev+0x780]` (bit0 = 1).** Failure or
+  the legacy provider path leaves bit0 = 0 (ctor zero-init `str wzr` at
+  0x959b264/0x959bcf0; the 0x9648b84 store belongs to
+  `_GLOBAL__sub_I_ANEMutableWeights.cpp`, a different static).
+- `dartMapMemoryDescriptor` branch (`0x95daae4-c`): visible_out arg
+  (stack, caller passes x24+0x70 = sp+0xE0 at 0x95f6b48 — **non-null**)
+  AND bit0==1 ⇒ RTBuddy path (`makeMemoryVisible`); visible_out NULL or
+  bit0==0 ⇒ ANE's own IODMACommand path (0x95dab88, store at 0x95db13c).
+  Which branch t6021 takes on macOS = which provider string the ANE
+  nub matches + whether the RTBuddy lookups succeed — **a live fact for
+  the ioreg lane, not decidable from the binary** (no branch-always
+  claim).
+
+**Convergence finding (instruction-pinned, both branches):** the RTBuddy
+path (KC: import 0x964bc38 → GOT 0x81634d8 → 0xb6bdb5c accessor
+`ldr x0,[x0,#0x88]; b 0xb6b42b0`) funnels into the SAME
+mapping-object pattern as the ANE-internal path: service vtable+0x888
+acquire → vtable+0x1e8 async request with completion 0xb6b4364 →
+completion builds a mapped command object (alloc via GOT 0x8a1d668
+vtable+0xa8, init 0xb699598: `[this+0x10] = desc`, object create via
+vtable+0x20) → getter at **vtable+0x138 (single u64 arg 0) returns the
+device-visible address** stored through `u64* iova_out`
+(`0x95db3c4 str x0, [x19]`), object through `visible_out`
+(`0x95db36c str x0, [x21]`). Exact class label of GOT 0x8a1d668 pending
+multi-cache-level base decode; the create(+0x20)/getter(+0x138) shape
+matches the ANE-side IODMACommand usage byte-for-byte.
+
+**Linux correspondence (actual code):** on Linux both macOS branches
+converge to one mechanism — a DART-visible mapping of the fw buffer whose
+device address feeds `Params+0x18` → RVBAR fold. In-tree equivalence:
+`apple_rtkit` (drivers/soc/apple/rtkit.c) provides only IOP-initiated
+`APPLE_RTKIT_BUFFER_REQUEST` (msg 1, size/iova mask fields) — there is no
+host-initiated "make visible" API — so the driver performs the mapping
+itself: `dma_alloc_coherent(ane->dev, …)` (already used for the endpoint
+rings in `ane_t6021_rtkit.c:589`) with the device DMA-configured against
+dart-ane0 returns the IOVA directly; that IOVA is the `Params+0x18`
+value. macOS "RTBuddyService::makeMemoryVisible" ≙ Linux
+`dma_alloc_coherent`/`dma_map_single` + publishing the returned
+dma_addr_t.
+
+**MMIO write table: none — analysis only.**
+
 ## 7. Next implementable step
 
 Resolved this lane: placement mechanism (§5) and the boot-args call
