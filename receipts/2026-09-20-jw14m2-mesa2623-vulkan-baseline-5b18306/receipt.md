@@ -172,7 +172,7 @@ build, staged `/var/tmp/mesa-095cb/` + dedicated ICD) under identical protocol:
    decode cost from `095cb7e1` itself. The −8%-ish stock-vs-lineage decode delta belongs to the devel
    vintage, not the fix.
 3. **Signed-zero decomposition completed** (G14C probe): e167 leaks raw subnormals (`sin(−1e−45)=
-   `80000001``, no flush), stock 26.2.3 flushes but loses sign (`00000000`), candidate flushes signed zero
+   0x80000001, no flush), stock 26.2.3 flushes but loses sign (`00000000`), candidate flushes signed zero
    (`80000000` = the fix's contract). Three builds, three behaviors, cleanly attributed.
 
 **Verdict: `095cb7e1` on G14C = subnormal signed-zero flush restored, model-output bit-neutral, no decode
