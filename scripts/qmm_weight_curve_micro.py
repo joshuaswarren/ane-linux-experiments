@@ -108,13 +108,17 @@ def paired_deltas(block_stats):
 # ---------- calibration stream verification (pure) ----------
 
 def verify_calibration(d_by_region, j_count, reasons=None):
-    """d_by_region: {region: [(has_ticks, dur_us, enum)]}. Region 0 =
-    everything flushed by the first join (materialize + warmup);
-    regions 1..CALIBRATION_CALLS = one calibration call each; ANY event
-    in a region beyond CALIBRATION_CALLS, or j_count !=
-    CALIBRATION_CALLS + 1, is NON-STRICT.
+    """d_by_region: {region: [(has_ticks, dur_us, enum)]}. Flush
+    convention (source + empirically proven on t6001-test-host, calib-v23.ndjson):
+    the j record is emitted BEFORE flush_slot writes that join's d
+    lines, so region r = the flush work of sync r:
+      region 1 = warmup straggler (last warmup dispatch(es) whose slot
+                 was not reused before the sync; tick-ful, count >= 0),
+      regions 2..CALIBRATION_CALLS+1 = ONE calibration call each,
+      any region beyond CALIBRATION_CALLS+1, or j_count !=
+      CALIBRATION_CALLS + 1, is NON-STRICT.
 
-    Returns (verdict, report). verdict "strict": every calibration
+    Returns (verdict, report). verdict "strict": each calibration
     region has exactly one tick-ful dispatch with a stable enum - one
     qmm call == one dispatch is PROVEN. verdict "non-strict": report
     only; no attribution, no perf claim."""
@@ -125,7 +129,7 @@ def verify_calibration(d_by_region, j_count, reasons=None):
               "region_enums": {str(r): sorted({e for _, _, e in v})
                                for r, v in sorted(d_by_region.items())}}
     overflow = {r: v for r, v in d_by_region.items()
-                if r > CALIBRATION_CALLS and v}
+                if r > expected_j and v}
     if j_count != expected_j or overflow:
         report["verdict"] = "NON-STRICT layout - parser validation required"
         report["expected_j"] = expected_j
@@ -133,7 +137,7 @@ def verify_calibration(d_by_region, j_count, reasons=None):
                                       for r, v in overflow.items()}
         return "non-strict", report
     calib_enum = None
-    for r in range(1, CALIBRATION_CALLS + 1):
+    for r in range(2, CALIBRATION_CALLS + 2):
         evs = d_by_region.get(r, [])
         if len(evs) != 1 or not evs[0][0]:
             report["verdict"] = (
@@ -512,18 +516,21 @@ def main():
         assert all(s["steps"] % s["w"] == 0 and s["steps"] >= MIN_STEPS
                    for s in seg)
         strict = {0: [(True, 10.0, 55), (False, None, 55)],
-                  1: [(True, 30.0, 400)], 2: [(True, 30.0, 400)],
-                  3: [(True, 30.0, 400)]}
+                  1: [(True, 10.0, 397)],
+                  2: [(True, 30.0, 400)], 3: [(True, 30.0, 400)],
+                  4: [(True, 30.0, 400)]}
         v, rep = verify_calibration(strict, 4)
         assert v == "strict" and rep["calibrated_enum"] == 400
         for bad, jc, frag in (
-                ({**strict, 4: [(True, 1.0, 55)]}, 5, "post-plan event"),
+                ({**strict, 5: [(True, 1.0, 55)]}, 5, "post-plan event"),
                 (strict, 6, "extra join"),
-                ({0: [], 1: [(True, 30.0, 400)], 2: [(True, 30.0, 400),
+                ({0: [], 1: [(True, 10.0, 397)], 2: [(True, 30.0, 400),
                                                     (True, 30.0, 400)],
-                  3: [(True, 30.0, 400)]}, 4, "two dispatches in a call"),
-                ({0: [], 1: [(False, None, 400)], 2: [(True, 30.0, 400)],
-                  3: [(True, 30.0, 400)]}, 4, "tick-less calibration")):
+                  3: [(True, 30.0, 400)], 4: [(True, 30.0, 400)]}, 4,
+                 "two dispatches in a call"),
+                ({0: [], 1: [], 2: [(False, None, 400)], 3: [(True, 30.0,
+                                                             400)],
+                  4: [(True, 30.0, 400)]}, 4, "tick-less calibration")):
             v, rep = verify_calibration(bad, jc)
             assert v == "non-strict", (frag, rep)
         d = paired_deltas({1: [10.0] * BLOCKS, 16: [16.0] * BLOCKS})
