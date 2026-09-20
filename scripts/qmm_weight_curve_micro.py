@@ -444,12 +444,11 @@ def pass_compiled_curve(args, k, cols, plan):
     # Warm EVERY group outside measured regions; the finite check runs
     # HERE (warmup, before the first layout sync) - isfinite kernels
     # must never land after a calibration sync.
-    finite = None
+    finite = True
     for g in range(n_groups):
         outs = fn(x, *groups[g])
         mx.eval(outs)
-        if finite is None:
-            finite = all(bool(mx.isfinite(o).all()) for o in outs)
+        finite = finite and all(bool(mx.isfinite(o).all()) for o in outs)
     force_sync(mx)
     walls = []
     for s in plan:
@@ -494,15 +493,62 @@ def make_groups(mx, k, cols, n_groups):
     return groups
 
 
+def verify_curve_regions(regions, j_count, plan, expected_enum=412):
+    """Pure verifier for the compiled-curve stream layout.
+
+    regions: {region_index: [(has_ticks, dur_us, enum)]}; region r is
+    the flush work of sync r (j record precedes its flush work - source
+    + empirically proven). Expected: region 1 = warmup flush; regions
+    2..1+len(plan) = one fused dispatch per call (exactly `steps`
+    entries each, all tick-ful, all enum == expected); region
+    2+len(plan) and beyond = empty; j_count == 2 + len(plan)
+    (warmup sync + one per segment). Raises SystemExit with a precise
+    reason on ANY violation. Returns per-w stats dict."""
+    expected_j = 1 + len(plan)
+    if j_count != expected_j:
+        raise SystemExit(
+            f"stream: {j_count} join events, expected {expected_j} "
+            "(warmup sync + one per segment); layout mismatch")
+    stray = {r: v for r, v in regions.items()
+             if r > expected_j and v}
+    if stray:
+        raise SystemExit(
+            f"stream: dispatches after the final sync's join in regions "
+            f"{sorted(stray)}; unlabeled post-plan work")
+    by_w = {}
+    per_w = {}
+    for i, s in enumerate(plan):
+        r = 2 + i
+        evs = regions.get(r, [])
+        if len(evs) != s["steps"]:
+            raise SystemExit(
+                f"region {r}: {len(evs)} dispatches, expected exactly "
+                f"{s['steps']} (one fused dispatch per call); layout "
+                "mismatch")
+        if not all(h for h, *_ in evs):
+            raise SystemExit(f"region {r}: tick-less dispatches present")
+        bad = [e for _, _, e in evs if e != expected_enum]
+        if bad:
+            raise SystemExit(
+                f"region {r}: unexpected kernel enums {sorted(set(bad))}, "
+                f"expected {expected_enum} (fused route)")
+        by_w.setdefault(s["w"], []).append(
+            statistics.median([d for _, d, _ in evs]))
+        per_w.setdefault(s["w"], []).extend(evs)
+    return by_w, per_w
+
+
 def pass_curve_report(args, plan):
-    """Offline: attribute the compiled-curve stream. Exact layout: each
-    plan segment is one join region (segment ends with its own sync),
-    region 0 = warmup, region i+1 = plan segment i."""
+    """Offline (post-producer-exit): verify the compiled-curve stream.
+    One fused dispatch per call is the contract: each segment region
+    holds exactly `steps` events, all the expected fused enum, all
+    tick-ful. Any 3-split-per-call layout, wrong enum, tick-less entry,
+    join-count mismatch, or post-final-sync event rejects the stream."""
     ident = {}
     if args.plan_meta and os.path.exists(args.plan_meta):
         ident.update(json.load(open(args.plan_meta)))
     region, j_count, meta = 0, 0, None
-    d_by_region = {}
+    regions = {}
     for line in open(args.profile):
         if not line.strip().startswith("{"):
             continue
@@ -518,35 +564,19 @@ def pass_curve_report(args, plan):
             region = j_count
         elif k == "d":
             has = "t0" in r
-            d_by_region.setdefault(region, []).append(
+            regions.setdefault(region, []).append(
                 (has,
                  (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3 if has
                  else None,
                  r["e"]))
     if meta is None:
         raise SystemExit(f"{args.profile}: no meta record")
-    by_w = {}
-    per_w_events = {}
-    r = 1
-    for s in plan:
-        evs = d_by_region.get(r, [])
-        if len(evs) != 3 * s["steps"] or not all(h for h, *_ in evs):
-            raise SystemExit(
-                f"region {r}: {len(evs)} dispatches, segment expects "
-                f"3*{s['steps']} (3 members per call); layout mismatch "
-                "- refusing")
-        by_w.setdefault(s["w"], []).append(
-            statistics.median([d for _, d, _ in evs]))
-        per_w_events.setdefault(s["w"], []).extend(evs)
-        r += 1
-    stray = {rr: len(v) for rr, v in d_by_region.items() if rr >= r and v}
-    if stray:
-        raise SystemExit(f"stream: dispatches in unlabeled regions {stray}")
+    by_w, per_w = verify_curve_regions(regions, j_count, plan)
     out = {"identity": ident,
            "dispatch_us_p50_per_block": {str(w): v for w, v
                                          in by_w.items()},
            "dispatch_us_quantiles_by_w": {
-               str(w): quantiles([d for _, d, _ in per_w_events[w]])
+               str(w): quantiles([d for _, d, _ in per_w[w]])
                for w in W_SERIES},
            "paired_delta_vs_W1": paired_deltas(by_w),
            "note": ("bracketed instrument durations; compare against an "
