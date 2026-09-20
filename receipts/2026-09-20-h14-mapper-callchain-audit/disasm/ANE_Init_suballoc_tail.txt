@@ -1,0 +1,43 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000025e6880 <.data+0x25e6880>:
+ fffffe00095ea880:	b94006e9 	ldr	w9, [x23, #4]
+ fffffe00095ea884:	f9002b29 	str	x9, [x25, #80]
+ fffffe00095ea888:	f9400d09 	ldr	x9, [x8, #24]
+ fffffe00095ea88c:	f9002f29 	str	x9, [x25, #88]
+ fffffe00095ea890:	f9400108 	ldr	x8, [x8]
+ fffffe00095ea894:	f9003328 	str	x8, [x25, #96]
+ fffffe00095ea898:	b941826a 	ldr	w10, [x19, #384]
+ fffffe00095ea89c:	71000d5f 	cmp	w10, #0x3
+ fffffe00095ea8a0:	f90043f7 	str	x23, [sp, #128]
+ fffffe00095ea8a4:	54000168 	b.hi	0x25e68d0  // b.pmore
+ fffffe00095ea8a8:	d37df14a 	lsl	x10, x10, #3
+ fffffe00095ea8ac:	f0ff5b0b 	adrp	x11, 0x1149000   ; -> __ZTV13OSValueObjectI16FWPendingRequestE+0x140
+ fffffe00095ea8b0:	9106816b 	add	x11, x11, #0x1a0
+ fffffe00095ea8b4:	eb2ac15f 	cmp	x10, w10, sxtw
+ fffffe00095ea8b8:	8b2ac16c 	add	x12, x11, w10, sxtw
+ fffffe00095ea8bc:	8b0a0170 	add	x16, x11, x10
+ fffffe00095ea8c0:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095ea8c4:	9a90018c 	csel	x12, x12, x16, eq	// eq = none
+ fffffe00095ea8c8:	f940018a 	ldr	x10, [x12]
+ fffffe00095ea8cc:	14000003 	b	0x25e68d8
+ fffffe00095ea8d0:	d0fef66a 	adrp	x10, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095ea8d4:	911a714a 	add	x10, x10, #0x69c
+ fffffe00095ea8d8:	a90123e9 	stp	x9, x8, [sp, #16]
+ fffffe00095ea8dc:	a9006fea 	stp	x10, x27, [sp]
+ fffffe00095ea8e0:	b0fef660 	adrp	x0, 0x4b3000
+ fffffe00095ea8e4:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095ea8e8:	b0ff5bc1 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095ea8ec:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095ea8f0:	90fef843 	adrp	x3, 0x4ee000   ; -> __ZZN11ANEHWDevice8ANE_InitEvE11_os_log_fmt_8+0x1a
+ fffffe00095ea8f4:	91093063 	add	x3, x3, #0x24c
+ fffffe00095ea8f8:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe00095ea8fc:	94018663 	bl	0x2648288
+ fffffe00095ea900:	6f00e400 	movi	v0.2d, #0x0
+ fffffe00095ea904:	aa1903f6 	mov	x22, x25
+ fffffe00095ea908:	3c86cec0 	str	q0, [x22, #108]!
+ fffffe00095ea90c:	52800808 	mov	w8, #0x40                  	// #64

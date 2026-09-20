@@ -499,5 +499,116 @@
    "disasm/start_config_seq_784_read.txt"
   ],
   "mmio_writes_this_lane": "none"
+ },
+ "pass5b": {
+  "scope": "URGENT corrections: decimal-immediate conversions, [0x10] clobber, missing 0x50/0x58/0x60, template +0xC0",
+  "decimal_conversion_audit": {
+   "error_class": "objdump prints ldr/str/stp immediates DECIMAL (byte offset, scaled for 64-bit); earlier pass5 table misread #24 as 0x24 (=24 dec is 0x18) and wrote dev+0x376 for the config pointer (376 DEC = 0x178)",
+   "corrected_offsets": {
+    "config_pointer": "dev+0x178 (not 0x376) - ldr x9,[x19,#376] at 0x95ea7b4 and all [x20,#376] reads",
+    "mapper2": "dev+0x928 (not 0x938) - str x0,[x22,#2344] 0x96031cc; dev+0x938 = the [x22,#2360] store 0x9603420",
+    "header_08": "*( *(dev+0x988) + 0x18 ) - ldr x9,[x19,#2440]; ldr x9,[x9,#24]; 24 DEC = 0x18",
+    "header_20": "*([sp+0x88 obj] + 0x18) or 0 - ldr x26,[x9,#24] 0x95ea7d0",
+    "fw_side_reads": "fn 0x71A4 reads at 0x74cc-0x7544 are DECIMAL byte offsets 8,16,24,32,40,48,56,64,72,80,88,96,104 = header [0x08]..[0x68] - unaffected"
+   }
+  },
+  "corrected_field_table": [
+   {
+    "off": "0x00",
+    "producer": "*(FWIM_Params + 0x18) staging DVA",
+    "site": "0x95ea794-7a0",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x08",
+    "producer": "*(IPC_Params + 0x18): IPC_Params = *(dev+0x988); IPC surface allocated via AllocateSharedMemorySurface out-param with tag 0x49504320 'IPC ' (lea 0x95ea228, args 0x95ea240-58: size=clamp(cfg+4, cap 0x3A70-obj), bool=1, tag, 1,0,0)",
+    "site": "0x95ea7a8-0x95ea7b0",
+    "status": "producer chain CLOSED; Params+0x18 = surface DVA (same layout as FWIM)"
+   },
+   {
+    "off": "0x10",
+    "producer": "config.size = *(config+0x138) u32 zero-extended (x9 CLOBBERED at 0x95ea7b4/b8 - NOT a duplicate of 0x08)",
+    "site": "0x95ea7c4 stp low half",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x18",
+    "producer": "0x10000000 - config.size",
+    "site": "0x95ea7bc-0x95ea7c4 stp high half",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x20",
+    "producer": "*(obj2 + 0x18) or 0; obj2 = [sp+0x88]",
+    "site": "0x95ea7cc-0x95ea7e0",
+    "status": "obj2 provenance open"
+   },
+   {
+    "off": "0x28",
+    "producer": "w22 zero-extended (ANE_Init local, upstream not dumped)",
+    "site": "0x95ea7dc-0x95ea7e0",
+    "status": "open"
+   },
+   {
+    "off": "0x30",
+    "producer": "dev[0x990] u32 (fw-load progress; producer ANE_LoadFirmware_gated 0x95f0180 w23 after config-size bound check)",
+    "site": "0x95ea870-0x95ea874",
+    "status": "producer CLOSED, semantics open"
+   },
+   {
+    "off": "0x38",
+    "producer": "0 (stp xzr,xzr [x25,#56])",
+    "site": "0x95ea878",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x40",
+    "producer": "0",
+    "site": "0x95ea878",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x48",
+    "producer": "0 (str xzr,[x25,#72])",
+    "site": "0x95ea87c",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x50",
+    "producer": "u64 = [x23_obj + 4] (u32 zero-ext; x23 object upstream - e.g. dev+0x3AA0 region candidate)",
+    "site": "0x95ea880-0x95ea884",
+    "status": "x23 provenance open"
+   },
+   {
+    "off": "0x58",
+    "producer": "u64 = *(x8_obj + 0x18) - same Params-DVA pattern (x8 = stack sp+0x88 candidate)",
+    "site": "0x95ea888-0x95ea88c",
+    "status": "x8 identity partially traced"
+   },
+   {
+    "off": "0x60",
+    "producer": "u64 = *(x8_obj + 0x00)",
+    "site": "0x95ea890-0x95ea894",
+    "status": "same"
+   },
+   {
+    "off": "0x68",
+    "producer": "u32 64 (template word count)",
+    "site": "0x95ea90c-0x95ea910",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x6C..0x16C",
+    "producer": "256B template from dev+0x998: legacy = ALL ZERO including +0xC0; the |=0x10 mutation (start 0x9600748-54) requires dev+0x784 bit0 SET - no such writer exists",
+    "site": "0x95ea934-0x95ea97c",
+    "status": "CLOSED - boot.h +0xC0=4 fill UNSUPPORTED, use 0"
+   }
+  ],
+  "boot_h_correction": "template is entirely zero on the legacy/observed path INCLUDING +0xC0 (kext mutation value is |=0x10, not 4, and is unreachable); any nonzero template fill must be justified against fw reads at 0x7614 semantics (open)",
+  "dev988_note": "dev+0x988 = ANESharedMemorySurfaceParams* ('IPC ' surface) installed via AllocateSharedMemorySurface out-param (add x22,x19,#0x988 at ANE_Init+0xdfc 0x95ea228; tag movz/movk 0x95ea248-0x95ea24c; callee at ~0x95ea25c) - mirrors the dev+0x978 lesson; earlier zero-stores are init/teardown",
+  "snippets_pass5b": [
+   "disasm/ANE_Init_suballoc_tail.txt"
+  ],
+  "mmio_writes_this_lane": "none"
  }
 }
