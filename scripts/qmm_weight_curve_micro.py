@@ -152,10 +152,6 @@ def verify_calibration(d_by_region, j_count, reasons=None):
 
 # ---------- device helpers ----------
 
-def require_sync(mx):
-    pass  # replaced below; kept for patch history
-
-
 def resolve_libmlx():
     """EXACT loaded libmlx.so preferred: /proc/self/maps names the
     library the process actually mapped. Fallbacks: mlx.__file__ dir,
@@ -317,39 +313,8 @@ def pass_compiled_calibrate(args, k, cols):
 
 
 def pass_unbracketed(args, k, cols, plan):
-    """Wall-clock W-curve producer (GATED until route verified)."""
-    import mlx.core as mx
-    require_sync(mx)
-    x = mx.random.normal((1, k)).astype(mx.float16)
-    mx.eval(x)
-    weights = make_weights(mx, k, cols, max(s["w"] for s in plan))
-    for i in range(WARMUP_STEPS):
-        mx.eval(qmm(x, *weights[0][:3]))
-    force_sync(mx)
-    wall, total_t0 = {}, time.perf_counter()
-    for s in plan:
-        t0 = time.perf_counter()
-        for i in range(s["steps"]):
-            mx.eval(qmm(x, *weights[i % s["w"]][:3]))
-        wall.setdefault((s["block"], s["w"]), []).append(
-            (time.perf_counter() - t0) / s["steps"] * 1e6)
-    plan_wall_s = time.perf_counter() - total_t0
-    force_sync(mx)
-    wall_blocks = {}
-    for (b, w), vals in wall.items():
-        wall_blocks.setdefault(w, []).append(statistics.mean(vals))
-    out = {"identity": {"pass": "unbracketed", "k": k, "cols": cols,
-                        "blocks": BLOCKS, "min_steps": MIN_STEPS,
-                        "w_series": W_SERIES, "seed": SEED},
-           "plan_wall_s": plan_wall_s,
-           "plan_wall_s_note": ("plan segments only; materialization and "
-                                "warmup excluded; includes python + "
-                                "eval-sync round trip"),
-           "wall_avg_us_per_block": {str(w): v
-                                     for w, v in wall_blocks.items()},
-           "wall_avg_paired_delta_vs_W1": paired_deltas(wall_blocks)}
-    json.dump(out, open(args.out, "w"), indent=1)
-    print("wrote", args.out)
+    """Unprofiled wall curve using the calibrated compiled graph."""
+    pass_compiled_curve(args, k, cols, plan, profiled=False)
 
 
 # ---------- report (offline; post-producer-exit) ----------
@@ -413,7 +378,7 @@ def pass_report(args, plan=None):
 
 # ---------- compiled W-curve (route: fused multi; GATED hardware) ----------
 
-def pass_compiled_curve(args, k, cols, plan):
+def pass_compiled_curve(args, k, cols, plan, profiled=True):
     """Working-set curve through the SAME compiled 3-member graph that
     --pass compiled-calibrate route-verified (enum 412). Main review
     implemented: the compiled function receives the ACTUAL weight/add
@@ -423,6 +388,8 @@ def pass_compiled_curve(args, k, cols, plan):
     walls are serialized in the sidecar. Producer only - attribution is
     post-exit via --pass curve-report. HARDWARE GATED until Main
     reviews; no performance conclusions in output."""
+    if not profiled and os.environ.get("MLX_OMARCHY_GPU_PROFILE"):
+        raise SystemExit("unbracketed requires profiler disabled")
     import mlx.core as mx
     require_sync(mx)
     x = mx.random.normal((1, k)).astype(mx.float16)
@@ -459,7 +426,8 @@ def pass_compiled_curve(args, k, cols, plan):
         t1 = time.perf_counter()
         walls.append({"block": s["block"], "w": s["w"], "steps": s["steps"],
                       "wall_avg_us": (t1 - t0) / s["steps"] * 1e6})
-    ident = sidecar_identity("compiled-curve", mx, args.profile,
+    ident = sidecar_identity("compiled-curve" if profiled else "compiled-unbracketed",
+                             mx, args.profile if profiled else None,
                              {"k": k, "cols": cols, "blocks": BLOCKS,
                               "w_series": W_SERIES, "seed": SEED,
                               "plan_segments": len(plan),
@@ -471,7 +439,8 @@ def pass_compiled_curve(args, k, cols, plan):
                               "note": "GATED: no hardware run until "
                                       "Main reviews"})
     json.dump(ident, open(args.out, "w"), indent=1)
-    print("producer complete; run --pass curve-report post-exit")
+    print("producer complete; run --pass curve-report post-exit" if profiled
+          else "unprofiled producer complete")
 
 
 def make_groups(mx, k, cols, n_groups):
