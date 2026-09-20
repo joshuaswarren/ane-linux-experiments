@@ -247,15 +247,24 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   open prerequisite, sourced from the iBoot registration chain.
 - ROM entry 0x0081_0000_0000_0001: bitfield semantics UNDECODED — the
   value may compose flag bits with a shifted address rather than being
-  a raw address, and its relation to the DART iova space (or any
-  42-bit aperture claim) is UNPROVEN. What is pinned: the constant
-  itself (K13≡K14), its bit0 pre-gate read, and the CPU_CONTROL/STATUS
-  follow-on registers. Boot-vs-runtime ordering: boot fn zeroes
-  SCRATCH0-7 (InitANEScratchRegisters) → mode write → RVBAR → RUN →
-  poll; runtime InitializeRTBuddy then publishes per-command surface
-  positions via SCRATCH0/1 (lo/hi of surface_obj->[0x18] + cursor −
-  surface_obj->[0x38]; the class identity of that object — and thus
-  the exact meaning of +0x18/+0x38 — is unresolved).
+  a raw address, and its relation to the DART iova space is UNPROVEN.
+  What is pinned: the constant itself (K13≡K14), its bit0 pre-gate
+  read, and the CPU_CONTROL/STATUS follow-on registers.
+- IMAGE DOMAIN BRANCH (H14DartAudit precision guard, kept explicit):
+  only the ROM ENTRY (PC) is pinned non-DART-internal. The IMAGE bytes'
+  domain is UNRESOLVED with two load-bearing branches: (a) DRAM behind
+  dart-ane0 — then a Linux cold boot must program dart-ane0 PTEs BEFORE
+  the RVBAR write (apple-dart probe wipes all TTBRs), and the W14
+  DART-mapped surface shape is compatible (pin the iova); (b) non-DART
+  window — the DART-surface approach dies and placement needs a
+  physical window. Favors (a): iBoot's own text references dart-ane0
+  (ADRP/ADD at 0x74920 → "dart-ane0" string; function under analysis)
+  and macOS-kext runtime fw addresses are dart-ane0 iovas. Boot-vs-
+  runtime ordering: boot fn zeroes SCRATCH0-7 (InitANEScratchRegisters)
+  → mode write → RVBAR → RUN → poll; runtime InitializeRTBuddy then
+  publishes per-command surface positions via SCRATCH0/1 (lo/hi of
+  surface_obj->[0x18] + cursor − surface_obj->[0x38]; object class
+  identity unresolved).
 
 ### Addendum 3c: iBoot registry trace state (continuation point)
 
@@ -271,6 +280,19 @@ poll register is CPU_STATUS — both offsets come from the SoC config
 - Continuation: trace `0xe8548` (what allocates the per-role object
   and where its load-address field is filled), and the caller chain at
   `0x75a0c/0xcd820`. Both pure-offline.
+- ADD (W13a 3e, iBoot device-population walker found): iBoot
+  `0x74700–0x74a00+` is a table-driven device walker passing ADT node
+  names to helpers — pinned name/VA pairs include `isp0/dart-isp0/
+  isp1/dart-isp1/i2c6/aop/dart-aop/ane0(0x211dda)/dart-ane0(0x211ddf)/
+  ane1/dart-ane1/atc*` with distinct helper calls per class
+  (`0x75804`, `0x75820`, `0x75788`). This is the keep/populate
+  mechanism: WHICH devices iBoot prepares per boot flow. The ANE
+  entries sit between aop/dart-aop and ane1/dart-ane1 — unconditional
+  in this table so far. Decoding helpers 0x75804/0x75820/0x75788 for
+  the ane0/dart-ane0 entries answers THE discriminating question: does
+  iBoot map dart-ane0 + load ANE fw on chainload boots (null-result
+  risk for the live-ADT route; also decides placement branch (a) vs
+  (b)). Next offline step, bounded.
 - Selene bootargs-parse trace (negative result, documented): the fw
   string "Boot arguments entries : %zu" (VA 0x9e02c in `__TEXT.__cstring`)
   has ZERO static references — no ADRP/ADD xref (fwxref), no literal-pool
