@@ -409,3 +409,37 @@ The two broadcast marshallings are NOT both ~2.25 MB: cond bool
 these two runtime inputs: 3,375,000 B — unless the ABI stages a padded
 dtype, which the device gate will verify from marshal_copy_ns against
 the staged input_bytes. Pricing uses actual bytes.
+
+## 11. Layer-0 F gate result: device execution works, numerics DIVERGE — NO-LAND
+
+With the valid minted bundle staged (immutable ac-head-014755b bytes,
+payload hashes frozen into the gate) and the F placement's layer-0-only
+fusion (layers 1-23 on the certified AC fallback), the encoder runs
+END-TO-END on device: 48 resident rounds, 0 timeouts, cpu_tensor_events 0,
+head round 24.5 ms + PV round 6.3 ms at layer 0. The transcript diverges
+at prefix 73 (hidden 3b9202cf ≠ 38c73261 certified; bounds FAIL) — the
+composed package numerics are NOT exact.
+
+Prime suspects, in order: (a) the -inf → select → add → softmax chain on
+the device datapath (the known-unexercised surface — Apple softmax uses
+fp16 lookup tables; -inf lanes may not propagate as exact zeros);
+(b) the mask-chain spelling: ac_head2.mil replaces the certified
+pad→reshape→slice→reshape→slice→mul chain with a single [0:375,0:375]
+slice of relpos — compile-equivalent per the census, but the certified
+chain's elementwise scale (var_371) was applied pre-slice by the runner,
+and any element-order difference inside the original reshape dance would
+shift values the byte-parity oracles never covered as a composition;
+(c) q spelling: the package matmul takes the var_7-scaled query with no
+in-package rescale — matches the certified island-A binding, verified.
+
+NO-LAND stands. The device-verified facts: the minted bundle LOADS and
+EXECUTES through the resident session with the zero-copy transport; the
+failure is a numerics composition issue inside the package spelling,
+owned jointly by this lane (runner-side input preparation) and the
+compiler lane (program spellings). Next iteration: differential probe of
+the head's smax vs the GPU softmax reference on identical inputs (device
+window), then either fix the spelling or fall back to feeding the head a
+GPU-computed masked input.
+
+Service restored and verified post-window: llm-inference active, timer
+active, real completion chatcmpl-6nsWHFAC9zH3PH7gQpPtqmV0dzyvuu4B.
