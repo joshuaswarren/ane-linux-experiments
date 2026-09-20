@@ -215,3 +215,36 @@ DIFF blocks (ANE, three darts, pmgr SET nodes) — the verifier discriminates.
 `ane-fragment.dtsi` regenerated from the verified build (sha
 `f41a9cbe…`). Still STAGED: no deployment until Main's review + the
 amended guard tip ride together.
+
+## Addendum 4 — verifier v2 (Main review fixes) + independent-run paths
+
+`verify_ane_dt.py` v2 (sha256
+`28d3a6587b3b8cef1c82d7f583292a83e060f1754a98b6dc5ac02283cba0bca1`) fixes the
+false positive: the provider regex expected `}` instead of ` {`, so every
+provider block was ABSENT on both sides and the earlier CANONICAL-EQUAL was
+vacuous for the chains. v2:
+
+- exact node-boundary extraction (`find_block` brace matching) for every
+  expected block; ALL blocks required present (absence fails loudly);
+- formatting-insensitive canonicalization (whitespace collapsed);
+- arity-aware phandle resolution from `#iommu-cells` — SID cells preserved,
+  never erased; `interrupt-parent` resolved too;
+- negative self-tests (`--selftest`): provider-parent-only mutation and
+  DMA-range-only mutation, each must FAIL (verified: 1 and 3 diff blocks).
+
+Independent run (all inputs committed):
+
+```sh
+cd receipts/2026-09-20-jwm1-ane-dt-derivation
+python3 build_ane_dtb.py evidence/stock-t8103-j293.dtb built.ane.dtb --workdir work
+python3 verify_ane_dt.py built.ane.dtb \
+  ../2026-09-20-jwm1-ane-first-load-wedge/evidence/carved-8c12e9f.dtb work
+python3 verify_ane_dt.py built.ane.dtb \
+  ../2026-09-20-jwm1-ane-first-load-wedge/evidence/carved-8c12e9f.dtb work --selftest
+```
+
+Executed here: build → `4ec4b87f…` (matches staged); compare →
+CANONICAL-EQUAL; selftests → both mutations correctly FAIL. Inputs:
+`evidence/stock-t8103-j293.dtb` (`ea32173d…`); historical carve at
+`receipts/2026-09-20-jwm1-ane-first-load-wedge/evidence/carved-8c12e9f.dtb`
+(`1a72bc81…`). Deployment remains HELD.
