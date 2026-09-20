@@ -173,8 +173,9 @@
    "signature": "_getDeviceParentsID(ApplePMGR* this @x0, DeviceData* dd @x1, u8 parent_idx @w2) -> u16 parent id, vm 0x9b49cf0.",
    "body": "kind = [this+7176]: kind==2 -> up to 3 parents read from dd+8 + (idx-2)*2 (u16 each); kind==1 -> up to 2 parents from dd+4 + idx*2; sentinel 0xFFFF -> cold.1 error; idx over max -> cold.2/0. RESULT = u16 at dd[4 + idx*2] (type1) or dd[8 + (idx-2)*2] (type2).",
    "structure": "PARENT-ID ARRAY lives at DeviceData+4 as u16 entries (0xFFFF-terminated) - the ADT alias field feeds this array via the builder (builder link still open).",
-   "regmap_table": "getRegMap(RegMap map, u32 idx) @vm 0x9b49db8: entry = this+0x29E8 + map*96 + idx*48, 48-byte RegMap entries, map < 0x89 guard. This is the ADT 'map'/'index' resolver infrastructure for the domain entries (ANE_CPU map6 idx28, AFR map18 idx0, ANE-SYS-V map0 idx0).",
-   "cluster": "_getDeviceClusterIDs(DeviceData*, u8*, u32*) @vm 0x9b49ea0 (cluster IDs = the second alias half candidate)."
+   "regmap_table": "RETRACTED as 'ADT map/index resolver': getRegMap(RegMap, u32) @vm 0x9b49db8 computes this+0x29E8 + arg1*96 + arg2*48 (48B entries), but NO direct bl callers exist in the ApplePMGR region scanned and no call-site args are proven - the equation with the ADT ps-regs map/index is UNPROVEN (Main: idx28 contradicts a two-entry-per-map reading). Do not use getRegMap arithmetic as ps-ctl derivation.",
+   "cluster": "_getDeviceClusterIDs(DeviceData*, u8*, u32*) @vm 0x9b49ea0 (cluster IDs = the second alias half candidate).",
+   "builder_search": "Session bounded search: no DeviceData builder found. ApplePMGR::start (990 insns) contains no strh stores and no bl getRegMap; getRegMap has no direct bl callers in the scanned ApplePMGR region (invoked via pointer/vtable or outside window); 26 sites reference the DeviceData array base 0x90A8 (first non-start consumer = _runEnergyModel helper 0x9b3c848 - a consumer, not the builder). The builder remains unlocated; alias byte-provenance remains OPEN."
   }
  },
  "tools_added": [
