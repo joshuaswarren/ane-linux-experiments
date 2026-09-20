@@ -302,6 +302,17 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   0xee0c4 — direct support for placement branch (a) (iBoot programs
   dart-ane0 for the ANE image). Next: analyze 0xee0c4's dart mapping +
   image-load path (bounded, offline).
+- ADD (W13a 3g, populate chain head): 0xee0c4 is a 5-insn shim →
+  bl 0xeed50 / 0xeeea8 / 0xeecf8 / (x7=x3) / 0xedcc4. The ANE/MTP
+  template at 0x2254c8 = {PAC'd ptr ×2, u32 4, ...} with INLINE role
+  strings ("MTP\0mtp/iop-mtp-nub\0mtp\0dart-mtp\0MtpFirmware.img4") —
+  per-role templates embed their strings; the ANE0 template sits at
+  the 0x22552b neighborhood. The following function 0xee0f8 walks a
+  0x50-stride client array ([+0x40] count, [+0x44] size, rounding
+  (+3&~3)+0x24) — the SAME bootargs size math as K14
+  SetupFWInitBootArgs (parallel implementation confirmed). Continuation:
+  0xeed50/0xeeea8/0xeecf8/0xedcc4 chain + the 0x50-stride array's
+  load-address field.
 - Selene bootargs-parse trace (negative result, documented): the fw
   string "Boot arguments entries : %zu" (VA 0x9e02c in `__TEXT.__cstring`)
   has ZERO static references — no ADRP/ADD xref (fwxref), no literal-pool
