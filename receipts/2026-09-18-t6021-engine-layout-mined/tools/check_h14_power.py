@@ -34,6 +34,10 @@ anchors = {
     0x95D205C: 0x54000160,  # skip sentinel -1
     0x95D2064: 0xB9400121,  # offset from record+0
     0x95D2080: 0xD73F0910,  # write32 accessor
+    0x9612BFC: 0x52800068,  # default power selector3
+    0x9612C00: 0xB93EA268,  # device+0x3ea0
+    0x9615E24: 0xD503245F,  # parseANEBootArgs is bti/ret in this KC
+    0x9615E28: 0xD65F03C0,
 }
 for address, word in anchors.items():
     assert struct.unpack_from("<I", data, address - base)[0] == word, hex(address)

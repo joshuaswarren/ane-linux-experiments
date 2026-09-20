@@ -19,6 +19,7 @@
   },
   "cpu_power_branch": {
     "selector": "Normalized config type0x80 maps via rotate((type-0x30),4) to jump-table index5; signed table displacement0x310 from0x95d0abc reaches0x95d0dcc",
+    "default": "initializeProperties0x9612bfc..c00 sets device+0x3ea0=3, so bit1 is initially set. The alternative branch is the default absent later overrides; parseANEBootArgs0x9615e24 is only bti/ret in this KC. This still does not prove absence of all later alias writes.",
     "subtype": "Accepts subtype0 or1; captured macOS subtype0",
     "plain": "If device+0x3ea0 bit1 is clear: write32(0xf) to accessor device+0x190 offset0x2e0; validate expected0xff with mask0xff",
     "alternative": "If bit1 is set: read-modify-write accessor device+0x198 offset0x2dc clearing0x30000000, validate those bits clear, then write32(0x1000000f) through accessor device+0x190 offset0x2e0 and validate0x100000ff under that mask",
@@ -26,7 +27,7 @@
   },
   "call_order": "power_on_hardware_gated calls EnableANEClocksAndPower(true,true), later EnableMPMClocksAndPower and ANE_Init; failure paths include power_off_hardware_gated. Full branch-by-branch failure handling remains to be reconstructed.",
   "captured_runtime_corroboration": "Saved macOS DeviceProperties reports normalized ANEVersion128, board type160, subtype0, architecture h14g,16 ANE cores and FirmwareLoaded=true. This does not expose private power flags or prove model parity.",
-  "regression": "check_h14_power.py checks25 exact instruction anchors, signed branch target, count and three full table records",
+  "regression": "check_h14_power.py checks29 exact instruction anchors, signed branch target, count and three full table records",
   "hardware_actions": "none",
   "boot_authorized": false
 }
