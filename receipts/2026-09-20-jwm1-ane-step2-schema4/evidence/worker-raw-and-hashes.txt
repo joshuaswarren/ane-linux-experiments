@@ -1,0 +1,10 @@
+bundle name=schema4-add-mul-worker programs=2 driver_abi=1 graph=5584d0fd8d40027229890408e924e6f7930cd5f02516466a442193408482ce76
+worker status=0 iterations=2 released=2 elapsed_ms=3
+worker detail=worker completed 2 iteration(s) and released its programs
+saved output y (128 bytes)
+verified output y exact
+===
+bade941d7d8f1e1097b9ce0298ff05617d85a9928de0e8c7eead5743f3f24352  /var/tmp/jwm1-ane-step2/run/y-device.bin
+abd3b8c9f1439c1fa508b42aa229c4b1688e06271d2bf7b823d71cd730200054  /var/tmp/jwm1-ane-step2/run/y.bin
+1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49  /var/tmp/jwm1-ane-step2/libane.so
+3cf0ccf1dca091d023cda0ef86f47db8b8516d60ea412f2fd91674958ed4191a  /var/tmp/jwm1-ane-step2/schema4-bundle/manifest.json
