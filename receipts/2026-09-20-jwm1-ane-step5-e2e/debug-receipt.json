@@ -1,0 +1,22 @@
+{
+  "schema": "jwm1-ane-step5-debug/1",
+  "date": "2026-09-20",
+  "lane": "Jwm1AnePlan Step 5 E2E debug (Main-authorized: core/strace/debugger/sourcefix)",
+  "root_cause": "Mesa Honeykrisp (libvulkan_asahi.so) SEGV_MAPERR inside pipeline creation for a mlx-omarchy custom kernel, during the Parakeet encoder E2E on the fresh jwm1 image (Mesa 26.2.3, kernel 7.1.13-3-2-ARCH). ANE-INDEPENDENT — proven by the --no-ane Vulkan-only control reproducing the identical crash.",
+  "crash_stack": {
+    "signal": "SIGSEGV SEGV_MAPERR",
+    "process": "/usr/bin/python3.14 (the runner venv python)",
+    "python_frames": ["vulkan_encoder.py:1270 _pipe (mx.async_eval of a custom-kernel result)", "vulkan_encoder.py:1359 _execute", "vulkan_encoder.py:1275 execute", "vulkan_encoder.py:1908 run", "vulkan_encoder.py:2058 main"],
+    "native_frames": ["libvulkan_asahi.so +0x30cb04 (+3 deeper frames in the same driver)", "+0x13d838/+0x13e414/+0x13e934 (pipeline creation path)", "mlx::core::omarchy::ComputeRuntime::create_pipeline", "ComputeRuntime::pipeline", "CommandEncoder::dispatch_compute", "mlx::core::fast::CustomKernel::eval_gpu", "mlx::core::gpu::eval", "mlx eval_impl/eval", "core.cpython-314 binding"],
+    "core_dump": "/var/lib/systemd/coredump/core.python.1001.0100e7249d7b4d5a9d4a5a145b0949ab.11330.1789945675000000.zst (11.7M, present) + two earlier identical cores (10905, 11304)"
+  },
+  "ane_independence_proof": "--no-ane Vulkan-only control (MLX_OMARCHY_PLACED= empty, no worker spawn): identical SIGSEGV, same Python frames (_pipe), same libvulkan_asahi frames",
+  "isolate_evidence": {
+    "ane_side": "the ANE worker itself ran clean in isolation (schema-4 add-mul: status=0, verified exact, 2 iterations, 3 ms; islands B/C/A all rc=0 executing their full TD counts)",
+    "gpu_side": "the crash is in the GPU custom-kernel pipeline creation — Honeykrisp driver domain (GPUparity's mesa lane)"
+  },
+  "environment": {"mesa": "26.2.3 (libvulkan_asahi.so)", "kernel": "7.1.13-3-2-ARCH", "venv": "V071REL (v0.7.1, libmlx df3d4e74) AND jwm1 v0.7.2-rc.1 venv (libmlx from its own build) — both segfault identically"},
+  "artifacts_preserved": ["evidence/stdout-noane.log (faulthandler Python + C stacks)", "core dump (systemd-coredump, 3 cores)", "all prior pairing stdout logs", "on-jwm1 encwall-out/* + encwall-scratch/*"],
+  "no_gate_weakening": true,
+  "fix_owner": "Mesa Honeykrisp lane (GPUparity's mesa fork domain) — upstream-able crash: Honeykrisp pipeline-creation SEGV for the mlx-omarchy Parakeet encoder custom kernel on G13G B1"
+}
