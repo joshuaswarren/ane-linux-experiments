@@ -1,10 +1,11 @@
 		iommu@26b800000 {
 			compatible = "apple,t8103-dart";
 			reg = <0x02 0x6b800000 0x00 0x4000>;
+			#iommu-cells = <0x01>;
 			interrupt-parent = <0x0f>;
 			interrupts = <0x00 0x1a1 0x04>;
-			#iommu-cells = <0x01>;
 			power-domains = <0x82>;
+			apple,dma-range = <0x00 0x00 0x00 0xe0000000>;
 			status = "okay";
 			phandle = <0xc6>;
 		};
@@ -12,10 +13,11 @@
 		iommu@26b810000 {
 			compatible = "apple,t8103-dart";
 			reg = <0x02 0x6b810000 0x00 0x4000>;
+			#iommu-cells = <0x01>;
 			interrupt-parent = <0x0f>;
 			interrupts = <0x00 0x1a1 0x04>;
-			#iommu-cells = <0x01>;
 			power-domains = <0x82>;
+			apple,dma-range = <0x00 0x00 0x00 0xe0000000>;
 			status = "okay";
 			phandle = <0xc7>;
 		};
@@ -23,22 +25,83 @@
 		iommu@26b820000 {
 			compatible = "apple,t8103-dart";
 			reg = <0x02 0x6b820000 0x00 0x4000>;
+			#iommu-cells = <0x01>;
 			interrupt-parent = <0x0f>;
 			interrupts = <0x00 0x1a1 0x04>;
-			#iommu-cells = <0x01>;
 			power-domains = <0x82>;
+			apple,dma-range = <0x00 0x00 0x00 0xe0000000>;
 			status = "okay";
 			phandle = <0xc8>;
 		};
 
-		ane@26a000000 {
+		ane@26bc04000 {
 			compatible = "apple,t8103-ane";
-			reg-names = "engine";
 			reg = <0x02 0x6bc04000 0x00 0x24000>;
+			reg-names = "engine";
 			interrupt-parent = <0x0f>;
-			interrupt-names = "ane";
 			interrupts = <0x00 0x1a0 0x04>;
-			iommus = <0xc6 0x00>, <0xc7 0x00>, <0xc8 0x00>;
-			power-domains = <0x82>, <0xc5>;
+			interrupt-names = "ane";
+			iommus = <0xc6 0x00 0xc7 0x00 0xc8 0x00>;
+			power-domains = <0xca 0xcb 0xcc 0xcd 0xce>;
 			status = "okay";
 		};
+
+power-controller@c008 {
+				compatible = "apple,t8103-pmgr-pwrstate\0apple,pmgr-pwrstate";
+				reg = <0xc008 0x04>;
+				#power-domain-cells = <0x00>;
+				#reset-cells = <0x00>;
+				label = "ane_base";
+				power-domains = <0xc5>;
+				phandle = <0xc9>;
+			};
+
+			power-controller@c010 {
+				compatible = "apple,t8103-pmgr-pwrstate\0apple,pmgr-pwrstate";
+				reg = <0xc010 0x04>;
+				#power-domain-cells = <0x00>;
+				#reset-cells = <0x00>;
+				label = "ane_set1";
+				power-domains = <0xc9>;
+				phandle = <0xca>;
+			};
+
+			power-controller@c018 {
+				compatible = "apple,t8103-pmgr-pwrstate\0apple,pmgr-pwrstate";
+				reg = <0xc018 0x04>;
+				#power-domain-cells = <0x00>;
+				#reset-cells = <0x00>;
+				label = "ane_set2";
+				power-domains = <0xc9>;
+				phandle = <0xcb>;
+			};
+
+			power-controller@c020 {
+				compatible = "apple,t8103-pmgr-pwrstate\0apple,pmgr-pwrstate";
+				reg = <0xc020 0x04>;
+				#power-domain-cells = <0x00>;
+				#reset-cells = <0x00>;
+				label = "ane_set3";
+				power-domains = <0xc9>;
+				phandle = <0xcc>;
+			};
+
+			power-controller@c028 {
+				compatible = "apple,t8103-pmgr-pwrstate\0apple,pmgr-pwrstate";
+				reg = <0xc028 0x04>;
+				#power-domain-cells = <0x00>;
+				#reset-cells = <0x00>;
+				label = "ane_set4";
+				power-domains = <0xc9>;
+				phandle = <0xcd>;
+			};
+
+			power-controller@c030 {
+				compatible = "apple,t8103-pmgr-pwrstate\0apple,pmgr-pwrstate";
+				reg = <0xc030 0x04>;
+				#power-domain-cells = <0x00>;
+				#reset-cells = <0x00>;
+				label = "ane_set5";
+				power-domains = <0xc9>;
+				phandle = <0xce>;
+			};

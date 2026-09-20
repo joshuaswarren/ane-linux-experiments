@@ -133,3 +133,52 @@ adopts.
    compatible readback.
 4. Load the pinned `ane.ko` → `/dev/accel/accel0` → the qualification ladder
    (fp16 smoke → compiler packages → schema-4 → islands → soak).
+
+## Addendum 2 — staged exact-historical build (Main directive; STAGED, not deployed)
+
+The five providers and DMA ranges are now carved-source-exact (see
+[the wedge receipt addendum 3](../2026-09-20-jwm1-ane-first-load-wedge/receipt.md)):
+the September working payload DTB (carved `1a72bc81…`) is the template, and
+this patch mirrors it node-for-node.
+
+Staged artifact (NOT deployed):
+
+- `t8103-j293.ane.dtb` sha256
+  `4ec4b87f36bc9f8f17d3a8213937144277a2197ff6f352ac24482ee20c76f280`
+- [patch_j293_ane.py](patch_j293_ane.py) sha256
+  `f1970bf14c49575325721601ecc38196e567ec94427856d6bfd14ec8739df3ff`
+- [ane-fragment.dtsi](ane-fragment.dtsi) sha256
+  `f41a9cbe3bb4883d31629b6afe6bdda62d36748497d2ea2b521b94a4424a34f7`
+
+Reviewer build command (from the stock dtb, byte-identical to the backup):
+
+```sh
+dtc -I dtb -O dts -o j293.dts t8103-j293.stock.dtb   # stock = ea32173df3b0f782bf610f38fb390f90a777c16d4a4b2822c58b924bc6088328
+python3 patch_j293_ane.py                            # j293.dts -> j293.ane.dts
+dtc -I dts -O dtb -o t8103-j293.ane.dtb j293.ane.dts # -> 4ec4b87f…
+```
+
+Five provider parent chains (exactly the historical tree):
+
+| provider | reg (pmgr@23b700000) | parent |
+|---|---|---|
+| ane_set1 @c010 | c010 | ane_base (@c008) |
+| ane_set2 @c018 | c018 | ane_base |
+| ane_set3 @c020 | c020 | ane_base |
+| ane_set4 @c028 | c028 | ane_base |
+| ane_set5 @c030 | c030 | ane_base |
+
+ane_base @c008 → parent ane_sys_cpu @c000 → parent ane_sys @470.
+ane node `power-domains = <&ane_set1>, …, <&ane_set5>` (five; no direct
+sys/sys_cpu entries — mirrors history).
+
+Three DMA ranges (one per ANE DART, all identical):
+
+```
+apple,dma-range = <0x00 0x00 0x00 0xe0000000>;   /* iommu@26b800000/810000/820000 */
+```
+
+(absent in the deployed dtb — the concrete wrong-buffer DMA candidate).
+Deployment remains gated: Main review → dtb install → update-m1n1 → one
+reboot → probe acceptance (ps act 0xffffff, ANERD pd[0..4], ps verify
+err=0) → guard module 99e8b8b5… load.
