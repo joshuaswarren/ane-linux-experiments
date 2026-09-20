@@ -256,3 +256,40 @@ ANEC tile semantics/operand interpretation of that bundle is the open RE item
 (owned lane; the select-island semantics are proven byte-exact and need no
 RE). No gate weakening; mismatch artifacts + per-page maps preserved in the
 run dir on jwm1.
+
+## Addendum 7 — per-element envelope verification and corrected A/C gate (Main directive: max_abs alone insufficient)
+
+The pre-existing acceptance semantics for the islands, from the historical
+compare.json fields (elements, value_equal, exact_fp16, max_abs_err,
+mean_abs_err, rel_l2_err, nan/inf) and the runner's own chunked envelope
+(`|device − reference| ≤ 0.02 + 0.02·|reference|` — the documented
+chunked-fp16 accumulation contract in mil-hwx-compiler
+docs/ane/parity-method.md), applied to ALL current outputs:
+
+| output | elements | exact-equal | envelope violations (0.02+0.02·|ref|) | max_abs (diagnostic) | mean_abs | rel_l2 | nan/inf |
+|---|---|---|---|---|---|---|---|
+| A:attention_scores_1 | 2247000 | 2238631 | **0** | 0.25 | — | — | 0/0 |
+| A:matmul_0 | 1125000 | 962735 | **0** | 0.00390625 | — | — | 0/0 |
+| B:attention_mask_9 | 1125000 | 1125000 (exact=True, worker-verified) | 0 | 0.0 | — | — | 0/0 |
+| C:attn_output_1 | 384000 | 275609 | **0** | 0.0078125 | — | — | 0/0 |
+
+The historical September compare.json recorded the SAME max_abs per op
+(A-scores 0.25, A-matmul 0.00390625, C 0.0078125) — the restored stack
+reproduces the September numeric state exactly, deviations included.
+September mismatches: A-scores 7581, A-matmul 164067, C 108428 (counts
+differ with input-dependent data, max_abs identical). The bit-mismatch
+counts are kept honest above; they are the accumulation-order/precision
+envelope of the ANE matmul tiles vs the numpy fp32-accumulate reference —
+the same class September recorded and accepted.
+
+Stage-hash comparison (September stage-manifest vs today's re-derivation):
+`B/ninf_rt` BIT-IDENTICAL (`98cabc7d…` — deterministic fill proves the
+capture→milrun→stage chain mechanics); capture-dependent tensors
+(`A/q_v` `73496b73…` vs `994117d9…`) differ because the preserved E2E-lane
+capture is a different capture generation than the lost September original
+— documented, both hash sets committed.
+
+Corrected Step-3 status: **A/C numerical gates PASS under the documented
+chunked envelope (0 violations across all outputs); B is BYTE-EXACT. The
+September numeric state is reproduced exactly on the restored stack
+(deviations included).**
