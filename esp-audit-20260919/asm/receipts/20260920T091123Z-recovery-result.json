@@ -1,0 +1,38 @@
+{
+  "status": "linux_candidate_unqualified_returned_to_macos",
+  "test": {
+    "arm_and_reboot_utc": "2026-09-20T08:55:47Z",
+    "attempts": 1,
+    "permanent_target": "macOS volume group 8000CF83-9C0D-45DA-813D-B45DC15FF2FD",
+    "oneshot_target": "Linux stub volume group 7A64DCB3-EA6C-4456-97E5-9347BCD9C152",
+    "initrd_sha256": "b4a24461669358f82db63d78e3d5f5fe72b9160b8dd66301190d60506e0a2a6e",
+    "kernel_sha256": "e339c992eef9bb879680513efee54aec68b39f14cba78f96b6db3a5c1d68533c",
+    "boot_bundle_sha256": "566227f96ea94bafac65ee6c997da0ba98be6f20479c3619ba1b8b739d156f33",
+    "grub_cfg_sha256": "2d9126e4a1349edf7ed236faafe632d3c39e2d980e8ed0831241a7044f455c5a",
+    "verification": "Main independently read all four hashes from read-only mounted ESP before authorizing one boot. Original grub.cfg remains preserved (68930cc4862fa740ce6dad35622224417ea78882a85f2e897cbd1a2c15e08133)."
+  },
+  "recovered_access": {
+    "transport": "LAN SSH through jw14m2-linux ProxyJump to 192.168.3.108, local id_app identity, HostKeyAlias=100.67.134.6",
+    "host_key_sha256": "5wifGgcidNue0+CnZupJsLpmhL1UI0khfIRsepG4aBc",
+    "verification": "Offered ED25519 key exactly matches saved macOS key; Linux key mismatch was not bypassed and known_hosts was not modified.",
+    "os": "macOS 27.0 / 26A428, Darwin T8103",
+    "kern_boottime_epoch": 1789894623,
+    "kern_boottime_utc": "2026-09-20T08:57:03Z",
+    "observed_utc": "2026-09-20T09:11:23Z",
+    "tailscale": "Both endpoints unavailable through Tailscale; macOS was reachable on LAN. Network-dark did not establish a boot hang."
+  },
+  "fresh_boot_evidence": {
+    "panic_report": "/Library/Logs/DiagnosticReports/Retired/panic-base-2026-09-20-035712.panic",
+    "panic_string": "Unexpected SoC (system) watchdog reset occurred after iBoot kernel handoff",
+    "boot_progress_register": "0x2f000000",
+    "notes": ["missing stackshot buffer or size"],
+    "reset_report": "/Library/Logs/DiagnosticReports/ResetCounter-2026-09-20-035713.diag",
+    "reset_count": 0,
+    "boot_failure_count": 1,
+    "boot_faults": "wdog,reset_in_1",
+    "boot_stage": "0x30",
+    "boot_app": 0,
+    "interpretation": "Watchdog reset after iBoot kernel handoff; does not establish whether m1n1 stage2, U-Boot, GRUB, or Linux was reached. Not evidence of Linux panic=10 recovery."
+  },
+  "next_gate": "Read-only boot-chain investigation or console evidence before another test boot. No second blind reboot authorized. No Linux performance or release acceptance claim."
+}
