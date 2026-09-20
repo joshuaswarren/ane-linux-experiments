@@ -293,6 +293,15 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   iBoot map dart-ane0 + load ANE fw on chainload boots (null-result
   risk for the live-ADT route; also decides placement branch (a) vs
   (b)). Next offline step, bounded.
+- ADD (W13a 3f, helpers decoded): all three "helpers" are thin
+  trampolines to ONE populate entry `0xee0c4`. Helper-A (0x75804,
+  used for ane0) shims x5=name("ane0"), x6=name+5("dart-ane0") —
+  device AND its dart registered as a PAIR in one call; helper-B
+  (0x75820) passes the bare name; helper-C (0x75788) name+len 0xb.
+  So iBoot's walker registers ane0 WITH dart-ane0 via populate entry
+  0xee0c4 — direct support for placement branch (a) (iBoot programs
+  dart-ane0 for the ANE image). Next: analyze 0xee0c4's dart mapping +
+  image-load path (bounded, offline).
 - Selene bootargs-parse trace (negative result, documented): the fw
   string "Boot arguments entries : %zu" (VA 0x9e02c in `__TEXT.__cstring`)
   has ZERO static references — no ADRP/ADD xref (fwxref), no literal-pool
