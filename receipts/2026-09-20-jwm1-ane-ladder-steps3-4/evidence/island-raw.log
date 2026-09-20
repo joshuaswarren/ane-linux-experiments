@@ -1,0 +1,5 @@
+output 'y' does not match the expected fp16 values
+bundle name=schema4-attn-select-island programs=2 driver_abi=1 graph=e0daeb7fd056f79f97a1552a1e11b0a92146dd480dcec216fac750613ea1b745
+worker status=0 iterations=1 released=2 elapsed_ms=27
+worker detail=worker completed 1 iteration(s) and released its programs
+saved output y (2250000 bytes)
