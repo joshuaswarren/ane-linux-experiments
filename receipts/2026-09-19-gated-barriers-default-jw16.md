@@ -391,46 +391,58 @@ completion `chatcmpl-3zZcStKe9oF0C4XQENPZPR9GctpPtzPW`. Provenance
 recorded in the window log: wheel `b1147338…`, lib `831c2bc6…`,
 ICD `278f473b…`.
 
-## Kernel-side census instrument — staged (first pass, header caveat)
+## Kernel-side census — CORRECTED 2026-09-19 (identity bug: census grouped by `op`, not kernel enum `e`)
 
-`analyze_kernel_census.py` (this receipt's .d/ dir, also jw16
-`/var/tmp/gdb/`) attributes profiled busy to kernels by enum name. First
-pass on the decode profiles: header mismatch with the diag wheel leaves
-several `unkNNN` entries (use the wheel-build's own compute.h); resolved
-so far on 8768 dispatches: ReduceGeneralF32 18.3%, HadamardF16 7.3%,
-ElementwiseF16 6.0%, CastU32F32 0.7%; largest unresolved single-kernel
-block `unk25984` (12.8%, n=462 ≈ 11/step, ~124 µs mean — likely the
-qmm/sdpa family, mapping pending). Per-kernel census is the base for the
-kernel-side attribution Main directed; runs offline on the four
-`/var/tmp/gdb/dprof-*.ndjson` profiles, no GPU needed.
+The census first published in this section was WRONG and is retracted.
+`analyze_kernel_census.py` indexed kernel names with the event field
+`op`, but per `gpu_profiler.h` flush_slot emitf (field order
+`k,s,e,op,n,gx,gy,gz,h,tp,bar[,t0,t1],b`) the KERNEL ENUM is `e`;
+`op` is `params.operation` — a per-kernel code that the qmm shaders
+load with the BIT WIDTH (`params.operation = static_cast<uint32_t>(bits)`,
+primitives.cpp:6986 "operation carries bits"). Every Q4 qmm dispatch
+therefore has op=4 and collapsed onto `names[4]` = CastBoolF32; op=0
+kernels collapsed onto `names[0]` = ElementwiseF32. The published
+"CastBoolF32 60.1%/65.7%, n=4052" and "ElementwiseF32 35.6%/32.1%"
+were that artifact; the earlier "first pass" numbers (ReduceGeneralF32
+18.3%, HadamardF16 7.3%, `unk25984`/`unk134656`) were the same
+op-indexed junk (huge op values overflowed the name table into
+`unkNNN`). Corrected facts: the qmm/KV family IS the top decode
+contributor. Regenerated with the same raw bytes:
 
-## Kernel-side census (corrected field: `op` is kernel enum, `n` is element count)
-
-| leg | kernel | busy % | dispatches | mean µs/disp |
+| leg | kernel (enum `e` → compute.h name) | busy % | dispatches | mean µs/disp |
 |---|---|---:|---:|---:|
-| short (def) | CastBoolF32 | **60.1%** | 4052 | 66.1 |
-| short (def) | ElementwiseF32 | 35.6% | 4484 | 35.3 |
-| short (def) | ElementwiseF16 | 3.4% | 146 | 105.1 |
-| ctx (def) | CastBoolF32 | **65.7%** | 4052 | 137.4 |
-| ctx (def) | ElementwiseF32 | 32.1% | 4484 | 60.7 |
+| short (def) | QmmVecQ4MultiSubgroupF16 | **38.0%** | 3648 | 46.4 |
+| short (def) | QmmPrefillCoopmatM16F16 | 18.2% | 326 | 248.0 |
+| short (def) | FastTrioNormF16 | 14.0% | 1956 | 31.9 |
+| short (def) | SdpaDecodeNativeF16 | 7.6% | 912 | 37.3 |
+| short (def) | FastTrioRopePairF16 | 6.9% | 958 | 32.1 |
+| ctx (def) | QmmPrefillCoopmatF16 | **43.3%** | 230 | 1597.9 |
+| ctx (def) | QmmVecQ4MultiSubgroupF16 | 18.4% | 3648 | 42.8 |
+| ctx (def) | MatmulRbF16 | 7.5% | 92 | 687.1 |
+| ctx (def) | SdpaDecodeNativeF16 | 7.2% | 912 | 66.7 |
+| ctx (def) | FastTrioNormF16 | 7.1% | 1956 | 30.9 |
 
-**Finding**: a single kernel type, CastBoolF32 (bool→f32 cast), accounts
-for ~60% (short) / ~66% (ctx) of profiled decode busy under the diag
-wheel. The KV walk / qmm kernels do NOT surface as top contributors in
-the bench_decode 32-token greedy legs (either absent on the diag build's
-compute.h enum mapping, or bench_decode's path doesn't exercise them
-proportionally to production). Cross-arm per-kernel busy delta ≤0.6%
-on both legs — barrier flavor changes nothing per kernel, consistent
-with the gap no-delta.
+CastBoolF32 appears in NONE of the four dprof legs (share < 0.2%).
+Cross-arm per-kernel delta ≤ 0.6% on both legs (designedusc vs default)
+— barrier flavor changes nothing per kernel, consistent with the gap
+no-delta. Totals for scope: 8768 dispatches, bracketed busy 445.3 ms
+(short) / 848.4 ms (ctx) — shares are bracket-inflated (isolation
+barrier, docs/known-defects.md) and valid as RELATIVE attribution only.
 
-**Concrete next measurement** (kernel-side, exclusive queue slot):
-map the remaining `unkNNN` enum indices using the wheel's own
-compute.h (the diag wheel was built at 6f70d4fa, but the header
-resolved most names — `unk134656` and friends need the wheel's exact
-header path), profile a richer workload (more tokens per leg so qmm /
-sdpa fire repeatedly), then inspect CastBoolF32 implementation (shader +
-per-dispatch cost) for source-side headroom. Readiness: census
-instrument ready (no GPU needed); a follow-up window needs the longer
-profile + a CastBoolF32-focused cross-arm (e.g., does the post-launch
-sink specifically tax cast kernels, which would re-open a barrier
-lever — untested flavor).
+Identity chain verified against the producing wheel: dprof profiles ran
+under venv `mlx_omarchy-0.32.2.dev202609171941+diag.6f70d4fa` (dist-info
+in `/var/tmp/qmmceil/venv`), libmlx sha256 `83d20eef…` matches the
+qmm-prefill-ceiling receipt line and the .so contains the `{"k":"d"`
+profiler literal; `.d/compute-6f70d4fa.h` byte-matches
+`git show 6f70d4fa:overlay/mlx/backend/omarchy/compute.h`; the
+gpu_profiler.h emitf field order at 6f70d4fa is identical to HEAD.
+Fixed parser + failing-first regression:
+`receipts/…/.d/analyze_kernel_census.py` (groups by `e`, converts with
+meta.period_ns, counts and skips no-tick dispatches) and
+`scripts/test_profile_kernel_census.py` (old script: KeyError on
+no-tick events, op-indexed mislabel, raw-tick totals; new: green).
+Follow-up kernel-side window should target the qmm Q4 GEMV
+(QmmVecQ4MultiSubgroupF16) and the qmm prefill coopmat variants — not
+CastBoolF32, which does not fire in these legs. The jw16 copy at
+`/var/tmp/gdb/analyze_kernel_census.py` is still the buggy version;
+pull from this repo before any further census run.
