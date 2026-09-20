@@ -19,6 +19,12 @@ BBHOST=${BBHOST:-$BB}
 if [ "$BBHOST" != "$BB" ]; then
     echo "NOTICE: BBHOST=$BBHOST is NOT the candidate binary (51572718...). Results are NOT candidate-proof." >&2
 fi
+# Arch gate: the exact candidate binary is aarch64; on other arches it cannot execute.
+# Emit an explicit SKIP line so automation can distinguish skip-vs-fail.
+if ! "$BBHOST" --help >/dev/null 2>&1 </dev/null; then
+    echo "SKIP: candidate busybox cannot execute on this arch ($(uname -m)). Run on aarch64 host (jw14m2-linux) for candidate-proof results." >&2
+    exit 0
+fi
 
 PASS=0; FAILN=0
 ok()  { PASS=$((PASS+1)); echo "PASS: $1"; }

@@ -61,11 +61,32 @@ if PATH="$BIN:$PATH" STAGE_BOOT="$WORK/stage-boot" STAGE_VMLINUZ="$WORK/stage-vm
     ok "E2E: full production flow rc=0, all installs+backups+cfg present, STAGE-DONE"
 else bad "E2E: full flow (out: $(tail -3 "$WORK/out" 2>/dev/null) | err: $(tail -3 "$WORK/err" 2>/dev/null))"; fi
 
-# mutation-stop: bad staged boot
+# mutation-stop: FRESH volume fixture + bad staged boot; require EXACT drift message and
+# byte-identical before/after full fixture manifest (proves zero writes happened).
+snapshot() { find "$VOL" -type f -exec sha256sum {} + | sort -k2; }
+mutvol="$WORK/mutvol"
+mkdir -p "$mutvol/usr/lib/firmware" "$mutvol/m1n1" "$mutvol/grub-ane" "$mutvol/EFI/BOOT" "$mutvol/asahi"
+ln -s usr/lib "$mutvol/lib"
+printf 'orig-boot-d1ee\n' > "$mutvol/m1n1/boot.bin"
+printf 'orig-9d6e\n' > "$mutvol/EFI/BOOT/BOOTAA64.EFI"
+printf 'orig-ee36\n' > "$mutvol/grub-ane/VMLINUZ.REC"
+printf 'orig-de4a\n' > "$mutvol/grub-ane/INITRD.REC"
+printf 'orig-marked-cfg\n' > "$mutvol/grub-ane/grub.cfg"
+printf 'orig-stock-boot\n' > "$mutvol/m1n1/boot.bin.stock-20260906"
+printf 'orig-stock-ba64\n' > "$mutvol/EFI/BOOT/BOOTAA64.EFI.stock"
+# re-point fake diskutil at the mutation volume
+sed -i "s|$VOL|$mutvol|g" "$BIN/diskutil"
+snapshot > "$WORK/manifest-before"
 printf 'bad\n' > "$WORK/badboot"
 if PATH="$BIN:$PATH" STAGE_BOOT="$WORK/badboot" STAGE_VMLINUZ="$WORK/stage-vmlinuz" \
-   STAGE_INITRD="$WORK/stage-initrd" sh "$EXEC" > "$WORK/out2" 2>"$WORK/err2"; then bad "mutation-stop accepted"; else
-    grep -q "STAGE-STOP" "$WORK/out2" "$WORK/err2" && ok "E2E mutation-stop: bad staged boot refuses before writes" || bad "mutation-stop no STAGE-STOP (out2/err2 empty?)"
+   STAGE_INITRD="$WORK/stage-initrd" sh "$EXEC" > "$WORK/out2" 2>"$WORK/err2"; then
+    bad "mutation-stop accepted"
+else
+    grep -q "staged boot.bin: hash drift" "$WORK/out2" "$WORK/err2" \
+      && snapshot > "$WORK/manifest-after" \
+      && cmp -s "$WORK/manifest-before" "$WORK/manifest-after" \
+      && ok "E2E mutation-stop: exact drift message, fixture manifest unchanged" \
+      || bad "mutation-stop (exact message or manifest-unchanged check failed)"
 fi
 
 echo "----"; echo "pass=$PASS fail=$FAILN"
