@@ -1,0 +1,32 @@
+{
+  "status": "static bootargs surface identity resolved; no firmware boot authorized",
+  "kernelcache_sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+  "address_basis": "Low32 unslid KC virtual addresses; file offset = address - 0x7004000",
+  "scope": "InitializeRTBuddyEndpoints branch, not proof that this provider bound on jw14m2 macOS",
+  "setup_function": "0x95fe660 ANEHWDevice::SetupEndpoints(unsigned int, ANESharedMemorySurfaceParams**)",
+  "bootargs_function": "0x95fe440 ANEHWDevice::SetupFWInitBootArgs(ANESharedMemorySurfaceParams*)",
+  "endpoint_table": {"base": "0x814e520", "stride": 40, "fields": ["index u64 at +0", "allocation bytes u64 at +8", "allocation tag u32 at +0x10", "chained string pointer at +0x18", "bootargs flag byte at +0x20"]},
+  "endpoints_in_setup_order": [
+    {"index": 1, "name": "FW_INIT", "bytes": 65536, "tag": "0x494e4954", "bootargs": true},
+    {"index": 2, "name": "T2F_CMD", "bytes": 262144, "tag": "0x54324643", "bootargs": false},
+    {"index": 3, "name": "T2F_HIPRI", "bytes": 262144, "tag": "0x54324648", "bootargs": false},
+    {"index": 4, "name": "T2H_SHMEM", "bytes": 65536, "tag": "0x54324853", "bootargs": false},
+    {"index": 5, "name": "T2H_CMD", "bytes": 131072, "tag": "0x54324843", "bootargs": false},
+    {"index": 6, "name": "T2H_TERM", "bytes": 65536, "tag": "0x54324854", "bootargs": false}
+  ],
+  "allocation_def_use": ["0x95fe80c zeroes sp+0x38 Params* output", "0x95fe840 calls allocator 0x95f6674 using table allocation bytes and tag", "0x95fe890 tests table+0x20 bit0", "0x95fe898 loads newly allocated Params*; 0x95fe8a0 invokes bootargs initializer", "0x95fe8a8 stores Params* to device+0x5c0+index*0x40+0x18", "FW_INIT Params* is therefore device+0x618, not firmware image slot+0x978 nor inference pool slot+0x980"],
+  "bootargs_surface_writes": {
+    "base": "x23 = Params+0x38 (CPU surface pointer) at 0x95fe46c",
+    "word_count": "surface+0x84 = 0x40",
+    "template_source": "device+0x998 points to 0x100 bytes",
+    "template_destination": "surface+[0x88,0x188)",
+    "critical_writeback": "0x95fe47c str q0,[x24,#0x88]! makes x24=surface+0x88. 0x95fe4fc writes first vector at x24; 0x95fe4d0 writes final pair at x24+0xe0. Prior +0x108..0x208 claim was wrong.",
+    "tail_loop": "Optional debug logging iterates up to 64 words from surface+0x88; it is not a per-client block constructor."
+  },
+  "template_initialization": {"function": "ANEHWDeviceConfig::initializeANEProperties(ANEHWDevice*)", "allocation_site": "0x9612b60 x0=0x100, x1=4, call0x964c3c8", "pointer_store": "0x9612b84 stores returned x0 into device+0x998", "observed_initial_fields": ["template+0 = [config+0x1d8]", "template+0xc0 OR=4", "template+[4,12) zeroed"], "limits": "Meaning of config+0x1d8, allocation helper zero-fill semantics, and later template mutations remain unproven."},
+  "endpoint_map_word": "0x95fe8b0..0x95fe8e8 chooses 4KiB units for allocation below1MiB else1MiB, rounds page count up, puts count low8 at bits44..51, address low44 from Params+0x18, and type1/type2 at bit52. It passes the word to endpoint-object vslot+0x1e8, not directly to a proven Linux mailbox API.",
+  "setup_loop": "0x95ff968 counter=-6; argument counter+7; increments through index6. Caller symbol InitializeRTBuddyEndpoints.",
+  "regression": "python3 receipts/2026-09-18-t6021-engine-layout-mined/tools/check_fwinit_surface.py",
+  "supersedes": ["receipt section7: template copy +0x108..0x208", "receipt section7: per-client bootargs writes", "receipt section7: Params+0x18 is completion status; this was an unrelated shared_ptr overload stack record. The actual Params** allocator maps IOVA into sp+0x88, copies the 0x78-byte Params value, and returns it."],
+  "remaining_before_bringup": ["Runtime provider branch identification", "Linux DMA mapping domain and firmware-visible address equivalence", "Complete template field initialization", "RTBuddy endpoint-object message transport semantics", "RVBAR register width and access path", "Controlled firmware boot with capture and recovery plan"]
+}
