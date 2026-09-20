@@ -230,8 +230,8 @@ WRONG and is retracted):** `dev+0x780` bit0 is **runtime-initialized by
 
 - `0x9600144` region: the provider (IOService*) is queried
   (vtable+0x3b0) and prefix-matched against two strings:
-  **"RTBuddyService"** (0x74c408f6) → `bl InitializeRTBuddyClient`
-  (0x95ffd60) at `0x96001b8`; **"ane"** (0x74c40905) → legacy direct
+  **"RTBuddyService"** (0x74c48f6) → `bl InitializeRTBuddyClient`
+  (0x95ffd60) at `0x96001b8`; **"ane"** (0x74c4905) → legacy direct
   lookup `bl 0x964bc58` → result stored `dev+0x810` (`0x960023c`),
   bit0 **not** set.
 - `InitializeRTBuddyClient` (0x95ffd60..0x9600054) performs three service
@@ -266,18 +266,19 @@ device-visible address** stored through `u64* iova_out`
 multi-cache-level base decode; the create(+0x20)/getter(+0x138) shape
 matches the ANE-side IODMACommand usage byte-for-byte.
 
-**Linux correspondence (actual code):** on Linux both macOS branches
-converge to one mechanism — a DART-visible mapping of the fw buffer whose
-device address feeds `Params+0x18` → RVBAR fold. In-tree equivalence:
-`apple_rtkit` (drivers/soc/apple/rtkit.c) provides only IOP-initiated
-`APPLE_RTKIT_BUFFER_REQUEST` (msg 1, size/iova mask fields) — there is no
-host-initiated "make visible" API — so the driver performs the mapping
-itself: `dma_alloc_coherent(ane->dev, …)` (already used for the endpoint
-rings in `ane_t6021_rtkit.c:589`) with the device DMA-configured against
-dart-ane0 returns the IOVA directly; that IOVA is the `Params+0x18`
-value. macOS "RTBuddyService::makeMemoryVisible" ≙ Linux
-`dma_alloc_coherent`/`dma_map_single` + publishing the returned
-dma_addr_t.
+**Linux correspondence (actual code; mechanism-level, not API-prescriptive):**
+on Linux both macOS branches converge to one mechanism — a dart-ane0-visible
+mapping of the fw image whose device address feeds `Params+0x18` → RVBAR
+fold. In-tree `apple_rtkit` (drivers/soc/apple/rtkit.c) provides only
+IOP-initiated `APPLE_RTKIT_BUFFER_REQUEST` (msg 1, size/iova fields) — no
+host-initiated "make visible" API — so the mapping is the driver's job,
+through whatever dart-ane0 binding the device tree actually gives the ane
+node (the existing `iommus`/`dma-ranges`/fw-segment placement must be
+traced before fixing the exact API/domain; the endpoint rings already use
+`dma_alloc_coherent(ane->dev, …)` in `ane_t6021_rtkit.c:589`, which
+produces dart-ane0 iovas under the current binding). macOS
+"RTBuddyService::makeMemoryVisible" ≙ Linux "map through dart-ane0 and
+publish the returned device address".
 
 **MMIO write table: none — analysis only.**
 
