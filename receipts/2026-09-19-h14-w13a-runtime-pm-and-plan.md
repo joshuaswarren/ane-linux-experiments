@@ -244,3 +244,27 @@ poll register is CPU_STATUS — both offsets come from the SoC config
 - Continuation: trace `0xe8548` (what allocates the per-role object
   and where its load-address field is filled), and the caller chain at
   `0x75a0c/0xcd820`. Both pure-offline.
+
+## 9. Complete bootstrap prerequisite table (status close-out)
+
+| # | prerequisite | evidence | status |
+| --- | --- | --- | --- |
+| 1 | firmware payload staged + validated | W12/W14: sha-pinned, exact-image assertions, on-target checker 15/15, regression 7/7 | DONE |
+| 2 | power precondition (8 domains on/clear) | W14 live snapshot + genpd summary | DONE |
+| 3 | read-only whitelist path | W14 audit + driver bind, 17 reads, 0 aborts | DONE |
+| 4 | driver bind | W14 bound (runtime PM removed; -22 trap structurally gone) | DONE |
+| 5 | fw surface DART mapping mechanics | W14 mapped 4 MiB coherent, iova 0x3ffffc00000 recorded as data | DONE (mechanics) |
+| 6 | DART stream identity | H14DartAudit: stream 0 across 3 instances, group 6; t6021-direct fault-obs open (owner-gated) | PARTIAL |
+| 7 | pinned-iova capability | fw_iova param implemented (475bff0/84a49e6), unexercised | CODE DONE |
+| 8 | image placement constant (iBoot) | OPEN — descriptor registry is runtime BSS (VA 0x264720+, addendum 3c); registration fn 0xe81a4-0xe81f8 via bl 0xe8548 | OPEN |
+| 9 | page-table patching contract (_rtk_boot_l1/_rtk_page_tables fill) | OPEN — same iBoot trace | OPEN |
+| 10 | boot-args field layout | PARTIAL — client walk + strides pinned (W13 §6); field semantics open | PARTIAL |
+| 11 | publication variant (fixed iova vs args-carried) | OPEN — depends on 8; DART audit bounds both candidates | OPEN |
+| 12 | reset sequence at register level | SCRATCH7 mode (0 cold/1 warm) → RVBAR gate → RVBAR ← 0x0081000000000001 → CPU_CONTROL 0x1400044 ← 0/0x10 → poll SCRATCH7/CPU_STATUS == 0x08042006 | DONE (register level) |
+| 13 | post-boot gate reads | SCRATCH7 poll + CPU_STATUS family named; bit semantics fw-defined | DONE (named) |
+| 14 | execution gate: collector verified off-host | W14 pre-mutation test | DONE |
+| 15 | TX fence (doorbell/a2i) | UNQUALIFIED — historical W5/W6/W9 SError; stays fenced until fw runs AND a handshake proves transport | OPEN (post-boot) |
+
+Next execution gate: items 8-11 (one iBoot-RE pass or one approved live-ADT
+phram read) → then ONE netconsole-armed boot probe with abort capture.
+No speculative writes; nothing executed since the approved staging probe.
