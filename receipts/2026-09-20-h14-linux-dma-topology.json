@@ -1,0 +1,48 @@
+{
+  "status": "read-only live topology; no firmware execution or DMA allocation performed",
+  "host": "jw14m2-linux",
+  "kernel": "7.1.13-3-1-ARCH",
+  "ane_node": "soc/ane@284000000",
+  "driver_bound": false,
+  "iommu_group": "6",
+  "domain_type": "DMA",
+  "members": [
+    "284000000.ane"
+  ],
+  "reserved_regions": "",
+  "iommus": [
+    {
+      "phandle": 498,
+      "stream_id": 0,
+      "node": "soc/iommu@285800000",
+      "mmio_base": "0x285800000",
+      "mmio_size": "0x4000",
+      "compatible": [
+        "apple,t6020-dart",
+        "apple,t8110-dart"
+      ]
+    },
+    {
+      "phandle": 499,
+      "stream_id": 0,
+      "node": "soc/iommu@285810000",
+      "mmio_base": "0x285810000",
+      "mmio_size": "0x4000",
+      "compatible": [
+        "apple,t6020-dart",
+        "apple,t8110-dart"
+      ]
+    },
+    {
+      "phandle": 500,
+      "stream_id": 0,
+      "node": "soc/iommu@285820000",
+      "mmio_base": "0x285820000",
+      "mmio_size": "0x4000",
+      "compatible": [
+        "apple,t6020-dart",
+        "apple,t8110-dart"
+      ]
+    }
+  ]
+}

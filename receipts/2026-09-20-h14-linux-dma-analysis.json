@@ -1,0 +1,21 @@
+{
+  "live_evidence": "2026-09-20-h14-linux-dma-topology.json",
+  "owned_linux_source_commit": "89cf2774434f78ea8a512bd69b1e9acbfbb46e9a",
+  "source_file": "drivers/iommu/apple-dart.c",
+  "source_trace": [
+    "apple_dart_of_xlate requires one IOMMU argument (stream id), adds each DART to the device stream_maps array, and checks matching page size and input-address width.",
+    "apple_dart_finalize_domain copies all device stream maps into the domain and allocates one io_pgtable_ops; forced aperture comes from the first DART's dma_min/dma_max.",
+    "apple_dart_attach_dev_paging iterates every stream map and installs translations for each DART using the same domain, including a separate locked-DART path.",
+    "T8110 address widths are read from hardware parameters; no numerical live aperture has been established by this read-only sysfs snapshot."
+  ],
+  "loader_trace": "tools/ane_t6021_fwload.c uses dma_set_mask_and_coherent and dma_alloc_coherent on the ANE platform device. It does not manually create an IOVA alias. No allocation was performed during this investigation.",
+  "established": "Live ANE has stream0 associations with three DARTs and a DMA-type IOMMU group containing only the ANE. Owned source describes shared page-table attachment across those DARTs.",
+  "not_established": [
+    "Exact running kernel binary equivalence to the inspected source revision",
+    "Live numerical IOVA aperture or hardware-parameter values",
+    "macOS RTBuddy provider selection and mapper equivalence",
+    "Whether the firmware boot ROM consumes the same IOVA domain",
+    "Safe RVBAR publication width/order and firmware boot sequence"
+  ],
+  "safety": "Only sysfs and source reads. ANE driver remains unbound; no insmod, MMIO, DMA allocation, or boot attempt."
+}

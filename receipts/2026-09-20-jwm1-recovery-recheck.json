@@ -1,0 +1,14 @@
+{
+  "status": "macOS fallback remains reachable; Linux recovery gate still failed",
+  "access": "192.168.3.108 via ProxyJump jw14m2-linux, existing id_app key and HostKeyAlias100.67.134.6",
+  "macos_version": "27.0",
+  "boot_epoch": 1789894623,
+  "uptime_at_check": "1 hour47 minutes",
+  "boot_volume_from_nvram_listing": "EF57347C-0000-AA11-AA11-00306543ECAC:909E8817-8293-C14A-ADA3-D9DC269D4A23:8000CF83-9C0D-45DA-813D-B45DC15FF2FD",
+  "one_shot_alt_boot_volume_in_listing": false,
+  "note": "Direct nvram boot-volume lookup returned data-not-found, but read-only nvram -p listing returned the existing macOS boot-volume value. No NVRAM was changed.",
+  "new_reboot": false,
+  "linux_qualified": false,
+  "prior_failure_evidence": "esp-audit-20260919/asm/receipts/20260920T091123Z-recovery-result.json",
+  "remaining": "Identify watchdog-reset boot stage before another test boot; no second blind attempt."
+}
