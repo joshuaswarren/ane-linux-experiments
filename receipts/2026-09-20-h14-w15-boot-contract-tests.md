@@ -14,6 +14,9 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
 - **5f6892d** `ane/t6021: correct init-suballocation producer fields
   per Main disasm review` — comment-only (decimal/hex fix: `+0x24` →
   `0x18`; `[0x10]` = config size, not a dup).
+- **c2f94b9** `ane/t6021: fail fw_boot before ANY MMIO write; shared
+  acceptance predicate; template +0xC0=4 resolved` — Main review
+  round 3 (see Corrections).
 
 ### New files
 
@@ -30,16 +33,16 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
   `fw_boot=1`. All reads individually whitelist-cited (W8/W10 live
   RVBAR=0x1; CPU_STATUS 0x1400048 phase-1 S2 + W10 0x2a; mailbox
   controls 0x1408110/4 W10-live 0x00020001; SCRATCH 0x1840048..64
-  phase-1 S2 + first_resume re-reads). **Pre-CPU engine table armed**:
-  writels `eng+0xb38/0xb98/0xbf8 ← 0x01ff01ff` behind `fw_boot=1` +
-  power gate + staging/IOMMU gates, per-write netconsole seam logs.
-  Pass5 proof: `dev+0x784` bit0 has NO writer (ctor-zero 0x959b268;
-  mutation 0x9600748-54 unreachable) → the table is REQUIRED every
-  power-up; order-vs-start moot. RVBAR write, CPU_CONTROL write and
-  SCRATCH publication stay **BLOCKED** on named prerequisites
-  (below); `fw_boot=1` fails probe at the block with -ENODATA,
-  `fw_boot=0` binds status-only. No force path exists.
-- `tools/h14_boot_regression.c` — shipped host regression, 31 checks:
+  phase-1 S2 + first_resume re-reads). **Boot write sequence GATED on one
+  complete-preflight flag (`boot_preflight_complete = false`):
+  preboot engine table (`eng+0xb38/0xb98/0xbf8 ← 0x01ff01ff`), RVBAR
+  resolution, CPU_CONTROL release and SCRATCH publication run
+  start-to-finish once every named prerequisite closes, or not at
+  all — `fw_boot=1` FAILS the probe (-ENODATA) BEFORE any MMIO
+  write; `fw_boot=0` binds status-only. No force path exists. The
+  pass5 "dev+0x784 bit0 has no writer" claim is itself under review
+  (alias/indirect absence not definitive) and gates nothing.
+- `tools/h14_boot_regression.c` — shipped host regression, 39 checks:
   fold vectors (bit 9/10/11/47/48/55/56 algebra), latch decode,
   acceptance round-trips (`entry_bits(compose(x)) == x & mask` for
   clean iovas; explicit loss cases), scratch split/join, init-fill
@@ -103,16 +106,27 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
    also writes 0x08042006 via idx0 — SCRATCH0 vs SCRATCH7 depends on
    accessor base at execution time, not dumped).
 
-## Next safe hardware step (Main's call; not executed by this lane)
+## Hardware step: NOT APPROVED (Main, 2026-09-20)
 
-Netconsole-armed load of `4b48ce2..5f6892d` with
-`allow_unqualified=1 fw_load=1 fw_boot=1`: expected log path =
-power gate → staging (`fwload: selene PRELOAD validated… iova …`) →
-boot state reads (all whitelist-proven) → three preboot table seam
-lines (`eng+0xb38/0xb98/0xbf8 <- 0x01ff01ff`, pass4/5-proven
-receiver+values, kext-mandated in this power state) → `boot: BLOCKED`
-with the named gate list → probe fails cleanly via the single
-teardown (IRQ → rings → surface → genpd). No RVBAR/CPU_CONTROL write
-is reachable in this build. Recovery: reboot (never rmmod/reload).
+No hardware command proposed or executed. Boot prerequisites remain
+unresolved; the write sequence cannot partially fire for diagnostics
+(complete-preflight gate). A future proposal requires the preflight
+items closed first.
+
+## Corrections applied during review (Main)
+
+1. `+0x24` in pass5 was DECIMAL 24 = 0x18: init `[0x08]` =
+   `*(dev+0x988+0x18)` (Params-pattern DVA of a second surface,
+   identity undecoded); `[0x10]` = config size (x9 overwritten before
+   the stp), not a dup.
+2. Template `+0xC0 = 4` RESOLVED correct by Main raw anchors
+   (0x9612b78/7c/80); pass5's all-zeros template read withdrawn by
+   Main. Conditional `|=0x10` separate, still unqualified, not set.
+3. pass5 header table incomplete: +0x50/+0x58/+0x60 pending pass5b
+   (audit lane correcting).
+4. No partial mutating boot: preboot table writes removed from the
+   blocked path; single complete-preflight gate.
+5. Acceptance predicate factored + tested; no-MMIO-before-preflight
+   enforced in boot_probe.
 
 MMIO writes from this lane: none.
