@@ -69,11 +69,23 @@ enum {
  * phase-1 §2 quote is the h16g/h17/h18g variant block 0x…9613458;
  * runtime h14g-shaped sites 0x…95d2968 write RUN there).  CPU_STATUS
  * +0x48 keeps the m1n1 ASCRegs +4 shape (config field dev+0x49c =
- * 0x1400048; kext poll 0x…95ecfb4).  The m1n1 t8103 mailbox
- * (INBOX_CTRL +0x8110 / INBOX0 +0x8800 family) has NO h14g analog:
- * zero 0x1608xxx / 0x1408xxx constants in the whole kext text, and the
- * +0x1608114 read SError-aborted jw14m2 (2026-09-19).  The h14g
- * transport is MBI (see ANE_MBI_* below). */
+ * 0x1400048; kext poll 0x…95ecfb4).
+ *
+ * W10 (2026-09-19) CORRECTS the claim that stood here — that the m1n1
+ * t8103 mailbox (INBOX_CTRL +0x8110 / INBOX0 +0x8800) "has NO h14g
+ * analog".  It has one, and it is live: see ANE_ASC_MBOX_* below.  The
+ * earlier live test read +0x1608114, the h16g base, which is simply
+ * the wrong address on this part; and the absence of 0x1408xxx
+ * constants from the kext text means only that the mailbox belongs to
+ * the RTBuddy provider kext, not to AppleH11ANEInterface.
+ *
+ * W10 also read the CPU block for the first time, on a Linux boot with
+ * all eight pmgr domains at ACTUAL=0xf and the W8 grant applied:
+ *   CPU_CONTROL 0x285400044 = 0x00000000  RUN=0
+ *   CPU_STATUS  0x285400048 = 0x0000002a  RUNNING=0 STOPPED=1 IDLE=1
+ *   RVBAR       0x285050000 = 0x00000001  valid bit set, entry addr 0
+ * The IOP has never been started and no firmware image is programmed,
+ * so nothing on this transport can answer the host until it is. */
 #define ANE_ASC_CPU_CONTROL	0x1400044	/* RUN = BIT(4) */
 #define ANE_ASC_CPU_STATUS	0x1400048	/* m1n1 R_CPU_STATUS shape */
 #define ANE_ASC_RVBAR		0x1050000	/* fw entry | valid bit0 */
@@ -81,6 +93,50 @@ enum {
 #define ANE_ASC_VERS		0x1840000
 #define ANE_ASC_RTB_STATUS	0x1840088	/* K14 poll: value < 2 */
 #define ANE_ASC_RTB_STATUS_UNK7C 0x184007c	/* phase1 S2 whitelist */
+
+/* The real ASC mailbox, mapped live by W10 (read-only) at ASC+0x8000.
+ * Three independent sources agree on the offsets: the live DT sibling
+ * mbox@2a2408000 ("apple,t6020-asc-mailbox" / "apple,asc-mailbox-v4",
+ * size 0x4000, IRQs send-empty/send-not-empty/recv-empty/
+ * recv-not-empty) fixes mailbox = asc_base + 0x8000; upstream
+ * drivers/soc/apple/mailbox.c apple_mbox_asc_hw fixes the register
+ * offsets; m1n1 proxyclient/m1n1/hw/asc.py ASCRegs gives the same set
+ * ASC-relative plus the R_MBOX_CTRL field layout.
+ *
+ * Observed on jw14m2 (2026-09-19), both directions identical:
+ *   a2i_control 0x285408110 = 0x00020001
+ *   i2a_control 0x285408114 = 0x00020001
+ *     -> ENABLE=1 EMPTY=1 FULL=0 OVERFLOW=0 FIFOCNT=0 WPTR=0 RPTR=0
+ * Enabled, and never used: both pointer pairs are still at the origin,
+ * so not one message has crossed either way since reset.  600 polls of
+ * i2a_control over 30 s produced zero changes.
+ *
+ * Receive is POP-ON-READ and 64-bit: upstream does
+ *   while (!(i2a_control & EMPTY)) { readq(RECV0); readq(RECV1); }
+ * A 32-bit or memcpy-based read would eat messages. */
+#define ANE_ASC_MBOX		0x1408000
+#define ANE_ASC_MBOX_A2I_CTRL	0x1408110	/* m1n1 INBOX_CTRL  */
+#define ANE_ASC_MBOX_I2A_CTRL	0x1408114	/* m1n1 OUTBOX_CTRL */
+#define ANE_ASC_MBOX_A2I_SEND0	0x1408800	/* m1n1 INBOX0,  u64 */
+#define ANE_ASC_MBOX_A2I_SEND1	0x1408808	/* m1n1 INBOX1,  u64 */
+#define ANE_ASC_MBOX_I2A_RECV0	0x1408830	/* m1n1 OUTBOX0, u64 */
+#define ANE_ASC_MBOX_I2A_RECV1	0x1408838	/* m1n1 OUTBOX1, u64 */
+
+/* R_MBOX_CTRL fields (m1n1 hw/asc.py) */
+#define ANE_ASC_MBOX_CTRL_FIFOCNT	GENMASK(23, 20)
+#define ANE_ASC_MBOX_CTRL_OVERFLOW	BIT(18)
+#define ANE_ASC_MBOX_CTRL_EMPTY		BIT(17)
+#define ANE_ASC_MBOX_CTRL_FULL		BIT(16)
+#define ANE_ASC_MBOX_CTRL_RPTR		GENMASK(15, 12)
+#define ANE_ASC_MBOX_CTRL_WPTR		GENMASK(11, 8)
+#define ANE_ASC_MBOX_CTRL_ENABLE	BIT(0)
+
+/* W10 hazard: a plain READ of ANE+0x1854000 is fabric-fatal (watchdog
+ * reset ~63 s later, netconsole pinned the pre-log and no value line).
+ * Nothing may touch 0x1854000..0x1c04000; the old engine kill window
+ * 0x1c04000..0x1c28000 still stands. */
+#define ANE_FATAL_READ_LO	0x1854000
+#define ANE_FATAL_READ_HI	0x1c04000
 
 /* MBI transport (K14 h14g config: socinit stores the SCRATCH register
  * offsets as q-blobs @0x…7503a40/0x…7503a50/0x…7503a60 into dev+0x438
@@ -117,8 +173,19 @@ enum {
 #define ANE_MBI_WAKE_REQ	0xf7fbdff9	/* host->fw SCRATCH7 */
 #define ANE_MBI_WAKE_ACK	0x08042006	/* fw->host: table ready */
 #define ANE_MBI_DOORBELL	0x1844000	/* write32 (1 << endpoint id) */
-#define ANE_MBI_MSG_I2A_LO	0x1170000	/* fw->host u64 message pair */
-#define ANE_MBI_MSG_I2A_HI	0x1170004
+/* NOT a message pair.  W10 proved this is a mirror of the 24 MHz
+ * architectural counter: across 32 samples the absolute difference
+ * against CNTVCT_EL0 is a constant 13-18 counts (the MRS-to-MMIO
+ * instruction gap), aggregate drift 0.054 ppm over 55.2M counts.  The
+ * "type-0 heartbeat, ~29 ticks/3 s" that W6/W9 recorded as firmware
+ * liveness was this clock plus a poll count: the RTKit type field
+ * GENMASK_ULL(59,52) is structurally zero until the counter passes
+ * 2^52 (~6 years of uptime).  Kept only so the old reads stay
+ * identifiable in the logs; do not treat as transport. */
+#define ANE_MBI_TIMEBASE_LO	0x1170000	/* was ANE_MBI_MSG_I2A_LO */
+#define ANE_MBI_TIMEBASE_HI	0x1170004	/* was ANE_MBI_MSG_I2A_HI */
+#define ANE_MBI_MSG_I2A_LO	ANE_MBI_TIMEBASE_LO
+#define ANE_MBI_MSG_I2A_HI	ANE_MBI_TIMEBASE_HI
 #define ANE_MBI_MSG_A2I_RD	0x184c000	/* host->fw message read peer */
 #define ANE_MBI_MSG_A2I_WR	0x1850000	/* host->fw message write */
 
@@ -286,9 +353,11 @@ struct ane_t6021 {
 
 	bool booted;		/* first_resume ran (eight-island gate) */
 
-	/* The m1n1-analogy mailbox (+0x1608xxx) is read-fatal on t6021
-	 * (SExternal-Abort 2026-09-19 under the full raise; phase1 hang
-	 * 09-18) and does not exist in the kext text; default off =
+	/* W10: the mailbox does exist — at +0x1408xxx, not the h16g
+	 * +0x1608xxx that read-aborted in 2026-09-19 — and it reads a
+	 * live, enabled, permanently-empty ASC v4 control pair.  It is
+	 * empty because the ASC CPU is STOPPED with RUN clear and RVBAR
+	 * entry 0, i.e. no firmware was ever started.  Default off =
 	 * status-only bring-up.  Opt-in runs the kext-evidenced MBI
 	 * handshake (SCRATCH wake -> fw channel table), capture-only. */
 	bool transport;
@@ -306,7 +375,6 @@ struct ane_t6021 {
 	void *fw_buf;
 	dma_addr_t fw_iova;
 	u32 fw_size;
-	u64 fw_pinned_iova;	/* host-chosen alias (fw_iova param), 0=none */
 };
 
 /* ane_t6021_rtkit.c */
