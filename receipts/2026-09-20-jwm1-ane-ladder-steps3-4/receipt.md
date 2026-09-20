@@ -170,3 +170,39 @@ Formal status:
 
 Diagnostics preserved with exact hashes (inputs, device outputs, references —
 Addendum hashes; device outputs additionally sha256'd above).
+
+## Addendum 5 — numeric gate re-analysis: the island matmul FAIL is real (Main directive)
+
+Correlation and K-coverage analysis of the preserved device output against
+the expected products (host fp32-accumulate matmul of the same staged bytes):
+
+- Per-head corr(device, expected product): heads 0-3, 5-7 ≈ **0.69**; **head 4
+  ≈ 0.004 (uncorrelated)**.
+- K-subset hypotheses REJECTED: correlating the device output against
+  partial-K products (K 0-63, 64-127, 0-31, 32-63) gives ≈0.49/≈0.35 — the
+  output is not a clean K-subset of the expected matmul.
+- All 1125000 outputs finite; deterministic across runs; wedged = 0.
+
+Reading: the device executed the 213-TD graph without faults, but the
+matmul consumed **partially-wrong input data** on the restored stack — a
+binding/mapping-level failure (large multi-DART input surfaces: 0.77-2.25 MB
+per tensor through the three external ANE DARTs + kernel IOMMU domain), not
+a rounding-order numerics issue (correlation 0.69 with head-4 at 0.004 is
+far beyond rounding noise; head 4 uniquely uncorrelated points at a
+dart/TD-range-specific mapping break). The small Step-1 packages bound
+correctly through the same driver on the same DT (bit-exact), isolating the
+failure to the LARGE multi-DART fanout surfaces of the islands bundle.
+
+Delta set against the September-proven run (same box, same worker source):
+kernel 7.1.6→7.1.13, fresh rootfs/Mesa, driver 6fa243a-era→44dd9bf, DT
+old-shape→five-provider external-dart form, capture-generation difference in
+the re-derived inputs. The binding/mapping break is upstream of numerics —
+label: **Step 3 numeric gate = FAIL (binding/mapping-level, unexplained
+mechanism)**, evidence preserved (device outputs run1/run2 sha
+`1320b672…`, all four staged inputs + references hash-pinned, correlation
+tables in this addendum).
+
+No gate weakening: no tolerance was introduced; the numeric FAIL stands
+until the mapping failure is root-caused (driver debug tooling: dump the
+DART translations/IOMMU mappings for the island submit, or bisect driver
+6fa243a↔44dd9bf on the old-vs-new DT).
