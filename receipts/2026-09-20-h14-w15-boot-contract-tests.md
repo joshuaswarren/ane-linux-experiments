@@ -158,14 +158,29 @@ c5bda7d). Flip = pf_main_lifetime_review = true; every other gate
 already true. The device still performs no MMIO until an operator
 runs the sequence below.
 
-MODULE ARTIFACT (provisioning step REQUIRED): the local cross-build
-carries vermagic 7.1.6-g89cf2774434f — the target runs
-7.1.13.asahi3-1, so the module MUST be built on jw14m2 against the
-matching headers:
+MODULE ARTIFACT (AUTHORIZED: push 6be485f + on-device build ONLY —
+no stage-1, no insmod until live authorization). Kernel version is
+UNAME-AUTHORITATIVE: uname -r on jw14m2 decides; my earlier
+"7.1.13.asahi3-1" claim is withdrawn (last-live record said
+7.1.13-3-1-ARCH — build against the running kernel's tree, whichever
+it is):
   1. rsync the worktree (6be485f) to jw14m2:~/src/omarchy-ane
   2. cd ane/t6021 && make -C /lib/modules/$(uname -r)/build M=$PWD
-  3. record sha256(ane_t6021.ko) + modinfo vermagic in the window
-     receipt; refuse to insmod if vermagic != uname -r
+  3. CAPTURE AND RECORD (window receipt): uname -r; sha256sum
+     ane_t6021.ko (full); modinfo ane_t6021.ko (vermagic, srcversion)
+  4. REFUSE insmod unless modinfo vermagic prefix == $(uname -r)
+
+DEFAULTS PARAMETER LIST (exact; anything unlisted stays kernel
+default):
+  insmod ane_t6021.ko allow_unqualified=1 fw_load=1 fw_boot=1
+  - allow_unqualified=1 : binds the unqualified T6021 skeleton
+  - fw_load=1           : validate + stage selene, DART-map
+  - fw_boot=1           : arms the resolved boot sequence
+  - rtkit_transport     : ABSENT (default 0 — transport off, no IRQ
+                          registration)
+  - mbi_doorbell        : ABSENT (default 0 — doorbell fenced)
+  - sessions            : ABSENT (code-fenced; response_validated
+                          false keeps CSNE gated past booted)
 
 FIRMWARE: t602x_ane0_fw_selene_rc4x.macho, sha256
 9f7915c431d288a2bdc2132c399db8cf5574716a3b1e94af76be6a291c2e665b,
