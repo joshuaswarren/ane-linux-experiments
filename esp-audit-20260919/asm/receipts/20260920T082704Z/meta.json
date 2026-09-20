@@ -1,0 +1,22 @@
+{
+ "artifact": {
+  "path": "esp-audit-20260919/initrd-7113-clean-modstage.img",
+  "sha256": "b4a24461669358f82db63d78e3d5f5fe72b9160b8dd66301190d60506e0a2a6e",
+  "verified_on_jw14_before_run": true
+ },
+ "harness": {
+  "note": "git show HEAD == working copy at run time; executed from /tmp/jwm1-sms-stage on jw14m2-linux",
+  "path": "esp-audit-20260919/asm/test-battery.sh",
+  "sha256": "11a0b1801bd1dfd611ccdca787fda0bceaac925153b7751e87f8f1f5e4024818"
+ },
+ "result": {
+  "fail": 0,
+  "note": "expected 20 vs prior 19: retained earlier receipt was the pre-commit harness (11 checks fewer incl. missing fw/e2 extraction rc assertion)",
+  "pass": 20,
+  "rc": 0,
+  "stderr_bytes": 0
+ },
+ "scope": "private mktemp fixtures only on jw14m2-linux; no real roots, no sudo; candidate busybox ash 51572718",
+ "timestamp_utc": "20260920T082704Z",
+ "what": "battery rerun with committed harness (adds fw/e2 cpio extraction rc=0 check)"
+}

@@ -1,0 +1,28 @@
+== split artifact segments ==
+  PASS: gzip stream ends inside artifact (firmware/e2 segments follow)
+  PASS: T1 firmware segment sha (verbatim append)
+  PASS: T1 e2 segment sha matches builder reference
+  PASS: fw/e2 cpio extraction rc=0
+== T3 syntax with candidate ash ==
+  PASS: ash -n init
+  PASS: ash -n init_functions
+  PASS: ash -n hooks/jwm1-modstage
+  PASS: ash -n usr/local/bin/jwm1-modstage.sh
+  PASS: ash -n usr/local/bin/jwm1-firmware-late
+== fw caller insertion position ==
+  PASS: order mount(67) < fw(72) < latehooks(80) < switch_root(119)
+  PASS: explicit exit fallback in init
+== firmware first-boot resolution + checked copy ==
+  PASS: e2 symlink lib/firmware/vendor -> /vendorfw
+  PASS: ekans firmware present under /vendorfw/brcm
+  PASS: firmware tree extracted: 340 files
+  PASS: busybox sha256sum -c: 338/217 entries OK
+== T4 hook contract: failure can never reach switch_root ==
+  PASS: failure path: rescue invoked, switch_root position never reached (harness rc=42)
+  PASS: success path: run_latehook rc=0, boot continues
+== embedded module stage end-to-end (artifact's own files) ==
+  PASS: artifact tree manifest == embedded manifest
+  PASS: artifact module stage rc=0 into fixture sysroot
+  PASS: second stage rc=0 (already-exact untouched)
+
+======== BATTERY: PASS=20 FAIL=0 ========
