@@ -154,9 +154,9 @@ verify_hash "$STAGE_INITRD" "$INITRD_SHA" "staged initrd"
 
 echo "== [0c] free space =="
 AVAIL_KB=$(df -k "$MPOINT" | awk 'NR==2{print $4}')
-NEED_KB=$(((98014376 + 34114048 + 6212626 + 33917440 + 19414040) / 1024 + 2048))
+NEED_KB=$(((98014376 + 34114048 + 6212626 + 33917440 + 19414040 + 6092721 + 552 + 4096) / 1024 + 2048))
 [ "${AVAIL_KB:-0}" -ge "$NEED_KB" ] || die "insufficient free space: avail=${AVAIL_KB}K need>=${NEED_KB}K"
-echo "  avail=${AVAIL_KB}K need>=${NEED_KB}K"
+echo "  avail=${AVAIL_KB}K need>=${NEED_KB}K (conservative: new artifacts + all backup copies + cfg, 2 MiB margin)"
 
 echo "== [1] fresh original hashes (full compare) =="
 verify_hash "$MPOINT/m1n1/boot.bin" "$BOOT_ORIG_SHA" "original boot.bin"
@@ -181,7 +181,7 @@ install_verified "$STAGE_BOOT" "$MPOINT/m1n1/boot.bin" "$BOOT_SHA" "boot.bin(566
 
 echo "== [5] temporary candidate-default grub.cfg =="
 HOST_CFG=$(mktemp /tmp/jwm1stage-cfg-XXXXXX)
-cat > "$HOST_CFG" <<'CFG'
+cat > "$HOST_CFG" <<'CFG' || { rm -f "$HOST_CFG"; echo "STAGE-STOP: cfg host write failed" >&2; exit 1; }
 set timeout=10
 set default=0
 terminal_output console
@@ -196,7 +196,9 @@ menuentry "Omarchy Linux recovery (7.1.6 kernel+initrd from ESP)" {
 	initrd /grub-ane/INITRD.REC
 }
 CFG
-sync || { rm -f "$HOST_CFG"; die "cfg host sync failed"; }
+_sync_rc=$?
+[ "$_sync_rc" = "0" ] || { rm -f "$HOST_CFG"; die "cfg host sync failed (rc=$_sync_rc)"; }
+[ -s "$HOST_CFG" ] || { rm -f "$HOST_CFG"; die "cfg host write produced empty file"; }
 CFG_SHA_EXPECT=$(hash_file "$HOST_CFG") || { rm -f "$HOST_CFG"; die "cfg host hash failed"; }
 [ -n "$CFG_SHA_EXPECT" ] || { rm -f "$HOST_CFG"; die "cfg host hash empty"; }
 CFG_TMP="$MPOINT/grub-ane/.grub.cfg.new.$$"
