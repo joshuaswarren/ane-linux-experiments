@@ -349,6 +349,7 @@ symbols `OSValueObject<ANESharedMemorySurfaceParams>::gMetaClass`,
   SetupFWInitBootArgs (parallel implementation confirmed). Continuation:
   0xeed50/0xeeea8/0xeecf8/0xedcc4 chain + the 0x50-stride array's
   load-address field.
+- RETRACTION (Main review): "kext implements DART programming inline via direct register writes" was PREMATURE — the unnamed bl targets in AllocateSharedMemorySurface_gated are now partially decoded and NEITHER is a DART PTE programmer: sub_9628d50 = range/bounds search over a sorted array; sub_962578c = program validation + client registration (validates ZinComputeProgramSharedHeader, iterates 0x50-stride client array). The DART mapping location remains OPEN — candidates include virtual dispatch (blraa), shared helpers, or the mapper-ane0 object methods.
 - ADD (W13a 3h, 0xee0f8 continuation + wrapper): 0xee0f8 removes a
   client entry ([+0x40] count decrement, 0x50-stride remove with
   [+0x44] size rounding (+3&~3)+0x24 — same math) via bl 0x104824; a
