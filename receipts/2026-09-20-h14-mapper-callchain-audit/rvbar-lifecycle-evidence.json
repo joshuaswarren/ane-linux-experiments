@@ -66,6 +66,33 @@
   "wake_word_not_in_host_elsewhere": "0xF7FBDFF9 occurs in ANE kext text exactly once (the wake write); absent from all KC data regions - the ONLY host->SCRATCH7 writes in the kext are: pulse 1, pulse 0, wake word. The kext never writes 0x08042006 anywhere.",
   "anchors": "tools/check_rvbar_lifecycle_anchors.py sections F1-F19; 57/57 total PASS"
  },
+ "pass6_init_header_producers": {
+  "scope": "Main last-payload barrier: close open fields 0x20/0x28/0x30/0x50/0x60 per CURRENT_CONTRACT 6b02e78. Owned here: w22, obj2, x23, pool word0, fw-load word. Byte-verified against pinned KC; anchors G1-G26 (87/87 total).",
+  "suballoc_placement": "suballoc host base x25 = *(pool+0x38) + sxtw( offset returned by DeviceMemoryManager::Allocate(0x174=372) ) at 0x95ea710-0x95ea738; offset saved to dev+0x960 (2400). pool = *(dev+0x980).",
+  "field_0x20_0x28_obj2_w22": {
+   "w22_source": "read32 via [dev+0x444] scratch-offset field (= cell idx3) at 0x95ea424-0x95ea444; x22 = result (0x95ea448). This is a FIRMWARE-published value: the fw writes its extra-heap request size into scratch idx3 before the host reaches the fill. Adjacent read32 [dev+0x448] (idx4) !=0 -> bool byte [x26] (0x95ea470-0x95ea478).",
+   "allocation": "if w22!=0 (0x95ea61c cbz): effective size = csel x22,x9,x8,hi at 0x95ea698 with x9=[dev+0x3A90] (14992, audit-lane cap/floor word) and x8=zext(w22) -> MAX(request, floor). AllocateSharedMemorySurface(size, &obj2, tag 0x48454150 'HEAP') 0x95ea6b4-0x95ea6d4. obj2 = ANESharedMemorySurfaceParams out-param at [sp+136], NULL-initialized 0x95ea618.",
+   "stores": "[0x20] u64 = *(obj2+0x18) heap-surface DVA (0x95ea7cc-0x95ea7d0; 0 if w22 was 0, 0x95ea7d8); [0x28] u64 = zext(final size) (0x95ea7dc-0x95ea7e0). obj2 DVA also passed to ANECoredump::addExtraHeapRegion (0x95ea868) - diagnostic only, fw-invisible.",
+   "linux_equivalent": "after READY ack: request = read scratch idx3; if request!=0 { sz = max(request, floor_from_config); heap = dma_alloc_coherent(sz); hdr[0x20]=iova(heap); hdr[0x28]=sz; } else { hdr[0x20]=0; hdr[0x28]=0; }"
+  },
+  "field_0x30_fw_load_word": {
+   "dev_0x990_writers": "zeroed by initializeANEProperties (0x9612b00); sole value-writer ANE_LoadFirmware_gated 0x95f0180, gated by dev+0x420 'ctrr-unlocked' bit0 SET (0x95f0164-0x95ea168) and len-1 < config.size (0x95f016c-0x95ea17c).",
+   "semantics": "stores the PREVIOUS firmware image length (w23) immediately before promoting the new length (mov w23,w24 0x95f0184) for withAddressRange. Header [0x30] u32 = previous fw image size in bytes; 0 on first boot.",
+   "linux_equivalent": "static u32 prev_fw_len; hdr[0x30]=prev_fw_len; prev_fw_len=len on each (re)load."
+  },
+  "field_0x50_x23": {
+   "x23_object": "x23 = [sp+128], an init-context object; [x23+0] = read32(SCRATCH0) stored verbatim (0x95ea0f8); [x23+4] = read32(SCRATCH1) + 1 (0x95ea120-0x95ea124). [x23+112] = IOMemoryDescriptor used by ANECoredump::addRegion(md, IPC_DVA, [IPC+0x38], [x23+4]) at 0x95ea3ec-0x95ea400 (diagnostic).",
+   "store": "hdr[0x50] u64 = zext(u32[x23+4]) (0x95ea880-0x95ea884) = SCRATCH1_read + 1 - boot ordinal: the fw-visible scratch idx1 value captured after READY, host-incremented. Unknown named: whether the fw writes idx1 before this point is not statically decidable (no assumption of zero; on real h/w read the cell, do not hardcode).",
+   "linux_equivalent": "after READY: hdr[0x50] = (u64)(u32)(read_scratch(idx1) + 1)."
+  },
+  "field_0x58_0x60_pool": {
+   "pool_identity": "dev+0x980 = out-param of AllocateSharedMemorySurface in start() 0x9604024-0x9604060: size 0x40000 (256 KiB), tag 0x44444D20 'DDM ' (DeviceMemoryManager pool). pool+0x18 = device DVA window base; pool+0x38 = host VA of same window (double-mapping delta used by SCRATCH0 publication); dev+0x960 holds the 0x174-byte suballoc offset into it.",
+   "stores": "hdr[0x58] u64 = *(pool+0x18) (0x95ea888-0x95ea88c); hdr[0x60] u64 = *(pool+0x00) (0x95ea890-0x95ea894). pool+0x00 is read NOWHERE else in the kext - sole consumer is this header field.",
+   "residual": "exact semantic of params+0x00 inside AllocateSharedMemorySurface_gated's OSValueObject<ANESharedMemorySurfaceParams> value build is the one remaining byte (fw-side interpretation owned by selene lane). Linux equivalent: publish the first qword of your own pool-descriptor struct at hdr[0x60]; do not synthesize a zero.",
+   "linux_equivalent": "hdr[0x58] = iova_base(ddm_pool); hdr[0x60] = ddm_pool_descriptor->word0."
+  },
+  "coordination": "boundary honored: dev+0x3A90 value/config reachability and IPC-size calc (0x10/0x18) remain the audit lane's; handshake phases per pass5_ack_ordering."
+ },
  "mmio_writes_this_lane": "none",
  "tools_added": ["tools/check_rvbar_lifecycle_anchors.py"]
 }
