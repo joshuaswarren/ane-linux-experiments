@@ -585,3 +585,28 @@ starts at +0x28 (not +0x18), so +0x18 may be wrapper-header or
 payload depending on the actual class — which has NOT been proven.
 The producer of whatever value sits at obj+0x18 is inside the
 SetupFWInitBootArgs machinery (H14DartAudit walk continuation).
+
+### Addendum 5: CLASS IDENTITY RESOLVED (H14DartAudit, definitive)
+
+The object at [dev+0x978] AND [dev+0x980] is `AppleANETunableApplyFunction`,
+size **0x7e8** (2024 bytes). Both prior attributions superseded:
+OSValueObject<Params> (my 3j) and u32-status (DartAudit's earlier framing).
+
+Evidence: `__mod_init` constructor 0x957a1ac registers the class with
+`OSMetaClass(name, super, size)` where w3 = 0x7e8; OSSymbol
+"AppleANETunableApplyFunction" stored at __bss+0x260 AND +0x268 (the
+gAppleANETunableApplyFunctionKey + Legacy pair); meta objects at __common
+0xcb6d868 / 0xcb6d890 (vtables 0x813f810 / 0x81401d0).
+
+Consequences:
+- Boot compose [dev+0x978] -> [+0x18] = apply-function object field at
+  offset 0x18 (wrapper header, size TBD within the 0x7e8-byte object).
+- SCRATCH math [dev+0x980] -> [+0x18]/[+0x38] = the same class,
+  different instance.
+- Init zero at +0x28..+0x88 = apply-function payload tables, NOT
+  ANESharedMemorySurfaceParams.
+- Next: dump the class methods near vtables 0x813f810/0x81401d0 to find
+  the +0x18/+0x38 stores inside the run/apply virtual methods.
+- The class resolves under key "FirmwareLoaded" (0x978) and key 0x40000
+  (0x980) through the same resolver 0x95f6674 — it IS the "resolved
+  object" that the FWIM request produces.
