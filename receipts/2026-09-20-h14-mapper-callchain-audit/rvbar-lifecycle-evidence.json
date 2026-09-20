@@ -1,0 +1,48 @@
+{
+ "meta": {
+  "date": "2026-09-20",
+  "lane": "M2/T6021 RVBAR latch/reset lifecycle audit (independent, static-only)",
+  "worker": "M2ResetLifecycle",
+  "no_device_contact": true,
+  "no_mmio_writes": true,
+  "kernelcache": {"path": "/tmp/kernelcache.mac14j.raw", "sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa"},
+  "anchors": "tools/check_rvbar_lifecycle_anchors.py - 38/38 PASS (raw instruction words, byte-exact)"
+ },
+ "flag_semantics": {
+  "dev+0x41F (1055)": "fw-latched/pre-loaded mode flag. SOLE writers are in ANEHWDevice::start: set 1 at 0x9600ed4 iff provider->getProperty(\"pre-loaded\") non-null (IORegistryEntry::getProperty vtable slot +0x2d8 salt 0x37a5, cstring 0x74c4968); cleared 0 at 0x9600fdc otherwise. NEVER written by ANE_Init/ANE_deInit/timeout paths. Consumers: ANE_Init gate (0x95e9850), ANE_LoadFirmware_gated (0x95f033c/0x95f046c: 1 -> ANE_ctrrReloadFw reload path, 0 -> fresh staging path), aneAddressToHostAddress, ANE_GetStatus_gated.",
+  "dev+0x420 (1056)": "getProperty(\"ctrr-unlocked\") mirror, start()+0xa6c logs both.",
+  "dev+0x3FB (1019)": "fw-initialized flag gating ANE_deInit inside power_off."
+ },
+ "rvbar_write_site": {
+  "only_write64_sites_in_kext": ["ANE_Init 0x95e9988 (RVBAR 0x1050000)", "ThermalPTDTimerTimeOut_gated 0x9605f28 (perf counters, accessor dev+0x1A0)"],
+  "mechanics": "gate dev+0x41F bit0 -> skip; read64OneShot(accessor dev+0x188 ENGINE reg[0], 0x1050000) bit0 set -> skip; else write64(dev+0x188, 0x1050000, 0x0081000000000001 | (FWIM_DVA & 0xff7efffffffff800)). FWIM_DVA = *(dev+0x978 Params +0x18) (pass3). Absolute: ENGINE aperture 0x84000000 + 0x1050000 = 0x85050000, width 64.",
+  "no_clear_write_exists": "No instruction anywhere in the KC writes RVBAR with bit0=0. The driver never force-clears the latch by MMIO."
+ },
+ "cpu_control_order": {
+  "after_rvbar_block_both_paths": "write32(accessor dev+0x188, [dev+0x4A0]=0x01400044 H14g, w2=0) at 0x95e99a8 then write32(same, 0x10) at 0x95e99d0; salt 0x1344 write32 slot; order strictly 0 then 0x10 AFTER latch (or after skip).",
+  "ack": "read32(dev+0x188, [dev+0x454]) polled; expected 0x08042006 (SCRATCH7 fw-ready ack, matches selene fn 0x71a4 writer 0x285840064)."
+ },
+ "power_lifecycle": {
+  "on": "setPowerStateGatedPriv +0x120/+0x6e8 -> power_on_hardware_gated 0x96076e4: selector dev+0x3EA0!=0 or dev+0x3FC bit0 skips MPM (H14g: selector 0 per pass4/04630ef -> plain PMGR 0x2e0 AUTO_ENABLE-clear branch); EnableMPMClocksAndPower(false); EnableANEClocksAndPower 0x96077f8; bl ANE_Init 0x9607968; ret==0xE00002DD tolerated; other nonzero -> power_off then retry.",
+  "off": "setPowerStateGatedPriv +0x588 -> power_off_hardware_gated 0x9607f48: claim 0x061B0019; dev+0x3FB bit0 -> bl ANE_deInit 0x9608028 (ANE_deInit has NO other caller in the entire KC: no bl at 0x25e8370, no fixup, no materialization); quiesce 5 IPC endpoints (slot +0x178 salt 0x9a99); bl DisableANEClocksAndPower x2 (0x96082d0/0x9608320); WaitForLastClocksPowerAssertion.",
+  "disable_chain": "DisableANEClocksAndPower 0x95d2d00 -> DisableCPUClocksAndPower 0x95d396c (bl 0x95d3060/0x95d3158/0x95d3470) -> write32(PMGR accessor dev+0x190 [reg[1] 0x8e080000], 0x2e0, 0x00000000) at 0x95d3d80-0x95d3d9c; enable side = write32(0x0000000f) with read-validate mask 0xff/expect 0xff (pass4 anchors G/I).",
+  "ane_deinit": "0x95ec370: clears state bytes dev+0x406/0x407/0x404-area, stopFirmware/suspendFirmware/shutdownFirmware, HandleFirmwareTimeout_gated, SCRATCH0/1 teardown; NEVER touches dev+0x41F and NEVER writes RVBAR."
+ },
+ "stale_latch_recovery": {
+  "lawful_branch": "RVBAR bit0=1 (or dev+0x41F=1) with fw NOT alive: ANE_Init skips latch, polls [dev+0x454] for 0x08042006; failure leads to ANE_Init's internal retry: bl power_off_hardware_gated 0x95eb280 -> bl power_on_hardware_gated 0x95eb3ac -> ANE_Init re-entry. power_off runs ANE_deInit + PMGR ps 0x2e0 <- 0 (domain off = the only mechanism that resets the ASC CPU and can clear RVBAR bit0); after the cycle the re-entry read64OneShot observes bit0=0 and takes the full latch path.",
+  "already_latched_alive": "dev+0x41F=1 route: subsequent ANE_LoadFirmware_gated uses ANE_ctrrReloadFw (memmove into CTRR windows dev+0x7C8/0x7D0, dev+0x970=1) - no RVBAR/CPU_CONTROL touch; ANE_Init itself still pulses CPU_CONTROL 0->0x10 on its (power_on-time) run."
+ },
+ "linux_first_boot_order": [
+  "1. PMGR ps 0x2e0 (via pmgr-pwrctl power-controller@2e0) write32 0x0000000f; read-validate 0xff (pass4).",
+  "2. MPM clocks/power per kext gating (selector=0 on H14g).",
+  "3. FWIM staging surface alloc + dartMap (pass3), Params+0x18 = DVA.",
+  "4. Publish pool DVA: SCRATCH0=low32 (0x285840048), SCRATCH1=high32 (0x28584004C).",
+  "5. RVBAR write64 0x85050000 = 0x0081000000000001 | (DVA & 0xff7efffffff800...) ONLY after read64OneShot bit0==0.",
+  "6. CPU_CONTROL 0x85400044 write32 0x00000000 then 0x00000010, in that order.",
+  "7. Poll SCRATCH7 (0x285840064) == 0x08042006.",
+  "Do not export any 'pre-loaded' analog: dev+0x41F must stay 0 so the full latch path runs. If bit0 reads 1 stale: lawful action is domain off (ps 0x2e0 <- 0) then on, never an RVBAR bit0=0 write."
+ ],
+ "unresolved_edge": "Static KC cannot prove that PMGR ps 0x2e0 <- 0 actually clears RVBAR bit0 in hardware (ASC reset semantics). The driver's retry design presupposes it; only in-driver evidence is behavioral (retry exists; no RVBAR-clear write exists). Live read-only confirmation: read64 0x85050000 after domain power-off, expect bit0==0.",
+ "mmio_writes_this_lane": "none",
+ "tools_added": ["tools/check_rvbar_lifecycle_anchors.py"]
+}
