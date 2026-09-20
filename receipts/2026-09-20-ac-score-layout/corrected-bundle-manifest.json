@@ -1,0 +1,178 @@
+{
+  "compiler": {
+    "host_build": "Linux-6.17.2-1-pve-x86_64-with-glibc2.36",
+    "target": "h13",
+    "toolchain": "mil-hwxc 18e93b982e4a57c69beed50d7204002321e1b98b sha256:5f447bdc4ca1cfadcba3b8e814346e2f1702a7d28cb996d0bebeeb90201be9d3"
+  },
+  "dispatch_plan": [
+    0
+  ],
+  "driver_abi_major": 1,
+  "graph_hash": "8d3a0ef91765d090bafc06d42b24a6c48d87d07f4838b18cc704a7029fcfd57f",
+  "inputs": [
+    {
+      "byte_size": 768000,
+      "dtype": "float16",
+      "index": 0,
+      "name": "k",
+      "shape": [
+        1,
+        8,
+        375,
+        128
+      ],
+      "stride": 770048
+    },
+    {
+      "byte_size": 768000,
+      "dtype": "float16",
+      "index": 1,
+      "name": "q",
+      "shape": [
+        1,
+        8,
+        375,
+        128
+      ],
+      "stride": 770048
+    }
+  ],
+  "intermediates": [],
+  "logical_results": [
+    {
+      "conversion": "identity",
+      "dtype": "float16",
+      "element_count": 1125000,
+      "element_offset": 0,
+      "name": "scores",
+      "shape": [
+        1,
+        8,
+        375,
+        375
+      ],
+      "tensor": "scores"
+    }
+  ],
+  "manifest_version": 4,
+  "name": "island-scores-mm",
+  "outputs": [
+    {
+      "byte_size": 2250000,
+      "dtype": "float16",
+      "index": 0,
+      "name": "scores",
+      "shape": [
+        1,
+        8,
+        375,
+        375
+      ],
+      "stride": 2310144
+    }
+  ],
+  "payloads": [
+    {
+      "byte_size": 183168,
+      "path": "program-0.anec",
+      "role": "anec",
+      "sha256": "6838e6d37c8d7a5d2ba18effde9e6c1b12773282cf0891160d2ff96fda6b2dba"
+    }
+  ],
+  "programs": [
+    {
+      "encoder": "apple-parity-batched-matmul",
+      "inputs": [
+        {
+          "allocation_bytes": 770048,
+          "channel": 5,
+          "dtype": "float16",
+          "element_count": 384000,
+          "element_offset": 0,
+          "logical_bytes": 768000,
+          "nchw": [
+            1,
+            8,
+            375,
+            128,
+            96000,
+            256
+          ],
+          "physical_elements": 384000,
+          "shape": [
+            1,
+            8,
+            375,
+            128
+          ],
+          "tensor": "k"
+        },
+        {
+          "allocation_bytes": 770048,
+          "channel": 6,
+          "dtype": "float16",
+          "element_count": 384000,
+          "element_offset": 0,
+          "logical_bytes": 768000,
+          "nchw": [
+            1,
+            8,
+            375,
+            128,
+            96000,
+            256
+          ],
+          "physical_elements": 384000,
+          "shape": [
+            1,
+            8,
+            375,
+            128
+          ],
+          "tensor": "q"
+        }
+      ],
+      "operation": "matmul",
+      "outputs": [
+        {
+          "allocation_bytes": 2310144,
+          "channel": 4,
+          "dtype": "float16",
+          "element_count": 1125000,
+          "element_offset": 0,
+          "logical_bytes": 2250000,
+          "nchw": [
+            1,
+            8,
+            375,
+            375,
+            288000,
+            768
+          ],
+          "physical_elements": 1125000,
+          "shape": [
+            1,
+            8,
+            375,
+            375
+          ],
+          "tensor": "scores"
+        }
+      ],
+      "payload": "program-0.anec",
+      "scratch_bytes": 0,
+      "task_descriptors": 209
+    }
+  ],
+  "provenance": {
+    "exported_at": "2026-09-20",
+    "source_commit": "18e93b982e4a57c69beed50d7204002321e1b98b",
+    "source_repo": "joshuaswarren/mil-hwx-compiler"
+  },
+  "release_asset": {
+    "model": "parakeet-tdt-0.6b-v3-encoder",
+    "model_sha256": "cbc4acccd13d54e7732e64e82e4f8194b842c2cf76f56f5450574713a041d517"
+  },
+  "state": [],
+  "task_descriptors": 209
+}

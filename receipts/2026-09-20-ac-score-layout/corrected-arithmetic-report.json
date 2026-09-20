@@ -1,0 +1,137 @@
+{
+  "arithmetic_isolation": {
+    "island-select-rta": {
+      "masked": {
+        "bit_equal": true,
+        "mismatch_count": 0,
+        "total": 1125000,
+        "max_abs_finite": 0.0,
+        "dev_neginf": 0,
+        "ref_neginf": 0,
+        "dev_posinf": 0,
+        "ref_posinf": 0,
+        "dev_nan": 0,
+        "ref_nan": 0,
+        "inf_mask_agree": true,
+        "nan_mask_agree": true,
+        "ulp_max_finite": 0,
+        "stage": "island-select-rta",
+        "output": "masked"
+      }
+    },
+    "island-scores-mm": {
+      "scores": {
+        "bit_equal": false,
+        "mismatch_count": 338272,
+        "total": 1125000,
+        "max_abs_finite": 0.00390625,
+        "dev_neginf": 0,
+        "ref_neginf": 0,
+        "dev_posinf": 0,
+        "ref_posinf": 0,
+        "dev_nan": 0,
+        "ref_nan": 0,
+        "inf_mask_agree": true,
+        "nan_mask_agree": true,
+        "ulp_max_finite": 1388,
+        "stage": "island-scores-mm",
+        "output": "scores"
+      }
+    },
+    "island-add-head": {
+      "add": {
+        "bit_equal": false,
+        "mismatch_count": 71977,
+        "total": 1125000,
+        "max_abs_finite": 0.03125,
+        "dev_neginf": 0,
+        "ref_neginf": 0,
+        "dev_posinf": 0,
+        "ref_posinf": 0,
+        "dev_nan": 0,
+        "ref_nan": 0,
+        "inf_mask_agree": true,
+        "nan_mask_agree": true,
+        "ulp_max_finite": 1,
+        "stage": "island-add-head",
+        "output": "add"
+      }
+    },
+    "island-softmax-head": {
+      "smax": {
+        "bit_equal": false,
+        "mismatch_count": 800168,
+        "total": 1125000,
+        "max_abs_finite": 0.0001220703125,
+        "dev_neginf": 0,
+        "ref_neginf": 0,
+        "dev_posinf": 0,
+        "ref_posinf": 0,
+        "dev_nan": 0,
+        "ref_nan": 0,
+        "inf_mask_agree": true,
+        "nan_mask_agree": true,
+        "ulp_max_finite": 10,
+        "stage": "island-softmax-head",
+        "output": "smax"
+      }
+    }
+  },
+  "chaining": {
+    "island-select-rta": {
+      "masked": {
+        "shape": [
+          1,
+          8,
+          375,
+          375
+        ],
+        "sha256": "55bed545ee58bedd70b2a42f86eed3efae986e57ceda84e957a0c04f8b65f5de",
+        "bytes": 2250000
+      }
+    },
+    "island-scores-mm": {
+      "scores": {
+        "shape": [
+          1,
+          8,
+          375,
+          375
+        ],
+        "sha256": "358832297097659105a1c4d2ab415ace012fe1650e363d51177050742158cd2f",
+        "bytes": 2250000
+      }
+    },
+    "island-add-head": {
+      "add": {
+        "shape": [
+          1,
+          8,
+          375,
+          375
+        ],
+        "sha256": "364e0480c1139f029778deface10e359a77531ceb1f1d67642874b3357eeaf78",
+        "bytes": 2250000
+      }
+    },
+    "island-softmax-head": {
+      "smax": {
+        "shape": [
+          1,
+          8,
+          375,
+          375
+        ],
+        "sha256": "67b7fc9af590beb332e77360d41d2d107126ac806ee3022f2f1301835008d681",
+        "bytes": 2250000
+      }
+    }
+  },
+  "bd_scale": 0.0625,
+  "ladder": [
+    "island-select-rta",
+    "island-scores-mm",
+    "island-add-head",
+    "island-softmax-head"
+  ]
+}

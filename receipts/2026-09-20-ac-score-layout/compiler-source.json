@@ -1,0 +1,13 @@
+{
+  "schema": "mil-hwxc.h13-anec-package.v2",
+  "artifact_format": "anec",
+  "target": "H13",
+  "compiler_binary_sha256": "5f447bdc4ca1cfadcba3b8e814346e2f1702a7d28cb996d0bebeeb90201be9d3",
+  "compiler_executable_source_commit": "18e93b982e4a57c69beed50d7204002321e1b98b",
+  "compiler_host_build": "Linux-6.17.2-1-pve-x86_64-with-glibc2.36",
+  "compiler_manifest_sha256": "103c03fe6d2bee027593aa158b9dd8dabe4116cc976b37f46d37581b78b6175f",
+  "graph_source_sha256": "8d3a0ef91765d090bafc06d42b24a6c48d87d07f4838b18cc704a7029fcfd57f",
+  "payloads": {
+    "program-0.anec": "6838e6d37c8d7a5d2ba18effde9e6c1b12773282cf0891160d2ff96fda6b2dba"
+  }
+}

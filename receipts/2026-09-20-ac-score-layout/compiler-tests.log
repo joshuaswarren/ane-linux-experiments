@@ -1,0 +1,41 @@
+/usr/bin/clang++-14 -O2 -std=c++17 -Wall -Wextra -Werror plugins/H13/H13Program.cpp tests/test_h13_encoding.cpp -o build/test_h13_encoding
+build/test_h13_encoding
+H13_ENCODING_OK
+build/test_h13_anec
+python3 tests/test_h13_cli.py build/mil-hwxc
+H13 MIL-to-ANEC/HWX CLI: PASS (device-free)
+python3 tests/test_h13_split_cli.py build/mil-hwxc
+h13 split cli: PASS
+python3 tests/test_h13_layout_cli.py build/mil-hwxc
+h13 layout cli: PASS
+python3 tests/test_h13_composite_cli.py build/mil-hwxc
+h13 composite cli: PASS
+python3 tests/test_h13_batched_cli.py build/mil-hwxc
+h13 batched cli: PASS
+python3 tests/test_h13_registry_cli.py build/mil-hwxc
+h13 registry cli: PASS
+python3 tests/test_h13_boolean_cli.py build/mil-hwxc
+h13 boolean cli: PASS
+python3 tests/test_h13_tile_cli.py build/mil-hwxc
+h13 tile cli: PASS
+python3 tests/test_h13_linear_tiling_cli.py build/mil-hwxc
+h13 linear tiling cli: PASS
+python3 tests/test_h13_matmul_envelope_cli.py build/mil-hwxc
+h13 matmul envelope cli: PASS
+python3 tests/test_h13_silu_envelope_cli.py build/mil-hwxc
+h13 silu envelope cli: PASS
+python3 tests/test_h13_norm_envelope_cli.py build/mil-hwxc
+h13 norm envelope cli: PASS
+python3 tests/test_h13_conv_envelope_cli.py build/mil-hwxc
+h13 conv envelope cli: PASS
+python3 tests/test_h13_select_envelope_cli.py build/mil-hwxc
+h13 select envelope cli: PASS
+python3 tests/test_h13_chain_envelope_cli.py build/mil-hwxc
+h13 chain envelope cli: PASS
+python3 tests/test_h13_transpose_cli.py build/mil-hwxc
+H13 transpose CLI: PASS (4 covered, 3 refusals)
+python3 tests/test_h13_slice_cli.py build/mil-hwxc
+H13 slice CLI: PASS (2 covered, 4 refusals)
+python3 research/mint_conv_probes.py --check
+H13 conv templates: up to date (/tmp/mil-hwxc-cov/plugins/H13/H13ConvTemplates.inc)
+H14 conv templates: up to date (/tmp/mil-hwxc-cov/plugins/H14/H14ConvTemplates.inc)

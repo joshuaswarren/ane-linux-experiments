@@ -1,0 +1,18 @@
+== pre-state
+PRE: chatcmpl-TnXtYsBo6S0f3FhAtk14vverSsml0PPo
+== stop timer+service
+LOCK-HELD pid=607577 fd=9
+== pre-run SHA pins (DIAG + WORKER + LIBANE; verified against operator-approved pins above)
+f3121d0e80f7146575a69b4550e2bdc4735ec791cfa1151885544dc185f49704  /var/tmp/encgate/ac_head_arithmetic_diagnostic.py
+44a99528f79e7fd1ffa06ab248a7e3e02c625ef55b6fd73d94b7600bfd17c3c7  /var/tmp/encwall-relay/cand/bin/mlx-omarchy-ane-worker
+04a176532b60d47285aa051a8c0635b8742b0126d37d4eaacb53577779aa73de  /var/tmp/jw16-oproj-place/libane-strict-fill.so
+== producer (ac head arithmetic diagnostic)
+island-select-rta masked: mismatch 0/1125000 bit_equal=True max_abs_finite=0.0 ulp_max_finite=0
+island-scores-mm scores: mismatch 338272/1125000 bit_equal=False max_abs_finite=0.00390625 ulp_max_finite=1388
+island-add-head add: mismatch 71977/1125000 bit_equal=False max_abs_finite=0.03125 ulp_max_finite=1
+island-softmax-head smax: mismatch 800168/1125000 bit_equal=False max_abs_finite=0.0001220703125 ulp_max_finite=10
+== post-run SHA pins (SUMS = PREPINS + REPORT, 4 lines total)
+== cleanup (rc=0)
+FD9-RELEASED
+RESTORE: units=active+timer completion=chatcmpl-5AftzpyLzVxCEKrWJf9pVqfSxp9zhQu4
+RELEASE: state=DONE

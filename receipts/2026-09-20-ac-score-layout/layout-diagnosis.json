@@ -1,0 +1,23 @@
+{
+  "status": "compiler root cause identified; corrected hardware run pending",
+  "baseline_artifacts": "jw16mbp1-linux:/var/tmp/encgate/ac-arith-diag-20260920T091845Z",
+  "baseline_restore_completion": "chatcmpl-w9CjfvMMtrudH9WGJz4P0PxFxcVLNuP3",
+  "baseline_scores": {"mismatches": 1124004, "elements": 1125000, "max_abs": 8.556640625},
+  "root_cause": "encodeBatchedMatmul constructs runtime input layouts from post-transpose geometry even when the task stream begins with a transpose prefix. Dense original K is therefore padded at the wrong row and plane boundaries.",
+  "original_k_binding_nchw": [1, 8, 128, 375, 98304, 768],
+  "apple_captured_k_binding_nchw": [1, 8, 375, 128, 96000, 256],
+  "oracle": "research/oracles/h13/batched/bmm_r3rr_m375_k128_n375_tx0_ty1_b8.json",
+  "cpu_reproduction": {
+    "method": "Pack original K using the bad manifest (128 rows of 375 fp16 elements, 768-byte row, 98304-byte plane). Interpret those bytes as the original input surface (375 rows of 128 fp16 elements, 256-byte row, 96000-byte plane). Compute captured Q times reconstructed K transpose in float32 and round to fp16. Compare against saved device scores. No device execution.",
+    "max_abs": 0.00390625,
+    "rmse": 0.0000905609704204835,
+    "exact_fraction": 0.5943155555555556,
+    "correct_logical_reference_rmse": 1.297320008277893,
+    "interpretation": "The wrong packing reproduces the large error; residual arithmetic rounding is not established as bit-parity."
+  },
+  "test_gap": "Batched CLI suite skipped all nine one-prefix captures because its accepted task-count remainders were 0 and 25, not 0 and 1. It also did not compare input layout metadata to Apple tensor descriptors. Inspector rejected valid one-prefix programs.",
+  "fix_scope": "Original X and runtime Y geometry selected using transpose flags in shared encodeBatchedMatmul. Input metadata checked against every successful captured oracle. Inspector ties task count to actual output batch with zero or one prefix.",
+  "failing_first": "New descriptor comparison failed on transpose-X constant-weight capture: emitted [1,8,375,128,96000,256], expected [1,8,128,375,98304,768].",
+  "fixed_test": "python3 tests/test_h13_batched_cli.py build/mil-hwxc: PASS after rebuilding compiler",
+  "qualification": "No full encoder, performance, M2, or release acceptance claim. Baseline select exact; baseline add and softmax retain own small rounding differences."
+}
