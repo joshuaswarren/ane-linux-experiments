@@ -1,0 +1,32 @@
+{
+  "status": "constructor defaults and conditional H14 CPU power preparation resolved statically; runtime power lifecycle remains unqualified",
+  "kernelcache_sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+  "constructor": {
+    "site": "ANEHWDevice C2 at0x959b144",
+    "flags": "0x959b264 writes32 zero to device+0x780, covering bytes780..783;0x959b268 zeroes byte784",
+    "mapping_index": "0x959b174 sets x22=device+0x8e8;0x959b290 stp xzr,xzr,[x22] zeroes16 bytes including the initial register-resource index",
+    "scope": "Initial values only; not a complete proof of later alias stores or runtime values. Earlier direct-immediate scans started at0x95d0000 and missed this constructor."
+  },
+  "h14_pre_cpu_table": {
+    "selection": "H14g config branch stores0xcb6c188 at config+0xa0; config+0x150 count is3 from0x7503d88",
+    "record_format": "20 bytes; this loop consumes u32 register offset+0 and u32 write value+8, skipping value0xffffffff",
+    "writes32": [
+      {"engine_relative_offset": "0xb38", "value": "0x01ff01ff"},
+      {"engine_relative_offset": "0xb98", "value": "0x01ff01ff"},
+      {"engine_relative_offset": "0xbf8", "value": "0x01ff01ff"}
+    ],
+    "gates": "EnableANEClocksAndPower non-HAL path executes this loop only if device+0x784 bit0 is clear and count is nonzero. These are not unconditional Linux initialization instructions."
+  },
+  "cpu_power_branch": {
+    "selector": "Normalized config type0x80 maps via rotate((type-0x30),4) to jump-table index5; signed table displacement0x310 from0x95d0abc reaches0x95d0dcc",
+    "subtype": "Accepts subtype0 or1; captured macOS subtype0",
+    "plain": "If device+0x3ea0 bit1 is clear: write32(0xf) to accessor device+0x190 offset0x2e0; validate expected0xff with mask0xff",
+    "alternative": "If bit1 is set: read-modify-write accessor device+0x198 offset0x2dc clearing0x30000000, validate those bits clear, then write32(0x1000000f) through accessor device+0x190 offset0x2e0 and validate0x100000ff under that mask",
+    "warning": "These branches differ in AUTO_ENABLE bit28 behavior. Do not collapse them into a universal clear-AUTO_ENABLE rule without resolving the runtime selector."
+  },
+  "call_order": "power_on_hardware_gated calls EnableANEClocksAndPower(true,true), later EnableMPMClocksAndPower and ANE_Init; failure paths include power_off_hardware_gated. Full branch-by-branch failure handling remains to be reconstructed.",
+  "captured_runtime_corroboration": "Saved macOS DeviceProperties reports normalized ANEVersion128, board type160, subtype0, architecture h14g,16 ANE cores and FirmwareLoaded=true. This does not expose private power flags or prove model parity.",
+  "regression": "check_h14_power.py checks25 exact instruction anchors, signed branch target, count and three full table records",
+  "hardware_actions": "none",
+  "boot_authorized": false
+}
