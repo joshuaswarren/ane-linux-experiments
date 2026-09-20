@@ -583,3 +583,25 @@ crash, was already fixed by the bd-input respell). Everything else
 
 Services restored and verified: active, /health ok, real completion
 chatcmpl-FCYeab8pd6LUqTgLNMDhOv2GU9d2ilPP. F stays branch-only NO-LAND.
+
+## 17b. Correction (Main review): the per-intermediate evidence covers ONLY the emitted outputs
+
+The comparison block captured softmax + attn-out only — the in-package
+intermediates (bd / masked / scores / add) were NOT captured, so:
+- the report does NOT name the earliest diverging intermediate (the
+  divergence could originate at the slice, select, scores matmul, or add);
+- the finite final softmax (0 NaN/Inf) does NOT exonerate upstream -inf
+  effects (upstream wrong data can be finite; the -inf-independence claim
+  is WITHDRAWN until a matched upstream capture exists).
+- Verified numbers stand: softmax 1,124,487/1,125,000 mismatch, max_abs
+  0.21108246; attn-out 103,664 mismatch, max_abs 0.0078125.
+
+Continuing: (a) compiler lane — shared chain routing fix + upstream prefix
+captures (bd/masked/scores/add per-program bundles with the captured
+inputs, each vs its GPU reference — the ladder bundles for select/add/
+softmax already exist; the slice bundle needs the relpos [1,8,375,749]
+binding fix or the bd GPU-prep substitution); (b) my side — re-run the
+per-program ladder with per-program GPU references to name the earliest
+wrong intermediate with matched evidence; the -inf-independence and
+bd-reblocking statements remain WITHDRAWN pending that matched upstream
+evidence.
