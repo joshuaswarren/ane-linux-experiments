@@ -1162,3 +1162,19 @@ writes):
 - marker files present (LAPKG.TXZ, REPAIR.SH 0-byte) — untouched.
 No mount changes, no live writes, no boots. Pre-livewrite gate remains: post-assembly initrd
 unpack/hardlinks/ordering verification (module agent) + Main assembly review.
+
+## 02:5x–03:0x CDT (Sep 20) — Jwm1LiveBootAudit: exact executed executor preserved; process correction accepted
+
+- EXACT EXECUTED SOURCE preserved as sanitized text artifact (pure sh, no secrets/blobs):
+  firmware-plan/stage-live-candidate.executed-f949b341.sh,
+  sha256 f949b34125e22ad714cbc7050e0763258f08221ff43a072b41b0a7de02a5284b
+  = v4 (0f6a1bc8…) + ONE-LINE diff: Mount Point extraction
+  `s/.*Mount Point: //p` → `s/.*Mount Point:[[:space:]]*//p`
+  (diskutil multi-space output made the unmodified script STOP at [0] volume-not-mounted —
+  false negative, pre-write; disclosed after the authorized run: PROCESS CORRECTION ACCEPTED —
+  the one-line delta should have been reported BEFORE executing under the exact-sha
+  authorization. No further live deviations; any future sha change is reported first.)
+- Per-file post-write sha table, cfg (670 B, 2d9126e4…), nvram boot-volume (macOS VG
+  8000CF83…), and fresh SSH observation (08:52:19Z, 27.0/26A428, kern.boottime unchanged)
+  were returned to Main in the staging report.
+- HOLD arm/reboot remains until Main's read-only ESP hash/cfg check completes.
