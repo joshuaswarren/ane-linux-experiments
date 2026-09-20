@@ -446,3 +446,33 @@ Follow-up kernel-side window should target the qmm Q4 GEMV
 CastBoolF32, which does not fire in these legs. The jw16 copy at
 `/var/tmp/gdb/analyze_kernel_census.py` is still the buggy version;
 pull from this repo before any further census run.
+
+## QmmVecQ4MultiSubgroupF16 review — read-only, attribution closed, kernel-side followup named
+
+Corrected census (auditor 2938754): this kernel is **38.0% of short
+decode busy (n=3648, 46.4 µs/disp)** — the top resolved kernel. Located
+at `overlay/mlx/backend/omarchy/shaders/qmm_vec.comp` (the fused
+matrix-vector path: single-row Q4 GEMV when x is one row) and dispatched
+from `primitives.cpp:7463-7465` via the multi-weight variant
+`QmmVecQ4MultiSubgroupF16` (activated when `caps.subgroup_size==32 &&
+VK_SUBGROUP_FEATURE_ARITHMETIC` — Honeykrisp supports this). It IS the
+fused multi-weight GEMV (the 22→14 dispatch drop per decode layer is
+active); the 38% share reflects the per-dispatch weight-streaming cost
+(no weight-cache across layers; gate/up/q/k/v/o weights fetched fresh
+per step). Per-dispatch mean 46.4 µs ≈ weight stream + serial k-chain +
+L2-cold fetch; consistent with the qmm-prefill-ceiling receipt's
+"per-dispatch floors set by the serial k-chain streaming weights once"
+characterization. The 09-11/09-14/09-17 qmm arms exhausted the variant-
+selection lever (TOP-2 qmm_vec quality closed per the decode-gap plan).
+
+**Kernel-side hypothesis, NOT tested, no implementation**: batch multiple
+decode steps' weights into shared L2 (multi-row GEMV that fuses
+contiguous decode steps' weight reads), a kernel-side change — not
+barrier-side, not driver-side. Implementation scope: shaders/qmm_vec.comp
++ primitives.cpp dispatch site; would require the fusing to be safe
+under the in-order stream and the existing temporaries/quarantine
+machinery.
+
+**Per-kernel cross-arm (corrected census, all four legs):** the
+≤0.6% no-delta on the corrected kernel labels holds — the barrier
+flavor decision is orthogonal to which kernel dominates busy.
