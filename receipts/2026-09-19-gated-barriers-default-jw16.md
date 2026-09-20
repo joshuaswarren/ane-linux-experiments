@@ -642,18 +642,32 @@ What transfers to the G13C theory:
    window is the discriminating measurement that would locate it; until
    then this is a candidate mechanism only, and nothing cross-generation
    is claimed.
-3. **CORRECTED direction (earlier text inverted it).** The PR14 prefill
-   row is THROUGHPUT in tok/s: 227/1180/1286 → 405/1829/2266 tok/s
-   means prefill throughput RISES on the fork (latency falls), and the
-   f32 matmul micro also improves (0.40 → 0.73 TFLOPS). The regression
-   is in DECODE latency: 155.71 → 176.99 (short) and 82.98 → 149.13 ms
-   (1053/32) per token. So on G14S the fork's behavior changes move
-   end-to-end legs in OPPOSITE directions — prefill and the matmul
-   micro improve while decode regresses — and a micro-level win there
-   coincided with, not contradicted, a decode cost. Any G13C coopmat
-   work must A/B prefill and decode legs separately; this remains
-   behavior-level evidence on a different die with no qualification
-   claim.
+3. **CORRECTED AGAIN from the raw artifact keys (commit 39a4e58 was
+   also wrong).** The receipt.json diff carries `"decode_tok_s"` —
+   decode numbers are THROUGHPUT (higher is better), not ms/token:
+   stock 155.71 / 124.46 / 82.98 → fork 176.99 / 170.85 / 149.13 on the
+   three legs; `"prefill_tok_s"` 226.9/1179.8/1285.5 →
+   404.9/1829.1/2265.6; `"matmul_f32_tflops"` 0.40 → 0.73. EVERY
+   measured leg improves on the fork on T6020 — there is no decode
+   regression; the reviewer's reading was correct and this section's
+   two earlier direction claims are retracted. The one change of
+   concern is NUMERICS, not speed: the unpinned `q4_long` digest moved
+   `55215e22d7f1b864` → `f873dc2bdd34c0fe` with the receipt's own note
+   "not a native-pinned leg; digest moved with the driver build as
+   parity-id-policy allows; stock value equals the jw14m2 T6021
+   receipt."
+4. **Most useful corroboration for G13C coopmat work**: the axes line
+   records stock Mesa 26.2.3 on T6020 as "no coopmat", the fork as
+   "coopmat advertised and taken", with the gate evidence being
+   "route-dependent throughput and the unchanged native digests" —
+   i.e. on G14S, enabling coopmat improved every throughput leg WITHOUT
+   moving the pinned digests. That is behavior-level support that
+   coopmat adoption can be both faster and digest-preserving on a
+   second Apple generation. G13C already takes coopmat (our census), so
+   the open G13C questions stay exactness on UNPINNED legs (our 262
+   census leg; PR14's q4_long drift is the cross-generation hint,
+   candidate mechanism only) and prefill/decode A/B — no native-divisor
+   or full-qualification scope is implied.
 
 No merge action taken or proposed here (build-fix + axes-file contracts
 belong to the reviewer, ContributorPRReviewNow; the receipt is honest
