@@ -150,13 +150,61 @@ items closed first (G1-G4 inventory in the 2026-09-20 Main IRC log:
 provider-array confirmation x2, dev+0x3A90 floor value, DART
 page-floor pin).
 
-PRE-WINDOW CHECKLIST addition (Main, 2026-09-20, device moved to
-Wi-Fi only): before any future live MMIO window, REVALIDATE the
-netconsole end-to-end marker on the CURRENT Wi-Fi path — prior marker
-delivery is not assumed after the move. jw14m2-linux: wlan0
-192.168.3.103/23, gw 192.168.2.1, tailscale 100.98.81.36; no network
-config changes needed. Re-run the marker test and record its receipt
-line in the window authorization.
+## Bounded live proposal (STAGED — Main confirms artifact, then authorizes)
+
+State: gate-flip commit STAGED locally, NOT pushed — omarchy-ane
+feat/t6021-ane-boot-w15 @ 6be485f (parent eb49b02, pushed through
+c5bda7d). Flip = pf_main_lifetime_review = true; every other gate
+already true. The device still performs no MMIO until an operator
+runs the sequence below.
+
+MODULE ARTIFACT (provisioning step REQUIRED): the local cross-build
+carries vermagic 7.1.6-g89cf2774434f — the target runs
+7.1.13.asahi3-1, so the module MUST be built on jw14m2 against the
+matching headers:
+  1. rsync the worktree (6be485f) to jw14m2:~/src/omarchy-ane
+  2. cd ane/t6021 && make -C /lib/modules/$(uname -r)/build M=$PWD
+  3. record sha256(ane_t6021.ko) + modinfo vermagic in the window
+     receipt; refuse to insmod if vermagic != uname -r
+
+FIRMWARE: t602x_ane0_fw_selene_rc4x.macho, sha256
+9f7915c431d288a2bdc2132c399db8cf5574716a3b1e94af76be6a291c2e665b,
+staged at /lib/firmware/apple/ane/ (Main preflight confirmed exact
+hash match).
+
+INSMOD (exact, all parameters explicit):
+  insmod ane_t6021.ko allow_unqualified=1 fw_load=1 fw_boot=1
+  (rtkit_transport and mbi_doorbell default 0 — transport/doorbell/
+  sessions OFF; response_validated false keeps CSNE fenced on first
+  boot regardless of booted)
+
+POWER PREFLIGHT (before insmod): userspace h14_bringup.py --stage 1
+(AUTO_ENABLE clear on the already-on ane_cpu); the driver's
+first_resume then verifies all 8 islands ACTUAL=0xf, BUSY=0 — the
+provider-strategy condition Main accepted.
+
+LOGS/NETCONSOLE/RAMOOPS: netconsole end-to-end VERIFIED on the
+current Wi-Fi path (marker m2-wifi-check-1789937086,
+2026-09-20T15:44:47.121595Z from 192.168.3.103:6668 — recorded real
+delivery proof); ramoops armed (Main preflight). Phase markers P0-P7
+(one bounded line per block) bracket every write for crash
+attribution.
+
+RUNTIME RULES: no runtime autosuspend (driver never enables runtime
+PM); first fault = STOP, no reset attempt, NO rmmod after CPU start
+(wedged-pin: module pinned, surfaces/rings/IRQ/links held; reboot is
+the only reclamation). Abort criteria: any SError/external abort in
+netconsole or non-P0..P7 phase marker order = window closed
+immediately, state preserved, post-mortem from ramoops.
+
+EXPECTED SEQUENCE: fwload validation banner -> 8-island gate ->
+fwload validated+DART-mapped (iova logged) -> P0/P1 (table, scratch
+clear+pulse) -> P2 (RVBAR read: bit0 set = LAWFUL SKIP) -> P3 (CPU
+release) -> P4 (fresh READY, <=1000x1ms; timeout = wedged HOLD) ->
+P5 (allocations: pool 0x40000, IPC max(0x4000, ord+1), HEAP bounded;
+publish) -> P6 (wake) -> P7 (DONE, scratch_result logged raw).
+Post-sequence: module stays pinned, sessions fenced (first boot);
+reboot required for any reattempt.
 
 ## Corrections applied during review (Main)
 
