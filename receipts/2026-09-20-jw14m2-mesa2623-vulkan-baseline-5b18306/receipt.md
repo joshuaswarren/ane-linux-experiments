@@ -84,7 +84,29 @@ Main extended the lane: stage the fleet-built 095cb7e1 candidate and run a targe
 fixed-model A/B. Done in the same window pattern (≤10-min legs, `/tmp/jw14-gpu.lock` — the canonical shared
 lock agreed with M2BootImplementation after Main asked both owners to converge on one path).
 
-## Provenance (no build, no system install)
+## Provenance (no build, no system install) — ANCESTRY MANIFEST (Main-directed, verified)
+
+**Exact ancestry / diff proof** (gh api, `joshuaswarren/mesa-1`, confirmed independently by NativeQ4ExactReproduction
+and Main's local-git check):
+- Chain: `d8d4e1c50` → `3a37b4fb0` (coopmat restore) → `27376cb16` (nir FP_MATH_CTRL revert) → `e16775642`
+  (precise div/log/sin FTZ revert) → `095cb7e1b` (**the sin fix**) → `807d9d868` (probe receipt commit).
+- `git compare 095cb7e1b...807d9d868`: **1 commit, files touched = `receipts/2026-09-20-sin-ftz-probe/*` only
+  (build.sh, 2 spvasm, 2 spv, probe.py) — ZERO driver source changes.** Driver code in the `807d9d868` build
+  is exactly `095cb7e1` code.
+- Build record: `08b82ea36` "native aarch64 build record for 807d9d86828 on **jw14m2-linux** + loader-proven ICD".
+- **Build-hash caveat**: the artifact is pinned by hash (`aade2693…`) to the binary actually run; a fresh
+  build from the same source is NOT byte-proven to reproduce it (host/toolchain non-determinism), and no
+  independent manifest ties source-file hashes to the binary. Treat as trusted-lineage artifact, not a
+  reproducible-build claim.
+- Per Main: lineage base is `e16775642` (omarchy devel), which itself differs from stock `mesa 26.2.3-arch1.1`
+  by the whole devel delta (SIMDMAT restore, coopmat restore, FTZ-pair reverts, vintage drift). Therefore:
+
+**LABEL CORRECTION (Main-directed): the run below is DIAGNOSTIC of the candidate LINEAGE
+(`e167756` + `095cb7e1`), not a qualification of the landed sin fix alone. Specifically: the
+`sin(0.5)` correctness delta and the −8% decode delta measure the VINTAGE difference
+(stock-26.2.3 vs devel-lineage) plus at most the tiny fix — they CANNOT be attributed to
+`095cb7e1` alone. Attribution requires the same-base `e167756` control (planned next gap;
+no redundant rebuild — source identity is proven).**
 
 - Candidate driver: fleet-built `libvulkan_asahi-fckey.so` sha256 `aade269367b42001adb20156990570bf6ee1afd1576b43f778ee5c6a507f50b3`
   (63,229,728 B), built **natively on jw14m2-linux** from `joshuaswarren/mesa-1` `hk/fdiv-fckey` at commit
@@ -99,37 +121,39 @@ lock agreed with M2BootImplementation after Main asked both owners to converge o
   DenormFlushToZero` written directly) + 100-line C runner (`sin_ftz_runner.c`, clang, sha `be9c157d…`).
   Computes `outs[0]=sin(x)`, `outs[1]=x` with fp32 DenormFlushToZero execution mode.
 
-## Sin-FTZ results (G14C hardware, both drivers)
+**Sin-FTZ results (G14C hardware, both drivers) — DIAGNOSTIC (lineage-level, see label correction above)**
 
-| input x | stock 26.2.3 sin | 095cb7e1 sin | expectation |
+| input x | stock 26.2.3 sin | candidate (e167+095cb7) sin | reading |
 | --- | --- | --- | --- |
-| `0x00000001` (+min subnormal) | `00000000` (+0) | `00000000` (+0) | +0 flushed ✓ both |
-| `0x80000001` (−min subnormal) | `00000000` (+0, **sign lost**) | `80000000` (−0, **sign preserved**) | fix present only in candidate |
-| `0x3f000000` (0.5, normal) | `3ef57742` (**2 ulp off**) | `3ef57744` (**correctly rounded**) | candidate more accurate |
+| `0x00000001` (+min subnormal) | `00000000` (+0) | `00000000` (+0) | +0 flushed, both |
+| `0x80000001` (−min subnormal) | `00000000` (+0, sign lost) | `80000000` (−0, **sign preserved**) | consistent with the fix's stated intent; strict attribution to `095cb7e1` alone awaits the same-base e167 control |
+| `0x3f000000` (0.5, normal) | `3ef57742` (2 ulp off CR) | `3ef57744` (**correctly rounded**) | **vintage-level delta** (devel trig lineage vs stock release), NOT fix-attributable — the fix targets only the flushed-zero path |
 | `0x00000000` | `00000000` | `00000000` | both |
 
-**The fix works on G14C**: flushed signed zero under DFTZ, matching CTS expectations; stock shows the exact
-defect the commit describes. Bonus finding: the candidate's sin is correctly rounded on normal inputs where
-stock 26.2.3 is 2 ulp off.
+The signed-zero flush behavior matches the `095cb7e1` commit's exact contract (flushed, sign-preserving
+zero from unflushed sources under DFTZ). The bonus correctly-rounded `sin(0.5)` is a lineage property;
+decomposed attribution requires the e167 control.
 
-## Driver-override model A/B (Qwen3.8-27B-4bit, wheel 5b18306, fixed harness, compileON)
+## Driver-override model A/B (Qwen3.8-27B-4bit, wheel 5b18306, fixed harness, compileON) — DIAGNOSTIC
 
 | leg | prompt | driver | decode tok/s | prefill s | ids sha256_16 |
 | --- | --- | --- | ---: | ---: | --- |
-| 6 | long (245) | 095cb7e1 | 4.115 | 18.71 | `1e10ee1431e14597` |
-| 7 | long (245) | 095cb7e1 A/A | 4.114 | 19.65 | `1e10ee1431e14597` ✓ deterministic |
-| 8 | ctx1024 (1036) | 095cb7e1 | 3.9323 | 76.97 | `1731d8318e451a09` |
+| 6 | long (245) | candidate lineage | 4.115 | 18.71 | `1e10ee1431e14597` |
+| 7 | long (245) | candidate lineage A/A | 4.114 | 19.65 | `1e10ee1431e14597` ✓ deterministic |
+| 8 | ctx1024 (1036) | candidate lineage | 3.9323 | 76.97 | `1731d8318e451a09` |
 
 - **Driver swap changes model digests on both prompts** (long `735b8de2…`→`1e10ee14…`, ctx `0e0c0824…`→
-  `1731d831…`). Causally consistent with the measured sin difference: RoPE consumes sin/cos of position
-  values, a ≤2-ulp sin change flips near-tie greedy tokens. The candidate's sin is the correctly-rounded
-  one, so the digest flip is a precision-lineage change, **not** evidence of candidate-side corruption.
-  Per-driver determinism holds (stock A/A 3×, override A/A 2×).
-- Decode rate under override: −8.2% (long), −8.5% (ctx), single-run first-indication, consistent magnitude
-  across both prompts; prefill unchanged (18.7-19.6 s / 76.8-77.0 s). Consistent with the known
-  precise-trig decode cost from the jw16 FTZ-lineage history; labeled observation, not a causal claim.
-- Contrast: NativeQ4ExactReproduction reports fix-vs-baseline **bit-neutral** on jwm1 Q4 legs (20/20
-  digests) — different model/die; jw14m2 Qwen3.8 legs are NOT bit-neutral across the driver swap.
+  `1731d831…`). **RoPE HYPOTHESIS (uncontrolled)**: the measured sin precision difference (≤2 ulp on normal
+  inputs, vintage-level) feeds RoPE's sin/cos and can flip near-tie greedy tokens. The hypothesis predicts
+  the same-base `e167756` control will flip digests IDENTICALLY (since the fix itself only alters
+  subnormal-input behavior); if e167 instead holds stock digests, the flip becomes fix-attributable.
+  **Control legs are the designated next-gap item.** Per-driver determinism holds (stock A/A 3×, candidate
+  A/A 2×).
+- Decode rate under candidate lineage: −8.2% (long), −8.5% (ctx) vs STOCK — single-run first-indication;
+  **stock is a different vintage, so this is NOT fix-cost attribution**; the meaningful same-base
+  candidate-vs-e167 comparison is pending the control driver.
+- Contrast: NativeQ4ExactReproduction reports fix-vs-e167-baseline **bit-neutral** on jwm1 Q4 legs (20/20
+  digests) — different model/die; jw14m2 Qwen3.8 legs are not bit-neutral across the vintage swap.
 
 ## Coordination (updated)
 
