@@ -411,6 +411,125 @@ def pass_report(args, plan=None):
     print("wrote", args.out, "| layout:", verdict, "| route:", route)
 
 
+# ---------- compiled W-curve (route: fused multi; GATED hardware) ----------
+
+def pass_compiled_curve(args, k, cols, plan):
+    """Working-set curve through the SAME compiled 3-member graph that
+    --pass compiled-calibrate route-verified (enum 412). Producer only:
+    every W segment ends with its own sync, so each segment is exactly
+    one join region (calibration-proven convention) and post-exit
+    attribution via --pass curve-report is exact. Counterbalanced
+    blocks; wall averages recorded alongside. HARDWARE GATED until Main
+    reviews this source; no performance conclusions in output."""
+    import mlx.core as mx
+    require_sync(mx)
+    x = mx.random.normal((1, k)).astype(mx.float16)
+    mx.eval(x)
+    groups = []
+    n_groups = max(s["w"] for s in plan)
+    for _ in range(n_groups):
+        ws = make_weights(mx, k, cols, 3)
+        adds = []
+        for _ in range(3):
+            a = mx.random.normal((1, cols)).astype(mx.float16)
+            mx.eval(a)
+            adds.append(a)
+        groups.append((ws, adds))
+
+    def call(i):
+        ws, adds = groups[i]
+        outs = [qmm(x, *w) for w in ws]
+        return [o + a for o, a in zip(outs, adds)]
+
+    fn = mx.compile(lambda idx: call(int(idx)))
+    idx = mx.array(0)
+    for _ in range(WARMUP_STEPS):
+        mx.eval(fn(idx))
+    force_sync(mx)
+    wall = {}
+    for s in plan:
+        t0 = time.perf_counter()
+        for i in range(s["steps"]):
+            mx.eval(fn(mx.array(i % s["w"])))
+        wall[(s["block"], s["w"])] = (
+            time.perf_counter() - t0) / s["steps"] * 1e6
+        force_sync(mx)  # segment boundary = join region label
+    ident = sidecar_identity("compiled-curve", mx, args.profile,
+                             {"k": k, "cols": cols, "blocks": BLOCKS,
+                              "w_series": W_SERIES, "seed": SEED,
+                              "plan_segments": len(plan),
+                              "total_plan_calls": sum(s["steps"]
+                                                      for s in plan),
+                              "segment_sync_layout": "one sync per "
+                                                     "segment; join "
+                                                     "region == segment",
+                              "note": "GATED: no hardware run until "
+                                      "Main reviews"})
+    json.dump(ident, open(args.out, "w"), indent=1)
+    print("producer complete; run --pass curve-report post-exit")
+
+
+def pass_curve_report(args, plan):
+    """Offline: attribute the compiled-curve stream. Exact layout: each
+    plan segment is one join region (segment ends with its own sync),
+    region 0 = warmup, region i+1 = plan segment i."""
+    ident = {}
+    if args.plan_meta and os.path.exists(args.plan_meta):
+        ident.update(json.load(open(args.plan_meta)))
+    region, j_count, meta = 0, 0, None
+    d_by_region = {}
+    for line in open(args.profile):
+        if not line.strip().startswith("{"):
+            continue
+        try:
+            r = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        k = r.get("k")
+        if k == "meta":
+            meta = r
+        elif k == "j":
+            j_count += 1
+            region = j_count
+        elif k == "d":
+            has = "t0" in r
+            d_by_region.setdefault(region, []).append(
+                (has,
+                 (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3 if has
+                 else None,
+                 r["e"]))
+    if meta is None:
+        raise SystemExit(f"{args.profile}: no meta record")
+    by_w = {}
+    per_w_events = {}
+    r = 1
+    for s in plan:
+        evs = d_by_region.get(r, [])
+        if len(evs) != s["steps"] or not all(h for h, *_ in evs):
+            raise SystemExit(
+                f"region {r}: {len(evs)} dispatches, segment expects "
+                f"{s['steps']} tick-ful; layout mismatch - refusing")
+        by_w.setdefault(s["w"], []).append(
+            statistics.median([d for _, d, _ in evs]))
+        per_w_events.setdefault(s["w"], []).extend(evs)
+        r += 1
+    stray = {rr: len(v) for rr, v in d_by_region.items() if rr >= r and v}
+    if stray:
+        raise SystemExit(f"stream: dispatches in unlabeled regions {stray}")
+    out = {"identity": ident,
+           "dispatch_us_p50_per_block": {str(w): v for w, v
+                                         in by_w.items()},
+           "dispatch_us_quantiles_by_w": {
+               str(w): quantiles([d for _, d, _ in per_w_events[w]])
+               for w in W_SERIES},
+           "paired_delta_vs_W1": paired_deltas(by_w),
+           "note": ("bracketed instrument durations; compare against an "
+                    "unbracketed wall pass before any conclusion; NO "
+                    "performance claim without Main approval")}
+    json.dump(out, open(args.out, "w"), indent=1)
+    print("wrote", args.out)
+
+
 # ---------- entry ----------
 
 def main():
@@ -418,6 +537,7 @@ def main():
     ap.add_argument("--k", type=int, default=None)
     ap.add_argument("--cols", type=int, default=None)
     ap.add_argument("--pass_", choices=["calibrate", "compiled-calibrate",
+                                        "compiled-curve", "curve-report",
                                         "unbracketed", "bracketed",
                                         "attribute", "report"],
                     dest="pass_name")
@@ -482,6 +602,10 @@ def main():
         pass_calibrate(args, args.k, args.cols)
     elif args.pass_name == "compiled-calibrate":
         pass_compiled_calibrate(args, args.k, args.cols)
+    elif args.pass_name == "compiled-curve":
+        pass_compiled_curve(args, args.k, args.cols, plan)
+    elif args.pass_name == "curve-report":
+        pass_curve_report(args, plan)
     elif args.pass_name == "unbracketed":
         pass_unbracketed(args, args.k, args.cols, plan)
     elif args.pass_name == "report":
