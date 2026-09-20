@@ -623,6 +623,17 @@ calibration diagnostic awaits Decoder's verified release, records the
 complete raw profile + exact library/source identity, and hardware
 stays held until Main reviews.
 
+Calibration slot protocol (Main-authorized, after Decoder fresh
+release): run `--pass calibrate` under the recorded wheel/venv with
+MLX_OMARCHY_GPU_PROFILE set; preserve (1) the complete raw ndjson,
+(2) the report JSON with strict/non-strict verdict + full identity +
+conditions (ICD/VK env, gated-barriers mode, wheel version, libmlx
+sha256), each sha256-recorded; restore units + verify real completion
+before release; then a NAMED release to Compiler (sentinel hardware
+stays Main-hold) and a report to Main so Submit can consider the
+arithmetic ladder if the calibration is reviewed. The calibration
+report supports NO performance conclusions.
+
 ## External corroboration — PR14 (wickthumb, T6020 / M2 Pro / G14S B1) — behavioral evidence ONLY
 
 Read as external corroboration of G14 coopmat behavior; NOT evidence of

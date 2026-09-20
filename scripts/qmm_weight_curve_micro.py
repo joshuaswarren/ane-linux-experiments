@@ -231,7 +231,27 @@ def pass_calibrate(args, k, cols):
              if hasattr(mx, "__version__") else "unknown",
              "device": meta.get("device"), "period_ns": meta.get("period_ns"),
              "valid_bits": meta.get("valid_bits"),
-             "profile_path": args.profile}
+             "profile_path": args.profile,
+             "conditions": {
+                 "label": meta.get("label"),
+                 "env_profile": os.environ.get("MLX_OMARCHY_GPU_PROFILE"),
+                 "env_label": os.environ.get("MLX_OMARCHY_GPU_PROFILE_LABEL"),
+                 "vk_driver_files": os.environ.get("VK_DRIVER_FILES"),
+                 "vk_icd_filenames": os.environ.get("VK_ICD_FILENAMES"),
+                 "gated_barriers": os.environ.get(
+                     "MLX_OMARCHY_GATED_BARRIERS"),
+             }}
+    for var in ("VK_DRIVER_FILES", "VK_ICD_FILENAMES"):
+        v = os.environ.get(var)
+        if v and os.path.exists(v.split(":")[0]):
+            icd = v.split(":")[0]
+            ident["conditions"][f"{var}_sha256"] = hashlib.sha256(
+                open(icd, "rb").read()).hexdigest()
+    try:
+        from importlib import metadata as _md
+        ident["wheel_version"] = _md.version("mlx_omarchy")
+    except Exception:
+        ident["wheel_version"] = "unknown"
     try:
         import mlx
         lib = os.path.join(os.path.dirname(mlx.__file__), "lib",
@@ -334,7 +354,7 @@ def main():
         ap.error("--pass_ {calibrate,unbracketed,bracketed,attribute} is "
                  "required")
     if args.pass_name in ("calibrate", "unbracketed", "bracketed") and \
-            args.k is None:
+            not args.dry_run and args.k is None:
         ap.error("--k and --cols are operator-supplied and required "
                  "(shape is never guessed)")
 
