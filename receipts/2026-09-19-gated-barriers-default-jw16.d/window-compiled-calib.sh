@@ -37,7 +37,7 @@ DID_STOP=0
 complete_check() {
   curl -fsS --max-time 60 http://127.0.0.1:8002/v1/chat/completions \
     -H "Content-Type: application/json" -H "Authorization: Bearer $K" \
-    -d '{"model":"qwen3.8-27b","messages":[{"role":"user","content":"Reply with the single word: ready"}],"max_tokens":8}' \
+    -d '{"model":"qwen3.8-27b","messages":[{"role":"user","content":"Reply with the single word: ready"}],"max_tokens":200}' \
   | python3 -c 'import json,sys
 d = json.load(sys.stdin)
 choices = d.get("choices") or []
