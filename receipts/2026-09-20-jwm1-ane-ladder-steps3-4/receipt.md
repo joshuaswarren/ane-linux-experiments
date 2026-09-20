@@ -63,3 +63,37 @@ pending Main.
 `step1-scratch/step1-results.json`, `island-run/y-device-run{1,2}.bin`,
 `island-raw.log`, `soak/` (100 per-run logs + outputs), pre-run hash
 manifest. Device frozen-clean after capture; nothing persistent installed.
+
+## Addendum 2 — definitive staged-hash comparison vs September (Main directive)
+
+| staged tensor | September sha (stage-manifest) | today (re-derived on jwm1) | match |
+|---|---|---|---|
+| B/ninf_rt | `98cabc7d…` | `98cabc7d…` | ✓ bit-identical (deterministic −inf fill) |
+| A/q_v | `73496b73…` | `994117d9…` | differs (capture-dependent) |
+| A/ref matmul_0 | `0275238e…` | `1e462db8…` | differs |
+
+Definitive characterization:
+
+1. The re-derived staging is a NEW authentic-chain staging (preserved E2E
+   capture → milrun.py numpy layer-0 evaluation → stage.py), NOT a bit-exact
+   reproduction of September's bytes — the original `154759Z-librispeech/ane`
+   capture content differs from the E2E-lane capture copy I staged
+   (per-tensor shas above; ninf_rt identical because it is a constant fill).
+   The original capture was on the wiped root's home cache and is not in any
+   owned archive (verified).
+2. **The restored stack reproduces the September per-op numeric envelopes
+   EXACTLY**: my run's max_abs per op (A-scores 0.25, A-matmul 0.00390625,
+   C-attn 0.0078125) are identical to the historical compare.json values;
+   mismatch counts differ as expected for different inputs (historical
+   7581/164067/10728/108428 vs mine 8369/162265/278391/0).
+3. Corrected B narrative: the historical B select had 10728 mismatches
+   (max 11.16) against its staged reference; MY B select is byte-exact
+   against MY staged reference — B gate PASS under the same historical
+   comparison semantics, with different (deterministic-fill) inputs.
+4. No gate weakening: the acceptance envelopes quoted are the
+   September-recorded ones; nothing was loosened.
+
+Open item (unresolved, owned by Main): a bit-level island golden requires
+either the original capture (lost) or the macOS-side .anec runner dev item
+(Main's directive path). The Linux-side staging chain is now proven
+reproducible and hash-pinned for whichever golden path closes the gate.
