@@ -347,3 +347,25 @@ Design consequences:
   consumes package/manifest.json + programs), then h13_v2_to_schema4 wrap
   (drops tensor-object fields like tensors.cond.dtype) → schema-4 bundle
   dir → device gate (-inf chain, 38c73261 bit-exact) + marginal pricing.
+
+## 9. Mint execution findings (compiler blockers, proven by running the tools)
+
+- Apple tool (macstudio, ane-compile-hwx 3d13fc85): compiles ac_head2.mil
+  (5-program package incl. the noncontiguous slice) → model.hwx 212992 B ✓.
+- Local mil-hwxc (agent/encoder-coverage-census build, omp-studio-local):
+  REFUSES ac_head2.mil with `h13.noncontiguous-slice` — the 749→375 column
+  slice interleaves 375-element chunks; no MIL-expressible decomposition.
+- Slice moved to the runner (bd as a runtime input, ac_head3.mil, 4
+  programs, all-contiguous inputs): local mil-hwxc hwx package writer then
+  refuses with `ANE.HWX.ObjectWriter Code=2 "generated commands cross
+  __TEXT"`.
+- Conclusion: the Linux-side per-program packaging of the fused head is
+  compiler-lane work — either fix the two local-tool refusals or emit the
+  per-program .anec from the Apple-compiled hwx. Runtime contract evidence:
+  certified multi-program bundles use one .anec PER PROGRAM
+  (island-attn-a-kt: 2 programs → program-0.anec + program-1.anec), so the
+  split is required; a whole-hwx single container is not the certified
+  shape.
+- F handler + tests: branch-only, ready for the bundle the moment it
+  exists (2d62c60d content; canonical worktree
+  ~/src/mlx-omarchy-fusion @ agent/fusion-submit-lane).
