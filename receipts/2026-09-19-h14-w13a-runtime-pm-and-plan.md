@@ -487,6 +487,40 @@ No speculative writes; nothing executed since the approved staging probe.
   SEPARATE runtime ring-position object (H14DartAudit) — untouched by
   the boot compose.
 
+### Addendum 3o: BREAKTHROUGH — the FWIM command IS the placement/publication mechanism
+
+The property-maintenance function (0x9603900–0x9603b60) submits the
+firmware-image request BEFORE any boot step:
+
+1. getProperty("FirmwareLoaded", 0) — cached at [dev+0x978].
+2. Build ctx: **out_slot = &dev+0x978**, w3=1,
+   **fourcc w4 = 0x4657494D ("FWIM" LE: M,I,W,F)**, w5=1, x7=0.
+3. `bl 0x95f6674` — the fw-command submit (async, completion
+   0x95f672c → 0x95f679c AllocateSharedMemorySurface).
+4. Completion stores the resolved object → dev+0x978; boot fn then
+   composes RVBAR from obj+0x18 and boots.
+
+So the ROM/fw-side firmware LOAD is driven by a FWIM fw-command over
+the MBI/SCRATCH transport: the host publishes the image location (the
+surface-position arithmetic SCRATCH0/1 = surface base + cursor −
+offset, iova-shaped per H14DartAudit), the ROM/firmware fetches it,
+and ACKs via SCRATCH7 = 0x08042006. THE PLACEMENT IS NOT A FIXED
+CONSTANT — it is the DART-mapped surface whose ASC-visible address the
+host publishes per load. This resolves the placement mechanism to the
+host-publishes model (branch (a) with per-load publication) and makes
+the Linux loader concrete:
+
+  allocate DART-mapped surface (fw_load, W14-proven) → compute
+  ASC-visible address of the image → publish via SCRATCH0/1 →
+  wake SCRATCH7 → poll 0x08042006 → RTKit/CSNE handshake.
+
+Remaining for a non-blind boot: the exact ASC-visible address formula
+(the obj+0x18/obj+0x38 field semantics inside the params — the delta
+that turns host VA into the ASC-visible position; H14DartAudit's
+stream-semantics lane) + the boot-args entries question. NO boot write
+until those two are pinned; everything else in the chain is now
+source-pinned.
+
 ### Addendum 3m: slot identities per Main source audit (final)
 
 - [dev+0x978] = "FirmwareLoaded" resolution — the BOOT compose reads
