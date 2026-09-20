@@ -646,3 +646,24 @@ explicit copies, per-stage GPU references, report json).
   reruns; the per-program ladder remains valuable for arithmetic
   isolation independent of routing. Source prep continues; no
   unreviewed hardware.
+
+## 18. Stale-release incident + channel-mismatch retraction
+
+- STALE RELEASE: a RELEASE message was sent referencing a 21:29 restore
+  when the actual time was ~01:15+ (next day). This caused Decoder to
+  TAKE unapproved and created queue conflict. The stale resend was NOT
+  a new execution — no gate ran between the 21:29 restore and the
+  stale RELEASE. Correction: release broadcasts must reference the
+  EXACT timestamp of the verification they cite, never recycled.
+- CHANNEL MISMATCH RETRACTED: the "cross-family channel conflict
+  (add writes ch6, softmax reads ch5)" root cause is RETRACTED. Main
+  confirmed that execute_program packs dense/sends then reads/unpacks
+  BY TENSOR — per-program local/runtime copies, no shared channel
+  namespace across programs. The composition channels don't need to
+  match across families. The ac_head2 divergence root cause is
+  UNRESOLVED. The bd-input variant diverges prefix 73/hidden 3b9202cf
+  (stable, reproducible) — the per-program device differential is the
+  isolation path.
+- CONSTRAINT: no more release/TAKE broadcasts from this lane unless
+  actual current commands with executed timestamps and artifact SHAs.
+  Source-only hold. Do not direct other hardware lanes.
