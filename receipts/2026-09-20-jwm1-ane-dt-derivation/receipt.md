@@ -182,3 +182,36 @@ apple,dma-range = <0x00 0x00 0x00 0xe0000000>;   /* iommu@26b800000/810000/82000
 Deployment remains gated: Main review → dtb install → update-m1n1 → one
 reboot → probe acceptance (ps act 0xffffff, ANERD pd[0..4], ps verify
 err=0) → guard module 99e8b8b5… load.
+
+## Addendum 3 — reproducible build + machine verification (Main directive)
+
+`patch_j293_ane.py` (hardcoded paths) is superseded by:
+
+- [build_ane_dtb.py](build_ane_dtb.py) sha256
+  `31ab0ccaed96a8789b759ee57feddae1239c126765ee490fe9f1657a8afb82bf` —
+  argparse CLI (`stock_dtb out_dtb --workdir DIR`); asserts the stock input
+  sha256 (`ea32173d…`) and phandle-collision absence (0xc5, 0xc9-0xce
+  unused) before any write; refuses output unless it matches the staged
+  reviewed hash.
+- [verify_ane_dt.py](verify_ane_dt.py) sha256
+  `14e9b8ef76d533eefd15f41b1ec287b308a0bcec0c430e68da6eb812dd67194e` —
+  canonical property comparison of the built dtb against the carved
+  historical tree (ane node + three ANE DARTs + all six SET-word pmgr
+  pwrstates; phandle refs resolved, sid-0 cells and node-name cosmetics
+  normalized).
+
+Independent verification, executed:
+
+```sh
+python3 build_ane_dtb.py t8103-j293.stock.dtb t8103-j293.ane.dtb --workdir work
+# -> built … sha256 4ec4b87f… output hash matches the staged reviewed build
+python3 verify_ane_dt.py t8103-j293.ane.dtb carved-8c12e9f.dtb
+# -> CANONICAL-EQUAL: ane node, 3 ANE DARTs, and all six SET-word pmgr
+#    pwrstate nodes match the carved historical working tree (rc=0)
+```
+
+Negative control (deployed two-provider dtb vs the same carve): rc=1, four
+DIFF blocks (ANE, three darts, pmgr SET nodes) — the verifier discriminates.
+`ane-fragment.dtsi` regenerated from the verified build (sha
+`f41a9cbe…`). Still STAGED: no deployment until Main's review + the
+amended guard tip ride together.
