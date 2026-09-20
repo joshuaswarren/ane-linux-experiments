@@ -22,6 +22,8 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
   unambiguous skip-path note`
 - **5b0724e** `sourced init-suballocation fill per corrected audit
   pass5b-5d/6`
+- **63d70cf** `FWIM surface 0x500000 per config+0x138; READY->WAKE->DONE
+  ack transition` (Main/audit 751caa4)
 
 ### New files
 
@@ -100,18 +102,25 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
 - Init field contract corrected: `[0x08]` = 'IPC ' surface DVA
   (dev+0x988 = AllocateSharedMemorySurface out-param, tag 0x49504320);
   `[0x10]` = config+0x138 image byte-count (u32 zext), NOT a dup;
-  `[0x18]` = 0x10000000 − size; `[0x50]` = zext u32 [x23+4] (object
+  `[0x18]` = 0x10000000 − 0x500000 = 0x0fb00000; `[0x50]` = zext u32 [x23+4] (object
   open); `[0x58]` = pool DMA base; `[0x60]` = pool word0;
   template+0xC0 = 4 (Main raw anchors, pass5 all-zero withdrawn).
 - Ack registers split: first-alive beacon = SCRATCH0 (selene fn 0x86EC
   → index 0; host-side consumer OPEN); init-ack = SCRATCH7 (fn 0x71A4
   0x77cc-0x77f0, the kext-polled register). fw_alive watches SCRATCH0;
   booted requires the SCRATCH7 init ack.
-- Linux allocation map (legacy branch): FWIM = config+0x138 byte-count
-  (Linux fw_buf 0x400000 = documented superset covering vmsize
-  0x36c000 ZI tail); 'IPC ' = min(config+4, dev+0x3A70 cap) — cap
-  numeric open; suballoc 0x174 from a Linux pool (pool total size
-  open); RTBuddy sizes never referenced.
+- Linux allocation map (legacy branch): FWIM = config+0x138
+  byte-count = 0x500000 (Main, audit 751caa4 — ANE_FW_BUF_SIZE grown
+  0x400000 -> 0x500000; the earlier "superset of vmsize" framing
+  withdrawn, the config semantic is honored directly); 'IPC ' =
+  min(config+4, dev+0x3A70 cap) — cap numeric open; suballoc 0x174
+  from a Linux pool (pool total size open); RTBuddy sizes never
+  referenced.
+- Ack model (751caa4, supersedes pass6 SCRATCH0-beacon reading):
+  single register SCRATCH7, transition-based — READY 0x08042006
+  pre-wake, host wake 0xf7fbdff9, fw consumes, DONE 0x08042006; a
+  bare ==ACK poll is a stale-ack hazard; SCRATCH0 marker not the
+  alive gate; fw_alive only on post-wake DONE.
 
 ## Exact remaining source-backed hardware gates (owners named)
 
