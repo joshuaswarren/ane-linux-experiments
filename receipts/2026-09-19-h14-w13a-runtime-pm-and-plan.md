@@ -368,3 +368,20 @@ poll register is CPU_STATUS — both offsets come from the SoC config
 Next execution gate: items 8-11 (one iBoot-RE pass or one approved live-ADT
 phram read) → then ONE netconsole-armed boot probe with abort capture.
 No speculative writes; nothing executed since the approved staging probe.
+
+### Addendum 3i (chunk results, successive offline passes)
+
+- CHUNK 1: 0x104790 / 0x104544 are keyed-container REMOVE/INSERT
+  primitives over the 0x50-stride client array — iBoot's populate
+  registry is a role→bootargs-block keyed map, not a flat table.
+- CHUNK 2: 0xeed50/0xeeea8/0xeecf8 are register-shuffle veneers; the
+  real worker 0xedcc4 splits DEVICE PATHS on '/' (bl 0x1039a0 with
+  w4=0x2f) — the populate entry resolves device paths ("ane0/
+  dart-ane0"), so the walker registers role+dart pairs by PATH.
+- Boundary/negative: the placement constant is NOT in these containers;
+  it lives downstream in the per-populated-device fw-load machinery
+  (the img4 loader invoked with the resolved device). Next chunk: from
+  the populated "ane0" device node, find the fw-image load invocation
+  and its destination parameter.
+- Session-resumable: each chunk committed; the chain continues from
+  the populated-ane0 → fw-image-load bridge.
