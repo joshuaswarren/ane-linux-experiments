@@ -1,0 +1,297 @@
+{
+  "base": {
+    "rows": [
+      {
+        "run": 1,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 132.121,
+          "mel_frontend": 210.424,
+          "encoder_ane": 3452.237,
+          "decoder_load": 76.485,
+          "tdt_decode": 847.158,
+          "detokenize": 40.453
+        }
+      },
+      {
+        "run": 2,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 74.756,
+          "mel_frontend": 164.043,
+          "encoder_ane": 3521.276,
+          "decoder_load": 75.5,
+          "tdt_decode": 843.237,
+          "detokenize": 40.168
+        }
+      },
+      {
+        "run": 3,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 83.4,
+          "mel_frontend": 168.222,
+          "encoder_ane": 3453.181,
+          "decoder_load": 75.629,
+          "tdt_decode": 834.266,
+          "detokenize": 40.11
+        }
+      },
+      {
+        "run": 4,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 81.264,
+          "mel_frontend": 166.818,
+          "encoder_ane": 3358.646,
+          "decoder_load": 69.764,
+          "tdt_decode": 864.698,
+          "detokenize": 55.552
+        }
+      },
+      {
+        "run": 5,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 75.991,
+          "mel_frontend": 159.604,
+          "encoder_ane": 3562.125,
+          "decoder_load": 76.648,
+          "tdt_decode": 857.62,
+          "detokenize": 57.0
+        }
+      },
+      {
+        "run": 6,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 75.23,
+          "mel_frontend": 163.864,
+          "encoder_ane": 3449.775,
+          "decoder_load": 78.22,
+          "tdt_decode": 874.885,
+          "detokenize": 57.744
+        }
+      }
+    ],
+    "tdt_decode_median_ms": 852.4,
+    "tdt_decode_per_run_ms": [
+      847.2,
+      843.2,
+      834.3,
+      864.7,
+      857.6,
+      874.9
+    ],
+    "stage_medians_ms": {
+      "audio_load": 78.6,
+      "mel_frontend": 165.4,
+      "encoder_ane": 3452.7,
+      "decoder_load": 76.1,
+      "tdt_decode": 852.4,
+      "detokenize": 48.0
+    }
+  },
+  "cand": {
+    "rows": [
+      {
+        "run": 1,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 75.116,
+          "mel_frontend": 161.717,
+          "encoder_ane": 3607.141,
+          "decoder_load": 74.979,
+          "tdt_decode": 838.596,
+          "detokenize": 39.341
+        }
+      },
+      {
+        "run": 2,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 77.294,
+          "mel_frontend": 161.071,
+          "encoder_ane": 3448.117,
+          "decoder_load": 74.778,
+          "tdt_decode": 826.656,
+          "detokenize": 30.454
+        }
+      },
+      {
+        "run": 3,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 74.825,
+          "mel_frontend": 157.892,
+          "encoder_ane": 3411.203,
+          "decoder_load": 70.333,
+          "tdt_decode": 831.674,
+          "detokenize": 40.094
+        }
+      },
+      {
+        "run": 4,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 75.542,
+          "mel_frontend": 155.804,
+          "encoder_ane": 3277.644,
+          "decoder_load": 76.252,
+          "tdt_decode": 834.598,
+          "detokenize": 39.493
+        }
+      },
+      {
+        "run": 5,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 75.076,
+          "mel_frontend": 161.653,
+          "encoder_ane": 3383.632,
+          "decoder_load": 75.349,
+          "tdt_decode": 835.169,
+          "detokenize": 39.806
+        }
+      },
+      {
+        "run": 6,
+        "status": "match",
+        "control": "gpu-loop",
+        "fallback": null,
+        "prefix": 104,
+        "bounds": true,
+        "cpu_ev": 0,
+        "timeouts": 0,
+        "transcript_sha": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+        "hidden_sha": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+        "mel_sha": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+        "stages": {
+          "audio_load": 75.916,
+          "mel_frontend": 159.307,
+          "encoder_ane": 3265.297,
+          "decoder_load": 68.49,
+          "tdt_decode": 851.446,
+          "detokenize": 31.671
+        }
+      }
+    ],
+    "tdt_decode_median_ms": 834.9,
+    "tdt_decode_per_run_ms": [
+      838.6,
+      826.7,
+      831.7,
+      834.6,
+      835.2,
+      851.4
+    ],
+    "stage_medians_ms": {
+      "audio_load": 75.3,
+      "mel_frontend": 160.2,
+      "encoder_ane": 3397.4,
+      "decoder_load": 74.9,
+      "tdt_decode": 834.9,
+      "detokenize": 39.4
+    }
+  },
+  "tdt_decode_delta_ms": -17.5
+}
