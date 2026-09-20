@@ -1,0 +1,439 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000025eb8e8 <.data+0x25eb8e8>:
+ fffffe00095ef8e8:	d503245f 	bti	c
+ fffffe00095ef8ec:	d503237f 	pacibsp
+ fffffe00095ef8f0:	d10203ff 	sub	sp, sp, #0x80
+ fffffe00095ef8f4:	a90367fa 	stp	x26, x25, [sp, #48]
+ fffffe00095ef8f8:	a9045ff8 	stp	x24, x23, [sp, #64]
+ fffffe00095ef8fc:	a90557f6 	stp	x22, x21, [sp, #80]
+ fffffe00095ef900:	a9064ff4 	stp	x20, x19, [sp, #96]
+ fffffe00095ef904:	a9077bfd 	stp	x29, x30, [sp, #112]
+ fffffe00095ef908:	9101c3fd 	add	x29, sp, #0x70
+ fffffe00095ef90c:	aa0203f7 	mov	x23, x2
+ fffffe00095ef910:	aa0103f4 	mov	x20, x1
+ fffffe00095ef914:	aa0003f3 	mov	x19, x0
+ fffffe00095ef918:	f943e400 	ldr	x0, [x0, #1992]
+ fffffe00095ef91c:	f9400010 	ldr	x16, [x0]
+ fffffe00095ef920:	aa0003f1 	mov	x17, x0
+ fffffe00095ef924:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095ef928:	dac11a30 	autda	x16, x17
+ fffffe00095ef92c:	d2802911 	mov	x17, #0x148                 	// #328
+ fffffe00095ef930:	8b110210 	add	x16, x16, x17
+ fffffe00095ef934:	f9400208 	ldr	x8, [x16]
+ fffffe00095ef938:	f2ffa230 	movk	x16, #0xfd11, lsl #48
+ fffffe00095ef93c:	d73f0910 	blraa	x8, x16
+ fffffe00095ef940:	aa0003f6 	mov	x22, x0
+ fffffe00095ef944:	f943ea60 	ldr	x0, [x19, #2000]
+ fffffe00095ef948:	aa0003f1 	mov	x17, x0
+ fffffe00095ef94c:	f9400010 	ldr	x16, [x0]
+ fffffe00095ef950:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095ef954:	dac11a30 	autda	x16, x17
+ fffffe00095ef958:	aa1003f1 	mov	x17, x16
+ fffffe00095ef95c:	dac147f1 	xpacd	x17
+ fffffe00095ef960:	eb11021f 	cmp	x16, x17
+ fffffe00095ef964:	54000040 	b.eq	0x25eb96c  // b.none   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x84
+ fffffe00095ef968:	d4388e40 	brk	#0xc472
+ fffffe00095ef96c:	91052208 	add	x8, x16, #0x148
+ fffffe00095ef970:	f940a609 	ldr	x9, [x16, #328]
+ fffffe00095ef974:	aa0803f1 	mov	x17, x8
+ fffffe00095ef978:	f2ffa231 	movk	x17, #0xfd11, lsl #48
+ fffffe00095ef97c:	d73f0931 	blraa	x9, x17
+ fffffe00095ef980:	aa0003f5 	mov	x21, x0
+ fffffe00095ef984:	90fef6b8 	adrp	x24, 0x4bf000
+ fffffe00095ef988:	91335f18 	add	x24, x24, #0xcd7
+ fffffe00095ef98c:	d001abe8 	adrp	x8, 0x5b69000   ; -> __ZL20ANEM11Caicos_PerfCtr
+ fffffe00095ef990:	91318108 	add	x8, x8, #0xc60
+ fffffe00095ef994:	39400508 	ldrb	w8, [x8, #1]
+ fffffe00095ef998:	36100768 	tbz	w8, #2, 0x25eba84   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x19c
+ fffffe00095ef99c:	0b1602a8 	add	w8, w21, w22
+ fffffe00095ef9a0:	6b17011f 	cmp	w8, w23
+ fffffe00095ef9a4:	1a973119 	csel	w25, w8, w23, cc	// cc = lo, ul, last
+ fffffe00095ef9a8:	b9418268 	ldr	w8, [x19, #384]
+ fffffe00095ef9ac:	71000d1f 	cmp	w8, #0x3
+ fffffe00095ef9b0:	54000168 	b.hi	0x25eb9dc  // b.pmore   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0xf4
+ fffffe00095ef9b4:	d37df108 	lsl	x8, x8, #3
+ fffffe00095ef9b8:	d0ff5ae9 	adrp	x9, 0x1149000   ; -> __ZTV13OSValueObjectI16FWPendingRequestE+0x140
+ fffffe00095ef9bc:	91068129 	add	x9, x9, #0x1a0
+ fffffe00095ef9c0:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095ef9c4:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095ef9c8:	8b080130 	add	x16, x9, x8
+ fffffe00095ef9cc:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095ef9d0:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095ef9d4:	f940015a 	ldr	x26, [x10]
+ fffffe00095ef9d8:	14000003 	b	0x25eb9e4   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0xfc
+ fffffe00095ef9dc:	b0fef65a 	adrp	x26, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095ef9e0:	911a735a 	add	x26, x26, #0x69c
+ fffffe00095ef9e4:	f943e660 	ldr	x0, [x19, #1992]
+ fffffe00095ef9e8:	f9400010 	ldr	x16, [x0]
+ fffffe00095ef9ec:	aa0003f1 	mov	x17, x0
+ fffffe00095ef9f0:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095ef9f4:	dac11a30 	autda	x16, x17
+ fffffe00095ef9f8:	d2802911 	mov	x17, #0x148                 	// #328
+ fffffe00095ef9fc:	8b110210 	add	x16, x16, x17
+ fffffe00095efa00:	f9400208 	ldr	x8, [x16]
+ fffffe00095efa04:	f2ffa230 	movk	x16, #0xfd11, lsl #48
+ fffffe00095efa08:	d73f0910 	blraa	x8, x16
+ fffffe00095efa0c:	aa0003f7 	mov	x23, x0
+ fffffe00095efa10:	f943ea60 	ldr	x0, [x19, #2000]
+ fffffe00095efa14:	aa0003f1 	mov	x17, x0
+ fffffe00095efa18:	f9400010 	ldr	x16, [x0]
+ fffffe00095efa1c:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095efa20:	dac11a30 	autda	x16, x17
+ fffffe00095efa24:	aa1003f1 	mov	x17, x16
+ fffffe00095efa28:	dac147f1 	xpacd	x17
+ fffffe00095efa2c:	eb11021f 	cmp	x16, x17
+ fffffe00095efa30:	54000040 	b.eq	0x25eba38  // b.none   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x150
+ fffffe00095efa34:	d4388e40 	brk	#0xc472
+ fffffe00095efa38:	91052208 	add	x8, x16, #0x148
+ fffffe00095efa3c:	f940a609 	ldr	x9, [x16, #328]
+ fffffe00095efa40:	aa0803f1 	mov	x17, x8
+ fffffe00095efa44:	f2ffa231 	movk	x17, #0xfd11, lsl #48
+ fffffe00095efa48:	d73f0931 	blraa	x9, x17
+ fffffe00095efa4c:	0b170008 	add	w8, w0, w23
+ fffffe00095efa50:	aa1503e9 	mov	x9, x21
+ fffffe00095efa54:	aa1603ea 	mov	x10, x22
+ fffffe00095efa58:	a9012bf9 	stp	x25, x10, [sp, #16]
+ fffffe00095efa5c:	a90063fa 	stp	x26, x24, [sp]
+ fffffe00095efa60:	a90223e9 	stp	x9, x8, [sp, #32]
+ fffffe00095efa64:	90fef640 	adrp	x0, 0x4b3000
+ fffffe00095efa68:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095efa6c:	90ff5ba1 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095efa70:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095efa74:	90fef823 	adrp	x3, 0x4ef000   ; -> __ZZN11ANEHWDevice15mapFwCTRRRegionEvE11_os_log_fmt_2+0x4d
+ fffffe00095efa78:	910e0463 	add	x3, x3, #0x381
+ fffffe00095efa7c:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe00095efa80:	94017202 	bl	0x2648288
+ fffffe00095efa84:	f9400290 	ldr	x16, [x20]
+ fffffe00095efa88:	aa1403f1 	mov	x17, x20
+ fffffe00095efa8c:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095efa90:	dac11a30 	autda	x16, x17
+ fffffe00095efa94:	d2802711 	mov	x17, #0x138                 	// #312
+ fffffe00095efa98:	8b110210 	add	x16, x16, x17
+ fffffe00095efa9c:	f9400208 	ldr	x8, [x16]
+ fffffe00095efaa0:	aa1403e0 	mov	x0, x20
+ fffffe00095efaa4:	f2e69ed0 	movk	x16, #0x34f6, lsl #48
+ fffffe00095efaa8:	d73f0910 	blraa	x8, x16
+ fffffe00095efaac:	aa0003f7 	mov	x23, x0
+ fffffe00095efab0:	f943e660 	ldr	x0, [x19, #1992]
+ fffffe00095efab4:	aa0003f1 	mov	x17, x0
+ fffffe00095efab8:	f9400010 	ldr	x16, [x0]
+ fffffe00095efabc:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095efac0:	dac11a30 	autda	x16, x17
+ fffffe00095efac4:	aa1003f1 	mov	x17, x16
+ fffffe00095efac8:	dac147f1 	xpacd	x17
+ fffffe00095efacc:	eb11021f 	cmp	x16, x17
+ fffffe00095efad0:	54000040 	b.eq	0x25ebad8  // b.none   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x1f0
+ fffffe00095efad4:	d4388e40 	brk	#0xc472
+ fffffe00095efad8:	9104e208 	add	x8, x16, #0x138
+ fffffe00095efadc:	f9409e09 	ldr	x9, [x16, #312]
+ fffffe00095efae0:	aa0803f1 	mov	x17, x8
+ fffffe00095efae4:	f2e69ed1 	movk	x17, #0x34f6, lsl #48
+ fffffe00095efae8:	d73f0931 	blraa	x9, x17
+ fffffe00095efaec:	2a1603f6 	mov	w22, w22
+ fffffe00095efaf0:	aa1703e1 	mov	x1, x23
+ fffffe00095efaf4:	aa1603e2 	mov	x2, x22
+ fffffe00095efaf8:	9401728c 	bl	0x2648528
+ fffffe00095efafc:	aa1403f1 	mov	x17, x20
+ fffffe00095efb00:	f9400290 	ldr	x16, [x20]
+ fffffe00095efb04:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095efb08:	dac11a30 	autda	x16, x17
+ fffffe00095efb0c:	aa1003f1 	mov	x17, x16
+ fffffe00095efb10:	dac147f1 	xpacd	x17
+ fffffe00095efb14:	eb11021f 	cmp	x16, x17
+ fffffe00095efb18:	54000040 	b.eq	0x25ebb20  // b.none   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x238
+ fffffe00095efb1c:	d4388e40 	brk	#0xc472
+ fffffe00095efb20:	9104e208 	add	x8, x16, #0x138
+ fffffe00095efb24:	f9409e09 	ldr	x9, [x16, #312]
+ fffffe00095efb28:	aa1403e0 	mov	x0, x20
+ fffffe00095efb2c:	aa0803f1 	mov	x17, x8
+ fffffe00095efb30:	f2e69ed1 	movk	x17, #0x34f6, lsl #48
+ fffffe00095efb34:	d73f0931 	blraa	x9, x17
+ fffffe00095efb38:	aa0003f4 	mov	x20, x0
+ fffffe00095efb3c:	f943ea60 	ldr	x0, [x19, #2000]
+ fffffe00095efb40:	aa0003f1 	mov	x17, x0
+ fffffe00095efb44:	f9400010 	ldr	x16, [x0]
+ fffffe00095efb48:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095efb4c:	dac11a30 	autda	x16, x17
+ fffffe00095efb50:	aa1003f1 	mov	x17, x16
+ fffffe00095efb54:	dac147f1 	xpacd	x17
+ fffffe00095efb58:	eb11021f 	cmp	x16, x17
+ fffffe00095efb5c:	54000040 	b.eq	0x25ebb64  // b.none   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x27c
+ fffffe00095efb60:	d4388e40 	brk	#0xc472
+ fffffe00095efb64:	9104e208 	add	x8, x16, #0x138
+ fffffe00095efb68:	f9409e09 	ldr	x9, [x16, #312]
+ fffffe00095efb6c:	aa0803f1 	mov	x17, x8
+ fffffe00095efb70:	f2e69ed1 	movk	x17, #0x34f6, lsl #48
+ fffffe00095efb74:	d73f0931 	blraa	x9, x17
+ fffffe00095efb78:	2a1503e2 	mov	w2, w21
+ fffffe00095efb7c:	8b160281 	add	x1, x20, x22
+ fffffe00095efb80:	9401726a 	bl	0x2648528
+ fffffe00095efb84:	b9418268 	ldr	w8, [x19, #384]
+ fffffe00095efb88:	71000d1f 	cmp	w8, #0x3
+ fffffe00095efb8c:	54000168 	b.hi	0x25ebbb8  // b.pmore   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x2d0
+ fffffe00095efb90:	d37df108 	lsl	x8, x8, #3
+ fffffe00095efb94:	d0ff5ae9 	adrp	x9, 0x1149000   ; -> __ZTV13OSValueObjectI16FWPendingRequestE+0x140
+ fffffe00095efb98:	91068129 	add	x9, x9, #0x1a0
+ fffffe00095efb9c:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095efba0:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095efba4:	8b080130 	add	x16, x9, x8
+ fffffe00095efba8:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095efbac:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095efbb0:	f9400148 	ldr	x8, [x10]
+ fffffe00095efbb4:	14000003 	b	0x25ebbc0   ; -> __ZN11ANEHWDevice16ANE_ctrrReloadFwEP11IOMemoryMapjjP4task+0x2d8
+ fffffe00095efbb8:	b0fef648 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095efbbc:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095efbc0:	a90063e8 	stp	x8, x24, [sp]
+ fffffe00095efbc4:	90fef640 	adrp	x0, 0x4b3000
+ fffffe00095efbc8:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095efbcc:	90ff5ba1 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095efbd0:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095efbd4:	90fef823 	adrp	x3, 0x4ef000   ; -> __ZZN11ANEHWDevice15mapFwCTRRRegionEvE11_os_log_fmt_2+0x4d
+ fffffe00095efbd8:	910f5863 	add	x3, x3, #0x3d6
+ fffffe00095efbdc:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe00095efbe0:	940171aa 	bl	0x2648288
+ fffffe00095efbe4:	52800028 	mov	w8, #0x1                   	// #1
+ fffffe00095efbe8:	3925c268 	strb	w8, [x19, #2416]
+ fffffe00095efbec:	52800000 	mov	w0, #0x0                   	// #0
+ fffffe00095efbf0:	a9477bfd 	ldp	x29, x30, [sp, #112]
+ fffffe00095efbf4:	a9464ff4 	ldp	x20, x19, [sp, #96]
+ fffffe00095efbf8:	a94557f6 	ldp	x22, x21, [sp, #80]
+ fffffe00095efbfc:	a9445ff8 	ldp	x24, x23, [sp, #64]
+ fffffe00095efc00:	a94367fa 	ldp	x26, x25, [sp, #48]
+ fffffe00095efc04:	910203ff 	add	sp, sp, #0x80
+ fffffe00095efc08:	d65f0fff 	retab
+ fffffe00095efc0c:	d503245f 	bti	c
+ fffffe00095efc10:	d503237f 	pacibsp
+ fffffe00095efc14:	d10103ff 	sub	sp, sp, #0x40
+ fffffe00095efc18:	a9024ff4 	stp	x20, x19, [sp, #32]
+ fffffe00095efc1c:	a9037bfd 	stp	x29, x30, [sp, #48]
+ fffffe00095efc20:	9100c3fd 	add	x29, sp, #0x30
+ fffffe00095efc24:	39502408 	ldrb	w8, [x0, #1033]
+ fffffe00095efc28:	370000e8 	tbnz	w8, #0, 0x25ebc44   ; -> __ZN11ANEHWDevice31CheckAndHandleIfFirmwareTimeoutER23ANEFirmwareCommandStatej+0x38
+ fffffe00095efc2c:	aa0103f3 	mov	x19, x1
+ fffffe00095efc30:	39408028 	ldrb	w8, [x1, #32]
+ fffffe00095efc34:	37000088 	tbnz	w8, #0, 0x25ebc44   ; -> __ZN11ANEHWDevice31CheckAndHandleIfFirmwareTimeoutER23ANEFirmwareCommandStatej+0x38
+ fffffe00095efc38:	aa0003f4 	mov	x20, x0
+ fffffe00095efc3c:	39501408 	ldrb	w8, [x0, #1029]
+ fffffe00095efc40:	360000a8 	tbz	w8, #0, 0x25ebc54   ; -> __ZN11ANEHWDevice31CheckAndHandleIfFirmwareTimeoutER23ANEFirmwareCommandStatej+0x48
+ fffffe00095efc44:	a9437bfd 	ldp	x29, x30, [sp, #48]
+ fffffe00095efc48:	a9424ff4 	ldp	x20, x19, [sp, #32]
+ fffffe00095efc4c:	910103ff 	add	sp, sp, #0x40
+ fffffe00095efc50:	d65f0fff 	retab
+ fffffe00095efc54:	b9418288 	ldr	w8, [x20, #384]
+ fffffe00095efc58:	71000d1f 	cmp	w8, #0x3
+ fffffe00095efc5c:	54000168 	b.hi	0x25ebc88  // b.pmore   ; -> __ZN11ANEHWDevice31CheckAndHandleIfFirmwareTimeoutER23ANEFirmwareCommandStatej+0x7c
+ fffffe00095efc60:	d37df108 	lsl	x8, x8, #3
+ fffffe00095efc64:	d0ff5ae9 	adrp	x9, 0x1149000   ; -> __ZTV13OSValueObjectI16FWPendingRequestE+0x140
+ fffffe00095efc68:	91068129 	add	x9, x9, #0x1a0
+ fffffe00095efc6c:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095efc70:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095efc74:	8b080130 	add	x16, x9, x8
+ fffffe00095efc78:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095efc7c:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095efc80:	f9400148 	ldr	x8, [x10]
+ fffffe00095efc84:	14000003 	b	0x25ebc90   ; -> __ZN11ANEHWDevice31CheckAndHandleIfFirmwareTimeoutER23ANEFirmwareCommandStatej+0x84
+ fffffe00095efc88:	b0fef648 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095efc8c:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095efc90:	90fef6a9 	adrp	x9, 0x4bf000
+ fffffe00095efc94:	9133a129 	add	x9, x9, #0xce8
+ fffffe00095efc98:	a9008be9 	stp	x9, x2, [sp, #8]
+ fffffe00095efc9c:	f90003e8 	str	x8, [sp]
+ fffffe00095efca0:	90fef640 	adrp	x0, 0x4b3000
+ fffffe00095efca4:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095efca8:	90ff5ba1 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095efcac:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095efcb0:	90fef823 	adrp	x3, 0x4ef000   ; -> __ZZN11ANEHWDevice15mapFwCTRRRegionEvE11_os_log_fmt_2+0x4d
+ fffffe00095efcb4:	910fe863 	add	x3, x3, #0x3fa
+ fffffe00095efcb8:	52800202 	mov	w2, #0x10                  	// #16
+ fffffe00095efcbc:	94017173 	bl	0x2648288
+ fffffe00095efcc0:	aa1403e0 	mov	x0, x20
+ fffffe00095efcc4:	aa1303e1 	mov	x1, x19
+ fffffe00095efcc8:	a9437bfd 	ldp	x29, x30, [sp, #48]
+ fffffe00095efccc:	a9424ff4 	ldp	x20, x19, [sp, #32]
+ fffffe00095efcd0:	910103ff 	add	sp, sp, #0x40
+ fffffe00095efcd4:	d50323ff 	autibsp
+ fffffe00095efcd8:	ca1e07d0 	eor	x16, x30, x30, lsl #1
+ fffffe00095efcdc:	b6f00050 	tbz	x16, #62, 0x25ebce4   ; -> __ZN11ANEHWDevice31CheckAndHandleIfFirmwareTimeoutER23ANEFirmwareCommandStatej+0xd8
+ fffffe00095efce0:	d4388e20 	brk	#0xc471
+ fffffe00095efce4:	17fff4fd 	b	0x25e90d8   ; -> __ZN11ANEHWDevice27HandleFirmwareTimeout_gatedEP23ANEFirmwareCommandState
+ fffffe00095efce8:	d503245f 	bti	c
+ fffffe00095efcec:	f9441000 	ldr	x0, [x0, #2080]
+ fffffe00095efcf0:	f9400010 	ldr	x16, [x0]
+ fffffe00095efcf4:	aa0003f1 	mov	x17, x0
+ fffffe00095efcf8:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095efcfc:	dac11a30 	autda	x16, x17
+ fffffe00095efd00:	d2803d11 	mov	x17, #0x1e8                 	// #488
+ fffffe00095efd04:	8b110210 	add	x16, x16, x17
+ fffffe00095efd08:	f9400208 	ldr	x8, [x16]
+ fffffe00095efd0c:	aa1003e6 	mov	x6, x16
+ fffffe00095efd10:	d0fffff0 	adrp	x16, 0x25e9000
+ fffffe00095efd14:	91036210 	add	x16, x16, #0xd8
+ fffffe00095efd18:	d297a831 	mov	x17, #0xbd41                	// #48449
+ fffffe00095efd1c:	dac10230 	pacia	x16, x17
+ fffffe00095efd20:	aa1003e1 	mov	x1, x16
+ fffffe00095efd24:	aa0803f0 	mov	x16, x8
+ fffffe00095efd28:	d2800002 	mov	x2, #0x0                   	// #0
+ fffffe00095efd2c:	d2800003 	mov	x3, #0x0                   	// #0
+ fffffe00095efd30:	d2800004 	mov	x4, #0x0                   	// #0
+ fffffe00095efd34:	d2800005 	mov	x5, #0x0                   	// #0
+ fffffe00095efd38:	aa0603f1 	mov	x17, x6
+ fffffe00095efd3c:	f2ff3ff1 	movk	x17, #0xf9ff, lsl #48
+ fffffe00095efd40:	d71f0a11 	braa	x16, x17
+ fffffe00095efd44:	d503245f 	bti	c
+ fffffe00095efd48:	d503237f 	pacibsp
+ fffffe00095efd4c:	d100c3ff 	sub	sp, sp, #0x30
+ fffffe00095efd50:	a9014ff4 	stp	x20, x19, [sp, #16]
+ fffffe00095efd54:	a9027bfd 	stp	x29, x30, [sp, #32]
+ fffffe00095efd58:	910083fd 	add	x29, sp, #0x20
+ fffffe00095efd5c:	aa0003f3 	mov	x19, x0
+ fffffe00095efd60:	940171ca 	bl	0x2648488
+ fffffe00095efd64:	cb130000 	sub	x0, x0, x19
+ fffffe00095efd68:	f90007ff 	str	xzr, [sp, #8]
+ fffffe00095efd6c:	910023e1 	add	x1, sp, #0x8
+ fffffe00095efd70:	9401714a 	bl	0x2648298
+ fffffe00095efd74:	f94007e8 	ldr	x8, [sp, #8]
+ fffffe00095efd78:	d2869b69 	mov	x9, #0x34db                	// #13531
+ fffffe00095efd7c:	f2baf6c9 	movk	x9, #0xd7b6, lsl #16
+ fffffe00095efd80:	f2dbd049 	movk	x9, #0xde82, lsl #32
+ fffffe00095efd84:	f2e86369 	movk	x9, #0x431b, lsl #48
+ fffffe00095efd88:	9bc97d08 	umulh	x8, x8, x9
+ fffffe00095efd8c:	d352fd00 	lsr	x0, x8, #18
+ fffffe00095efd90:	a9427bfd 	ldp	x29, x30, [sp, #32]
+ fffffe00095efd94:	a9414ff4 	ldp	x20, x19, [sp, #16]
+ fffffe00095efd98:	9100c3ff 	add	sp, sp, #0x30
+ fffffe00095efd9c:	d65f0fff 	retab
+ fffffe00095efda0:	d503245f 	bti	c
+ fffffe00095efda4:	71000c1f 	cmp	w0, #0x3
+ fffffe00095efda8:	54000168 	b.hi	0x25ebdd4  // b.pmore   ; -> __ZL24getCommandPipeHandleNamej+0x34
+ fffffe00095efdac:	d37d7c08 	ubfiz	x8, x0, #3, #32
+ fffffe00095efdb0:	d0ff5ae9 	adrp	x9, 0x1149000   ; -> __ZTV13OSValueObjectI16FWPendingRequestE+0x140
+ fffffe00095efdb4:	91060129 	add	x9, x9, #0x180
+ fffffe00095efdb8:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095efdbc:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095efdc0:	8b080130 	add	x16, x9, x8
+ fffffe00095efdc4:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095efdc8:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095efdcc:	f9400140 	ldr	x0, [x10]
+ fffffe00095efdd0:	d65f03c0 	ret
+ fffffe00095efdd4:	d0fef640 	adrp	x0, 0x4b5000
+ fffffe00095efdd8:	913f4c00 	add	x0, x0, #0xfd3
+ fffffe00095efddc:	d65f03c0 	ret
+ fffffe00095efde0:	d503245f 	bti	c
+ fffffe00095efde4:	52800028 	mov	w8, #0x1                   	// #1
+ fffffe00095efde8:	39102408 	strb	w8, [x0, #1033]
+ fffffe00095efdec:	39102c01 	strb	w1, [x0, #1035]
+ fffffe00095efdf0:	395e0009 	ldrb	w9, [x0, #1920]
+ fffffe00095efdf4:	36000049 	tbz	w9, #0, 0x25ebdfc   ; -> __ZN11ANEHWDevice31latchFirmwareFailureState_gatedEb+0x1c
+ fffffe00095efdf8:	39102808 	strb	w8, [x0, #1034]
+ fffffe00095efdfc:	d65f03c0 	ret
+ fffffe00095efe00:	d503245f 	bti	c
+ fffffe00095efe04:	d65f03c0 	ret
+ fffffe00095efe08:	d503245f 	bti	c
+ fffffe00095efe0c:	d503237f 	pacibsp
+ fffffe00095efe10:	d10243ff 	sub	sp, sp, #0x90
+ fffffe00095efe14:	a9036ffc 	stp	x28, x27, [sp, #48]
+ fffffe00095efe18:	a90467fa 	stp	x26, x25, [sp, #64]
+ fffffe00095efe1c:	a9055ff8 	stp	x24, x23, [sp, #80]
+ fffffe00095efe20:	a90657f6 	stp	x22, x21, [sp, #96]
+ fffffe00095efe24:	a9074ff4 	stp	x20, x19, [sp, #112]
+ fffffe00095efe28:	a9087bfd 	stp	x29, x30, [sp, #128]
+ fffffe00095efe2c:	910203fd 	add	x29, sp, #0x80
+ fffffe00095efe30:	aa0003f3 	mov	x19, x0
+ fffffe00095efe34:	b4000921 	cbz	x1, 0x25ebf58   ; -> __ZN11ANEHWDevice25FWSharedEventDoorbellRingEP19ANEInferenceRequest+0x150
+ fffffe00095efe38:	d001abe8 	adrp	x8, 0x5b69000   ; -> __ZL20ANEM11Caicos_PerfCtr
+ fffffe00095efe3c:	91318108 	add	x8, x8, #0xc60
+ fffffe00095efe40:	b9400108 	ldr	w8, [x8]
+ fffffe00095efe44:	365008a8 	tbz	w8, #10, 0x25ebf58   ; -> __ZN11ANEHWDevice25FWSharedEventDoorbellRingEP19ANEInferenceRequest+0x150
+ fffffe00095efe48:	aa0103f4 	mov	x20, x1
+ fffffe00095efe4c:	f95f8a60 	ldr	x0, [x19, #16144]
+ fffffe00095efe50:	f9400010 	ldr	x16, [x0]
+ fffffe00095efe54:	aa0003f1 	mov	x17, x0
+ fffffe00095efe58:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095efe5c:	dac11a30 	autda	x16, x17
+ fffffe00095efe60:	d2802711 	mov	x17, #0x138                 	// #312
+ fffffe00095efe64:	8b110210 	add	x16, x16, x17
+ fffffe00095efe68:	f9400208 	ldr	x8, [x16]
+ fffffe00095efe6c:	f2e69ed0 	movk	x16, #0x34f6, lsl #48
+ fffffe00095efe70:	d73f0910 	blraa	x8, x16
+ fffffe00095efe74:	b969ba88 	ldr	w8, [x20, #10680]
+ fffffe00095efe78:	34000708 	cbz	w8, 0x25ebf58   ; -> __ZN11ANEHWDevice25FWSharedEventDoorbellRingEP19ANEInferenceRequest+0x150
+ fffffe00095efe7c:	aa0003f5 	mov	x21, x0
+ fffffe00095efe80:	d2800019 	mov	x25, #0x0                   	// #0
+ fffffe00095efe84:	52853808 	mov	w8, #0x29c0                	// #10688
+ fffffe00095efe88:	8b08029a 	add	x26, x20, x8
+ fffffe00095efe8c:	90fef6bc 	adrp	x28, 0x4bf000
+ fffffe00095efe90:	913c339c 	add	x28, x28, #0xf0c
+ fffffe00095efe94:	90fef656 	adrp	x22, 0x4b3000
+ fffffe00095efe98:	913b02d6 	add	x22, x22, #0xec0
+ fffffe00095efe9c:	90ff5bb7 	adrp	x23, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095efea0:	f945fef7 	ldr	x23, [x23, #3064]
+ fffffe00095efea4:	90fef838 	adrp	x24, 0x4ef000   ; -> __ZZN11ANEHWDevice15mapFwCTRRRegionEvE11_os_log_fmt_2+0x4d
+ fffffe00095efea8:	911e6318 	add	x24, x24, #0x798
+ fffffe00095efeac:	8b190728 	add	x8, x25, x25, lsl #1
+ fffffe00095efeb0:	8b08135b 	add	x27, x26, x8, lsl #4
+ fffffe00095efeb4:	ca1b0350 	eor	x16, x26, x27
+ fffffe00095efeb8:	f24a261f 	tst	x16, #0xffc0000000000000
+ fffffe00095efebc:	54000040 	b.eq	0x25ebec4  // b.none   ; -> __ZN11ANEHWDevice25FWSharedEventDoorbellRingEP19ANEInferenceRequest+0xbc
+ fffffe00095efec0:	f2f9145b 	movk	x27, #0xc8a2, lsl #48
+ fffffe00095efec4:	f9400f60 	ldr	x0, [x27, #24]
+ fffffe00095efec8:	940170a4 	bl	0x2648158
+ fffffe00095efecc:	b0fef648 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095efed0:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095efed4:	b9418269 	ldr	w9, [x19, #384]
+ fffffe00095efed8:	71000d3f 	cmp	w9, #0x3
+ fffffe00095efedc:	54000148 	b.hi	0x25ebf04  // b.pmore   ; -> __ZN11ANEHWDevice25FWSharedEventDoorbellRingEP19ANEInferenceRequest+0xfc
+ fffffe00095efee0:	d37df128 	lsl	x8, x9, #3
+ fffffe00095efee4:	d0ff5aea 	adrp	x10, 0x1149000   ; -> __ZTV13OSValueObjectI16FWPendingRequestE+0x140
+ fffffe00095efee8:	9106814a 	add	x10, x10, #0x1a0
+ fffffe00095efeec:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095efef0:	8b28c149 	add	x9, x10, w8, sxtw
+ fffffe00095efef4:	8b080150 	add	x16, x10, x8
+ fffffe00095efef8:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095efefc:	9a900129 	csel	x9, x9, x16, eq	// eq = none
+ fffffe00095eff00:	f9400128 	ldr	x8, [x9]
+ fffffe00095eff04:	2a0003e9 	mov	w9, w0
+ fffffe00095eff08:	d37df12a 	lsl	x10, x9, #3
+ fffffe00095eff0c:	eb2ac15f 	cmp	x10, w10, sxtw
+ fffffe00095eff10:	8b2ac2ab 	add	x11, x21, w10, sxtw
+ fffffe00095eff14:	8b0a02b0 	add	x16, x21, x10
+ fffffe00095eff18:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095eff1c:	9a90016b 	csel	x11, x11, x16, eq	// eq = none
+ fffffe00095eff20:	f940016a 	ldr	x10, [x11]
+ fffffe00095eff24:	b940076b 	ldr	w11, [x27, #4]
+ fffffe00095eff28:	a901abeb 	stp	x11, x10, [sp, #24]
+ fffffe00095eff2c:	a900a7fc 	stp	x28, x9, [sp, #8]
+ fffffe00095eff30:	f90003e8 	str	x8, [sp]
+ fffffe00095eff34:	aa1603e0 	mov	x0, x22
+ fffffe00095eff38:	aa1703e1 	mov	x1, x23
+ fffffe00095eff3c:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe00095eff40:	aa1803e3 	mov	x3, x24
+ fffffe00095eff44:	940170d1 	bl	0x2648288
+ fffffe00095eff48:	91000739 	add	x25, x25, #0x1
+ fffffe00095eff4c:	b969ba88 	ldr	w8, [x20, #10680]
+ fffffe00095eff50:	eb08033f 	cmp	x25, x8
+ fffffe00095eff54:	54fffac3 	b.cc	0x25ebeac  // b.lo, b.ul, b.last   ; -> __ZN11ANEHWDevice25FWSharedEventDoorbellRingEP19ANEInferenceRequest+0xa4
+ fffffe00095eff58:	52802700 	mov	w0, #0x138                 	// #312
+ fffffe00095eff5c:	72a0c360 	movk	w0, #0x61b, lsl #16
+ fffffe00095eff60:	d2800001 	mov	x1, #0x0                   	// #0
+ fffffe00095eff64:	d2800002 	mov	x2, #0x0                   	// #0
+ fffffe00095eff68:	d2800003 	mov	x3, #0x0                   	// #0
+ fffffe00095eff6c:	d2800004 	mov	x4, #0x0                   	// #0
+ fffffe00095eff70:	d2800005 	mov	x5, #0x0                   	// #0
+ fffffe00095eff74:	94017129 	bl	0x2648418
+ fffffe00095eff78:	f95fa668 	ldr	x8, [x19, #16200]
+ fffffe00095eff7c:	52800809 	mov	w9, #0x40                  	// #64
+ fffffe00095eff80:	b9000109 	str	w9, [x8]
+ fffffe00095eff84:	52800000 	mov	w0, #0x0                   	// #0
+ fffffe00095eff88:	a9487bfd 	ldp	x29, x30, [sp, #128]
+ fffffe00095eff8c:	a9474ff4 	ldp	x20, x19, [sp, #112]
+ fffffe00095eff90:	a94657f6 	ldp	x22, x21, [sp, #96]
+ fffffe00095eff94:	a9455ff8 	ldp	x24, x23, [sp, #80]
+ fffffe00095eff98:	a94467fa 	ldp	x26, x25, [sp, #64]
+ fffffe00095eff9c:	a9436ffc 	ldp	x28, x27, [sp, #48]
+ fffffe00095effa0:	910243ff 	add	sp, sp, #0x90
+ fffffe00095effa4:	d65f0fff 	retab

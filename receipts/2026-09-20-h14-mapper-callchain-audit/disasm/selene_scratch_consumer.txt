@@ -1,0 +1,172 @@
+=== accessor ctor 0x8740 (base 0x285840048 -> +72), ack write via byte48, READ32 0x87e0, WRITE32 0x87f0, vtable ptr 0xE81D8
+
+/tmp/h14-staged-selene.macho:     file format binary
+
+
+Disassembly of section .data:
+
+000000000000c6e0 <.data+0xc6e0>:
+      86e0:	91000108 	add	x8, x8, #0x0
+      86e4:	b9400108 	ldr	w8, [x8]
+      86e8:	350002a8 	cbnz	w8, 0xc73c
+      86ec:	d503237f 	pacibsp
+      86f0:	a9bf7bfd 	stp	x29, x30, [sp, #-16]!
+      86f4:	910003fd 	mov	x29, sp
+      86f8:	9402077b 	bl	0x8e4e4
+      86fc:	90000f28 	adrp	x8, 0x1f0000
+      8700:	aa1f03e1 	mov	x1, xzr
+      8704:	9113e108 	add	x8, x8, #0x4f8
+      8708:	528400c2 	mov	w2, #0x2006                	// #8198
+      870c:	72a10082 	movk	w2, #0x804, lsl #16
+      8710:	f9400100 	ldr	x0, [x8]
+      8714:	f9400010 	ldr	x16, [x0]
+      8718:	aa0003f1 	mov	x17, x0
+      871c:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      8720:	dac11a30 	autda	x16, x17
+      8724:	f8430e08 	ldr	x8, [x16, #48]!
+      8728:	f2eb7bb0 	movk	x16, #0x5bdd, lsl #48
+      872c:	d73f0910 	blraa	x8, x16
+      8730:	d5033b9f 	dsb	ish
+      8734:	a8c17bfd 	ldp	x29, x30, [sp], #16
+      8738:	d65f0fff 	retab
+      873c:	d65f03c0 	ret
+      8740:	d503237f 	pacibsp
+      8744:	a9bf7bfd 	stp	x29, x30, [sp, #-16]!
+      8748:	910003fd 	mov	x29, sp
+      874c:	52800103 	mov	w3, #0x8                   	// #8
+      8750:	94003f65 	bl	0x1c4e4
+      8754:	90000710 	adrp	x16, 0xec000
+      8758:	91072210 	add	x16, x16, #0x1c8
+      875c:	91004210 	add	x16, x16, #0x10
+      8760:	aa0003f1 	mov	x17, x0
+      8764:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      8768:	dac10a30 	pacda	x16, x17
+      876c:	d2800908 	mov	x8, #0x48                  	// #72
+      8770:	a8c17bfd 	ldp	x29, x30, [sp], #16
+      8774:	f2b0b088 	movk	x8, #0x8584, lsl #16
+      8778:	f2c00048 	movk	x8, #0x2, lsl #32
+      877c:	f9000010 	str	x16, [x0]
+      8780:	f9002408 	str	x8, [x0, #72]
+      8784:	d65f0fff 	retab
+      8788:	90000710 	adrp	x16, 0xec000
+      878c:	91072210 	add	x16, x16, #0x1c8
+      8790:	91004210 	add	x16, x16, #0x10
+      8794:	aa0003f1 	mov	x17, x0
+      8798:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      879c:	dac10a30 	pacda	x16, x17
+      87a0:	f9000010 	str	x16, [x0]
+      87a4:	14003f63 	b	0x1c530
+      87a8:	d503237f 	pacibsp
+      87ac:	a9bf7bfd 	stp	x29, x30, [sp, #-16]!
+      87b0:	910003fd 	mov	x29, sp
+      87b4:	90000710 	adrp	x16, 0xec000
+      87b8:	91072210 	add	x16, x16, #0x1c8
+      87bc:	91004210 	add	x16, x16, #0x10
+      87c0:	aa0003f1 	mov	x17, x0
+      87c4:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      87c8:	dac10a30 	pacda	x16, x17
+      87cc:	f9000010 	str	x16, [x0]
+      87d0:	94003f58 	bl	0x1c530
+      87d4:	a8c17bfd 	ldp	x29, x30, [sp], #16
+      87d8:	d50323ff 	autibsp
+      87dc:	140200e1 	b	0x8cb60
+      87e0:	f9402408 	ldr	x8, [x0, #72]
+      87e4:	8b010908 	add	x8, x8, x1, lsl #2
+      87e8:	b9400100 	ldr	w0, [x8]
+      87ec:	d65f03c0 	ret
+      87f0:	f9402408 	ldr	x8, [x0, #72]
+      87f4:	8b010908 	add	x8, x8, x1, lsl #2
+      87f8:	b9000102 	str	w2, [x8]
+      87fc:	d65f03c0 	ret
+=== fn 0x71a4: READ32 idx1 -> <<32; READ32 idx0; orr -> pool DVA; write(6,1)
+
+/tmp/h14-staged-selene.macho:     file format binary
+
+
+Disassembly of section .data:
+
+000000000000b404 <.data+0xb404>:
+      7404:	f9400280 	ldr	x0, [x20]
+      7408:	52800021 	mov	w1, #0x1                   	// #1
+      740c:	f9401bb6 	ldr	x22, [x29, #48]
+      7410:	f9400010 	ldr	x16, [x0]
+      7414:	aa0003f1 	mov	x17, x0
+      7418:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      741c:	dac11a30 	autda	x16, x17
+      7420:	f8428e08 	ldr	x8, [x16, #40]!
+      7424:	f2ef1ef0 	movk	x16, #0x78f7, lsl #48
+      7428:	d73f0910 	blraa	x8, x16
+      742c:	f9400288 	ldr	x8, [x20]
+      7430:	d3607c0a 	lsl	x10, x0, #32
+      7434:	eb1b001f 	cmp	x0, x27
+      7438:	aa1f03e1 	mov	x1, xzr
+      743c:	9a8a03f7 	csel	x23, xzr, x10, eq	// eq = none
+      7440:	f9400110 	ldr	x16, [x8]
+      7444:	aa0803e0 	mov	x0, x8
+      7448:	aa0803f1 	mov	x17, x8
+      744c:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      7450:	dac11a30 	autda	x16, x17
+      7454:	f8428e09 	ldr	x9, [x16, #40]!
+      7458:	f2ef1ef0 	movk	x16, #0x78f7, lsl #48
+      745c:	d73f0930 	blraa	x9, x16
+      7460:	aa0003f3 	mov	x19, x0
+      7464:	f9400280 	ldr	x0, [x20]
+      7468:	528000c1 	mov	w1, #0x6                   	// #6
+      746c:	52800022 	mov	w2, #0x1                   	// #1
+      7470:	f9400010 	ldr	x16, [x0]
+      7474:	aa0003f1 	mov	x17, x0
+      7478:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      747c:	dac11a30 	autda	x16, x17
+      7480:	f8430e08 	ldr	x8, [x16, #48]!
+      7484:	f2eb7bb0 	movk	x16, #0x5bdd, lsl #48
+      7488:	d73f0910 	blraa	x8, x16
+      748c:	b0000f28 	adrp	x8, 0x1f0000
+      7490:	b00004a4 	adrp	x4, 0xa0000
+      7494:	91192108 	add	x8, x8, #0x648
+      7498:	aa170261 	orr	x1, x19, x23
+      749c:	911e0c84 	add	x4, x4, #0x783
+      74a0:	52800e02 	mov	w2, #0x70                  	// #112
+      74a4:	52800043 	mov	w3, #0x2                   	// #2
+      74a8:	52801165 	mov	w5, #0x8b                  	// #139
+      74ac:	f9400100 	ldr	x0, [x8]
+=== fn 0x71a4 tail: write32(0,w19) -> SCRATCH0; write32(7,0x08042006) ack
+
+/tmp/h14-staged-selene.macho:     file format binary
+
+
+Disassembly of section .data:
+
+000000000000b790 <.data+0xb790>:
+      7790:	dac11a30 	autda	x16, x17
+      7794:	f8430e08 	ldr	x8, [x16, #48]!
+      7798:	f2eb7bb0 	movk	x16, #0x5bdd, lsl #48
+      779c:	d73f0910 	blraa	x8, x16
+      77a0:	f9400280 	ldr	x0, [x20]
+      77a4:	2a1303e2 	mov	w2, w19
+      77a8:	aa1f03e1 	mov	x1, xzr
+      77ac:	f9400010 	ldr	x16, [x0]
+      77b0:	aa0003f1 	mov	x17, x0
+      77b4:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      77b8:	dac11a30 	autda	x16, x17
+      77bc:	f8430e08 	ldr	x8, [x16, #48]!
+      77c0:	f2eb7bb0 	movk	x16, #0x5bdd, lsl #48
+      77c4:	d73f0910 	blraa	x8, x16
+      77c8:	f9400280 	ldr	x0, [x20]
+      77cc:	528400c2 	mov	w2, #0x2006                	// #8198
+      77d0:	528000e1 	mov	w1, #0x7                   	// #7
+      77d4:	72a10082 	movk	w2, #0x804, lsl #16
+      77d8:	f9400010 	ldr	x16, [x0]
+      77dc:	aa0003f1 	mov	x17, x0
+      77e0:	f2e2f731 	movk	x17, #0x17b9, lsl #48
+      77e4:	dac11a30 	autda	x16, x17
+      77e8:	f8430e08 	ldr	x8, [x16, #48]!
+      77ec:	f2eb7bb0 	movk	x16, #0x5bdd, lsl #48
+      77f0:	d73f0910 	blraa	x8, x16
+      77f4:	a94a7bfd 	ldp	x29, x30, [sp, #160]
+      77f8:	a9494ff4 	ldp	x20, x19, [sp, #144]
+      77fc:	a94857f6 	ldp	x22, x21, [sp, #128]
+      7800:	a9475ff8 	ldp	x24, x23, [sp, #112]
+      7804:	a94667fa 	ldp	x26, x25, [sp, #96]
+      7808:	a9456ffc 	ldp	x28, x27, [sp, #80]
+      780c:	9102c3ff 	add	sp, sp, #0xb0
+      7810:	 	retab

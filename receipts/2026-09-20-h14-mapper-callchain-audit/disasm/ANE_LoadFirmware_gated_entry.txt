@@ -1,0 +1,30 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000095effa8 <.data>:
+     95effa8:	feedfacf 	.inst	0xfeedfacf ; undefined
+     95effac:	0100000c 	.inst	0x0100000c ; undefined
+     95effb0:	c0000002 	mov	za0h.b[w12, 2], p0/m, z0.b
+     95effb4:	0000000c 	udf	#12
+     95effb8:	0000016e 	udf	#366
+     95effbc:	00006618 	udf	#26136
+	...
+     95effc8:	0000001b 	udf	#27
+     95effcc:	00000018 	udf	#24
+     95effd0:	b954694c 	ldr	w12, [x10, #5224]
+     95effd4:	c8489a01 	ldaxr	x1, [x16]
+     95effd8:	fa78e99a 	.inst	0xfa78e99a ; undefined
+     95effdc:	2ad69435 	.inst	0x2ad69435 ; undefined
+     95effe0:	00000032 	udf	#50
+     95effe4:	00000018 	udf	#24
+	...
+     95efff8:	00000005 	udf	#5
+     95efffc:	00000120 	udf	#288
+     95f0000:	00000006 	udf	#6
+     95f0004:	00000044 	udf	#68
+	...
+     95f0088:	0bbe8000 	.inst	0x0bbe8000 ; undefined
+     95f008c:	fffffe00 	.inst	0xfffffe00 ; undefined

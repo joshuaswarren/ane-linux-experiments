@@ -1,0 +1,83 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+0000000002551e40 <.data+0x2551e40>:
+ fffffe0009555e40:	8b090110 	add	x16, x8, x9
+ fffffe0009555e44:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe0009555e48:	9a9002f7 	csel	x23, x23, x16, eq	// eq = none
+ fffffe0009555e4c:	f94002b0 	ldr	x16, [x21]
+ fffffe0009555e50:	dac11b10 	autda	x16, x24
+ fffffe0009555e54:	d2811911 	mov	x17, #0x8c8                 	// #2248
+ fffffe0009555e58:	8b110210 	add	x16, x16, x17
+ fffffe0009555e5c:	f9400208 	ldr	x8, [x16]
+ fffffe0009555e60:	aa1503e0 	mov	x0, x21
+ fffffe0009555e64:	f2ef5530 	movk	x16, #0x7aa9, lsl #48
+ fffffe0009555e68:	d73f0910 	blraa	x8, x16
+ fffffe0009555e6c:	aa0003e4 	mov	x4, x0
+ fffffe0009555e70:	aa1803f1 	mov	x17, x24
+ fffffe0009555e74:	b9404266 	ldr	w6, [x19, #64]
+ fffffe0009555e78:	f9402667 	ldr	x7, [x19, #72]
+ fffffe0009555e7c:	f94002b0 	ldr	x16, [x21]
+ fffffe0009555e80:	dac11a30 	autda	x16, x17
+ fffffe0009555e84:	aa1003f1 	mov	x17, x16
+ fffffe0009555e88:	dac147f1 	xpacd	x17
+ fffffe0009555e8c:	eb11021f 	cmp	x16, x17
+ fffffe0009555e90:	54000040 	b.eq	0x2551e98  // b.none   ; -> __ZN11ANEResource8_dartMapEP18ANEDeviceInterface+0x154
+ fffffe0009555e94:	d4388e40 	brk	#0xc472
+ fffffe0009555e98:	9122a208 	add	x8, x16, #0x8a8
+ fffffe0009555e9c:	f9445609 	ldr	x9, [x16, #2216]
+ fffffe0009555ea0:	3945526a 	ldrb	w10, [x19, #340]
+ fffffe0009555ea4:	f90003ff 	str	xzr, [sp]
+ fffffe0009555ea8:	910042e2 	add	x2, x23, #0x10
+ fffffe0009555eac:	12000145 	and	w5, w10, #0x1
+ fffffe0009555eb0:	aa1503e0 	mov	x0, x21
+ fffffe0009555eb4:	aa1603e1 	mov	x1, x22
+ fffffe0009555eb8:	aa1703e3 	mov	x3, x23
+ fffffe0009555ebc:	aa0803f1 	mov	x17, x8
+ fffffe0009555ec0:	f2f73351 	movk	x17, #0xb99a, lsl #48
+ fffffe0009555ec4:	d73f0931 	blraa	x9, x17
+ fffffe0009555ec8:	1400002a 	b	0x2551f70   ; -> __ZN11ANEResource8_dartMapEP18ANEDeviceInterface+0x22c
+ fffffe0009555ecc:	f9404e76 	ldr	x22, [x19, #152]
+ fffffe0009555ed0:	9102c268 	add	x8, x19, #0xb0
+ fffffe0009555ed4:	52800509 	mov	w9, #0x28                  	// #40
+ fffffe0009555ed8:	9b297e89 	smull	x9, w20, w9
+ fffffe0009555edc:	eb29c13f 	cmp	x9, w9, sxtw
+ fffffe0009555ee0:	8b29c117 	add	x23, x8, w9, sxtw
+ fffffe0009555ee4:	8b090110 	add	x16, x8, x9
+ fffffe0009555ee8:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe0009555eec:	9a9002f7 	csel	x23, x23, x16, eq	// eq = none
+ fffffe0009555ef0:	f94002b0 	ldr	x16, [x21]
+ fffffe0009555ef4:	dac11b10 	autda	x16, x24
+ fffffe0009555ef8:	d2811911 	mov	x17, #0x8c8                 	// #2248
+ fffffe0009555efc:	8b110210 	add	x16, x16, x17
+ fffffe0009555f00:	f9400208 	ldr	x8, [x16]
+ fffffe0009555f04:	aa1503e0 	mov	x0, x21
+ fffffe0009555f08:	f2ef5530 	movk	x16, #0x7aa9, lsl #48
+ fffffe0009555f0c:	d73f0910 	blraa	x8, x16
+ fffffe0009555f10:	aa0003e4 	mov	x4, x0
+ fffffe0009555f14:	aa1803f1 	mov	x17, x24
+ fffffe0009555f18:	910062e8 	add	x8, x23, #0x18
+ fffffe0009555f1c:	b9404266 	ldr	w6, [x19, #64]
+ fffffe0009555f20:	f9402667 	ldr	x7, [x19, #72]
+ fffffe0009555f24:	f94002b0 	ldr	x16, [x21]
+ fffffe0009555f28:	dac11a30 	autda	x16, x17
+ fffffe0009555f2c:	aa1003f1 	mov	x17, x16
+ fffffe0009555f30:	dac147f1 	xpacd	x17
+ fffffe0009555f34:	eb11021f 	cmp	x16, x17
+ fffffe0009555f38:	54000040 	b.eq	0x2551f40  // b.none   ; -> __ZN11ANEResource8_dartMapEP18ANEDeviceInterface+0x1fc
+ fffffe0009555f3c:	d4388e40 	brk	#0xc472
+ fffffe0009555f40:	9122a209 	add	x9, x16, #0x8a8
+ fffffe0009555f44:	f944560a 	ldr	x10, [x16, #2216]
+ fffffe0009555f48:	3945526b 	ldrb	w11, [x19, #340]
+ fffffe0009555f4c:	f90003e8 	str	x8, [sp]
+ fffffe0009555f50:	910042e2 	add	x2, x23, #0x10
+ fffffe0009555f54:	12000165 	and	w5, w11, #0x1
+ fffffe0009555f58:	aa1503e0 	mov	x0, x21
+ fffffe0009555f5c:	aa1603e1 	mov	x1, x22
+ fffffe0009555f60:	aa1703e3 	mov	x3, x23
+ fffffe0009555f64:	aa0903f1 	mov	x17, x9
+ fffffe0009555f68:	f2f73351 	movk	x17, #0xb99a, lsl #48
+ fffffe0009555f6c:	d73f0951 	blraa	x10, x17

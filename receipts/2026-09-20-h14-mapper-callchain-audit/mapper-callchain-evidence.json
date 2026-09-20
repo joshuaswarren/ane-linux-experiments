@@ -1,0 +1,331 @@
+{
+ "meta": {
+  "date": "2026-09-20",
+  "lane": "M2/T6021 ANE firmware mapper callchain audit (independent, static-only)",
+  "worker": "M2mapperevidenceaudit",
+  "no_device_contact": true,
+  "no_live_writes": true
+ },
+ "inputs": {
+  "kernelcache": {
+   "path": "/tmp/kernelcache.mac14j.raw",
+   "sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+   "container": "MH_FILESET (magic 0xfeedfacf, filetype 12, cputype 0x0100000c, ncmds 366)",
+   "flat_layout_verified": "file_offset = vm - 0xfffffe0007004000, consistent with all 9 LC_SEGMENT_64 vm/file pairs (checked programmatically)",
+   "segments": {
+    "__TEXT": "vm 0xfffffe0007004000 file 0x0 size 0x8000",
+    "__PRELINK_TEXT": "vm 0xfffffe000700c000 file 0x8000 size 0xddc000",
+    "__DATA_CONST": "vm 0xfffffe0007de8000 file 0xde4000 size 0xc8c000",
+    "__DATA_SPTM": "vm 0xfffffe0008a74000 file 0x1a70000 size 0x74000",
+    "__TEXT_EXEC": "vm 0xfffffe0008ae8000 file 0x1ae4000 size 0x3ab8000",
+    "__TEXT_BOOT_EXEC": "vm 0xfffffe000c5a0000 file 0x559c000 size 0x8000",
+    "__PRELINK_INFO": "vm 0xfffffe000c5a8000 file 0x55a4000 size 0x3a0000",
+    "__DATA": "vm 0xfffffe000c948000 file 0x5944000 size 0x420000",
+    "__LINKEDIT": "vm 0xfffffe000cd68000 file 0x5d64000 size 0x19e0000"
+   }
+  },
+  "selene": {
+   "path": "/tmp/h14-staged-selene.macho",
+   "sha256": "9f7915c431d288a2bdc2132c399db8cf5574716a3b1e94af76be6a291c2e665b",
+   "container": "Mach-O filetype 5 (MH_PRELOAD), 7 load commands",
+   "segment_verification": [
+    {
+     "seg": "__TEXT",
+     "vm": "0x0+0xe8000",
+     "file": "0x4000+0xe8000",
+     "bounds_ok": true,
+     "file_minus_vm": "0x4000"
+    },
+    {
+     "seg": "__DATA",
+     "vm": "0xe8000+0x284000",
+     "file": "0xec000+0xb8000",
+     "bounds_ok": true,
+     "note": "vmsize 0x284000 > filesize 0xb8000 (ZI tail = runtime page tables); file-backed portion NOT all-zero (86118 nonzero bytes) - 'all-zero' claim in earlier receipts is scoped to the _rtk_boot/_rtk_page_tables sections, not whole __DATA"
+    },
+    {
+     "seg": "__DATA_CONST",
+     "vm": "0x36c000+0x0",
+     "file": "0x1a4000+0x0",
+     "bounds_ok": true
+    }
+   ],
+   "conversion_verified": "file = vm + 0x4000 for __TEXT/__DATA (independently reproduced; matches prior receipts' convention)",
+   "anchors_in_bounds": {
+    "0x450_reset_vector": true,
+    "0x4ac_TTBR0": true,
+    "0x4b4_TTBR1": true,
+    "0x590_MMU_enable": true,
+    "0x71a4_scratch_handshake": true,
+    "0x7364_ack_writer": true,
+    "0x7614_template_copy": true,
+    "0x7ec0_caller": true
+   }
+  }
+ },
+ "symbol_ground_truth": {
+  "method": "Container LC_FILESET_ENTRY (cmd 0x80000035: entry_offset=vm base, u64@+16=nested Mach-O file offset, bundle id inline at +32) -> nested Mach-O LC_SYMTAB of com.apple.driver.AppleH11ANEInterface: symoff 0x5f98650, nsyms 11022, stroff 0x6621ef8 (shared linkedit string table). Every name below comes from the KC's OWN nlist records; every vtable slot from the KC's OWN DYLD_CHAINED_PTR_64_KERNEL_CACHE fixup words in __DATA_CONST. No adjacency inference.",
+  "key_symbols": {
+   "__ZTV11ANEHWDevice": "0xfffffe0008141dd0 (address point 0x8141de0)",
+   "ANEHWDevice::dartMapMemoryDescriptor(IOMemoryDescriptor*, IODMACommand**, u64*, IOMapper*, bool, ANEResourceUsageType, u64, RTBuddyVisibleMemory**)": "0xfffffe00095daa38",
+   "ANEHWDevice::dartMapMemoryDescriptorSharedMallocRegion(IOMemoryDescriptor*, u64*, bool)": "0xfffffe00095db620",
+   "ANEHWDevice::dartUnmapMemoryDescriptor(IODMACommand*, u64, u32, u32, u64, ANEResourceUsageType, RTBuddyVisibleMemory*, bool)": "0xfffffe00095dbce8 (vtable +0x8c0)",
+   "ANEHWDevice::makeMemoryVisible(IOMemoryDescriptor*, u64*, RTBuddyVisibleMemory**, bool, ANEResourceUsageType, u64)": "0xfffffe00095db284",
+   "ANEHWDevice::getMapper": "0xfffffe00095a0cfc (vtable +0x8c8); duplicate same-name symbol 0xfffffe000960fec0 (byte-identical 3-insn body)",
+   "ANEHWDevice::ANE_LoadFirmware_gated(void*, u32, u32, task*)": "0xfffffe00095effa8",
+   "ANEHWDevice::ANE_ctrrReloadFw(IOMemoryMap*, u32, u32, task*)": "0xfffffe00095ef8e8",
+   "ANEHWDevice::CheckAndHandleIfFirmwareTimeout": "0xfffffe00095efc0c",
+   "ANEHWDevice::mapFwCTRRRegion": "0xfffffe00095ee720",
+   "ANEResource::_dartMap(ANEDeviceInterface*)": "0xfffffe0009555d44 (dispatch sites +0x154/+0x1fc)",
+   "ANEInVMAllocator::forMapper(IOMapper*, u32)": "0xfffffe00095a4504",
+   "ANEDeviceInterface::getMapper (interface default stub)": "0xfffffe000950369c = 'bti c; mov w0,#0; ret'"
+  }
+ },
+ "vtable_decode": {
+  "note": "DYLD_CHAINED_PTR_64_KERNEL_CACHE entries at __ZTV11ANEHWDevice address point; target = low30 + __TEXT vm base; auth entries key=0(IA) diversity 0xb99a addrDiv=1",
+  "slots": [
+   {
+    "slot": "0x890",
+    "raw": "0x8011a7ec0259ccd4",
+    "target": "0xfffffe00095a0cd4",
+    "name": "ANEHWDevice::ANE_GetSubType"
+   },
+   {
+    "slot": "0x8a0",
+    "raw": "0x8011c1660259cce4",
+    "target": "0xfffffe00095a0ce4",
+    "name": "ANEHWDevice::isDartSpaceLimited"
+   },
+   {
+    "slot": "0x8a8",
+    "raw": "0x8011b99a025d6a38",
+    "target": "0xfffffe00095daa38",
+    "name": "ANEHWDevice::dartMapMemoryDescriptor"
+   },
+   {
+    "slot": "0x8b0",
+    "raw": "0x80114eb3025d7620",
+    "target": "0xfffffe00095db620",
+    "name": "ANEHWDevice::dartMapMemoryDescriptorSharedMallocRegion"
+   },
+   {
+    "slot": "0x8b8",
+    "raw": "0x8011bc18025d79f4",
+    "target": "0xfffffe00095db9f4",
+    "name": "ANEHWDevice::dartUnMapMemoryDescriptorSharedMallocRegion"
+   },
+   {
+    "slot": "0x8c0",
+    "raw": "0x80119575025d7ce8",
+    "target": "0xfffffe00095dbce8",
+    "name": "ANEHWDevice::dartUnmapMemoryDescriptor"
+   },
+   {
+    "slot": "0x8c8",
+    "raw": "0x80117aa90259ccfc",
+    "target": "0xfffffe00095a0cfc",
+    "name": "ANEHWDevice::getMapper"
+   }
+  ]
+ },
+ "prior_claim_audit": {
+  "REBUTTED_ANE_LoadFirmware_gated_entry": {
+   "claim": "entry at vm 0xfffffe00095efe0c, 'true entry by pacibsp scan' (2026-09-20 dart receipt section 13.6)",
+   "finding": "A pacibsp prologue DOES exist at 0x95efe0c - but it belongs to an UNNAMED function (no symtab entry; prologue pacibsp; sub sp,#0x90; loads [dev+0x3F10] object and dispatches vtable slot 0x138; cbz x1 early-exit), adjacent to FWSharedEventDoorbellRing. The symbol ANEHWDevice::ANE_LoadFirmware_gated is at 0xfffffe00095effa8 ('bti c; pacibsp; sub sp,sp,#0xc0', file 0x25ebfa8). The claimed blraa at 0x95efe70 is inside the unnamed function and dispatches slot 0x138 - not a dartMap (0x8a8) dispatch. (First-pass tool artifact showing a Mach-O header at these addresses is retracted; bytes were re-dumped raw.)",
+   "snippets": [
+    "disasm/ANE_LoadFirmware_gated_head.txt (true entry)",
+    "disasm/ANE_LoadFirmware_gated_entry.txt (kept as the artifact record: re-run of old-claim region)"
+   ]
+  },
+  "REBUTTED_slot_0x8b0_getMapper": {
+   "claim": "vtable slot 0x8b0 -> getMapper 0x95a0cfc, 'newly identified via chained-fixup walk' (same receipt)",
+   "finding": "Slot 0x8b0 decodes to dartMapMemoryDescriptorSharedMallocRegion 0x95db620 (raw fixup 0x80114eb3025d7620) - the earlier kc_chains_decode.py REGRESS table was CORRECT. getMapper 0x95a0cfc is at slot 0x8c8 (raw 0x80117aa90259ccfc). The receipt overwrote a correct regress anchor with a wrong adjacency guess."
+  },
+  "REBUTTED_getMapper_returns_dev_0x188": {
+   "claim": "getMapper body returns the device+0x188 accessor object",
+   "finding": "getMapper = 'bti c; ldr x0,[x0,#0x920]; ret' (0xf9449000) - returns dev+0x920, an IOMapper* (bound in start() from IOMapper::copyMapperForDeviceWithIndex). dev+0x188 is the ANERegisterControl write32 accessor used by InitANEScratchRegisters - a different object. The two must not be conflated (matches the lane rule 'never dev+188 accessor=IOMapper').",
+   "snippet": "disasm/ANEHWDevice_getMapper.txt"
+  },
+  "REBUTTED_LoadFirmware_calls_dartMap_slot_0x8a8": {
+   "claim": "dartMapMemoryDescriptor invoked via slot 0x8a8 at ANE_LoadFirmware_gated 0x95efe0c",
+   "finding": "ANE_LoadFirmware_gated (0x95effa8..0x95f07a4) contains NO slot-0x8a8/0x8b0/0x8c8 dispatch. Full text scanned for '#0x8a8' immediates across the entire ANE kext __TEXT_EXEC (0x9500070..0x964c8b8): 18 sites, attributed by enclosing symbol. Real dartMapMemoryDescriptor callers: ANEResource::_dartMap(+0x154,+0x1fc), ANEHWDevice::AllocateSharedMemorySurface_gated(+0x3a0), ANEHWDevice::start(IOService*)(3 sites), ANEISPEndPoints::dartMapIPCEndPoints(3 sites), ANEHWDevice::ANE_MapMPMMemory_gated(+0x198), ANEHWDevice::ANE_processISPSurfaceMapRequest block, ANEHWDevice::ANE_processIspAneNetworkSurfaceRemap(+0x46c).",
+   "full_text": "disasm/ANE_kext_text_exec.txt"
+  },
+  "CONFIRMED": [
+   "vptr address point 0x8141de0 (kc_chains_decode regress + dart receipt)",
+   "slot 0x8a8 -> dartMapMemoryDescriptor 0x95daa38",
+   "slot 0x8b0 -> 0x95db620 dartMapMemoryDescriptorSharedMallocRegion (tool was right, receipt wrong)",
+   "KC vm base 0xfffffe0007004000 and segment table"
+  ]
+ },
+ "proven_callchain": {
+  "firmware_load_and_map": [
+   "ANEHWDevice::ANE_LoadFirmware_gated 0x95effa8",
+   "  0x95f0198 bl tramp 0x964bd58 -> GOT 0x8163568 -> IOMemoryDescriptor::withAddressRange(addr=x22, len=x23, opts=2, task=x21) -> md",
+   "  0x95f01d0 vcall md+0x218 = IOGeneralMemoryDescriptor::prepare(0)  (wires/pins pages)",
+   "  0x95dac0c/0x95dac1c: md->getMapperOptions()|1 -> md->setMapperOptions(w1)  [mapper flag: bit0 set]",
+   "  0x95f0330 vcall md+0x228 = IOMemoryDescriptor::map(0x1000) -> IOMemoryMap*",
+   "  0x95f0350 bl ANEHWDevice::ANE_ctrrReloadFw(IOMemoryMap*, u32, u32, task*) 0x95ef8e8",
+   "    ANE_ctrrReloadFw reads the image via IOMemoryMap::getVirtualAddress (slot 0x138) / getLength (slot 0x148) and drives the engine; timeout path CheckAndHandleIfFirmwareTimeout 0x95efc0c",
+   "  teardown: md->complete(0) (slot 0x220) / md->release() (slot 0x28)"
+  ],
+  "resource_map_path_where_dartMap_lives": [
+   "ANEResource::_dartMap(ANEDeviceInterface*) 0x9555d44",
+   "  0x9555ef8 vcall dev+0x8c8 = getMapper() -> IOMapper* -> passed as x4",
+   "  0x9555ec4/0x9555f6c vcall dev+0x8a8 = dartMapMemoryDescriptor(this_dev, md=x1=[x19+152], cmd_out=x2, iova_out=x3, mapper=x4, bool=(x19[340]&1), usage=x6[19+64], size=x7[x19+72], stack RTBuddyVisibleMemory**)",
+   "  PAC dispatch salt 0xb99a on both sites == diversity in vtable fixup words (independent cross-check)"
+  ],
+  "dartMap_mechanics": [
+   "ANEHWDevice::dartMapMemoryDescriptor 0x95daa38 (entry bti c; pacibsp; sub sp,#0xd0)",
+   "  0x95daad8 md->getLength() (slot 0x1f0) zero-check",
+   "  branch A (dev+0x780 bit0 set AND RTBuddyVisibleMemory** non-null): tail-call makeMemoryVisible(this, md, iova_out, vis_mem, bool, usage, size) at 0x95dab50; makeMemoryVisible sets md mapper options (getMapperOptions|1 -> setMapperOptions), allocs via ANEInVMAllocator family (forMapper/init/vmAlloc(IODMACommand*)/vmReserve, IODARTVMSpace/IODARTAllocationInfo types)",
+   "  branch B (legacy, dev+0x780 bit0 clear - OBSERVED config):",
+   "    0x95dabac bl _kernel_debug (trace 0x061b005d)",
+   "    0x95dabd4 x0=[dev+0x930] (IOCommandPool); 0x95dabfc pool slot 0x148 = IOCommandPool::getCommand(0) -> x25 (an IODMACommand built at start() by IODMACommand::withSpecification, pool holds 1024)",
+   "    0x95dac04 x23=[dev+0x920] (IOMapper* #1 == getMapper field); x25-cmd compare vs mapper at 0x95db0b4 selects dev+0x930/dev+0x938 on release path (dev+0x938 = IOMapper* #2)",
+   "    0x95daf60 vcall cmd+0x148 = IODMACommand::setMemoryDescriptor(md, autoPrepare=1)",
+   "    0x95dafc0 vcall cmd+0x178 = IODMACommand::genIOVMSegments(&off[sp+0x28], &seg[sp+0x30|sp+0x58], &count[sp+0x24])  <-- THE IOVA PRODUCER",
+   "    0x95daef4 vcall this+0x6e8 = callPlatformFunction(OSSymbol::withCString(\"cacheFlushInactive\"), false, 0,0,0,0)",
+   "    0x95db13c str x8,[x19]   *iova_out = segment base (64-bit [sp+0x30] if chipclass[dev+0x180]>0x6f else 32-bit [sp+0x58])",
+   "    0x95db140 str x25,[x22]  *cmd_out = the IODMACommand",
+   "    unwind: cmd->clearMemoryDescriptor(1) (slot 0x150), pool->returnCommand (dev+0x930 slot 0x150), DisableANEClocksAndPower, removeAneSysClockAssertion"
+  ],
+  "mapper_objects_creation_ANEHWDevice_start": [
+   "start(IOService*): dev+0x920 (2336) = IOMapper::copyMapperForDeviceWithIndex(provider=[dev+0x810], 0)  (bl 0x964bf58 -> GOT 0x8163668)",
+   "                     dev+0x938 (2344) = IOMapper::copyMapperForDeviceWithIndex(provider, 1)",
+   "                     dev+0x930 (2352) = IOCommandPool::withWorkLoop(...) (bl 0x964bb88 -> GOT 0x8163480); loop of 1024x IODMACommand::withSpecification(...) (bl 0x964ba48 -> GOT 0x81633e0) pooled via slot 0x150",
+   "                     ANEInVMAllocator::forMapper(mapper2, 0) result stored dev+0x950 (2384); setupDartRemap() called after",
+   "     two mappers bound = two DART instances per device (matches the 3-window DART picture only weakly; exact DART count/routing NOT provable statically - see unresolved)"
+  ],
+  "map_flags": {
+   "firmware_md": "getMapperOptions()|1 -> setMapperOptions() in BOTH ANE_LoadFirmware_gated (0x95dac0c..0x95dac1c) and makeMemoryVisible (0x95db338..0x95db344); precise XNU semantic of bit0 in mapper options NOT resolved here (flag VALUE is byte-proven)",
+   "withAddressRange_opts": "2 (argument w2 at 0x95f0198, byte-proven)",
+   "map_call_opts": "0x1000 (argument w1 to IOMemoryDescriptor::map at 0x95f0328, byte-proven)"
+  }
+ },
+ "tools_written": [
+  "tools/kc_ane_symbols.py - fileset/symtab/fixup walker (independent of prior receipts)",
+  "tools/disasm_range.py - objdump wrapper (flat KC vm mapping, symbol annotation)",
+  "tools/vmethods.py - PAC vmethod slot tracer",
+  "tools/resolve_tramp.py - GOT trampoline resolver",
+  "all_kext.syms (340386 symbols from all 353 filesets), ane_kext.syms (11022), filesets.txt"
+ ],
+ "snippets": [
+  "disasm/ANE_LoadFirmware_gated_head.txt - true entry + withAddressRange/prepare sites",
+  "disasm/ANE_LoadFirmware_gated_full.txt - whole function",
+  "disasm/dartMapMemoryDescriptor.txt - whole function incl. IOVA write 0x95db13c / cmd_out 0x95db140",
+  "disasm/ANEResource_dartMap_dispatch.txt - slot 0x8c8 + 0x8a8 dispatch",
+  "disasm/ANEHWDevice_getMapper.txt - both getMapper copies",
+  "disasm/ANE_ctrrReloadFw.txt",
+  "disasm/makeMemoryVisible.txt",
+  "disasm/mapFwCTRRRegion.txt",
+  "disasm/ANE_kext_text_exec.txt - full kext __TEXT_EXEC (master reference)"
+ ],
+ "unresolved": [
+  "Which physical DART(s) the ANEHWDevice mappers (dev+0x920/dev+0x938) are bound to at runtime (copyMapperForDeviceWithIndex resolves via IOService provider matching - static binary cannot name the DART entry).",
+  "The StreamID the ASC CPU emits (item4 gate): unchanged, not statically decodable from the kext.",
+  "Exact XNU semantic of mapper-options bit0 and of withAddressRange opts=2 / map(0x1000) constants (values byte-proven, enum names not cross-checked against owned XNU headers this pass).",
+  "IOMemoryDescriptor vtable slot 0x218 resolved only in IOGeneralMemoryDescriptor vtable as prepare(uint32); base-class slot is pure virtual - the exact subclass used for the firmware MD (IOGeneralMemoryDescriptor vs IOBufferMemoryDescriptor) depends on withAddressRange runtime behavior (it returns IOGeneralMemoryDescriptor per XNU sources, not re-derived here).",
+  "Duplicate getMapper symbol (0x95a0cfc and 0x960fec0, byte-identical bodies): which one the vtable picks is 0x95a0cfc (slot 0x8c8); why two identical symbol values exist (cold duplicate in symtab) not chased further.",
+  "Selene-side consumer of the published staging IOVA (item3 open half) - untouched by this lane."
+ ],
+ "mmio_writes_this_lane": "none",
+ "cross_receipt_impact": "2026-09-20-h14-dart-stream-identification.md section 13.6 contains two concrete address errors (ANE_LoadFirmware_gated entry, slot 0x8b0) and one accessor-field error (getMapper dev+0x188 vs dev+0x920). This receipt should be treated as the corrected mapper-callchain record; the other receipt was not edited per lane rules.",
+ "pass2": {
+  "scope": "ANE_ctrrReloadFw -> upload/remap/cacheflush/RVBAR chain + SCRATCH0/1 backing source; CPU VA vs DVA vs PA uncertainty marked",
+  "fw_upload_chain": [
+   "ANE_LoadFirmware 0x9609db4 (public wrapper): ldr x0,[x0,#2080] (dev+0x820 async queue object); slot 0x1e8 dispatch; builds PAC-signed function pointer to ANE_LoadFirmware_gated via adrp/add #0xfa8 + pacia x16,#0xbd41 and passes it as callback arg (x1). No direct bl callers and no vtable fixup targets 0x95effa8 anywhere in the file (8-byte-stride scan).",
+   "ANEHWDevice::ANE_LoadFirmware_gated(void* fwAddr, u32 len, u32 flags, task*) 0x95effa8:",
+   "  md = IOMemoryDescriptor::withAddressRange(fwAddr=x22, len=x23, opts=2, task=x21) [0x95f0198]",
+   "  md->prepare(0) [0x95f01d0, slot 0x218 = IOGeneralMemoryDescriptor::prepare]",
+   "  md->getMapperOptions()|1 -> setMapperOptions() [0x95dac0c..0x95dac1c]",
+   "  fwMap = md->map(0x1000) [0x95f0330, slot 0x228]",
+   "  ANE_ctrrReloadFw(fwMap, u32, u32, task) [0x95f0350]",
+   "  md->complete/release teardown [slots 0x220/0x28]",
+   "ANE_ctrrReloadFw 0x95ef8e8 (bti c; pacibsp; sub sp,#0x80):",
+   "  lenA = [dev+0x7C8 map]->getLength() [0x95ef93c, slot 0x148]",
+   "  lenB = [dev+0x7D0 map]->getLength() [0x95ef97c]",
+   "  split = min(lenA+lenB, arg2) [0x95ef99c csel]",
+   "  COPY1: memmove(mapA->getVirtualAddress(), fwMap->getVirtualAddress(), lenA) [VA reads 0x95efaa8/0x95efae8 slot 0x138; bl 0x95efaf8 -> GOT 0x8163950 -> _memmove]",
+   "  COPY2: memmove(mapB->getVirtualAddress(), fwMap->getVirtualAddress()+lenA, lenB) [0x95efb34/0x95efb74/0x95efb80]",
+   "  dev+0x970 flag byte = 1 [0x95efbe8 strb]; return 0 [0x95efbec]",
+   "  NO cache-flush and NO RVBAR/SCRATCH write inside ANE_ctrrReloadFw. The only timer trampoline (IOTimerEventSource::timerEventSource, GOT 0x8163598) is at 0x95efaf8-region of the NEIGHBOR CheckAndHandleIfFirmwareTimeout span, not a flush."
+  ],
+  "ctrr_backing": [
+   "maps stored at dev+0x7C8/0x7D0 created in mapFwCTRRRegion 0x95ee720: [dev+0x7D8](2008) and [dev+0x7E0](2016) are IOMemoryDescriptors; slot 0x228 = IOMemoryDescriptor::map(options) with w1 = 0x1000 or 0x10001000 (csel at 0x95ef190/0x95ef198), results stored dev+0x7C8 [0x95ef1ac] and dev+0x7D0 [0x95ef1f4]",
+   "descriptors at dev+0x7D8/0x7E0 produced by AllocateFwHeapMemorySurface 0x95faa5c -> createANESurface(...) [0x95fab0c] + OSValueObject<ANESharedMemorySurfaceParams>::create/setValue [0x95fab9c/0x95fabb0]; surface class dispatch slots 0x20/0x218/0x1e8",
+   "CPU VA vs DVA vs PHYSICAL (explicit uncertainty):",
+   "  - map->getVirtualAddress() values used by the memmoves are CPU KERNEL VIRTUAL addresses of the CTRR windows (byte-proven: vmethod 0x138 of IOMemoryMap = getVirtualAddress)",
+   "  - the ENGINE-visible (DVA/IOVA) address of the CTRR heap is NOT produced in this chain; it is established elsewhere (ANEInVMAllocator::vmAlloc family takes IODMACommand* and produces DART-mapped allocations; forMapper binds a mapper). The exact instruction binding CTRR heap DVA -> Params+0x18 is NOT pinned.",
+   "  - physical addresses: none appear in this kext chain; SCRATCH/RVBAR register offsets are accessor-relative (mapped base accessor+0x18), absolute PA unknown statically"
+  ],
+  "scratch01_publication": [
+   "Writer pair (ONLY write of SCRATCH0/1 found): ANE_Init+0x166c/+0x16a4 = 0x95eaa98/0x95eaad0",
+   "  0x95eaa90 dsb st; accessor object [dev+0x188]; write32 slot = pre-index [x16,#24]!, branch salt 0x1344",
+   "  SCRATCH0 (offset from dev+0x438): w2 = (u32)([pool(dev+0x980)+0x18] + alloc_off - [pool+0x38])  [0x95eaa9c..0x95eaac8]",
+   "  SCRATCH1 (offset dev+0x43C):     (u64)([pool+0x18] + alloc_off - [pool+0x38]) >> 32             [0x95eaad4..0x95eaaec]",
+   "  alloc_off accumulated by the allocation walk loop ending 0x95eaa78 (count [pool+0x104])",
+   "Read pairs: ANE_Init+0xcac/+0xcd4 (0x95ea0d8/0x95ea100) read32 SCRATCH0/1 via slot [x16,#16]! salt 0x9d33, stores + increments [x23]/[x23+4] (boot counter); ANE_Init+0x18dc/+0x1904 (0x95ead08/0x95ead30) read-back reassembles u64 = (SCRATCH1<<32)|SCRATCH0",
+   "ANE_deInit+0x678/+0xa1c/+0xa78 also touch SCRATCH0/1 (teardown)"
+  ],
+  "rvbar_compose_byte_verified": [
+   "ANE_Init 0x95e9850: dev+0x41F bit0 set -> skip whole block",
+   "0x95e985c: w1=0x01050000; bl ANERegisterControl::read64OneShot (0x9622b04); result bit0 set -> skip",
+   "mask x22 = 0xff7efffffffff800 [0x95e9868/0x95e986c]; base x21 = 0x0081000000000001 [0x95e9870/0x95e9874]",
+   "0x95e9880: x8 = [dev+0x978]; x8 = [x8+0x18] (fw Params DMA address); RVBAR = base | (x8 & mask) [0x95e9888..0x95e988c]; write64 via accessor [0x95e9988 per rvbar-width receipt, re-affirmed]",
+   "aneAddressToHostAddress 0x95eba4c: range-checks arbitrary ANE address against Params+0x18 base and [dev+0x376 obj]+312 size - confirms Params+0x18 is the ANE-side (device) base of the fw region"
+  ],
+  "unresolved_pass2": [
+   "Writer of dev+0x978 (fw Params pointer) not pinned: 13 refs in ANE kext __TEXT_EXEC = 12 loads + 1 null-store (start teardown 0x9603ad8). Install likely via struct copy in config/init path or from outside the kext text scanned.",
+   "Producer instruction binding CTRR-heap DVA into Params+0x18 not pinned (vmAlloc->surface-Params path exists; exact store not located).",
+   "Caller of ANE_LoadFirmware wrapper: no direct bl, no fixup; reached through ANEHWInterface(ANEResidency, array<ANEDeviceInterface*,4>) forwarding or async queue - not chased further.",
+   "CPU VA vs DVA: the CTRR memmoves operate on CPU VAs; how/whether the engine fetches through the CTRR window DVA vs through the Params+0x18 staging region remains open (both live in dart-ane0 space per prior receipts)."
+  ],
+  "snippets_pass2": [
+   "disasm/ANE_ctrrReloadFw.txt",
+   "disasm/ANE_Init_RVBAR_compose.txt",
+   "disasm/ANE_Init_SCRATCH01_publish.txt",
+   "disasm/mapFwCTRRRegion.txt",
+   "disasm/AllocateFwHeapMemorySurface.txt"
+  ],
+  "mmio_writes_this_lane": "none (static decode only)"
+ },
+ "pass3": {
+  "scope": "Params+0x18 producer closed; Selene SCRATCH0/1 consumer closed with bounded-offset dereferences",
+  "params_producer": {
+   "writer": "ANEHWDevice::start +0x336c = vm 0xfffffe0009603954: 'add x2, x22, #0x978' passes &dev->field_978 as OUT-PARAM (x2) to AllocateSharedMemorySurface(size=[dev+0x376]+312, &Params_out, bool=1, alloc_tag=0x4657494D 'FWIM', 1, 0, 0) [bl 0x95f2674]. The callee writes the pointer - explains the proven absence of a direct store.",
+   "allocation_tag": "0x4657494D 'FWIM' (Firmware Image) built at 0x9603968/0x960396c",
+   "iova_source": "AllocateSharedMemorySurface_gated 0x95f679c: slot 0x8a8 dartMapMemoryDescriptor(md, cmd_out=sp+0x40, iova_out=sp+0x18, mapper=[dev+0x920] (x27 loaded 0x95f6b18), bool, usage, size, stack) at 0x95f6b3c-0x95f6b6c; IODMACommand setMemoryDescriptor(autoPrepare)+genIOVMSegments produce the IOVA; slot 0x8b0 dartMapMemoryDescriptorSharedMallocRegion called at 0x95f6bd4 for the shared-malloc side; Params object built via OSValueObject<ANESharedMemorySurfaceParams>::create/setValue; Params+0x18 = device IOVA (matches RVBAR consumer).",
+   "consumers_of_Params_0x18": [
+    "RVBAR compose 0x95e9880: ([dev+0x978])->+0x18 & 0xff7efffffffff800 | 0x0081000000000001",
+    "init template 0x95ea794",
+    "aneAddressToHostAddress range check 0x95eba4c"
+   ],
+   "negative_result_scope": "no direct/indirect in-text 64-bit store to dev+0x978 (imm12=303 str-x only null at 0x9603ad8; stp cannot encode 0x978; stur imm9 < 0x978; register-offset mov #0x978 only a read at 0x9576e0c; split-add pairs with sum 0x978: 0 in window 16; six add-imm 0x978 sites all belong to OTHER classes (ANEScheduler MappingANEStats embedded struct at scheduler+0x978 init by InitMappingANEStats 0x957b770, ANEProgramEventMsg, ZinComputeProgram, start uses the by-reference form))"
+  },
+  "selene_scratch_consumer": {
+   "accessor_object": "vm 0x1EC4F8 (file 0x1F04F8; earlier 'vm 0x1f04f8' was a file-offset mislabel) in __DATA ZI tail; runtime-constructed",
+   "constructor_0x8740": "allocates, stores PAC'd vptr (vtable vm 0xE81D8, file 0xEC1D8; salt 0x17b9 = object-address diversity) at [x0], and engine window base x8 = 0x0000000285840048 at [x0+72] (mov #0x48; movk #0x8584,lsl16; movk #0x2,lsl32). SCRATCH registers are ABSOLUTE 0x285840048+4*idx (idx 0..7 -> 0x48..0x64); the kext-view 0x1840048 is the engine-relative offset, the ASC-view base differs.",
+   "READ32": "vm 0x87E0: ldr x8,[x0,#72]; add x8,x8,x1,lsl#2; ldr w0,[x8]; ret  (bounded offset 72; index*4)",
+   "WRITE32": "vm 0x87F0: same; str w2,[x8]; ret",
+   "vtable_slots": "byte40 -> 0x87E0 READ32 (vtable word 0x801178f7000087e0 at file 0xEC200), byte48 -> 0x87F0 WRITE32 (0x80315bdd000087f0 at file 0xEC208); branch salts 0x78f7/0x5bdd match the vtable diversities (independent cross-check)",
+   "consumer_sequence_fn_0x71a4": [
+    "0x7404 READ32(idx=1) -> w0 = SCRATCH1 (0x28584004C)",
+    "0x7430 lsl x10, x0, #32 ; csel x23 = SCRATCH1<<32 (0 on cmp-fail)",
+    "0x7440-0x745c READ32(idx=0) -> x19 = SCRATCH0 (0x285840048)",
+    "0x7498 orr x1, x19, x23  -> FULL 64-bit host-published pool DVA",
+    "0x7464-0x7488 WRITE32(idx=6, 1) -> SCRATCH6 = 1 marker",
+    "0x77a0-0x77c4 WRITE32(idx=0, w19) -> SCRATCH0 = fw result word",
+    "0x77c8-0x77f0 WRITE32(idx=7, 0x08042006) -> SCRATCH7 ack (matches host poll)",
+    "host-side order match: ANE_Init publishes low32->SCRATCH0, high32->SCRATCH1 (0x95eaa98/0x95eaad0) - firmware consumes exactly those two cells, high<<32|low"
+   ],
+   "pass1_correction": "pass1 note 'x20 = adrp 0x1f0000+0x4f8' was a file-offset reading; true object vm = 0x1EC4F8. Pass1 slot numbering '+40/+48' refers to BYTE offsets from the vptr and is confirmed."
+  },
+  "snippets_pass3": [
+   "disasm/selene_scratch_consumer.txt",
+   "disasm/start_FWIM_params_outparam.txt",
+   "disasm/gated_dartMap_iova_params.txt"
+  ],
+  "mmio_writes_this_lane": "none"
+ }
+}

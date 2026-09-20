@@ -1,0 +1,238 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000025d7284 <.data+0x25d7284>:
+ fffffe00095db284:	d503245f 	bti	c
+ fffffe00095db288:	d503237f 	pacibsp
+ fffffe00095db28c:	d10243ff 	sub	sp, sp, #0x90
+ fffffe00095db290:	a9036ffc 	stp	x28, x27, [sp, #48]
+ fffffe00095db294:	a90467fa 	stp	x26, x25, [sp, #64]
+ fffffe00095db298:	a9055ff8 	stp	x24, x23, [sp, #80]
+ fffffe00095db29c:	a90657f6 	stp	x22, x21, [sp, #96]
+ fffffe00095db2a0:	a9074ff4 	stp	x20, x19, [sp, #112]
+ fffffe00095db2a4:	a9087bfd 	stp	x29, x30, [sp, #128]
+ fffffe00095db2a8:	910203fd 	add	x29, sp, #0x80
+ fffffe00095db2ac:	aa0003f4 	mov	x20, x0
+ fffffe00095db2b0:	395e0008 	ldrb	w8, [x0, #1920]
+ fffffe00095db2b4:	36000ac8 	tbz	w8, #0, 0x25d740c   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x188
+ fffffe00095db2b8:	aa0303f5 	mov	x21, x3
+ fffffe00095db2bc:	aa0203f3 	mov	x19, x2
+ fffffe00095db2c0:	aa0103f7 	mov	x23, x1
+ fffffe00095db2c4:	b4000be1 	cbz	x1, 0x25d7440   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x1bc
+ fffffe00095db2c8:	b4000bd3 	cbz	x19, 0x25d7440   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x1bc
+ fffffe00095db2cc:	b4000bb5 	cbz	x21, 0x25d7440   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x1bc
+ fffffe00095db2d0:	aa0603f9 	mov	x25, x6
+ fffffe00095db2d4:	aa0503fa 	mov	x26, x5
+ fffffe00095db2d8:	aa0403f8 	mov	x24, x4
+ fffffe00095db2dc:	52800bbb 	mov	w27, #0x5d                  	// #93
+ fffffe00095db2e0:	72a0c37b 	movk	w27, #0x61b, lsl #16
+ fffffe00095db2e4:	f94002f0 	ldr	x16, [x23]
+ fffffe00095db2e8:	aa1703f1 	mov	x17, x23
+ fffffe00095db2ec:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095db2f0:	dac11a30 	autda	x16, x17
+ fffffe00095db2f4:	d2803e11 	mov	x17, #0x1f0                 	// #496
+ fffffe00095db2f8:	8b110210 	add	x16, x16, x17
+ fffffe00095db2fc:	f9400208 	ldr	x8, [x16]
+ fffffe00095db300:	aa1703e0 	mov	x0, x23
+ fffffe00095db304:	f2f67250 	movk	x16, #0xb392, lsl #48
+ fffffe00095db308:	d73f0910 	blraa	x8, x16
+ fffffe00095db30c:	aa0003f6 	mov	x22, x0
+ fffffe00095db310:	2a1803e2 	mov	w2, w24
+ fffffe00095db314:	2a1a03e3 	mov	w3, w26
+ fffffe00095db318:	52800ba0 	mov	w0, #0x5d                  	// #93
+ fffffe00095db31c:	72a0c360 	movk	w0, #0x61b, lsl #16
+ fffffe00095db320:	aa1603e1 	mov	x1, x22
+ fffffe00095db324:	aa1903e4 	mov	x4, x25
+ fffffe00095db328:	d2800005 	mov	x5, #0x0                   	// #0
+ fffffe00095db32c:	9401c43b 	bl	0x2648418
+ fffffe00095db330:	370000d8 	tbnz	w24, #0, 0x25d7348   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0xc4
+ fffffe00095db334:	aa1703e0 	mov	x0, x23
+ fffffe00095db338:	9401c280 	bl	0x2647d38   ; -> __ZN27ANEProcedureVariantSelector25determineProcedureVariantER31ANEProcedureVariantSelectorArgsR29ProcedureExecutionLate+0x5c8
+ fffffe00095db33c:	32000001 	orr	w1, w0, #0x1
+ fffffe00095db340:	aa1703e0 	mov	x0, x23
+ fffffe00095db344:	9401c281 	bl	0x2647d48   ; -> __ZN27ANEProcedureVariantSelector25determineProcedureVariantER31ANEProcedureVariantSelectorArgsR29ProcedureExecutionLate+0x5d8
+ fffffe00095db348:	aa1403e0 	mov	x0, x20
+ fffffe00095db34c:	97ffc7b2 	bl	0x25c9214   ; -> __ZN11ANEHWDevice24takeAneSysClockAssertionEv
+ fffffe00095db350:	aa1403e0 	mov	x0, x20
+ fffffe00095db354:	52800001 	mov	w1, #0x0                   	// #0
+ fffffe00095db358:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe00095db35c:	97ffd999 	bl	0x25cd9c0   ; -> __ZN11ANEHWDevice23EnableANEClocksAndPowerEbb
+ fffffe00095db360:	f942d680 	ldr	x0, [x20, #1448]
+ fffffe00095db364:	aa1703e1 	mov	x1, x23
+ fffffe00095db368:	9401c234 	bl	0x2647c38   ; -> __ZN27ANEProcedureVariantSelector25determineProcedureVariantER31ANEProcedureVariantSelectorArgsR29ProcedureExecutionLate+0x4c8
+ fffffe00095db36c:	f90002a0 	str	x0, [x21]
+ fffffe00095db370:	f940be88 	ldr	x8, [x20, #376]
+ fffffe00095db374:	39459508 	ldrb	w8, [x8, #357]
+ fffffe00095db378:	12000102 	and	w2, w8, #0x1
+ fffffe00095db37c:	aa1403e0 	mov	x0, x20
+ fffffe00095db380:	52800001 	mov	w1, #0x0                   	// #0
+ fffffe00095db384:	97ffde5f 	bl	0x25ced00   ; -> __ZN11ANEHWDevice24DisableANEClocksAndPowerEbb
+ fffffe00095db388:	aa1403e0 	mov	x0, x20
+ fffffe00095db38c:	97ffc7c7 	bl	0x25c92a8   ; -> __ZN11ANEHWDevice26removeAneSysClockAssertionEv
+ fffffe00095db390:	f94002a0 	ldr	x0, [x21]
+ fffffe00095db394:	b4000b80 	cbz	x0, 0x25d7504   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x280
+ fffffe00095db398:	f9400010 	ldr	x16, [x0]
+ fffffe00095db39c:	aa0003f1 	mov	x17, x0
+ fffffe00095db3a0:	f2f9b431 	movk	x17, #0xcda1, lsl #48
+ fffffe00095db3a4:	dac11a30 	autda	x16, x17
+ fffffe00095db3a8:	d2802711 	mov	x17, #0x138                 	// #312
+ fffffe00095db3ac:	8b110210 	add	x16, x16, x17
+ fffffe00095db3b0:	f9400208 	ldr	x8, [x16]
+ fffffe00095db3b4:	d2800001 	mov	x1, #0x0                   	// #0
+ fffffe00095db3b8:	f2e77250 	movk	x16, #0x3b92, lsl #48
+ fffffe00095db3bc:	d73f0910 	blraa	x8, x16
+ fffffe00095db3c0:	aa0003e2 	mov	x2, x0
+ fffffe00095db3c4:	f9000260 	str	x0, [x19]
+ fffffe00095db3c8:	d001ac88 	adrp	x8, 0x5b69000   ; -> __ZL20ANEM11Caicos_PerfCtr
+ fffffe00095db3cc:	91318108 	add	x8, x8, #0xc60
+ fffffe00095db3d0:	39400508 	ldrb	w8, [x8, #1]
+ fffffe00095db3d4:	36101048 	tbz	w8, #2, 0x25d75dc   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x358
+ fffffe00095db3d8:	b9418288 	ldr	w8, [x20, #384]
+ fffffe00095db3dc:	71000d1f 	cmp	w8, #0x3
+ fffffe00095db3e0:	54000dc8 	b.hi	0x25d7598  // b.pmore   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x314
+ fffffe00095db3e4:	d37df108 	lsl	x8, x8, #3
+ fffffe00095db3e8:	f0ff5b69 	adrp	x9, 0x1146000   ; -> _sANEDriverClientMethods+0x198
+ fffffe00095db3ec:	913c4129 	add	x9, x9, #0xf10
+ fffffe00095db3f0:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095db3f4:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095db3f8:	8b080130 	add	x16, x9, x8
+ fffffe00095db3fc:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095db400:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095db404:	f9400148 	ldr	x8, [x10]
+ fffffe00095db408:	14000066 	b	0x25d75a0   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x31c
+ fffffe00095db40c:	b9418288 	ldr	w8, [x20, #384]
+ fffffe00095db410:	71000d1f 	cmp	w8, #0x3
+ fffffe00095db414:	54000308 	b.hi	0x25d7474  // b.pmore   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x1f0
+ fffffe00095db418:	d37df108 	lsl	x8, x8, #3
+ fffffe00095db41c:	f0ff5b69 	adrp	x9, 0x1146000   ; -> _sANEDriverClientMethods+0x198
+ fffffe00095db420:	913c4129 	add	x9, x9, #0xf10
+ fffffe00095db424:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095db428:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095db42c:	8b080130 	add	x16, x9, x8
+ fffffe00095db430:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095db434:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095db438:	f9400148 	ldr	x8, [x10]
+ fffffe00095db43c:	14000010 	b	0x25d747c   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x1f8
+ fffffe00095db440:	b9418288 	ldr	w8, [x20, #384]
+ fffffe00095db444:	71000d1f 	cmp	w8, #0x3
+ fffffe00095db448:	540003a8 	b.hi	0x25d74bc  // b.pmore   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x238
+ fffffe00095db44c:	d37df108 	lsl	x8, x8, #3
+ fffffe00095db450:	f0ff5b69 	adrp	x9, 0x1146000   ; -> _sANEDriverClientMethods+0x198
+ fffffe00095db454:	913c4129 	add	x9, x9, #0xf10
+ fffffe00095db458:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095db45c:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095db460:	8b080130 	add	x16, x9, x8
+ fffffe00095db464:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095db468:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095db46c:	f9400148 	ldr	x8, [x10]
+ fffffe00095db470:	14000015 	b	0x25d74c4   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x240
+ fffffe00095db474:	b0fef6e8 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095db478:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095db47c:	f0fef729 	adrp	x9, 0x4be000
+ fffffe00095db480:	91273129 	add	x9, x9, #0x9cc
+ fffffe00095db484:	a90027e8 	stp	x8, x9, [sp]
+ fffffe00095db488:	90fef6e0 	adrp	x0, 0x4b3000
+ fffffe00095db48c:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095db490:	90ff5c41 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095db494:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095db498:	b0fef8a3 	adrp	x3, 0x4ec000   ; -> __ZZN19ANECPULoadThrottler18updateCPULoadScoreEjE11_os_log_fmt+0x39
+ fffffe00095db49c:	91148863 	add	x3, x3, #0x522
+ fffffe00095db4a0:	52800202 	mov	w2, #0x10                  	// #16
+ fffffe00095db4a4:	9401c379 	bl	0x2648288
+ fffffe00095db4a8:	528000a8 	mov	w8, #0x5                   	// #5
+ fffffe00095db4ac:	52805849 	mov	w9, #0x2c2                 	// #706
+ fffffe00095db4b0:	72bc0009 	movk	w9, #0xe000, lsl #16
+ fffffe00095db4b4:	2a080134 	orr	w20, w9, w8
+ fffffe00095db4b8:	14000051 	b	0x25d75fc   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x378
+ fffffe00095db4bc:	b0fef6e8 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095db4c0:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095db4c4:	52805854 	mov	w20, #0x2c2                 	// #706
+ fffffe00095db4c8:	72bc0014 	movk	w20, #0xe000, lsl #16
+ fffffe00095db4cc:	a901d7f3 	stp	x19, x21, [sp, #24]
+ fffffe00095db4d0:	f0fef729 	adrp	x9, 0x4be000
+ fffffe00095db4d4:	91273129 	add	x9, x9, #0x9cc
+ fffffe00095db4d8:	a900dfe9 	stp	x9, x23, [sp, #8]
+ fffffe00095db4dc:	f90003e8 	str	x8, [sp]
+ fffffe00095db4e0:	90fef6e0 	adrp	x0, 0x4b3000
+ fffffe00095db4e4:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095db4e8:	90ff5c41 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095db4ec:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095db4f0:	b0fef8a3 	adrp	x3, 0x4ec000   ; -> __ZZN19ANECPULoadThrottler18updateCPULoadScoreEjE11_os_log_fmt+0x39
+ fffffe00095db4f4:	91158863 	add	x3, x3, #0x562
+ fffffe00095db4f8:	52800202 	mov	w2, #0x10                  	// #16
+ fffffe00095db4fc:	9401c363 	bl	0x2648288
+ fffffe00095db500:	1400003f 	b	0x25d75fc   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x378
+ fffffe00095db504:	d001ac88 	adrp	x8, 0x5b69000   ; -> __ZL20ANEM11Caicos_PerfCtr
+ fffffe00095db508:	91318108 	add	x8, x8, #0xc60
+ fffffe00095db50c:	39400108 	ldrb	w8, [x8]
+ fffffe00095db510:	36100088 	tbz	w8, #2, 0x25d7520   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x29c
+ fffffe00095db514:	aa1403e0 	mov	x0, x20
+ fffffe00095db518:	52800001 	mov	w1, #0x0                   	// #0
+ fffffe00095db51c:	9400c862 	bl	0x26096a4   ; -> __ZN11ANEHWDevice37ANE_ShowSharedMemoryAllocations_gatedEb
+ fffffe00095db520:	b9418288 	ldr	w8, [x20, #384]
+ fffffe00095db524:	71000d1f 	cmp	w8, #0x3
+ fffffe00095db528:	54000168 	b.hi	0x25d7554  // b.pmore   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x2d0
+ fffffe00095db52c:	d37df108 	lsl	x8, x8, #3
+ fffffe00095db530:	f0ff5b69 	adrp	x9, 0x1146000   ; -> _sANEDriverClientMethods+0x198
+ fffffe00095db534:	913c4129 	add	x9, x9, #0xf10
+ fffffe00095db538:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095db53c:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095db540:	8b080130 	add	x16, x9, x8
+ fffffe00095db544:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095db548:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095db54c:	f9400148 	ldr	x8, [x10]
+ fffffe00095db550:	14000003 	b	0x25d755c   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x2d8
+ fffffe00095db554:	b0fef6e8 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095db558:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095db55c:	f0fef729 	adrp	x9, 0x4be000
+ fffffe00095db560:	91273129 	add	x9, x9, #0x9cc
+ fffffe00095db564:	a90027e8 	stp	x8, x9, [sp]
+ fffffe00095db568:	90fef6e0 	adrp	x0, 0x4b3000
+ fffffe00095db56c:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095db570:	90ff5c41 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095db574:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095db578:	b0fef8a3 	adrp	x3, 0x4ec000   ; -> __ZZN19ANECPULoadThrottler18updateCPULoadScoreEjE11_os_log_fmt+0x39
+ fffffe00095db57c:	91172863 	add	x3, x3, #0x5ca
+ fffffe00095db580:	52800202 	mov	w2, #0x10                  	// #16
+ fffffe00095db584:	9401c341 	bl	0x2648288
+ fffffe00095db588:	52805848 	mov	w8, #0x2c2                 	// #706
+ fffffe00095db58c:	72bc0008 	movk	w8, #0xe000, lsl #16
+ fffffe00095db590:	11001914 	add	w20, w8, #0x6
+ fffffe00095db594:	1400001a 	b	0x25d75fc   ; -> __ZN11ANEHWDevice17makeMemoryVisibleEP18IOMemoryDescriptorPyPP20RTBuddyVisibleMemoryb20ANEResourceUsageTypey+0x378
+ fffffe00095db598:	b0fef6e8 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095db59c:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095db5a0:	f94002a9 	ldr	x9, [x21]
+ fffffe00095db5a4:	a901dbe9 	stp	x9, x22, [sp, #24]
+ fffffe00095db5a8:	f0fef729 	adrp	x9, 0x4be000
+ fffffe00095db5ac:	91273129 	add	x9, x9, #0x9cc
+ fffffe00095db5b0:	a9008be9 	stp	x9, x2, [sp, #8]
+ fffffe00095db5b4:	f90003e8 	str	x8, [sp]
+ fffffe00095db5b8:	90fef6e0 	adrp	x0, 0x4b3000
+ fffffe00095db5bc:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095db5c0:	90ff5c41 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095db5c4:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095db5c8:	b0fef8a3 	adrp	x3, 0x4ec000   ; -> __ZZN19ANECPULoadThrottler18updateCPULoadScoreEjE11_os_log_fmt+0x39
+ fffffe00095db5cc:	9117e463 	add	x3, x3, #0x5f9
+ fffffe00095db5d0:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe00095db5d4:	9401c32d 	bl	0x2648288
+ fffffe00095db5d8:	f9400262 	ldr	x2, [x19]
+ fffffe00095db5dc:	395e0288 	ldrb	w8, [x20, #1920]
+ fffffe00095db5e0:	11000760 	add	w0, w27, #0x1
+ fffffe00095db5e4:	92400103 	and	x3, x8, #0x1
+ fffffe00095db5e8:	aa1603e1 	mov	x1, x22
+ fffffe00095db5ec:	d2800004 	mov	x4, #0x0                   	// #0
+ fffffe00095db5f0:	d2800005 	mov	x5, #0x0                   	// #0
+ fffffe00095db5f4:	9401c389 	bl	0x2648418
+ fffffe00095db5f8:	52800014 	mov	w20, #0x0                   	// #0
+ fffffe00095db5fc:	aa1403e0 	mov	x0, x20
+ fffffe00095db600:	a9487bfd 	ldp	x29, x30, [sp, #128]
+ fffffe00095db604:	a9474ff4 	ldp	x20, x19, [sp, #112]
+ fffffe00095db608:	a94657f6 	ldp	x22, x21, [sp, #96]
+ fffffe00095db60c:	a9455ff8 	ldp	x24, x23, [sp, #80]
+ fffffe00095db610:	a94467fa 	ldp	x26, x25, [sp, #64]
+ fffffe00095db614:	a9436ffc 	ldp	x28, x27, [sp, #48]
+ fffffe00095db618:	910243ff 	add	sp, sp, #0x90
+ fffffe00095db61c:	d65f0fff 	retab

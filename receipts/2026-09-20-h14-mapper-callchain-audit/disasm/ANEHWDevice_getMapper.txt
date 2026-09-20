@@ -1,0 +1,24 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+000000000259ccfc <.data+0x259ccfc>:
+ fffffe00095a0cfc:	d503245f 	bti	c
+ fffffe00095a0d00:	f9449000 	ldr	x0, [x0, #2336]
+ fffffe00095a0d04:	d65f03c0 	ret
+ fffffe00095a0d08:	d503245f 	bti	c
+ fffffe00095a0d0c:	f940bc00 	ldr	x0, [x0, #376]
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+000000000260bec0 <.data+0x260bec0>:
+ fffffe000960fec0:	d503245f 	bti	c
+ fffffe000960fec4:	f9449000 	ldr	x0, [x0, #2336]
+ fffffe000960fec8:	d65f03c0 	ret
+ fffffe000960fecc:	d503245f 	bti	c
+ fffffe000960fed0:	f940bc00 	ldr	x0, [x0, #376]

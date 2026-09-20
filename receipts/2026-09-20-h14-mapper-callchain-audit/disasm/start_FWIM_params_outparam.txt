@@ -1,0 +1,31 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000025ff930 <.data+0x25ff930>:
+ fffffe0009603930:	913cf421 	add	x1, x1, #0xf3d
+ fffffe0009603934:	aa1603e0 	mov	x0, x22
+ fffffe0009603938:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe000960393c:	f2e245d0 	movk	x16, #0x122e, lsl #48
+ fffffe0009603940:	d73f0910 	blraa	x8, x16
+ fffffe0009603944:	f940bec8 	ldr	x8, [x22, #376]
+ fffffe0009603948:	b9413901 	ldr	w1, [x8, #312]
+ fffffe000960394c:	f9000bff 	str	xzr, [sp, #16]
+ fffffe0009603950:	390023ff 	strb	wzr, [sp, #8]
+ fffffe0009603954:	9125e2c2 	add	x2, x22, #0x978
+ fffffe0009603958:	b90007ff 	str	wzr, [sp, #4]
+ fffffe000960395c:	390003ff 	strb	wzr, [sp]
+ fffffe0009603960:	aa1603e0 	mov	x0, x22
+ fffffe0009603964:	52800023 	mov	w3, #0x1                   	// #1
+ fffffe0009603968:	528929a4 	mov	w4, #0x494d                	// #18765
+ fffffe000960396c:	72a8cae4 	movk	w4, #0x4657, lsl #16
+ fffffe0009603970:	52800025 	mov	w5, #0x1                   	// #1
+ fffffe0009603974:	52800006 	mov	w6, #0x0                   	// #0
+ fffffe0009603978:	d2800007 	mov	x7, #0x0                   	// #0
+ fffffe000960397c:	97ffcb3e 	bl	0x25f2674   ; -> __ZN11ANEHWDevice27AllocateSharedMemorySurfaceEyPP28ANESharedMemorySurfaceParamsbjbbybiby
+ fffffe0009603980:	b94182c8 	ldr	w8, [x22, #384]
+ fffffe0009603984:	71000d1f 	cmp	w8, #0x3
+ fffffe0009603988:	340004c0 	cbz	w0, 0x25ffa20
+ fffffe000960398c:	54000aa8 	b.hi	0x25ffae0  // b.pmore

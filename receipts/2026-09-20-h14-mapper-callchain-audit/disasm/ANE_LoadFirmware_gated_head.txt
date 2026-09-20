@@ -1,0 +1,49 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000025ebfa8 <.data+0x25ebfa8>:
+ fffffe00095effa8:	d503245f 	bti	c
+ fffffe00095effac:	d503237f 	pacibsp
+ fffffe00095effb0:	d10303ff 	sub	sp, sp, #0xc0
+ fffffe00095effb4:	a9066ffc 	stp	x28, x27, [sp, #96]
+ fffffe00095effb8:	a90767fa 	stp	x26, x25, [sp, #112]
+ fffffe00095effbc:	a9085ff8 	stp	x24, x23, [sp, #128]
+ fffffe00095effc0:	a90957f6 	stp	x22, x21, [sp, #144]
+ fffffe00095effc4:	a90a4ff4 	stp	x20, x19, [sp, #160]
+ fffffe00095effc8:	a90b7bfd 	stp	x29, x30, [sp, #176]
+ fffffe00095effcc:	9102c3fd 	add	x29, sp, #0xb0
+ fffffe00095effd0:	aa0403f5 	mov	x21, x4
+ fffffe00095effd4:	aa0303f7 	mov	x23, x3
+ fffffe00095effd8:	aa0203f8 	mov	x24, x2
+ fffffe00095effdc:	aa0103f6 	mov	x22, x1
+ fffffe00095effe0:	aa0003f4 	mov	x20, x0
+ fffffe00095effe4:	90ff5ba8 	adrp	x8, 0x115f000
+ fffffe00095effe8:	f945f908 	ldr	x8, [x8, #3056]
+ fffffe00095effec:	f9400108 	ldr	x8, [x8]
+ fffffe00095efff0:	f9002fe8 	str	x8, [sp, #88]
+ fffffe00095efff4:	d001abfc 	adrp	x28, 0x5b69000
+ fffffe00095efff8:	9131839c 	add	x28, x28, #0xc60
+ fffffe00095efffc:	39400788 	ldrb	w8, [x28, #1]
+ fffffe00095f0000:	f0fef69a 	adrp	x26, 0x4bf000
+ fffffe00095f0004:	913c9b5a 	add	x26, x26, #0xf26
+ fffffe00095f0008:	36100348 	tbz	w8, #2, 0x25ec070
+ fffffe00095f000c:	b9418288 	ldr	w8, [x20, #384]
+ fffffe00095f0010:	71000d1f 	cmp	w8, #0x3
+ fffffe00095f0014:	54000168 	b.hi	0x25ec040  // b.pmore
+ fffffe00095f0018:	d37df108 	lsl	x8, x8, #3
+ fffffe00095f001c:	b0ff5ae9 	adrp	x9, 0x1149000
+ fffffe00095f0020:	91068129 	add	x9, x9, #0x1a0
+ fffffe00095f0024:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095f0028:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095f002c:	8b080130 	add	x16, x9, x8
+ fffffe00095f0030:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095f0034:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095f0038:	f9400148 	ldr	x8, [x10]
+ fffffe00095f003c:	14000003 	b	0x25ec048
+ fffffe00095f0040:	90fef648 	adrp	x8, 0x4b4000
+ fffffe00095f0044:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095f0048:	a900e3fa 	stp	x26, x24, [sp, #8]
+ fffffe00095f004c:	f90003e8 	str	x8, [sp]
