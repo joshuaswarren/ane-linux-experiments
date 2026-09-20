@@ -1,0 +1,29 @@
+{
+  "status": "saved macOS provider resolved; Linux firmware boot remains unqualified",
+  "capture": {
+    "path": "receipts/2026-09-18-jw14m2-macos27-capture/ioreg-ioservice.plist.gz",
+    "sha256": "e4688fa51b1750e71ee9602dda9e4478a750302053320764b127b74fdd749f37",
+    "host": "JW14M2.local",
+    "capture_time": "2026-09-18T14:25:16Z",
+    "os": "macOS 27.0 build 26A428",
+    "hardware": "Mac14,5 / Apple M2 Max / J414cAP",
+    "provider_path": "Root/J414cAP/AppleARMPE/arm-io/AppleT602xIO/ane0",
+    "provider_class": "AppleARMIODevice",
+    "child": "H11ANE",
+    "child_class": "H11ANEIn",
+    "child_IOProviderClass": "AppleARMIODevice",
+    "ane_type_hex_bytes": "a0000000",
+    "ane_subtype_hex_bytes": "00000000"
+  },
+  "static_branch_evidence": {
+    "kernelcache_sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+    "provider_selection": "InitializeProvider compares RTBuddyService prefix first, then ane. The captured ane0 provider matches the latter. Its successful cast is saved at device+0x810 and returns success without executing the RTBuddy success flag store at0x9600288.",
+    "configuration_selection": "ane-type0xa0 routes through0x9613808..0c to0x9613fc8, sets normalized config+0x7c=0x80 and config+0x1c8=h14g. Captured subtype is0.",
+    "limits": "No live device-private flags or final boot payload were read. This proves the observed provider topology and corresponding static branch, not all subsequent firmware actions. Do not assume every macOS version or device uses this topology."
+  },
+  "impact": "RTBuddy FW_INIT endpoint reconstruction remains valid static evidence for that branch, but is not established as the observed H14g boot route. Prioritize tracing the legacy ANE_Init transport and surface before adding RTBuddy endpoint boot code for this host.",
+  "linux_read_only_check": "Current Linux DT compatible is apple,t6021-ane; ane-type and ane-subtype files are absent. No MMIO or DMA allocation performed.",
+  "regression": "tools/check_h14_provider.py PASS: pinned capture hierarchy, raw property bytes,20 instruction anchors and3 exact strings",
+  "hardware_writes": false,
+  "firmware_boot_authorized": false
+}
