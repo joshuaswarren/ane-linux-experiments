@@ -390,3 +390,16 @@ jw16 restored and verified: llm-inference active, timer active, real
 completion `chatcmpl-3zZcStKe9oF0C4XQENPZPR9GctpPtzPW`. Provenance
 recorded in the window log: wheel `b1147338…`, lib `831c2bc6…`,
 ICD `278f473b…`.
+
+## Kernel-side census instrument — staged (first pass, header caveat)
+
+`analyze_kernel_census.py` (this receipt's .d/ dir, also jw16
+`/var/tmp/gdb/`) attributes profiled busy to kernels by enum name. First
+pass on the decode profiles: header mismatch with the diag wheel leaves
+several `unkNNN` entries (use the wheel-build's own compute.h); resolved
+so far on 8768 dispatches: ReduceGeneralF32 18.3%, HadamardF16 7.3%,
+ElementwiseF16 6.0%, CastU32F32 0.7%; largest unresolved single-kernel
+block `unk25984` (12.8%, n=462 ≈ 11/step, ~124 µs mean — likely the
+qmm/sdpa family, mapping pending). Per-kernel census is the base for the
+kernel-side attribution Main directed; runs offline on the four
+`/var/tmp/gdb/dprof-*.ndjson` profiles, no GPU needed.
