@@ -600,18 +600,28 @@ shapes' baseline; the micro below is what decides.
    shader.
 
 Status: protocol pre-registered here; driver
-`scripts/qmm_weight_curve_micro.py` **v2** rewritten per Main's v1
-review (v1 had: undefined `ident` NameError, lazy un-eval'd inputs, no
-warmup, wall averages mislabeled as dispatch distributions, W=256
-segments visiting only 200 of 256 buffers, and a guessed cols=400
-default). v2: --k/--cols required for device passes (shape never
-guessed; signature check is the validator), inputs materialized before
-timing, warmup segment, complete W cycles per segment, bracketed pass
-reads per-dispatch durations from the profiler ndjson with a fail-first
-count assert, wall averages always labeled `wall_avg_us` distinct from
-`dispatch_us`, and a `--dry-run` that executes the real plan/
-attribution/analysis path without mlx or GPU. Selftest + dry-run PASS
-locally; NOT executed on device — hardware held until Main reviews.
+`scripts/qmm_weight_curve_micro.py` **v2.3**. Per Main review of v2.2:
+ONLY `--pass calibrate` is approved to run — a SMALL diagnostic (same
+(k, cols) shape as the plan, distinct weight buffer, warmup + 3
+calibration calls with sync after each) that establishes the actual
+event lifecycle (joins per eval, flush placement) and same-shape
+routing. Reason strings cannot label sync joins ("explicit" is shared
+by slot-reuse joins; source encoder.h:214), so the strict region layout
+is an EMPIRICAL claim: the diagnostic either proves strict layout
+(j_count == 4, calibration regions 1..3 exactly one tick-ful dispatch
+each, ZERO dispatches in any region beyond — post-plan events or extra
+joins reject) or downgrades to a descriptive NON-STRICT report for
+parser validation. Full W-curve (--pass bracketed/--pass attribute)
+is GATED until the parser is validated against that diagnostic; both
+passes refuse to run until then. mx.sync() is required (mlx.core.sync
+hasattr-guarded). wall timer renamed plan_wall_s — spans plan segments
+only, materialization/warmup excluded, labeled as including the
+python + eval-sync round trip. No performance conclusions are drawn
+from calibration. Selftest covers strict proof and all four
+non-strict downgrades; dry-run green; NOT executed on device — the
+calibration diagnostic awaits Decoder's verified release, records the
+complete raw profile + exact library/source identity, and hardware
+stays held until Main reviews.
 
 ## External corroboration — PR14 (wickthumb, T6020 / M2 Pro / G14S B1) — behavioral evidence ONLY
 

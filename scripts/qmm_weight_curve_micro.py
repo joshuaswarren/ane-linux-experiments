@@ -1,34 +1,40 @@
 #!/usr/bin/env python3
-"""qmm weight-fetch sensitivity micro v2.2 (protocol: receipts/
-2026-09-19-gated-barriers-default-jw16.md; v2.1 review fixes per Main).
+"""qmm weight-fetch sensitivity micro v2.3 (protocol: receipts/
+2026-09-19-gated-barriers-default-jw16.md).
 
-Two-phase bracketed pass (profiler flush lifecycle, from source):
-d events are written to the ndjson ONLY at flush_slot time - a join
-(backend synchronize: eval.cpp:135 -> encoder.cpp:603 join_last_completion
--> on_join flushes all ring slots) or ring-slot reuse. Pending events at
-process exit are LOST (destructor emits "end" without flushing), and
-mid-run reads race the C++ stdio buffer. Therefore:
-  --pass bracketed  runs materialization + warmup + calibration + plan,
-                    ends with mx.sync() (required; refused if missing),
-                    writes only plan metadata.
-  --pass attribute   AFTER exit: parses the complete stream, verifies the
-                     calibration (one qmm call == exactly one dispatch,
-                     same kernel enum - structural proof, not assumed),
-                     end-aligns the plan tail, and writes distributions.
-Fail-first everywhere: short tails, tick-less tail events, calibration
-calls that produced != 1 dispatch, or a tail kernel that differs from
-the calibrated enum abort instead of mislabeling.
+STATUS PER MAIN REVIEW: only --pass calibrate is approved to run (small,
+after Decoder's verified release). It establishes the ACTUAL profiler
+event lifecycle (joins per eval, flush placement) and same-shape routing
+on the device. The full W-curve (--pass bracketed/--pass attribute)
+remains gated until the parser is validated against that diagnostic.
+No performance conclusions are drawn from calibration.
 
-Unbracketed pass: wall-clock per segment, labeled wall_avg_us (includes
-python + eval-sync round trip; it is NOT a GPU dispatch duration).
+Lifecycle facts from source (encoder.h:214, encoder.cpp:157-172,603,
+eval.cpp:135, gpu_profiler.h flush_slot):
+  - synchronize() defaults to reason "explicit"; ring-slot-reuse joins
+    and mx.sync joins are therefore NOT distinguishable by reason.
+  - d events flush only at joins or slot reuse; the destructor emits
+    "end" WITHOUT flushing, so pending events are lost at exit.
+  - mid-run reads race the C++ stdio buffer.
+Hence: same-process layout assumptions are EMPIRICAL claims. The
+calibration pass verifies the one property that must hold under any
+lifecycle and reports the observed layout descriptively:
 
-Shapes are operator-supplied (--k/--cols); the fused multi-group decode
-shape does not map to a clean single (k, cols) and is never guessed.
-The calibration kernel enum is compared against the decode signature
-(DECODE_SIGNATURE) for a PROXY SHAPE verdict.
+  STRICT layout (syncs placed warmup | c1 | c2 | c3):
+    j_count == CALIBRATION_CALLS + 1, every d region r in
+    1..CALIBRATION_CALLS holds EXACTLY one tick-ful dispatch, and NO
+    dispatch exists in any region > CALIBRATION_CALLS (any post-final-
+    sync event, or any extra join carrying one, rejects).
+    Strict-pass proves one qmm call == one dispatch.
+  NON-STRICT (anything else): a descriptive report is emitted for
+    parser validation; nothing is attributed, no verdict is claimed.
 
-Selftest (--selftest) and dry-run (--dry-run) exercise the full
-plan/attribution/verification path GPU-free.
+Calibration uses the SAME (k, cols) shape as the plan with a distinct
+weight buffer, so routing (kernel enum, n, gx) is identical by
+construction; a different shape would route differently and prove
+nothing about plan calls. --k/--cols are operator-supplied, never
+guessed. Unbracketed wall pass is labeled plan_wall_s: it spans the
+plan only (materialization and warmup excluded from the timer).
 """
 import argparse
 import hashlib
@@ -49,11 +55,9 @@ SEED = 20260919
 BOOTSTRAP = 10000
 
 
-# ---------- planning (pure) ----------
+# ---------- planning / analysis (pure) ----------
 
 def build_plan(blocks=BLOCKS, w_series=None, min_steps=MIN_STEPS, seed=SEED):
-    """Per block a seeded permutation of W; per segment whole cycles over
-    all W buffers (touched set == advertised set), >= min_steps calls."""
     w_series = W_SERIES if w_series is None else w_series
     segments = []
     for b in range(blocks):
@@ -67,13 +71,10 @@ def build_plan(blocks=BLOCKS, w_series=None, min_steps=MIN_STEPS, seed=SEED):
 
 
 def chunk_attribution(plan, durations):
-    """Split the end-aligned duration list by the plan. Fail-first on
-    any count mismatch."""
     need = sum(s["steps"] for s in plan)
     if len(durations) != need:
         raise SystemExit(
-            f"attribution: {len(durations)} dispatches, plan expects "
-            f"{need}; refusing to chunk")
+            f"attribution: {len(durations)} dispatches, plan expects {need}")
     out, i = [], 0
     for s in plan:
         out.append({"block": s["block"], "w": s["w"],
@@ -81,80 +82,6 @@ def chunk_attribution(plan, durations):
         i += s["steps"]
     return out
 
-
-# ---------- stream verification (pure; selftest-covered) ----------
-#
-# Flush lifecycle (source): each mx.sync() is one backend synchronize ->
-# one join -> flush of ALL pending slots, recorded as one "j" event.
-# With syncs placed as  [materialize+warmup] sync [calib] sync [calib]
-# sync [calib] sync [plan] sync, the ndjson regions between consecutive
-# "j" events label the segments exactly:
-#   j0..j1: materialize + warmup + calibration call 1 (unbounded)
-#   j1..j2: calibration call 2  -> must be EXACTLY 1 dispatch
-#   j2..j3: calibration call 3  -> must be EXACTLY 1 dispatch
-#   j3..j4: the plan            -> must be EXACTLY plan_total dispatches
-#   after last j: nothing (anything here means unflushed tail events
-#   appeared post-sync, which is a lifecycle violation)
-# One qmm call == one dispatch is therefore PROVEN by the calibration
-# regions, not assumed, and the plan region needs no end-alignment.
-
-def verify_joined_stream(d_events, j_count, plan, calib_calls=CALIBRATION_CALLS):
-    """d_events: file-ordered (region, has_ticks, dur_us, e). j_count:
-    number of j events seen. Requires j_count >= calib_calls + 2.
-    Returns (plan_durations, calib_enum, diag)."""
-    if j_count < calib_calls + 2:
-        raise SystemExit(
-            f"stream: {j_count} join events; the sync-labeled layout "
-            "needs one per mx.sync() (materialize/warmup sync + one per "
-            "calibration call + final plan sync). Missing final sync?")
-    regions = {}
-    for r, h, d, e in d_events:
-        regions.setdefault(r, []).append((h, d, e))
-    # Region r holds events flushed by join r+1: region 0 =
-    # materialize+warmup (unbounded), regions 1..calib_calls = one
-    # calibration call each, region calib_calls+1 = the plan, anything
-    # beyond = post-final-sync violation.
-    calib_regions = list(range(1, calib_calls + 1))
-    if len(regions) - 1 < calib_calls + 1 or j_count < calib_calls + 2:
-        raise SystemExit("stream: fewer regions/joins than sync labels imply")
-    calib_enum = None
-    for r in calib_regions:
-        evs = regions.get(r, [])
-        if len(evs) != 1 or not evs[0][0]:
-            raise SystemExit(
-                f"calibration region {r}: {len(evs)} dispatches, expected "
-                "exactly 1 tick-ful dispatch per qmm call; extra kernels "
-                "per call invalidate attribution")
-        if calib_enum is None:
-            calib_enum = evs[0][2]
-        elif evs[0][2] != calib_enum:
-            raise SystemExit("calibration: kernel changed between calls")
-    plan_region = calib_calls + 1
-    evs = regions.get(plan_region, [])
-    need = sum(s["steps"] for s in plan)
-    if len(evs) != need:
-        raise SystemExit(
-            f"plan region: {len(evs)} dispatches, plan expects {need}")
-    if not all(h for h, _, _ in evs):
-        raise SystemExit(
-            "plan region: tick-less dispatches (pool exhaustion?); "
-            "durations would be silently dropped")
-    if {e for _, _, e in evs} != {calib_enum}:
-        raise SystemExit(
-            f"plan region: kernels {sorted({e for _, _, e in evs})} != "
-            f"calibrated enum {calib_enum}")
-    if regions.get(plan_region + 1):
-        raise SystemExit(
-            "stream: dispatches appear after the final sync's join; "
-            "unlabeled post-plan work invalidates the layout")
-    durations = [d for _, d, _ in evs]
-    diag = {"calib_enum": calib_enum,
-            "region_counts": {str(r): len(v) for r, v
-                              in sorted(regions.items())}}
-    return durations, calib_enum, diag
-
-
-# ---------- analysis (pure) ----------
 
 def quantiles(vals):
     s = sorted(vals)
@@ -178,9 +105,55 @@ def paired_deltas(block_stats):
     return out
 
 
+# ---------- calibration stream verification (pure) ----------
+
+def verify_calibration(d_by_region, j_count, reasons=None):
+    """d_by_region: {region: [(has_ticks, dur_us, enum)]}. Region 0 =
+    everything flushed by the first join (materialize + warmup);
+    regions 1..CALIBRATION_CALLS = one calibration call each; ANY event
+    in a region beyond CALIBRATION_CALLS, or j_count !=
+    CALIBRATION_CALLS + 1, is NON-STRICT.
+
+    Returns (verdict, report). verdict "strict": every calibration
+    region has exactly one tick-ful dispatch with a stable enum - one
+    qmm call == one dispatch is PROVEN. verdict "non-strict": report
+    only; no attribution, no perf claim."""
+    expected_j = CALIBRATION_CALLS + 1
+    report = {"j_count": j_count, "join_reasons": reasons or {},
+              "region_counts": {str(r): len(v) for r, v
+                                in sorted(d_by_region.items())},
+              "region_enums": {str(r): sorted({e for _, _, e in v})
+                               for r, v in sorted(d_by_region.items())}}
+    overflow = {r: v for r, v in d_by_region.items()
+                if r > CALIBRATION_CALLS and v}
+    if j_count != expected_j or overflow:
+        report["verdict"] = "NON-STRICT layout - parser validation required"
+        report["expected_j"] = expected_j
+        report["overflow_regions"] = {str(r): len(v)
+                                      for r, v in overflow.items()}
+        return "non-strict", report
+    calib_enum = None
+    for r in range(1, CALIBRATION_CALLS + 1):
+        evs = d_by_region.get(r, [])
+        if len(evs) != 1 or not evs[0][0]:
+            report["verdict"] = (
+                f"NON-STRICT: calibration region {r} holds {len(evs)} "
+                "dispatches (expected exactly 1 tick-ful)")
+            return "non-strict", report
+        if calib_enum is None:
+            calib_enum = evs[0][2]
+        elif evs[0][2] != calib_enum:
+            report["verdict"] = "NON-STRICT: kernel changed between calls"
+            return "non-strict", report
+    report["verdict"] = ("strict: one qmm call == one dispatch, "
+                         "kernel-stable across calls")
+    report["calibrated_enum"] = calib_enum
+    return "strict", report
+
+
 # ---------- device path ----------
 
-def materialize(k, cols, max_w, calib_cols):
+def materialize(k, cols, max_w):
     import mlx.core as mx
     x = mx.random.normal((1, k)).astype(mx.float16)
     mx.eval(x)
@@ -190,8 +163,8 @@ def materialize(k, cols, max_w, calib_cols):
         wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
         mx.eval(wq), mx.eval(scales), mx.eval(biases)
         weights.append((wq, scales, biases))
-    cw = mx.random.normal((calib_cols, k)).astype(mx.float16)
-    calib = mx.quantize(cw, group_size=64, bits=4)
+    cw = mx.random.normal((cols, k)).astype(mx.float16)  # SAME shape,
+    calib = mx.quantize(cw, group_size=64, bits=4)       # distinct buffer
     mx.eval(calib[0]), mx.eval(calib[1]), mx.eval(calib[2])
     return x, weights, calib
 
@@ -202,91 +175,11 @@ def qmm(x, wq, scales, biases):
                                group_size=64, bits=4)
 
 
-def run_device(plan, k, cols, calib_cols):
-    import mlx.core as mx
-    if not hasattr(mx, "sync"):
-        raise SystemExit(
-            "bracketed pass requires mlx.core.sync to force the final "
-            "profiler flush (pending d events are lost at exit); "
-            "refusing to run on this mlx build")
-    max_w = max(s["w"] for s in plan)
-    x, weights, calib = materialize(k, cols, max_w, calib_cols)
-    for i in range(WARMUP_STEPS):
-        mx.eval(qmm(x, *weights[i % max_w]))
-    mx.sync()  # flush warmup events
-    for _ in range(CALIBRATION_CALLS):  # one call, one sync each
-        mx.eval(qmm(x, *calib))
-        mx.sync()
-    wall, total_t0 = {}, time.perf_counter()
-    for s in plan:
-        t0 = time.perf_counter()
-        for i in range(s["steps"]):
-            mx.eval(qmm(x, *weights[i % s["w"]]))
-        wall.setdefault((s["block"], s["w"]), []).append(
-            (time.perf_counter() - t0) / s["steps"] * 1e6)
-    wall_s = time.perf_counter() - total_t0
-    mx.sync()  # MANDATORY: flush the plan's d events before exit
-    return wall, {"wall_s": wall_s}
-
-
-# ---------- passes ----------
-
-def pass_unbracketed(args, plan):
-    import mlx.core as mx  # fail fast
-    wall, meta = run_device(plan, args.k, args.cols, args.cols + 8)
-    wall_blocks = {}
-    for (b, w), vals in wall.items():
-        wall_blocks.setdefault(w, []).append(statistics.mean(vals))
-    out = {"identity": {"pass": "unbracketed", "k": args.k,
-                        "cols": args.cols, "blocks": BLOCKS,
-                        "min_steps": MIN_STEPS, "warmup": WARMUP_STEPS,
-                        "w_series": W_SERIES, "seed": SEED, **meta},
-           "wall_avg_us_per_block": {str(w): v
-                                     for w, v in wall_blocks.items()},
-           "wall_avg_paired_delta_vs_W1": paired_deltas(wall_blocks),
-           "note": ("wall averages include python + eval-sync round "
-                    "trip per call; NOT GPU dispatch durations")}
-    json.dump(out, open(args.out, "w"), indent=1)
-    print("wrote", args.out)
-
-
-def pass_bracketed(args, plan):
-    import mlx.core as mx  # fail fast
-    try:
-        import mlx
-        ident = {"mlx_version": getattr(mlx, "__version__", "unknown")}
-        lib = os.path.join(os.path.dirname(mlx.__file__), "lib",
-                           "libmlx.so")
-        if os.path.exists(lib):
-            ident["libmlx_sha256"] = hashlib.sha256(
-                open(lib, "rb").read()).hexdigest()
-    except ImportError:
-        ident = {"mlx_version": "absent"}
-    ident.update({"pass": "bracketed-run", "k": args.k, "cols": args.cols,
-                  "calib_cols": args.cols + 8,
-                  "calib_calls": CALIBRATION_CALLS, "blocks": BLOCKS,
-                  "min_steps": MIN_STEPS, "warmup": WARMUP_STEPS,
-                  "w_series": W_SERIES, "seed": SEED,
-                  "total_plan_calls": sum(s["steps"] for s in plan)})
-    wall, meta = run_device(plan, args.k, args.cols, args.cols + 8)
-    ident.update(meta)
-    json.dump(ident, open(args.out, "w"), indent=1)
-    print("run complete (synced); now attribute the complete stream:\n"
-          "  %s --pass attribute --profile %s --plan-meta %s --out OUT"
-          % (sys.argv[0], args.profile, args.out))
-
-
-def pass_attribute(args, plan):
-    ident = {}
-    if args.plan_meta and os.path.exists(args.plan_meta):
-        ident.update(json.load(open(args.plan_meta)))
-    # Parse the complete stream; each d event is labeled with the index
-    # of the join region it sits in (region = number of j events seen
-    # before it). A torn final line is tolerated and cannot create
-    # dispatches.
+def parse_stream(profile_path):
+    """File-ordered (region, has_ticks, dur_us, enum, reason@join)."""
     region, j_count = 0, 0
-    events, meta = [], None
-    for line in open(args.profile):
+    d_by_region, reasons, meta = {}, {}, None
+    for line in open(profile_path):
         if not line.strip().startswith("{"):
             continue
         try:
@@ -299,43 +192,99 @@ def pass_attribute(args, plan):
         elif k == "j":
             j_count += 1
             region = j_count
+            reasons[r.get("reason")] = reasons.get(r.get("reason"), 0) + 1
         elif k == "d":
             has = "t0" in r
-            events.append((region, has,
-                           (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3
-                           if has else None,
-                           r["e"]))
+            d_by_region.setdefault(region, []).append(
+                (has,
+                 (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3 if has
+                 else None,
+                 r["e"]))
     if meta is None:
-        raise SystemExit(f"{args.profile}: no meta record")
-    durations, calib_enum, diag = verify_joined_stream(
-        events, j_count, plan)
-    chunks = chunk_attribution(plan, durations)
-    disp_blocks = {}
-    for c in chunks:
-        disp_blocks.setdefault(c["w"], []).append(statistics.median(c["us"]))
-    match = (calib_enum == DECODE_SIGNATURE["kernel"])
-    ident["signature_check"] = {
-        "calibrated_enum": calib_enum,
-        "decode_kernel": DECODE_SIGNATURE["kernel"],
-        "join_events": j_count,
-        "verdict": "decode-shape kernel" if match else "PROXY SHAPE",
-        "calibration_proven": ("each calibration region holds exactly one "
-                               "tick-ful dispatch; plan region "
-                               "kernel-uniform and count-exact")}
-    out = {"identity": ident,
-           "region_counts": diag["region_counts"],
-           "dispatch_us_p50_per_block": {str(w): v for w, v
-                                         in disp_blocks.items()},
-           "dispatch_us_quantiles_by_w": {
-               str(w): quantiles([u for c in chunks if c["w"] == w
-                                  for u in c["us"]]) for w in W_SERIES},
-           "dispatch_paired_delta_vs_W1": paired_deltas(disp_blocks),
-           "note": ("dispatch_us derive from profiler t0/t1 and include "
-                    "the instrument's per-dispatch overhead; compare "
-                    "against the unbracketed wall pass before any "
+        raise SystemExit(f"{profile_path}: no meta record")
+    return d_by_region, j_count, reasons, meta
+
+
+# ---------- passes ----------
+
+def pass_calibrate(args, k, cols):
+    """SMALL approved diagnostic: materialize + warmup + 3 same-shape
+    calibration calls, sync after each. Verifies strict layout or emits
+    the descriptive report. No performance conclusions."""
+    import mlx.core as mx
+    if not hasattr(mx, "sync"):
+        raise SystemExit("mlx.core.sync missing; flush cannot be forced")
+    x, weights, calib = materialize(k, cols, 1, )
+    for i in range(WARMUP_STEPS):
+        mx.eval(qmm(x, *weights[0]))
+    mx.sync()
+    for _ in range(CALIBRATION_CALLS):
+        mx.eval(qmm(x, *calib))
+        mx.sync()
+    d_by_region, j_count, reasons, meta = parse_stream(args.profile)
+    verdict, report = verify_calibration(d_by_region, j_count, reasons)
+    ident = {"pass": "calibrate", "k": k, "cols": cols,
+             "warmup": WARMUP_STEPS, "calibration_calls": CALIBRATION_CALLS,
+             "shape_note": "calibration uses the SAME (k, cols) as the "
+                           "plan with a distinct weight buffer",
+             "mlx_version": getattr(mx, "__version__", "unknown")
+             if hasattr(mx, "__version__") else "unknown",
+             "device": meta.get("device"), "period_ns": meta.get("period_ns"),
+             "valid_bits": meta.get("valid_bits"),
+             "profile_path": args.profile}
+    try:
+        import mlx
+        lib = os.path.join(os.path.dirname(mlx.__file__), "lib",
+                           "libmlx.so")
+        if os.path.exists(lib):
+            ident["libmlx_sha256"] = hashlib.sha256(
+                open(lib, "rb").read()).hexdigest()
+        ident["mlx_version"] = getattr(mlx, "__version__",
+                                       ident["mlx_version"])
+    except ImportError:
+        pass
+    out = {"identity": ident, "calibration": report,
+           "raw_profile": args.profile,
+           "note": ("lifecycle diagnostic ONLY: establishes event "
+                    "layout and routing; durations here are bracketed "
+                    "instrument values and support NO performance "
                     "conclusion")}
     json.dump(out, open(args.out, "w"), indent=1)
-    print("wrote", args.out, "- verdict:", ident["signature_check"]["verdict"])
+    print(f"wrote {args.out} - verdict: {report['verdict']}")
+
+
+def pass_unbracketed(args, k, cols, plan):
+    import mlx.core as mx
+    if not hasattr(mx, "sync"):
+        raise SystemExit("mlx.core.sync missing; flush cannot be forced")
+    x, weights, calib = materialize(k, cols, max(s["w"] for s in plan))
+    for i in range(WARMUP_STEPS):
+        mx.eval(qmm(x, *weights[0]))
+    mx.sync()
+    wall, total_t0 = {}, time.perf_counter()  # plan only; warmup excluded
+    for s in plan:
+        t0 = time.perf_counter()
+        for i in range(s["steps"]):
+            mx.eval(qmm(x, *weights[i % s["w"]]))
+        wall.setdefault((s["block"], s["w"]), []).append(
+            (time.perf_counter() - t0) / s["steps"] * 1e6)
+    plan_wall_s = time.perf_counter() - total_t0
+    mx.sync()
+    wall_blocks = {}
+    for (b, w), vals in wall.items():
+        wall_blocks.setdefault(w, []).append(statistics.mean(vals))
+    out = {"identity": {"pass": "unbracketed", "k": k, "cols": cols,
+                        "blocks": BLOCKS, "min_steps": MIN_STEPS,
+                        "w_series": W_SERIES, "seed": SEED},
+           "plan_wall_s": plan_wall_s,
+           "plan_wall_s_note": ("spans plan segments only; "
+                                "materialization and warmup excluded; "
+                                "includes python + eval-sync round trip"),
+           "wall_avg_us_per_block": {str(w): v
+                                     for w, v in wall_blocks.items()},
+           "wall_avg_paired_delta_vs_W1": paired_deltas(wall_blocks)}
+    json.dump(out, open(args.out, "w"), indent=1)
+    print("wrote", args.out)
 
 
 # ---------- entry ----------
@@ -344,10 +293,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--k", type=int, default=None)
     ap.add_argument("--cols", type=int, default=None)
-    ap.add_argument("--pass_", choices=["unbracketed", "bracketed",
-                                        "attribute"], dest="pass_name")
+    ap.add_argument("--pass_", choices=["calibrate", "unbracketed",
+                                        "bracketed", "attribute"],
+                    dest="pass_name")
     ap.add_argument("--profile", default="/tmp/qmm_micro.ndjson")
-    ap.add_argument("--plan-meta", dest="plan_meta")
     ap.add_argument("--out")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--selftest", action="store_true")
@@ -355,95 +304,69 @@ def main():
 
     if args.selftest:
         seg = build_plan()
-        total = sum(s["steps"] for s in seg)
-        assert [s["w"] for s in seg if s["block"] == 0] != sorted(W_SERIES)
         assert all(s["steps"] % s["w"] == 0 and s["steps"] >= MIN_STEPS
                    for s in seg)
-
-        def mkstream(plan_durs=(50.0,), tail_enum=400, tail_count=None,
-                     calib_counts=(1, 1, 1), post_plan=0, joins=5,
-                     tickless_plan=0):
-            d = [(0, True, 10.0, 55), (0, False, None, 55)]
-            for r, cnt in enumerate(calib_counts, start=1):
-                d += [(r, True, 30.0, 400)] * cnt
-            n = tail_count if tail_count is not None else total
-            for i in range(n):
-                if i < tickless_plan:
-                    d.append((4, False, None, tail_enum))
-                else:
-                    d.append((4, True, 50.0, tail_enum))
-            d += [(5, True, 1.0, 55)] * post_plan
-            return d, joins
-
-        durs, enum, diag = verify_joined_stream(*mkstream(), plan=seg)
-        assert len(durs) == total and enum == 400
-        assert diag["region_counts"]["4"] == total
-        for kw, frag in (
-                ({"calib_counts": (1, 2, 1)}, "calibration region 2"),
-                ({"tail_count": total - 1}, "plan region"),
-                ({"tickless_plan": 1}, "tick-less"),
-                ({"tail_enum": 401}, "kernels"),
-                ({"post_plan": 1}, "after the final sync"),
-                ({"joins": 3}, "join events")):
-            st = mkstream(**kw)
-            try:
-                verify_joined_stream(st[0], st[1], plan=seg)
-                raise SystemExit(f"selftest: {frag} case must fail")
-            except SystemExit as e:
-                assert any(t in str(e) for t in
-                           ("calibration", "region", "final sync",
-                            "join events")), e
+        strict = {0: [(True, 10.0, 55), (False, None, 55)],
+                  1: [(True, 30.0, 400)], 2: [(True, 30.0, 400)],
+                  3: [(True, 30.0, 400)]}
+        v, rep = verify_calibration(strict, 4)
+        assert v == "strict" and rep["calibrated_enum"] == 400
+        for bad, jc, frag in (
+                ({**strict, 4: [(True, 1.0, 55)]}, 5, "post-plan event"),
+                (strict, 6, "extra join"),
+                ({0: [], 1: [(True, 30.0, 400)], 2: [(True, 30.0, 400),
+                                                    (True, 30.0, 400)],
+                  3: [(True, 30.0, 400)]}, 4, "two dispatches in a call"),
+                ({0: [], 1: [(False, None, 400)], 2: [(True, 30.0, 400)],
+                  3: [(True, 30.0, 400)]}, 4, "tick-less calibration")):
+            v, rep = verify_calibration(bad, jc)
+            assert v == "non-strict", (frag, rep)
         d = paired_deltas({1: [10.0] * BLOCKS, 16: [16.0] * BLOCKS})
         assert d[16]["delta_us"] > 5.5
-        print("PASS: plan, join-region calibration proof, plan-region "
-              "count/tick/kernel checks, post-sync and join-count "
-              "rejection, deltas")
+        print("PASS: strict layout proof, non-strict downgrade "
+              "(post-plan event, extra join, extra dispatch per call, "
+              "tick-less), deltas")
         return
 
     if not args.out:
         ap.error("--out is required")
     if not args.pass_name:
-        ap.error("--pass_ {unbracketed,bracketed,attribute} is required")
-    if args.pass_name == "bracketed" and not args.dry_run and not \
-            os.environ.get("MLX_OMARCHY_GPU_PROFILE"):
-        ap.error("bracketed pass needs MLX_OMARCHY_GPU_PROFILE set before "
-                 "process start")
-    if not args.dry_run and args.pass_name in ("unbracketed", "bracketed") \
-            and ((args.k is None) != (args.cols is None) or args.k is None):
-        ap.error("--k and --cols required for device passes (shape is "
-                 "operator-supplied, never guessed)")
+        ap.error("--pass_ {calibrate,unbracketed,bracketed,attribute} is "
+                 "required")
+    if args.pass_name in ("calibrate", "unbracketed", "bracketed") and \
+            args.k is None:
+        ap.error("--k and --cols are operator-supplied and required "
+                 "(shape is never guessed)")
 
     plan = build_plan()
     if args.dry_run:
-        total = sum(s["steps"] for s in plan)
-        d = ([(0, True, 10.0, 55), (0, False, None, 55)]
-             + [(r, True, 30.0, 400) for r in (1, 2, 3)]
-             + [(4, True, 50.0, 400)] * total)
-        durs, enum, diag = verify_joined_stream(d, 5, plan)
-        chunks = chunk_attribution(plan, durs)
-        by_w = {}
-        for c in chunks:
-            by_w.setdefault(c["w"], []).append(quantiles(c["us"])["p50"])
-        out = {"dry_run": True, "segments": len(plan),
-               "total_plan_calls": total,
-               "region_counts": diag["region_counts"],
-               "calibrated_enum": enum,
-               "dispatch_us_p50_by_block": {str(w): v
-                                            for w, v in by_w.items()},
-               "paired_delta_vs_W1": paired_deltas(by_w)}
+        strict = {0: [(True, 10.0, 55)], 1: [(True, 30.0, 400)],
+                  2: [(True, 30.0, 400)], 3: [(True, 30.0, 400)]}
+        v, rep = verify_calibration(strict, 4)
+        nonstrict = dict(strict)
+        nonstrict[7] = [(True, 1.0, 55)]
+        v2, rep2 = verify_calibration(nonstrict, 5)
+        assert v == "strict" and v2 == "non-strict"
+        out = {"dry_run": True, "strict_case": rep,
+               "nonstrict_case_verdict": rep2["verdict"],
+               "plan_segments": len(plan)}
         json.dump(out, open(args.out, "w"), indent=1)
-        print(f"dry-run OK: verification+attribution path green; "
-              f"wrote {args.out}")
+        print(f"dry-run OK: verification path green; wrote {args.out}")
         return
 
-    if args.pass_name == "unbracketed":
-        pass_unbracketed(args, plan)
+    if args.pass_name == "calibrate":
+        pass_calibrate(args, args.k, args.cols)
+    elif args.pass_name == "unbracketed":
+        pass_unbracketed(args, args.k, args.cols, plan)
     elif args.pass_name == "bracketed":
-        pass_bracketed(args, plan)
+        raise SystemExit(
+            "bracketed full-curve pass is GATED: run --pass calibrate "
+            "first and validate the parser against the observed event "
+            "lifecycle (Main directive; no curve until then)")
     else:
-        if not args.plan_meta:
-            ap.error("attribute needs --plan-meta from the bracketed run")
-        pass_attribute(args, plan)
+        raise SystemExit(
+            "attribute pass is GATED with the bracketed curve until the "
+            "calibration diagnostic validates the parser")
 
 
 if __name__ == "__main__":
