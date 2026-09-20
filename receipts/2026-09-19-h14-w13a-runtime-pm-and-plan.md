@@ -618,3 +618,37 @@ Consequences:
 - The class resolves under key "FirmwareLoaded" (0x978) and key 0x40000
   (0x980) through the same resolver 0x95f6674 — it IS the "resolved
   object" that the FWIM request produces.
+
+### Addendum 6: exact object layout + proven/unproven boundary
+
+Init (0x957a2d0) zeroes the object +0x00 through +0x88 byte-by-byte.
+
+Object layout by offset:
+```
++0x00: vtable ptr (8B) — overwritten by OSMetaClass after memset
++0x08: u32 — refcount/flags
++0x10: u64 — expansion data or reserved
++0x18: u64 ← BOOT COMPOSE READS THIS (RVBAR composition source)
++0x20: u64 ← LOADER PATH READS THIS (surface base arithmetic +0x38 ref)
++0x28..+0x88: additional zeroed fields
+```
+
+PROVEN:
+- init zeroes +0x00 through +0x88 (the whole object)
+- boot compose reads +0x18 as u64
+- loader reads +0x38 in the surface base arithmetic
+- factory calls gMetaClass vtable+0xa8 (alloc), instance vtable+0xa8
+  (init), vtable+0x28 (setValue/second init) — three vcalls in sequence
+
+UNPROVEN:
+- whether +0x18 = params.field_0 or a wrapper-header field
+  (requires sizeof(OSObject) proof for this kernel build — 
+  arm64 Asahi kernel's libkern OSObject may be 0x10 or 0x18 bytes)
+- the exact semantic of the value at +0x18 (entry address? flags?
+  status?) — depends on ANESharedMemorySurfaceParams field layout
+
+NEXT PROOF STEP: find the first non-vtable WRITE to +0x18 after the
+OSValueObject is allocated — that is the params field producer. 
+Candidates: (a) the vtable+0x28 call in the factory (if it's 
+setValue(T&)), (b) the FWIM completion handler, (c) the
+AllocateSharedMemorySurface_gated caller.
