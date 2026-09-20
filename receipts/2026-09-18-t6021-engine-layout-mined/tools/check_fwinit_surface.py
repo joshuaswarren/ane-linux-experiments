@@ -30,10 +30,18 @@ anchors = {
     0x964C3C8: 0xF0FF58B1,  # stub GOT page 0x8163000
     0x964C3CC: 0x91228231,  # GOT offset 0x8a0
     0xBC4DD20: 0x33000822,  # kalloc_data preserves flags bits0..2
+    0x9612A60: 0x91043016,  # x22 = config+0x10c
+    0x9612B48: 0xB0FEF788,  # constant page 0x7503000
+    0x9612B4C: 0xFD46AD00,  # d0 = constant8 at0x7503d58
+    0x9612B50: 0xFD0066C0,  # d0 -> config+[0x1d4,0x1dc)
+    0x9612B70: 0xB941DA89,  # load config+0x1d8
+    0x9612B74: 0xB9000009,  # store template word0
 }
 for vm, expected in anchors.items():
     assert struct.unpack_from("<I", data, vm - base)[0] == expected, hex(vm)
 assert struct.unpack_from("<Q", data, 0x81638A0 - base)[0] == 0x8011000004C49D10
+assert 0x10C + 0xC8 == 0x1D4
+assert struct.unpack_from("<2I", data, 0x7503D58 - base) == (128, 0)
 expected = [
     (1, 0x10000, 0x494E4954, "FW_INIT", 1),
     (2, 0x40000, 0x54324643, "T2F_CMD", 0),
