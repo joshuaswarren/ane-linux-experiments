@@ -323,6 +323,102 @@ def pass_unbracketed(args, k, cols, plan):
     print("wrote", args.out)
 
 
+def pass_report(args, plan):
+    """Offline: verify a PRESERVED calibration stream and emit the
+    report. Flush convention from source (gpu_profiler.h on_join):
+    the j record is emitted BEFORE flush_slot writes that join's d
+    lines, so the d lines following the r-th j line are the flush work
+    of sync r. Region 1 therefore holds the warmup straggler (last
+    warmup dispatch whose slot was not reused before the sync);
+    regions 2..(CALIBRATION_CALLS+1) must hold exactly one tick-ful
+    dispatch each with one stable enum (the calibration calls); ANY
+    dispatch after the last join's flush work rejects."""
+    ident = {}
+    if args.plan_meta and os.path.exists(args.plan_meta):
+        ident.update(json.load(open(args.plan_meta)))
+    else:
+        ident["run_identity"] = ("device-side identity block was not "
+                                 "written (v2.3 identity crash after "
+                                 "syncs); library sha + wheel version "
+                                 "recorded in receipt from prior "
+                                 "provenance checks")
+    seq, meta = [], None
+    for line in open(args.profile):
+        if not line.strip().startswith("{"):
+            continue
+        try:
+            r = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        k = r.get("k")
+        if k == "meta":
+            meta = r
+        elif k == "j":
+            seq.append(("j", r.get("reason")))
+        elif k == "d":
+            has = "t0" in r
+            seq.append(("d", has,
+                        (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3
+                        if has else None, r["e"]))
+    if meta is None:
+        raise SystemExit(f"{args.profile}: no meta record")
+    # group d lines by their preceding j line (0 = before first j)
+    regions, cur = {}, 0
+    for item in seq:
+        if item[0] == "j":
+            cur += 1
+        else:
+            regions.setdefault(cur, []).append(item[1:])
+    report = {"j_count": cur,
+              "reasons": sorted({i[1] for i in seq if i[0] == "j"}),
+              "region_counts": {str(r): len(v) for r, v
+                                in sorted(regions.items())},
+              "region_enums": {str(r): sorted({e for _, _, e in
+                                               regions.get(r, [])})
+                               for r in sorted(regions)}}
+    # strict verdict requires: 4 joins; regions 2,3,4 exactly one
+    # tick-ful dispatch each, one enum across them; region 1 = warmup
+    # stragglers (>=0, tick-ful); no region beyond 4 with events.
+    strict_ok = (cur == CALIBRATION_CALLS + 1
+                 and all(len(regions.get(r, [])) == 1 for r in (2, 3, 4))
+                 and all(all(h for h, *_ in regions.get(r, []))
+                         for r in (2, 3, 4))
+                 and len({e for r in (2, 3, 4)
+                          for _, _, e in regions[r]}) == 1
+                 and all(h for h, *_ in regions.get(1, []))
+                 and not any(regions.get(r) for r in regions if r > 4))
+    calib_enum = (regions[2][0][2] if strict_ok else None)
+    ident["signature_check"] = {
+        "calibrated_enum": calib_enum,
+        "decode_kernel": DECODE_SIGNATURE["kernel"],
+        "decode_route": "fused multi-weight (QmmVecQ4MultiSubgroupF16)",
+        "verdict": ("decode-shape kernel" if
+                    calib_enum == DECODE_SIGNATURE["kernel"] else
+                    "PROXY ROUTE - single-row python route selects a "
+                    "different kernel than the decode fused route; full "
+                    "curve through this route would measure the wrong "
+                    "kernel")}
+    out = {"identity": {**ident, "profile_path": args.profile,
+                        "device": meta.get("device"),
+                        "period_ns": meta.get("period_ns"),
+                        "valid_bits": meta.get("valid_bits"),
+                        "label": meta.get("label")},
+           "calibration": {"verdict": "strict (under source flush "
+                                       "convention: j emitted before its "
+                                       "flush work)" if strict_ok
+                                       else "NON-STRICT",
+                           "region_counts": report["region_counts"],
+                           "region_enums": report["region_enums"],
+                           "join_reasons": report["reasons"],
+                           "j_count": cur},
+           "note": ("lifecycle diagnostic: establishes event layout and "
+                    "routing only; durations are bracketed instrument "
+                    "values and support NO performance conclusion")}
+    json.dump(out, open(args.out, "w"), indent=1)
+    print("wrote", args.out, "- verdict:", out["calibration"]["verdict"],
+          "|", ident["signature_check"]["verdict"])
+
+
 # ---------- entry ----------
 
 def main():
@@ -330,9 +426,10 @@ def main():
     ap.add_argument("--k", type=int, default=None)
     ap.add_argument("--cols", type=int, default=None)
     ap.add_argument("--pass_", choices=["calibrate", "unbracketed",
-                                        "bracketed", "attribute"],
+                                        "bracketed", "attribute", "report"],
                     dest="pass_name")
     ap.add_argument("--profile", default="/tmp/qmm_micro.ndjson")
+    ap.add_argument("--plan-meta", dest="plan_meta")
     ap.add_argument("--out")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--selftest", action="store_true")
@@ -399,6 +496,8 @@ def main():
             "bracketed full-curve pass is GATED: run --pass calibrate "
             "first and validate the parser against the observed event "
             "lifecycle (Main directive; no curve until then)")
+    elif args.pass_name == "report":
+        pass_report(args, plan)
     else:
         raise SystemExit(
             "attribute pass is GATED with the bracketed curve until the "
