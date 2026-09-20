@@ -1,0 +1,17 @@
+# RAW MIRROR — validate_loop 5-seed recert run, captured verbatim from the
+# recert hold execution (ssh jw16mbp1-linux, 2026-09-19 ~19:4x CDT).
+# Command: /var/tmp/tdt-pairload-ab-reb/venv/bin/python \
+#   ~/src/mlx-omarchy/receipts/2026-09-15-tdt-gpu-loop/derivation/validate_loop.py \
+#   /var/tmp/tdt-pairload-ab-reb/pkg-cand \
+#   ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+# Identity: candidate pkg overlay (measured shader bytes), libmlx16
+# bbad05a26b32a8ee, wheel 4ef82f5d...1353ce. Preceding [rtmod] lines are the
+# box's own runtime monitor noise, part of the captured stream.
+[rtmod] COMMIT-NOOP
+seed 20260915 scale 0.5: PASS emissions 0 vs 0 ref 465.9 ms loop 228.6 ms window_ok True
+seed 20260916 scale 1.0: PASS emissions 0 vs 0 ref 17.0 ms loop 36.4 ms window_ok True
+seed 20260917 scale 2.0: PASS emissions 0 vs 0 ref 14.1 ms loop 32.1 ms window_ok True
+seed 20260918 scale 4.0: PASS emissions 1 vs 1 ref 31.0 ms loop 64.3 ms window_ok True
+seed 20260919 scale 8.0: PASS emissions 0 vs 0 ref 18.3 ms loop 40.7 ms window_ok True
+FAILURES: 0
+[rtmod] COMMIT-NOOP

@@ -1,0 +1,29 @@
+== PR tip 3def32c0b41b033ff624c7851d7d8eb692b12898, tree 84f2f06858f9acb4d9caab2431a3390df392321f
+== measured battery tree: 557db2de / f77ce1fd — overlay/tools/coreml diff vs tip is EMPTY (exercised bytes identical; tip adds the guard test only)
+== 2026-09-19T19:26:04-05:00 host omp-studio-local
+test_carriers_roundtrip_fp16_bits (__main__.LstmRebalanceTest.test_carriers_roundtrip_fp16_bits)
+Native, float-carried, and uint-carried slots preserve fp16 bits. ... ok
+test_item_mapping_covers_every_lane_gate_exactly_once (__main__.LstmRebalanceTest.test_item_mapping_covers_every_lane_gate_exactly_once)
+The 1024-thread mapping covers all (lane, gate) items exactly once. ... ok
+test_budget_derived_from_declarations (__main__.RenderedShaderGuard.test_budget_derived_from_declarations)
+Byte sum comes from the shader's own declarations, not constants. ... ok
+test_guard_is_load_bearing (__main__.RenderedShaderGuard.test_guard_is_load_bearing)
+Failing-first: each targeted mutation breaks the guard. ... ok
+test_rendered_shader_carries_rebalance (__main__.RenderedShaderGuard.test_rendered_shader_carries_rebalance) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.245s
+
+OK
+
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.005s
+
+OK
+
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
