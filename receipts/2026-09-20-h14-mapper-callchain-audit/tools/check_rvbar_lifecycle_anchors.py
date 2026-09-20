@@ -178,5 +178,13 @@ chk('J10 host = off + kva', 0xFFFFFE00095EBBE0, 0x8B080120)
 chk('J11 image ptr -> dev+0x3FC0', 0xFFFFFE00095EACFC, 0xF91FE260)
 chk('J12 shifted FWIM -> dev+0x3FC8', 0xFFFFFE00095EACF0, 0xB93FCA69)
 
+# --- K. >=0x21 fail-closed epilogue (pass9b correction) ---
+chk('K1 b -> vm 0x95ea330 epilogue', 0xFFFFFE00095EA2C4, 0x1400001B)
+chk('K2 sub w21,#0x1e (0xE00002BC)', 0xFFFFFE00095EA330, 0x51007AB5)
+chk('K3 stack-canary ldur', 0xFFFFFE00095EA334, 0xF85A03A8)
+chk('K4 mov x0,x21 (return code)', 0xFFFFFE00095EA34C, 0xAA1503E0)
+chk('K5 retab', 0xFFFFFE00095EA36C, 0xD65F0FFF)
+chk('K6 poll A timeout -> epilogue', 0xFFFFFE00095EB178, 0x17FFFC6F)
+
 print('ALL OK' if ok else 'SOME FAILED')
 sys.exit(0 if ok else 1)
