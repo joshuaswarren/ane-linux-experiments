@@ -180,3 +180,37 @@ dmesg-after.txt:54-80` (jwm1-linux, same 0x26bc04000 block, same guard code):
      `ps act` must reach **0xffffff** with `ANERD pd[0..4]` lines present and
      `ps verify err=0` — journal lines 891-909 of this boot are the failure
      template to diff against.
+
+## Addendum 3 — exact archived-DT comparison (Main directive; carve = ground truth)
+
+The September working payload DTB was carved from the archived ESP snapshot
+`esp-audit-20260919/esp-live-1848.img` (m1n1 `boot.bin`, FDT at file offset
+0x8c12e9f): `carved-8c12e9f.dtb`, sha256
+`1a72bc81c03cf0b548e9f959a778accb60d03ba6777131c04c28ef67ec2fd1fc`
+(69,046 B). The currently DEPLOYED dtb (sha256 `033a3fc4…`) was pulled back
+and decompiled; both were normalized and diffed
+(`anediag.DEPLOYED.txt` / `anediag.HISTORICAL.txt`, committed).
+
+Functional deltas (deployed → historical):
+
+1. ane node `power-domains`: `<ane_sys>, <ane_sys_cpu>` →
+   `<ane_set1 @c010>, <ane_set2 @c018>, <ane_set3 @c020>, <ane_set4 @c028>,
+   <ane_set5 @c030>` (five providers; sets parent ane_base @c008 →
+   ane_sys_cpu @c000 → ane_sys @470).
+2. Missing pmgr pwrstate nodes restored: `ane_base @c008` (parent
+   ane_sys_cpu) and `ane_set1..5 @c010..c030` (parent ane_base) — these are
+   the raisers whose absence left ps words 1..5 at 0.
+3. **Each ANE DART gains `apple,dma-range = <0x00 0x00 0x00 0xe0000000>`**
+   (absent in the deployed dtb). This caps/positions the DMA window to the
+   3.5 GiB the ANE DARTs service (matches m1n1 iova_range (0x4000,
+   0xe0000000)); its absence makes the first-exec wrong-buffer DMA
+   hypothesis concrete, on top of the gated islands.
+4. Node name `ane@26a000000` → `ane@26bc04000` (unit-address convention;
+   reg identical).
+
+Everything else is semantically identical (engine reg/size, IRQs, reg-names,
+iommus 3×sid0, ane_sys/ane_sys_cpu pwrstates, darts' reg/IRQ/compatible).
+
+The mirror patch (`patch_j293_ane.py` in the DT-derivation receipt dir, latest
+revision) already produces exactly this shape; it remains STAGED — no deploy
+until Main's review + the amended guard tip.

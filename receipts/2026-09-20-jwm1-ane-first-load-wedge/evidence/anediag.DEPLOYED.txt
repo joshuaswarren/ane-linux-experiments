@@ -1,0 +1,50 @@
+--- DEPLOYED: ane@26a000000
+		ane@26a000000 {
+			compatible = "apple,t8103-ane";
+			interrupt-names = "ane";
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a0 0x04>;
+			iommus = <0xc6 0x00 0xc7 0x00 0xc8 0x00>;
+			power-domains = <0x82 0xc5>;
+			reg = <0x02 0x6bc04000 0x00 0x24000>;
+			reg-names = "engine";
+			status = "okay";
+		};
+
+--- DEPLOYED: ane@26bc04000 ABSENT
+
+--- DEPLOYED: iommu@26b800000
+		iommu@26b800000 {
+			#iommu-cells = <0x01>;
+			compatible = "apple,t8103-dart";
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a1 0x04>;
+			phandle = <0xc6>;
+			power-domains = <0x82>;
+			reg = <0x02 0x6b800000 0x00 0x4000>;
+			status = "okay";
+		};
+
+--- DEPLOYED: iommu@26b810000
+		iommu@26b810000 {
+			#iommu-cells = <0x01>;
+			compatible = "apple,t8103-dart";
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a1 0x04>;
+			phandle = <0xc7>;
+			power-domains = <0x82>;
+			reg = <0x02 0x6b810000 0x00 0x4000>;
+			status = "okay";
+		};
+
+--- DEPLOYED: iommu@26b820000
+		iommu@26b820000 {
+			#iommu-cells = <0x01>;
+			compatible = "apple,t8103-dart";
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a1 0x04>;
+			phandle = <0xc8>;
+			power-domains = <0x82>;
+			reg = <0x02 0x6b820000 0x00 0x4000>;
+			status = "okay";
+		};

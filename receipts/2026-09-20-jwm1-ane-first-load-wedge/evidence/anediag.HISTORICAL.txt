@@ -1,0 +1,53 @@
+--- HISTORICAL: ane@26a000000 ABSENT
+
+--- HISTORICAL: ane@26bc04000
+		ane@26bc04000 {
+			compatible = "apple,t8103-ane";
+			reg = <0x02 0x6bc04000 0x00 0x24000>;
+			reg-names = "engine";
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a0 0x04>;
+			interrupt-names = "ane";
+			iommus = <0x9c 0x00 0x9d 0x00 0x9e 0x00>;
+			power-domains = <0x9f 0xa0 0xa1 0xa2 0xa3>;
+			status = "okay";
+		};
+
+--- HISTORICAL: iommu@26b800000
+		iommu@26b800000 {
+			compatible = "apple,t8103-dart";
+			reg = <0x02 0x6b800000 0x00 0x4000>;
+			#iommu-cells = <0x01>;
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a1 0x04>;
+			power-domains = <0x83>;
+			apple,dma-range = <0x00 0x00 0x00 0xe0000000>;
+			status = "okay";
+			phandle = <0x9c>;
+		};
+
+--- HISTORICAL: iommu@26b810000
+		iommu@26b810000 {
+			compatible = "apple,t8103-dart";
+			reg = <0x02 0x6b810000 0x00 0x4000>;
+			#iommu-cells = <0x01>;
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a1 0x04>;
+			power-domains = <0x83>;
+			apple,dma-range = <0x00 0x00 0x00 0xe0000000>;
+			status = "okay";
+			phandle = <0x9d>;
+		};
+
+--- HISTORICAL: iommu@26b820000
+		iommu@26b820000 {
+			compatible = "apple,t8103-dart";
+			reg = <0x02 0x6b820000 0x00 0x4000>;
+			#iommu-cells = <0x01>;
+			interrupt-parent = <0x0f>;
+			interrupts = <0x00 0x1a1 0x04>;
+			power-domains = <0x83>;
+			apple,dma-range = <0x00 0x00 0x00 0xe0000000>;
+			status = "okay";
+			phandle = <0x9e>;
+		};
