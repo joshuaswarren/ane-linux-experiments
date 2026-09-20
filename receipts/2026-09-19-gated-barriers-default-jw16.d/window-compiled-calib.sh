@@ -116,7 +116,13 @@ systemctl stop llm-benchmark-recovery.timer
 systemctl stop llm-inference.service
 sleep "$SLEEP_UNIT"
 
-exec 9>"$LOCK"
+# LOCK contract (fs.protected_regular): the lock file already exists
+# (owner joshuawarren, sticky /tmp) - O_CREAT on it is EACCES even for
+# root. Open READ-ONLY for flock (exclusive flock works on a read-only
+# fd). NEVER replace/chown/unlink the lock or disable the protection.
+[[ -e $LOCK && ! -L $LOCK ]] \
+  || { echo "FAIL: $LOCK missing or is a symlink"; exit 20; }
+exec 9<"$LOCK"
 flock -n 9 || { echo "FAIL: lock busy"; exit 23; }
 echo "LOCK-HELD pid=$$"
 

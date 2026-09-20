@@ -19,6 +19,7 @@ WRAPPER="$HERE/../receipts/2026-09-19-gated-barriers-default-jw16.d/window-compi
 TD=$(mktemp -d)
 trap 'rm -rf "$TD"' EXIT
 mkdir -p "$TD/bin" "$TD/gdb"
+: > "$TD/lock"
 echo 1 > "$TD/svc_state"
 echo 1 > "$TD/timer_state"
 : > "$TD/units.log"
