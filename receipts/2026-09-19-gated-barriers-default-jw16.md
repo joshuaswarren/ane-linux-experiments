@@ -444,8 +444,10 @@ no-tick events, op-indexed mislabel, raw-tick totals; new: green).
 Follow-up kernel-side window should target the qmm Q4 GEMV
 (QmmVecQ4MultiSubgroupF16) and the qmm prefill coopmat variants — not
 CastBoolF32, which does not fire in these legs. The jw16 copy at
-`/var/tmp/gdb/analyze_kernel_census.py` is still the buggy version;
-pull from this repo before any further census run.
+`/var/tmp/gdb/analyze_kernel_census.py` was replaced with the fixed
+version on 2026-09-19 (commit 2825b4b: rejects negative enum, meta-less
+files, zero totals; remote output sha-verified identical to local on
+dprof-default-short).
 
 ## QmmVecQ4MultiSubgroupF16 review — read-only, attribution closed, kernel-side followup named
 
