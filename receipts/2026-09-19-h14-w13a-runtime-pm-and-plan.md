@@ -438,9 +438,11 @@ No speculative writes; nothing executed since the approved staging probe.
 - Object: [dev+0x978] = OSValueObject<ANESharedMemorySurfaceParams>
   (addendum 3j); +0x18 = params field 0 (u32 status); +0x38 = the
   shared-surface base field (loader path).
-- OPEN next chunk: identify the provider class/method behind
-  vtable+0x10 (walk the arg object to its vtable symbol), then the
-  full ANESharedMemorySurfaceParams layout.
+- RESOLVED: the provider method is vtable+0x10 called with x1=0 on
+  the resource object — its return value (w0/u32) is stored at
+  obj+0x18 (see addendum 3k). The boot-fn compose path now has
+  a complete def-use chain from the FWIM submission to the RVBAR
+  compose (see addendum 5).
 
 ### Addendum 3l: wrapper-vs-payload PARTIALLY resolved (with DartAudit)
 
@@ -556,3 +558,31 @@ from the ZinCompute RT op descriptions in this kext region, not from
 selene string xrefs. The 0x104790/0x104544 keyed container stores the
 per-client result blocks. DART mapping is NOT in this region — it
 happens elsewhere (or the surface mapping is the W14 dma_alloc path).
+### Addendum 5: dev+0x978 def-use chain PINNED (backward register trace)
+
+Backward def-use from the store `str x16, [x22]` at 0x95f7118 (where
+x22 = the out_slot = &dev+0x978):
+
+```
+0x95f70e4: bl 0x95f7314(x19=session, x1=&sp+0x70)   ; result getter
+0x95f70ec: ldr x16, [x8, #0x10]!                    ; x16 = session+0x10
+                                                     ; (pre-indexed: x8 += 0x10)
+0x95f70f0: cbz x16, -> skip                          ; null check
+0x95f70f4-fc: autda x16, ctx(0x70f1)                ; PAC authenticate
+0x95f7100-0x95f710c: xpacd + cmp x16, x17           ; integrity check
+                                                     ; (brk on mismatch)
+0x95f7114: ldr x22, [sp+0x50]                       ; x22 = out_slot
+0x95f7118: str x16, [x22]                           ; STORE to dev+0x978
+```
+
+**PINNED**: dev+0x978 = the authenticated pointer stored at
+session+0x10. The session is the object built by the
+SetupFWInitBootArgs/program-setup machinery (0x95f7314 is the getter).
+The boot compose reads `[dev+0x978]+0x18` = `session_object+0x18`.
+
+If session_object = OSValueObject<Params> (libkern OSObject header
+0x18), then +0x18 = params payload field 0 — a u64 at the START of
+ANESharedMemorySurfaceParams. The producer of THAT field is inside
+the SetupFWInitBootArgs machinery (the code that fills the params
+value object before storing it at session+0x10) — which is the
+H14DartAudit lane's SetupFWInitBootArgs walk continuation.
