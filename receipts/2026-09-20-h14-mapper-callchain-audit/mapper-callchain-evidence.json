@@ -1177,5 +1177,13 @@
   },
   "fn_0x86EC_caller": "no direct bl/b callers in selene __TEXT (full scan) - indirect/registered invocation; non-gating",
   "mmio_writes_this_lane": "none"
+ },
+ "pass6g": {
+  "scope": "exact offset-0 store trace into returned Params (per Main hard gate) - honest partial close",
+  "object_correction": "dev+0x988/0x978 hold OSValueObject<ANESharedMemorySurfaceParams>* created in AllocateSharedMemorySurface_gated (create at 0x95f684c); obj+0x18 = params VALUE+0x08 under the OSValueObject layout (vptr/refcount 0x10 header); the raw params struct itself is built inside createANESurface (0x95a9ac4, called gated+0x124) and passed to setValue",
+  "params_value_0x00": "the value+0x00 store lives inside createANESurface's body (0x95a9ac4, span large; str candidates at 0x95a9bd0/0x95a9c1c are stack spilling) - dedicated def-use pass REQUIRED; not closed this round",
+  "pool_0x00": "dev+0x980 = DeviceMemoryManager INSTANCE inline state (DMA base +0x18, CPU base +0x38, count +0x68 confirmed by publish reads); +0x00 = manager instance first field written by DDM init (not the gated params); Allocate walks the free-list via [manager+0]; pool word0 = manager state, producer not pinned this round",
+  "page_size_numeric_pin": "gated fn builds divide-by-0x4000 via magic reciprocal 0x20c49ba5e353f7cf (umulh+lsr#4) at 0x95f6c2c-0x95f6ca4 - page size 0x4000 is ARITHMETICALLY PINNED kext-side (raw: 0xf81a03bf stur xzr,[x29,-96]; 0xd10183a1 sub x1,x29,#0x60; 0x940155a1 bl; 0x9bd87d08 umulh; 0xd344fd08 lsr #4 x3; movk x24,#0xf7cf/#0xe353/#0x9ba5/#0x20c4 sequence at 0x95f6c30-0x95f6c40)",
+  "mmio_writes_this_lane": "none"
  }
 }
