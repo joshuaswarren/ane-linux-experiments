@@ -190,5 +190,12 @@
    "B_honor_retained_entry": "iommu_map staged fw AT the retained IOVA (in-window; 4KiB-aligned by fold mask; verify entry bits vs rvbar_entry_ok from the owner read64) -> bit0-skip path becomes valid, pollA meaningful, RVBAR untouched."
   },
   "mmio_writes_this_lane": "none"
+ },
+ "pass12_p0_stall_root_cause": {
+  "verdict": "P0/P-1 stall root cause (LIVE-EVIDENCE-BACKED, not hypothesis): the boot attempts issued eng-aperture writes WITHOUT the W8 write-grant unlock sequence. Live jw14m2 proof: W8 receipt (2026-09-19-h14-w8-write-grant.md, commit d090681) - m1n1 apply_static_tunables() led by base+0x0<-0x10 then 11 more writes: VERDICT APERTURE_UNLOCKED, no SError; W9 receipt - grant verified live (SCRATCH nonzero latch) but PARTIAL: MBI send class still SErrors.",
+  "required_sequence": "verbatim m1n1 fw/ane.py apply_static_tunables order, as FIRST eng-aperture writes of every attempt (after ps-raise, which genpd already provides): base+0x0<-0x10 (unlock), 0x38<-0x50020, 0x3c<-0xa0030, 0x400<-0x40010001, 0x600<-0x1ffffff, 0x738<-0x200020, 0x798<-0x100030, 0x7f8<-0x100000a, 0x900<-0x101, 0x410<-0x1100, 0x420<-0x1100, 0x430<-0x1100. Then (kext order) pre-CPU table 0xb38/0xb98/0xbf8 <- 0x01ff01ff.",
+  "partial_grant_caveat": "W9: the aperture grant is PARTIAL - MBI send class still SErrors after the unlock. Expect any MBI/doorbell send to be the next stall class; SCRATCH/engine-class writes work behind the grant.",
+  "attempt3_fit": "attempt 3 last phase P-1 grant-tunables (17:33:54) before P1: grant/tunable writes without the leading base+0x0<-0x10 unlock stall identically to the earlier P0 table writes - one common mechanism explains both.",
+  "implementation_note": "boot adapter: insert the 12-tunable unlock as new first eng-aperture writes (before P0), order verbatim; W8/W9 receipts are the live citations; keep >=0x21 fail-closed and ACK-gated booted unchanged."
  }
 }
