@@ -112,14 +112,27 @@ def regress(d, entries):
     return ok
 
 
+HEADER_PIN = (0, 28, 2336, 2336, 0, 1, 0)
+
+
 def main():
+    d0 = open(KC, 'rb').read()
+    hdr = struct.unpack_from("<7I", d0, 0x7740000)
+    if hdr != HEADER_PIN:
+        print(f"FAIL: KC fixup header {hdr} != pinned {HEADER_PIN}")
+        return 1
+    print(f"header pin OK: {hdr}")
     d, chains, entries = walk()
     print(f"chains {chains}, entries {len(entries)}")
     segok = all(
         any(s[1] <= KC_TEXT_VM + e["target"] < s[1] + s[2] for s in SEGMENTS)
         for _, e in entries
     )
-    print(f"targets inside known KC segments: {segok}")
+    lv0 = all(e["cacheLevel"] == 0 for _, e in entries)
+    print(f"targets inside known KC segments: {segok}; all cacheLevel 0: {lv0}")
+    if not (segok and lv0):
+        print("FAIL: segment/cacheLevel validation")
+        return 1
     if "--regress" in sys.argv:
         if not regress(d, entries):
             sys.exit(1)
