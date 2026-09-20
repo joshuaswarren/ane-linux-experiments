@@ -106,3 +106,15 @@ Missing-and-must-recover items (owned archives searched, absent): the
 September patched `t8103-j293.dtb` (recoverable only via the provider
 re-derivation already staged), and the historical worker binary
 (recoverable only via the pinned-source rebuild above).
+
+## Addendum 2 — Step 5 provisioning DONE via fleetcopy (staged; execution gated on Main)
+
+Copied jw16 → jwm1 (tar relay, hashes verified by size, 2026-09-20 ~17:1x UTC):
+`/var/tmp/V071REL-venv` (115M, v0.7.1 runtime venv at the same absolute path),
+`/var/tmp/encwall-v071/base` (runner), `/var/tmp/jw16-conv-place/bundles-conv`
+(ANE bundles), `/var/tmp/jw16-oproj-place/{mlx-omarchy-ane-worker,
+libane-strict-fill.so}`, `/var/tmp/MelFrontendPerf/spirv-ab.3KDGHZ` (SPIRV
+cache), `/var/tmp/EncoderParityAne/capture` (golden capture). Execution of
+the Parakeet E2E on the ANE remains gated on Main until the Steps 3-4 island
+gate closes (golden regeneration or semantics RE) per the standing
+"Steps 3-4 close first" ordering.
