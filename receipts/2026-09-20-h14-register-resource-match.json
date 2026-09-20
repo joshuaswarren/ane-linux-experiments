@@ -1,0 +1,24 @@
+{
+  "status": "Linux DT resources match saved macOS IODeviceMemory; no MMIO attempted",
+  "linux_source": "jw14m2-linux:/sys/firmware/devicetree/base/soc/ane@284000000/reg",
+  "linux_reg_sha256": "1dc2afd870c1dd2699c287edc8b5921f2ff2946eb2c6df04d6aee4c4a09d66e9",
+  "linux_reg_hex": "00000002840000000000000002000000000000028e0800000000000000004034000000028e08c0000000000000004000",
+  "linux_reg_names": ["engine", "pmgr", "set"],
+  "macos_source": "receipts/2026-09-18-jw14m2-macos27-capture/ioreg-ioservice.plist.gz, ane0 IODeviceMemory",
+  "resources": [
+    {"base": "0x284000000", "size": "0x2000000"},
+    {"base": "0x28e080000", "size": "0x4034"},
+    {"base": "0x28e08c000", "size": "0x4000"}
+  ],
+  "engine_bounds_checked": [
+    {"offset": "0x01050000", "width": 8, "purpose": "RVBAR"},
+    {"offset": "0x01400044", "width": 4, "purpose": "H14g device+0x4a0 control"},
+    {"offset": "0x01840048", "width": 4, "purpose": "init address low32"},
+    {"offset": "0x01840064", "width": 4, "purpose": "scratch7 handshake"}
+  ],
+  "static_preparation": "Legacy ANE_Init calls InitANEScratchRegisters0x960f2a8 before RVBAR. That helper writes32 zero to all eight device-selected scratch offsets+0x438 through+0x454. Caller then writes1 through offset+0x450. This is not a power/reset proof.",
+  "accessor_mapping": "ANERegisterControl constructor calls provider slot0x710 with index from device+0x8e8, obtains map address through map slot0x138 and stores it at accessor+0x18. Runtime selected index and full power/reset lifecycle remain unqualified.",
+  "regression": "check_h14_provider.py accepts optional Linux reg binary; live48-byte DT matched captured resources, alignment and bounds passed; one-byte mutated resource was rejected with AssertionError",
+  "limits": "Matching resource descriptions and in-bounds offsets do not prove safe powered MMIO access, correct initialization ordering, runtime mapping index or firmware boot success.",
+  "hardware_writes": false
+}

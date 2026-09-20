@@ -20,6 +20,13 @@ for name in ("J414cAP", "AppleARMPE", "arm-io", "AppleT602xIO", "ane0"):
 assert node["IOObjectClass"] == "AppleARMIODevice"
 assert node["ane-type"] == bytes.fromhex("a0000000")
 assert node["ane-subtype"] == bytes(4)
+resources = [(0x284000000, 0x2000000), (0x28E080000, 0x4034), (0x28E08C000, 0x4000)]
+assert node["IODeviceMemory"] == [[{"address": address, "length": size}] for address, size in resources]
+for offset, width in ((0x1050000, 8), (0x1400044, 4), (0x1840048, 4), (0x1840064, 4)):
+    assert offset % width == 0 and offset + width <= resources[0][1]
+if len(sys.argv) > 2:
+    linux_reg = Path(sys.argv[2]).read_bytes()
+    assert linux_reg == b"".join(struct.pack(">QQ", *resource) for resource in resources)
 children = node["IORegistryEntryChildren"]
 assert len(children) == 1
 assert children[0]["IORegistryEntryName"] == "H11ANE"
