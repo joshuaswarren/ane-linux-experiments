@@ -262,9 +262,21 @@ vtable+0xa8, init 0xb699598: `[this+0x10] = desc`, object create via
 vtable+0x20) → getter at **vtable+0x138 (single u64 arg 0) returns the
 device-visible address** stored through `u64* iova_out`
 (`0x95db3c4 str x0, [x19]`), object through `visible_out`
-(`0x95db36c str x0, [x21]`). Exact class label of GOT 0x8a1d668 pending
-multi-cache-level base decode; the create(+0x20)/getter(+0x138) shape
-matches the ANE-side IODMACommand usage byte-for-byte.
+(`0x95db36c str x0, [x21]`). Correction (Main): GOT 0x8a1d668 holds a
+**function pointer, not a class/vtable pointer** — its target
+0xc46e7c4 disassembles as a **segment-output callback**
+(`ubfiz x8, x4, #4, #0x20; add x9, x3, w8; stp x1, x2, [x9]; mov w0, #1`
+— writes (address, length) pairs into an output array indexed by x4)
+passed as the callback argument to the DMA-command factory reached via
+auth-stub 0xb6dfed8 (GOT 0x8a1d1c0). The constructed object is then
+driven with **prepare vtable+0x148 (auth 0xb91, x1=descriptor, w2=1) and
+execute vtable+0x178 (auth 0x3968, out-params sp+0x18/sp/sp+0x14)** —
+byte-identical slot usage and PAC context values to the ANE kext's own
+IODMACommand handling (0x95dad80/0x95dadc0) — i.e. the RTBuddy path
+constructs the same IODMACommand-class object, runs prepare+execute, and
+the +0x138 getter (single u64 arg) reads back the mapped segment address.
+C++ symbol label for the class remains absent from the mined artifacts;
+the behavioral identity is what carries the Linux correspondence.
 
 **Linux correspondence (actual code; mechanism-level, not API-prescriptive):**
 on Linux both macOS branches converge to one mechanism — a dart-ane0-visible
