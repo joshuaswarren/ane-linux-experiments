@@ -386,3 +386,17 @@ N submits); (c) Apple-tool hwx + a per-task container splitter (new
 tooling, format work in h13_td.py/hwxv2-to-anec terms). Route (b) needs
 no compiler change and is testable the moment any single-program compile
 of select/matmul/add/softmax at [1,8,375,375] exists.
+
+## 10a. Route correction (EncoderCompilerCoverage, same hour)
+
+The §10 route ranking is superseded by direct evidence: census-branch HEAD
+(e115371+) contains the slice-lastdim lowering — ac_head2.mil compiles
+under `--format anec`, which emits manifest.json + program-0..4.anec
+DIRECTLY (no HWX writer, no splitter needed; the __TEXT writer bug is
+hwx-format-only and off the critical path). Remaining work is the
+ane-export adapter: scalar runtime inputs unsupported (fill respelled
+full-shape [1,8,375,375]), cond must be pre-broadcast (certified
+island-select spelling), and a real emitter defect it caught (manifest
+out=4 vs stream ch6 — binding fix in flight). Handler alignment queued on
+my side: a_fill full-shape + cond pre-broadcast spellings, and the
+broadcast_to marshal cost will be measured in the pricing window.
