@@ -198,5 +198,19 @@
   "partial_grant_caveat": "W9: the aperture grant is PARTIAL - MBI send class still SErrors after the unlock. Expect any MBI/doorbell send to be the next stall class; SCRATCH/engine-class writes work behind the grant.",
   "attempt3_fit": "attempt 3 last phase P-1 grant-tunables (17:33:54) before P1: grant/tunable writes without the leading base+0x0<-0x10 unlock stall identically to the earlier P0 table writes - one common mechanism explains both.",
   "implementation_note": "boot adapter: insert the 12-tunable unlock as new first eng-aperture writes (before P0), order verbatim; W8/W9 receipts are the live citations; keep >=0x21 fail-closed and ACK-gated booted unchanged."
+ },
+ "pass13_m1n1_reference_chain": {
+  "source": "receipts/2026-09-18-t6021-engine-layout-mined/m1n1_fw_ane.py (repo-captured m1n1 fw/ane.py; m1n1 = cold-boot-proven ANE bring-up reference; note: its ps_map addresses are t8103 - the SEQUENCE transfers to t6021, the addresses do not).",
+  "m1n1_sequence_quoted": {
+   "line19": "self.p.pmgr_adt_power_enable('/arm-io/ane')  # enables the node's ADT power-gates (ANE-SYS-V 473 among them)",
+   "line20": "self.p.pmgr_adt_power_enable('/arm-io/dart-ane')",
+   "line24": "self.apply_static_tunables()  # FIRST eng writes: base+0x0<-0x10 unlock + 11 tunables (comment: 'this cost me a solid week')",
+   "lines37_45": "DART: iova_range=(0x4000,0xe0000000); dart.initialize(); TTBR HACK: dart_regs[1].TTBR[0,0] = dart_regs[2].TTBR[0,0] = dart0's ttbr0 - 'DMA fails w/o' (second/third dart-ane0 DARTs need TTBRs programmed or ASC DMA fails)",
+   "power_up_L66_72": "pmgr_adt_power_enable x2 -> power_down() (0x300 reversed) -> write 0xf to ps_base+0x0..0x30 step 8 -> tm.reset()"
+  },
+  "p0p1_stall_explanation": "Linux genpd raises the 8 named ps-ctls (2e0,4000-4030) but has NO domain for ADT gate 473 (ANE-SYS-V) which m1n1 raises via pmgr_adt_power_enable before the tunables. The first eng write (unlock base+0x0<-0x10, or the table writes without it) stalls with 473 unraised - consistent with attempt 3 stopping inside P-1a and the earlier P0 table-write stalls.",
+  "additional_gotcha": "m1n1 DART TTBR patch for dart-ane0 darts[1]/[2] ('DMA fails w/o') - verify the Linux apple_dart driver programs TTBRs for all three dart-ane0 DARTs before expecting ASC DMA.",
+  "diagnostic_for_owner": "before next attempt: raise the unmodeled domain(s) - either via the AFR/ANE-SYS-V ps-ctl (window(reg 0x2c)+0x100/0x0, base pinned from the ADT reg list) or via an ADT-power-gates-equivalent raise - THEN the unlock+tunables, then the proven order. Decouple: attempt with ONLY unlock+tunables+SCRATCH read to test the stall clears.",
+  "mmio_writes_this_lane": "none"
  }
 }
