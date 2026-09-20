@@ -1,0 +1,49 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000025fc6b8 <.data+0x25fc6b8>:
+ fffffe00096006b8:	aa1603e0 	mov	x0, x22
+ fffffe00096006bc:	aa1303e1 	mov	x1, x19
+ fffffe00096006c0:	97fffe65 	bl	0x25fc054   ; -> __ZN11ANEHWDevice18InitializeProviderEP9IOService
+ fffffe00096006c4:	360008a0 	tbz	w0, #0, 0x25fc7d8   ; -> __ZN11ANEHWDevice5startEP9IOService+0x1f0
+ fffffe00096006c8:	f0ff5aa0 	adrp	x0, 0x1153000   ; -> __ZZN13OSValueObjectIP24ANEFirmwareCommandBufferE4initEvE20kalloc_type_view_478+0x10
+ fffffe00096006cc:	9114c000 	add	x0, x0, #0x530
+ fffffe00096006d0:	94012c7a 	bl	0x26478b8   ; -> __ZN27ANEProcedureVariantSelector25determineProcedureVariantER31ANEProcedureVariantSelectorArgsR29ProcedureExecutionLate+0x148
+ fffffe00096006d4:	f9440ac1 	ldr	x1, [x22, #2064]
+ fffffe00096006d8:	395e02c8 	ldrb	w8, [x22, #1920]
+ fffffe00096006dc:	12000103 	and	w3, w8, #0x1
+ fffffe00096006e0:	aa1603e2 	mov	x2, x22
+ fffffe00096006e4:	940055d2 	bl	0x2611e2c   ; -> __ZN17ANEHWDeviceConfigC1EPK16AppleARMIODeviceP11ANEHWDeviceb
+ fffffe00096006e8:	f900bec0 	str	x0, [x22, #376]
+ fffffe00096006ec:	b9408408 	ldr	w8, [x0, #132]
+ fffffe00096006f0:	b90182c8 	str	w8, [x22, #384]
+ fffffe00096006f4:	aa1603e0 	mov	x0, x22
+ fffffe00096006f8:	97ffff35 	bl	0x25fc3cc   ; -> __ZN11ANEHWDevice10setANENameEv
+ fffffe00096006fc:	aa1603e0 	mov	x0, x22
+ fffffe0009600700:	97ff79b9 	bl	0x25dade4   ; -> __ZN11ANEHWDevice26ANE_DebugWorkProcessorInitEv
+ fffffe0009600704:	f940bec8 	ldr	x8, [x22, #376]
+ fffffe0009600708:	b9407d09 	ldr	w9, [x8, #124]
+ fffffe000960070c:	34000b49 	cbz	w9, 0x25fc874   ; -> __ZN11ANEHWDevice5startEP9IOService+0x28c
+ fffffe0009600710:	b903e2df 	str	wzr, [x22, #992]
+ fffffe0009600714:	39461109 	ldrb	w9, [x8, #388]
+ fffffe0009600718:	360000c9 	tbz	w9, #0, 0x25fc730   ; -> __ZN11ANEHWDevice5startEP9IOService+0x148
+ fffffe000960071c:	b940850a 	ldr	w10, [x8, #132]
+ fffffe0009600720:	b9412d09 	ldr	w9, [x8, #300]
+ fffffe0009600724:	5100052b 	sub	w11, w9, #0x1
+ fffffe0009600728:	6b0b015f 	cmp	w10, w11
+ fffffe000960072c:	54001841 	b.ne	0x25fca34  // b.any   ; -> __ZN11ANEHWDevice5startEP9IOService+0x44c
+ fffffe0009600730:	52875409 	mov	w9, #0x3aa0                	// #15008
+ fffffe0009600734:	8b0902da 	add	x26, x22, x9
+ fffffe0009600738:	395e12c9 	ldrb	w9, [x22, #1924]
+ fffffe000960073c:	360000e9 	tbz	w9, #0, 0x25fc758   ; -> __ZN11ANEHWDevice5startEP9IOService+0x170
+ fffffe0009600740:	395e0ec9 	ldrb	w9, [x22, #1923]
+ fffffe0009600744:	370000a9 	tbnz	w9, #0, 0x25fc758   ; -> __ZN11ANEHWDevice5startEP9IOService+0x170
+ fffffe0009600748:	f944cec9 	ldr	x9, [x22, #2456]
+ fffffe000960074c:	b940c12a 	ldr	w10, [x9, #192]
+ fffffe0009600750:	321c014a 	orr	w10, w10, #0x10
+ fffffe0009600754:	b900c12a 	str	w10, [x9, #192]
+ fffffe0009600758:	3945cd08 	ldrb	w8, [x8, #371]
+ fffffe000960075c:	37000048 	tbnz	w8, #0, 0x25fc764   ; -> __ZN11ANEHWDevice5startEP9IOService+0x17c

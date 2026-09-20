@@ -387,5 +387,117 @@
   },
   "anchors": "tools/check_power_anchors.py - 33/33 PASS",
   "mmio_writes_this_lane": "none"
+ },
+ "pass5": {
+  "scope": "init-payload field consumers (selene) + field table (kext producers) + dev+0x784 gate resolution; minimal-valid payload assessment",
+  "fw_consumption_selene": {
+   "pool_dva_fetch": "fn 0x71A4: READ32 idx1 (0x7404)<<32 | READ32 idx0 (0x7440), orr 0x7498 -> pool DVA",
+   "content_fetch": "0x74ac-0x74c8: object-2 [vm 0x1EC648] slot byte40 (salt 0xef41) called with the composed pool DVA -> returns pointer x0 to the suballoc content (fw-visible mapping)",
+   "fields_consumed": "0x74cc-0x7544: reads returned struct at +8,+16,+24,+32,+40,+48(u32),+56,+64,+72..88(ldp x10,x9),+88,+96,+104(u32 -> w23 = count) - i.e. header offsets [0x08]..[0x68] INCLUSIVE are all consumed; count [0x68] lands in w23 (64) and gates the template loop",
+   "template_loop": "vm 0x7614 (pass1 section 13.5): copies words from x28+0x6C, count w23 - confirms [0x6C..0x16C) template consumption",
+   "ack": "write32(idx0, w19 result) 0x77a0; write32(idx7, 0x08042006) 0x77c8",
+   "consequence": "ALL header fields [0x00]..[0x68] are consumed by firmware - zeros for unknown fields are NOT valid unless proven equal to kext values"
+  },
+  "field_table": [
+   {
+    "off": "0x00",
+    "w": "u64",
+    "producer": "*(dev+0x978 Params +0x18) = FWIM staging DVA",
+    "site": "0x95ea794-0x95ea7a0",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x08",
+    "w": "u64",
+    "producer": "*(dev+0x988 obj +0x24)",
+    "site": "0x95ea7a8-0x95ea7b0",
+    "status": "producer value open: dev+0x988 only zero-stored (0x9608eb4 power-off, 0x9612b9c init) - installer open"
+   },
+   {
+    "off": "0x10",
+    "w": "u64",
+    "producer": "duplicate of [0x08] (x9 reused)",
+    "site": "0x95ea7c4",
+    "status": "same as 0x08"
+   },
+   {
+    "off": "0x18",
+    "w": "u64",
+    "producer": "0x10000000 - *(config[dev+0x376]+312) (size field)",
+    "site": "0x95ea7b4-0x95ea7c4",
+    "status": "formula CLOSED; config size value = ANEHeap size config"
+   },
+   {
+    "off": "0x20",
+    "w": "u64",
+    "producer": "*([sp+136] obj +0x24) or 0",
+    "site": "0x95ea7cc-0x95ea7e0",
+    "status": "object identity open (sp+136 = another surface params)"
+   },
+   {
+    "off": "0x28",
+    "w": "u32",
+    "producer": "w22 zero-extended (ANE_Init local, upstream)",
+    "site": "0x95ea7dc-0x95ea7e0",
+    "status": "w22 origin not dumped - open"
+   },
+   {
+    "off": "0x30",
+    "w": "u32",
+    "producer": "dev+0x990 u32; written by ANE_LoadFirmware_gated 0x95f0180 (w23 = load-progress word, config size bound-check at 0x95f016c-0x95f017c); zeroed initializeANEProperties 0x9612b00",
+    "site": "0x95ea870-0x95ea874",
+    "status": "value = last fw-load chunk state - CLOSED as producer, semantics open"
+   },
+   {
+    "off": "0x38",
+    "w": "u64",
+    "producer": "0 (stp xzr,xzr)",
+    "site": "0x95ea878",
+    "status": "CLOSED zero"
+   },
+   {
+    "off": "0x40",
+    "w": "u64",
+    "producer": "0",
+    "site": "0x95ea878",
+    "status": "CLOSED zero"
+   },
+   {
+    "off": "0x48",
+    "w": "u64",
+    "producer": "0",
+    "site": "0x95ea87c",
+    "status": "CLOSED zero"
+   },
+   {
+    "off": "0x68",
+    "w": "u32",
+    "producer": "64 (count of template words)",
+    "site": "0x95ea90c-0x95ea910",
+    "status": "CLOSED"
+   },
+   {
+    "off": "0x6C..0x16C",
+    "w": "256B",
+    "producer": "copy of dev+0x998 template (kalloc_data 0x100 Z_ZERO; word0=config+0x1d8=0; +0xC0 word 0 on legacy)",
+    "site": "0x95ea934-0x95ea97c",
+    "status": "CLOSED: zeros ARE the legacy template (mutation 0x9600748-54 unreachable on observed flags)"
+   }
+  ],
+  "gate_784_resolution": {
+   "premise_correction": "start 0x9600738 is a READ of dev+0x784 bit0 (ldrb; tbz), NOT a mutation; the gated action is template[0xC0] |= 0x10 (0x9600748-0x9600754) requiring dev+0x784 bit0 SET and dev+0x783 bit0 CLEAR - unreachable on observed values",
+   "writers_scan": "dev+0x784 written ONLY by ANEHWDevice::C2 zeroing (0x959b268, dup 0x959bcf4); dev+0x783/0x780-0x783 likewise zero-only (str wzr [x19,#1920] covers 0x780..0x783); NO set sites in kext text",
+   "consequence": "dev+0x784 bit0 = 0 always -> pre-CPU table loop gate ALWAYS OPEN -> the 3 engine writes (0xb38/0xb98/0xbf8 <- 0x01ff01ff) are REQUIRED on every EnableANEClocksAndPower non-HAL invocation; ordering vs start moot since the gate cannot flip"
+  },
+  "provider_equivalence": {
+   "closed": "enableDeviceClock/enableDevicePower are AppleARMIODevice vtable slots 0x8a8/0x8b0 (0x8c6f2f8/0x8c6f408); ANE calls them with enable=1 and cached arg dev+0x8F0 before the pre-CPU table",
+   "open": "internal gate-index -> PMGR ID arrays are runtime-populated; Linux equivalent is the 8 pmgr-pwrctl genpds from DT (incl power-controller@2e0 = kext PMGR+0x2e0) - Linux driver should attach the DT domains rather than emulate AppleARMIODevice"
+  },
+  "minimal_valid_payload": "derivable except [0x08]/[0x10] (needs dev+0x988 object identity + its +0x24 meaning) and [0x20]/[0x28] (locals not fully dumped) - flagged missing prerequisites; zeros NOT safe for [0x08]/[0x10]",
+  "snippets_pass5": [
+   "disasm/ANE_Init_suballoc_header.txt (full)",
+   "disasm/start_config_seq_784_read.txt"
+  ],
+  "mmio_writes_this_lane": "none"
  }
 }
