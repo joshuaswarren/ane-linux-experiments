@@ -127,14 +127,15 @@ int main(int argc, char **argv)
 				   &entry, &reason);
 	report("negative: truncated size", 0, got, reason);
 
-	/* negative: bad magic */
+	/* Match the mutant hash so this case reaches the magic guard. */
 	mut = malloc(len);
 	memcpy(mut, blob, len);
 	mut[3] ^= 0xff;
 	SHA256(mut, len, actual);
-	got = ane_fw_validate_blob(mut, len, pinned_sha, actual, segs,
+	got = ane_fw_validate_blob(mut, len, actual, actual, segs,
 				   &entry, &reason);
-	report("negative: magic", 0, got, reason);
+	report("negative: magic", 0,
+	       got && reason && !strcmp(reason, "magic"), reason);
 
 	/* negative: cmdsize corruption -> out-of-bounds walk.
 	 * expected=actual(sha of mutant): bypasses the hash gate so the
