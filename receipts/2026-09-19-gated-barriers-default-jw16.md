@@ -332,8 +332,10 @@ lineage):
 
 **VERDICT: NO-LAND.** The micro's −32% does not transfer to real decode:
 the fully-dependent tiny-kernel chain exposes the full drain latency
-between launches, while real decode kernels are heavy enough that the
-drain overlaps execution — the barrier-flavor delta vanishes. ctx is
+between launches, while real decode kernels may be heavy enough that the
+drain overlaps execution — HYPOTHESIS for the non-transfer, not proven by
+this no-gain alone (measured decode-leg timing on hkccad76a required;
+analyzer staged: /var/tmp/gdb/analyze_decode_attrib.py). ctx is
 slightly negative (same direction as termA's designed-set ctx −3.17%,
 now also with usc). The G13X barrier-shape lever is now bounded from
 three directions: termA (designed set: short+13/ctx−3.17, installed
