@@ -1,0 +1,32 @@
+{
+  "schema": "jwm1-ane-ladder-steps3-4/1",
+  "date": "2026-09-20",
+  "lane": "Jwm1AnePlan (Main-authorized autonomous ladder Steps 3-5; exclusive inode-27 lock; GPU rerun complete and released)",
+  "step3_islands": {
+    "status": "E2E EXECUTES + DETERMINISTIC; BYTE-EXACT GATE FAIL vs derived reference — STOPPED per orders",
+    "bundle": "schema4-attn-select-island (owned: 2026-09-13-h13-v2-to-schema4/bundle; programs 9a6a6a9a.../62595e4a..., 213 task descriptors = matmul 208 + select 5; graph e0daeb7f...)",
+    "inputs": "SYNTHETIC deterministic (numpy default_rng 20260920): cond bool 1125000 B ~50/50, ninf_rt fp16 2250000 B (all -inf with 25% -4.0), w/x fp16 768000 B each — NOT the September golden layer-0 tensors (layer0.npz NOT in any owned archive; old root wiped — verified by search)",
+    "runs": "2 runs, both status=0, released=2 programs (matmul 208 TDs + select 5 TDs executed end-to-end on the ANE), elapsed 27 ms each",
+    "determinism": "PASS — run1 sha 1320b672943b85ef1b9f0b92bb19d1593c6daf5d53c56a202f9fbd8e9c0971bd == run2, bit-identical",
+    "byte_gate": "FAIL — device output differs from the derived host reference in 1094147/1125000 elements (~97%), including cond-false cells; device matches neither my product, nor ninf, nor either select polarity (>61k/1.1M best candidate) — the island program semantics are NOT derivable from the manifest alone",
+    "root_cause_of_gate": "the historical Sept-14 E2E validated byte-exact against host references computed from the AUTHENTICATED GOLDEN layer-0 capture (lost with the old root); with synthetic inputs the byte gate is unmeetable because the program semantics are unknown — this is an input/provenance limitation, not evidence of device regression (the device is perfectly deterministic and the worker ran the full 213-TD graph without fault)",
+    "recovery_paths": ["recover the golden layer0.npz / stage dir from any unsearched archive or backup", "re-derive the island program semantics from the ANEC payloads (separate RE lane)", "obtain a fresh golden capture via the documented collector on macOS side"],
+    "no_retry": "island gate NOT re-run after the mismatch (per stop-first-fault)"
+  },
+  "step4_soak": {
+    "status": "PASS — 100/100 runs, zero drift",
+    "command": "schema4-bundle (chain-add-mul, the Step-2-verified package) via worker 944f2a86..., deadline 5000 ms, iterations 2, per-run --save",
+    "results": "100/100 runs rc=0; device output sha256 bade941d7d8f1e1097b9ce0298ff05617d85a9928de0e8c7eead5743f3f24352 IDENTICAL across all 100 runs (deterministic, zero drift, no reset/timeout)",
+    "numeric_gate": "PASS — 0 float-unequal pairs vs pristine reference (the known 5/64 signed-zero pairs: reference emits -0.0, device +0.0; float-equal, reported per Main's bits/numeric separation)",
+    "bit_gate_vs_reference": "5 bytes differ per run (constant, deterministic — the documented signed-zero semantic, NOT drift)",
+    "wedged_after": "0",
+    "my_comparator_erratum": "the soak shell loop labeled runs FAILED by demanding bit-identity with the -0.0 reference — the underlying data shows a perfect deterministic soak; verdicts here use the Step-2 numeric/bits separation",
+    "evidence": "soak dir /var/tmp/jwm1-ane-step2/soak/ (100 per-run logs + outputs), per-run shas constant bade941d..."
+  },
+  "step5": {
+    "status": "GATED — prerequisites not staged",
+    "requires": ["mlx-omarchy ANE runtime venv with Parakeet fixtures + .ane bundles", "audio input fixtures + 104/104-style pin contract", "Main authorization — the restored stack qualifies for this step only after Steps 3-4 close with golden-provenance inputs"]
+  },
+  "host_state": "wedged=0, module loaded non-persistent, sddm/NM/sshd active, GPU lock released, no persistence installed",
+  "bounds": "all runs well inside the 60-minute authorization; stop-first-fault honored at the Step-3 byte gate"
+}
