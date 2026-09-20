@@ -504,15 +504,17 @@ So the ROM/fw-side firmware LOAD is driven by a FWIM fw-command over
 the MBI/SCRATCH transport: the host publishes the image location (the
 surface-position arithmetic SCRATCH0/1 = surface base + cursor −
 offset, iova-shaped per H14DartAudit), the ROM/firmware fetches it,
-and ACKs via SCRATCH7 = 0x08042006. THE PLACEMENT IS NOT A FIXED
-CONSTANT — it is the DART-mapped surface whose ASC-visible address the
-host publishes per load. This resolves the placement mechanism to the
-host-publishes model (branch (a) with per-load publication) and makes
-the Linux loader concrete:
+and ACKs via SCRATCH7 = 0x08042006.
 
-  allocate DART-mapped surface (fw_load, W14-proven) → compute
-  ASC-visible address of the image → publish via SCRATCH0/1 →
-  wake SCRATCH7 → poll 0x08042006 → RTKit/CSNE handshake.
+  **RETRACTION (Main review):** the FWIM request identifies the
+  allocation-REQUEST mechanism only. It does NOT prove (i) that the ASC
+  fetches the image from that surface, nor (ii) that SCRATCH0/1
+  publishes the IMAGE position rather than the +980 command-surface
+  position — the SCRATCH0/1 arithmetic reads the +980 object
+  ([0x18]+cursor−[0x38]), while the IMAGE copy wrote into the +978
+  object's [+0x38] region. Different objects; equating them was a
+  conflation. Fetch source, page-table patching, boot-args, stream
+  mapping, and TX gates all remain OPEN.
 
 Remaining for a non-blind boot: the exact ASC-visible address formula
 (the obj+0x18/obj+0x38 field semantics inside the params — the delta
