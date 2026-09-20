@@ -229,3 +229,18 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   RVBAR ← entry → CPU_CONTROL 0 → CPU_CONTROL 0x10 → poll SCRATCH7 ==
   0x08042006. Page-tables/boot-args/placement/stream-mapping remain
   open separately (§6).
+
+### Addendum 3c: iBoot registry trace state (continuation point)
+
+- The fw-descriptor REGISTRY is runtime-populated BSS at VA `0x264720+`
+  (beyond the file image, file ends 0x257110): registration code
+  `0xe81a4–0xe81f8` stores `{x8+4, x8+4, x8+0x10, &pool}` where the
+  pool pointer `0x2254c8` anchors the per-role descriptor strings and
+  `x8` comes from `bl 0xe8548` (runtime allocator/lookup) — static
+  extraction of populated entries is impossible from the file; the
+  allocation constants live in the registration call chain
+  (`0xe8548`, and the cluster-0x3f990 constructor family; 0x3f9xx pool
+  refs are DESTRUCTORS).
+- Continuation: trace `0xe8548` (what allocates the per-role object
+  and where its load-address field is filled), and the caller chain at
+  `0x75a0c/0xcd820`. Both pure-offline.
