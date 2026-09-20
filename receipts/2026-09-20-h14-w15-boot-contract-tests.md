@@ -175,6 +175,22 @@ it is):
      ane_t6021.ko (full); modinfo ane_t6021.ko (vermagic, srcversion)
   4. REFUSE insmod unless modinfo vermagic prefix == $(uname -r)
 
+EXECUTED 2026-09-20 (Main-authorized on-device build; build ONLY, no
+stage-1, no insmod, no MMIO):
+  uname -r            : 7.1.13-3-1-ARCH (build dir present, headers OK;
+                        my earlier asahi3-1 version claim withdrawn)
+  provision tarball   : sha256 a72af0b1cba8b9d6efdae115b9dc2b6247b8
+                        67c76aa24ceec830371826c6c6db (git archive
+                        6be485f, gzipped)
+  provision dir       : /var/tmp/ane-t6021-6be485f (isolated; device
+                        tree exact at 6be485f)
+  ane_t6021.ko sha256 : ed38f378f506da49785ef941aedf0ae7974cae27a0979
+                        f3203b656b0b9aa7b99
+  size                : 1073152 bytes (BTF compiled)
+  vermagic            : 7.1.13-3-1-ARCH SMP preempt mod_unload aarch64
+                        (== uname -r, insmod-eligible)
+  srcversion          : 7DC1A6EFFF801DEB69A8415
+
 DEFAULTS PARAMETER LIST (exact; all parameters explicit — no shadow
 defaults):
   insmod ane_t6021.ko allow_unqualified=1 fw_load=1 fw_boot=1 \
