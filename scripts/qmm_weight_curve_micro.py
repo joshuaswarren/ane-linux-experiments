@@ -561,29 +561,26 @@ def analyze_walls(walls, blocks, w_series):
     return rows
 
 
-def attribute_by_submission(subs, plan, warm_count=W_SERIES[0]*BLOCKS):
-    """Pure qualifier (s-grouped). Returns (by_w, attribution_str).
+def attribute_by_submission(subs, plan):
+    """Group dispatches by monotonic submission id, never by flush order.
 
-    subs: {s: [(dur_us, enum), ...]} - d records grouped by s.
-    plan: the plan (segment order defines measured chunk order).
-    warm_count: number of warm submissions expected (default 256).
-
-    Warm = first `warm_count` submissions in s order (singleton 412).
-    Measured = remaining `sum(plan steps)` singleton 412 submissions in s
-    order = execution order. Returns per-w medians; raises SystemExit
-    (UNQUALIFIED) if the s-order singleton-412 contract is violated.
-    No marker-dispatch design required for this recovery."""
+    Producer warms each group once: max(plan.w), not number of W values.
+    All measured submissions must contain exactly one fused dispatch.
+    """
+    warm_count = max(s["w"] for s in plan)
     singletons = sorted(
         (s, d[0][0], d[0][1]) for s, d in subs.items()
         if len(d) == 1 and d[0][1] == 412)
     need_total = warm_count + sum(sp["steps"] for sp in plan)
-    if len(singletons) < need_total:
+    if len(singletons) != need_total:
         raise SystemExit(
-            f"UNQUALIFIED: {len(singletons)} 412 singletons < required "
-            f"{need_total} (warm {warm_count} + measured "
+            f"UNQUALIFIED: {len(singletons)} 412 singletons != exact "
+            f"required {need_total} (warm {warm_count} + measured "
             f"{sum(sp['steps'] for sp in plan)}); fused contract unproven")
     measured = singletons[warm_count:]
-    # singletons are (s, dur, enum) tuples; pass durations list forward
+    if any(len(events) != 1 or events[0][1] != 412
+           for s, events in subs.items() if s >= measured[0][0]):
+        raise SystemExit("UNQUALIFIED: foreign work in measured submission range")
     durations = [dur for (_, dur, _) in measured]
     by_w = {}
     pos = 0
@@ -618,34 +615,47 @@ def pass_curve_report(args, plan):
     The walls analysis (paired W1 differences, diagnostic only - no
     Metal parity claim) reads the producer's per-segment wall_avg_us and
     pairs them against W=1 within each block."""
-    ident = {}
-    if args.plan_meta and os.path.exists(args.plan_meta):
-        ident.update(json.load(open(args.plan_meta)))
-    meta = None
-    subs = {}   # s -> [(has, dur_us, enum)] in file order
-    for line in open(args.profile):
-        if not line.strip().startswith("{"):
-            continue
-        try:
-            r = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-        k = r.get("k")
-        if k == "meta":
-            meta = r
-        elif k == "j":
-            pass
-        elif k == "d":
-            if "t0" not in r:
+    if not args.plan_meta:
+        raise SystemExit("UNQUALIFIED: producer sidecar required")
+    with open(args.plan_meta) as stream:
+        ident = json.load(stream)
+    walls = ident.get("walls", [])
+    if (ident.get("pass") != "compiled-curve" or
+            ident.get("outputs_finite") is not True or
+            [(s.get("block"), s.get("w"), s.get("steps")) for s in walls] !=
+            [(s["block"], s["w"], s["steps"]) for s in plan]):
+        raise SystemExit("UNQUALIFIED: producer finite check or ordered plan mismatch")
+    meta = end = None
+    subs = {}
+    dispatches = 0
+    with open(args.profile) as stream:
+        for line in stream:
+            if not line.strip():
                 continue
-            dur = (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3
-            subs.setdefault(r["s"], []).append((dur, r["e"]))
-    if meta is None:
-        raise SystemExit(f"{args.profile}: no meta record")
+            r = json.loads(line)
+            if end is not None:
+                raise SystemExit("UNQUALIFIED: records after end")
+            k = r.get("k")
+            if k == "meta":
+                if meta is not None or r["period_ns"] <= 0:
+                    raise SystemExit("UNQUALIFIED: duplicate or invalid meta")
+                meta = r
+            elif k == "end":
+                end = r
+            elif k == "d":
+                if (meta is None or "t0" not in r or "t1" not in r or
+                        r["t1"] < r["t0"]):
+                    raise SystemExit("UNQUALIFIED: missing or invalid dispatch ticks")
+                dur = (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3
+                subs.setdefault(r["s"], []).append((dur, r["e"]))
+                dispatches += 1
+    if (meta is None or end is None or end.get("dropped") != 0 or
+            end.get("dispatches") != dispatches):
+        raise SystemExit("UNQUALIFIED: incomplete or dropped profile")
     by_w, attr = attribute_by_submission(subs, plan)
     measured_durs = [subs[s][0][0] for s in sorted(subs)
                        if len(subs[s]) == 1 and subs[s][0][1] == 412]
-    measured_durs = measured_durs[max(1, len(W_SERIES) * BLOCKS // BLOCKS):]
+    measured_durs = measured_durs[max(s["w"] for s in plan):]
     per_w_events = {}
     pos = 0
     for sp in plan:
