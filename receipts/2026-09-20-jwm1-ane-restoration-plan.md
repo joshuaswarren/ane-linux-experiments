@@ -21,7 +21,13 @@ from prior jwm1 boots, not a current recert.
 
 The old jwm1 boot exposed `/dev/accel/accel0` with DT node `ane@26bc04000`
 ([schema-4 smoke](2026-09-13-jwm1-schema4-ane-smoke.json)); that DT state did
-not survive the reinstall and must be re-published.
+not survive the reinstall and must be re-published. **Correction after the
+same-day audit:** Gate 1's mechanism below is superseded by the audit — the
+m1n1 boot.conf overlay flow is obsolete on this image; the real mechanism is
+the packaged-DTB + `update-m1n1` payload. See
+[2026-09-20-jwm1-ane-boot-readiness-audit.md](2026-09-20-jwm1-ane-boot-readiness-audit.md)
+for the corrected recipe, the passed reboot gate, and the pinned build
+artifacts.
 
 ## Gate 0 — reboot gate BEFORE anything that needs a reboot
 
