@@ -683,5 +683,33 @@
   "mmio_writes_this_lane": "none",
   "implication": "FWIM allocation size = 0x500000 (5 MiB) for H14g; suballoc header [0x10] = 0x500000, [0x18] = 0x10000000 - 0x500000 = 0x0FB00000 (Main arithmetic correction; earlier 0xF5000000 was a hex-subtraction error, withdrawn)",
   "fwim_alloc_note": "Linux FW alloc 0x400000 (4 MiB) is NOT a superset of the kext 0x500000 (5 MiB) - must be grown"
+ },
+ "pass6c": {
+  "scope": "IPC size operand identities, dev+0x784 writer-scan scope record, 0x86EC caller status",
+  "ipc_size_operands": {
+   "site": "0x95ea214-0x95ea224: w8=[x23+4] (u32); x9=[dev+0x3A90] (14992 DEC, u64); cmp x9,x8; csel hi -> size = max(u64[dev+0x3A90], zext(u32[x23+4]))",
+   "correction": "earlier 'dev+0x3A70 cap' was a decimal confusion: 14992 DEC = dev+0x3A90 (0x3A70 = 14960 is a DIFFERENT field)",
+   "dev_0x3A90": "single writer start+0x28a8 (0x9602e90); DebugWorkProcessor allocations occupy neighboring dev+0x3A50/0x3A68/0x3A70 (ANE_DebugWorkProcessorInit w0=1 allocs 0x95dee04-0x95dee24)",
+   "x23": "config-like object (also read [x23+0] at 0x95ea1a0 and [x23+112] for coredump MD); exact upstream bind not dumped"
+  },
+  "dev_0x784_writer_scan_scope": {
+   "patterns": [
+    "strb imm12=1924 (x-form)",
+    "add-imm64 1924 (alias lea)",
+    "add-imm32 1924",
+    "str-w imm12=481",
+    "ldr-w imm12=481",
+    "stur-q imm9 range 239-247"
+   ],
+   "hits": "strb x2 (ANEHWDevice::C2 0x959b268 + dup 0x959bcf4, both zero); add-imm64 x2 = os_log format-pointer artifacts (0x9572310/0x958a0d0, add x3,page+0x784 feeding __os_log_internal - NOT device aliases)",
+   "conclusion_scope": "within ANE kext __TEXT_EXEC and the listed encodings, dev+0x784 has NO non-zero store; bulk-copy exclusion: no stp/stur-q covers byte 1924 in the scan; register-offset stores to 1924 excluded via the add-alias scan. Residual risk: stores via multi-step base arithmetic beyond these idioms, and callee out-param writes - not exhaustively provable from text alone",
+   "read_provenance_on_init_path": "ctor zero -> start 0x9600738 read -> EnableANEClocksAndPower 0x95d2024 read (loop gate)"
+  },
+  "first_alive_fn_0x86EC": {
+   "callers": "no direct bl and no b tail-callers anywhere in selene __TEXT (full scan) -> indirect/registered-callback invocation or orphan path",
+   "handshake_impact": "NONE - host never reads SCRATCH0 per M2ResetLifecycle host trace; does not gate READY/wake/DONE",
+   "status": "call-order open-by-design; register distinction (SCRATCH0 vs SCRATCH7) stands"
+  },
+  "mmio_writes_this_lane": "none"
  }
 }
