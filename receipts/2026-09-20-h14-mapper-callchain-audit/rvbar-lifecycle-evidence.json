@@ -162,7 +162,13 @@
   },
   "final_link_runtime_only": "superseded: the ADT text decode above now supplies the domain entries; remaining = pin bank physical bases and read the two ps-ctls' live state on the boot attempt logs (Main).",
   "mmio_writes_this_lane": "none",
-  "deviceid_accessor": "ApplePMGR::_getDeviceID(DeviceData*) 0x9b48cc4: ldrh w0,[x1,#26] (u16 primary id = 473), cbz -> fallback ldrb w0,[x1,#3] (u8 secondary id = 0) - matches the ADT id2/id1 pair; DeviceData layout confirmed as ADT-entry-derived. Alias-field DeviceData offset and any child-domain decomposition remain untraced within the authorized time box (paths: ipsw dtree.go source - moved from master cmd/ipsw/cmd/dtree.go; or extended ApplePMGR::start + powerOverwrite dig)."
+  "deviceid_accessor": "ApplePMGR::_getDeviceID(DeviceData*) 0x9b48cc4: ldrh w0,[x1,#26] (u16 primary id = 473), cbz -> fallback ldrb w0,[x1,#3] (u8 secondary id = 0) - matches the ADT id2/id1 pair; DeviceData layout confirmed as ADT-entry-derived. Alias-field DeviceData offset and any child-domain decomposition remain untraced within the authorized time box (paths: ipsw dtree.go source - moved from master cmd/ipsw/cmd/dtree.go; or extended ApplePMGR::start + powerOverwrite dig).",
+  "lookup_and_expansion": {
+   "device_lookup": "_deviceIDToDeviceData(vm 0x9b49e10): u16 ID->index table @this+0x9D40 (bounds: id!=0, id<800, sentinel 0xFFFF); DeviceData records 48 bytes at [this+0x90A8]; DeviceData = ADT-entry-derived (id2 @+26 u16 per _getDeviceID).",
+   "expansion_functions": "_getDeviceParentsID(DeviceData*, u8) @0x9b45cf0 and _getDeviceClusterIDs(DeviceData*, u8*, u32*) EXIST and are invoked immediately after _deviceIDToDeviceData in the gate path (caller at 0x9b49ea0 region) - the kext HAS parent/cluster expansion machinery, consistent with the ANE-SYS-V alias word {380 AFR, 76 ANE_CPU} candidate.",
+   "poweroverwrite_note": "ApplePMGR::powerOverwrite @0x9b7675c compiles to an EMPTY stub (bti; ret) in this KC - power-state changes flow through other appliers; do not cite powerOverwrite as the ps writer.",
+   "vm_arithmetic_audit": "two vm/file slips in this session caught and corrected (0x25e6330->vm 0x95ea330; 0x2b45e10->vm 0x9b49e10): receipt addendum notes the corrected-device-lookup proof supersedes the earlier wrong-address dump."
+  }
  },
  "tools_added": [
   "tools/check_rvbar_lifecycle_anchors.py"
