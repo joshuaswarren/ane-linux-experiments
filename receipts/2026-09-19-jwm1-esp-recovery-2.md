@@ -727,20 +727,34 @@ PROVEN structural defect, not merely a version preference. (Still NOT a
 guarantee the full Linux boot then succeeds — the root userland and any
 independent failures remain separate questions.)
 
-## 18:1x CDT — SESSION-HISTORY PROVENANCE SEARCH (partial)
+## 01:1x UTC (Sep 20) — ROOT CAUSE ESTABLISHED BY MAIN (supersedes unknown-writer wording)
 
-- `Jwm1InitramfsFix` history (the 13:30-era lane): built `esp-recovery.part`
-  (7623) by **copying `esp-final.part` as base** and replacing only
-  INITRD.REC (+grub.cfg). It did NOT touch BOOT.BIN — 7623's BOOT.BIN
-  (`07009e0b`) was **inherited from `esp-final.part`** (12:33-era base).
-  Therefore the swap window tightens to **02:03 → ~12:33**.
-- `AccurateCicada` history: ESP audit only (built `esp-auditfix.part`, no
-  BOOT.BIN write). `Jwm1BootFinalize` history: bputil inspection, then the
-  box slept — no BOOT.BIN write observed. `Jwm1BootFix` (02:0x era) and
-  any other lanes: NOT yet checked (bounded).
-- Correlation statement stays CORRELATION: the macOS-msdos-written-metadata
-  factor covers the three user-observed hangs but #0 (14:0x, mtools+dd
-  state) had an unobserved outcome, so causation is not established.
+Main found the exact historical bug and asserts it with independent
+verification (Bf16RecertRepair re-verifying original results):
+
+- 15:57:18.127Z: the ESP staging writer's `add_file_83` built 28-byte
+  directory entries but assigned 32-byte image slices (twice) → the
+  staged image (`esp-repair`) SHRANK BY 8 BYTES — every allocation after
+  the affected file shifted left 8. This is the source of the
+  d1ee→0700 shift (BOOT.BIN payload landed 8 bytes into its region; the
+  reset vector was consumed by the shift).
+- 15:58Z: the corrected writer built a CLEAN `esp-final` — but
+  `esp-repair` was left STALE on disk.
+- 18:04Z: Main read the STALE `esp-repair` and overwrote `esp-final`
+  with it — REINTRODUCING the shifted image into the lineage.
+- 18:27Z: Jwm1InitramfsFix inherited it (7623 built from esp-final;
+  flashed to the device 18:31Z = 13:31 CDT).
+- Ownership (Main, honest): the historical repair code caused the
+  corruption — NOT an m1n1 rebuild, NOT a macOS FAT writer.
+
+This supersedes my earlier "02:03–13:30 window, writer unknown" wording.
+My timeline reconciles: the 18:04Z reintroduction matches my observed
+18:27–18:31Z (13:27–13:31 CDT) 7623 inheritance and flash. The current
+repaired state (esp-live-1848, cd65c46d: d1ee BOOT.BIN restored, 7.1.6
+pair, marked cfg, 9d6e7510 GRUB) was audited AFTER the restoration and
+remains valid — the file audit found no shifted entry in the restored
+payloads, and no new live writes have occurred from attribution work
+alone.
 
 ## 18:1x CDT — INDEPENDENT SECOND-TOOL VERIFICATION (mtools); RETRACTION
 
