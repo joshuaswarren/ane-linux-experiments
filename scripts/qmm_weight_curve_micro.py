@@ -415,58 +415,83 @@ def pass_report(args, plan=None):
 
 def pass_compiled_curve(args, k, cols, plan):
     """Working-set curve through the SAME compiled 3-member graph that
-    --pass compiled-calibrate route-verified (enum 412). Producer only:
-    every W segment ends with its own sync, so each segment is exactly
-    one join region (calibration-proven convention) and post-exit
-    attribution via --pass curve-report is exact. Counterbalanced
-    blocks; wall averages recorded alongside. HARDWARE GATED until Main
-    reviews this source; no performance conclusions in output."""
+    --pass compiled-calibrate route-verified (enum 412). Main review
+    implemented: the compiled function receives the ACTUAL weight/add
+    ARRAYS as dynamic arguments (no closure capture, no traced Python
+    indexing); ALL groups are warmed outside measured regions; each
+    segment ends with force_sync BEFORE the wall endpoint; per-segment
+    walls are serialized in the sidecar. Producer only - attribution is
+    post-exit via --pass curve-report. HARDWARE GATED until Main
+    reviews; no performance conclusions in output."""
     import mlx.core as mx
     require_sync(mx)
     x = mx.random.normal((1, k)).astype(mx.float16)
     mx.eval(x)
-    groups = []
     n_groups = max(s["w"] for s in plan)
-    for _ in range(n_groups):
-        ws = make_weights(mx, k, cols, 3)
-        adds = []
-        for _ in range(3):
-            a = mx.random.normal((1, cols)).astype(mx.float16)
-            mx.eval(a)
-            adds.append(a)
-        groups.append((ws, adds))
+    groups = make_groups(mx, k, cols, n_groups)
 
-    def call(i):
-        ws, adds = groups[i]
-        outs = [qmm(x, *w) for w in ws]
-        return [o + a for o, a in zip(outs, adds)]
+    def group_fn(x, m1q, m1s, m1b, m2q, m2s, m2b, m3q, m3s, m3b,
+                 a1, a2, a3):
+        o1 = mx.quantized_matmul(x, m1q, m1s, m1b, transpose=True,
+                                 group_size=64, bits=4)
+        o2 = mx.quantized_matmul(x, m2q, m2s, m2b, transpose=True,
+                                 group_size=64, bits=4)
+        o3 = mx.quantized_matmul(x, m3q, m3s, m3b, transpose=True,
+                                 group_size=64, bits=4)
+        return [o1 + a1, o2 + a2, o3 + a3]
 
-    fn = mx.compile(lambda idx: call(int(idx)))
-    idx = mx.array(0)
-    for _ in range(WARMUP_STEPS):
-        mx.eval(fn(idx))
+    fn = mx.compile(group_fn)  # weights/adds are dynamic array args
+    # Warm EVERY group outside measured regions; the finite check runs
+    # HERE (warmup, before the first layout sync) - isfinite kernels
+    # must never land after a calibration sync.
+    finite = None
+    for g in range(n_groups):
+        outs = fn(x, *groups[g])
+        mx.eval(outs)
+        if finite is None:
+            finite = all(bool(mx.isfinite(o).all()) for o in outs)
     force_sync(mx)
-    wall = {}
+    walls = []
     for s in plan:
         t0 = time.perf_counter()
         for i in range(s["steps"]):
-            mx.eval(fn(mx.array(i % s["w"])))
-        wall[(s["block"], s["w"])] = (
-            time.perf_counter() - t0) / s["steps"] * 1e6
-        force_sync(mx)  # segment boundary = join region label
+            mx.eval(fn(x, *groups[i % s["w"]]))
+        force_sync(mx)  # synchronized endpoint BEFORE wall capture
+        t1 = time.perf_counter()
+        walls.append({"block": s["block"], "w": s["w"], "steps": s["steps"],
+                      "wall_avg_us": (t1 - t0) / s["steps"] * 1e6})
     ident = sidecar_identity("compiled-curve", mx, args.profile,
                              {"k": k, "cols": cols, "blocks": BLOCKS,
                               "w_series": W_SERIES, "seed": SEED,
                               "plan_segments": len(plan),
                               "total_plan_calls": sum(s["steps"]
                                                       for s in plan),
-                              "segment_sync_layout": "one sync per "
-                                                     "segment; join "
-                                                     "region == segment",
+                              "dynamic_args": True,
+                              "outputs_finite": finite,
+                              "walls": walls,
                               "note": "GATED: no hardware run until "
                                       "Main reviews"})
     json.dump(ident, open(args.out, "w"), indent=1)
     print("producer complete; run --pass curve-report post-exit")
+
+
+def make_groups(mx, k, cols, n_groups):
+    """n_groups fused sets: each is the flat dynamic-arg tuple
+    (w1q,s1,b1, w2q,s2,b2, w3q,s3,b3, a1,a2,a3), fully materialized."""
+    groups = []
+    for gi in range(n_groups):
+        members = []
+        for _ in range(3):
+            w = mx.random.normal((cols, k)).astype(mx.float16)
+            wq, scales, biases = mx.quantize(w, group_size=64, bits=4)
+            mx.eval(wq), mx.eval(scales), mx.eval(biases)
+            members += [wq, scales, biases]
+        for _ in range(3):
+            a = mx.random.normal((1, cols)).astype(mx.float16)
+            mx.eval(a)
+            members.append(a)
+        groups.append(members)
+    return groups
 
 
 def pass_curve_report(args, plan):
@@ -505,10 +530,11 @@ def pass_curve_report(args, plan):
     r = 1
     for s in plan:
         evs = d_by_region.get(r, [])
-        if len(evs) != s["steps"] or not all(h for h, *_ in evs):
+        if len(evs) != 3 * s["steps"] or not all(h for h, *_ in evs):
             raise SystemExit(
                 f"region {r}: {len(evs)} dispatches, segment expects "
-                f"{s['steps']} tick-ful; layout mismatch - refusing")
+                f"3*{s['steps']} (3 members per call); layout mismatch "
+                "- refusing")
         by_w.setdefault(s["w"], []).append(
             statistics.median([d for _, d, _ in evs]))
         per_w_events.setdefault(s["w"], []).extend(evs)
