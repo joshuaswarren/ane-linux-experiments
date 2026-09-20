@@ -481,3 +481,28 @@ active, real completion chatcmpl-6nsWHFAC9zH3PH7gQpPtqmV0dzyvuu4B.
   layout/output for each prefix AND compare against the same GPU fp16
   reference — a first-diff label without layout-correct materialization is
   not a program attribution.
+
+## 13. Device qualification result: the mint CRASHES the resident on first submit
+
+The differential arms never reached smax comparison: with the captured
+layer-0 inputs staged, the worker's resident child died SILENTLY (empty
+stderr, client-side EPIPE) on the first head submit — a SIGSEGV-class
+crash (the child resets fatal handlers, so silence IS the signature).
+The mlx-omarchy-info --check-bundle PASS is host-side only; the C++
+worker load + first device dispatch of the NEW slice-lastdim lowering
+(has never run on ANE: EncoderCompilerCoverage's own qualification gap)
+segfaults. This is a compiler-lane device-qualification defect in the
+slice lowering / package, not a transport defect: the certified
+islands (A/C/PV/select) ran through the identical transport in the same
+session shape for 48 rounds across two batteries.
+
+Preserved: failing inputs = the captured layer-0 bytes
+(/var/tmp/encgate/fdump/{q,k,cond,relpos,a_fill}.{bin,json}), failing
+bundle = immutable ac-head-014755b (hashes in §12), driver = ecbbd071+
+(/tmp/ac_head_diff_exec.py + ac_head_differential.py), worker binary
+44a99528 unchanged. Repro = one hold, the differential driver, arm
+A — no isolation work is possible until the crash is fixed.
+
+Handed to EncoderCompilerCoverage: slice-lastdim lowering crash on
+device is now the top compiler-lane item; the differential arms resume
+the moment the crash is fixed (everything else is staged and frozen).
