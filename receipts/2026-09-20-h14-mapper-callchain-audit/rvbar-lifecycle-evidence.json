@@ -161,7 +161,8 @@
    "bank_bases_open": "bank->physical-window bases not yet pinned (ps-regs 'reg' indices map into the pmgr node's window list; the @2e0 calibration constrains bank6's window to the one containing the SoC-pmgr ps block). AFR's ps-ctl physical address = window(reg 0x2c) + 0x100 once pinned. ANE_SYS @0x260 likely already on via the CPU parent \u2014 DT sysfs read (safe, no MMIO) can confirm."
   },
   "final_link_runtime_only": "superseded: the ADT text decode above now supplies the domain entries; remaining = pin bank physical bases and read the two ps-ctls' live state on the boot attempt logs (Main).",
-  "mmio_writes_this_lane": "none"
+  "mmio_writes_this_lane": "none",
+  "deviceid_accessor": "ApplePMGR::_getDeviceID(DeviceData*) 0x9b48cc4: ldrh w0,[x1,#26] (u16 primary id = 473), cbz -> fallback ldrb w0,[x1,#3] (u8 secondary id = 0) - matches the ADT id2/id1 pair; DeviceData layout confirmed as ADT-entry-derived. Alias-field DeviceData offset and any child-domain decomposition remain untraced within the authorized time box (paths: ipsw dtree.go source - moved from master cmd/ipsw/cmd/dtree.go; or extended ApplePMGR::start + powerOverwrite dig)."
  },
  "tools_added": [
   "tools/check_rvbar_lifecycle_anchors.py"
