@@ -549,3 +549,15 @@ transport/session are clean.
   element-by-element against the handler's chain) before any further
   device attempt. The per-program device differential tooling (driver,
   arms, references) is staged and reusable for that derivation.
+
+## 16. Window close: pad-dim corrected, divergence signature unchanged — next window owns the per-program device differential
+
+Corrected the reblocking to the exact MIL params (pad dim2 +1 →
+[1,8,750,375] → drop row 0 → [1,8,375,749] → cols [0:375] → var_371):
+the divergence is UNCHANGED (prefix 41, hidden 9f744276) — the mx chain
+matches the MIL param-for-param yet the device result still differs, so
+the residual delta is inside the package's device execution of the
+compose (slice/select/matmul/add/softmax task chaining) or a remaining
+spelling delta not visible in the MIL. The per-program device
+differential (driver + arms staged, one hold) is the isolation path;
+services restored and verified (chatcmpl-FCYeab8pd6LUqTgLNMDhOv2GU9d2ilPP).
