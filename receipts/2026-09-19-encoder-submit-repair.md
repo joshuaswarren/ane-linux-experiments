@@ -400,3 +400,12 @@ island-select spelling), and a real emitter defect it caught (manifest
 out=4 vs stream ch6 — binding fix in flight). Handler alignment queued on
 my side: a_fill full-shape + cond pre-broadcast spellings, and the
 broadcast_to marshal cost will be measured in the pricing window.
+
+## 10b. Marshal byte correction (Main review)
+
+The two broadcast marshallings are NOT both ~2.25 MB: cond bool
+[1,8,375,375] is 1,125,000 bytes (1 byte/lane); a_fill fp16
+[1,8,375,375] is 2,250,000 bytes. Actual staged bytes per layer for
+these two runtime inputs: 3,375,000 B — unless the ABI stages a padded
+dtype, which the device gate will verify from marshal_copy_ns against
+the staged input_bytes. Pricing uses actual bytes.
