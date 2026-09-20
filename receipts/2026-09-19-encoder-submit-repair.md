@@ -322,3 +322,28 @@ Design consequences:
   must pass UNTRANSPOSED k instead of the pre-swapped k_headsT (one-line
   handler change at mint time).
 
+
+## 8. Mint-prep state at handoff (host-side, no device used)
+
+- DONE: ac_head2.mil compiled on macstudio (ane-compile-hwx 3d13fc85, target
+  H13) → model.hwx 212992 B, 5 programs; artifact at /tmp/ac-head-model.hwx
+  (local) and /tmp/ac-head-mint/compiled/model.hwx (macstudio).
+- MANIFEST CONTRACT (from preserved ac-head-manifest.json tensors table):
+  externals a_fill fp16 [] (2 B), cond bool [1,1,375,375] (140625 B, raw
+  pre-logical_not), k fp16 [1,8,375,128] (768000 B, bound ty=1-direct), q
+  fp16 [1,8,375,128] (768000 B, the var_7-scaled query), relpos fp16
+  [1,8,375,749] (4494000 B); output smax fp16 [1,8,375,375] (2250000 B);
+  programs slice(20992 B) + boolean(9216 B) + batched-matmul(183168 B) +
+  broadcast(20992 B) + norm(7936 B), dispatch plan 0..4.
+- F HANDLER: landed (mlx-omarchy 2d62c60d on agent/issue8-schema-tolerant-
+  set-base; canonical branch agent/fusion-submit-lane worktree
+  ~/src/mlx-omarchy-fusion @ 6807a0f5) — submits head + certified island-pv,
+  passes exactly these externals (cond via the raw pre-not tensor resolved
+  from the select's producer), skips the covered span, PV via the certified
+  bundle.
+- REMAINING (one step): split model.hwx into per-program .anec files
+  (hwxv2-to-anec.py is single-program shaped; the multi-program splitter
+  lives in the compiler lane's ane-export tooling — h13_package_to_bundle
+  consumes package/manifest.json + programs), then h13_v2_to_schema4 wrap
+  (drops tensor-object fields like tensors.cond.dtype) → schema-4 bundle
+  dir → device gate (-inf chain, 38c73261 bit-exact) + marginal pricing.
