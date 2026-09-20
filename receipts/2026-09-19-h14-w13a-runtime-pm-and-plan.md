@@ -421,3 +421,22 @@ No speculative writes; nothing executed since the approved staging probe.
   and its destination parameter.
 - Session-resumable: each chunk committed; the chain continues from
   the populated-ane0 → fw-image-load bridge.
+
+### Addendum 3k: obj+0x18 DEF-USE pinned (DartAudit status-coupling CONFIRMED at the def site)
+
+- DEF: `0x95f6304-0x95f6308`: `bl vtable+0x10 (x1=0)` → `str w0,
+  [obj+0x18]` — obj+0x18 is a U32 written from a provider-method
+  result (x0 = an OSObject arg; vtable slot +0x10). Immediately
+  re-read (`ldr w8, [x8, #0x18]`) and zero-tested: zero → alternate
+  path 0x95f6358.
+- USE: boot fn RVBAR compose takes this SAME u32 (obj+0x18) through
+  the mask — obj18 bits 11-31 (the u32's surviving bits) flow into the
+  entry encoding. The status-coupled entry reading is def-use
+  CONFIRMED; the RVBAR entry is NOT a plain constant NOR a plain
+  address — it composes this u32.
+- Object: [dev+0x978] = OSValueObject<ANESharedMemorySurfaceParams>
+  (addendum 3j); +0x18 = params field 0 (u32 status); +0x38 = the
+  shared-surface base field (loader path).
+- OPEN next chunk: identify the provider class/method behind
+  vtable+0x10 (walk the arg object to its vtable symbol), then the
+  full ANESharedMemorySurfaceParams layout.
