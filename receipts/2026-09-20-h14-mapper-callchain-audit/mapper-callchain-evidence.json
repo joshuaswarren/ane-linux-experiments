@@ -311,7 +311,9 @@
     "off": "0x08",
     "w": 8,
     "val": "*(IPC_Params+0x18)",
-    "meaning": "'IPC ' surface DVA (tag 0x49504320)"
+    "meaning": "'IPC ' surface DVA (tag 0x49504320)",
+    "size_semantics": "IPC surface size = MAX(IODARTMapper::getPageSize()=0x4000, boot_ordinal+1) -> 0x4000 (one 16K DART page) typical; operands: u64[dev+0x3A90]=mapper page size (slot0x888=IODARTMapper::getPageSize), u32[x23+4]=boot ordinal+1 (SCRATCH1 captured post-READY + 1; verified 0x95ea0f8/0x95ea120/0x95ea124)",
+    "status": "CLOSED"
    },
    {
     "off": "0x10",
@@ -333,7 +335,7 @@
     "off": "0x28",
     "w": 4,
     "val": "w22",
-    "open": "w22 upstream local"
+    "open": "w22 exact upstream still open (NOT config+4: x23=context SCRATCH counters per Reset/Main decode, consistent with 0x95ea0f8/0x95ea124 stores)"
    },
    {
     "off": "0x30",
@@ -399,7 +401,6 @@
    "0x34 gap",
    "0x50 x23 object",
    "0x60 semantics",
-   "config+4 H14g numeric",
    "dev+0x3A90 writer value"
   ],
   "handshake": {
@@ -409,6 +410,13 @@
    "done": "fw SCRATCH0=result (0x77a0), SCRATCH7=0x08042006 (0x77c8)",
    "first_alive_beacon": "separate fn 0x86EC writes 0x08042006 to SCRATCH0 (idx0) - non-gating, caller indirect",
    "consumer": "M2ResetLifecycle owns host ordering"
+  },
+  "pool": {
+   "size": "0x40000 (256 KiB)",
+   "tag": "'DDM'",
+   "site": "start+0x4024 (Reset/Main decode)",
+   "corroboration": "start+0x4054-0x405c: ldr x24,[dev+0x3A90] (mapper page size); udiv/mul round-down by page size adjacent to the pool path (raw words verified: udiv=0x9ad80b88, mul=0x9b187d00, ldr=0xf95d4ad8)",
+   "pool_0x00": "still open"
   }
  },
  "meta": {
