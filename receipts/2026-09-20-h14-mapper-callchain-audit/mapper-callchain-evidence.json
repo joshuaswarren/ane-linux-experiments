@@ -664,5 +664,22 @@
    "dt_contract": "ane@284000000: apple,t6021-ane; iommus <498 0><499 0><500 0>; power-domains 8 pmgr-pwrctl (@4000..@4030, @2e0); reg engine/pmgr/set as above"
   },
   "mmio_writes_this_lane": "none"
+ },
+ "pass6b": {
+  "scope": "SCRATCH7 bidirectional handshake discovery + h14g numeric config fields",
+  "scratch7_handshake": {
+   "model": "SCRATCH7 is BIDIRECTIONAL: fw writes 0x08042006 (READY beacon, 0x7360-0x7388 slot byte48) -> fw POLLS SCRATCH7 for the HOST wake word 0xf7fbdff9 (x19 built at entry 0x71f8/0x7200; poll loop 0x73c4-0x7400: READ32 idx7, cmp x19, sleep(1000us) bl 0x97070, global flag vm 0x19C000) -> after wake: fw reads SCRATCH1/0 pool DVA (0x7404+) -> processes -> SCRATCH0 = result word (0x77a0) -> SCRATCH7 = 0x08042006 DONE ack (0x77c8)",
+   "host_side": "kext writes wake 0xf7fbdff9 to SCRATCH7 (dev+0x454) and polls 0x08042006 (dart receipt 11.2 + rvbar-width) - matches the fw poll/ack exactly",
+   "correction": "pass1 'acks at 0x73ac/0x73e4' were POLL READS (slot byte40, w1=7), not writes; the real writes are 0x7388 (ready) and 0x77c8 (done)",
+   "first_alive": "fn 0x86EC write32(idx0=SCRATCH0, 0x08042006) remains a DISTINCT beacon; ordering vs 0x71A4 not dumped; candidate consumer = an early kext fw-alive poll (M2ResetLifecycle owns kext side)"
+  },
+  "h14g_numeric_config": {
+   "config+0x138": "0x500000 (5242880) = fw-heap byte size: movz w8,#0x500000 0x9613da8; str w8,[x20,#312] 0x9613dac - in the same H14g straight-line block as dev+0x4A0=0x01400044 (0x9613d94) and dev+0x3EA0=0 (0x9613e14)",
+   "implication": "FWIM allocation size = 0x500000 for H14g; suballoc header [0x10] = 0x500000, [0x18] = 0x10000000 - 0x500000 = 0xF5000000",
+   "config+4": "IPC size on H14g: no store found in the H14g block; candidate stores cluster at 0x9614604-0x9615a9c (other config-type paths) - value OPEN",
+   "config+0x150": "pre-CPU table count = 3 (H14g) - stored per-type; config+0xA0 = table pointer 0xcb6c188",
+   "dev+0x3A70_cap": "IPC cap field: no in-text writer found in this pass - OPEN"
+  },
+  "mmio_writes_this_lane": "none"
  }
 }
