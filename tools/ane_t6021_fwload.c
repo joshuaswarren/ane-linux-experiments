@@ -1,33 +1,35 @@
 // SPDX-License-Identifier: GPL-2.0-only OR MIT
 /*
- * T6021 ANE firmware loader — W13 increment (receipt
- * 2026-09-19-h14-w13-boot-contract.md §5-§7).
+ * T6021 ANE firmware loader — W13/W14 increment (receipts
+ * 2026-09-19-h14-w13-boot-contract.md, -w14-staging-proven.md).
  *
  * Implements, behind fw_load=1:
  *   1. request_firmware("apple/ane/t602x_ane0_fw_selene_rc4x.macho")
- *   2. Validation via ane_fw_validate.h (shared, offline-regressed by
- *      tools/h14_fwload_regression.c): sha256 pin, strict exact-image
- *      assertions (7 load commands, 3 pinned segments, entry 0,
- *      bounded LC walk).
+ *   2. Validation via ane_fw_validate.h (shared with the offline
+ *      regression tools/h14_fwload_regression.c): sha256 pin, strict
+ *      exact-image assertions (7 load commands, 3 pinned segments,
+ *      entry 0, bounded LC walk).
  *   3. dma_alloc_coherent on the ANE platform device: the buffer is
- *      DART-mapped through the device's iommu group. NOTE: mapped-
- *      host-visible only; equality of this iova with the FIRMWARE's
- *      address space is NOT established until the dart-ane0 stream
- *      mapping is verified (W13 review) — treat the iova as data,
- *      not as a boot constant.
+ *      DART-mapped through the device's iommu group (stream 0 of the
+ *      three bound instances, H14DartAudit). Segment-wise copy
+ *      (__TEXT fileoff 0x4000 -> vm0, __DATA -> 0xe8000; vmsize tail
+ *      zero from the coherent alloc). Coherent memory needs no explicit
+ *      cache clean.
  *
  * NOT implemented: the boot step (RVBAR write + SCRATCH7). The
  * surface-address publication path to the boot ROM is unevidenced; any
  * boot write before that datum would be exactly the blind retry the
- * lane rules forbid.
+ * lane rules forbid. A pinned-iova alias was also reviewed OUT (YAGNI
+ * until the placement contract exists: dma_alloc_coherent memory is
+ * not guaranteed direct-map/contiguous, and manual default-domain
+ * maps without IOVA reservation can collide with the DMA allocator).
  *
- * Load is non-fatal to probe: the W10 transport role of this driver is
- * independent of firmware presence.
+ * Error ownership: every failure path releases the firmware and, once
+ * allocated, the coherent buffer, and clears ane->fw_buf — remove()
+ * frees only what fw_buf still names. Load is non-fatal to probe.
  */
 #include <crypto/sha2.h>
 #include <linux/dma-mapping.h>
-#include <linux/iommu.h>
-#include <linux/io.h>
 #include <linux/firmware.h>
 #include <linux/moduleparam.h>
 #include <linux/sizes.h>
@@ -40,16 +42,7 @@ static bool fw_load;
 module_param(fw_load, bool, 0444);
 MODULE_PARM_DESC(fw_load,
 		 "OPT-IN: validate + DART-map the selene PRELOAD payload "
-		 "(W13). No boot action; publication datum unevidenced.");
-
-static unsigned long long fw_iova;
-module_param(fw_iova, ullong, 0444);
-MODULE_PARM_DESC(fw_iova,
-		 "If nonzero, ALSO create a pinned alias mapping of the fw "
-		 "surface at this iova in the device's default domain "
-		 "(H14DartAudit prerequisite A: deterministic host mapping, "
-		 "expressible at whatever constant the iBoot trace yields). "
-		 "0 = record the allocator iova only (W14 behavior).");
+		 "(W13/W14). No boot action; publication datum unevidenced.");
 
 #define ANE_FW_NAME "apple/ane/t602x_ane0_fw_selene_rc4x.macho"
 
@@ -118,35 +111,6 @@ int ane_t6021_fwload_probe(struct ane_t6021 *ane)
 	ane->fw_iova = iova;
 	ane->fw_size = ANE_FW_BUF_SIZE;
 
-	if (fw_iova) {
-		/* H14DartAudit prerequisite A: alias the same physical
-		 * pages at a HOST-CHOSEN pinned iova in the device's
-		 * default domain, so the loader can express whatever
-		 * constant the iBoot placement trace yields without
-		 * depending on allocator choice. The pages are the same
-		 * coherent allocation (identity phys on arm64 direct
-		 * map), so both iovas view identical bytes. */
-		struct iommu_domain *dom = iommu_get_domain_for_dev(ane->dev);
-		phys_addr_t phys = page_to_phys(virt_to_page(buf));
-
-		if (!dom) {
-			dev_err(ane->dev, "fwload: no iommu domain for pinned iova\n");
-			dma_free_coherent(ane->dev, ANE_FW_BUF_SIZE, buf, iova);
-			return -ENODEV;
-		}
-		ret = iommu_map(dom, fw_iova, phys, ANE_FW_BUF_SIZE,
-				IOMMU_READ | IOMMU_WRITE, GFP_KERNEL);
-		if (ret) {
-			dev_err(ane->dev, "fwload: pinned iova map %#llx: %d\n",
-				fw_iova, ret);
-			dma_free_coherent(ane->dev, ANE_FW_BUF_SIZE, buf, iova);
-			return ret;
-		}
-		ane->fw_pinned_iova = fw_iova;
-		dev_info(ane->dev, "fwload: pinned alias iova %#llx -> phys %pap\n",
-			 fw_iova, &phys);
-	}
-
 	dev_info(ane->dev,
 		 "fwload: selene PRELOAD validated + DART-mapped: 3 segs, "
 		 "entry %#llx, iova %pad size %#x (no boot action — "
@@ -160,13 +124,7 @@ void ane_t6021_fwload_remove(struct ane_t6021 *ane)
 {
 	if (!ane->fw_buf)
 		return;
-	if (ane->fw_pinned_iova) {
-		struct iommu_domain *dom = iommu_get_domain_for_dev(ane->dev);
-
-		if (dom)
-			iommu_unmap(dom, ane->fw_pinned_iova, ane->fw_size);
-		ane->fw_pinned_iova = 0;
-	}
 	dma_free_coherent(ane->dev, ane->fw_size, ane->fw_buf, ane->fw_iova);
 	ane->fw_buf = NULL;
+	ane->fw_size = 0;
 }
