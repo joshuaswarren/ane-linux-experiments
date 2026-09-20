@@ -36,48 +36,48 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
        34,114,048 B  e339c992eef9bb879680513efee54aec68b39f14cba78f96b6db3a5c1d68533c
        (banner: Linux version 7.1.13-3-1-ARCH #SMP PREEMPT_DYNAMIC)
        -> temp+readback+rename to /grub-ane/VMLINUZ.7113
-     INITRD.NEW = jw14m2:/tmp/jwm1-sms-stage/initrd-7113-clean-modstage.img
-       97,524,883 B  5ebbdff895211afd367b6083185460e65868543341df60f734aaf793aa7318ca
-       -> temp+readback+rename to /grub-ane/INITRD.7113
+     INITRD.NEW = SUPERSEDED — DO NOT STAGE YET. 5ebbdff8… (initrd-7113-clean-modstage.img,
+       97,524,883 B) is superseded by a pending rebuild (Main directive). The rebuilt initrd
+       sha will be recorded here when the module agent delivers it; staging waits for that
+       artifact + Main assembly review.
   C. INSTALL clean boot.bin 566227f9… (signed-package rebuild, m1n1 1.6.1 + pkg DTBs):
      /m1n1/boot.bin.d1ee-716  <- copy of current d1ee (rollback)
      /m1n1/.boot.new = 566227f9… bundle -> readback -> rename to /m1n1/boot.bin
-  D. GRUB CONFIG — TEST BOOT DEFAULTS TO THE NEW 7.1.13 (Main directive: do NOT leave default
-     old 7.1.6 for the test boot). ONESHOT protocol chosen conservatively because the CURRENT
-     grub.cfg has NO load_env/save_env infrastructure and grubenv is a blank slate:
-     D1. PRESERVE original: /grub-ane/grub.cfg -> grub.cfg.pre-7113 (552 B, 9d6e7510-era marked
-         cfg) — exact revert copy, in addition to the existing .preoneshot/.prepersistent/.bak.
-     D2. Write grub.cfg.new containing BOTH menuentries (7.1.6 recovery first, 7.1.13 netfix
-         second) PLUS the oneshot block at top:
-           if [ -f /grub-ane/grubenv ]; then
-             load_env -f /grub-ane/grubenv
-             if [ "${next_entry}" ]; then set default="${next_entry}"; set next_entry=;
-                 save_env -f /grub-ane/grubenv next_entry; fi
-           fi
-         (grubenv exists, is a valid environment block, currently zero entries — blank slate,
-         so load_env on it is safe; save_env requires the fs to be writable, which it is only
-         during this staged write — after test boot GRUB may fail to save_env on FAT ro?
-         MITIGATION: even if save_env fails, `set next_entry=` in-memory clears the oneshot,
-         so a subsequent normal reboot falls back to default ordering — bounded behavior.)
-     D3. Set the oneshot via grub-editenv ON THE STAGED COPY (grub-editenv 2:2.14-1.1 available
-         on jw14m2): grub-editenv grubenv.new set next_entry=1  (index 1 = 7.1.13 netfix)
-         then temp+readback+rename grubenv.new -> grubenv.
-     D4. default=0 (7.1.6 recovery) remains the permanent default — after ONE 7.1.13 boot,
-         every later boot lands on 7.1.6 recovery automatically. Explicit temporary default,
-         preserved original, conservative existing protocol.
-     PRESERVE: grub.cfg.preoneshot, grub.cfg.prepersistent, grub.cfg.bak-20260903-130516.
+  D. GRUB CONFIG — EXPLICIT TEMPORARY CANDIDATE-DEFAULT (Main: REJECTED oneshot/grubenv infra).
+     REJECTED RATIONALE (Main, accepted): (i) if save_env FAILS, next_entry=1 PERSISTS across
+     boots — clearing in-RAM does not clear the on-disk env, so the "auto-fallback" claim was
+     false; (ii) 7.1.6 is a KNOWN-PANIC kernel on this firmware — it cannot be called a healthy
+     fallback; (iii) NO new untested GRUB env infrastructure may be introduced for recovery.
+     CHOSEN:
+     D1. PRESERVE original exactly: /grub-ane/grub.cfg -> /grub-ane/grub.cfg.pre-7113
+         (552 B marked single-entry Omarchy recovery).
+     D2. INSTALL temporary candidate-default config as /grub-ane/grub.cfg: BOTH entries
+         (7.1.13 netfix FIRST = default; 7.1.6 recovery SECOND), same UUID/rw/subvol=@,
+         same marked-echo style, written grub.cfg.new -> readback -> rename.
+         The 7.1.6 recovery entry remains PRESENT for manual selection at the GRUB menu.
+     D3. ON TEST VERDICT (either way), restore /grub-ane/grub.cfg from grub.cfg.pre-7113
+         (file-level, temp+readback+rename). Permanent default returns to 7.1.6 recovery only
+         when Main directs a permanent config; not part of the test protocol.
+  D-alt. macOS-SIDE NEXT-BOOT CONTROL: bless --nextonly IF PROVEN AVAILABLE on this macOS
+         (27.0/26A428, bless 335.0.2). CURRENT ON-DEVICE FACT: `bless --help` on this build
+         lists NO --nextonly option (checked 02:4x CDT Sep 20) — Info/File/Folder/Device/
+         Snapshot modes only. So bless --nextonly is NOT available and is NOT part of this
+         plan. macOS permanent default (diskutil/bless setBoot) stays untouched throughout;
+         return-to-macOS after a failed test is via the EXISTING controlled protocol (boot
+         picker / startup-disk selection by user or Main-directed controlled command), never
+         by an automatic claim that the old Linux kernel is a healthy fallback.
   E. VENDORFW: NONE required on ESP (already resident, b1e15f13 217/217 verified); initrd
      embeds/loads it per firmware-plan v4 (snippet early-embed E1/E2). No ESP vendorfw writes.
   F. UBOOTEFI VAR + vendorfw/ + asahi/ + EFI/ANE: UNTOUCHED.
 
-## ROLLBACK (each step reversible without re-flashing)
-  - Test boot (first boot after install) IS the 7.1.13 netfix via oneshot next_entry=1. If it
-    fails to boot: power-cycle -> next boot falls to default=0 (7.1.6 recovery, preserved pair)
-    automatically because oneshot consumed itself (or failed save leaves default). If the
-    7.1.13 kernel must never run again: restore grub.cfg.pre-7113 + d1ee boot.bin from
-    /m1n1/boot.bin.d1ee-716 — all file-level, no raw writes.
-  - Full revert: restore d1ee boot.bin + 7.1.6 pair + original grub.cfg — all hashes recorded
-    (d1ee639c…, ee36d989…, de4ae604…, 9d6e7510…, 552 B marked cfg).
+## ROLLBACK (explicit, no automatic-fallback claims)
+  - Test boot is the 7.1.13 netfix (explicit temporary candidate default). If it fails to boot
+    or misbehaves: return to macOS via the EXISTING controlled protocol (boot picker /
+    startup-disk), then restore grub.cfg from grub.cfg.pre-7113 (file-level). 7.1.6 recovery
+    remains AVAILABLE as a manual menu selection only — it is a KNOWN-PANIC kernel on this
+    firmware and is NOT a healthy automatic fallback.
+  - Full revert: restore grub.cfg.pre-7113 + d1ee boot.bin from /m1n1/boot.bin.d1ee-716 +
+    optionally remove VMLINUZ.7113/INITRD.7113 — all file-level, no raw writes.
 
 ## VERIFICATION GATES BEFORE any reboot (in-order)
   G1. mount-ro readback of EVERY written file: sha256 == staged source (esp. 566227f9… bundle)
