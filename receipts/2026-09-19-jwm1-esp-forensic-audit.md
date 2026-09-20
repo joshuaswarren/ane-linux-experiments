@@ -138,10 +138,16 @@ burns time debugging a phantom error on the console.
 ## Operational lesson
 
 Three separate remote fix attempts were driven by unverified hypotheses, and
-two of them wrote an image whose size was not a multiple of the block size, so
-the write could not have completed even in principle. The read-back digest
-check that finally caught this (`esp-readback.part` sha256 equal to
-`esp-recovery.part`) is the only reason we know a good image ever landed.
+two of them wrote an image whose size was not a multiple of the block
+size. On this raw device the observed behavior was a short write: dd exited 1
+with EINVAL on the final partial block after writing most of the image,
+leaving the ESP a partial overwrite of the good image by the stale one
+(verified live 2026-09-19 16:21: on-device digest `7a786f85ccfd8c4f…` equals
+the failed write's read-back). That is the observed behavior of one
+device/dd/final-block combination, not a universal law — alignment handling
+of a trailing partial block is device- and driver-dependent. The policy rule
+is unchanged and general: never write an ESP image whose size is not an
+exact multiple of the sector size, and always verify by read-back digest.
 
 Rules this supports:
 - Never write an ESP image whose size is not an exact multiple of 512.

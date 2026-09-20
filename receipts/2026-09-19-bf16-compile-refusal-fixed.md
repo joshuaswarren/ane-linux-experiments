@@ -158,7 +158,7 @@ All five digests equal the section-5 pins from the 972c6dd wheel — compile ON 
 
 Ancestry: `git merge-base --is-ancestor 63c1d3cf HEAD` → exit 1 (NOT ancestor), re-verified at 1fbc9825 and 925cfa64.
 
-### 11.7 Open items (owned, each with a named next action)
+### 11.7 Open items — all closed
 
 1. **Upstream `test_compile.py` on lift bytes — CLOSED.** Run on the corrected wheel (`1fbc9825` bytes, venv `/tmp/bf16-lift-venv`) in a short coordinated hold: **68/68 passed** (`rc=0`, "68 passed in 1.69s"), log `/var/tmp/bf16-lift/test_compile-1fbc9825.log` on jw16. The three formerly-named-refusal cases stay green through the fence lift + dispatch fix.
-2. Strengthened fused-chain regressions land with `925cfa64` (test-only, byte-identical to the recerted wheel — no further GPU recert required for it, Main-approved scope). Durable full-suite log pending a GPU slot; strengthened cases themselves ran green in-window.
+2. **Strengthened fused-chain regressions (`925cfa64`) — CLOSED.** Durable full-suite log captured: `/var/tmp/bf16-lift/omarchy_fused_chain_tests-925cfa64.log` — **36/36, 346,272 assertions, SUCCESS** (338,080 + 2×4096 fused-eager bitwise loops, exactly as reviewed).
