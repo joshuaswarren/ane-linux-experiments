@@ -155,6 +155,30 @@ decomposed attribution requires the e167 control.
 - Contrast: NativeQ4ExactReproduction reports fix-vs-e167-baseline **bit-neutral** on jwm1 Q4 legs (20/20
   digests) — different model/die; jw14m2 Qwen3.8 legs are not bit-neutral across the vintage swap.
 
+## CONTROL CLOSED (same window, e167 same-base on G14C): attribution resolved
+
+Same-base `e16775642` baseline driver (`libvulkan_asahi-e167.so` sha `7087acce…`, jw16 copy of the jwm1
+build, staged `/var/tmp/mesa-095cb/` + dedicated ICD) under identical protocol:
+
+| leg | prompt | driver | decode tok/s | prefill s | ids sha256_16 |
+| --- | --- | --- | ---: | ---: | --- |
+| 9 | long (245) | e167 (no fix) | 4.0785 | 18.78 | `1e10ee1431e14597` == candidate |
+| 10 | ctx1024 (1036) | e167 (no fix) | 3.9524 | 76.23 | `1731d8318e451a09` == candidate |
+
+1. **RoPE hypothesis CONFIRMED**: e167 (which lacks the fix) produces digests **byte-identical to the
+   candidate** on both prompts. The stock-vs-lineage digest flip is entirely vintage-level; the sin fix is
+   **bit-neutral on the model** (matching NativeQ4's jwm1 20/20 result).
+2. **Same-base perf**: fix delta = +0.9% (long) / −0.5% (ctx) single-run — within wander, no measurable
+   decode cost from `095cb7e1` itself. The −8%-ish stock-vs-lineage decode delta belongs to the devel
+   vintage, not the fix.
+3. **Signed-zero decomposition completed** (G14C probe): e167 leaks raw subnormals (`sin(−1e−45)=
+   `80000001``, no flush), stock 26.2.3 flushes but loses sign (`00000000`), candidate flushes signed zero
+   (`80000000` = the fix's contract). Three builds, three behaviors, cleanly attributed.
+
+**Verdict: `095cb7e1` on G14C = subnormal signed-zero flush restored, model-output bit-neutral, no decode
+cost vs its own base. Diagnostic-label rescinded for the attribution question; stock-vs-lineage deltas
+remain vintage-level.**
+
 ## Coordination (updated)
 
 - M2BootImplementation authorized each window in-band and received the attempt-4 GPU yield; ownership then
