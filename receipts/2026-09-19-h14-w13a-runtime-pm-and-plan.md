@@ -528,11 +528,13 @@ source-pinned.
 
 ### Addendum 3m: slot identities per Main source audit (final)
 
-- [dev+0x978] = "FirmwareLoaded" resolution — the BOOT compose reads
-  its [+0x18] (64-bit). This is the RVBAR entry-composition source.
-- [dev+0x980] = a DIFFERENT registry object (key 0x40000, fourcc
-  0x444D4D20) — the SCRATCH math reads its [+0x18] (w32 lo + x64) and
-  [+0x38] (x64) for per-command surface positions.
+- [dev+0x978] = OSValueObject<ANESharedMemorySurfaceParams>::gMetaClass
+  allocation (Main independently verified via correct nlist decode:
+  VA 0xfffffe000cb6e5e8 = gMetaClass). Boot compose [+0x18] 64-bit =
+  params field 0. NOT an IOKit runtime pointer, NOT the old
+  AppleANETunableApplyFunction class.
+- [dev+0x980] = DIFFERENT registry object (key 0x40000/fourcc
+  0x444D4D20) — SCRATCH math reads [+0x18] (w32/x64) and [+0x38] (x64).
 - The +0x18 "status" stores (0x95f6160/0x95f6308) belong to the
   ALLOC-RESULT struct, NOT params; the +0x38 zero store uses a dynamic
   base dev+x24, NOT params. Producer tracing is SPLIT: DartAudit
