@@ -293,3 +293,31 @@ Corrected Step-3 status: **A/C numerical gates PASS under the documented
 chunked envelope (0 violations across all outputs); B is BYTE-EXACT. The
 September numeric state is reproduced exactly on the restored stack
 (deviations included).**
+
+## Addendum 8 — A/C accumulation-class check (source-traced; Main directive: no envelope shopping)
+
+The runner's per-output criterion selection is source-traced:
+`chunked_tensors(manifest)` propagates `"accumulation": "chunked-fp16"` from
+the package manifest's tensor records through the dispatch plan (outputs
+computed from chunked intermediates inherit the classification). Results:
+
+- **A/C island outputs carry NO `accumulation` marker** in the
+  island-attn-a-kt bundle manifest (attention_scores_1, matmul_0: none;
+  pos_kT/q_v/k_headsT/q_scaled: none). The runner therefore applies
+  **exact fp16 equality** to them — the same bar the runner applied to
+  B (which has no marker either and passed byte-exact).
+- Contrast: the 08-mlp package DOES mark its intermediates
+  (`$h13.hidden.linear`, `$h13.projected.linear`:
+  `"accumulation": "chunked-fp16"`) — that is why the mlp run's own
+  runner-verdict was `PASS` under the chunked envelope while my stricter
+  byte bar flagged it.
+
+Consequence for the A/C gate: **the chunked envelope does NOT apply** (the
+compiled programs are not classified chunked-fp16), and exact equality is
+the runner-selected criterion, under which A/C have real mismatches
+(8369/2247000 and 162265/1125000/384000). The mismatch mechanism remains
+open. Status: **A/C execution PASS (rung 4), numerical criterion unresolved
+pending a source-derived accumulation-precision/order proof** (the
+error-bound derivation from the actual tile structure per Main's earlier
+directive). B byte-exact accepted. No verdict change without the
+accumulation-class source proof.
