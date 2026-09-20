@@ -79,3 +79,39 @@ ba6186d (hardening: header pin, cacheLevel assert, segok exit).
    readReg bit0 gate, then SCRATCH7 = 0 (cold) / 1 (warm); host ack SCRATCH3 = 0x08042006;
    wake poke 0xf7fbdff9; host polls SCRATCH7 == 0x08042006.
 4. Zeroing routine 0x957a2d0 covers [+0x0,+0x88)+arrays (whole-record zero before fill).
+
+## 7. AMENDMENT (2026-09-20, same lane): two-surface model; +0xe8 claim withdrawn
+
+Fixed-symbol re-trace supersedes parts of §2/§6:
+
+- SetupFWInitBootArgs true address = 0x95fe440 (single caller 0x95fe8a0 inside
+  ANEHWDevice::SetupEndpoints(u32, ANESharedMemorySurfaceParams**)); conditional
+  on a flag byte ([x27+0x20] bit0). It initializes the SURFACE HEADER of the
+  params->0x38 surface: +0x84 = 0x40, +0x88..+0x108 zeroed, a 0x100-byte template
+  from dev->0x998 copied to +0x108..+0x208, then per-client blocks.
+- The earlier "[surface+0xe8] = boot-args buffer" reading is surface-relative
+  (correct as a surface offset); the receipt's "Params+0xe8 = boot-args buffer
+  pointer" line is WITHDRAWN — the params record (T size 0x78, setValue copy)
+  only has the fields below.
+- dev->0x978 and dev->0x980 are TWO SEPARATE params (ANESharedMemorySurfaceParams)
+  slots, both values of OSValueObject<Params> instances (keys "FirmwareLoaded" and
+  id 0x40000):
+  - 0x978 = FIRMWARE slot: ANE_LoadFirmware_gated (0x95effa8) copies the fw image
+    to params->0x38 surface; ANE_Init folds params->0x18 into the RVBAR word.
+  - 0x980 = INFERENCE-memory slot: ANEFirmwareManager::
+    initializeInferenceRequestMemoryPool (0x95e3ce8) writes the pool base at
+    params->0x38; SCRATCH0/1 position math uses params->0x18 + cursor − params->0x38.
+- Params+0x18 producer (corrected): the gated-alloc completion (0x95f6570) stores
+  the completion-vcall return into record+0x18 via the stack byref — a completion
+  status/value on the gated-alloc record; its identity to the params struct is the
+  remaining formal step. The RVBAR fold semantics for that field follow from the
+  fw lane's producer trace.
+- True symbol anchors (fixed <IBBHQ> parser): SetupFWInitBootArgs 0x95fe440,
+  ANE_LoadFirmware_gated 0x95effa8, ANE_Init 0x95e942c, ANEFirmwareManager ctor
+  0x95e3a04, initializeInferenceRequestMemoryPool 0x95e3ce8,
+  createANESurface 0x95a9ac4, dartMapMemoryDescriptor 0x95daa38,
+  dartMapMemoryDescriptorSharedMallocRegion 0x95db620, makeMemoryVisible 0x95db284,
+  SharedMemorySurfaceTargetPhysicalAddressToHostVirtualAddress 0x95f73cc,
+  OSValueObject<Params> create 0x95f727c / setValue 0x95f7314 / init 0x95fd29c.
+- The earlier broken-parser addresses (0x9579520/0x957a2f0/0x9579560/0x9579b14 and
+  the 0x957a2d0/0x957a1ac zero/ctor attributions) are discarded.
