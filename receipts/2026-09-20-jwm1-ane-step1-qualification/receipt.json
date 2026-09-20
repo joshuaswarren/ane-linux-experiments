@@ -1,0 +1,33 @@
+{
+  "schema": "jwm1-ane-step1-qualification/1",
+  "date": "2026-09-20",
+  "lane": "Jwm1AnePlan ladder Step 1 (Main-authorized after GPU 12-round release, 24/24 rc=0)",
+  "scope": "Eight pinned H13 packages + finite-input overflow case on the restored T8103 ANE stack (five-provider DT + guard v2 module), bit-level verification per Main's signed-zero directive",
+  "result": "8/8 packages PASS under the pinned referenceCriteria; overflow +inf PASS",
+  "packages": {
+    "01-add-legacy": "rc=0, y BIT-IDENTICAL",
+    "02-add-runtime-native": "rc=0, y BIT-IDENTICAL",
+    "03-mul-scalar": "rc=0, y BIT-IDENTICAL",
+    "04-matvec-k256-n512": "rc=0, y BIT-IDENTICAL",
+    "05-softmax-512": "rc=0, y BIT-IDENTICAL",
+    "06-chain-add-mul": "rc=0, y FLOAT-EQUAL with exactly 1 signed-zero pair (bit-diff 1 byte; zero true numeric diffs)",
+    "07-runtime-matmul-64": "rc=0, y BIT-IDENTICAL",
+    "08-mlp-768-1024-768": "rc=0 PASS under pinned chunked envelope; bit-level: 109/768 elements differ by exactly 1 fp16 ULP, max |delta| 9.77e-4 vs envelope 0.02+0.02*|ref| (~4.9e-2 at those magnitudes, ~50x margin); 0 signed-zero pairs"
+  },
+  "overflow": {
+    "inputs": "[65504, 65504] fp16 x64 (finite-input maximum)",
+    "expected": "first output +inf (historical ABI-1 qualification record)",
+    "result": "PASS; all 64 outputs +inf (bits 007c little-endian); runner rc=0"
+  },
+  "protocol_notes": [
+    "Pre-run hash manifest committed (runner, reference, inspector, h13_td, libane_python.so 76fedabb..., every package manifest/program/fixture)",
+    "Runner internal compare is FLOAT semantics (+0.0 == -0.0); every device output additionally byte-compared against the pristine reference — signed-zero-only diffs reported separately (one: 06-chain-add-mul), never called bit-exact",
+    "Pristine references never passed as --output targets (the runner overwrites them with device output on pass — discovered this session; the smoke-1 fixture was restored from the workstation repo and its device output preserved for analysis)",
+    "The script stopped once at 08-mlp under a stricter-than-pinned bit bar; the pinned chunked envelope (documented referenceCriteria, Sept 6 qualification) passes with ~50x margin — runner verdict rc=0 re-captured",
+    "No reboot, no retry beyond the harness-path fixes (constant/model file materialization into per-package scratch copies; staged tree untouched)",
+    "Module remains loaded non-persistent (guard v2 99e8b8b5..., wedged=0 throughout)"
+  ],
+  "evidence": ["step1-results.json", "step1-prerun-hashes.json", "ov-y-device.fp16"],
+  "bound": "completed in ~4 s of device time, far inside the 60-minute authorization",
+  "next": "Step 2 schema-4 add-mul re-earn via run-once.sh recipe (worker rebuild from pinned ane-v064-wt tree — heavy build, own window) — gated on Main"
+}

@@ -1,0 +1,59 @@
+{
+  "01-add-legacy": {
+    "rc": 0,
+    "verdicts": {
+      "y": "BIT-IDENTICAL"
+    },
+    "elapsed_s": 0.078
+  },
+  "02-add-runtime-native": {
+    "rc": 0,
+    "verdicts": {
+      "y": "BIT-IDENTICAL"
+    },
+    "elapsed_s": 0.078
+  },
+  "03-mul-scalar": {
+    "rc": 0,
+    "verdicts": {
+      "y": "BIT-IDENTICAL"
+    },
+    "elapsed_s": 0.081
+  },
+  "04-matvec-k256-n512": {
+    "rc": 0,
+    "verdicts": {
+      "y": "BIT-IDENTICAL"
+    },
+    "elapsed_s": 0.113
+  },
+  "05-softmax-512": {
+    "rc": 0,
+    "verdicts": {
+      "y": "BIT-IDENTICAL"
+    },
+    "elapsed_s": 0.084
+  },
+  "06-chain-add-mul": {
+    "rc": 0,
+    "verdicts": {
+      "y": "FLOAT-EQUAL-with-signed-zero-diffs"
+    },
+    "elapsed_s": 0.057
+  },
+  "07-runtime-matmul-64": {
+    "rc": 0,
+    "verdicts": {
+      "y": "BIT-IDENTICAL"
+    },
+    "elapsed_s": 0.183
+  },
+  "08-mlp-768-1024-768": {
+    "rc": 0,
+    "verdict": {
+      "y": "NUMERIC-MISMATCH"
+    },
+    "elapsed_s": 0.8451994290001039,
+    "stopped": true
+  }
+}
