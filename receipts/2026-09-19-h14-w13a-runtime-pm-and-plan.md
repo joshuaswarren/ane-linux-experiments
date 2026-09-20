@@ -245,11 +245,17 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   the ROM's boot-time image source is NOT SCRATCH-published — it is a
   fixed convention only iBoot/ROM knows. Placement constant stays the
   open prerequisite, sourced from the iBoot registration chain.
-- ROM entry 0x0081_0000_0000_0001 exceeds the 42-bit dart-ane0 iova
-  aperture → ROM fetch is an internal non-DART decode; boot image
-  space and runtime DART iova space are distinct domains (runtime fw
-  buffer addresses ARE dart-ane0 iovas resolved host-side, W2 §5 +
-  H14DartAudit).
+- ROM entry 0x0081_0000_0000_0001: bitfield semantics UNDECODED — the
+  value may compose flag bits with a shifted address rather than being
+  a raw address, and its relation to the DART iova space (or any
+  42-bit aperture claim) is UNPROVEN. What is pinned: the constant
+  itself (K13≡K14), its bit0 pre-gate read, and the CPU_CONTROL/STATUS
+  follow-on registers. Boot-vs-runtime ordering: boot fn zeroes
+  SCRATCH0-7 (InitANEScratchRegisters) → mode write → RVBAR → RUN →
+  poll; runtime InitializeRTBuddy then publishes per-command surface
+  positions via SCRATCH0/1 (lo/hi of surface_obj->[0x18] + cursor −
+  surface_obj->[0x38]; the class identity of that object — and thus
+  the exact meaning of +0x18/+0x38 — is unresolved).
 
 ### Addendum 3c: iBoot registry trace state (continuation point)
 
