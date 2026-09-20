@@ -1,0 +1,250 @@
+{
+ "pass": "compiled-curve",
+ "mlx_version": "0.32.2.dev202609171941+diag.6f70d4fa",
+ "profile_path": "/var/tmp/gdb/curve-20260920T084616Z.ndjson",
+ "conditions": {
+  "vk_driver_files": null,
+  "gated_barriers": null,
+  "fused_chain": null,
+  "fused_gemv": null,
+  "per_node_submit": null
+ },
+ "k": 2048,
+ "cols": 896,
+ "blocks": 6,
+ "w_series": [
+  1,
+  2,
+  4,
+  16,
+  64,
+  256
+ ],
+ "seed": 20260919,
+ "plan_segments": 36,
+ "total_plan_calls": 7920,
+ "dynamic_args": true,
+ "outputs_finite": true,
+ "walls": [
+  {
+   "block": 0,
+   "w": 16,
+   "steps": 208,
+   "wall_avg_us": 456.0370192708573
+  },
+  {
+   "block": 0,
+   "w": 2,
+   "steps": 200,
+   "wall_avg_us": 419.6027350553777
+  },
+  {
+   "block": 0,
+   "w": 64,
+   "steps": 256,
+   "wall_avg_us": 413.24372659801156
+  },
+  {
+   "block": 0,
+   "w": 4,
+   "steps": 200,
+   "wall_avg_us": 399.8797701206058
+  },
+  {
+   "block": 0,
+   "w": 1,
+   "steps": 200,
+   "wall_avg_us": 403.09602496563457
+  },
+  {
+   "block": 0,
+   "w": 256,
+   "steps": 256,
+   "wall_avg_us": 449.26807038336847
+  },
+  {
+   "block": 1,
+   "w": 1,
+   "steps": 200,
+   "wall_avg_us": 401.6308100835886
+  },
+  {
+   "block": 1,
+   "w": 256,
+   "steps": 256,
+   "wall_avg_us": 410.44277736546064
+  },
+  {
+   "block": 1,
+   "w": 16,
+   "steps": 208,
+   "wall_avg_us": 431.77573556581945
+  },
+  {
+   "block": 1,
+   "w": 2,
+   "steps": 200,
+   "wall_avg_us": 405.59957502409816
+  },
+  {
+   "block": 1,
+   "w": 4,
+   "steps": 200,
+   "wall_avg_us": 422.2364950692281
+  },
+  {
+   "block": 1,
+   "w": 64,
+   "steps": 256,
+   "wall_avg_us": 432.7844649196777
+  },
+  {
+   "block": 2,
+   "w": 16,
+   "steps": 208,
+   "wall_avg_us": 403.61581243185077
+  },
+  {
+   "block": 2,
+   "w": 4,
+   "steps": 200,
+   "wall_avg_us": 400.0206000637263
+  },
+  {
+   "block": 2,
+   "w": 64,
+   "steps": 256,
+   "wall_avg_us": 417.96183984388335
+  },
+  {
+   "block": 2,
+   "w": 256,
+   "steps": 256,
+   "wall_avg_us": 441.9879453507747
+  },
+  {
+   "block": 2,
+   "w": 1,
+   "steps": 200,
+   "wall_avg_us": 404.3662401090842
+  },
+  {
+   "block": 2,
+   "w": 2,
+   "steps": 200,
+   "wall_avg_us": 414.3287650367711
+  },
+  {
+   "block": 3,
+   "w": 2,
+   "steps": 200,
+   "wall_avg_us": 403.6426950187888
+  },
+  {
+   "block": 3,
+   "w": 16,
+   "steps": 208,
+   "wall_avg_us": 404.85940861309734
+  },
+  {
+   "block": 3,
+   "w": 64,
+   "steps": 256,
+   "wall_avg_us": 412.3451250279686
+  },
+  {
+   "block": 3,
+   "w": 1,
+   "steps": 200,
+   "wall_avg_us": 465.40160503354855
+  },
+  {
+   "block": 3,
+   "w": 4,
+   "steps": 200,
+   "wall_avg_us": 410.2502149180509
+  },
+  {
+   "block": 3,
+   "w": 256,
+   "steps": 256,
+   "wall_avg_us": 418.86760152465286
+  },
+  {
+   "block": 4,
+   "w": 16,
+   "steps": 208,
+   "wall_avg_us": 418.2785095718618
+  },
+  {
+   "block": 4,
+   "w": 1,
+   "steps": 200,
+   "wall_avg_us": 406.82874503545463
+  },
+  {
+   "block": 4,
+   "w": 64,
+   "steps": 256,
+   "wall_avg_us": 412.92601952136465
+  },
+  {
+   "block": 4,
+   "w": 256,
+   "steps": 256,
+   "wall_avg_us": 425.99750395311275
+  },
+  {
+   "block": 4,
+   "w": 2,
+   "steps": 200,
+   "wall_avg_us": 405.11999002774246
+  },
+  {
+   "block": 4,
+   "w": 4,
+   "steps": 200,
+   "wall_avg_us": 405.56540989200585
+  },
+  {
+   "block": 5,
+   "w": 16,
+   "steps": 208,
+   "wall_avg_us": 416.3784664202607
+  },
+  {
+   "block": 5,
+   "w": 256,
+   "steps": 256,
+   "wall_avg_us": 438.9885858699927
+  },
+  {
+   "block": 5,
+   "w": 4,
+   "steps": 200,
+   "wall_avg_us": 412.0508399500977
+  },
+  {
+   "block": 5,
+   "w": 2,
+   "steps": 200,
+   "wall_avg_us": 416.7181449884083
+  },
+  {
+   "block": 5,
+   "w": 64,
+   "steps": 256,
+   "wall_avg_us": 410.500394536939
+  },
+  {
+   "block": 5,
+   "w": 1,
+   "steps": 200,
+   "wall_avg_us": 410.4787549294997
+  }
+ ],
+ "note": "GATED: no hardware run until Main reviews",
+ "libmlx_sha256": "83d20eefad8033eefb2b323c4de74124b50e306f917ed57ad69700d73a29f6f7",
+ "libmlx_path": "/var/tmp/qmmceil/venv/lib/python3.14/site-packages/mlx/lib/libmlx.so",
+ "wheel_version": "0.32.2.dev202609171941+diag.6f70d4fa"
+}
