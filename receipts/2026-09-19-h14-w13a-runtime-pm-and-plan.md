@@ -313,6 +313,17 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   SetupFWInitBootArgs (parallel implementation confirmed). Continuation:
   0xeed50/0xeeea8/0xeecf8/0xedcc4 chain + the 0x50-stride array's
   load-address field.
+- ADD (W13a 3h, 0xee0f8 continuation + wrapper): 0xee0f8 removes a
+  client entry ([+0x40] count decrement, 0x50-stride remove with
+  [+0x44] size rounding (+3&~3)+0x24 — same math) via bl 0x104824; a
+  second shim 0xee2c0 (bl 0xeed50/0xeeea8/0xeecf8 → 0xee0f8) wraps it.
+  Sibling 0xee2c0+ walks the client array with bl 0x103cdc (bounds
+  0x20), bl 0xeef18, bl 0xed708 (bool), registry-style zeroing at
+  [x+0x48], then bl 0x104790(w4=0,w5=0x20) + bl 0x104544(+x4..x7) —
+  the heavy lifters for entry allocation/registration. These are the
+  entry-management primitives; the per-role templates (0x2254c8 MTP /
+  0x22552b ANE0 neighborhoods) carry the role strings INLINE while the
+  load-address fields are filled at runtime from this machinery.
 - Selene bootargs-parse trace (negative result, documented): the fw
   string "Boot arguments entries : %zu" (VA 0x9e02c in `__TEXT.__cstring`)
   has ZERO static references — no ADRP/ADD xref (fwxref), no literal-pool
