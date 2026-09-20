@@ -506,3 +506,27 @@ A — no isolation work is possible until the crash is fixed.
 Handed to EncoderCompilerCoverage: slice-lastdim lowering crash on
 device is now the top compiler-lane item; the differential arms resume
 the moment the crash is fixed (everything else is staged and frozen).
+
+## 14. Hand-trimmed manifest route rejected (evidence); correct route = per-program MIL compiles
+
+Trimming the minted package's manifest into per-program bundles (filtering
+inputs/outputs lists per program) fails the loader's invariants:
+`missing field 'index'` (bindings carry tensor-table indices that trimming
+invalidates) and `inputs must be a non-empty array` (intermediate outputs
+are not in the final-outputs list). Manifest surgery is not a splitter.
+
+Correct route (matches how island-attn-a-kt's two programs were minted on
+2026-09-14): compile EACH head program's MIL snippet as its own package
+through mil-hwxc HEAD (d041417 — has the slice-lastdim lowering) + the
+h13_v2_to_schema4 adapter. The MIL snippets are trivial hand-authors of
+slice/select/matmul/add/softmax at the head shapes. This is
+EncoderCompilerCoverage's toolchain (they own the adapter); the ladder
+runbook + input value sets are staged and frozen on my side
+(/var/tmp/encgate/{ladder bundles deprecated, fdump captures, ladder_run.py}).
+
+State: F gate blocked on the compiler lane's per-program mint (or on their
+fix of the 5-program package's device crash — either resolves it). The
+discriminating ladder (which program crashes/numerics) executes in one
+short hold once the per-program bundles exist. F remains branch-only,
+unqualified. Transport exonerated: certified islands through the identical
+transport/session are clean.
