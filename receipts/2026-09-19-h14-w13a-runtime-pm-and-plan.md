@@ -587,6 +587,12 @@ The producer of whatever value sits at obj+0x18 is inside the
 SetupFWInitBootArgs machinery (H14DartAudit walk continuation).
 
 ### Addendum 5: CLASS IDENTITY RESOLVED (H14DartAudit, definitive)
+**CORRECTED per audit + Main**: the init zeroing starts at 0x957a2d0 and
+covers [0x0, 0x88) INCLUDING +0x18 — there is NO wrapper-header/payload
+split. Both my "+0x18 = params payload field 0" and DartAudit's
+"+0x18 = wrapper-header" inferences are WITHDRAWN. +0x18 is simply a
+field of the object, zeroed at construction, written by unknown code
+between construction and the boot compose.
 
 The object at [dev+0x978] AND [dev+0x980] is `AppleANETunableApplyFunction`,
 size **0x7e8** (2024 bytes). Both prior attributions superseded:
