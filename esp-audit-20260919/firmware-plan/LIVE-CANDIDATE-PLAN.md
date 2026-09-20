@@ -54,6 +54,8 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
      D2. INSTALL temporary candidate-default config as /grub-ane/grub.cfg: BOTH entries
          (7.1.13 netfix FIRST = default; 7.1.6 recovery SECOND), same UUID/rw/subvol=@,
          same marked-echo style, written grub.cfg.new -> readback -> rename.
+         The 7.1.13 entry cmdline INCLUDES panic=10 (known-panic autoreboot after 10 s —
+         covers kernel-panic-class failures only; see COVERAGE note in ROLLBACK).
          The 7.1.6 recovery entry remains PRESENT for manual selection at the GRUB menu.
      D3. ON TEST VERDICT (either way), restore /grub-ane/grub.cfg from grub.cfg.pre-7113
          (file-level, temp+readback+rename). Permanent default returns to 7.1.6 recovery only
@@ -92,10 +94,12 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
        (Linux) EXACTLY ONCE; the following boot returns to macOS automatically.
 
      FAILURE OBSERVATION (concrete):
-       tailscale status --json: JW-M1 (100.67.134.6) coming online on macOS after the test =
-       returned-to-macOS confirmed; jwm1-linux (100.84.184.102) frozen lastSeen = Linux test
-       failed to reach userspace/network. This pattern is from the same receipt (02:32-02:45
-       CDT section).
+       panic=10-class failure: autoreboot in <=10 s + panic Counters; tailscale shows JW-M1
+       (100.67.134.6) online on macOS shortly after = returned.
+       rescue-shell/hang: JW-M1 does NOT come online (no autoreboot happened) = use the
+       separate handling above (manual power-cycle / console reboot).
+       One failed attempt = STOP + capture (err, tailscale state, panic Counters if any).
+       NO second blind try.
 
      ONE-ATTEMPT POLICY (Main): ONE failed attempt = STOP. Capture evidence (err/log/tailscale
        state), report to Main. NO automatic second blind try; the 2-attempt rule from the old
@@ -108,12 +112,24 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
      embeds/loads it per firmware-plan v4 (snippet early-embed E1/E2). No ESP vendorfw writes.
   F. UBOOTEFI VAR + vendorfw/ + asahi/ + EFI/ANE: UNTOUCHED.
 
-## ROLLBACK (explicit, no automatic-fallback claims)
-  - Test boot is the 7.1.13 netfix (explicit temporary candidate default). If it fails to boot
-    or misbehaves: return to macOS via the EXISTING controlled protocol (boot picker /
-    startup-disk), then restore grub.cfg from grub.cfg.pre-7113 (file-level). 7.1.6 recovery
-    remains AVAILABLE as a manual menu selection only — it is a KNOWN-PANIC kernel on this
-    firmware and is NOT a healthy automatic fallback.
+## ROLLBACK — COVERAGE IS EXACT, NOT "ALL BOOT FAILURES"
+  panic=10 on the 7.1.13 entry covers ONLY kernel-panic-class failures (panic() calls /
+  oops with panic_on_oops). EXACT COVERAGE:
+    COVERED:   kernel panic during boot or early userspace (SError escalated to panic,
+               NVMe ANS abort -> panic, initramfs panic paths) -> autoreboot after 10 s ->
+               next boot = macOS (permanent default, verified in STEP 2).
+    NOT COVERED — separate failure handling required:
+      a. rescue PID1 interactive shell (initramfs fails to find root / mount failure):
+         box sits at an interactive shell; it will NOT autoreboot. Handling: agent types
+         `reboot -f` over ssh/console IF reachable, else manual power-cycle; then macOS boots.
+      b. hard hang (no panic, e.g. early firmware wedge before console): no autoreboot.
+         Handling: manual power-cycle (or Main-directed Tailscale-driven power action if
+         any exists); then macOS boots.
+      c. silent network-up failure (userspace fine, tailscale down): box healthy but dark.
+         Handling: manual power-cycle from console OR wait for user; macOS default intact.
+    In ALL not-covered cases the macOS permanent default is intact; the next MANUAL reboot
+    lands on macOS. Do NOT claim "all failures auto-return" — the plan claims only the
+    panic=10 class.
   - Full revert: restore grub.cfg.pre-7113 + d1ee boot.bin from /m1n1/boot.bin.d1ee-716 +
     optionally remove VMLINUZ.7113/INITRD.7113 — all file-level, no raw writes.
 
