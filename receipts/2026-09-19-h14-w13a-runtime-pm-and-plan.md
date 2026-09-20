@@ -186,7 +186,14 @@ Complete Chinook boot flow (K14 0x95e9420–0x95e9d00; W13a + this pass):
 
 1. `readReg(eng+0x1050000)` — RVBAR; `bit0 == 1` → SKIP (released latch;
    matches live reads 0x1).
-2. `writeReg(eng+0x1050000, 0x0081_0000_0000_0001)` — ROM entry (K13 ≡ K14).
+2. `writeReg(eng+0x1050000, rvbar)` where
+   `rvbar = (obj18 & 0xff7e_ffff_ffff_f800) | 0x0081_0000_0000_0001`
+   (DartAudit correction: a COMPOSITION, not a literal constant — the
+   mask preserves bits [46:11] of the `FirmwareLoaded` object's +0x18
+   value, so that field's producer feeds the entry encoding. The
+   obj+0x18 producer is the open piece; resolver 0x95f679c /
+   AllocateSharedMemorySurface traced next. K13 ≡ K14 composition
+   identical.)
 3. two config-driven writes with `w2=0` then `w2=0x10` on cfg field
    `[dev+0x4a0]` (clock/PM asserts — identities not yet named).
 4. **Poll loop** `0x95e9adc–0x95e9b8c`: ≤1000 iterations of
