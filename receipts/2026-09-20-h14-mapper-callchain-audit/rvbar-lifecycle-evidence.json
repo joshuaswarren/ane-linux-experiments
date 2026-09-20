@@ -5,7 +5,10 @@
   "worker": "M2ResetLifecycle",
   "no_device_contact": true,
   "no_mmio_writes": true,
-  "kernelcache": {"path": "/tmp/kernelcache.mac14j.raw", "sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa"},
+  "kernelcache": {
+   "path": "/tmp/kernelcache.mac14j.raw",
+   "sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa"
+  },
   "anchors": "tools/check_rvbar_lifecycle_anchors.py - 38/38 PASS (raw instruction words, byte-exact)"
  },
  "flag_semantics": {
@@ -14,7 +17,10 @@
   "dev+0x3FB (1019)": "fw-initialized flag gating ANE_deInit inside power_off."
  },
  "rvbar_write_site": {
-  "only_write64_sites_in_kext": ["ANE_Init 0x95e9988 (RVBAR 0x1050000)", "ThermalPTDTimerTimeOut_gated 0x9605f28 (perf counters, accessor dev+0x1A0)"],
+  "only_write64_sites_in_kext": [
+   "ANE_Init 0x95e9988 (RVBAR 0x1050000)",
+   "ThermalPTDTimerTimeOut_gated 0x9605f28 (perf counters, accessor dev+0x1A0)"
+  ],
   "mechanics": "gate dev+0x41F bit0 -> skip; read64OneShot(accessor dev+0x188 ENGINE reg[0], 0x1050000) bit0 set -> skip; else write64(dev+0x188, 0x1050000, 0x0081000000000001 | (FWIM_DVA & 0xff7efffffffff800)). FWIM_DVA = *(dev+0x978 Params +0x18) (pass3). Absolute: ENGINE aperture 0x84000000 + 0x1050000 = 0x85050000, width 64.",
   "no_clear_write_exists": "No instruction anywhere in the KC writes RVBAR with bit0=0. The driver never force-clears the latch by MMIO."
  },
@@ -135,9 +141,22 @@
    "after READY: r0 = read_scratch(0); r1 = read_scratch(1); if (r0 >= 0x21) FAIL the boot attempt (propagate 0xE00002BC-equivalent; caller power-cycles and retries) - publish NOTHING; else ipc = alloc(max(r1+1, floor)); hdr[0x08] = iova(ipc); hdr[0x50] = (u64)(u32)(r1+1);",
    "after DONE ack: addr = ((u64)read_scratch(1) << 32) | read_scratch(0); host_ptr = translate_whitelist(addr) - accepted ONLY in FWIM staging [dva, dva+0x500000), IPC window [dva, dva+word0), or CTRR windows; NULL translation = error -> retry path; never deref an untranslated/NULL pointer",
    "never treat SCRATCH0 as return code; never expect zero; never fill header[0x08] with 0 on the high branch - fail closed instead; booted=true remains ACK-gated (poll B)"
-   ],
+  ],
   "anchors": "tools/check_rvbar_lifecycle_anchors.py I1-I13 + J1-J12 + K1-K6 (126/126 total KC); selene 19/19"
  },
- "mmio_writes_this_lane": "none",
- "tools_added": ["tools/check_rvbar_lifecycle_anchors.py"]
+ "pass10_gate473_resolution": {
+  "scope": "Main: trace provider gate ID 473 (ANE-SYS-V, clock-gates==power-gates==[473]) to physical register; P0-stall root cause still open. Corrections accepted: clock-gated-island hypothesis UNPROVEN (Apple ps domains can gate clocks; no clk-API inference); phys address item1 = 0x284000B38 (ASC view, 64-bit DT cell 0x2:84000000); dev+0x784 always-open NOT proven (bulk/config-copy alias writers invisible to imm scans).",
+  "resolver_chain_raw": [
+   "ApplePMGR::_deviceIDToPowerDomainData(u16) 0x9b5cbbc: x0 = _deviceIDToDeviceData(id) (0x2b45e10); w1 = [DeviceData+14] (u8); tbnz w1,#7 -> error cold path; cbz w1 -> NULL (no domain); else TAIL-CALL _powerDomainIDToPowerDomainData((u8)w1) 0x9b5e3b8 -> PowerDomainData.",
+   "i.e. the device entry carries a DOMAIN-MAP INDEX byte at +14; the power domain is a per-map table lookup, not the raw ADT id.",
+   "Applier: ApplePMGR::powerOverwrite(PowerDomainData*) 0x9b7675c; CPU-gating helpers _enableCPUDevicePowerDomainGating 0x9b6b73c.",
+   "Callers: AppleARMIODevice::enableDeviceClock 0x8c6f2f8 / enableDevicePower 0x8c6f408 (slots 0x8a8/0x8b0) with cached arg dev+0x8F0 (provider-power-calls.json: enable=1, before the pre-CPU table)."
+  ],
+  "final_link_runtime_only": "ANE-SYS-V DeviceData+14 (the domain index) is live-ADT data: Main decodes the j414c ADT (device 473 lines 7178+; id76=ANE_CPU map6 index28 parent60 ANE_SYS; id380=AFR map18 index0 alias0; alias word 0x017C004C = {380<<16|76} decomposition candidate). Extraction needed: ANE-SYS-V DeviceData+14 -> domain index -> PowerDomainData.ps-ctl offset; compare against the Linux genpd raised set {2e0,4000,4008,4010,4018,4020,4028,4030}. If it lands on 2e0 (ANE_CPU), the provider calls add NOTHING beyond genpd and the P0 stall cause is elsewhere; if it lands on an unraised domain (AFR/other), that ps-ctl is the missing predecessor.",
+  "mmio_writes_this_lane": "none"
+ },
+ "tools_added": [
+  "tools/check_rvbar_lifecycle_anchors.py"
+ ],
+ "mmio_writes_this_lane": "none"
 }
