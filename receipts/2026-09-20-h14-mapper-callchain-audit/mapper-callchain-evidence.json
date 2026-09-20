@@ -326,6 +326,19 @@
    "disasm/start_FWIM_params_outparam.txt",
    "disasm/gated_dartMap_iova_params.txt"
   ],
-  "mmio_writes_this_lane": "none"
+  "mmio_writes_this_lane": "none",
+  "suballoc_content": {
+   "scope": "0x174-byte init-pool suballocation fill (M2BootImplementation request), byte-verified",
+   "layout": [
+    "[0x00] u64 = *(dev+0x978 Params + 0x18) = FWIM surface DVA: ldr x9,[x19,#2424] 0x95ea794; add x9,#0x18/ldr 0x95ea79c; str x9,[x25] 0x95ea7a0 (x25 = suballoc base)",
+    "[0x08] u64 = *(dev+0x988 (2440)) + 0x24: 0x95ea7a8/0x95ea7ac/0x95ea7b0",
+    "[0x10..0x38] further header fields stp'd at 0x95ea7c4/0x95ea7e0, w32 at 0x95ea874 ([x25,#48])",
+    "[0x68] u32 = 64 (count) at 0x95ea90c/0x95ea910",
+    "[0x6C..0x16C] 256-byte template copied from dev+0x998 (0x95ea934 + 8x ldp/stp 0x95ea938-0x95ea97c); template from initializeANEProperties 0x9612b60: kalloc_data(0x100,Z_ZERO), word0=config+0x1d8=0, +0xC0|=0x10 conditional",
+    "dev+0x780 bit0 branch at 0x95ea978/0x95ea980: clear -> skip walk loop, straight to ack/publish at 0x95eaa88 (legacy observed)"
+   ],
+   "honest_linux_fill": "header[0]=driver fw_params DVA, header[0x68]=64, template=zeroed 256B are structurally fillable; per-field template semantics on the fw side unresolved (selene fn 0x71A4 reads the template region via x28+0x6C at vm 0x7614; field meanings open)",
+   "snippet": "disasm/ANE_Init_suballoc_header.txt"
+  }
  }
 }

@@ -1,0 +1,68 @@
+
+/tmp/kernelcache.mac14j.raw:     file format binary
+
+
+Disassembly of section .data:
+
+00000000025e678c <.data+0x25e678c>:
+ fffffe00095ea78c:	11003eb5 	add	w21, w21, #0xf
+ fffffe00095ea790:	17fffee9 	b	0x25e6334
+ fffffe00095ea794:	f944be69 	ldr	x9, [x19, #2424]
+ fffffe00095ea798:	91006129 	add	x9, x9, #0x18
+ fffffe00095ea79c:	f9400129 	ldr	x9, [x9]
+ fffffe00095ea7a0:	f9000329 	str	x9, [x25]
+ fffffe00095ea7a4:	f90033fa 	str	x26, [sp, #96]
+ fffffe00095ea7a8:	f944c669 	ldr	x9, [x19, #2440]
+ fffffe00095ea7ac:	f9400d29 	ldr	x9, [x9, #24]
+ fffffe00095ea7b0:	f9000729 	str	x9, [x25, #8]
+ fffffe00095ea7b4:	f940be69 	ldr	x9, [x19, #376]
+ fffffe00095ea7b8:	b9413929 	ldr	w9, [x9, #312]
+ fffffe00095ea7bc:	52a2000a 	mov	w10, #0x10000000            	// #268435456
+ fffffe00095ea7c0:	4b09014a 	sub	w10, w10, w9
+ fffffe00095ea7c4:	a9012b29 	stp	x9, x10, [x25, #16]
+ fffffe00095ea7c8:	34000096 	cbz	w22, 0x25e67d8
+ fffffe00095ea7cc:	f94047e9 	ldr	x9, [sp, #136]
+ fffffe00095ea7d0:	f9400d3a 	ldr	x26, [x9, #24]
+ fffffe00095ea7d4:	14000002 	b	0x25e67dc
+ fffffe00095ea7d8:	d280001a 	mov	x26, #0x0                   	// #0
+ fffffe00095ea7dc:	2a1603f6 	mov	w22, w22
+ fffffe00095ea7e0:	a9025b3a 	stp	x26, x22, [x25, #32]
+ fffffe00095ea7e4:	f9403ae0 	ldr	x0, [x23, #112]
+ fffffe00095ea7e8:	b4000440 	cbz	x0, 0x25e6870
+ fffffe00095ea7ec:	39400688 	ldrb	w8, [x20, #1]
+ fffffe00095ea7f0:	36100348 	tbz	w8, #2, 0x25e6858
+ fffffe00095ea7f4:	b9418268 	ldr	w8, [x19, #384]
+ fffffe00095ea7f8:	71000d1f 	cmp	w8, #0x3
+ fffffe00095ea7fc:	54000168 	b.hi	0x25e6828  // b.pmore
+ fffffe00095ea800:	d37df108 	lsl	x8, x8, #3
+ fffffe00095ea804:	f0ff5b09 	adrp	x9, 0x1149000   ; -> __ZTV13OSValueObjectI16FWPendingRequestE+0x140
+ fffffe00095ea808:	91068129 	add	x9, x9, #0x1a0
+ fffffe00095ea80c:	eb28c11f 	cmp	x8, w8, sxtw
+ fffffe00095ea810:	8b28c12a 	add	x10, x9, w8, sxtw
+ fffffe00095ea814:	8b080130 	add	x16, x9, x8
+ fffffe00095ea818:	f2e575b0 	movk	x16, #0x2bad, lsl #48
+ fffffe00095ea81c:	9a90014a 	csel	x10, x10, x16, eq	// eq = none
+ fffffe00095ea820:	f9400148 	ldr	x8, [x10]
+ fffffe00095ea824:	14000003 	b	0x25e6830
+ fffffe00095ea828:	d0fef668 	adrp	x8, 0x4b4000   ; -> __ZZN37AppleGCIOHIDEventDriverPropertyMerger5probeEP9IOServicePiE11_os_log_fmt+0x188
+ fffffe00095ea82c:	911a7108 	add	x8, x8, #0x69c
+ fffffe00095ea830:	a9006fe8 	stp	x8, x27, [sp]
+ fffffe00095ea834:	b0fef660 	adrp	x0, 0x4b3000
+ fffffe00095ea838:	913b0000 	add	x0, x0, #0xec0
+ fffffe00095ea83c:	b0ff5bc1 	adrp	x1, 0x115f000   ; -> __ZZN3ANE12ANEAllocatorIyE10deallocateEPymE19kalloc_type_view_39+0x10
+ fffffe00095ea840:	f945fc21 	ldr	x1, [x1, #3064]
+ fffffe00095ea844:	90fef843 	adrp	x3, 0x4ee000   ; -> __ZZN11ANEHWDevice8ANE_InitEvE11_os_log_fmt_8+0x1a
+ fffffe00095ea848:	91088063 	add	x3, x3, #0x220
+ fffffe00095ea84c:	52800002 	mov	w2, #0x0                   	// #0
+ fffffe00095ea850:	9401868e 	bl	0x2648288
+ fffffe00095ea854:	f9403ae0 	ldr	x0, [x23, #112]
+ fffffe00095ea858:	f94047e8 	ldr	x8, [sp, #136]
+ fffffe00095ea85c:	f9401501 	ldr	x1, [x8, #40]
+ fffffe00095ea860:	aa1a03e2 	mov	x2, x26
+ fffffe00095ea864:	aa1603e3 	mov	x3, x22
+ fffffe00095ea868:	97ffba8c 	bl	0x25d5298   ; -> __ZN11ANECoredump18addExtraHeapRegionEP18IOMemoryDescriptorPvm
+ fffffe00095ea86c:	f944c268 	ldr	x8, [x19, #2432]
+ fffffe00095ea870:	b9499269 	ldr	w9, [x19, #2448]
+ fffffe00095ea874:	b9003329 	str	w9, [x25, #48]
+ fffffe00095ea878:	a903ff3f 	stp	xzr, xzr, [x25, #56]
+ fffffe00095ea87c:	f900273f 	str	xzr, [x25, #72]
