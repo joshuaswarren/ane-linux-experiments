@@ -652,3 +652,40 @@ OSValueObject is allocated — that is the params field producer.
 Candidates: (a) the vtable+0x28 call in the factory (if it's 
 setValue(T&)), (b) the FWIM completion handler, (c) the
 AllocateSharedMemorySurface_gated caller.
+
+### Addendum 7: PARSE CORRECTION + params pointer chain RESOLVED (H14DartAudit)
+
+CRITICAL: the prior disx symbol parser had a WRONG nlist struct size
+(22 B instead of 16 B), producing misaligned symbol addresses
+(0x957a2f0/0x9579520/0x9579560 = broken-parser artifacts). Corrected
+parser (<IBBHQ, 16 B) yields TRUE method addresses:
+
+| method | TRUE address |
+| --- | --- |
+| OSValueObject<Params>::init | **0x95fd29c** |
+| ::D1 | 0x95fd1a8 |
+| ::D0 | 0x95fd1b0 |
+| ::getMetaClass | 0x95fd200 |
+| ::serialize | 0x95fd1f4 |
+| ::free | 0x95fd3f8 |
+| __ZTV (vtable) | 0x814d7d8 (__const) |
+| AllocateSharedMemorySurface_gated | **0x95f5f20** |
+
+RESOLVED CHAIN (H14DartAudit trace, Main-confirmed gMetaClass):
+1. 0x95f727c: `ldr x0, [__bss+0x5e8]` → gMetaClass<Params>
+2. gMetaClass vtable+0xa8 → MetaClass::alloc → new instance
+3. TRUE init 0x95fd29c (not the broken-parser 0x957a2f0)
+4. setValue 0x95f7314(this, &value) stores the caller's
+   ANESharedMemorySurfaceParams* into instance+0x10 (PAC ctx 0x70f1)
+5. Resolver 0x95f679c reads [instance+0x10] autda 0x70f1
+6. Stores THE VALUE (the raw ANESharedMemorySurfaceParams*) to
+   dev+0x978/0x980 at 0x95f7114-18
+
+CONSEQUENCE: dev+0x978/0x980 hold the RAW ANESharedMemorySurfaceParams
+struct pointer (the T value), NOT the wrapper. Boot compose
+[params+0x18] = REAL params field. [params+0x38] = params field
+(surface base). The 0x957a2d0 zeroing function + all 0x957a/0x9579
+addresses from the broken parser are DISCARDED.
+
+NEXT: re-run the gated-sig trace (AllocateSharedMemorySurface_gated =
+0x95f5f20 with true symbols) for the params+0x18/+0x38 producers.
