@@ -36,10 +36,12 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
        34,114,048 B  e339c992eef9bb879680513efee54aec68b39f14cba78f96b6db3a5c1d68533c
        (banner: Linux version 7.1.13-3-1-ARCH #SMP PREEMPT_DYNAMIC)
        -> temp+readback+rename to /grub-ane/VMLINUZ.7113
-     INITRD.NEW = SUPERSEDED — DO NOT STAGE YET. 5ebbdff8… (initrd-7113-clean-modstage.img,
-       97,524,883 B) is superseded by a pending rebuild (Main directive). The rebuilt initrd
-       sha will be recorded here when the module agent delivers it; staging waits for that
-       artifact + Main assembly review.
+     INITRD.NEW (FINAL, reproducible rebuild — Main strict verifier passed; battery/repro
+       evidence complete):
+       98,014,376 B  b4a24461669358f82db63d78e3d5f5fe72b9160b8dd66301190d60506e0a2a6e
+       (artifact esp-audit-20260919/initrd-7113-clean-modstage.img; two consecutive builds
+        byte-identical; superseded 5ebbdff8… preserved under its own hash)
+       -> temp+readback+rename to /grub-ane/INITRD.7113
   C. INSTALL clean boot.bin 566227f9… (signed-package rebuild, m1n1 1.6.1 + pkg DTBs):
      /m1n1/boot.bin.d1ee-716  <- copy of current d1ee (rollback)
      /m1n1/.boot.new = 566227f9… bundle -> readback -> rename to /m1n1/boot.bin
@@ -57,9 +59,10 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
          The 7.1.13 entry cmdline INCLUDES panic=10 (known-panic autoreboot after 10 s —
          covers kernel-panic-class failures only; see COVERAGE note in ROLLBACK).
          The 7.1.6 recovery entry remains PRESENT for manual selection at the GRUB menu.
-     D3. ON TEST VERDICT (either way), restore /grub-ane/grub.cfg from grub.cfg.pre-7113
-         (file-level, temp+readback+rename). Permanent default returns to 7.1.6 recovery only
-         when Main directs a permanent config; not part of the test protocol.
+     D3. RESTORE POLICY (per Main): revert to grub.cfg.pre-7113 ONLY on a FAILED candidate
+         test or explicit Main direction. On a GOOD candidate test the tested cfg STAYS in
+         place (retained pending Main direction on the permanent config) — do NOT
+         unconditionally revert a successful candidate to the old known-panic config.
   D-alt. RETURN-TO-macOS PROTOCOL (agent-operable; CORRECTED per Main — permanent default
          MUST be macOS BEFORE arming the Linux one-shot).
      CURRENT STATE (nvram, verified 02:4x CDT Sep 20): boot-volume =
@@ -80,11 +83,15 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
           it as macOS installation 1), i.e. boot-volume =
           EF57347C-…:8BAAF2FA-…-:8000CF83-9C0D-45DA-813D-B45DC15FF2FD or the exact partition/
           VG UUID triple macOS writes; MUST NOT still be 7A64DCB3-… (stub).
-       b. Fresh SSH proof: ssh in (tailscale), run sw_vers → ProductVersion 27.0 /
-          BuildVersion 26A428 AND sysctl kern.boottime showing a boot AFTER the bless — this
-          proves the box is RUNNING macOS as its boot target, not just that NVRAM changed.
-       c. ONLY IF both (a) and (b) hold is the macOS-default arm verified. If the VG still
-          reads 7A64DCB3… or verification fails: STOP, do not arm the one-shot, report.
+       b. Fresh SSH OBSERVATION (NO new boot — verification must not require a reboot):
+          record timestamp, sw_vers (ProductVersion 27.0 / BuildVersion 26A428) and
+          sysctl kern.boottime from the currently-running macOS session. This confirms the box
+          is STILL RUNNING macOS; it does NOT by itself prove the NEXT boot target.
+       c. Evidence split: nvram boot-volume VG (from (a)) = NEXT-BOOT TARGET evidence; the SSH
+          observation (b) = CURRENTLY-RUNNING evidence. Only when (a) shows the macOS VG
+          (8000CF83-9C0D-45DA-813D-B45DC15FF2FD, not stub 7A64DCB3…) is the macOS-default arm
+          verified for the one-shot. If the VG still reads 7A64DCB3… or either check fails:
+          STOP, do not arm the one-shot, report.
 
      STEP 3 — ARM THE LINUX ONE-SHOT (only after STEP 2 verification):
        sudo bless --mount '/Volumes/Asahi Alarm Minimal (BTRFS)' --setBoot --nextonly
@@ -133,6 +140,9 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
     In ALL not-covered cases the macOS permanent default is intact; the next MANUAL reboot
     lands on macOS. Do NOT claim "all failures auto-return" — the plan claims only the
     panic=10 class.
+  - RESTORE POLICY (aligned with D3): revert grub.cfg to grub.cfg.pre-7113 ONLY on a FAILED
+    candidate test or explicit Main direction; on a GOOD candidate test the tested cfg STAYS
+    in place pending Main direction on the permanent config.
   - Full revert: restore grub.cfg.pre-7113 + d1ee boot.bin from /m1n1/boot.bin.d1ee-716 +
     optionally remove VMLINUZ.7113/INITRD.7113 — all file-level, no raw writes.
 
