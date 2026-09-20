@@ -160,6 +160,59 @@ def main():
         assert ident["outputs_finite"] is True
         print("PASS: per-segment walls serialized with dynamic_args=True, "
               "outputs_finite=True")
+        assert ident["outputs_finite"] is True
+
+        # --- synthetic stream verification (fused-dispatch contract) ---
+        segs = [s["steps"] for s in plan]
+
+        def mkregions(segs, enum=412, tickful=True):
+            regs = {1: [(tickful, 5.0, 30)]}
+            for i, steps in enumerate(segs):
+                regs[2 + i] = [(tickful, 10.0 + i, 412)] * steps
+            return regs
+
+        j = 1 + len(segs)
+        good = mkregions(segs)
+        by_w, per_w = mod.verify_curve_regions(good, j, plan)
+        assert sum(len(v) for v in per_w.values()) == sum(segs)
+        split = {1: [(True, 5.0, 30)]}
+        for i, steps in enumerate(segs):
+            split[2 + i] = [(True, 5.0, 412)] * (3 * steps)
+        try:
+            mod.verify_curve_regions(split, j, plan)
+            raise SystemExit("FAIL: 3-split layout must reject")
+        except SystemExit as e:
+            assert "exactly" in str(e)
+        wrong = {r: [(h, d, 397 if r > 1 else e) for (h, d, e) in v]
+                 for r, v in good.items()}
+        try:
+            mod.verify_curve_regions(wrong, j, plan)
+            raise SystemExit("FAIL: wrong enum must reject")
+        except SystemExit as e:
+            assert "enum" in str(e)
+        tick = {r: [(False, None, e) for (h, d, e) in v]
+                for r, v in good.items() if r >= 2}
+        tick[1] = good[1]
+        try:
+            mod.verify_curve_regions(tick, j, plan)
+            raise SystemExit("FAIL: tick-less must reject")
+        except SystemExit as e:
+            assert "tick-less" in str(e)
+        try:
+            mod.verify_curve_regions(good, j - 1, plan)
+            raise SystemExit("FAIL: join mismatch must reject")
+        except SystemExit as e:
+            assert "join events" in str(e)
+        post = dict(good)
+        post[j + 1] = [(True, 5.0, 412)]
+        try:
+            mod.verify_curve_regions(post, j, plan)
+            raise SystemExit("FAIL: post-sync dispatches must reject")
+        except SystemExit as e:
+            assert "final sync" in str(e)
+        print("PASS: synthetic stream verification (good passes; "
+              "3-split, wrong enum, tick-less, join mismatch, "
+              "post-sync dispatches all reject)")
 
 
 if __name__ == "__main__":
