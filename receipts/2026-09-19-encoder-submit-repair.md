@@ -369,3 +369,20 @@ Design consequences:
 - F handler + tests: branch-only, ready for the bundle the moment it
   exists (2d62c60d content; canonical worktree
   ~/src/mlx-omarchy-fusion @ agent/fusion-submit-lane).
+
+## 10. Writer blocker is systematic (all three jw16 mil-hwxc builds)
+
+The slice-free 4-program head (ac_head3.mil) fails identically on every
+jw16 mil-hwxc build (main, 504a1e4, f3inv): `ANE.HWX.ObjectWriter Code=2
+"generated commands cross __TEXT"`. The certified 2-program mint
+(island-attn-a-kt, mil-hwxc 83d486b toolchain, 2026-09-14, host jw16)
+predates this package size. Finding: the HWX object writer cannot emit
+this multi-task package — the blocker is the writer, above both the slice
+gate and any single build. Mint route candidates for the compiler lane:
+(a) fix the writer's __TEXT segment budget for multi-task packages;
+(b) mint the head as separate compiles and chain them via multiple
+submits (handler-ready: the two-submit shape already generalizes to
+N submits); (c) Apple-tool hwx + a per-task container splitter (new
+tooling, format work in h13_td.py/hwxv2-to-anec terms). Route (b) needs
+no compiler change and is testable the moment any single-program compile
+of select/matmul/add/softmax at [1,8,375,375] exists.
