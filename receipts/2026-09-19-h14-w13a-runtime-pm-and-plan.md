@@ -187,13 +187,14 @@ Complete Chinook boot flow (K14 0x95e9420–0x95e9d00; W13a + this pass):
 1. `readReg(eng+0x1050000)` — RVBAR; `bit0 == 1` → SKIP (released latch;
    matches live reads 0x1).
 2. `writeReg(eng+0x1050000, rvbar)` where
-   `rvbar = (obj18 & 0xff7e_ffff_ffff_f800) | 0x0081_0000_0000_0001`
-   (DartAudit correction: a COMPOSITION, not a literal constant — the
-   mask preserves bits [46:11] of the `FirmwareLoaded` object's +0x18
-   value, so that field's producer feeds the entry encoding. The
-   obj+0x18 producer is the open piece; resolver 0x95f679c /
-   AllocateSharedMemorySurface traced next. K13 ≡ K14 composition
-   identical.)
+   `rvbar = (obj18 & 0xff7efffffffff800) | 0x0081_0000_0000_0001`
+   (DartAudit/Main correction: a COMPOSITION, not a literal. Exact bit
+   budget: the mask CLEARS obj18 bits 2-0, 48, 55 and PRESERVES bits
+   54-49, 11-3 and everything else high; the OR then forces bits 48,
+   55, 0. Net: bits 2-0 = 001, bits 3-7 + 54-49 + all high bits from
+   params. No address-width implication until the bitfield is decoded.
+   obj = OSValueObject<ANESharedMemorySurfaceParams>, addendum 3j.
+   K13 ≡ K14 composition identical.)
 3. two config-driven writes with `w2=0` then `w2=0x10` on cfg field
    `[dev+0x4a0]` (clock/PM asserts — identities not yet named).
 4. **Poll loop** `0x95e9adc–0x95e9b8c`: ≤1000 iterations of
@@ -267,12 +268,16 @@ symbols `OSValueObject<ANESharedMemorySurfaceParams>::gMetaClass`,
 - loader-path `[[dev+0x978]+0x38]` = a later params field (the shared
   surface base used for the custom-fw image copy).
 - Params producer: `ANEHWDevice::AllocateSharedMemorySurface_gated`
-  (symbols at 0x…74fa5ed region; signature
+  (real body 0x95b0790 region; signature
   `(u64, ANEResource&, u32, u8, u64, u8, u8, bool, u64, u8)`) builds
-  the value object. OPEN: the ANESharedMemorySurfaceParams field
-  layout (which field carries the ASC entry composition vs the surface
-  base) — same derivation family as the boot-args layout; H14DartAudit
-  coordinates on SetupFWInitBootArgs.
+  the value object. It iterates the SAME 0x50-stride client array as
+  the bootargs walk: per client it reads `[+0x28]` (base), `[+0x30]`/
+  `[+0x44]` (address lo/hi pair — orr x9, x10, x9 lsl 32), `[+0x40]`
+  (count) and calls a translate/map helper (0x962a5bc) per entry —
+  the client array IS a DMA-descriptor list. OPEN: the
+  ANESharedMemorySurfaceParams field layout (entry-composition field
+  vs surface base) and the per-client address semantics — the named
+  next RE chunk, coordinated with H14DartAudit.
 - ROM entry 0x0081_0000_0000_0001: bitfield semantics UNDECODED — the
   value may compose flag bits with a shifted address rather than being
   a raw address, and its relation to the DART iova space is UNPROVEN.
