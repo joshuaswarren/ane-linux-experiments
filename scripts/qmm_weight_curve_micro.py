@@ -162,10 +162,15 @@ def run_device_pass(plan, k, cols, profile_path):
     return wall, {"wall_s": wall_s}
 
 
-def read_dispatch_us(profile_path):
-    """Per-dispatch durations (us) in file order + the dominant kernel
-    enum for the signature check."""
-    meta, kernel_counts, durs = None, {}, []
+def read_dispatch_us(profile_path, plan_total):
+    """Per-dispatch durations (us) for the LAST plan_total dispatch
+    events, end-aligned: materialization and warmup dispatch kernels
+    precede the measured plan in file order, so leading events are
+    excluded by construction. Fail-first: fewer captured events than
+    planned, or any tick-less dispatch inside the tail (pool exhaustion
+    would silently shrink durations), aborts attribution."""
+    meta, tail_start = None, None
+    events = []  # (has_ticks, dur_us) in file order
     for line in open(profile_path):
         if not line.strip().startswith("{"):
             continue
@@ -173,13 +178,25 @@ def read_dispatch_us(profile_path):
         if r.get("k") == "meta":
             meta = r
         elif r.get("k") == "d":
-            kernel_counts[r["e"]] = kernel_counts.get(r["e"], 0) + 1
             if "t0" in r:
-                durs.append((r["t1"] - r["t0"]) * meta["period_ns"] / 1e3)
-    if not kernel_counts:
-        raise SystemExit(f"{profile_path}: no dispatch events")
-    dominant = max(kernel_counts, key=kernel_counts.get)
-    return durs, dominant, kernel_counts
+                events.append((True, (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3,
+                               r["e"]))
+            else:
+                events.append((False, None, r["e"]))
+    if meta is None or len(events) < plan_total:
+        raise SystemExit(
+            f"{profile_path}: {len(events)} dispatch events, plan needs "
+            f"{plan_total}; refusing end-alignment")
+    tail = events[-plan_total:]
+    lead_noticks = sum(1 for h, _, _ in events[:-plan_total] if not h)
+    tail_noticks = sum(1 for h, _, _ in tail if not h)
+    if tail_noticks:
+        raise SystemExit(
+            f"{profile_path}: {tail_noticks} dispatches in the measured "
+            "tail recorded no timestamps (pool exhaustion?); durations "
+            "would be silently dropped")
+    kernels = {e for _, _, e in tail}
+    return ([d for _, d, _ in tail], kernels, lead_noticks)
 
 
 # ---------- driver ----------
@@ -226,7 +243,45 @@ def main():
             assert "refusing" in str(e)
         d = paired_deltas({1: [10.0] * BLOCKS, 16: [16.0] * BLOCKS})
         assert d[16]["delta_us"] > 5.5
-        print("PASS: plan, attribution chunking (incl. fail-short), deltas")
+        # End-alignment: leading materialization/warmup events (incl. a
+        # tick-less one) are excluded; the plan-sized tail is returned.
+        import tempfile, os
+        total = sum(s["steps"] for s in seg)
+        lines = ['{"k":"meta","period_ns":1.0,"valid_bits":64}']
+        lines.append(json.dumps({"k": "d", "s": 1, "e": 55, "n": 1, "gx": 1,
+                                 "gy": 1, "gz": 1, "h": 1, "tp": 0, "bar": 0,
+                                 "t0": 0, "t1": 10}))
+        lines.append(json.dumps({"k": "d", "s": 1, "e": 55, "n": 1, "gx": 1,
+                                 "gy": 1, "gz": 1, "h": 1, "tp": 0, "bar": 0}))
+        for i in range(total):
+            lines.append(json.dumps({"k": "d", "s": 2, "e": 412, "n": 112,
+                                     "gx": 112, "gy": 1, "gz": 1, "h": 1,
+                                     "tp": 0, "bar": 1, "t0": i * 100000,
+                                     "t1": i * 100000 + 50000}))
+        with tempfile.NamedTemporaryFile("w", suffix=".ndjson",
+                                         delete=False) as tf:
+            tf.write("\n".join(lines) + "\n")
+            path = tf.name
+        try:
+            durs, kernels, lead = read_dispatch_us(path, total)
+            assert len(durs) == total and kernels == {412} and lead == 1
+            assert all(d == 50.0 for d in durs)
+            # Tick-less event inside the tail must abort, not shrink.
+            bad = lines[:-1]
+            bad.append(json.dumps({"k": "d", "s": 2, "e": 412, "n": 112,
+                                   "gx": 112, "gy": 1, "gz": 1, "h": 1,
+                                   "tp": 0, "bar": 1}))
+            with open(path, "w") as f:
+                f.write("\n".join(bad) + "\n")
+            try:
+                read_dispatch_us(path, total)
+                raise SystemExit("selftest: tick-less tail must fail")
+            except SystemExit as e:
+                assert "no timestamps" in str(e)
+        finally:
+            os.unlink(path)
+        print("PASS: plan, attribution chunking (incl. fail-short), "
+              "end-alignment, tick-less tail guard, deltas")
         return
 
     if (args.pass_name == "bracketed" and not args.dry_run
@@ -287,18 +342,19 @@ def main():
            "wall_avg_paired_delta_vs_W1": paired_deltas(wall_blocks)}
 
     if args.pass_name == "bracketed":
-        durs, dominant, counts = read_dispatch_us(args.profile)
+        durs, kernels, lead_noticks = read_dispatch_us(
+            args.profile, ident["total_dispatches"])
         chunks = chunk_attribution(plan, durs)  # fail-first on count
+        ident["signature_check"] = {
+            "tail_kernels": sorted(kernels),
+            "leading_events_excluded": lead_noticks,
+            "decode_match": kernels == {DECODE_SIGNATURE["kernel"]},
+            "verdict": "decode-shape kernel" if
+                       kernels == {DECODE_SIGNATURE["kernel"]} else "PROXY SHAPE"}
         disp_blocks = {}
         for c in chunks:
             disp_blocks.setdefault(c["w"], []).append(
                 statistics.median(c["us"]))
-        ident["signature_check"] = {
-            "dominant_kernel": dominant,
-            "kernel_event_counts": counts,
-            "decode_match": dominant == DECODE_SIGNATURE["kernel"],
-            "verdict": "decode-shape kernel" if
-                       dominant == DECODE_SIGNATURE["kernel"] else "PROXY SHAPE"}
         out["dispatch_us_p50_per_block"] = {
             str(w): v for w, v in disp_blocks.items()}
         out["dispatch_us_quantiles_by_w"] = {
