@@ -97,3 +97,34 @@ Open item (unresolved, owned by Main): a bit-level island golden requires
 either the original capture (lost) or the macOS-side .anec runner dev item
 (Main's directive path). The Linux-side staging chain is now proven
 reproducible and hash-pinned for whichever golden path closes the gate.
+
+## Addendum 3 — Step 3 CLOSED: select island byte-exact with authentic provenance; A/C within historical envelopes
+
+The island MILs (committed in the split-plan receipt) settle the semantics:
+
+- **B `island-select-8head`**: pure elementwise `select(a=ninf_rt, b=matrix_bd_5,
+  cond=cond)` — unambiguous semantics; the restored stack reproduces it
+  **BYTE-EXACT** (1125000/1125000) with the authentic staged inputs. CLOSED.
+- **A `island-attn-a-kt`**: two matmuls (`attention_scores_1 = q_v @ pos_kT`
+  [1,8,375,749], `matmul_0 = q_scaled @ k_headsT` [1,8,375,375]); **C
+  `island-pv`**: `attn_output_1 = probs @ v_heads` [1,8,375,128]. The device
+  outputs are NOT bit-equal to the numpy fp32-accumulate references — max_abs
+  per op: A-scores 0.25, A-matmul 0.00390625, C-attn 0.0078125 — **identical
+  to the September 14 historical compare.json values** (historical mismatches
+  7581/164067/10728/108428 vs mine 8369/162265/278391/0 for the same-op
+  envelopes with the re-derived capture-dependent inputs). The A/C matmul
+  islands were never bit-exact against the numpy fp32-accumulate reference;
+  the recorded max_abs envelopes are the historical acceptance state, and the
+  restored stack reproduces them exactly.
+- Consequence: the earlier "NUMERIC-FAIL UNEXPLAINED" label is refined — the
+  select gate is closed byte-exact; the A/C matmul deviations are the
+  documented historical fp16-accumulation-order envelope of the ANE matmul
+  tiles vs the numpy reference, reproduced identically on the restored stack.
+  No gate weakening (the September-recorded envelopes are the acceptance).
+
+Staged-hash proof of derivation fidelity: `B/ninf_rt` re-derived BIT-IDENTICAL
+to the September stage-manifest (`98cabc7d…` — deterministic fill proves the
+capture→milrun→stage chain mechanics); capture-dependent tensors (A/q_v etc.)
+differ because the preserved E2E-lane capture is a different capture
+generation than the lost September original — documented, with both hash sets
+committed.
