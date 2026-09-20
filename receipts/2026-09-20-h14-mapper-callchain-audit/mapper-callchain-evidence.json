@@ -610,5 +610,32 @@
    "disasm/ANE_Init_suballoc_tail.txt"
   ],
   "mmio_writes_this_lane": "none"
+ },
+ "pass5c": {
+  "scope": "suballoc tail fields + allocation zeroing + pool-object identification",
+  "x8_pool_confirmation": "x8 at 0x95ea86c reloads dev+0x980 (ldr x8,[x19,#2432]) = THE POOL object -> [0x58] = *(pool+0x18) = POOL DMA BASE; [0x60] = *(pool+0x00) = pool first qword (semantics open; pool+0x18 DMA base and +0x38 CPU base known from dart receipt 11.2)",
+  "x23_note": "[0x50] = zext u32 [x23+4]; x23 also supplies the coredump MD ([x23+112] -> addExtraHeapRegion) - object identity open",
+  "allocation": "DeviceMemoryManager::Allocate(0x174) at 0x95ea710 (allocator obj dev+0x968; offset -> dev+0x960; suballoc CPU VA = pool+0x38 + offset). Allocate does free-list bookkeeping only - NO memset of the returned range visible in the function window",
+  "gap_bytes": "[0x34..0x37] and [0x64..0x67] are written by NO kext store; they sit inside fw-read u64 units at +0x30 and +0x60. Their value = pool memory residue (fresh-DMA allocation likely zero on first boot, NOT proven). Linux driver should zero the whole 0x174 block before filling closed fields",
+  "branch_order_correction": "0x95ea73c-0x95ea748: dev+0x780 bit0 and dev+0x41F bit0 branch BEFORE the [0x00] store; observed legacy (both clear) reaches [0x00] at 0x95ea794",
+  "mmio_writes_this_lane": "none"
+ },
+ "pass5d": {
+  "scope": "template initialization correction + runnable field-contract validator",
+  "template_c0_correction": {
+   "verdict": "template[0xC0] = 4 initially (Main decode, independently verified: 0x9612b78 ldr w9,[x0,#192] 0xb940c009; 0x9612b7c orr w9,w9,#4 0x321e0129; 0x9612b80 str w9,[x0,#192] 0xb900c009). kalloc_data called with flags=4. boot.h +0xC0=4 is CORRECT; pass5/5b 'entirely zero' claim is WITHDRAWN. start+0x9600748 |=0x10 remains unreachable (dev+0x784 bit0 never set).",
+   "template_00": "template[0x00] = [dev+0x1D8 (472)] config word (0x9612b70/74) - producer dev+0x1D8, value constant-0 per sibling receipt (not re-proven here)",
+   "template_04_0b": "zero (stur d0,[x0,#4] 0x9612b8c)"
+  },
+  "validator": {
+   "path": "tools/check_init_contract.py",
+   "checks": 64,
+   "result": "64/64 PASS (plus check_power_anchors.py 33/33 PASS)",
+   "guards": "decimal-immediate decode (x*8/w*4/byte*1/scaling), stp imm7, stur/str-q imm9 sign, +24-vs-0x18 deref anchor, x9-clobber (config ptr dev+0x178) anchor, template c0=4 anchors, selene consumer read/compose/ack anchors, accessor base +72 and vtable words",
+   "note": "config pointer field is dev+0x178 (376 DEC) - all 'dev+0x376' mentions in prior lane texts are decimal confusions"
+  },
+  "suballoc_gaps_final": "[0x34..0x37] and [0x64..0x67] are inside fw-read u64 units (+0x30, +0x60) and receive NO kext store; DeviceMemoryManager::Allocate does not memset in the visible window; Linux driver should zero the full 0x174 block before filling closed fields (residue-on-macOS value unknown)",
+  "dev988_producer": "CLOSED as out-param: ANE_Init+0xdfc (0x95ea228) 'add x22,x19,#0x988'; callee = AllocateSharedMemorySurface wrapper ~0x95ea25c with tag 0x49504320 ('IPC ' read BE) - mirrors dev+0x978 'FWIM' pattern",
+  "mmio_writes_this_lane": "none"
  }
 }
