@@ -128,3 +128,45 @@ capture→milrun→stage chain mechanics); capture-dependent tensors (A/q_v etc.
 differ because the preserved E2E-lane capture is a different capture
 generation than the lost September original — documented, with both hash sets
 committed.
+
+## Addendum 4 — Main-directed A/C gate status correction (no retrofit PASS)
+
+Main is right: the historical compare.json only OBSERVED max_abs — it is not a
+formal pass criterion, and the repository's own evidence ladder
+(mil-hwx-compiler docs/ane/parity-method.md, "The evidence ladder") places the
+H13/H14 islands at rung 3 (container validation): rungs 4 (device execution)
+and 5 (numerical qualification against a higher-precision reference, with
+recorded tolerances) are NOT claimed for the H13 islands in this repository.
+No formal pre-existing acceptance formula exists for the A/C island outputs;
+none is retrofitted here.
+
+Corrected Step-3 status (formula candidates applied transparently, all four
+outputs, authentic re-derived staged inputs):
+
+| output | exact-equality violations | chunked-envelope violations (0.02+0.02·|ref|) | signed-zero-only (float-equal, bit-diff) |
+|---|---|---|---|
+| A:attention_scores_1 (2247000) | 8369 | **0** | 0 |
+| A:matmul_0 (1125000) | 162265 | **0** | 0 |
+| B:attention_mask_9 (1125000) | 0 | 0 | 0 (BYTE-EXACT) |
+| C:attn_output_1 (384000) | 108391 | **0** | 0 |
+| raw max_abs (DIAGNOSTIC ONLY, not a pass criterion) | A-scores 0.25, A-matmul 0.00390625, C 0.0078125 | | |
+
+Formal status:
+
+- B select island: **CLOSED — BYTE-EXACT** (the MIL itself is an unambiguous
+  elementwise select; byte-exact vs the host reference computed from the same
+  staged bytes; authentic provenance: ninf_rt bit-identical to the September
+  stage-manifest).
+- A/C matmul islands: **EXECUTION GATE PASS (rung 4: device executes, rc=0,
+  deterministic, finite, no NaN/inf); NUMERICAL QUALIFICATION (rung 5) NOT
+  PERFORMED — no formal acceptance formula exists in the repository for these
+  outputs.** Under the candidate chunked envelope (the runner's own
+  documented tolerance for chunked-fp16 accumulation): 0 violations across
+  all outputs. Under exact equality: the violation counts above. The choice
+  of the formal rung-5 criterion is Main's; both candidate verdicts are
+  stated without retrofit.
+- The "Step 3 CLOSED" headline is RETRACTED; corrected status:
+  **Step 3 execution gates pass; numerical qualification open (rung 5).**
+
+Diagnostics preserved with exact hashes (inputs, device outputs, references —
+Addendum hashes; device outputs additionally sha256'd above).
