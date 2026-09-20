@@ -478,3 +478,64 @@ machinery.
 **Per-kernel cross-arm (corrected census, all four legs):** the
 ≤0.6% no-delta on the corrected kernel labels holds — the barrier
 flavor decision is orthogonal to which kernel dominates busy.
+
+## QmmVec review — INDEPENDENT VERIFICATION (auditor, 2026-09-19, commit 2938754+)
+
+Checked every claim in the section above against source and receipts:
+
+- **Selection site: CONFIRMED.** `primitives.cpp:7462-7465`:
+  `subgroup_ready = caps.subgroup_size == 32u && ARITHMETIC_BIT` →
+  `QmmVecQ4MultiSubgroup{F32,F16,BF16}`, else the non-subgroup Multi
+  variants.
+- **Shader role: CONFIRMED.** `shaders/qmm_vec.comp` is the fused
+  single-row quantized GEMV; the Multi variants bind several weight
+  matrices per dispatch (q/k/v, gate/up) — "one dispatch, no dequant
+  intermediate" per the header comment.
+- **"22→14 dispatch drop": SOURCED.** `docs/install-omarchy.md:63`
+  ("a Qwen2 decode layer drops from 22 dispatches to 14") — was cited
+  without a reference in the review section.
+- **CAUSAL BRIDGE RETRACTED (per Main): "46.4 µs/disp ≈ weight stream +
+  serial k-chain + L2-cold" is NOT established.** The 46.4 µs mean is
+  bracket-inflated: the in-data per-dispatch duration floor is
+  p05 = 22.4 µs (short) / 23.0 µs (ctx), consistent with the profiler's
+  isolation-barrier overhead. The qmm-prefill-ceiling receipt's
+  "floors set by the serial k-chain streaming weights once, 4.7 GB/s
+  effective" characterizes PREFILL dispatches (160-810 µs, m=30), not
+  this decode kernel; extending it to decode QmmVec is analogy.
+  Residual above floor: ~21-26 µs/disp (f ∈ [20, 25]).
+- **Floor-corrected shares** (uniform per-dispatch subtraction f;
+  ordering robust, magnitudes move):
+
+| floor | QmmVec short | QmmPrefillCoopM16 short | QmmPrefillCoop ctx | QmmVec ctx |
+|---:|---:|---:|---:|---:|
+| 0 µs | 38.0% | 18.2% | 43.3% | 18.4% |
+| 10 µs | 37.2% | 21.7% | 48.0% | 15.7% |
+| 20 µs | 35.7% | 27.5% | 53.9% | 12.3% |
+| 25 µs | 34.1% | 31.7% | 57.3% | 10.3% |
+
+  No ceiling or release-busy claim follows from any column; these bound
+  attribution only. Observation (no causal weight): QmmVec mean differs
+  46.4 (short) vs 42.8 µs (ctx) across legs despite identical weights
+  and dispatch count — the kernel does not read KV, so this is
+  submission-context variance, direction inconsistent with a simple
+  L2-pressure story; inconclusive.
+
+**Smallest discriminating candidate (proposed, NOT staged for hardware
+without a queue slot): L2-residency A/B on identical qmm_vec work.**
+Profiled micro, both arms under the same instrument bracketing so the
+per-dispatch overhead cancels in the DIFFERENCE: arm H dispatches the
+same layer shape (k=4096, group64, Q4→f16, one 8 MB weight) 200×
+back-to-back (weight set ≪ L2); arm C cycles 16 distinct 8 MB weight
+buffers (128 MB ≫ L2) in round-robin. If weight-fetch dominates the
+residual, median(C) ≫ median(H); if the serial k-chain compute
+dominates, medians are ≈ equal. The delta also yields a direct
+GB/s-effective weight-stream number for the decode shape without any
+new kernel — it uses the existing shader and dispatch site. Decision
+rule pre-registered: C/H ≥ 1.5 → weight-fetch-led (multi-step L2 fusion
+hypothesis advances to design); C/H < 1.2 → compute/latency-led
+(fusion hypothesis demoted; look at k-chain parallelism instead).
+Between 1.2 and 1.5 → split; run the batch-amortization arm
+(batch-2 rows through the existing multi-row path) before concluding.
+This is the source-side successor to the sink/turnaround attribution
+and does not reuse its 20.4/4.7 µs figures, which were microbench-
+specific.
