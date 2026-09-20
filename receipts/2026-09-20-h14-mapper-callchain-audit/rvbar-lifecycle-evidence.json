@@ -149,7 +149,7 @@
   "resolver_chain_raw": [
    "ApplePMGR::_deviceIDToPowerDomainData(u16) 0x9b5cbbc: x0 = _deviceIDToDeviceData(id) (0x2b45e10); w1 = [DeviceData+14] (u8); tbnz w1,#7 -> error cold path; cbz w1 -> NULL (no domain); else TAIL-CALL _powerDomainIDToPowerDomainData((u8)w1) 0x9b5e3b8 -> PowerDomainData.",
    "i.e. the device entry carries a DOMAIN-MAP INDEX byte at +14; the power domain is a per-map table lookup, not the raw ADT id.",
-   "Applier: ApplePMGR::powerOverwrite(PowerDomainData*) 0x9b7675c; CPU-gating helpers _enableCPUDevicePowerDomainGating 0x9b6b73c.",
+   "RETRACTED AS APPLIER: ApplePMGR::powerOverwrite @0x9b7675c is an EMPTY STUB (bti c; ret) in this KC - it is NOT the ps applier. The PowerDomainData applier is TBD (power writes flow through other paths). Historical correction preserved here and in pass10e lookup_and_expansion.poweroverwrite_note.",
    "Callers: AppleARMIODevice::enableDeviceClock 0x8c6f2f8 / enableDevicePower 0x8c6f408 (slots 0x8a8/0x8b0) with cached arg dev+0x8F0 (provider-power-calls.json: enable=1, before the pre-CPU table)."
   ],
   "adt_text_decode": {
@@ -168,6 +168,13 @@
    "expansion_functions": "_getDeviceParentsID(DeviceData*, u8) @0x9b45cf0 and _getDeviceClusterIDs(DeviceData*, u8*, u32*) EXIST and are invoked immediately after _deviceIDToDeviceData in the gate path (caller at 0x9b49ea0 region) - the kext HAS parent/cluster expansion machinery, consistent with the ANE-SYS-V alias word {380 AFR, 76 ANE_CPU} candidate.",
    "poweroverwrite_note": "ApplePMGR::powerOverwrite @0x9b7675c compiles to an EMPTY stub (bti; ret) in this KC - power-state changes flow through other appliers; do not cite powerOverwrite as the ps writer.",
    "vm_arithmetic_audit": "two vm/file slips in this session caught and corrected (0x25e6330->vm 0x95ea330; 0x2b45e10->vm 0x9b49e10): receipt addendum notes the corrected-device-lookup proof supersedes the earlier wrong-address dump."
+  },
+  "parents_id_decode": {
+   "signature": "_getDeviceParentsID(ApplePMGR* this @x0, DeviceData* dd @x1, u8 parent_idx @w2) -> u16 parent id, vm 0x9b49cf0.",
+   "body": "kind = [this+7176]: kind==2 -> up to 3 parents read from dd+8 + (idx-2)*2 (u16 each); kind==1 -> up to 2 parents from dd+4 + idx*2; sentinel 0xFFFF -> cold.1 error; idx over max -> cold.2/0. RESULT = u16 at dd[4 + idx*2] (type1) or dd[8 + (idx-2)*2] (type2).",
+   "structure": "PARENT-ID ARRAY lives at DeviceData+4 as u16 entries (0xFFFF-terminated) - the ADT alias field feeds this array via the builder (builder link still open).",
+   "regmap_table": "getRegMap(RegMap map, u32 idx) @vm 0x9b49db8: entry = this+0x29E8 + map*96 + idx*48, 48-byte RegMap entries, map < 0x89 guard. This is the ADT 'map'/'index' resolver infrastructure for the domain entries (ANE_CPU map6 idx28, AFR map18 idx0, ANE-SYS-V map0 idx0).",
+   "cluster": "_getDeviceClusterIDs(DeviceData*, u8*, u32*) @vm 0x9b49ea0 (cluster IDs = the second alias half candidate)."
   }
  },
  "tools_added": [
