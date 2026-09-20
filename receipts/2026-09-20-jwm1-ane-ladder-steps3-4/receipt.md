@@ -230,3 +230,29 @@ match/mismatch map directly proves or refutes input-readback integrity
 (binding offset/stride/layout breaks), without touching the DT or kernel.
 Bundle input map vs staged layout per head byte-offset checked statically in
 parallel.
+
+## Addendum 7 — discriminator RESULT: input readback integrity PROVEN; binding/mapping hypothesis REFUTED
+
+Executed per the addendum-6 design (exclusive inode-27 lock, GPUparity and
+NativeQ4 coordinated, no objections):
+
+| run | inputs | gate | per-page hash map (4K pages of 550) |
+|---|---|---|---|
+| D1 | cond = all-false → y = copy of `matrix_bd_5` | worker rc=0, "verified exact" | **0 mismatched pages** |
+| D2 | cond = all-true → y = copy of `ninf_rt` | worker rc=0, "verified exact" | **0 mismatched pages** |
+
+Both staged 2.25 MB surfaces (matrix_bd_5, ninf_rt) round-tripped through the
+full ANE read→compute→write path **bit-exactly, all 550 4K pages**, with the
+worker's own byte-exact gate agreeing and the independent per-page hash map
+confirming.
+
+**Conclusion (direct data proof):** input-readback integrity of the large
+multi-DART surfaces is PROVEN — the "partially-wrong input data via
+binding/mapping breaks" hypothesis is REFUTED. The islands numeric gate
+failure therefore narrows to the **matmul program semantics**: what the
+`island-attn-a-kt` compiled program computes with arbitrary staged inputs
+differs from my assumed numpy per-head `x@w` fp32-accumulate reference — the
+ANEC tile semantics/operand interpretation of that bundle is the open RE item
+(owned lane; the select-island semantics are proven byte-exact and need no
+RE). No gate weakening; mismatch artifacts + per-page maps preserved in the
+run dir on jwm1.
