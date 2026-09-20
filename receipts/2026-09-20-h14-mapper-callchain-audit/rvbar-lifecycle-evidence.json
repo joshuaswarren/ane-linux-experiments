@@ -105,6 +105,20 @@
   "protocol_meaning_status": "OPEN and gated: host must not publish ANY synthesized value. word0==0 silently skips fw pool registration; word0=0x40000 (or any invented constant/pointer) is unverifiable until the audit lane closes AllocateSharedMemorySurface's params+0x00 build. The fw consumer constraint that IS closed: value must be byte-identical to macOS params+0x00, non-zero in practice, carried opaquely into image state.",
   "hdr_0x50_note": "hdr[0x50] (SCRATCH1+1) caps x27 via MIN at vm 0x753c-0x7540 before the vm 0x20980 IPC call - boot ordinal acts as a limit on the fw side."
  },
+ "pass8_pool_producer_defuse": {
+  "scope": "Main: independent producer proof for dev+0x980 (not trusting audit summaries; audit ccc0375 reciprocal/page-size claim rejected by Main). All KC bytes re-verified this pass.",
+  "object_chain": [
+   "start() 0x9604024-0x9604058: AllocateSharedMemorySurface(size=0x40000, out=x2=&dev->field_980, tag 0x44444D20 'DDM ', w3=1, w5=1).",
+   "gated callee 0x95f70dc-0x95f7118: OSValueObject<ANESharedMemorySurfaceParams>::setValue(x0=x19, x1=sp+0x70 struct); then x22=[sp,#80] (the out-param), str x16,[x22] with x16=[valueobj+0x10] (auth salt 0x70f1) -> dev+0x980 = RAW POINTER TO THE PARAMS VALUE BUFFER. It is NOT a manager object.",
+   "params+0x18 and params+0x40 written by dartMapMemoryDescriptor via OUT-PARAMs (0x95f6b4c-0x95f6b6c: x2=&params+0x40 cmd_out, x3=&params+0x18 iova_out; iova store = pass4-proven 0x95db13c str x8,[x19]).",
+   "start() 0x96040d0-0x96040f8: x0=[pool+0x38] (host VA), w1=0x40000 -> DeviceMemoryManager::C1(hostVA,0x40000,0) at 0x258360c; result -> dev+0x968. The manager is constructed OVER the params surface's host window - the 'manager vs Params' contradiction resolves: BOTH exist, chained.",
+   "DeviceMemoryManager::Allocate 0x9587700: free-list walk ([mgr+0] head; nodes {+0 next,+8 prev,+16 used,+20 offset,+24 size}); size rounds to 64-BYTE granules ((n+0x3F)&~0x3F, 0x9587728-30); returns node+0x14 offset (0xFFFFFFFF on fail). Independent kill of the 0x4000 page-size claim - granule is 64, not 16384."
+  ],
+  "reciprocal_verdict": "umulh magic 0x20C49BA5E353F7CF built at 0x95f6c30-0x95f6c3c inside the allocator is ELAPSED-TIME LOGGING: bl 0x2648298(now,&out) -> ns (0x95f6c14), threshold 0x596832E8 = 1,500,001,000 ns ~ 1.5 s (0x95f6c1c-0x95f6c28), then >>3 -> umulh(magic) >>4 = /1000 -> microseconds, pushed as os_log args (0x95f6ce4-0x95f6d1c). No page-size, no params+0x00 role. ccc0375 claim dead from two independent angles.",
+  "exact_loads_in_ane_init": "+0x18 device window: 0x95eaa9c/[x8,#24]; +0x38 host VA: 0x95ea734/[x8,#56] and 0x95eaaac; +0x00: 0x95ea890/[x8] sole load -> header[0x60].",
+  "still_open": "params+0x00 writer: no store found in the gated allocator body (fills located: +0x18/+0x40 via dartMap out-params; +0x38 by use/constructor; the stack-struct +0x00 fill site not located - audit lane owns the value build). fw consumer per pass7: verbatim, zero-rejected.",
+  "linux_equivalent": "dma_alloc_coherent 256KiB 'DDM ' pool; DMM = 64-byte-granular first-fit offset allocator over it (free-list of {used,offset,size} nodes); suballoc(372) -> host base = kva+off, device addr = iova_base+off; hdr[0x58]=iova_base; hdr[0x60]=macOS params word0 - DO NOT SYNTHESIZE (see pass7)."
+ },
  "mmio_writes_this_lane": "none",
  "tools_added": ["tools/check_rvbar_lifecycle_anchors.py"]
 }
