@@ -1,0 +1,80 @@
+# env pins 2026-09-20T22:30:57Z
+kernel: 7.1.13-3-1-ARCH
+mesa 1:26.2.3-1
+vulkan-asahi 1:26.2.3-1
+
+== vulkaninfo ==
+GPU0:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.2.3
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Apple M2 Max (G14C B1)
+	driverID           = DRIVER_ID_MESA_HONEYKRISP
+	driverName         = Honeykrisp
+	driverInfo         = Mesa 26.2.3-arch1.1
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 3bacad71-c665-e4c0-2a9c-fe8391209a8e
+
+== pip freeze (bench venv) ==
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.15.1
+certifi==2026.7.22
+cffi==2.1.1
+charset-normalizer==3.5.1
+click==8.5.0
+fastapi==0.141.1
+filelock==4.0.1
+fsspec==2026.9.0
+h11==0.16.0
+hf-xet==1.6.0
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==1.32.0
+idna==3.20
+Jinja2==3.1.6
+llguidance==1.8.0
+markdown-it-py==4.2.0
+MarkupSafe==3.0.3
+mdurl==0.1.2
+miniaudio==1.71
+ml_dtypes==0.6.0
+mlx==0.32.2
+mlx-audio==0.5.4
+mlx-lm==0.31.3
+mlx-omarchy @ file:///home/joshuawarren/src/mlx-omarchy/.work/v072-aarch64/dist/mlx_omarchy-0.32.3.dev202609201440%2B5b18306-cp314-cp314-linux_aarch64.whl#sha256=fe51534b1ed658f64f2e16f5ce4709c27cbb1c683388b50a2d04eacf6b362a01
+mlx-vlm==0.7.1
+numpy==2.5.3
+opencv-python==5.0.0.93
+packaging==26.3
+pillow==12.3.0
+protobuf==7.36.2
+pycparser==3.0
+pydantic==2.13.5
+pydantic_core==2.46.5
+Pygments==2.21.0
+python-multipart==0.0.32
+PyYAML==6.0.3
+regex==2026.9.10
+requests==2.34.2
+rich==15.0.0
+safetensors==0.8.0
+scipy==1.18.1
+sentencepiece==0.2.2
+shellingham==1.5.4
+sounddevice==0.5.6
+starlette==1.6.0
+tokenizers==0.23.2
+tqdm==4.70.1
+transformers==5.17.0
+typer==0.27.2
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+urllib3==2.8.0
+uvicorn==0.53.0
+websockets==17.1
+
+== libmlx ==
+c28a485f98b55aadf12c68ae6d373f308517177c0cf33ad3c77ea82a796e931e  venv/lib/python3.14/site-packages/mlx/lib/libmlx.so
