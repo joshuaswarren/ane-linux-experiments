@@ -1,0 +1,6 @@
+round 1: AB
+round 2: BA
+round 3: AB
+round 4: BA
+round 5: AB
+round 6: BA

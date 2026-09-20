@@ -1,4 +1,4 @@
-# TDT joint ILP2 A/B on jw16: pins EXACT both arms, decode −17.5 ms (−2.1 %), 6/6 paired wins — LAND candidate (2026-09-19)
+# TDT joint ILP2 on jw16: first A/B −17.5 ms REFUTED by pre-registered counterbalanced repeat (+0.7 ms) — NO-LAND (2026-09-19)
 
 Verdict: **WIN — LAND candidate, scoped.** The joint two-output interleave
 is bit-exact on device (all 12 measured runs hold the full pin set on
@@ -133,3 +133,14 @@ restore: both units active, llama-server PIDs 597146/597148, real
 completion `chatcmpl-Y6XrU8llWNWoRZBp0OBJgJGwGDS4jUvf`. Artifacts:
 `summary-counterbalanced.json`, `schedule.txt` mirrored here; jw16
 `/var/tmp/tdt-pairload-ab-ilp2/`.
+
+
+## Repository note
+
+Commit `914906e` (this receipt's counterbalanced section + a rebalance
+receipt cleanup) is an AMEND of GpuDispatchParity's `03de1fc` isolation
+plan receipt — the shared checkout had both lanes' uncommitted edits when
+their commit landed and my unconditional `--amend` folded in after.
+Content of both changesets is intact; reflog preserves `03de1fc`;
+`74b0276` (Jwm1RecoveryLive) stacks on the amended commit, so history is
+left as-is rather than rewritten.
