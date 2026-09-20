@@ -637,5 +637,32 @@
   "suballoc_gaps_final": "[0x34..0x37] and [0x64..0x67] are inside fw-read u64 units (+0x30, +0x60) and receive NO kext store; DeviceMemoryManager::Allocate does not memset in the visible window; Linux driver should zero the full 0x174 block before filling closed fields (residue-on-macOS value unknown)",
   "dev988_producer": "CLOSED as out-param: ANE_Init+0xdfc (0x95ea228) 'add x22,x19,#0x988'; callee = AllocateSharedMemorySurface wrapper ~0x95ea25c with tag 0x49504320 ('IPC ' read BE) - mirrors dev+0x978 'FWIM' pattern",
   "mmio_writes_this_lane": "none"
+ },
+ "pass6": {
+  "scope": "address-space explicitness, first-alive vs init-ack distinction, allocation sizes, powercycle caveat",
+  "address_space": {
+   "rule": "ALL T6021 ANE addresses are 33-bit 0x000000028xxxxxxx (live DT: ane reg[0] engine = bytes 00 00 00 02 84 00 00 00 = 0x2_84000000 size 0x02000000; reg[1] pmgr = 0x2_8e080000 size 0x4034; reg[2] set = 0x2_8e08c000 size 0x4000; reg-names engine/pmgr/set)",
+   "rvbar_correction": "reset-receipt 'PA 0x85050000' is a 32-bit truncation: correct absolute = 0x0000000285050000 (kext engine-aperture offset 0x01050000 + engine base 0x2_84000000; offset inside the 32MB window)",
+   "scratch_absolute": "SCRATCH0 = 0x2_85840048 (ASC view, selene accessor base); SCRATCH7 = 0x2_85840064; kext-view engine-relative = 0x18400048/0x18400064 via dev+0x188 accessor mapping",
+   "rule_for_all_docs": "any bare 0x8xxxxxxx ANE address in receipts must be prefixed 0x000000028..."
+  },
+  "ack_distinction": {
+   "first_alive_candidate": "selene fn (0x86EC-0x8738): guard call bl 0x8E4E4; write32(INDEX 0, 0x08042006) -> absolute SCRATCH0 0x2_85840048; dsb ish. No 0x285840064-base builder exists in selene (exhaustive movz/movk scan) -> this site CANNOT be SCRATCH7; it writes the ack VALUE into SCRATCH0",
+   "init_ack": "fn 0x71A4 tail 0x77cc-0x77f0: write32(INDEX 7, 0x08042006) -> SCRATCH7 0x2_85840064 (the register the kext polls per rvbar-width receipt); two more idx7/0x08042006 sites at 0x16614/0x166ac region (pass1 list)",
+   "status": "DISTINCT REGISTERS PROVEN (idx0 vs idx7, same accessor object [vm 0x1EC4F8], base 0x285840048, no base rewrite found in str-[#,72] candidate scan). Which host-side poll consumes the SCRATCH0 first-alive beacon is OPEN (kext legacy polls SCRATCH7 per rvbar-width); DO NOT conflate the two acks in the Linux driver",
+   "powercycle_caveat": "ACCEPTED: the existence of kext powercycle/retry code paths is NOT evidence of fw live/first-stale/requires-reset semantics - no such state claim is made anywhere in this receipt"
+  },
+  "allocation_sizes_legacy": {
+   "fwim_surface": "size = *(config+0x138) (u32, the fw-heap size config); allocated in start (w1=[dev+0x178 obj]+312), tag 'FWIM'",
+   "ipc_surface": "size = min([config+4], [dev+0x3A70 cap]) - clamped; tag 0x49504320; allocated ANE_Init+0xdfc",
+   "init_suballoc": "0x174 bytes from DeviceMemoryManager pool (dev+0x968), rounds 0x180",
+   "rtbuddy_branch_sizes": "FW_INIT 65536 / T2F_CMD 262144 / T2F_HIPRI 262144 / T2H_SHMEM 65536 etc per 2026-09-20-h14-fwinit-surface.json - DIFFERENT branch, not observed on j414c legacy",
+   "open": "actual numeric config values live in the h14g config blob (dev+0x178 target) - numeric sizes not extracted; config blob field map remains a prerequisite for exact Linux sizes"
+  },
+  "linux_source_status": {
+   "kernel": "linux-asahi 7.1.13.asahi3-1: apple_dart built-in; NO ane driver module/file in build -> no in-tree ANE source to defer to; driver implementation references the DT contract only",
+   "dt_contract": "ane@284000000: apple,t6021-ane; iommus <498 0><499 0><500 0>; power-domains 8 pmgr-pwrctl (@4000..@4030, @2e0); reg engine/pmgr/set as above"
+  },
+  "mmio_writes_this_lane": "none"
  }
 }
