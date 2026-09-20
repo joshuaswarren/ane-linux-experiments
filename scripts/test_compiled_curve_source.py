@@ -215,5 +215,50 @@ def main():
               "post-sync dispatches all reject)")
 
 
+        # --- synthetic qualifier cases (s-grouped attribution) ---
+        subs = {i: [(10.0 + i * 0.01, 412)] for i in range(1, 256 + 1)}
+        for i, sp in enumerate(plan):
+            for _ in range(sp["steps"]):
+                subs[256 + 1 + sum(sp2["steps"] for sp2 in plan[:i])
+                     + _] = (lambda: None)
+        # rebuild with singleton tuples for each s
+        ssubs = {}
+        cursor = 256 + 1
+        for sp in plan:
+            for _ in range(sp["steps"]):
+                ssubs[cursor] = [(20.0, 412)]
+                cursor += 1
+        # prepend warm 256
+        full = {i: [(10.0 + i * 0.001, 412)] for i in range(1, 257)}
+        for i in range(257, 257 + sum(sp["steps"] for sp in plan)):
+            full[i] = [(20.0, 412)]
+        by_w, attr = mod.attribute_by_submission(full, plan)
+        for w in mod.W_SERIES:
+            assert w in by_w and len(by_w[w]) == mod.BLOCKS, (w, by_w.get(w))
+        # wrong enum
+        bad = {i: [(10.0, 397)] for i in range(1, 257 + sum(sp["steps"] for sp in plan))}
+        try:
+            mod.attribute_by_submission(bad, plan)
+            raise SystemExit("FAIL: wrong enum must reject")
+        except SystemExit as e:
+            assert "UNQUALIFIED" in str(e)
+        # multi-record per submission (unfused)
+        multi = {i: [(10.0, 412), (10.0, 412), (10.0, 412)]
+                 for i in range(1, 257 + sum(sp["steps"] for sp in plan))}
+        try:
+            mod.attribute_by_submission(multi, plan)
+            raise SystemExit("FAIL: multi-record must reject")
+        except SystemExit as e:
+            assert "UNQUALIFIED" in str(e)
+        # too few submissions
+        short = {i: [(10.0, 412)] for i in range(1, 200)}
+        try:
+            mod.attribute_by_submission(short, plan)
+            raise SystemExit("FAIL: short stream must reject")
+        except SystemExit as e:
+            assert "UNQUALIFIED" in str(e)
+        print("PASS: s-grouped qualifier (QUALIFIED + wrong-enum + "
+              "multi-record + too-few rejections)")
+
 if __name__ == "__main__":
     main()
