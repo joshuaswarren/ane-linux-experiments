@@ -44,8 +44,13 @@ pairing consumes it), gate 1 float carrier in `s_bval`, gate 2
 `floatBitsToUint` carrier in `s_bidx`, gate 3 float carrier in `s_h1`
 (pairing reads it back before overwriting the slot with the layer's h1,
 same thread). Fold, bias add, gate pairing, cell update, argmax, control,
-barrier count, and the joint head are untouched; threadgroup budget
+and the joint head are untouched; threadgroup budget
 unchanged (26208 B actual, 28768 requirement ceiling, M1 32 KiB limit).
+BARRIER CORRECTION (review finding): the rebalance ADDS one workgroup
+barrier per LSTM layer — the staging barrier between the chains and
+pairing phases, required for cross-thread visibility of the carriers
+(static count 12 → 13; two extra executions per full decoder step). All
+other barriers are unchanged; the cost is inside the measured win.
 
 ## Measured revisions and byte provenance (per Main)
 
@@ -75,6 +80,10 @@ bytes were substituted. Proof, per arm:
   `overlay/tools/coreml/vulkan_tdt_loop.py`,
   `overlay/tests/omarchy/coreml/test_tdt_lstm_rebalance.py`,
   `scripts-local/tdt-pairload-ab-window.sh`.
+- PR tip: `3def32c0` (tree `84f2f068`) — adds the code-linked guard test
+  on top of the measured tip `557db2de` (tree `f77ce1fd`);
+  `git diff 557db2de 3def32c0 -- overlay/tools/coreml/` is EMPTY, so the
+  exercised bytes of the measured battery and the PR tip are identical.
 - Raw battery JSON: jw16 `/var/tmp/tdt-pairload-ab-reb/out-{base,cand}-{warm,1..6}/e2e-report.json`
   (14 reports), `summary.json`, per-run logs, decoder traces; mirrored in
   this receipt directory.
@@ -104,13 +113,23 @@ tail; internal attribution not decomposed further).
 
 ## Exactness evidence chain
 
-- CPU: `test_tdt_lstm_rebalance.py` 3/3 — exact-once item coverage with
+- CPU: `test_tdt_lstm_rebalance.py` 5/5 — exact-once item coverage with
   the measured 512×3 + 512×2 balance; bit-exact round trips of all three
   carrier forms (native fp16, float, uint float-bits) including
-  zero/subnormal/max edges; threadgroup budget unchanged.
+  zero/subnormal/max edges; plus the code-linked `RenderedShaderGuard`
+  over the REAL rendered `_loop_glsl()` (mapping bound/stride, staging
+  barrier between chains and pairing, all four carrier writes and reads,
+  s_h1 read-before-store order, and a byte budget derived from the
+  shader's own parsed declarations vs `LOOP_WORKGROUP_MEMORY_BYTES` and
+  the 32 KiB M1 limit) with failing-first `test_guard_is_load_bearing`
+  (staging-barrier removal, mapping-bound shrink, carrier-write drop
+  each fail). PR-tip run log: `pr-tip-tests.log` (5+8+3 tests OK, run at
+  tip `3def32c0`, tree `84f2f068`).
 - glslangValidator compiles the rendered kernel clean.
-- Device: both arms 6/6 pins-EXACT above; `validate_loop` 5-seed
-  bit-exact gate unchanged and re-runnable at this identity.
+- Device: both arms 6/6 pins-EXACT above. `validate_loop` 5-seed
+  bit-exact at the candidate identity is a REQUIRED item of the
+  scheduled recert and is PENDING until run — it is not satisfied by the
+  file being unchanged.
 
 ## Window discipline
 
@@ -142,3 +161,20 @@ trees, venv).
   is not decomposed.
 - No cross-host comparison of any kind: the measured win is
   base-vs-candidate on jw16 only.
+
+## Recert (scheduled gate, 2026-09-19 ~19:4x, jw16)
+
+- `validate_loop` 5-seed at the candidate identity (pkg-cand overlay =
+  measured shader bytes, venv libmlx16 `bbad05a26b32a8ee`):
+  **5/5 PASS, FAILURES: 0** — seeds 20260915–20260919, windowed mode OK
+  per seed (emission streams identical host-control vs GPU loop).
+- Code-linked regression `test_tdt_lstm_rebalance.py` (incl.
+  `RenderedShaderGuard` + failing-first mutations): **5/5 OK** at PR tip
+  `81c3c227` (log `pr-tip-tests.log`); duplicate `__main__` block found
+  by Main's review removed in `81c3c227`.
+- Window: dual-consent TAKE (GpuDispatchParity release + EncoderSubmitRepair
+  pass + Main grant) → both units stopped/verified → single flock hold →
+  restore: both units `active`, llama-server re-acquired the lock
+  (PIDs 593142/593144), real completion
+  `chatcmpl-eAZyrPoeYjxly9L2XNmZ3Mq3gJCMXtcS`. Named handoff to
+  EncoderSubmitRepair.
