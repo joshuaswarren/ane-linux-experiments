@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check exact KC anchors for RTBuddy FW_INIT surface; never touches hardware."""
+"""Check pinned legacy and RTBuddy init surfaces; never touches hardware."""
 import hashlib
 import json
 import struct
@@ -36,12 +36,47 @@ anchors = {
     0x9612B50: 0xFD0066C0,  # d0 -> config+[0x1d4,0x1dc)
     0x9612B70: 0xB941DA89,  # load config+0x1d8
     0x9612B74: 0xB9000009,  # store template word0
+    0x95EA710: 0xF944B660,  # offset allocator at device+0x968
+    0x95EA714: 0x52802E81,  # request 0x174 bytes
+    0x95EA718: 0x97FE73FA,
+    0x95EA720: 0xB9096260,  # save offset at device+0x960
+    0x95EA730: 0xF944C268,  # pool Params at device+0x980
+    0x95EA734: 0xF9401D09,  # pool CPU base
+    0x95EA738: 0x8B20C139,  # x25 = CPU base + signed offset
+    0x95EA908: 0x3C86CEC0,  # x22 writeback to x25+0x6c
+    0x95EA90C: 0x52800808,  # 64 words
+    0x95EA910: 0xB81FC2C8,  # count at x25+0x68
+    0x95EA934: 0xF944CE68,  # template source device+0x998
+    0x95EA958: 0xAD075ED6,  # last 32 template bytes
+    0x95EA97C: 0xAD0006C0,  # first 32 template bytes
+    0x95EAA90: 0xD5033E9F,  # dsb st before publication
+    0x95EAA98: 0xB9443A61,  # low publication register offset
+    0x95EAA9C: 0xF944C268,
+    0x95EAAA0: 0xB9401909,  # DMA base low32
+    0x95EAAA4: 0xB9403908,  # CPU base low32
+    0x95EAAA8: 0x0B190129,
+    0x95EAAAC: 0x4B080122,  # low32(DMA base+x25-CPU base)
+    0x95EAAD0: 0xB9443E61,  # high publication register offset
+    0x95EAAD8: 0xF9400D09,
+    0x95EAADC: 0xF9401D08,
+    0x95EAAE0: 0x8B190129,
+    0x95EAAE4: 0xCB080128,
+    0x95EAAE8: 0xD360FD02,  # high32(DMA base+x25-CPU base)
+    0x9622770: 0x913E0210,  # ANERegisterControl vtable address
+    0x9622774: 0x91004210,  # address point +0x10
+    0x9622784: 0xF9000010,
+    0x9622D48: 0xF9400C08,  # mapped register base
+    0x9622D4C: 0xB8214902,  # write32, not write64
 }
 for vm, expected in anchors.items():
     assert struct.unpack_from("<I", data, vm - base)[0] == expected, hex(vm)
 assert struct.unpack_from("<Q", data, 0x81638A0 - base)[0] == 0x8011000004C49D10
 assert 0x10C + 0xC8 == 0x1D4
 assert struct.unpack_from("<2I", data, 0x7503D58 - base) == (128, 0)
+assert struct.unpack_from("<Q", data, 0x814FFA8 - base)[0] == 0x801113440261ED44
+assert (0x801113440261ED44 & 0x3FFFFFFF) + base == 0x9622D44
+assert struct.unpack_from("<8I", data, 0x7503A40 - base) == tuple(range(0x1840048, 0x1840068, 4))
+assert 0x6C + 0xE0 + 32 == 0x16C < 0x174
 expected = [
     (1, 0x10000, 0x494E4954, "FW_INIT", 1),
     (2, 0x40000, 0x54324643, "T2F_CMD", 0),

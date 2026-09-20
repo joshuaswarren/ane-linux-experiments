@@ -1,0 +1,30 @@
+{
+  "status": "legacy ANE_Init surface ownership and address publication resolved statically; boot sequence still unqualified",
+  "kernelcache_sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+  "surface": {
+    "function": "ANEHWDevice::ANE_Init at0x95e942c",
+    "allocation": "0x95ea710..738 calls offset allocator0x9587700 through device+0x968 for0x174 bytes. Rejects -1, saves returned offset in device+0x960, and computes x25=Params(device+0x980).CPU_base(+0x38)+sign_extended_offset.",
+    "allocator_alignment": "0x9587728..72c rounds requested bytes up to64;0x174 rounds to0x180. Free-list offset is returned, not a CPU pointer or DMA address.",
+    "identity": "Suballocation of the device+0x980 shared pool, NOT the firmware image at device+0x978 and NOT RTBuddy FW_INIT endpoint Params at device+0x618.",
+    "template": "count64 at suballocation+0x68, template256 bytes at+[0x6c,0x16c); separate from RTBuddy+[0x88,0x188).",
+    "leading_address": "When device+0x780 bit0 is clear, first qword receives firmware Params+0x18 unless device+0x41f bit0 selects alternate device+0x7f0. Runtime alternate flag remains unqualified."
+  },
+  "publication": {
+    "site": "0x95eaa90..0x95eab04",
+    "barrier": "dsb st at0x95eaa90 precedes both address writes",
+    "address": "pool_DMA_base(+0x18)+x25-pool_CPU_base(+0x38), i.e. pool DMA base plus suballocation offset",
+    "order": "low32 first via register offset in device+0x438; high32 second via device+0x43c",
+    "accessor": "device+0x188 ANERegisterControl, vtable address point0x814ff90, slot0x18 chained pointer0x801113440261ed44 resolves cacheLevel0 to0x9622d44 write32",
+    "actual_access_width": "0x9622d48 loads mapped register base from accessor+0x18;0x9622d4c str w2,[x8,w1,uxtw] proves32-bit store",
+    "h14g_register_constants": "ane-type0xa0 branch copies constants0x7503a40..a60 to device+0x438..458:0x01840048,4c,50,54,58,5c,60,64. Thus publication offsets are0x01840048 and0x0184004c relative to the mapped register base, not asserted absolute physical addresses.",
+    "following_handshake": "Writes0xf7fbdff9 via device+0x454 then reads that register awaiting0x08042006. Timeouts and complete lifecycle are not yet translated into Linux."
+  },
+  "limits": [
+    "This is an ANE_Init command surface, not proof that the boot ROM consumes it before firmware startup.",
+    "RVBAR write width, firmware-start sequencing, full final payload, runtime DMA placement and safe Linux register lifecycle remain unresolved.",
+    "No firmware boot implementation or hardware write is justified by this receipt alone.",
+    "Existing standalone .syms dump is malformed; regenerated /tmp/h14-correct-nlist.syms using repository macho_syms.py nlist64 <IBBHQ> for function names."
+  ],
+  "regression": "check_fwinit_surface.py checks56 exact instruction anchors, register vtable pointer, initialization constant, H14 register constants and six RTBuddy endpoint records",
+  "hardware_actions": "none"
+}
