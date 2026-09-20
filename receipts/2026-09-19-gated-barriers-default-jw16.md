@@ -296,3 +296,56 @@ standing digest protocol + both decode legs + the omarchy runtime suite
 before any landing discussion. State-keying (emit usc-inval only when the
 launch's uniform/texture-state actually changed, keyed on hk_cs) is the
 second-stage reduction once the static shape proves digest-clean.
+
+## designedusccdmbarrier costed + gated — RUN (00:20Z window, hkccad76a-1): exactness PASS, decode NO-LAND
+
+Four-arm micro on the rebuilt package (`hkccad76a-1` = ccad76a6160,
+cross-session replication vs the previous window: default 24.68 vs 25.11,
+nocdm 4.73 vs 4.72, usc 9.33 vs 9.34 — instrument stable):
+
+| arm | µs/launch | 32-token digest |
+|---|---:|---|
+| default (full sink) | 24.68 | `7fd25a869ff21678` exact |
+| nocdmbarrier | 4.73 | shifted |
+| usccdmbarrier | 9.33 | shifted |
+| **designedusccdmbarrier {4,5,6,8}+usc** | **16.74** | **`7fd25a869ff21678` exact** |
+
+Micro: the candidate saves 7.94 µs/launch (−32%) AND holds the short
+pin — the first barrier flavor to do both on this micro.
+
+Exactness gate (RUN_DESIGNED_GATE=1, pins FATAL): **PASS both legs** —
+short and ctx1024 smokes reproduce both canonical pins; 24/24 battery
+rows exact. This upgrades the barrier-manifold knowledge: {4,5,6,8}+usc
+is a VALID correctness point on G13X (with usc added, termA's
+designed-set digest behavior extends to ctx).
+
+6-round interleaved battery, BOTH arms on the same extracted trunk
+driver (removes the installed-package vintage from the comparison;
+absolute short level ~198 tok/s reflects the merged trunk's FTZ-revert
+lineage):
+
+| arm | short med | ctx1024 med | ctx prefill |
+|---|---:|---:|---:|
+| designedusc | 198.68 [195.99–199.88] | 140.90 [134.25–157.51] | 3885 |
+| default | 198.25 [195.48–199.60] | 144.58 [140.11–160.54] | 3897 |
+| delta | +0.22% | −2.54% | −0.32% |
+
+**VERDICT: NO-LAND.** The micro's −32% does not transfer to real decode:
+the fully-dependent tiny-kernel chain exposes the full drain latency
+between launches, while real decode kernels are heavy enough that the
+drain overlaps execution — the barrier-flavor delta vanishes. ctx is
+slightly negative (same direction as termA's designed-set ctx −3.17%,
+now also with usc). The G13X barrier-shape lever is now bounded from
+three directions: termA (designed set: short+13/ctx−3.17, installed
+vintage), chain-batch (corrupts), designed+usc (digest-clean, decode
+even/ctx-negative). No barrier flavor both holds pins AND wins decode on
+G13X; the per-launch sink cost is real (20.4 µs measured) but its price
+is paid only where decode is not actually waiting. Remaining bounded
+follow-ups, all requiring new evidence: (a) decode-leg sink attribution
+(profiler brackets on the hkccad76a driver) to confirm the overlap
+hypothesis; (b) state-keyed usc-inval (second-stage) — likely same
+non-transfer; (c) accept the measured verdict: the fixed-cost lever on
+G13X is firmware/turnaround-bound, not driver-addressable.
+
+jw16 restored and verified: llm-inference active, timer active, real
+completion `chatcmpl-3zZcStKe9oF0C4XQENPZPR9GctpPtzPW` (16 tokens).
