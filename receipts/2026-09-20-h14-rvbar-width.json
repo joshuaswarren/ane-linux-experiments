@@ -1,0 +1,33 @@
+{
+  "status": "RVBAR access width and local sequencing resolved statically; no boot authorized",
+  "kernelcache_sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+  "call_path": "ANEHWDevice::ANE_Init,0x95e9850..9988",
+  "conditions": [
+    "device+0x41f bit0 set skips RVBAR read/write",
+    "Otherwise read64OneShot at register offset0x01050000; if bit0 already set, skip RVBAR write",
+    "Otherwise derive the write from firmware Params(device+0x978)+0x18, NOT from the legacy init surface or RTBuddy FW_INIT endpoint"
+  ],
+  "encoding": "0x0081000000000001 | (firmware_dma_address & 0xff7efffffffff800)",
+  "width_proof": {
+    "read": "0x95e9860 calls0x9622b04;0x9622b0c ldr x0,[mapped_base,w1,uxtw] is one64-bit access",
+    "write": "0x95e9988 calls0x9622c8c;0x9622c94 str x2,[mapped_base,w1,uxtw] is one64-bit access",
+    "base": "ANERegisterControl object at device+0x188; mapped base is accessor+0x18. This receipt does not establish an absolute physical address."
+  },
+  "local_order_after_rvbar": [
+    "write32 zero then0x10 to offset selected by device+0x4a0 (H14g configuration sets0x01400044)",
+    "conditional scratch-register setup and readiness wait for0x08042006 via device+0x454",
+    "later allocate0x174-byte init suballocation from device+0x980 pool, fill its header and template",
+    "dsb st, publish init suballocation DMA low32 then high32 at offsets selected by device+0x438 and+0x43c",
+    "write0xf7fbdff9 to device+0x454-selected register and await0x08042006 again"
+  ],
+  "important_distinction": "The init-surface publication occurs AFTER the earlier RVBAR operation and first readiness wait on this traced path. Do not place its header over firmware code or assume boot ROM reads it before firmware startup.",
+  "remaining_gates": [
+    "Trace full earlier clock/reset/power preparation and failure cleanup",
+    "Qualify mapped register-base identity and bounds on Linux",
+    "Qualify initial private flags and readiness timeout semantics",
+    "Validate firmware DMA placement, full payload and safe runtime lifecycle before any write"
+  ],
+  "supersedes": "Earlier uncertainty about RVBAR access width and local ordering relative to legacy init publication; does not supersede no-blind-boot restriction.",
+  "regression": "check_fwinit_surface.py PASS76 instruction anchors plus constants, pointer and endpoint checks",
+  "hardware_actions": "none"
+}

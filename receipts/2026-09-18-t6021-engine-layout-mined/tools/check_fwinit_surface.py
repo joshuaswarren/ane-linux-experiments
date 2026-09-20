@@ -67,6 +67,26 @@ anchors = {
     0x9622784: 0xF9000010,
     0x9622D48: 0xF9400C08,  # mapped register base
     0x9622D4C: 0xB8214902,  # write32, not write64
+    0x95E9850: 0x39507E68,  # alternate boot flag
+    0x95E9854: 0x370009C8,  # skip RVBAR if alternate flag set
+    0x95E985C: 0x52A020A1,  # register offset0x1050000
+    0x95E9860: 0x9400E4A9,  # read64OneShot
+    0x95E9864: 0x37000940,  # skip if RVBAR bit0 already set
+    0x95E9868: 0x9280FFF6,  # mask low bits clear
+    0x95E986C: 0xF2FFEFD6,  # mask high16=ff7e
+    0x95E9870: 0xD2800035,  # fixed bit0
+    0x95E9874: 0xF2E01035,  # fixed high16=0081
+    0x95E9880: 0xF944BE68,  # firmware Params, not init pool
+    0x95E9884: 0xF9400D08,  # firmware DMA address
+    0x95E9888: 0x8A160108,
+    0x95E988C: 0xAA150115,
+    0x95E9980: 0x52A020A1,
+    0x95E9984: 0xAA1503E2,
+    0x95E9988: 0x9400E4C1,  # direct write64 call
+    0x9622B08: 0xF9400C08,
+    0x9622B0C: 0xF8614900,  # 64-bit register read
+    0x9622C90: 0xF9400C08,
+    0x9622C94: 0xF8214902,  # 64-bit register write
 }
 for vm, expected in anchors.items():
     assert struct.unpack_from("<I", data, vm - base)[0] == expected, hex(vm)
