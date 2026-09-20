@@ -1,0 +1,101 @@
+== pre-state
+PRE: chatcmpl-JOPC49vbp7V4AirHmQ9qymYbiPA4Q1am
+== stop timer+service
+LOCK-HELD pid=617120 fd=9
+== pre-run SHA pins (DIAG + DIFF + WORKER + LIBANE + AC_HEAD bundle + FDUMP fixtures; verified against operator-approved pins above)
+f3121d0e80f7146575a69b4550e2bdc4735ec791cfa1151885544dc185f49704  /var/tmp/encgate/ac_head_arithmetic_diagnostic.py
+6d72aaf6fd79d862119e42fde333b005089f6b87a0924b3d7042a1c0296492b5  /tmp/encgate-diffs/ac_head_differential_v2.py
+44a99528f79e7fd1ffa06ab248a7e3e02c625ef55b6fd73d94b7600bfd17c3c7  /var/tmp/encwall-relay/cand/bin/mlx-omarchy-ane-worker
+04a176532b60d47285aa051a8c0635b8742b0126d37d4eaacb53577779aa73de  /var/tmp/jw16-oproj-place/libane-strict-fill.so
+f4a8bc37fca4786198ff28095d4754f804277d1288bb3199892f09d962fee178  /tmp/ac-head-bdscale-bundle/manifest.json
+9515166fa3bc0e3db1a4483de6b5e89ded108e99627221889e4780e5d413cdc0  /tmp/ac-head-bdscale-bundle/program-0.anec
+0a4e4d83542f334a7c1bed50e4c1df435f652e0661b054feb87c7625f92d1b08  /tmp/ac-head-bdscale-bundle/program-1.anec
+0879c6277cf3d89888735ea69ef96d29fb492d43eacfe42a0f154f8f0f91c8eb  /tmp/ac-head-bdscale-bundle/program-2.anec
+6838e6d37c8d7a5d2ba18effde9e6c1b12773282cf0891160d2ff96fda6b2dba  /tmp/ac-head-bdscale-bundle/program-3.anec
+48465bf74f396e551689408a12db2807bf0c49650a5a78887a0dc2937678d245  /tmp/ac-head-bdscale-bundle/program-4.anec
+1f725233de1700ea035cf52aaf62bf7cfb2e451d2fe4111f7840a9517580780f  /tmp/ac-head-bdscale-bundle/program-5.anec
+7f7505e07654f3228b5dfa50d843dfe67108431d10db02b9f5ed9c808b590141  /var/tmp/encgate/fdump-arms/captured-layer0/q.bin
+bea05536a662a009ce73c4575cb44986631bf59d1058a3368f97719928c6b883  /var/tmp/encgate/fdump-arms/captured-layer0/k.bin
+f268acb26e8d325c9f23fc98eee4571ffcabd7cfe47fce3f04f3301708cf2b91  /var/tmp/encgate/fdump-arms/captured-layer0/cond.bin
+8475be7de5f30cb723752f395a6ee3af7d5104f12f9e61a673314386f785e2ca  /var/tmp/encgate/fdump-arms/captured-layer0/relpos.bin
+98cabc7db74c4a173e1bc2a1e22afc5c3595a5a5f91a53a19c2e89e903726d3b  /var/tmp/encgate/fdump-arms/captured-layer0/a_fill.bin
+== producer (ac-head-18e93b9 differential on captured fdump arms)
+bundle island-attn-ac-head-L00-bdscale graph df0d901b423e9341 programs 6
+{"arm": "captured-layer0", "elapsed_ms": 25.35, "smax_sha256": "0d4cd32d5c822da03843bcaa3d5ca06bed6fa015dff2fb382a6aebd70167708e", "smax_bytes": 2250000}
+ARMS=1 smax dumps in /var/tmp/encgate/diff-isol-20260920T153828Z/diff-fdump
+== post-run PREPINS check (all pinned artifacts re-verified against the pre-run pin list)
+/var/tmp/encgate/ac_head_arithmetic_diagnostic.py: OK
+/tmp/encgate-diffs/ac_head_differential_v2.py: OK
+/var/tmp/encwall-relay/cand/bin/mlx-omarchy-ane-worker: OK
+/var/tmp/jw16-oproj-place/libane-strict-fill.so: OK
+/tmp/ac-head-bdscale-bundle/manifest.json: OK
+/tmp/ac-head-bdscale-bundle/program-0.anec: OK
+/tmp/ac-head-bdscale-bundle/program-1.anec: OK
+/tmp/ac-head-bdscale-bundle/program-2.anec: OK
+/tmp/ac-head-bdscale-bundle/program-3.anec: OK
+/tmp/ac-head-bdscale-bundle/program-4.anec: OK
+/tmp/ac-head-bdscale-bundle/program-5.anec: OK
+/var/tmp/encgate/fdump-arms/captured-layer0/q.bin: OK
+/var/tmp/encgate/fdump-arms/captured-layer0/k.bin: OK
+/var/tmp/encgate/fdump-arms/captured-layer0/cond.bin: OK
+/var/tmp/encgate/fdump-arms/captured-layer0/relpos.bin: OK
+/var/tmp/encgate/fdump-arms/captured-layer0/a_fill.bin: OK
+== cleanup (rc=0)
+FD9-RELEASED
+curl: (7) Failed to connect to 127.0.0.1:8002 after 0 ms: Could not connect to server
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+curl: (22) The requested URL returned error: 503
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+curl: (22) The requested URL returned error: 503
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+    d = json.load(sys.stdin)
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+RESTORE: units=active+timer completion=chatcmpl-crKoWGeB2a1Sy1bRSej8MjeFmgNR6Xh5
+RELEASE: state=DONE
+[jw16-bdscale-f1feaeb-gate: exited; cursor=6463]

@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-20",
+  "host": "jw16mbp1-linux",
+  "soc": "T6001 / M1 Max",
+  "scope": "Captured layer-0 attention head: slice, scalar multiply, select, scores matmul, add, softmax. Not full encoder or end-to-end Parakeet.",
+  "compiler_commit": "f1feaeb0fa2165f86b788906d2e7a0a4bc47c983",
+  "compiler_binary_sha256": "047b80e4e6d31459067489d7ed20c8fc6e0839e549300e6c3b54e72cb557ea9a",
+  "bundle_manifest_sha256": "f4a8bc37fca4786198ff28095d4754f804277d1288bb3199892f09d962fee178",
+  "bundle_graph_hash": "df0d901b423e934141eaa54963c75bddad425fec5755d2a7ce12c52d457cbdf9",
+  "program_count": 6,
+  "scalar": "fp16 0x1p-4 (bits 0x2c00), one decoded whole-tensor program",
+  "wrapper_sha256": "2cd80466fdcce776599ee906532e8d01bb12797246c134d6180b58afcd41ae52",
+  "remote_output": "/var/tmp/encgate/diff-isol-20260920T153828Z",
+  "input": "Raw unscaled relpos; no runner-side scaling. All five inputs and their JSON metadata pinned before/after; resident Python module also pinned.",
+  "result": {
+    "exit_code": 0,
+    "elapsed_ms_single_submission": 25.35,
+    "output_bytes": 2250000,
+    "smax_sha256": "0d4cd32d5c822da03843bcaa3d5ca06bed6fa015dff2fb382a6aebd70167708e",
+    "comparison": "cmp returned 0 against the five-program diagnostic with CPU-prescaled relpos at /var/tmp/encgate/diff-isol-20260920T142049Z/diff-fdump/captured-layer0.smax.bin"
+  },
+  "recovery": {
+    "service": "llm-inference.service active",
+    "timer": "llm-benchmark-recovery.timer active",
+    "completion_id": "chatcmpl-crKoWGeB2a1Sy1bRSej8MjeFmgNR6Xh5",
+    "completion_content": "Nonempty content required by wrapper",
+    "lock_inode_before_after": 12,
+    "lock": "/tmp/m1-gpu.lock opened read-only fd9; released before service restoration"
+  },
+  "evidence_directory": "2026-09-20-bdscale-fullhead-gate",
+  "limitations": [
+    "Single submission is not a performance benchmark or native parity claim.",
+    "Exact equivalence is to the CPU-prescaled-input device diagnostic, not an independent native full-encoder output.",
+    "Full encoder integration and 104-token Parakeet end-to-end recertification remain pending.",
+    "Compiler f1feaeb has a different-scalar compatibility regression; a fix is required before main merge. This captured 0x1p-4 case passes."
+  ]
+}
