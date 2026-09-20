@@ -374,17 +374,17 @@ Measured (41 submissions × 201 nodes per leg, both legs):
 | busy/span | bracket-noise band | bracket-noise band | — |
 
 **The micro's 7.94 µs/launch saving is ABSENT in real decode** (per-node
-gap delta ≈ 0 on both legs, 8200+ nodes measured). The overlap hypothesis
-is confirmed by measurement: in production decode the sink drain overlaps
-real kernel execution/teardown, so barrier flavor changes nothing; the
-tiny micro chain exposed the drain only because the GPU was idle between
-launches. The G13X fixed-cost lever via barrier flavor is now closed with
-a mechanism, not just a no-gain: the addressable remainder in real decode
-is the ~11 µs gap itself (firmware launch cadence + the irreducible
-drain), which no tested flavor reduces — bit ownership would need
-firmware-level knowledge beyond the unk map. Next attribution targets are
-kernel-side (KV walk, qmm kernel time), consistent with the 09-17
-slope/fixed decomposition and the dispatch-floor verdict.
+gap delta ≈ 0 on both legs, 8200+ nodes measured). This is CONSISTENT
+WITH the overlap reading but does not prove it, and does not decompose
+the ~11 µs remainder: equal median gaps under two flavors show only that
+neither flavor reduces the gap. Candidates for the remainder (firmware
+launch cadence, drain hidden under kernels, other serialization) are
+UNDECORATED — decomposition requires attributable stall counters (firmware
+timeline) or controlled dependency tests. No wholesale impossibility
+claim: the barrier lever is closed FOR THE TESTED FLAVORS (measured
+no-delta), not in general. Next attribution targets are kernel-side (KV
+walk, qmm kernel time), consistent with the 09-17 slope/fixed
+decomposition and the dispatch-floor verdict.
 
 jw16 restored and verified: llm-inference active, timer active, real
 completion `chatcmpl-3zZcStKe9oF0C4XQENPZPR9GctpPtzPW`. Provenance
