@@ -50,3 +50,13 @@ else:
 
 print('ALL OK' if not failures else f'{len(failures)} FAILED')
 sys.exit(0 if not failures else 1)
+
+# --- ps differential (Main-directed retraction addendum) ---
+W8_CPU_PS = 0x1F0003FF   # w8-run.out: ane_cpu proven-working word
+A3_CPU_PS = 0x0F0001FF   # attempt-3 stalled word (owner capture)
+_xor = W8_CPU_PS ^ A3_CPU_PS
+chk('ps xor W8^A3 = 0x10000200 (bit9 + bit28 only)', _xor == 0x10000200)
+chk('missing in A3 = {9, 28} (NOT bit20)',
+    [b for b in range(32) if (W8_CPU_PS >> b) & 1 and not (A3_CPU_PS >> b) & 1] == [9, 28])
+print('W8 bits:', [b for b in range(32) if (W8_CPU_PS >> b) & 1])
+print('A3 bits:', [b for b in range(32) if (A3_CPU_PS >> b) & 1])
