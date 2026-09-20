@@ -252,6 +252,27 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   the ROM's boot-time image source is NOT SCRATCH-published — it is a
   fixed convention only iBoot/ROM knows. Placement constant stays the
   open prerequisite, sourced from the iBoot registration chain.
+
+### Addendum 3j: obj identity RESOLVED (Main/DartAudit catch integrated)
+
+`[dev+0x978]` = an `OSValueObject<ANESharedMemorySurfaceParams>` (kext
+symbols `OSValueObject<ANESharedMemorySurfaceParams>::gMetaClass`,
+`OSValueObject<...>::init/free` kalloc views, vtable
+`__ZTV13OSValueObject<...>`). Therefore:
+- boot-fn `[[dev+0x978]+0x18]` = the FIRST FIELD(S) of the
+  ANESharedMemorySurfaceParams struct — the value masked/ORed into the
+  RVBAR compose is params data, NOT a boolean. The "reduces to the
+  constant for a bool" claim is WITHDRAWN; the RVBAR encoding carries
+  params-derived bits (mask preserves [46:11]).
+- loader-path `[[dev+0x978]+0x38]` = a later params field (the shared
+  surface base used for the custom-fw image copy).
+- Params producer: `ANEHWDevice::AllocateSharedMemorySurface_gated`
+  (symbols at 0x…74fa5ed region; signature
+  `(u64, ANEResource&, u32, u8, u64, u8, u8, bool, u64, u8)`) builds
+  the value object. OPEN: the ANESharedMemorySurfaceParams field
+  layout (which field carries the ASC entry composition vs the surface
+  base) — same derivation family as the boot-args layout; H14DartAudit
+  coordinates on SetupFWInitBootArgs.
 - ROM entry 0x0081_0000_0000_0001: bitfield semantics UNDECODED — the
   value may compose flag bits with a shifted address rather than being
   a raw address, and its relation to the DART iova space is UNPROVEN.
