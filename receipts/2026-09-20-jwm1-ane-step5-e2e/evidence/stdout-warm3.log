@@ -1,0 +1,13 @@
+libmlx identity: /var/tmp/V071REL-venv/lib/python3.14/site-packages/mlx/lib/libmlx.so sha256=df3d4e74c597956c dist=0.32.3.dev202609190758+50eeb29
+[rtmod] SUBMIT tid=10905 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=10905 cv=2 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=10905 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=10905 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=10905 cv=5 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=10905 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+timeout: the monitored command dumped core

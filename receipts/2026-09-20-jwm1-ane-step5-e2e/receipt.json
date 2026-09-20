@@ -1,0 +1,20 @@
+{
+  "schema": "jwm1-ane-step5-e2e-attempt/1",
+  "date": "2026-09-20",
+  "lane": "Jwm1AnePlan Step 5 Parakeet E2E (Main-authorized autonomous; STOPPED after repeated segfaults per stop-first-fault)",
+  "status": "BLOCKED — the transplanted/runtime Parakeet E2E segfaults in the runner process on the fresh jwm1 image across THREE runtime pairings; evidence preserved; device state frozen-clean (wedged=0, module loaded-idle non-persistent, sddm/NM/sshd active)",
+  "pairings_attempted": [
+    {"runner_venv": "V071REL-venv (v0.7.1, libmlx df3d4e74)", "worker": "jw16 transplant 6b63261a...", "result": "worker dynamic-link libmlx.so not found (no LD_LIBRARY_PATH); first attempt failed at input open (dangling bundles-conv symlinks — the relay missed the symlink targets /var/tmp/jw16-encoder-islands/bundles/, now transferred: 29 real bundle dirs, 49M)"},
+    {"runner_venv": "V071REL-venv", "worker": "jw16 transplant 6b63261a...", "libmlx": "jw16 r4-wheelx b2de6602... via LD_LIBRARY_PATH", "result": "venv python mlx.core ImportError (undefined symbol gated_delta_update — jw16 libmlx ABI != v0.7.1 jwm1 venv mlx.core build)"},
+    {"runner_venv": "V071REL-venv", "worker": "jwm1-native 944f2a86... (ane-v064-wt @3611cd59 build)", "libmlx": "V071REL df3d4e74 via LD_LIBRARY_PATH", "result": "SEGFAULT in the runner process mid-pipeline after ~6 GPU submits"},
+    {"runner_venv": "jwm1 v0.7.2-rc.1 venv (GPU path proven on this box)", "worker": "jwm1-native 944f2a86...", "result": "SEGFAULT, same crash point after ~6 GPU submits"}
+  ],
+  "analysis": "The segfault reproduces identically across BOTH venvs and BOTH worker binaries at the same pipeline point (after the ANE worker starts and ~6 GPU-side submits) — pointing at an incompatibility between the transplanted v0.7.1-era runner/resident-worker protocol and the fresh image's environment (7.1.13 kernel, current Mesa, or the ANE driver's submit logging interleaving), NOT a single-library pairing issue. The five-provider DT + guard v2 driver coexist with GPU work (proven: GPUparity's 24/24 rc=0 12-round ran while the module was loaded-idle).",
+  "preserved": ["stdout-warm.log", "stdout-warm3.log", "stdout-warm4.log", "stdout-warm5.log", "stdout-run-1.log (each documents its pairing)", "on-jwm1: /var/tmp/jwm1-ane-step2/encwall-out/* + encwall-scratch/*"],
+  "device_state": "wedged=0, module loaded-idle non-persistent, /dev/accel/accel0 present, no persistence installed",
+  "paths_for_recovery": {
+    "step3_bitgate": "open, separately scoped — requires golden layer0.npz recovery, ANEC semantics RE, or the macOS .anec-runner dev item",
+    "step5_e2e_debug": "core-dump/strace debug lane on jwm1, or a jwm1-native Parakeet E2E harness (the runner + ane_resident protocol re-validated on this image)"
+  },
+  "main_disposition_requested": "Step 5 E2E debug lane authorization; Steps 1-2 receipts stand; Step 3 gate remains separately scoped per prior directive"
+}
