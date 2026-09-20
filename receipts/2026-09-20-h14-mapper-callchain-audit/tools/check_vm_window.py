@@ -25,8 +25,8 @@ vm_end = DART_ANE0_VM_BASE + DART_ANE0_VM_SIZE
 chk('vm_end = vm_base + vm_size = 0x40000000000 (4 TiB)',
     vm_end == 0x40000000000)
 chk('vm_size = 3 TiB (0x30000000000)', DART_ANE0_VM_SIZE == 3 * 2**40)
-chk('staged 0x3ffff800000 = 4 TiB - 8 MiB',
-    STAGED_FW_DVA == 0x40000000000 - 0x8000000)
+chk('staged 0x3ffff800000 = 4 TiB - 8 MiB (0x800000)',
+    STAGED_FW_DVA == 0x40000000000 - 0x800000)
 chk('staged INSIDE dart-ane0 window (>= vm_base)',
     STAGED_FW_DVA >= DART_ANE0_VM_BASE)
 chk('staged INSIDE dart-ane0 window (< vm_end)',
