@@ -146,7 +146,17 @@ Commits (pushed to `joshuaswarren/omarchy-ane`):
 No hardware command proposed or executed. Boot prerequisites remain
 unresolved; the write sequence cannot partially fire for diagnostics
 (complete-preflight gate). A future proposal requires the preflight
-items closed first.
+items closed first (G1-G4 inventory in the 2026-09-20 Main IRC log:
+provider-array confirmation x2, dev+0x3A90 floor value, DART
+page-floor pin).
+
+PRE-WINDOW CHECKLIST addition (Main, 2026-09-20, device moved to
+Wi-Fi only): before any future live MMIO window, REVALIDATE the
+netconsole end-to-end marker on the CURRENT Wi-Fi path — prior marker
+delivery is not assumed after the move. jw14m2-linux: wlan0
+192.168.3.103/23, gw 192.168.2.1, tailscale 100.98.81.36; no network
+config changes needed. Re-run the marker test and record its receipt
+line in the window authorization.
 
 ## Corrections applied during review (Main)
 
