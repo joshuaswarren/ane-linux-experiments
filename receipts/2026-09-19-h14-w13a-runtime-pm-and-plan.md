@@ -244,6 +244,26 @@ poll register is CPU_STATUS — both offsets come from the SoC config
 - Continuation: trace `0xe8548` (what allocates the per-role object
   and where its load-address field is filled), and the caller chain at
   `0x75a0c/0xcd820`. Both pure-offline.
+- Selene bootargs-parse trace (negative result, documented): the fw
+  string "Boot arguments entries : %zu" (VA 0x9e02c in `__TEXT.__cstring`)
+  has ZERO static references — no ADRP/ADD xref (fwxref), no literal-pool
+  u32/u64 pointing at it (full-payload scan). The fw references log
+  strings through a mechanism its relocation scheme hides (PRELOAD
+  linked-at-0 but strings not pool-addressed). Bootargs layout must come
+  from the HOST side (SetupFWInitBootArgs walk, W13 §6) or the iBoot
+  descriptor trace, not selene string xrefs.
+- Live-ADT route (jw14m2): the only captured phram data is jw16's
+  (`adt` @ 0x10004f70000/0x7c000, `m1n1_stage2.log` @ 0x10fb8458000/0x4000
+  — jw16mbp1-linux-adt-exposure.json); jw14m2 has NO captured ADT
+  physical address (its FDT memreserve list is empty) and no
+  apfs/devmem route (STRICT_DEVMEM blocks System RAM). A live read also
+  carries a real risk of null result: W10/W14 evidence (CPU stopped,
+  mailbox at origin, domains off at boot) says iBoot likely does NOT
+  place/start ANE firmware on chainload boots, in which case the ADT
+  would show no ane placement markers and the read proves nothing about
+  the macOS-boot placement the ROM uses. Discriminating value therefore
+  conditional — the iBoot registration-chain RE (0xe8548) is the
+  primary offline lead.
 
 ## 9. Complete bootstrap prerequisite table (status close-out)
 
