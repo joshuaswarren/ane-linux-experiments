@@ -111,12 +111,15 @@ the win**:
 | base | **844.8** | 843.9, 844.6, 853.8, 858.1, 845.0, 843.6 |
 | cand | **845.5** | 841.0, 827.5, 850.2, 827.2, 850.0, 875.7 |
 
-- Median delta **+0.7 ms** — no effect.
+- Median delta **+0.7 ms** — the counterbalance fails to corroborate
+  the first battery's speedup. (Order semantics: A = base, B = candidate,
+  so BA rounds ran the CANDIDATE FIRST.)
 - Paired deltas by round (cand − base): −2.9, −17.1, −3.6, −30.9, +5.0,
   +32.1 (4/6 paired wins) — split by order: AB [−2.9, −3.6, +5.0],
-  BA [−17.1, −30.9, +32.1]. The largest pro-candidate deltas sit in
-  BA rounds where the candidate ran SECOND — consistent with the
-  order/warmup bias Main flagged on the first battery.
+  BA [−17.1, −30.9, +32.1]. BA rounds carry the widest swings (−30.9,
+  +32.1), but the sample is small and the causal mechanism (order vs
+  warmup vs drift) is NOT established — the repeat establishes only that
+  the speedup does not corroborate.
 - Gates 6/6 pins-EXACT both arms (correctness intact; the change is
   exact, it just is not faster).
 
