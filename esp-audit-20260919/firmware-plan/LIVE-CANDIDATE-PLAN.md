@@ -116,8 +116,11 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
   panic=10 on the 7.1.13 entry covers ONLY kernel-panic-class failures (panic() calls /
   oops with panic_on_oops). EXACT COVERAGE:
     COVERED:   kernel panic during boot or early userspace (SError escalated to panic,
-               NVMe ANS abort -> panic, initramfs panic paths) -> autoreboot after 10 s ->
-               next boot = macOS (permanent default, verified in STEP 2).
+               NVMe ANS abort -> panic, initramfs panic paths) -> panic=10 arms a 10-SECOND
+               TIMER; reboot fires when the timer expires. Total time to macOS = 10 s timer
+               PLUS boot latency (uncertain — firmware + macOS boot time); do NOT treat
+               "online within 10 s" as a guarantee. The reboot itself is the guarantee for
+               this class; macOS permanent default (verified in STEP 2) is the destination.
     NOT COVERED — separate failure handling required:
       a. rescue PID1 interactive shell (initramfs fails to find root / mount failure):
          box sits at an interactive shell; it will NOT autoreboot. Handling: agent types
