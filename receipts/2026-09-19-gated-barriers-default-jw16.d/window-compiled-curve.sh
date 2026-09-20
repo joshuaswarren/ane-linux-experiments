@@ -1,7 +1,20 @@
 #!/bin/bash
-# Compiled-route calibration window, jw16 (v3.1, rewritten per Main
-# review). Bounded: compiled-calibrate producer + post-exit report
-# ONLY; no full curve; no performance conclusions.
+# Compiled-route WORKING-SET CURVE window, jw16 (curve variant of the
+# approved window-compiled-calib.sh v3.1; safety structure IDENTICAL -
+# only producer/report args, artifact prefix and label differ).
+# Bounded: compiled-curve producer + post-exit curve-report ONLY; no
+# full curve; no performance conclusions.
+#
+# RUNTIME/MEMORY BUDGET (computed from build_plan; 36 segments = 6
+# blocks x W={1,2,4,16,64,256}):
+#   producer  7,920 fused dispatches total (steps per segment =
+#             ceil(200/w)*w -> 200/200/200/208/256/256); expected
+#             wall 1-3 min; HARD bound:
+#             timeout --signal=TERM --kill-after=15s 540s
+#   memory    256 groups x 3 members x (w f16 3.5MB + wq/scales/bias
+#             ~1.5MB) ~ 3.9 GB unified (M1 Max 32/64GB).
+#   report    offline parse of the complete profile, < 1s.
+#   materialize  256 groups x 6 normals + quantize, before warmup.
 #
 # Contract (Main-reviewed):
 #   * set -euo pipefail; every optional env via ${VAR:-default};
@@ -131,6 +144,7 @@ cd "$GDB"
 [ -x "$V" ] || { echo "FAIL: venv python missing"; exit 24; }
 MLX_OMARCHY_GPU_PROFILE="$NDJSON" \
 MLX_OMARCHY_GPU_PROFILE_LABEL=compiled-curve-v1 \
+timeout --signal=TERM --kill-after=15s 540s \
 "$V" "$GDB/qmm_weight_curve_micro.py" --pass compiled-curve \
   --k 2048 --cols 896 \
   --profile "$NDJSON" \
