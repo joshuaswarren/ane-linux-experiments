@@ -118,3 +118,27 @@ cache), `/var/tmp/EncoderParityAne/capture` (golden capture). Execution of
 the Parakeet E2E on the ANE remains gated on Main until the Steps 3-4 island
 gate closes (golden regeneration or semantics RE) per the standing
 "Steps 3-4 close first" ordering.
+
+## Addendum 3 — macOS golden regeneration: environment staged; adaptation required (Main directive)
+
+Switch tooling: `asahi-bless 0.4.2-1` IS installed on jwm1 Linux
+(/usr/bin/asahi-bless) — the macOS one-boot switch is remotely drivable.
+NativeQ4ExactReproduction: CPU reproduction in flight; their jwm1 GPU runs
+NOT started; they will request the exclusive slot and send explicit RELEASE
+before jwm1 touches — the OS-switch window opens after that release.
+
+ESP staging DONE: `/boot/efi/ANE-GOLDEN-REQ/` holds the four input bins +
+island bundle (manifest + 2 programs), hashes verified — readable from the
+macOS side (FAT32) after the switch.
+
+Adaptation finding (source-checked): an off-the-shelf macOS path to execute
+raw `.anec` programs with injected inputs does NOT exist in owned trees —
+`mil-hwxc.mm` is the compiler, ANEForge runs full models via the documented
+model-level flow (the historical goldens were ANEForge full-model captures;
+milrun.py then evaluated layer 0 in numpy). The macOS golden for arbitrary
+injected inputs therefore requires a small macOS development item (a .anec
+runner over the macOS ANE userland client) OR ANEForge model surgery to
+inject the staged tensors. Recommendation: treat this as its own gated lane;
+the Linux-side artifacts (inputs, references, verifier, mismatch outputs)
+are frozen and hash-pinned in the ladder receipt for whichever path Main
+picks.
