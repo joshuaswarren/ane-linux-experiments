@@ -1,0 +1,82 @@
+{
+ "identity": {
+  "pass": "compiled-calibrate",
+  "mlx_version": "0.32.2.dev202609171941+diag.6f70d4fa",
+  "profile_path": "/var/tmp/gdb/calibc-20260920T074637Z.ndjson",
+  "conditions": {
+   "vk_driver_files": null,
+   "gated_barriers": null,
+   "fused_chain": null,
+   "fused_gemv": null,
+   "per_node_submit": null
+  },
+  "k": 2048,
+  "cols": 896,
+  "group_members": 3,
+  "warmup": 32,
+  "calibration_calls": 3,
+  "seed": 20260919,
+  "x_bytes": 4096,
+  "weight_bytes_per_member": [
+   1032192,
+   1032192,
+   1032192
+  ],
+  "weight_bytes_total": 3096576,
+  "outputs_finite": true,
+  "route_note": "compiled tape -> DecodeFusion -> QmmVecQ4Multi (actual call site)",
+  "libmlx_sha256": "83d20eefad8033eefb2b323c4de74124b50e306f917ed57ad69700d73a29f6f7",
+  "libmlx_path": "/var/tmp/qmmceil/venv/lib/python3.14/site-packages/mlx/lib/libmlx.so",
+  "wheel_version": "0.32.2.dev202609171941+diag.6f70d4fa",
+  "device": "Apple M1 Max (G13C C0)",
+  "period_ns": 1.0,
+  "valid_bits": 64,
+  "label": "compiled-calib-v241"
+ },
+ "calibration": {
+  "j_count": 4,
+  "join_reasons": [
+   "explicit",
+   "explicit",
+   "explicit",
+   "explicit"
+  ],
+  "region_counts": {
+   "0": 141,
+   "1": 1,
+   "2": 1,
+   "3": 1,
+   "4": 1
+  },
+  "region_enums": {
+   "0": [
+    0,
+    8,
+    14,
+    46,
+    52,
+    101,
+    129,
+    203,
+    314,
+    412
+   ],
+   "1": [
+    412
+   ],
+   "2": [
+    412
+   ],
+   "3": [
+    412
+   ],
+   "4": [
+    412
+   ]
+  },
+  "verdict": "strict: one qmm call == one dispatch, kernel-stable across calls",
+  "calibrated_enum": 412
+ },
+ "route": "decode fused multi route CONFIRMED (QmmVecQ4MultiSubgroupF16)",
+ "note": "lifecycle/route diagnostic ONLY; durations are bracketed instrument values and support NO performance conclusion"
+}
