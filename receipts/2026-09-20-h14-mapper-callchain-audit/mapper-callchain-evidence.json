@@ -313,7 +313,8 @@
     "val": "*(IPC_Params+0x18)",
     "meaning": "'IPC ' surface DVA (tag 0x49504320)",
     "size_semantics": "IPC surface size = MAX(IODARTMapper::getPageSize()=0x4000, boot_ordinal+1) -> 0x4000 (one 16K DART page) typical; operands: u64[dev+0x3A90]=mapper page size (slot0x888=IODARTMapper::getPageSize), u32[x23+4]=boot ordinal+1 (SCRATCH1 captured post-READY + 1; verified 0x95ea0f8/0x95ea120/0x95ea124)",
-    "status": "CLOSED"
+    "status": "CLOSED",
+    "page_floor": "0x4000 raw-provenance: IODARTMapper::getPageSize (0xabb0968) = ldr x8,[x0,#288]; ldr x0,[x8,#48]; ret - INDIRECT read of the DART spec object; the 0x4000 constant is the ADT dart-ane0 page-size property (dart receipt 1.2) - DT/ADT-anchored, not a code literal"
    },
    {
     "off": "0x10",
@@ -380,8 +381,9 @@
    {
     "off": "0x60",
     "w": 8,
-    "val": "*(pool+0x00)",
-    "open": "pool first qword semantics"
+    "val": "DDM free-list head node POINTER (kernel VA, opaque) - pool word0",
+    "open": "fw-side use of this pointer unverified (fn 0x71A4 reads +0x60 into [sp]; downstream not traced). NOT a length - length hypothesis refuted: Allocate never writes manager+0x18",
+    "meaning": "DeviceMemoryManager (dev+0x980 obj) free-list head; Allocate walks [manager+0] nodes {+0 next,+0x10 flag,+0x14 offset,+0x18 size}"
    },
    {
     "off": "0x68",
@@ -1154,6 +1156,26 @@
    "Allocate_decode": "DeviceMemoryManager::Allocate(this=dev+0x968, size): want=(size+0x3F)&~0x3F (64B round); walks free-list via [manager+0] head: nodes {+0x00 next, +0x10 flag-byte, +0x14 offset u32, +0x18 size u32}; exact-size match -> node[0x10]=0, return node[0x14]; larger -> split (kalloc_type carve); no memset of the returned range",
    "pool_0x00": "pool(dev+0x980)+0x00 = manager+0x18 - NOT touched by Allocate (Allocate walks [manager+0]); value/identity open; Main hypothesis 'likely length = pool total 0x40000' plausible but fw-side use of suballoc[0x60] unverified - implement as pool length 0x40000 behind a fence comment"
   },
+  "mmio_writes_this_lane": "none"
+ },
+ "pass6f": {
+  "scope": "pool word0 producer chain + page floor raw pin (Main hard gate)",
+  "pool_word0": {
+   "verdict": "pool word0 = DeviceMemoryManager free-list head NODE POINTER (kernel VA, opaque cookie) - NOT a length. Main's length-0x40000 hypothesis REFUTED by producer decode: Allocate (0x9587700) never writes manager+0x18; it walks [manager+0] nodes {next@0, flag@0x10, offset@0x14, size@0x18}",
+   "layout": "DDM manager object = *(dev+0x968): +0x00 free-list head node ptr; pool obj = *(dev+0x980): +0x18 DMA base, +0x38 CPU base, +0x68 count (confirmed by ANE_Init publish reads)",
+   "ABI_guidance": "Linux publishes its own DDM-equivalent head pointer value; treat as opaque. fw-side consumption of [0x60] unverified (0x71A4 reads +0x60 into [sp] at 0x7520, downstream use not traced)"
+  },
+  "page_floor_raw_pin": {
+   "getter": "IODARTMapper::getPageSize @0xabb0968: bti c; ldr x8,[x0,#288]; ldr x0,[x8,#48]; ret - returns *( *(mapper+0x120) + 0x30 ) INDIRECT (DART spec object field), NOT a code literal",
+   "anchor": "0x4000 = ADT dart-ane0 'page-size' property (DeviceTree.j414cap, dart receipt 1.2) - ADT/DT-anchored constant; Linux DT t8110 darts hardcode 16K equivalently",
+   "raw": [
+    "0xabb0968: d503245f bti c",
+    "0xabb096c: f9409008 ldr x8,[x0,#288]",
+    "0xabb0970: f9401900 ldr x0,[x8,#48]",
+    "0xabb0974: d65f03c0 ret"
+   ]
+  },
+  "fn_0x86EC_caller": "no direct bl/b callers in selene __TEXT (full scan) - indirect/registered invocation; non-gating",
   "mmio_writes_this_lane": "none"
  }
 }
