@@ -1,0 +1,45 @@
+{
+  "status": "fresh_linux_image_installed_apple_local_authorization_pending",
+  "linux_boot_verified": false,
+  "benchmark_fleet_restored": false,
+  "authorization": "Owner explicitly authorized reinstall and destruction of disposable Linux test data; macOS and recovery preserved.",
+  "installer": {
+    "version": "v0.9.1",
+    "archive_sha256": "68089126c1607b60f56b873d363978421717b08f7001bbcf107c5debce5d694e",
+    "bootstrap_manifest_failure": "https://asahi-alarm.org/installer_data.json returned HTTP 404",
+    "official_manifest_source": "https://raw.githubusercontent.com/asahi-alarm/asahi-installer-data/master/data/installer_data.json",
+    "manifest_sha256": "8b22059589897be0d00a7ebb73063181bd08f375d06ad8f94ad3e6ef0dc8d09d",
+    "m1n1_version": "v1.6.1",
+    "image_url": "https://asahi-alarm.org/asahi-base-btrfs.zip",
+    "image_sha256": "74760a4ecf6f58173723d60a76ecb6b10d8888c5035f66c4c3bd31c76737ed42",
+    "image_integrity": "unzip -t passed every member before old Linux partitions were removed",
+    "selection": "Asahi Alarm Minimal (BTRFS), reclaimed free space only, max 481.46 GB, OS label Omarchy",
+    "remote_directory": "/tmp/jwm1-clean-install"
+  },
+  "deleted_disposable_partitions": [
+    {"device": "disk0s5", "uuid": "8FEC7933-D713-4ECE-A6F4-8AB5A83C00DC", "type": "Linux Filesystem", "bytes": 478435868672},
+    {"device": "disk0s4", "uuid": "2DCCADB2-C083-4C21-ABAE-5A29B442EA48", "type": "EFI", "bytes": 524288000},
+    {"device": "disk0s3", "uuid": "FAF2AA8B-37D8-4E24-833B-A139C6851FDA", "type": "Apple_APFS", "bytes": 2499805184}
+  ],
+  "removal_note": "UUID/type/size assertions passed before removal. diskutil apfs deleteContainer itself removed disk0s3, so the planned redundant eraseVolume was not executed. Subsequent inspection verified reclaimed space and protected partition identities/sizes.",
+  "protected_partitions_verified_unchanged": [
+    {"device": "disk0s1", "uuid": "87B0AD5E-4838-46FD-A565-6139B75917F4", "type": "Apple_APFS_ISC", "bytes": 524288000},
+    {"device": "disk0s2", "uuid": "17889E90-9382-4AC1-ADA3-D9DC269D4A23", "type": "Apple_APFS", "bytes": 1513757868032},
+    {"device": "disk0s6", "uuid": "0BA975D8-6302-433A-8433-CE92F9F931C8", "type": "Apple_APFS_Recovery", "bytes": 5368664064}
+  ],
+  "observed_install_progress": [
+    "Stub OS installation complete",
+    "EFI formatted; vendor firmware copied",
+    "root.img extraction reached 100 percent",
+    "Preparing to finish installation / collecting installer data",
+    "Password for joshuawarren requested by official installer"
+  ],
+  "handoff": {
+    "remote_installer": "Interrupted at password prompt, before supplying credentials",
+    "local_launcher": "/tmp/jwm1-clean-install/Finish-Omarchy.command",
+    "launch": "open -a Terminal succeeded; official main.py observed on ttys002",
+    "required": "Complete incomplete-install p flow, enter administrator credentials locally, follow official physical power-button Recovery authorization instructions",
+    "owner_state": "Owner states they are completing authorization; do not interfere with the console"
+  },
+  "remaining_gates": ["Successful Linux boot", "Network and SSH access", "Omarchy provisioning", "Pinned GPU and ANE functional checks", "Benchmarks and release acceptance"]
+}
