@@ -34,7 +34,7 @@
 		ane@26a000000 {
 			compatible = "apple,t8103-ane";
 			reg-names = "engine";
-			reg = <0x02 0x6a000000 0x00 0x2000000>;
+			reg = <0x02 0x6bc04000 0x00 0x24000>;
 			interrupt-parent = <0x0f>;
 			interrupt-names = "ane";
 			interrupts = <0x00 0x1a0 0x04>;

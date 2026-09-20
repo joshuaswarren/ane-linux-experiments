@@ -60,7 +60,7 @@ new_nodes = '''\t\tiommu@26b800000 {
 \t\tane@26a000000 {
 \t\t\tcompatible = "apple,t8103-ane";
 \t\t\treg-names = "engine";
-\t\t\treg = <0x02 0x6a000000 0x00 0x2000000>;
+\t\t\treg = <0x02 0x6bc04000 0x00 0x24000>;
 \t\t\tinterrupt-parent = <0x0f>;
 \t\t\tinterrupt-names = "ane";
 \t\t\tinterrupts = <0x00 0x1a0 0x04>;
