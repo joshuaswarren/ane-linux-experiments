@@ -26,6 +26,31 @@ RVBAR_OFF = 0x1050000
 ROM_ENTRY = 0x0081000000000001
 ENTRY_MASK = 0xFF7EFFFFFFFFFFF8
 POSTBOOT_POLL_CONST = 0x08042006
+RVBAR_COMPOSE_MASK = 0xFF7EFFFFFFFFF800
+RVBAR_OR_BITS = 0x0081000000000001
+
+
+def check_rvbar_compose():
+    """RVBAR entry is a COMPOSITION: (obj18 & mask) | OR_BITS — verified
+    bit semantics (integer bitops; mask 0xFF7EFFFFFFFFF800 clears obj18
+    bits 0-10, 48, 55; preserves 11-47, 49-54, 56-63; OR forces 0, 48,
+    55; bits 1-10 always 0 in the result)."""
+    ok = True
+    for obj18 in (0, 1, 0x08042006, 0x1234567890abcdef, 0xffffffffffffffff):
+        rvbar = (obj18 & RVBAR_COMPOSE_MASK) | RVBAR_OR_BITS
+        # bits 1-10 must always be 0 in the result (cleared, not ORed)
+        if any((rvbar >> b) & 1 for b in range(1, 11)):
+            ok = False
+        # bit0, 48, 55 always forced
+        if not ((rvbar >> 0) & 1 and (rvbar >> 48) & 1 and (rvbar >> 55) & 1):
+            ok = False
+        # obj18 bits 11-47 survive verbatim
+        for b in list(range(11, 48)):
+            if ((rvbar >> b) & 1) != ((obj18 >> b) & 1):
+                ok = False
+    print(f"[{'PASS' if ok else 'FAIL'}] RVBAR compose bit semantics "
+          f"(mask {RVBAR_COMPOSE_MASK:#x}, OR {RVBAR_OR_BITS:#x})")
+    return ok
 
 
 def check(name, ok, detail=""):
@@ -160,6 +185,8 @@ def main():
     ok &= check("_fwinfo magic", struct.unpack_from("<Q", fwinfo, 0)[0] == FWINFO_MAGIC)
     tun = read_vm(payload, 0x100590, 8)
     ok &= check("_rtk_tunables header", struct.unpack_from("<I", tun, 0)[0] == TUNABLES_HDR)
+
+    ok &= check_rvbar_compose()
 
     for label, path in (("K14", args.kext14), ("K13", args.kext13)):
         if not path or not os.path.exists(path):

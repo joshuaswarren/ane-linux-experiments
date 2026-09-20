@@ -188,13 +188,16 @@ Complete Chinook boot flow (K14 0x95e9420–0x95e9d00; W13a + this pass):
    matches live reads 0x1).
 2. `writeReg(eng+0x1050000, rvbar)` where
    `rvbar = (obj18 & 0xff7efffffffff800) | 0x0081_0000_0000_0001`
-   (DartAudit/Main correction: a COMPOSITION, not a literal. Exact bit
-   budget: the mask CLEARS obj18 bits 2-0, 48, 55 and PRESERVES bits
-   54-49, 11-3 and everything else high; the OR then forces bits 48,
-   55, 0. Net: bits 2-0 = 001, bits 3-7 + 54-49 + all high bits from
-   params. No address-width implication until the bitfield is decoded.
-   obj = OSValueObject<ANESharedMemorySurfaceParams>, addendum 3j.
-   K13 ≡ K14 composition identical.)
+   (DartAudit/Main correction: a COMPOSITION, not a literal. VERIFIED
+   bit budget with integer bitops AND asserted in
+   tools/h14_fw_contract_check.py: mask = **0xFF7EFFFFFFFFF800**
+   (mov x?,#-0x800 + movk #0xff7e,lsl #48 — a prior transcription
+   0xff7efffffffff800 was missing an F and produced wrong bit
+   conclusions) — clears obj18 bits 0-10, 48, 55; preserves bits
+   11-47, 49-54, 56-63; OR forces bits 0, 48, 55. No address-width
+   implication until the bitfield is decoded. obj =
+   OSValueObject<ANESharedMemorySurfaceParams>, addendum 3j. K13 ≡ K14
+   composition identical.)
 3. two config-driven writes with `w2=0` then `w2=0x10` on cfg field
    `[dev+0x4a0]` (clock/PM asserts — identities not yet named).
 4. **Poll loop** `0x95e9adc–0x95e9b8c`: ≤1000 iterations of
