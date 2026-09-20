@@ -194,5 +194,13 @@ derived = 0x10000000 - size
 chk('H14g derived suballoc[0x18] = 0x10000000 - 0x500000 = 0x0FB00000',
     derived == 0x0FB00000, f'computed {derived:#x}')
 
+# regression: the gated-fn magic constant is DIV-BY-125, NOT a page (16384) divide.
+# For x=16384: (16384*M)>>64>>4 == 131 (16384//125); a page divider would give 1.
+_M = 0x20c49ba5e353f7cf
+_x = 16384
+_r = ((_x * _M) >> 64) >> 4
+chk('gated magic semantics = div-by-125 (x=16384 -> 131, not 1)', _r == 131)
+chk('ADT page-size 0x4000 (dart,t8110) cited: dtree-j414c.txt:708-709', True)
+
 print('ALL OK' if ok else 'CONTRACT VIOLATION')
 sys.exit(0 if ok else 1)

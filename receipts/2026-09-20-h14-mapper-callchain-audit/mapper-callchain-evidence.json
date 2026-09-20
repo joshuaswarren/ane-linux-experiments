@@ -314,7 +314,7 @@
     "meaning": "'IPC ' surface DVA (tag 0x49504320)",
     "size_semantics": "IPC surface size = MAX(IODARTMapper::getPageSize()=0x4000, boot_ordinal+1) -> 0x4000 (one 16K DART page) typical; operands: u64[dev+0x3A90]=mapper page size (slot0x888=IODARTMapper::getPageSize), u32[x23+4]=boot ordinal+1 (SCRATCH1 captured post-READY + 1; verified 0x95ea0f8/0x95ea120/0x95ea124)",
     "status": "CLOSED",
-    "page_floor": "0x4000 raw-provenance: IODARTMapper::getPageSize (0xabb0968) = ldr x8,[x0,#288]; ldr x0,[x8,#48]; ret - INDIRECT read of the DART spec object; the 0x4000 constant is the ADT dart-ane0 page-size property (dart receipt 1.2) - DT/ADT-anchored, not a code literal"
+    "page_floor": "0x4000 anchored to ADT: dart,t8110 nodes carry page-size 0x4000 (dtree-j414c.txt lines 708-709 et al., verified in-file this pass); corroboration: start+0x4058 udiv/mul aligns a config-derived value by [dev+0x3A90] (raw 0x9ad80b88/0x9b187d00) - dev+0x3A90 = page-size field used as alignment divisor"
    },
    {
     "off": "0x10",
@@ -418,8 +418,10 @@
    "tag": "'DDM'",
    "site": "start+0x4024 (Reset/Main decode)",
    "corroboration": "start+0x4054-0x405c: ldr x24,[dev+0x3A90] (mapper page size); udiv/mul round-down by page size adjacent to the pool path (raw words verified: udiv=0x9ad80b88, mul=0x9b187d00, ldr=0xf95d4ad8)",
-   "pool_0x00": "still open"
-  }
+   "pool_0x00": "still open",
+   "word0": "dev+0x980 = the 0x40000 'DDM' allocation (start+0x4024); +0x00 = DDM object first field - writer = DDM init (not yet pinned); NOT the gated params; NOT a proven length"
+  },
+  "page_floor": "0x4000 = ADT dart page-size property (dtree-j414c.txt:708-709 'compatible: dart,t8110 / page-size: 0x4000', verified this pass); corroborated by start+0x4058 page-alignment udiv/mul by [dev+0x3A90]. getPageSize getter (0xabb0968) reads it indirectly from the DART spec object."
  },
  "meta": {
   "date": "2026-09-20",
@@ -1183,7 +1185,7 @@
   "object_correction": "dev+0x988/0x978 hold OSValueObject<ANESharedMemorySurfaceParams>* created in AllocateSharedMemorySurface_gated (create at 0x95f684c); obj+0x18 = params VALUE+0x08 under the OSValueObject layout (vptr/refcount 0x10 header); the raw params struct itself is built inside createANESurface (0x95a9ac4, called gated+0x124) and passed to setValue",
   "params_value_0x00": "the value+0x00 store lives inside createANESurface's body (0x95a9ac4, span large; str candidates at 0x95a9bd0/0x95a9c1c are stack spilling) - dedicated def-use pass REQUIRED; not closed this round",
   "pool_0x00": "dev+0x980 = DeviceMemoryManager INSTANCE inline state (DMA base +0x18, CPU base +0x38, count +0x68 confirmed by publish reads); +0x00 = manager instance first field written by DDM init (not the gated params); Allocate walks the free-list via [manager+0]; pool word0 = manager state, producer not pinned this round",
-  "page_size_numeric_pin": "gated fn builds divide-by-0x4000 via magic reciprocal 0x20c49ba5e353f7cf (umulh+lsr#4) at 0x95f6c2c-0x95f6ca4 - page size 0x4000 is ARITHMETICALLY PINNED kext-side (raw: 0xf81a03bf stur xzr,[x29,-96]; 0xd10183a1 sub x1,x29,#0x60; 0x940155a1 bl; 0x9bd87d08 umulh; 0xd344fd08 lsr #4 x3; movk x24,#0xf7cf/#0xe353/#0x9ba5/#0x20c4 sequence at 0x95f6c30-0x95f6c40)",
+  "page_size_numeric_pin": "WITHDRAWN per Main arithmetic check: magic 0x20c49ba5e353f7cf + umulh + lsr#4 computes x/125 (magic/2^68 = 16/125 = 0.008), NOT x/16384 (power-of-2 divide would be a shift #14). For x=16384 the sequence yields 131 (=16384/125), not 1. Input data source NOT established (Main: likely timing units) - no page-size inference from this constant. Numeric regression check added to tools/check_init_contract.py.",
   "mmio_writes_this_lane": "none"
  }
 }
