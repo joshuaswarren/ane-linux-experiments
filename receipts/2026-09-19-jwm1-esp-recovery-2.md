@@ -1136,3 +1136,29 @@ FIRMWARE-PLAN GATE STATE (all green):
 - module battery (Jwm1SafeModuleStage): 19/0 assembly + 52/0 regression on same candidate binary
 REMAINING PRE-LIVEWRITE GATE (module agent owns): post-assembly full initrd
 unpack/hardlinks/ordering verification. No live writes, no privileged mounts, no boots.
+
+## 02:4x CDT (Sep 20) — Jwm1LiveBootAudit: source committed+pushed; READ-ONLY live-write preflight
+
+COMMIT/PUSH: 873c3ef on main (origin) — firmware-plan v4 + dual suites + init-caller spec +
+vendorfw.sha256 + early-embed spec + receipt sections. ONLY source/text; no images, no raw ESP,
+no .work artifacts (Main directive).
+
+READ-ONLY PREFLIGHT (fresh raw ESP read via ssh dd → local stage; NO mount changes, NO device
+writes):
+- fresh full-image: /tmp/jwespchk-1U3S/esp-preflight.img, 524,288,000 B,
+  sha256 2d935cfc1522d4fbdb3fdef6aefc09afb658e9d7b6a2712abb10dd60cdbf7b8b — IDENTICAL to the
+  23:52 capture (esp-live-0007). ESP unchanged since last audit; only the known 1-byte
+  access-date delta vs cd65c46d baseline remains.
+- volume: EFI - ASAHI, serial 6C79-DC47; free 332,775,424 B of ~500 MiB (≈63% free — ample for
+  the 7.1.13 kernel+initrd additions).
+- critical file identities (fresh read):
+  /m1n1/boot.bin 6,092,721 B d1ee639c… (restored stock m1n1 build)
+  /EFI/BOOT/BOOTAA64.EFI 913,408 B 9d6e7510… (GRUB build)
+  /grub-ane/VMLINUZ.REC 33,917,440 B ee36d989… (7.1.6 rec) / INITRD.REC 19,414,040 B de4ae604…
+  /grub-ane/grub.cfg 552 B marked single-entry (Omarchy recovery, root=UUID=725346d2…, subvol=@)
+- ROLLBACK identities on-device:
+  /m1n1/boot.bin.stock-20260906 6,090,601 B 3945ed51…
+  /EFI/BOOT/BOOTAA64.EFI.stock 405,504 B d5765e2c…
+- marker files present (LAPKG.TXZ, REPAIR.SH 0-byte) — untouched.
+No mount changes, no live writes, no boots. Pre-livewrite gate remains: post-assembly initrd
+unpack/hardlinks/ordering verification (module agent) + Main assembly review.
