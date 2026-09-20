@@ -15,7 +15,7 @@
 # completion check runs for real. No symlink chmod.
 set -uo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
-WRAPPER="$HERE/../receipts/2026-09-19-gated-barriers-default-jw16.d/window-compiled-calib.sh"
+WRAPPER="${WRAPPER_UNDER_TEST:-$HERE/../receipts/2026-09-19-gated-barriers-default-jw16.d/window-compiled-calib.sh}"
 TD=$(mktemp -d)
 trap 'rm -rf "$TD"' EXIT
 mkdir -p "$TD/bin" "$TD/gdb"
