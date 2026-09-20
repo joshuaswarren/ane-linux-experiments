@@ -1,0 +1,35 @@
+{
+  "status": "static allocator identity and zero-initialization request resolved; firmware boot still unqualified",
+  "kernelcache_sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+  "call": "0x9612b60 size=0x100; 0x9612b64 flags=4; 0x9612b68 bl0x964c3c8",
+  "import_resolution": {
+    "method": "Standalone kext LC_DYSYMTAB indirect symbol table and 16-byte nlist_64 entries, not guessed function naming",
+    "stub_section_start": "0xfffffe000964b808",
+    "stub_bytes": 16,
+    "stub_ordinal": 188,
+    "indirect_table_file_offset": 2100080,
+    "symbol_index": 10939,
+    "symbol_table_file_offset": 1923728,
+    "symbol_string_index": 871997,
+    "symbol_string_file_offset": 2974373,
+    "symbol": "_kalloc_data"
+  },
+  "bound_target": {
+    "got_vm": "0x81638a0",
+    "raw_chained_pointer": "0x8011000004c49d10",
+    "cache_level": 0,
+    "target_vm": "0xbc4dd10",
+    "flags_forwarding": "0xbc4dd20 bfxil w2,w1,#0,#3 preserves caller flag4; helper tail branches to0xbc4d904"
+  },
+  "allocation_contract": {
+    "source": "https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/osfmk/kern/zalloc.h",
+    "definition": "Z_ZERO = 0x0004",
+    "comment": "Passing this flags means that the returned memory has been zeroed out.",
+    "scope": "Public XNU API contract corroborates the decoded _kalloc_data call requesting zeroed memory. This is not an assertion that public source is byte-identical to this macOS kernelcache, nor a live memory observation."
+  },
+  "initial_template_under_allocator_contract": "256 zero-initialized bytes, then word0=[config+0x1d8], word0xc0 OR=4, bytes[4,12) explicitly zeroed. Later mutations and config+0x1d8 meaning remain unresolved.",
+  "regression": "check_fwinit_surface.py: PASS with19 instruction anchors, exact allocator GOT pointer, and6 endpoint records",
+  "prior_receipt": "2026-09-20-h14-fwinit-surface.json",
+  "remaining": ["Later template mutations and field meanings", "Runtime provider branch", "Linux firmware-visible DMA address domain", "Endpoint message transport", "RVBAR access width and ordering", "Controlled live boot with recovery"],
+  "hardware_writes": false
+}

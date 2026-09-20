@@ -24,9 +24,16 @@ anchors = {
     0x95FF968: 0x928000B5,  # endpoint loop starts -6; index = counter+7
     0x95FF9A8: 0x54FFFE43,  # continue through endpoint6
     0x9612B84: 0xF904CE60,  # template allocation -> device+0x998
+    0x9612B60: 0x52802000,  # allocation size 0x100
+    0x9612B64: 0x52800081,  # allocation flags 4 (Z_ZERO)
+    0x9612B68: 0x9400E618,  # bl _kalloc_data auth stub
+    0x964C3C8: 0xF0FF58B1,  # stub GOT page 0x8163000
+    0x964C3CC: 0x91228231,  # GOT offset 0x8a0
+    0xBC4DD20: 0x33000822,  # kalloc_data preserves flags bits0..2
 }
 for vm, expected in anchors.items():
     assert struct.unpack_from("<I", data, vm - base)[0] == expected, hex(vm)
+assert struct.unpack_from("<Q", data, 0x81638A0 - base)[0] == 0x8011000004C49D10
 expected = [
     (1, 0x10000, 0x494E4954, "FW_INIT", 1),
     (2, 0x40000, 0x54324643, "T2F_CMD", 0),
