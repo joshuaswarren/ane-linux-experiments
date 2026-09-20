@@ -612,3 +612,45 @@ count assert, wall averages always labeled `wall_avg_us` distinct from
 `dispatch_us`, and a `--dry-run` that executes the real plan/
 attribution/analysis path without mlx or GPU. Selftest + dry-run PASS
 locally; NOT executed on device — hardware held until Main reviews.
+
+## External corroboration — PR14 (wickthumb, T6020 / M2 Pro / G14S B1) — behavioral evidence ONLY
+
+Read as external corroboration of G14 coopmat behavior; NOT evidence of
+M1 speedup, native parity, or arithmetic qualification (the PR itself
+claims no §4 qualification: no arithmetic-contract probes, no bf16
+legs, no native divisor for the die). Source: joshuaswarren/mlx-omarchy
+PR14, branch `receipt/t6020-coopmat-fork-icd`, mesa fork
+`26.3.0.devel.hk6f6afc8` vs stock 26.2.3, v0.7.1 wheel, Qwen2.5-0.5B-4bit
+`a5339a41`, system Mesa untouched (VK_DRIVER_FILES ICD).
+
+What transfers to the G13C theory:
+
+1. **Pinned numerics are driver-build-robust on a second Apple GPU
+   generation.** Both pinned decode legs (`7fd25a869ff21678` short,
+   `7da83f06ec9f001d` 1053/32) digest-match the native pins under BOTH
+   stock and fork on G14S. The fork's coopmat/execution changes did not
+   move pinned-leg results there — same contract my G13C profiles
+   satisfy.
+2. **The mid-length leg is the sensitive one.** The ONLY digest drift
+   is the unpinned 262/128 leg (`55215e22…` → `f873dc2b…`), and prefill
+   regresses heavily at all lengths (227/1180/1286 → 405/1829/2266).
+   My G13C census shows the qmm prefill coopmat variant boundary
+   (QmmPrefillCoopmatM16F16 top at short, QmmPrefillCoopmatF16 top at
+   ctx) sits between the short and ctx legs — i.e. exactly across the
+   mid length where PR14's execution is driver-sensitive. Concrete
+   addition to the next G13C window: a 262-length census leg to locate
+   which qmm prefill variant fires at 262 and whether the M16 ↔ coopmat
+   selection boundary is near it. If it is, PR14's unpinned mid-leg
+   drift gets a candidate mechanism (selection boundary) that is
+   checkable per generation without claiming parity.
+3. **Risk note for G13C coopmat work**: on G14S this coopmat-flavored
+   fork roughly halves prefill speed (and 1053 decode 82.98 → 149.13)
+   while the f32 matmul micro improves (0.40 → 0.73 TFLOPS) — behavior
+   changes are large and not uniformly positive across kernels. Any
+   G13C coopmat variant work must A/B prefill and decode separately;
+   micro-level wins (their matmul row) did not predict end-to-end
+   direction on that die.
+
+No merge action taken or proposed here (build-fix + axes-file contracts
+belong to the reviewer, ContributorPRReviewNow; the receipt is honest
+about its unpinned digest drift).
