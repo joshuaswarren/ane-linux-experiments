@@ -538,17 +538,91 @@ def verify_curve_regions(regions, j_count, plan, expected_enum=412):
     return by_w, per_w
 
 
+def analyze_walls(walls, blocks, w_series):
+    """Diagnostic instrumented only (no Metal parity claim). For each
+    block the producer ran a seeded shuffle of W_SERIES with one
+    segment per W; each segment records its own wall_avg_us. Returns a
+    per-block table of the paired W1 differences (delta_us = median(W)
+    - median(W=1)) plus an across-block delta-vs-W1 average."""
+    by_block = {}
+    for w in walls:
+        by_block.setdefault(w["block"], {})[w["w"]] = w["wall_avg_us"]
+    rows = []
+    for b in sorted(by_block):
+        bw = by_block[b]
+        base = bw.get(1)
+        if base is None:
+            continue
+        row = {"block": b, "w1_us": base}
+        for w in w_series:
+            if w in bw:
+                row[f"w{w}_delta_us"] = bw[w] - base
+        rows.append(row)
+    return rows
+
+
+def attribute_by_submission(subs, plan, warm_count=W_SERIES[0]*BLOCKS):
+    """Pure qualifier (s-grouped). Returns (by_w, attribution_str).
+
+    subs: {s: [(dur_us, enum), ...]} - d records grouped by s.
+    plan: the plan (segment order defines measured chunk order).
+    warm_count: number of warm submissions expected (default 256).
+
+    Warm = first `warm_count` submissions in s order (singleton 412).
+    Measured = remaining `sum(plan steps)` singleton 412 submissions in s
+    order = execution order. Returns per-w medians; raises SystemExit
+    (UNQUALIFIED) if the s-order singleton-412 contract is violated.
+    No marker-dispatch design required for this recovery."""
+    singletons = sorted(
+        (s, d[0][0], d[0][1]) for s, d in subs.items()
+        if len(d) == 1 and d[0][1] == 412)
+    need_total = warm_count + sum(sp["steps"] for sp in plan)
+    if len(singletons) < need_total:
+        raise SystemExit(
+            f"UNQUALIFIED: {len(singletons)} 412 singletons < required "
+            f"{need_total} (warm {warm_count} + measured "
+            f"{sum(sp['steps'] for sp in plan)}); fused contract unproven")
+    measured = singletons[warm_count:]
+    # singletons are (s, dur, enum) tuples; pass durations list forward
+    durations = [dur for (_, dur, _) in measured]
+    by_w = {}
+    pos = 0
+    for sp in plan:
+        evs = durations[pos:pos + sp["steps"]]
+        by_w.setdefault(sp["w"], []).append(statistics.median(evs))
+        pos += sp["steps"]
+    return by_w, (
+        f"QUALIFIED (s-order proven: {len(singletons)} 412 singletons "
+        f"= warm {warm_count} + measured "
+        f"{sum(sp['steps'] for sp in plan)})")
+
+
 def pass_curve_report(args, plan):
-    """Offline (post-producer-exit): verify the compiled-curve stream.
-    One fused dispatch per call is the contract: each segment region
-    holds exactly `steps` events, all the expected fused enum, all
-    tick-ful. Any 3-split-per-call layout, wrong enum, tick-less entry,
-    join-count mismatch, or post-final-sync event rejects the stream."""
+    """Offline (post-producer-exit) attribution by SUBMISSION id.
+
+    Flush ordering (gpu_profiler.h, source + 084616 capture): d records
+    reach the file at slot-reuse flushes (on_begin, NO j record) and at
+    sync joins (j record, then flush) - file order interleaves across
+    the 4-slot ring and j regions do NOT delimit segments. But every d
+    record carries its submission id "s", and the encoder's submission
+    counter is monotonic: grouping by s recovers per-submission dispatch
+    sets, and sorting groups by s recovers execution order independent
+    of final ring flush order.
+
+    Fused-dispatch contract per submission: EXACTLY one enum-412 record
+    (one fused dispatch per compiled call). Warm = all fn calls before
+    the first measured submission = first len(warm) submissions in s
+    order = the first 256. Measured = the LAST sum(steps) singleton
+    submissions in s order. dropped=0 required from the end record.
+
+    The walls analysis (paired W1 differences, diagnostic only - no
+    Metal parity claim) reads the producer's per-segment wall_avg_us and
+    pairs them against W=1 within each block."""
     ident = {}
     if args.plan_meta and os.path.exists(args.plan_meta):
         ident.update(json.load(open(args.plan_meta)))
-    region, j_count, meta = 0, 0, None
-    regions = {}
+    meta = None
+    subs = {}   # s -> [(has, dur_us, enum)] in file order
     for line in open(args.profile):
         if not line.strip().startswith("{"):
             continue
@@ -560,33 +634,46 @@ def pass_curve_report(args, plan):
         if k == "meta":
             meta = r
         elif k == "j":
-            j_count += 1
-            region = j_count
+            pass
         elif k == "d":
-            has = "t0" in r
-            regions.setdefault(region, []).append(
-                (has,
-                 (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3 if has
-                 else None,
-                 r["e"]))
+            if "t0" not in r:
+                continue
+            dur = (r["t1"] - r["t0"]) * meta["period_ns"] / 1e3
+            subs.setdefault(r["s"], []).append((dur, r["e"]))
     if meta is None:
         raise SystemExit(f"{args.profile}: no meta record")
-    by_w, per_w = verify_curve_regions(regions, j_count, plan)
-    out = {"identity": ident,
+    by_w, attr = attribute_by_submission(subs, plan)
+    measured_durs = [subs[s][0][0] for s in sorted(subs)
+                       if len(subs[s]) == 1 and subs[s][0][1] == 412]
+    measured_durs = measured_durs[max(1, len(W_SERIES) * BLOCKS // BLOCKS):]
+    per_w_events = {}
+    pos = 0
+    for sp in plan:
+        evs = measured_durs[pos:pos + sp["steps"]]
+        per_w_events.setdefault(sp["w"], []).extend(evs)
+        pos += sp["steps"]
+    out = {"identity": {**ident, "device": meta.get("device"),
+                        "period_ns": meta.get("period_ns"),
+                        "valid_bits": meta.get("valid_bits"),
+                        "label": meta.get("label")},
+           "attribution": attr,
            "dispatch_us_p50_per_block": {str(w): v for w, v
                                          in by_w.items()},
            "dispatch_us_quantiles_by_w": {
-               str(w): quantiles([d for _, d, _ in per_w[w]])
-               for w in W_SERIES},
+               str(w): quantiles(per_w_events[w]) for w in W_SERIES},
            "paired_delta_vs_W1": paired_deltas(by_w),
-           "note": ("bracketed instrument durations; compare against an "
-                    "unbracketed wall pass before any conclusion; NO "
-                    "performance claim without Main approval")}
+           "walls_paired_analysis": analyze_walls(
+               ident.get("walls", []), BLOCKS, W_SERIES),
+           "note": ("durations are single fused-dispatch dispatches "
+                    "under the bracketing instrument; compare against "
+                    "an unbracketed wall pass before any conclusion; "
+                    "walls_paired_analysis is diagnostic instrumented "
+                    "only (no Metal parity claim)")}
     json.dump(out, open(args.out, "w"), indent=1)
-    print("wrote", args.out)
+    print("wrote", args.out, "|", out["attribution"])
 
 
-# ---------- entry ----------
+# ---------- entry ----------# ---------- entry ----------# ---------- entry ----------
 
 def main():
     ap = argparse.ArgumentParser()
