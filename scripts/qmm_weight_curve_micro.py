@@ -157,8 +157,17 @@ def require_sync(mx):
 
 
 def resolve_libmlx():
-    """Actual libmlx.so path. mlx.__file__ can be None (namespace
-    package): fall back to sys.path scanning; never silently omit."""
+    """EXACT loaded libmlx.so preferred: /proc/self/maps names the
+    library the process actually mapped. Fallbacks: mlx.__file__ dir,
+    then sys.path scanning. Returns (path or None, method)."""
+    try:
+        for line in open("/proc/self/maps"):
+            if "libmlx.so" in line:
+                path = line.split()[-1]
+                if os.path.exists(path):
+                    return path, "proc_self_maps"
+    except OSError:
+        pass
     import mlx
     base = getattr(mlx, "__file__", None)
     candidates = []
@@ -170,9 +179,9 @@ def resolve_libmlx():
             candidates.append(os.path.join(p, "mlx", "lib", "libmlx.so"))
     for c in candidates:
         if os.path.exists(c):
-            return c, "resolved"
-    return None, ("unresolved: mlx.__file__=%r and sys.path scan found "
-                  "no mlx/lib/libmlx.so" % (base,))
+            return c, "mlx_file_or_syspath"
+    return None, ("unresolved: /proc/self/maps has no libmlx.so, "
+                  "mlx.__file__=%r, sys.path scan empty" % (base,))
 
 
 def qmm(x, wq, scales, biases):
@@ -277,15 +286,14 @@ def pass_compiled_calibrate(args, k, cols):
 
     fn = mx.compile(group)
     finite = None
-    for i in range(WARMUP_STEPS):
-        outs = fn(x)
-        mx.eval(outs)
-    force_sync(mx)
-    for _ in range(CALIBRATION_CALLS):
-        outs = fn(x)
-        mx.eval(outs)
-        if finite is None:
+    for i in range(WARMUP_STEPS):  # finite check inside warmup ONLY:
+        outs = fn(x)               # its isfinite kernels stay in the
+        mx.eval(outs)              # warmup region, never after a
+        if i == 0:                 # calibration sync
             finite = all(bool(mx.isfinite(o).all()) for o in outs)
+    force_sync(mx)
+    for _ in range(CALIBRATION_CALLS):  # pure: dispatch + sync, no
+        mx.eval(fn(x))                  # additional GPU ops
         force_sync(mx)
     ident = sidecar_identity("compiled-calibrate", mx, args.profile,
                              {"k": k, "cols": cols,
