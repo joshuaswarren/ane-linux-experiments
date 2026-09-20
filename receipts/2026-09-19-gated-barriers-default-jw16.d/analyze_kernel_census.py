@@ -37,7 +37,7 @@ def main():
             e = json.loads(line)
             if e.get("k") != "d":
                 continue
-            k = names[e["n"]] if e["n"] < len(names) else f"unk{e['n']}"
+            k = names[e["op"]] if e["op"] < len(names) else f"unk{e['op']}"
             busy[k] += (e["t1"] - e["t0"]) / 1e6
             cnt[k] += 1
             steps.append(e)

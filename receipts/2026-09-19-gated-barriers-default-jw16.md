@@ -403,3 +403,34 @@ block `unk25984` (12.8%, n=462 ≈ 11/step, ~124 µs mean — likely the
 qmm/sdpa family, mapping pending). Per-kernel census is the base for the
 kernel-side attribution Main directed; runs offline on the four
 `/var/tmp/gdb/dprof-*.ndjson` profiles, no GPU needed.
+
+## Kernel-side census (corrected field: `op` is kernel enum, `n` is element count)
+
+| leg | kernel | busy % | dispatches | mean µs/disp |
+|---|---|---:|---:|---:|
+| short (def) | CastBoolF32 | **60.1%** | 4052 | 66.1 |
+| short (def) | ElementwiseF32 | 35.6% | 4484 | 35.3 |
+| short (def) | ElementwiseF16 | 3.4% | 146 | 105.1 |
+| ctx (def) | CastBoolF32 | **65.7%** | 4052 | 137.4 |
+| ctx (def) | ElementwiseF32 | 32.1% | 4484 | 60.7 |
+
+**Finding**: a single kernel type, CastBoolF32 (bool→f32 cast), accounts
+for ~60% (short) / ~66% (ctx) of profiled decode busy under the diag
+wheel. The KV walk / qmm kernels do NOT surface as top contributors in
+the bench_decode 32-token greedy legs (either absent on the diag build's
+compute.h enum mapping, or bench_decode's path doesn't exercise them
+proportionally to production). Cross-arm per-kernel busy delta ≤0.6%
+on both legs — barrier flavor changes nothing per kernel, consistent
+with the gap no-delta.
+
+**Concrete next measurement** (kernel-side, exclusive queue slot):
+map the remaining `unkNNN` enum indices using the wheel's own
+compute.h (the diag wheel was built at 6f70d4fa, but the header
+resolved most names — `unk134656` and friends need the wheel's exact
+header path), profile a richer workload (more tokens per leg so qmm /
+sdpa fire repeatedly), then inspect CastBoolF32 implementation (shader +
+per-dispatch cost) for source-side headroom. Readiness: census
+instrument ready (no GPU needed); a follow-up window needs the longer
+profile + a CastBoolF32-focused cross-arm (e.g., does the post-launch
+sink specifically tax cast kernels, which would re-open a barrier
+lever — untested flavor).
