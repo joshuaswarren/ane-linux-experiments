@@ -225,10 +225,31 @@ poll register is CPU_STATUS — both offsets come from the SoC config
   0x…95eaee8-0x…95eaef0), and the older W2-era header/comment value
   "0x80402006" is a TRANSCRIPTION ERROR (nibble swap) — corrected in
   the driver header and this receipt. Reset ordering at register level
-  is therefore: SCRATCH7 mode write (cold 0 / warm 1) → RVBAR gate →
-  RVBAR ← entry → CPU_CONTROL 0 → CPU_CONTROL 0x10 → poll SCRATCH7 ==
-  0x08042006. Page-tables/boot-args/placement/stream-mapping remain
-  open separately (§6).
+  is therefore: InitANEScratchRegisters (SCRATCH0-7 ← 0; bl 0x960f2a8
+  at boot 0x95e954c, H14DartAudit) → SCRATCH7 mode write (cold 0 /
+  warm 1) → RVBAR gate → RVBAR ← entry → CPU_CONTROL 0 → CPU_CONTROL
+  0x10 → poll SCRATCH7 == 0x08042006. Page-tables/boot-args/placement/
+  stream-mapping remain open separately (§6).
+
+### Addendum 3d: SCRATCH corrections (H14DartAudit cross-review)
+
+- dev+0x438+4n == rANE_SCRATCHn, n=0..9 (SCRATCH8/9 at 0x458/0x45c,
+  runtime-only sites); InitANEScratchRegisters (0x960f2a8) zeroes
+  SCRATCH0-7 before the boot sequence.
+- Direction fix: cfg+0x438/0x43c reads (0x95ea0d4/0x95ea0fc) are
+  readReg; the publication WRITE is 0x95eaa94-0x95eab08:
+  SCRATCH0=lo32/SCRATCH1=hi32 of (surface->[0x18] + ring_cursor −
+  surface->[0x38]) — a per-command surface position with iova-shaped
+  arithmetic. The fw learns ring positions from SCRATCH at runtime.
+- Consequence for placement: SCRATCH is zeroed before RVBAR/RUN, so
+  the ROM's boot-time image source is NOT SCRATCH-published — it is a
+  fixed convention only iBoot/ROM knows. Placement constant stays the
+  open prerequisite, sourced from the iBoot registration chain.
+- ROM entry 0x0081_0000_0000_0001 exceeds the 42-bit dart-ane0 iova
+  aperture → ROM fetch is an internal non-DART decode; boot image
+  space and runtime DART iova space are distinct domains (runtime fw
+  buffer addresses ARE dart-ane0 iovas resolved host-side, W2 §5 +
+  H14DartAudit).
 
 ### Addendum 3c: iBoot registry trace state (continuation point)
 
