@@ -1,0 +1,50 @@
+Sep 20 14:26:30 jwm1-linux kernel: /soc/dsi@228600000: Fixed dependency cycle(s) with /soc/dsi@228600000/panel@0
+Sep 20 14:26:30 jwm1-linux kernel: /soc/dsi@228600000/panel@0: Fixed dependency cycle(s) with /soc/dsi@228600000
+Sep 20 14:26:30 jwm1-linux kernel: /soc/dsi@228600000: Fixed dependency cycle(s) with /soc/dsi@228600000/panel@0
+Sep 20 14:26:30 jwm1-linux kernel: /soc/dsi@228600000/panel@0: Fixed dependency cycle(s) with /soc/dsi@228600000
+Sep 20 14:26:30 jwm1-linux kernel: apple-dart 26b800000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 36] initialized
+Sep 20 14:26:30 jwm1-linux kernel: apple-dart 26b810000.iommu: DART [pagesize 4000, 16 streams, bypass support: 0, bypass forced: 0, locked: 0, AS 32 -> 36] initialized
+Sep 20 14:26:30 jwm1-linux kernel: platform 26bc04000.ane: Adding to iommu group 0
+Sep 20 14:26:30 jwm1-linux kernel: apple-dart 26b820000.iommu: DART [pagesize 4000, 16 streams, bypass support: 1, bypass forced: 0, locked: 0, AS 32 -> 36] initialized
+Sep 20 14:26:30 jwm1-linux kernel: watchdog: Hard watchdog permanently disabled
+Sep 20 14:26:30 jwm1-linux kernel: /soc/dsi@228600000: Fixed dependency cycle(s) with /soc/dsi@228600000/panel@0
+Sep 20 14:26:30 jwm1-linux kernel: /soc/dsi@228600000/panel@0: Fixed dependency cycle(s) with /soc/dsi@228600000
+Sep 20 14:26:42 jwm1-linux kernel: apple-pmgr-pwrstate 23b700000.power-management:power-controller@470: sync_state() pending due to 26bc04000.ane
+Sep 20 14:26:42 jwm1-linux kernel: apple-pmgr-pwrstate 23b700000.power-management:power-controller@c000: sync_state() pending due to 26bc04000.ane
+Sep 20 14:35:57 jwm1-linux unknown: ANE-PREFLIGHT MARKER jwm1 netconsole end-to-end 193557
+Sep 20 14:36:22 jwm1-linux kernel: ane: loading out-of-tree module taints kernel.
+Sep 20 14:36:22 jwm1-linux kernel: [drm] Initialized ane 1.0.0 for 26bc04000.ane on minor 0
+Sep 20 14:36:22 jwm1-linux kernel: ane 26bc04000.ane: loaded ane
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: tm completion failed: -110, finish lines=0 (q4 nid=0x40)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: recovering: power-cycling engine partitions
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[0] genpd:0:26bc04000.ane force_suspend begin (ps act 0xf)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[0] force_suspend -> 0 (ps act 0xf)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[1] genpd:1:26bc04000.ane force_suspend begin (ps act 0xf)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[1] force_suspend -> 0 (ps act 0x0)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[0] genpd:0:26bc04000.ane force_resume begin (ps act 0x0)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[0] force_resume -> 0 (ps act 0x0)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[1] genpd:1:26bc04000.ane force_resume begin (ps act 0x0)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD pd[1] force_resume -> 0 (ps act 0xf)
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: ANERD ps verify act=0xf err=-110
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: recovery: ane set islands not powered on: -110
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: recovery failed; preserving resources until reboot
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: refusing bo free
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
+Sep 20 14:37:17 jwm1-linux kernel: ane 26bc04000.ane: wedged: preserving bo mapping
