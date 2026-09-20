@@ -10,14 +10,16 @@
 # SPDX-License-Identifier: MIT
 set -u
 
+# ALL hash pins are test-overridable for fixture runs (production defaults = real on-device
+# identities). Production runs MUST NOT set these env vars.
 VUUID=919DE1C3-2EC7-3B75-ACA0-86DE382AD2F7
-BOOT_SHA=566227f96ea94bafac65ee6c997da0ba98be6f20479c3619ba1b8b739d156f33
-VML_SHA=e339c992eef9bb879680513efee54aec68b39f14cba78f96b6db3a5c1d68533c
-INITRD_SHA=b4a24461669358f82db63d78e3d5f5fe72b9160b8dd66301190d60506e0a2a6e
-BOOT_ORIG_SHA=d1ee639c160cdabdde206d8ef5b91ab7a58f132033b6fe91d92623bf028d3aa2
-BOOTAA64_SHA=9d6e751045e794733a672db7f6acf73a2b137e6488653c5eba93d013c45a1065
-VML_REC_SHA=ee36d989d62f2dd498b818e15c2044350c79d814a2017ffca61fdc2ad1aa95b6
-INITRD_REC_SHA=de4ae60473443e2b2184dce8b73be270ded13f21b704f7d568145bbb000d650c
+BOOT_SHA=${BOOT_SHA:-566227f96ea94bafac65ee6c997da0ba98be6f20479c3619ba1b8b739d156f33}
+VML_SHA=${VML_SHA:-e339c992eef9bb879680513efee54aec68b39f14cba78f96b6db3a5c1d68533c}
+INITRD_SHA=${INITRD_SHA:-b4a24461669358f82db63d78e3d5f5fe72b9160b8dd66301190d60506e0a2a6e}
+BOOT_ORIG_SHA=${BOOT_ORIG_SHA:-d1ee639c160cdabdde206d8ef5b91ab7a58f132033b6fe91d92623bf028d3aa2}
+BOOTAA64_SHA=${BOOTAA64_SHA:-9d6e751045e794733a672db7f6acf73a2b137e6488653c5eba93d013c45a1065}
+VML_REC_SHA=${VML_REC_SHA:-ee36d989d62f2dd498b818e15c2044350c79d814a2017ffca61fdc2ad1aa95b6}
+INITRD_REC_SHA=${INITRD_REC_SHA:-de4ae60473443e2b2184dce8b73be270ded13f21b704f7d568145bbb000d650c}
 
 die() { echo "STAGE-STOP: $*" >&2; exit 1; }
 
@@ -36,11 +38,11 @@ hash_file() {  # $1=file ; prints hash ; rc!=0 if missing/unreadable
     $SHACMD "$1" 2>/dev/null | awk '{print $1}'
 }
 
-verify_hash() {  # $1=file $2=expected_full_sha $3=label
+verify_hash() {  # $1=file $2=expected_full_sha $3=label ; EXITS the script on mismatch
     _vh_file=$1; _vh_want=$2; _vh_label=$3
-    [ -f "$_vh_file" ] || die "$_vh_label: missing ($_vh_file)"
-    _vh_got=$(hash_file "$_vh_file") || die "$_vh_label: unreadable"
-    [ "$_vh_got" = "$_vh_want" ] || die "$_vh_label: hash drift (got=$_vh_got want=$_vh_want)"
+    [ -f "$_vh_file" ] || { echo "STAGE-STOP: $_vh_label: missing ($_vh_file)" >&2; exit 1; }
+    _vh_got=$(hash_file "$_vh_file") || { echo "STAGE-STOP: $_vh_label: unreadable" >&2; exit 1; }
+    [ "$_vh_got" = "$_vh_want" ] || { echo "STAGE-STOP: $_vh_label: hash drift (got=$_vh_got want=$_vh_want)" >&2; exit 1; }
 }
 
 # backup_existing SRC DST EXPECTED LABEL
@@ -135,9 +137,10 @@ esac
 detect_sha
 
 echo "== [0] volume identity by UUID =="
-diskutil info "$VUUID" > "$WORK_VINFO" 2>/dev/null || { WORK_VINFO=$(mktemp); diskutil info "$VUUID" > "$WORK_VINFO" 2>/dev/null; } || die "volume $VUUID not present"
-grep -q "EFI - ASAHI" "$WORK_VINFO" || die "volume name mismatch (expected EFI - ASAHI)"
-MPOINT=$(sed -n 's/.*Mount Point: //p' "$WORK_VINFO" | head -1)
+VINFO=$(mktemp /tmp/jwm1stage-vinfo-XXXXXX)
+diskutil info "$VUUID" > "$VINFO" 2>&1 || die "volume $VUUID not present (diskutil info failed)"
+grep -q "EFI - ASAHI" "$VINFO" || die "volume name mismatch (expected EFI - ASAHI)"
+MPOINT=$(sed -n 's/.*Mount Point: //p' "$VINFO" | head -1)
 [ -n "$MPOINT" ] && [ -d "$MPOINT" ] || die "volume not mounted; mount by UUID first per plan"
 echo "  mount point: $MPOINT"
 
@@ -151,7 +154,7 @@ verify_hash "$STAGE_INITRD" "$INITRD_SHA" "staged initrd"
 
 echo "== [0c] free space =="
 AVAIL_KB=$(df -k "$MPOINT" | awk 'NR==2{print $4}')
-NEED_KB=$(((97524883 + 34114048 + 6212626) / 1024 + 2048))
+NEED_KB=$(((98014376 + 34114048 + 6212626 + 33917440 + 19414040) / 1024 + 2048))
 [ "${AVAIL_KB:-0}" -ge "$NEED_KB" ] || die "insufficient free space: avail=${AVAIL_KB}K need>=${NEED_KB}K"
 echo "  avail=${AVAIL_KB}K need>=${NEED_KB}K"
 
@@ -177,8 +180,8 @@ echo "== [4] install clean boot.bin =="
 install_verified "$STAGE_BOOT" "$MPOINT/m1n1/boot.bin" "$BOOT_SHA" "boot.bin(566227f9)" || exit 1
 
 echo "== [5] temporary candidate-default grub.cfg =="
-CFG_TMP="$MPOINT/grub-ane/.grub.cfg.new.$$"
-cat > "$CFG_TMP" <<'CFG'
+HOST_CFG=$(mktemp /tmp/jwm1stage-cfg-XXXXXX)
+cat > "$HOST_CFG" <<'CFG'
 set timeout=10
 set default=0
 terminal_output console
@@ -193,19 +196,28 @@ menuentry "Omarchy Linux recovery (7.1.6 kernel+initrd from ESP)" {
 	initrd /grub-ane/INITRD.REC
 }
 CFG
+sync || { rm -f "$HOST_CFG"; die "cfg host sync failed"; }
+CFG_SHA_EXPECT=$(hash_file "$HOST_CFG") || { rm -f "$HOST_CFG"; die "cfg host hash failed"; }
+[ -n "$CFG_SHA_EXPECT" ] || { rm -f "$HOST_CFG"; die "cfg host hash empty"; }
+CFG_TMP="$MPOINT/grub-ane/.grub.cfg.new.$$"
+cp "$HOST_CFG" "$CFG_TMP" || { rm -f "$HOST_CFG"; die "cfg copy failed"; }
 sync
-CFG_GOT=$(hash_file "$CFG_TMP") || { rm -f "$CFG_TMP"; die "cfg temp readback failed"; }
-grep -q "panic=10" "$CFG_TMP" || { rm -f "$CFG_TMP"; die "cfg missing panic=10"; }
-mv -f "$CFG_TMP" "$MPOINT/grub-ane/grub.cfg" || die "cfg rename failed"
+CFG_GOT=$(hash_file "$CFG_TMP") || CFG_GOT=""
+if [ "$CFG_GOT" != "$CFG_SHA_EXPECT" ]; then rm -f "$CFG_TMP" "$HOST_CFG"; die "cfg copy readback mismatch"; fi
+grep -q "panic=10" "$CFG_TMP" || { rm -f "$CFG_TMP" "$HOST_CFG"; die "cfg missing panic=10"; }
+mv -f "$CFG_TMP" "$MPOINT/grub-ane/grub.cfg" || { rm -f "$HOST_CFG"; die "cfg rename failed"; }
 sync
-verify_hash "$MPOINT/grub-ane/grub.cfg" "$CFG_GOT" "grub.cfg(final, exact staged content)"
-echo "  grub.cfg installed, exact-hash verified (sha=$CFG_GOT)"
+verify_hash "$MPOINT/grub-ane/grub.cfg" "$CFG_SHA_EXPECT" "grub.cfg(final, exact staged content)"
+rm -f "$HOST_CFG"
+echo "  grub.cfg installed, exact-hash verified (sha=$CFG_SHA_EXPECT)"
 
 echo "== [6] final readback table =="
 FAILS=0
 verify_hash "$MPOINT/m1n1/boot.bin"                    "$BOOT_SHA"      "final boot.bin"               || FAILS=$((FAILS+1))
 verify_hash "$MPOINT/m1n1/boot.bin.d1ee-716"           "$BOOT_ORIG_SHA" "final boot.bin.d1ee-716"      || FAILS=$((FAILS+1))
-verify_hash "$MPOINT/m1n1/boot.bin.stock-20260906"     "3945ed51f83224c09f3a837fa8bcb746fdd7db23b02cfb6b4ac7718b174311d1" "final boot.bin.stock" || FAILS=$((FAILS+1))
+STOCK_BOOT_SHA=${STOCK_BOOT_SHA:-3945ed51f83224c09f3a837fa8bcb746fdd7db23b02cfb6b4ac7718b174311d1}
+STOCK_BA64_SHA=${STOCK_BA64_SHA:-d5765e2caadedcf19c30361903bd047dc4059c41b23be53fa1002cd9287d2847}
+verify_hash "$MPOINT/m1n1/boot.bin.stock-20260906"     "$STOCK_BOOT_SHA" "final boot.bin.stock" || FAILS=$((FAILS+1))
 verify_hash "$MPOINT/grub-ane/VMLINUZ.7113"            "$VML_SHA"       "final VMLINUZ.7113"           || FAILS=$((FAILS+1))
 verify_hash "$MPOINT/grub-ane/INITRD.7113"             "$INITRD_SHA"    "final INITRD.7113"            || FAILS=$((FAILS+1))
 verify_hash "$MPOINT/grub-ane/VMLINUZ.REC"             "$VML_REC_SHA"   "final VMLINUZ.REC"            || FAILS=$((FAILS+1))
@@ -213,6 +225,6 @@ verify_hash "$MPOINT/grub-ane/VMLINUZ.REC.716"         "$VML_REC_SHA"   "final V
 verify_hash "$MPOINT/grub-ane/INITRD.REC"              "$INITRD_REC_SHA" "final INITRD.REC"            || FAILS=$((FAILS+1))
 verify_hash "$MPOINT/grub-ane/INITRD.REC.716"          "$INITRD_REC_SHA" "final INITRD.REC.716"        || FAILS=$((FAILS+1))
 verify_hash "$MPOINT/EFI/BOOT/BOOTAA64.EFI"            "$BOOTAA64_SHA"  "final BOOTAA64.EFI"           || FAILS=$((FAILS+1))
-verify_hash "$MPOINT/EFI/BOOT/BOOTAA64.EFI.stock"      "d5765e2caadedcf19c30361903bd047dc4059c41b23be53fa1002cd9287d2847" "final BOOTAA64.stock" || FAILS=$((FAILS+1))
+verify_hash "$MPOINT/EFI/BOOT/BOOTAA64.EFI.stock"      "$STOCK_BA64_SHA" "final BOOTAA64.stock" || FAILS=$((FAILS+1))
 if [ $FAILS -ne 0 ]; then die "final readback: $FAILS file(s) failed"; fi
 echo "STAGE-DONE (all final readbacks exact)"
