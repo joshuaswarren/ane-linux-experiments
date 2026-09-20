@@ -130,3 +130,53 @@ nothing, and the collector file on macstudio is in fact 0 bytes
 (/tmp/netconsole-jwm1.log, listener pid 73836 alive). Netconsole delivery is
 therefore UNPROVEN; the surviving evidence is the persistent journal, which
 is complete and committed above. Corrected here per the honesty gate.
+
+## Addendum 2 — reviewer corrections accepted; netconsole verdict; open matrix (device still FROZEN)
+
+Accepted from the independent source-only review (ParakeetParityGateAudit) and
+Main, with self-verification against `receipts/2026-09-16-parakeet-100-run/
+dmesg-after.txt:54-80` (jwm1-linux, same 0x26bc04000 block, same guard code):
+
+1. **Five-provider proof.** The September proven boots attached **five genpd
+   providers (pd[0..4])** to the ane device and cycled all six SET words
+   through Linux: force_suspend 0xffffff→0xfff0ff→0xff00ff→0xf000ff→0xff→0x0,
+   force_resume back to **0xffffff**, `ps verify act=0xffffff err=0` — twice —
+   followed by TM_TQ_EN/TQ_PRTY init and working execution. Therefore:
+   words 1..5 are live raisable pmgr words on T8103 (present-but-gated today,
+   not absent hardware); the raise mechanism is Linux genpd via DT providers;
+   and my earlier "cold partition / warm handoff" causal story is RETRACTED
+   (the proven trace gated to 0x0 and re-raised through five providers
+   repeatedly — warm state cannot survive that).
+2. **My fragment under-provisioned the device**: 2 providers (pd[0]=ane_sys,
+   pd[1]=ane_sys_cpu) vs the proven 5. Today's journal confirms the shape:
+   pd[0] controls no SET cell, pd[1] raises word 0 only, act stuck 0xf.
+   Missing raisers ≈ the base/set1..4 words (exact node set = open item).
+3. **T6001-copy rejected.** T6001's live DT carries five pwrstate nodes
+   ({2c8, c010, c018, c020, c028}); the "six" is the raw word count the
+   guard probes; direct pmgr writes are named-fatal on both SoCs. The
+   T8103 provider set must be re-derived from Apple IODeviceTree, not copied.
+4. **Netconsole verdict (final): not delivering on this Wi-Fi path.**
+   `transmit_errors` = 0 (netpoll believes it transmits) yet no marker ever
+   reached the fleet collector (/var/log/fleet-netconsole.log, receiver
+   proven live via other hosts), for broadcast and gateway-MAC unicast
+   alike. One verification bug of mine (grep|tail && echo false-positive)
+   also invalidated the first "marker received" claim — retracted in the
+   addendum above. The persistent journal is the only accepted evidence
+   channel and is committed raw.
+5. Open investigation matrix (source/derivation work, no device action):
+   - Re-derive the five provider links for the T8103 ane node from Apple
+     IODeviceTree (fresh node has only <0x82>,<0xc5>; needs the missing
+     raisers for base/set1..4 words).
+   - Historical working node shape: the pre-wipe lane doc describes a
+     4-reg node (engine + 3 darts) for the Sept-3-era override; the Sept-16
+     proven runs used external darts + 5 providers. A historical DT dump is
+     not in any owned archive (checked) — recovery of the exact provider
+     node definitions must come from IODeviceTree + the behavioral trace.
+   - DART: 7.1.13 dart stream/TTBR behavior vs the prior boot kernel, and
+     whether the first TM timeout could be wrong-buffer DMA (no DART fault
+     logged — which does not prove valid DMA). Smoke artifact hwxc format
+     re-validation vs the current runner also listed.
+   - Acceptance signal for ANY future load attempt (before exec): probe-time
+     `ps act` must reach **0xffffff** with `ANERD pd[0..4]` lines present and
+     `ps verify err=0` — journal lines 891-909 of this boot are the failure
+     template to diff against.
