@@ -1,4 +1,416 @@
 {
+ "CURRENT_CONTRACT": {
+  "authority": "THIS SECTION IS THE AUTHORITATIVE FIELD CONTRACT. passes 1-6c below are historical evidence layers; where any older text conflicts with THIS section, THIS section wins. Raw branch/load anchors are byte-verified live from the pinned KC (sha 8304156f) at read time by this file's generator and re-verified by tools/check_init_contract.py (68/68) + tools/check_power_anchors.py (33/33).",
+  "verified_now": true,
+  "h14g_branch_load_trace": [
+   {
+    "site": "0x0095ea73c",
+    "raw": "0x395e0269",
+    "note": "branch: ldrb w9,[x19,#1920] dev+0x780 bit0 (legacy=clear)",
+    "verified": true,
+    "expect_note": "my transient expect word 0x395e0288 was a transposition; correct raw 0x395e0269 decodes imm12=0x780=1920 DEC -> dev+0x780"
+   },
+   {
+    "site": "0x0095ea740",
+    "raw": "0x37000329",
+    "note": "branch: tbnz w9,#0 -> skip when dev+0x780 bit0 SET",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea744",
+    "raw": "0x39507e69",
+    "note": "branch: ldrb w9,[x19,#1055] dev+0x41F bit0",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea748",
+    "raw": "0x36000269",
+    "note": "branch: tbz w9,#0 -> [0x00] fill when dev+0x41F bit0 CLEAR",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea794",
+    "raw": "0xf944be69",
+    "note": "load: x9 = *(dev+0x978) FWIM Params ptr (2424 DEC)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea798",
+    "raw": "0x91006129",
+    "note": "add: x9 += 0x18 (HEX) -> &FWIM_Params.dmaAddress",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea79c",
+    "raw": "0xf9400129",
+    "note": "load: x9 = *(x9) = FWIM staging DVA",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7a0",
+    "raw": "0xf9000329",
+    "note": "store: suballoc[0x00] u64 = FWIM DVA",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7a8",
+    "raw": "0xf944c669",
+    "note": "load: x9 = *(dev+0x988) IPC Params ptr (2440 DEC)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7ac",
+    "raw": "0xf9400d29",
+    "note": "REGRESSION ANCHOR: ldr x9,[x9,#24] -> byte offset 24 DECIMAL == 0x18 (w-form unscaled imm12=3)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7b0",
+    "raw": "0xf9000729",
+    "note": "store: suballoc[0x08] u64 = IPC surface DVA",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7b4",
+    "raw": "0xf940be69",
+    "note": "REGRESSION ANCHOR: x9 CLOBBERED = config ptr *(dev+0x178) (376 DEC, not 0x376)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7b8",
+    "raw": "0xb9413929",
+    "note": "load w32: x9 = config.size = *(config+0x138) (312 DEC)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7bc",
+    "raw": "0x52a2000a",
+    "note": "const: w10 = 0x10000000",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7c0",
+    "raw": "0x4b09014a",
+    "note": "arith: w10 = 0x10000000 - config.size",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7c4",
+    "raw": "0xa9012b29",
+    "note": "store: stp -> suballoc[0x10]=size, [0x18]=0x10000000-size",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7cc",
+    "raw": "0xf94047e9",
+    "note": "load: x9 = [sp+0x88] obj2 ptr",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7d0",
+    "raw": "0xf9400d3a",
+    "note": "load: x26 = *(x9+0x18) = obj2 DVA (24 DEC)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea7e0",
+    "raw": "0xa9025b3a",
+    "note": "store: stp -> suballoc[0x20]=obj2 DVA, [0x28]=w22",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea870",
+    "raw": "0xb9499269",
+    "note": "load w32: x9 = dev[0x990] (2448 DEC) fw-load progress",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea874",
+    "raw": "0xb9003329",
+    "note": "store: suballoc[0x30] u32 = dev[0x990]; gap 0x34-0x37 unwritten",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea878",
+    "raw": "0xa903ff3f",
+    "note": "store: stp xzr,xzr -> suballoc[0x38],[0x40] = 0",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea87c",
+    "raw": "0xf900273f",
+    "note": "store: suballoc[0x48] = 0",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea868",
+    "raw": "0x97ffba8c",
+    "note": "call: ANECoredump::addExtraHeapRegion(md=[x23+112], [x23+0x28?], x26, x22)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea86c",
+    "raw": "0xf944c268",
+    "note": "load: x8 = *(dev+0x980) POOL obj",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea880",
+    "raw": "0xb94006e9",
+    "note": "load w32: [x23_obj+4] -> zext u64",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea884",
+    "raw": "0xf9002b29",
+    "note": "store: suballoc[0x50] u64 = zext(u32 [x23+4])",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea888",
+    "raw": "0xf9400d09",
+    "note": "load: x9 = *(pool+0x18) = POOL DMA BASE",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea88c",
+    "raw": "0xf9002f29",
+    "note": "store: suballoc[0x58] u64 = pool DMA base",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea890",
+    "raw": "0xf9400108",
+    "note": "load: x8 = *(pool+0x00) pool first qword",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea894",
+    "raw": "0xf9003328",
+    "note": "store: suballoc[0x60] u64 = pool[0]",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea90c",
+    "raw": "0x52800808",
+    "note": "const: w8 = 0x40 = 64",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea910",
+    "raw": "0xb81fc2c8",
+    "note": "store: stur w8,[x22,-4] -> suballoc[0x68] u32 = 64 (x22=base+0x6C)",
+    "verified": true
+   },
+   {
+    "site": "0x0095ea934",
+    "raw": "0xf944ce68",
+    "note": "load: template src ptr = dev+0x998 (2456 DEC)",
+    "verified": true,
+    "expect_note": "my transient expect word 0xf9447e88 was wrong; correct raw 0xf944ce68 decodes imm12=0x133*8=2456 DEC -> dev+0x998"
+   },
+   {
+    "site": "0x009612b60",
+    "raw": "0x52802000",
+    "note": "alloc: kalloc_data size 0x100 (256)",
+    "verified": true
+   },
+   {
+    "site": "0x009612b64",
+    "raw": "0x52800081",
+    "note": "alloc flags = 4",
+    "verified": true
+   },
+   {
+    "site": "0x009612b70",
+    "raw": "0xb941da89",
+    "note": "load w32: [dev+0x1D8 (472)] config word",
+    "verified": true
+   },
+   {
+    "site": "0x009612b74",
+    "raw": "0xb9000009",
+    "note": "store: template[0x00] u32 = [dev+0x1D8]",
+    "verified": true
+   },
+   {
+    "site": "0x009612b78",
+    "raw": "0xb940c009",
+    "note": "REGRESSION c0: ldr w9,[x0,#192] 192 DEC == 0xC0",
+    "verified": true
+   },
+   {
+    "site": "0x009612b7c",
+    "raw": "0x321e0129",
+    "note": "arith: orr w9,#4 -> template[0xC0] = 4",
+    "verified": true
+   },
+   {
+    "site": "0x009612b80",
+    "raw": "0xb900c009",
+    "note": "store: template[0xC0] = 4 (boot.h c0=4 CORRECT)",
+    "verified": true
+   },
+   {
+    "site": "0x009612b84",
+    "raw": "0xf904ce60",
+    "note": "store: dev+0x998 = template ptr",
+    "verified": true
+   },
+   {
+    "site": "0x009612b8c",
+    "raw": "0xfc004000",
+    "note": "store: template[0x04..0x0B] = 0 (stur d0)",
+    "verified": true
+   },
+   {
+    "site": "0x009613d90",
+    "raw": "0x72a02808",
+    "note": "const: movk w8,#0x140,lsl16",
+    "verified": true
+   },
+   {
+    "site": "0x009613d94",
+    "raw": "0xb904a268",
+    "note": "store: dev+0x4A0 (1184 DEC) = 0x01400044 CPU_CONTROL offset",
+    "verified": true
+   },
+   {
+    "site": "0x009613da8",
+    "raw": "0x52a00a08",
+    "note": "const: movz w8,#0x50,lsl16 = 0x500000 H14g fw-heap size",
+    "verified": true
+   },
+   {
+    "site": "0x009613dac",
+    "raw": "0xb9013a88",
+    "note": "store: config+0x138 (312 DEC) = 0x500000 -> FWIM size / suballoc[0x10]",
+    "verified": true
+   },
+   {
+    "site": "0x009613e14",
+    "raw": "0xb93ea27f",
+    "note": "store: dev+0x3EA0 = 0 (selector final; bit1 clear -> plain branch, no AUTO_ENABLE bit28)",
+    "verified": true
+   }
+  ],
+  "arithmetic": {
+   "config.size": "0x500000 (5 MiB)",
+   "suballoc_0x10": "0x0000000005000000",
+   "suballoc_0x18": "0x10000000 - 0x500000 = 0x000000000FB00000",
+   "error_note": "earlier 0xF5000000 was a hex-subtraction error (withdrawn 54f56cf)"
+  },
+  "field_contract": [
+   {
+    "off": "0x00",
+    "w": 8,
+    "val": "*(FWIM_Params+0x18)",
+    "meaning": "firmware staging DVA"
+   },
+   {
+    "off": "0x08",
+    "w": 8,
+    "val": "*(IPC_Params+0x18)",
+    "meaning": "'IPC ' surface DVA (tag 0x49504320)"
+   },
+   {
+    "off": "0x10",
+    "w": 8,
+    "val": "zext(config.size=0x500000)"
+   },
+   {
+    "off": "0x18",
+    "w": 8,
+    "val": "0x10000000-0x500000=0x0FB00000"
+   },
+   {
+    "off": "0x20",
+    "w": 8,
+    "val": "*(obj2+0x18) or 0",
+    "open": "obj2 provenance"
+   },
+   {
+    "off": "0x28",
+    "w": 4,
+    "val": "w22",
+    "open": "w22 upstream local"
+   },
+   {
+    "off": "0x30",
+    "w": 4,
+    "val": "dev[0x990]",
+    "meaning": "fw-load progress word",
+    "open": "exact semantics"
+   },
+   {
+    "off": "0x34",
+    "w": 4,
+    "val": "UNWRITTEN GAP (inside fw-read u64 @0x30)",
+    "open": "zero whole block recommended"
+   },
+   {
+    "off": "0x38",
+    "w": 8,
+    "val": 0
+   },
+   {
+    "off": "0x40",
+    "w": 8,
+    "val": 0
+   },
+   {
+    "off": "0x48",
+    "w": 8,
+    "val": 0
+   },
+   {
+    "off": "0x50",
+    "w": 8,
+    "val": "zext(u32 [x23+4])",
+    "open": "x23 object"
+   },
+   {
+    "off": "0x58",
+    "w": 8,
+    "val": "*(pool+0x18)",
+    "meaning": "pool DMA base"
+   },
+   {
+    "off": "0x60",
+    "w": 8,
+    "val": "*(pool+0x00)",
+    "open": "pool first qword semantics"
+   },
+   {
+    "off": "0x68",
+    "w": 4,
+    "val": 64
+   },
+   {
+    "off": "0x6C..0x16C",
+    "w": 256,
+    "val": "template: [0x00]=[dev+0x1D8](config word, sibling-constant 0), [0x04..0x0B]=0, [0xC0]=4, rest 0"
+   }
+  ],
+  "OPEN_fields": [
+   "0x20 obj2",
+   "0x28 w22",
+   "0x30 semantics",
+   "0x34 gap",
+   "0x50 x23 object",
+   "0x60 semantics",
+   "config+4 H14g numeric",
+   "dev+0x3A90 writer value"
+  ],
+  "handshake": {
+   "ready": "fw SCRATCH7=0x08042006 (0x7360-88)",
+   "wake_poll": "fw polls SCRATCH7==0xf7fbdff9 (0x73c4-0x7400, 1ms loop)",
+   "host_wake": "kext writes 0xf7fbdff9 to SCRATCH7 (0x95eab24-30)",
+   "done": "fw SCRATCH0=result (0x77a0), SCRATCH7=0x08042006 (0x77c8)",
+   "first_alive_beacon": "separate fn 0x86EC writes 0x08042006 to SCRATCH0 (idx0) - non-gating, caller indirect",
+   "consumer": "M2ResetLifecycle owns host ordering"
+  }
+ },
  "meta": {
   "date": "2026-09-20",
   "lane": "M2/T6021 ANE firmware mapper callchain audit (independent, static-only)",
@@ -498,7 +910,15 @@
    "disasm/ANE_Init_suballoc_header.txt (full)",
    "disasm/start_config_seq_784_read.txt"
   ],
-  "mmio_writes_this_lane": "none"
+  "mmio_writes_this_lane": "none",
+  "SUPERSEDED": [
+   "field_table: template 'all zeros' WRONG (c0=4, see CURRENT_CONTRACT)",
+   "field_table: '+0x24' deref wrong (24 DECIMAL=0x18)",
+   "field_table: '[0x10]=dup of 0x08' WRONG (x9 clobbered: =config.size)",
+   "'dev+0x376' mentions wrong (376 DEC=0x178)",
+   "'min/cap' characterization wrong (csel hi = max)",
+   "'dev+0x3A70 cap' wrong (14992 DEC=dev+0x3A90)"
+  ]
  },
  "pass5b": {
   "scope": "URGENT corrections: decimal-immediate conversions, [0x10] clobber, missing 0x50/0x58/0x60, template +0xC0",
@@ -609,7 +1029,8 @@
   "snippets_pass5b": [
    "disasm/ANE_Init_suballoc_tail.txt"
   ],
-  "mmio_writes_this_lane": "none"
+  "mmio_writes_this_lane": "none",
+  "SUPERSEDED_BY": "CURRENT_CONTRACT (folded; its corrections stand but the authoritative table is CURRENT_CONTRACT)"
  },
  "pass5c": {
   "scope": "suballoc tail fields + allocation zeroing + pool-object identification",
@@ -663,7 +1084,8 @@
    "kernel": "linux-asahi 7.1.13.asahi3-1: apple_dart built-in; NO ane driver module/file in build -> no in-tree ANE source to defer to; driver implementation references the DT contract only",
    "dt_contract": "ane@284000000: apple,t6021-ane; iommus <498 0><499 0><500 0>; power-domains 8 pmgr-pwrctl (@4000..@4030, @2e0); reg engine/pmgr/set as above"
   },
-  "mmio_writes_this_lane": "none"
+  "mmio_writes_this_lane": "none",
+  "SUPERSEDED_BY": "CURRENT_CONTRACT for sizes/ack (ack distinction and address space stand)"
  },
  "pass6b": {
   "scope": "SCRATCH7 bidirectional handshake discovery + h14g numeric config fields",
@@ -675,7 +1097,7 @@
   },
   "h14g_numeric_config": {
    "config+0x138": "0x500000 (5242880) = fw-heap byte size: movz w8,#0x500000 0x9613da8; str w8,[x20,#312] 0x9613dac - in the same H14g straight-line block as dev+0x4A0=0x01400044 (0x9613d94) and dev+0x3EA0=0 (0x9613e14)",
-   "implication": "FWIM allocation size = 0x500000 for H14g; suballoc header [0x10] = 0x500000, [0x18] = 0x10000000 - 0x500000 = 0xF5000000",
+   "implication": "SUPERSEDED arithmetic in this field: correct [0x18] = 0x10000000 - 0x500000 = 0x0FB00000 (not 0xF5000000). Numeric authority = CURRENT_CONTRACT + tools/check_init_contract.py asserts.",
    "config+4": "IPC size on H14g: no store found in the H14g block; candidate stores cluster at 0x9614604-0x9615a9c (other config-type paths) - value OPEN",
    "config+0x150": "pre-CPU table count = 3 (H14g) - stored per-type; config+0xA0 = table pointer 0xcb6c188",
    "dev+0x3A70_cap": "IPC cap field: no in-text writer found in this pass - OPEN"
