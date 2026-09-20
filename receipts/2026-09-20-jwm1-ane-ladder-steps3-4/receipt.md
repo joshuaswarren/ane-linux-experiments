@@ -206,3 +206,27 @@ No gate weakening: no tolerance was introduced; the numeric FAIL stands
 until the mapping failure is root-caused (driver debug tooling: dump the
 DART translations/IOMMU mappings for the island submit, or bisect driver
 6fa243a↔44dd9bf on the old-vs-new DT).
+
+## Addendum 6 — Main correction accepted: categorical root cause RETRACTED
+
+The correlation pattern (heads ≈0.69, head 4 ≈0.004) is real evidence of an
+output/input mismatch, but it does NOT establish "partially-wrong input data
+via multi-DART binding/mapping" — that causal claim is RETRACTED. Candidate
+mechanisms remain open: input binding/mapping, program semantics/layout,
+staging layout, or a combination.
+
+Minimal discriminator (next ANE slot, coordinated with Native/Mesa lanes):
+identity round-trip through the SELECT island itself — the MIL is
+`y = select(cond, a=ninf_rt, b=matrix_bd_5)`, so with constant cond the
+output is a pure copy of one staged 2.25 MB surface through the full ANE
+read→compute→write path:
+
+1. cond = all-false (0x00) → y must equal `matrix_bd_5` staged bytes.
+2. cond = all-true (0xFF) → y must equal `ninf_rt` staged bytes.
+
+Per-page (4 KiB) SHA-256 of staged inputs before, and of the saved outputs
+after, plus canary files around the surfaces — a page-granular
+match/mismatch map directly proves or refutes input-readback integrity
+(binding offset/stride/layout breaks), without touching the DT or kernel.
+Bundle input map vs staged layout per head byte-offset checked statically in
+parallel.
