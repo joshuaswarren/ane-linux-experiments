@@ -58,30 +58,52 @@ Sequence (each step independent, resumable, non-destructive to rollback set):
      D3. ON TEST VERDICT (either way), restore /grub-ane/grub.cfg from grub.cfg.pre-7113
          (file-level, temp+readback+rename). Permanent default returns to 7.1.6 recovery only
          when Main directs a permanent config; not part of the test protocol.
-  D-alt. RETURN-TO-macOS PROTOCOL (agent-operable; proven on THIS box):
-     FORWARD ARM (select Linux test boot for ONE boot, from macOS, before reboot):
+  D-alt. RETURN-TO-macOS PROTOCOL (agent-operable; CORRECTED per Main — permanent default
+         MUST be macOS BEFORE arming the Linux one-shot).
+     CURRENT STATE (nvram, verified 02:4x CDT Sep 20): boot-volume =
+       EF57347C-0000-AA11-AA11-00306543ECAC:8BAAF2FA-D837-244E-833B-A139C6851FDA:7A64DCB3-EA6C-4456-97E5-9347BCD9C152
+       = PERMANENT DEFAULT IS THE STUB (Linux m1n1 chain). So nextonly to the same stub chain
+       would NOT return the box to macOS — the previous draft's implication was FALSE and is
+       corrected here.
+
+     REQUIRED SEQUENCE (order is mandatory):
+     STEP 1 — SET macOS PERMANENT DEFAULT (receipt-proven command):
+       sudo bless --mount /Volumes/Macintosh\ HD --setBoot
+       (2026-09-19-jwm1-omarchy-bootloop-fix.md line 117 documented follow-up; run from the
+        running macOS session.)
+     STEP 2 — VERIFY the firmware default ACTUALLY points at macOS (do not trust the command
+       exit code alone):
+       a. nvram -p | grep boot-volume   → the third field (VG UUID) MUST now be the macOS VG
+          8000CF83-9C0D-45DA-813D-B45DC15FF2FD (the disk4 "Macintosh HD" VG — bputil listed
+          it as macOS installation 1), i.e. boot-volume =
+          EF57347C-…:8BAAF2FA-…-:8000CF83-9C0D-45DA-813D-B45DC15FF2FD or the exact partition/
+          VG UUID triple macOS writes; MUST NOT still be 7A64DCB3-… (stub).
+       b. Fresh SSH proof: ssh in (tailscale), run sw_vers → ProductVersion 27.0 /
+          BuildVersion 26A428 AND sysctl kern.boottime showing a boot AFTER the bless — this
+          proves the box is RUNNING macOS as its boot target, not just that NVRAM changed.
+       c. ONLY IF both (a) and (b) hold is the macOS-default arm verified. If the VG still
+          reads 7A64DCB3… or verification fails: STOP, do not arm the one-shot, report.
+
+     STEP 3 — ARM THE LINUX ONE-SHOT (only after STEP 2 verification):
        sudo bless --mount '/Volumes/Asahi Alarm Minimal (BTRFS)' --setBoot --nextonly
-       (receipt 2026-09-19-jwm1-omarchy-bootloop-fix.md line 65-66: this EXACT command on THIS
-        box printed "ONE-SHOT BLESS OK" and the reboot occurred — i.e. --nextonly IS accepted
-        by this bless build despite help-text absence; note macOS 27 build may warn; verify by
-        re-reading `bless --info` / nvram boot-volume after arming.)
-       NOTE: mounts the STUB volume (the Asahi APFS stub, disk1 VG 7A64DCB3…) whose boot object
-       is the m1n1 chain — one boot only, then firmware returns to the macOS permanent default.
-     RETURN ARM (agent-operable return to macOS after a FAILED test — from macOS session):
-       sudo bless --mount /Volumes/Macintosh\ HD --setBoot    (permanent default = macOS)
-       (receipt line 117: documented follow-up; executed in prior jwm1 recoveries.)
-       If Linux panicked BEFORE network: macOS side auto-appears only if bless one-shot was
-       consumed — the one-shot design means the boot AFTER the failed Linux test is macOS
-       automatically (nextonly = single boot). Observation: tailscale status --json for
-       jwm1-linux (100.84.184.102) and JW-M1 (100.67.134.6); JW-M1 coming online on macOS =
-       return-armed state confirmed (this exact observation pattern is in the bootloop receipt
-       02:32-02:45 CDT section).
-     SAFETY RULES (from receipts):
-       - Arm exactly ONE one-shot per test (2-attempt policy max, then restore permanent
-         default via `bless --mount /Volumes/Macintosh\ HD --setBoot` from macOS).
-       - Never leave both a Linux one-shot AND a pending macOS capture armed simultaneously.
-       - All bless operations require sudo on the Mac (root; documented in
-         2026-09-18-jwm1-macos-root-deadlock.md).
+       (receipt 2026-09-19-jwm1-omarchy-bootloop-fix.md lines 65-66: exact command proven on
+        this box, "ONE-SHOT BLESS OK".)
+       Semantics now correct: permanent default = macOS; the one-shot boots the stub chain
+       (Linux) EXACTLY ONCE; the following boot returns to macOS automatically.
+
+     FAILURE OBSERVATION (concrete):
+       tailscale status --json: JW-M1 (100.67.134.6) coming online on macOS after the test =
+       returned-to-macOS confirmed; jwm1-linux (100.84.184.102) frozen lastSeen = Linux test
+       failed to reach userspace/network. This pattern is from the same receipt (02:32-02:45
+       CDT section).
+
+     ONE-ATTEMPT POLICY (Main): ONE failed attempt = STOP. Capture evidence (err/log/tailscale
+       state), report to Main. NO automatic second blind try; the 2-attempt rule from the old
+       receipt is superseded by Main's one-shot-stop directive.
+
+     SAFETY RULES: every bless op needs sudo on the Mac (root; 2026-09-18 root-deadlock
+       receipt). Never arm a Linux one-shot while a macOS capture is pending. macOS permanent
+       default stays macOS throughout; 7.1.6 recovery remains manual-menu-only.
   E. VENDORFW: NONE required on ESP (already resident, b1e15f13 217/217 verified); initrd
      embeds/loads it per firmware-plan v4 (snippet early-embed E1/E2). No ESP vendorfw writes.
   F. UBOOTEFI VAR + vendorfw/ + asahi/ + EFI/ANE: UNTOUCHED.
