@@ -461,3 +461,19 @@ No speculative writes; nothing executed since the approved staging probe.
   slot [dev+0x980] (reads [+0x18] w32 AND x64, [+0x38] x64) — 0x978
   and 0x980 are distinct registry slots; my earlier conflation is
   corrected.
+
+### Addendum 3m: slot identities per Main source audit (final)
+
+- [dev+0x978] = "FirmwareLoaded" resolution — the BOOT compose reads
+  its [+0x18] (64-bit). This is the RVBAR entry-composition source.
+- [dev+0x980] = a DIFFERENT registry object (key 0x40000, fourcc
+  0x444D4D20) — the SCRATCH math reads its [+0x18] (w32 lo + x64) and
+  [+0x38] (x64) for per-command surface positions.
+- The +0x18 "status" stores (0x95f6160/0x95f6308) belong to the
+  ALLOC-RESULT struct, NOT params; the +0x38 zero store uses a dynamic
+  base dev+x24, NOT params. Producer tracing is SPLIT: DartAudit
+  continues the resolver out-slot; my lane owns the 0x978/FirmwareLoaded
+  object chain (resolver 0x95f6674 tail) and the iBoot populate chain.
+- No loader prescription derives from the withdrawn status theory; the
+  RVBAR compose is source-pinned as a def-use fact without a decoded
+  bitfield.
