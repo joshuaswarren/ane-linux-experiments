@@ -304,19 +304,17 @@
    {
     "off": "0x00",
     "w": 8,
-    "val": "*(FWIM_Params+0x18)",
-    "meaning": "firmware staging DVA",
-    "params_word0": "Params.value+0x00 = gated fn size argument (x1): captured x27=x1 (0x95f67dc) -> x23 (0x95f6824) -> str x23,[sp,#112] (0x95f68d8); setValue(x1=sp+0x70) copies 32B into value buffer (ldp q0,q1/stp q0,q1 0x95f736c/0x95f7370); NO intervening store (single-access scan 0x95f68d8-0x95f70dc)"
+    "val": "*(FWIM_params_buffer+0x18)",
+    "meaning": "firmware staging DVA"
    },
    {
     "off": "0x08",
     "w": 8,
-    "val": "*(IPC_Params+0x18)",
-    "meaning": "'IPC ' surface DVA (tag 0x49504320)",
+    "val": "*(IPC_params_buffer+0x18)",
+    "meaning": "IPC surface DVA; buffer+0x00 = size word0",
     "size_semantics": "IPC surface size = MAX(IODARTMapper::getPageSize()=0x4000, boot_ordinal+1) -> 0x4000 (one 16K DART page) typical; operands: u64[dev+0x3A90]=mapper page size (slot0x888=IODARTMapper::getPageSize), u32[x23+4]=boot ordinal+1 (SCRATCH1 captured post-READY + 1; verified 0x95ea0f8/0x95ea120/0x95ea124)",
     "status": "CLOSED",
-    "page_floor": "0x4000 anchored to ADT: dart,t8110 nodes carry page-size 0x4000 (dtree-j414c.txt lines 708-709 et al., verified in-file this pass); corroboration: start+0x4058 udiv/mul aligns a config-derived value by [dev+0x3A90] (raw 0x9ad80b88/0x9b187d00) - dev+0x3A90 = page-size field used as alignment divisor",
-    "params_word0_note": "IPC Params.value+0x00 = IPC size (max(pagesize,ordinal+1)); value+0x08 = DVA; suballoc reads value+0x08"
+    "page_floor": "0x4000 anchored to ADT: dart,t8110 nodes carry page-size 0x4000 (dtree-j414c.txt lines 708-709 et al., verified in-file this pass); corroboration: start+0x4058 udiv/mul aligns a config-derived value by [dev+0x3A90] (raw 0x9ad80b88/0x9b187d00) - dev+0x3A90 = page-size field used as alignment divisor"
    },
    {
     "off": "0x10",
@@ -383,9 +381,9 @@
    {
     "off": "0x60",
     "w": 8,
-    "val": "DDM free-list head node POINTER (kernel VA, opaque) - pool word0",
-    "open": "fw-side use of this pointer unverified (fn 0x71A4 reads +0x60 into [sp]; downstream not traced). NOT a length - length hypothesis refuted: Allocate never writes manager+0x18",
-    "meaning": "DeviceMemoryManager (dev+0x980 obj) free-list head; Allocate walks [manager+0] nodes {+0 next,+0x10 flag,+0x14 offset,+0x18 size}"
+    "val": "*(DDM_params_buffer+0x00)",
+    "open": "buffer+0x00 producer inside createANESurface/Params build; object link open; NOT manager free-list, NOT length",
+    "meaning": "companion pool window word0 (Reset 6cb048d: stored verbatim, possible extent downstream)"
    },
    {
     "off": "0x68",
@@ -424,21 +422,22 @@
    "word0": "dev+0x980 = the 0x40000 'DDM' allocation (start+0x4024); +0x00 = DDM object first field - writer = DDM init (not yet pinned); NOT the gated params; NOT a proven length"
   },
   "page_floor": "0x4000 = ADT dart page-size property (dtree-j414c.txt:708-709 'compatible: dart,t8110 / page-size: 0x4000', verified this pass); corroborated by start+0x4058 page-alignment udiv/mul by [dev+0x3A90]. getPageSize getter (0xabb0968) reads it indirectly from the DART spec object.",
-  "params_layout": {
-   "value+0x00": "allocation size (u64)",
-   "value+0x08": "surface DVA (u64)",
-   "obj_base": "OSValueObject header 0x10 bytes",
-   "obj+0x10": "value+0x00 = SIZE",
-   "obj+0x18": "value+0x08 = DVA (the field the suballoc header consumes)"
-  },
-  "propagation_chain": [
-   "0x95f67dc mov x27,x1 (size)",
-   "0x95f6824 mov x23,x27",
-   "0x95f68d8 str x23,[sp,#112] (params.value+0x00)",
-   "0x95f70dc setValue(x0=obj, x1=sp+0x70)",
-   "0x95f736c/0x95f7370 ldp q0,q1,[params]; stp -> value buffer (32B)",
-   "0x95f7114/0x95f7118 OSValueObject ptr -> out-param (dev+0x988/0x978)"
-  ]
+  "params_buffer_model": {
+   "authoritative": "Main decode + Reset 183fd50 independent confirmation; supersedes pass6h OSValueObject indirection claims",
+   "model": {
+    "dev+0x988/0x978/0x980": "raw ANESharedMemorySurfaceParams BUFFERS (not OSValueObject wrappers): IPC / FWIM / DDM('IPC '-style out-param &dev+0x980 @0x960402c, size 0x40000 'DDM')",
+    "buffer+0x00": "word0 = allocation size (gated size arg x1: captured x27=x1 0x95f67dc -> x23 0x95f6824 -> str x23,[sp+112=0x70] 0x95f68d8; setValue @0x95f70dc x1=sp+0x70; copy ldp q0,q1/stp 0x95f736c-0x95f7370; out-param stores the BUFFER pointer 0x95f7118)",
+    "buffer+0x18": "surface DVA (the field consumed: suballoc[0x00]=FWIM buffer+0x18, [0x08]=IPC buffer+0x18 - the obj+0x18 deref is direct because obj IS the buffer)",
+    "dev+0x968": "DIFFERENT manager constructed at 0x96040d0 from pool+0x38 hostVA (do not conflate with the 0x980 params buffer)"
+   },
+   "consumer_chain_verified": [
+    "0x95ea794 ldr x9,[dev+0x978]",
+    "0x95ea798 add x9,#0x18",
+    "0x95ea79c ldr x9,[x9] = buffer+0x18 = DVA",
+    "same for +2440 (IPC) at 0x95ea7a8-0x95ea7b0"
+   ],
+   "valueobj_note": "the OSValueObject wrapper exists in the gated fn (create 0x95f684c, valueobj+0x10 = buffer POINTER per pre-index load 0xf8410d10 @0x95f70ec) but the OUT-PARAM receives the BUFFER pointer; raw anchors 0x95f67dc/0x95f6824/0x95f68d8/0x95f70dc/0x95f7114/0x95f7118/0x95f736c/0x95f7370 all stand"
+  }
  },
  "meta": {
   "date": "2026-09-20",
@@ -1179,11 +1178,7 @@
  },
  "pass6f": {
   "scope": "pool word0 producer chain + page floor raw pin (Main hard gate)",
-  "pool_word0": {
-   "verdict": "pool word0 = DeviceMemoryManager free-list head NODE POINTER (kernel VA, opaque cookie) - NOT a length. Main's length-0x40000 hypothesis REFUTED by producer decode: Allocate (0x9587700) never writes manager+0x18; it walks [manager+0] nodes {next@0, flag@0x10, offset@0x14, size@0x18}",
-   "layout": "DDM manager object = *(dev+0x968): +0x00 free-list head node ptr; pool obj = *(dev+0x980): +0x18 DMA base, +0x38 CPU base, +0x68 count (confirmed by ANE_Init publish reads)",
-   "ABI_guidance": "Linux publishes its own DDM-equivalent head pointer value; treat as opaque. fw-side consumption of [0x60] unverified (0x71A4 reads +0x60 into [sp] at 0x7520, downstream use not traced)"
-  },
+  "pool_word0": "WITHDRAWN free-list-head claim: dev+0x980 = 0x40000 'DDM' params buffer (out-param &dev+0x980 @start+0x402c 0x960402c); +0x00 = params word0 = allocation size word (gated build), stored verbatim by fw as companion pool window (Reset 6cb048d)",
   "page_floor_raw_pin": {
    "getter": "IODARTMapper::getPageSize @0xabb0968: bti c; ldr x8,[x0,#288]; ldr x0,[x8,#48]; ret - returns *( *(mapper+0x120) + 0x30 ) INDIRECT (DART spec object field), NOT a code literal",
    "anchor": "0x4000 = ADT dart-ane0 'page-size' property (DeviceTree.j414cap, dart receipt 1.2) - ADT/DT-anchored constant; Linux DT t8110 darts hardcode 16K equivalently",
@@ -1207,6 +1202,9 @@
  },
  "pass6h": {
   "scope": "Main word0=SIZE chain verified raw + no-intervening-overwrite scan closed",
-  "result": "68->77 PASS (9 new anchors): word0 = gated size arg; value buffer = 32B copy of the sp+0x70 params struct into valueobj+0x10; OSValueObject ptr propagated to out-param; single-access scan proves no intervening store/load of the word0 slot"
+  "result": "68->77 PASS (9 new anchors): word0 = gated size arg; value buffer = 32B copy of the sp+0x70 params struct into valueobj+0x10; OSValueObject ptr propagated to out-param; single-access scan proves no intervening store/load of the word0 slot",
+  "SUPERSEDED": [
+   "params layout inference 'value+0x00=SIZE, value+0x08=DVA; obj+0x10/obj+0x18' \u2014 corrected per Main: valueobj+0x10 = POINTER TO BUFFER; params buffer+0x18 = DVA; dev+0x980 IS the params buffer (0x40000 'DDM', out-param 0x960402c); dev+0x968 = different manager (0x96040d0). RAW anchors in pass6h all stand; only the layout inference is withdrawn"
+  ]
  }
 }
