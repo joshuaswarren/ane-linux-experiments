@@ -61,3 +61,48 @@ Parakeet encoder pins / Qwen3.8 ANE paths, per the standing contracts
 - No persistence (module stays staged/insmod-only until Main says otherwise).
 - Any fault → STOP, preserve journal (persistent) + netconsole
   (non-delivering on this wifi path — journal only), receipt, Main.
+
+## Addendum — Steps 2-4 exact pins (Main directive: no vagueness)
+
+Step 2 (schema-4 add-mul re-earn) — exact historical recipe, verbatim from
+`ane-v064-wt/receipts/2026-09-13-ane-worker-validation/run-once.sh`:
+
+- Fixture: `.local/ane-v064-wt/overlay/tests/omarchy/ane/fixtures/
+  h13-explicit-chain-add-mul` (present; `source.json` pins schema
+  `mil-hwxc.h13-anec-package.v2`, payload shas `9a6a6a9a…`/`62595e4a…`,
+  compiler binary sha `b3587e4d…`, source commit `b12b03f1…`).
+- Worker: rebuilt from the pinned `ane-v064-wt` mlx-omarchy tree
+  (`scripts/prepare-mlx.sh` + cmake `-DMLX_OMARCHY_ANE_DEVICE=ON
+  -DOMARCHY_ANE_INCLUDE_DIR=<libane@f261a6c worktree>` + ninja
+  `mlx-omarchy-ane-worker` `omarchy_ane_worker_tests`). The historical
+  worker binary itself (schema4-smoke `5e315017…`) is NOT in any owned
+  archive (old root wiped; verified) — the rebuild from pinned sources is
+  the faithful path. Heavy ninja build → runs in its own coordination
+  window.
+- libane for the worker: f261a6c worktree (worktree from `omarchy-ane`
+  `f261a6c`, present in the local repo).
+- Bundle conversion: `overlay/tools/ane-export/h13_package_to_bundle.py`
+  (present) — note: its `--compiler-source` tree
+  (`~/src/mil-hwxc-h13-ea903c4`) is NOT in owned archives; the converter's
+  provenance fields will cite the preserved `source.json` data instead of
+  the lost tree.
+- Run: `mlx-omarchy-ane-worker --bundle … --libane … --deadline-ms 5000
+  --iterations 2 --input a=… --input b=… --expect y=…` with deterministic
+  64-el inputs (the generator is embedded in run-once.sh), inside
+  `/tmp/m1-gpu.lock`, with the run-once preflight/post-verify blocks.
+
+Step 3 (islands E2E): the preserved converted bundle
+`ane-v064-wt/receipts/2026-09-13-h13-v2-to-schema4/bundle/`
+(`schema4-attn-select-island`, program-0 `a3aa2fe1…`, program-1
+`860de06c…`, 213 task descriptors) through the same worker; acceptance =
+exact outputs per the bundle's logical_result contract.
+
+Step 4 (soak): 100 warm repetitions of the Step-2 worker command
+(`--iterations 2` per run, run 100×), zero drift across runs (per-run
+output sha256 all identical), no reset/timeout, journal clean; the
+parakeet-100-run pattern's preflight/post-verify blocks reused.
+
+Missing-and-must-recover items (owned archives searched, absent): the
+September patched `t8103-j293.dtb` (recoverable only via the provider
+re-derivation already staged), and the historical worker binary
+(recoverable only via the pinned-source rebuild above).
