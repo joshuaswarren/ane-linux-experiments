@@ -57,7 +57,31 @@ def test_capture_regression():
     assert "PROXY ROUTE" in r["route"], r["route"]
 
 
+def test_compiled_capture_regression():
+    import hashlib
+    cap = (REPO / "receipts/2026-09-19-gated-barriers-default-jw16.d/"
+           "calibc-20260920T074637Z.ndjson")
+    sha = hashlib.sha256(cap.read_bytes()).hexdigest()
+    assert sha == ("53a6b7042ed5fc12c73b5688afa4acc1fc280178609fcd24f2f09"
+                   "6f749dfce0c"), f"capture drifted: {sha}"
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        out = Path(td) / "calibc-report.json"
+        proc = subprocess.run(
+            [sys.executable, str(MICRO), "--pass", "report",
+             "--profile", str(cap), "--out", str(out)],
+            capture_output=True, text=True, timeout=60)
+        assert proc.returncode == 0, proc.stderr
+        r = json.loads(out.read_text())
+        assert "strict" in r["calibration"]["verdict"]
+        assert r["calibration"]["calibrated_enum"] == 412
+        assert r["calibration"]["region_counts"] == {
+            "0": 141, "1": 1, "2": 1, "3": 1, "4": 1}
+        assert "CONFIRMED" in r["route"], r["route"]
+
+
 if __name__ == "__main__":
     test_capture_regression()
-    print("PASS: preserved capture reproduces strict layout + PROXY "
-          "ROUTE verdict")
+    test_compiled_capture_regression()
+    print("PASS: preserved captures reproduce strict layout, single-row "
+          "PROXY ROUTE, and compiled 412 CONFIRMED route")
