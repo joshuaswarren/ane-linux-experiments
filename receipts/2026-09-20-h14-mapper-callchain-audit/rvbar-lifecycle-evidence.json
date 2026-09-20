@@ -42,7 +42,11 @@
   "7. Poll SCRATCH7 (0x285840064) == 0x08042006.",
   "Do not export any 'pre-loaded' analog: dev+0x41F must stay 0 so the full latch path runs. If bit0 reads 1 stale: lawful action is domain off (ps 0x2e0 <- 0) then on, never an RVBAR bit0=0 write."
  ],
- "unresolved_edge": "Static KC cannot prove that PMGR ps 0x2e0 <- 0 actually clears RVBAR bit0 in hardware (ASC reset semantics). The driver's retry design presupposes it; only in-driver evidence is behavioral (retry exists; no RVBAR-clear write exists). Live read-only confirmation: read64 0x85050000 after domain power-off, expect bit0==0.",
+ "unresolved_edge": "hardware proof that PMGR ps 0x2e0 <- 0 actually clears RVBAR bit0 (ASC reset semantics) is not statically derivable; the driver's retry design presupposes it, only in-driver evidence is behavioral. Verification constraint (Main, 2026-09-20): engine-aperture accesses while the ANE domain is gated were previously fatal on real hardware - do NOT read 0x85050000 while the domain is off. Lawful next operation: gated re-enable first (ps 0x2e0 <- 0x0000000f, read-validate 0xff), THEN read64 0x85050000 and check bit0==0; if cleared, the stale latch was domain-cleared and the normal ANE_Init latch path may proceed.",
+ "main_corrections": [
+  "2026-09-20 Main: no engine-aperture read while domain gated/off (previously fatal); any read-back requires gated re-enable before read. Supersedes this lane's initial 'read after domain off' suggestion.",
+  "2026-09-20 Main: no hardware permission granted; this lane and downstream lanes remain static-only."
+ ],
  "mmio_writes_this_lane": "none",
  "tools_added": ["tools/check_rvbar_lifecycle_anchors.py"]
 }
