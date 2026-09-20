@@ -462,6 +462,31 @@ No speculative writes; nothing executed since the approved staging probe.
   and 0x980 are distinct registry slots; my earlier conflation is
   corrected.
 
+### Addendum 3n: resolver tail + class model (best-source resolution)
+
+- 0x95f6674 = an ASYNC COMMAND SUBMIT: builds a 0x60-byte command
+  block on stack (args x1/x2/w3/w4/w5/w6/w12 + x7/x10 + a PAC'd
+  completion 0x95f672c with context 0x14) and calls
+  `bl 0x964bb78(x0=[dev+0x820] command-queue object, x1=&block)` —
+  the RUNTIME fw-command path. Its completion 0x95f672c unpacks the
+  result block and calls 0x95f679c (AllocateSharedMemorySurface…)
+  — i.e. shared-surface allocation runs on fw-command completion.
+- CLASS MODEL (consistent with libkern + init zeroing): OSObject
+  header = 0x18 bytes; `OSValueObject<ANESharedMemorySurfaceParams>`
+  payload (T) starts at obj+0x18; init zeroes T fields 0x10..0x68
+  (obj+0x28..0x80) leaving T+0x00 (obj+0x18) and the surface base
+  (obj+0x38 = T+0x20) as the two live fields. Then:
+  boot compose `[obj+0x18]` (64-bit) = **params field 0** — the
+  entry/flags word fed to RVBAR — and loader `[obj+0x38]` =
+  **params field 4 (T+0x20)** — the surface base. The two reads are
+  the SAME object, DIFFERENT fields; no class ambiguity remains under
+  this model (labeled: consistent-inference from libkern layout +
+  init pattern; the resolver tail 0x95f6674 submit/completion is the
+  runtime producer of field 0).
+- Distinct slot [dev+0x980] (key 0x40000/fourcc 0x444D4D20) is the
+  SEPARATE runtime ring-position object (H14DartAudit) — untouched by
+  the boot compose.
+
 ### Addendum 3m: slot identities per Main source audit (final)
 
 - [dev+0x978] = "FirmwareLoaded" resolution — the BOOT compose reads
