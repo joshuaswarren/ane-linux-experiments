@@ -139,5 +139,15 @@ chk('G26 pool size 0x40000', 0xFFFFFE000960403C, 0x52A00081)
 chk('G26 ddm tag lo', 0xFFFFFE0009604044, 0x5289A404)
 chk('G26 ddm tag hi', 0xFFFFFE0009604048, 0x72A889A4)
 
+# --- H. params word0 producer (pass8: hdr[0x60] = requested size) ---
+chk('H1 mov x23,x27 (size)', 0xFFFFFE00095F6824, 0xAA1B03F7)
+chk('H2 save [sp,#96]', 0xFFFFFE00095F687C, 0xF90033F7)
+chk('H3 restore [sp,#96]', 0xFFFFFE00095F6894, 0xF94033F7)
+chk('H4 str word0 -> [sp,#112]', 0xFFFFFE00095F68D8, 0xF9003BF7)
+chk('H5 setValue struct base sp+0x70', 0xFFFFFE00095F70DC, 0x9101C3E1)
+chk('H6 setValue call', 0xFFFFFE00095F70E4, 0x9400008C)
+chk('H7 out-param reload [sp,#80]', 0xFFFFFE00095F7114, 0xF9402BF6)
+chk('H8 *out = value buffer', 0xFFFFFE00095F7118, 0xF90002D0)
+
 print('ALL OK' if ok else 'SOME FAILED')
 sys.exit(0 if ok else 1)
