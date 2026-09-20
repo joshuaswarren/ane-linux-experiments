@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-20",
+  "host": "jw14m2-linux",
+  "soc": "T6021 (M2 Max)",
+  "model": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+  "revision": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+  "metadata_source": "https://huggingface.co/api/models/SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+  "license": "apache-2.0",
+  "gated": false,
+  "last_modified": "2026-08-20T12:16:59.000Z",
+  "provenance": "Community MLX quant of empero-ai/Qwen3.8-2B-Distill. Qwen3.8 teacher distilled into the Qwen3.5-2B architecture; not an official Qwen3.8 2B base model.",
+  "architecture": "Qwen3_5ForConditionalGeneration",
+  "quantization": {"bits": 4, "group_size": 64, "mode": "affine"},
+  "weights": {
+    "file": "model.safetensors",
+    "bytes": 1059404429,
+    "sha256": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863"
+  },
+  "runtime": {
+    "wheel": "0.32.3.dev202609201346+a1251aaa",
+    "wheel_sha256": "c9d2b0f68323193718837db35c93a92206559f794c254035d87d10bece2ca411",
+    "loader": "mlx-vlm 0.7.1",
+    "environment": "/tmp/qwen38-clean-main-20260920",
+    "compile": "MLX_DISABLE_COMPILE unset",
+    "precision": "Unmodified checkpoint Q4; no re-quantization",
+    "lock": "Exclusive flock /tmp/jw14-bench/gpu.lock"
+  },
+  "command": "python -m mlx_vlm.generate --model <pinned snapshot path> --max-tokens 32 --prompt 'Say READY.'",
+  "exit_code": 0,
+  "output_excerpt": "# READY.\n\nI'm ready to help. What would you like me to do?",
+  "raw_log": "2026-09-20-qwen38-distill2b-smoke.log",
+  "limits": [
+    "A load and generation smoke, not instruction-compliance or numerical-parity qualification",
+    "No performance claim: concurrent CPU build was allowed",
+    "Checkpoint file size is not peak runtime memory",
+    "Not yet run on the 16 GiB jwm1; fresh installation remains unreachable",
+    "No Linux ANE inference claimed",
+    "Not a silent replacement of the 27B model or its benchmark baseline"
+  ],
+  "existing_research_contract_crosscheck": {
+    "path": "benchmarks/qwen38-2b-contract.json",
+    "gguf_repository": "empero-ai/Qwen3.8-2B-Distill-GGUF",
+    "revision": "f4f73582d0b149595450c719b9a7521a03894f9c",
+    "q4_k_m_sha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
+    "check": "Published SHA256SUMS matches the existing contract. MLX and GGUF quants are different artifacts; no equality asserted."
+  }
+}
