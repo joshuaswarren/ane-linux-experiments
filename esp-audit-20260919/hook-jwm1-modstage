@@ -1,0 +1,29 @@
+#!/bin/ash
+# jwm1-modstage hook: run_latehook runs after the real root is mounted at
+# /sysroot and before switch_root (mkinitcpio run_hookfunctions order).
+#
+# run_hookfunctions ignores the callee's exit status, so this hook enforces
+# the abort itself: any staging failure drops into the init's own fatal
+# pattern (err + launch_interactive_shell --exec), which replaces the init
+# shell. switch_root is never reached after a failed stage.
+#
+# Embedded paths are fixed at initramfs build time:
+#   /usr/local/bin/jwm1-modstage.sh              the staging script
+#   /usr/lib/modules/7.1.13-3-1-ARCH             embedded full module tree
+#   /etc/jwm1-modules.manifest                    its manifest (same script, manifest mode)
+
+run_latehook() {
+    /usr/local/bin/jwm1-modstage.sh stage \
+        /sysroot \
+        /usr/lib/modules/7.1.13-3-1-ARCH \
+        /etc/jwm1-modules.manifest \
+        || {
+            err "jwm1-modstage: module staging failed; refusing to switch_root"
+            # Upstream fatal pattern: replaces the init shell (PID 1) with an
+            # interactive rescue shell on /dev/console.
+            launch_interactive_shell --exec
+            # Terminal fallback: if the exec ever returns, kill PID 1 so
+            # control can NEVER fall through to /usr/bin/switch_root.
+            exit 1
+        }
+}
