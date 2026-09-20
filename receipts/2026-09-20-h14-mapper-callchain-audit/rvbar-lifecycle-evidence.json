@@ -181,5 +181,14 @@
  "tools_added": [
   "tools/check_rvbar_lifecycle_anchors.py"
  ],
- "mmio_writes_this_lane": "none"
+ "mmio_writes_this_lane": "none",
+ "pass11_staging_window": {
+  "finding": "Linux staged fw DVA 0x3FFFF800000 (~275GiB) is BELOW dart-ane0 vm-base 0x10000000000 (1TiB, ADT dtree-j414c.txt lines 11508+: vm-base 0x10000000000, vm-size 0x30000000000, page-size 0x4000, DART regs 0x85800000/85810000/85820000/85804000). Legal dart-ane0 IOVAs = [0x10000000000, 0x13000000000). The staging allocation must be re-homed in-window before ANY RVBAR fold is translatable; same for all ASC-consumed DVAs (FWIM/IPC/heap/pool).",
+  "latched_entry_provenance": "1TiB-scale latched RVBAR entry = retained macOS-era staging IOVA in the vm-base window: format-valid, translation-dead (Linux apple_dart re-created dart-ane0 domains; old page tables gone). bit0-skip without a live translation -> ASC fetch faults -> no READY -> pollA timeout 1s. bit0-skip is not validity proof.",
+  "recovery_paths": {
+   "A_kext_lawful_clear": "attempt fails no-ACK -> fail closed -> power-cycle vehicle (ANE deInit equiv + PS 0x2e0->0 settle ->0xf) -> read64 RVBAR: bit0==0 proves domain-off clears latch (edge C answered) -> re-home staging in-window -> full latch path. bit0 still set -> escalate reset vehicle to Main.",
+   "B_honor_retained_entry": "iommu_map staged fw AT the retained IOVA (in-window; 4KiB-aligned by fold mask; verify entry bits vs rvbar_entry_ok from the owner read64) -> bit0-skip path becomes valid, pollA meaningful, RVBAR untouched."
+  },
+  "mmio_writes_this_lane": "none"
+ }
 }
