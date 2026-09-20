@@ -153,6 +153,24 @@ def verify_calibration(d_by_region, j_count, reasons=None):
 
 # ---------- device path ----------
 
+def force_sync(mx):
+    """Flush-forcing call: mlx.core exposes `synchronize` on this build
+    (verified on t6001-test-host diag wheel); older builds name it `sync`."""
+    if hasattr(mx, "synchronize"):
+        mx.synchronize()
+    elif hasattr(mx, "sync"):
+        mx.sync()
+    else:
+        raise SystemExit("no mlx.core sync/synchronize; flush cannot be "
+                         "forced")
+
+
+def require_sync(mx):
+    if not (hasattr(mx, "synchronize") or hasattr(mx, "sync")):
+        raise SystemExit("no mlx.core sync/synchronize; flush cannot be "
+                         "forced on this mlx build")
+
+
 def materialize(k, cols, max_w):
     import mlx.core as mx
     x = mx.random.normal((1, k)).astype(mx.float16)
@@ -212,15 +230,14 @@ def pass_calibrate(args, k, cols):
     calibration calls, sync after each. Verifies strict layout or emits
     the descriptive report. No performance conclusions."""
     import mlx.core as mx
-    if not hasattr(mx, "sync"):
-        raise SystemExit("mlx.core.sync missing; flush cannot be forced")
+    require_sync(mx)
     x, weights, calib = materialize(k, cols, 1, )
     for i in range(WARMUP_STEPS):
         mx.eval(qmm(x, *weights[0]))
-    mx.sync()
+    force_sync(mx)
     for _ in range(CALIBRATION_CALLS):
         mx.eval(qmm(x, *calib))
-        mx.sync()
+        force_sync(mx)
     d_by_region, j_count, reasons, meta = parse_stream(args.profile)
     verdict, report = verify_calibration(d_by_region, j_count, reasons)
     ident = {"pass": "calibrate", "k": k, "cols": cols,
@@ -275,12 +292,11 @@ def pass_calibrate(args, k, cols):
 
 def pass_unbracketed(args, k, cols, plan):
     import mlx.core as mx
-    if not hasattr(mx, "sync"):
-        raise SystemExit("mlx.core.sync missing; flush cannot be forced")
+    require_sync(mx)
     x, weights, calib = materialize(k, cols, max(s["w"] for s in plan))
     for i in range(WARMUP_STEPS):
         mx.eval(qmm(x, *weights[0]))
-    mx.sync()
+    force_sync(mx)
     wall, total_t0 = {}, time.perf_counter()  # plan only; warmup excluded
     for s in plan:
         t0 = time.perf_counter()
@@ -289,7 +305,7 @@ def pass_unbracketed(args, k, cols, plan):
         wall.setdefault((s["block"], s["w"]), []).append(
             (time.perf_counter() - t0) / s["steps"] * 1e6)
     plan_wall_s = time.perf_counter() - total_t0
-    mx.sync()
+    force_sync(mx)
     wall_blocks = {}
     for (b, w), vals in wall.items():
         wall_blocks.setdefault(w, []).append(statistics.mean(vals))
