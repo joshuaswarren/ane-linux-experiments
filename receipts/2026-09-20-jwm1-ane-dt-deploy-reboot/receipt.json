@@ -1,0 +1,46 @@
+{
+  "schema": "jwm1-ane-dt-deploy-reboot/1",
+  "date": "2026-09-20",
+  "lane": "Jwm1AnePlan (controlled deploy + ONE reboot, Main-authorized)",
+  "authorization": "Main reviewed corrected derivation 49415f5 (dtb 033a3fc4…, engine 0x26bc04000/0x24000, phandles c5-c8, no DART overlap) and authorized deploy + one reboot with preflight gates; GPU owner confirmed the 12-round window NOT STARTED and held; this lane owned the exclusive boot window",
+  "preflight": {
+    "serial": "C02DP17UQ05P (re-verified)",
+    "compatible": "apple,j293 apple,t8103 apple,arm-platform",
+    "kernel": "7.1.13-3-2-ARCH (unchanged)",
+    "services_pre": "sddm/NetworkManager/sshd active",
+    "grub_cmp": "FRESH PASS vmlinuz+initramfs rc=0 both, re-run immediately before reboot",
+    "pre_hashes": {
+      "stock_dtbs_t8103-j293.dtb": "ea32173df3b0f782bf610f38fb390f90a777c16d4a4b2822c58b924bc6088328",
+      "boot.bin": "50601efe8843be4e5480c02149ab49508da82be0a8ce0fbc39278f43a45eaa76",
+      "boot.bin.old": "566227f96ea94bafac65ee6c997da0ba98be6f20479c3619ba1b8b739d156f33",
+      "ubootefi.var": "a6e5ec853a23e132d00ff9776dd4fa3919c36529fb301ae6eca731f521ddf0db"
+    },
+    "staged_dtb_verified": "033a3fc4b0fb3f1f4e56315274995fff81c27a8857577fafda5d0b09b5791f23 (after scp, before install)"
+  },
+  "deploy": {
+    "backups_independent": [
+      "/var/tmp/jwm1-ane-restore/backup/t8103-j293.stock-20260920T192547Z.dtb (ea32173d…)",
+      "/var/tmp/jwm1-ane-restore/backup/boot.bin.pre-ane-20260920T192547Z (6212622 B)"
+    ],
+    "installed": "cp staged dtb over /usr/lib/modules/7.1.13-3-2-ARCH/dtbs/t8103-j293.dtb; installed sha 033a3fc4… verified",
+    "update_m1n1": "run (no /etc/default/update-m1n1 override; default *-ARCH glob); 'm1n1 updated at /run/.system-efi/m1n1/boot.bin'",
+    "payload_change": "boot.bin 50601efe… → 66604ffab562826876975ecfe8a194c035dfb022481cf4cd26297b8d57c047bd (6212622 → 6213446 B, +824 = patched dtb delta); boot.bin.old now holds pre-ane payload 50601efe… (rotation intact) PLUS the independent named backup"
+  },
+  "reboot": {
+    "count": 1,
+    "method": "sudo systemctl reboot (single)",
+    "return": "boot 2026-09-20 14:26:28 UTC, SSH resumed on first poll"
+  },
+  "post_checks": {
+    "serial": "C02DP17UQ05P ✓",
+    "kernel": "7.1.13-3-2-ARCH ✓ unchanged",
+    "cpus": "nproc=8, online 0-7 ✓ (one-core incident did NOT recur)",
+    "ane_node": "/proc/device-tree/soc/ane@26a000000 present; compatible readback 'apple,t8103-ane' ✓",
+    "darts_bound": "26b800000.iommu, 26b810000.iommu, 26b820000.iommu all bound to apple-dart; dmesg 'DART [pagesize 4000, 16 streams, …] initialized' ×3",
+    "ane_platform": "platform 26bc04000.ane: Adding to iommu group 0 (matches September proven signature); device present and UNBOUND (ane.ko not loaded)",
+    "module_state": "lsmod ane = 0; /dev/accel absent — ane.ko staged only, STOP honored",
+    "services_post": "sddm/NetworkManager/sshd active; GUI undisturbed; Wi-Fi/password untouched; APFS untouched; GRUB config untouched"
+  },
+  "failure_mode": "none encountered; no repeated reboots, no mutations beyond the authorized dtb+payload",
+  "next_gate": "ane.ko load from staged /var/tmp/jwm1-ane-restore/ane/ane.ko (vermagic-exact) ONLY after Main reviews this receipt and authorizes the load; then qualification ladder"
+}
