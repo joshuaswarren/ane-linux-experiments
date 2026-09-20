@@ -351,3 +351,42 @@ G13X is firmware/turnaround-bound, not driver-addressable.
 
 jw16 restored and verified: llm-inference active, timer active, real
 completion `chatcmpl-3zZcStKe9oF0C4XQENPZPR9GctpPtzPW` (16 tokens).
+
+## Real-decode attribution — MEASURED (01:29Z window, diag wheel + hkccad76a): overlap hypothesis CONFIRMED, barrier lever closed with mechanism
+
+Setup: qmmceil diag wheel (`diag.6f70d4fa`, wheel sha `b1147338…`) on the
+extracted hkccad76a driver, MLX_OMARCHY_GPU_PROFILE per arm/leg,
+HK_PERFTEST default vs designedusccdmbarrier, 41 decode steps per leg.
+Provenance + observer-effect caveat recorded in the window log: the
+profiler adds a timestamp+barrier pair per dispatch, so absolute gaps are
+profiler-shaped — only the CROSS-ARM DELTA under identical
+instrumentation informs the hypothesis. Exactness for this experiment =
+cross-arm digest EQUALITY: **all four legs reproduce the canonical pins
+exactly** (`7fd25a869ff21678` short / `7da83f06ec9f001d` ctx) in both
+arms — the diag vintage is digest-identical to the protocol wheel here.
+
+Measured (41 submissions × 201 nodes per leg, both legs):
+
+| metric | default | designedusc | delta |
+|---|---|---|---|
+| host record/node | 0.6–0.9 µs | 0.6–0.9 µs | none |
+| **inter-kernel gap median** | **~11–12 µs** | **~11–12 µs** | **≈0 (±1 µs wander)** |
+| busy/span | bracket-noise band | bracket-noise band | — |
+
+**The micro's 7.94 µs/launch saving is ABSENT in real decode** (per-node
+gap delta ≈ 0 on both legs, 8200+ nodes measured). The overlap hypothesis
+is confirmed by measurement: in production decode the sink drain overlaps
+real kernel execution/teardown, so barrier flavor changes nothing; the
+tiny micro chain exposed the drain only because the GPU was idle between
+launches. The G13X fixed-cost lever via barrier flavor is now closed with
+a mechanism, not just a no-gain: the addressable remainder in real decode
+is the ~11 µs gap itself (firmware launch cadence + the irreducible
+drain), which no tested flavor reduces — bit ownership would need
+firmware-level knowledge beyond the unk map. Next attribution targets are
+kernel-side (KV walk, qmm kernel time), consistent with the 09-17
+slope/fixed decomposition and the dispatch-floor verdict.
+
+jw16 restored and verified: llm-inference active, timer active, real
+completion `chatcmpl-3zZcStKe9oF0C4XQENPZPR9GctpPtzPW`. Provenance
+recorded in the window log: wheel `b1147338…`, lib `831c2bc6…`,
+ICD `278f473b…`.
