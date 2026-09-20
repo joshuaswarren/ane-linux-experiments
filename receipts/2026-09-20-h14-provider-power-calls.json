@@ -1,0 +1,28 @@
+{
+  "status": "legacy first-enable provider calls resolved by actual ARM platform symbols and vtable pointers",
+  "kernelcache_sha256": "8304156fe05849a45f1c15807432e82cb0e8ac8cb9c883541889bf51287340fa",
+  "symbol_source": {
+    "fileset": "com.apple.driver.AppleARMPlatform",
+    "header_file_offset": "0x1789d0",
+    "symoff": "0x5e58ca0",
+    "nsyms": 3716,
+    "stroff": "0x6621ef8",
+    "format": "nlist_64 <IBBHQ>; offsets refer to containing kernelcache"
+  },
+  "provider_vtable": {
+    "symbol": "__ZTV16AppleARMIODevice at0x7fbb358; address point+0x10",
+    "slot_8a8": {"pointer_address": "0x7fbbc10", "raw": "0x8011d07d01c6b2f8", "target": "0x8c6f2f8", "symbol": "AppleARMIODevice::enableDeviceClock(unsigned int,unsigned int)"},
+    "slot_8b0": {"pointer_address": "0x7fbbc18", "raw": "0x8011a51501c6b408", "target": "0x8c6f408", "symbol": "AppleARMIODevice::enableDevicePower(unsigned int,unsigned int*,unsigned int)"},
+    "decode": "Both chained pointers have cacheLevel0; target30+outer __TEXT base0x7004000"
+  },
+  "legacy_first_enable": [
+    "EnableANEClocksAndPower when first reference and device+0x783 bit0 clear enters0x95d1d18",
+    "0x95d1d48 calls provider.enableDeviceClock(1,device+0x8f0)",
+    "0x95d1d90 then calls provider.enableDevicePower(1,&stack_output,device+0x8f0)",
+    "Provider implementations bounds-check the index against separate clock/power counts and translate it via their corresponding ID arrays before forwarding to parent platform services"
+  ],
+  "meaning": "The first-enable sequence includes provider clock and power service requests before the later pre-CPU register table and CPU-power helper. Raw PMGR word writes alone are not a demonstrated equivalent.",
+  "limits": "Parent platform implementation and Linux genpd/clock equivalence remain unresolved. No claim that these calls alone explain prior Linux write aborts. Runtime selector/index still requires complete def-use qualification.",
+  "regression": "check_h14_power.py PASS36 instruction anchors plus exact provider vtable pointers, H14 jump target and tables",
+  "hardware_actions": "none"
+}

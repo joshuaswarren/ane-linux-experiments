@@ -38,9 +38,21 @@ anchors = {
     0x9612C00: 0xB93EA268,  # device+0x3ea0
     0x9615E24: 0xD503245F,  # parseANEBootArgs is bti/ret in this KC
     0x9615E28: 0xD65F03C0,
+    0x95D1D20: 0xB948F282,  # clock index from device+0x8f0
+    0x95D1D40: 0x52800021,  # enable=1
+    0x95D1D48: 0xD73F0910,  # provider enableDeviceClock
+    0x95D1D50: 0xB948F283,  # power index from same field
+    0x95D1D80: 0x910073E2,  # stack output pointer
+    0x95D1D84: 0x52800021,  # enable=1
+    0x95D1D90: 0xD73F0931,  # provider enableDevicePower
 }
 for address, word in anchors.items():
     assert struct.unpack_from("<I", data, address - base)[0] == word, hex(address)
+for address, raw, target in ((0x7FBBC10, 0x8011D07D01C6B2F8, 0x8C6F2F8),
+                             (0x7FBBC18, 0x8011A51501C6B408, 0x8C6F408)):
+    assert struct.unpack_from("<Q", data, address - base)[0] == raw
+    assert (raw >> 30) & 3 == 0
+    assert (raw & 0x3FFFFFFF) + base == target
 assert struct.unpack_from("<i", data, 0x95D16B4 + 5 * 4 - base)[0] + 0x95D0ABC == 0x95D0DCC
 assert struct.unpack_from("<2I", data, 0x7503D88 - base) == (3, 128)
 for index, offset in enumerate((0xB38, 0xB98, 0xBF8)):
