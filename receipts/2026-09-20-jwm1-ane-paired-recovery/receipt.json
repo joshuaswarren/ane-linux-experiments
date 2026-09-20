@@ -3,10 +3,13 @@
   "date": "2026-09-20",
   "lane": "Jwm1AnePlan (paired DT+guard recovery, Main-authorized after independent build verification)",
   "authorization": "Main verified build reproducibility (independent stock->4ec4b87f reproduction PASSED, both negative selftests pass) and authorized: backup-hash verify -> reviewed v2 DT install -> update-m1n1 -> ONE reboot -> live-DT/provider verification -> guard v2 nonpersistent load -> ps inspect -> ONE bounded fp16 add-mul smoke; stop on first fault",
-  "gpu": "owner explicitly RELEASED before start (nothing running); corrected 12-round rerun waits for host healthy-clear",
   "predeploy": {
-    "backups_verified": ["t8103-j293.stock-20260920T192547Z.dtb ea32173d...", "boot.bin.pre-ane-20260920T192547Z 50601efe...", "t8103-j293.prev-033a3fc4-<ts>.dtb 033a3fc4..."],
-    "staged_dtb_verified": "4ec4b87f36bc9f8f17d3a8213937144277a2197ff6f352ac24482ee20c76f28 0 after scp",
+    "backups_verified": [
+      "t8103-j293.stock-20260920T192547Z.dtb ea32173d...",
+      "boot.bin.pre-ane-20260920T192547Z 50601efe...",
+      "t8103-j293.prev-033a3fc4-<ts>.dtb 033a3fc4..."
+    ],
+    "staged_dtb_verified": "4ec4b87f36bc9f8f17d3a8213937144277a2197ff6f352ac24482ee20c76f280 after scp",
     "fresh_grub_cmp": "2x PASS immediately before deploy",
     "journal_before": "evidence/journal-before-v2-deploy.log (2268 lines)"
   },
@@ -14,7 +17,10 @@
     "installed": "4ec4b87f... over dtbs/t8103-j293.dtb (prev 033a3fc4 backed up)",
     "update_m1n1": "payload 66604ffa... -> 41a39ac756fb181cf1abb052199cb45893e2ed5d1368c7db495a71f23f027bd5; boot.bin.old rotated to 66604ffa..."
   },
-  "reboot": {"count": 1, "return": "15:47:00 UTC"},
+  "reboot": {
+    "count": 1,
+    "return": "15:47:00 UTC"
+  },
   "post_boot": {
     "serial_kernel": "C02DP17UQ05P / 7.1.13-3-2-ARCH unchanged; 8 CPUs online 0-7",
     "live_dt": "/proc/device-tree/soc/ane@26bc04000 present; power-domains cells 0xca..0xce (five set providers); iommu@26b800000 apple,dma-range bytes 00*11 e0 00 00 00 (0xe0000000)",
@@ -24,7 +30,7 @@
   "guard_v2_load": {
     "module": "/var/tmp/jwm1-ane-guard-v2/ane/ane.ko sha256 99e8b8b51ff4acf4c3b356430ed89a1920da702c567e4d1ea8039f7fb62e6bb0 (9875ef0, guard inside engine_lock), insmod rc=0",
     "bind": "26bc04000.ane -> drivers/ane; /dev/accel/accel0 (261:0) present",
-    "providers": "FIVE genpd suppliers attached (genpd:0..4:26bc04000.ane); genpd summary: ane_set1..5 ALL on, ane_base on (parent of set1..5), ane_sys_cpu on (parent ane_base), ane_sys on (parent ane_sys_cpu) — full chain matches the September proven topology",
+    "providers": "FIVE genpd suppliers attached (genpd:0..4:26bc04000.ane); genpd summary: ane_set1..5 ALL on, ane_base on (parent of set1..5), ane_sys_cpu on (parent ane_base), ane_sys on (parent ane_sys_cpu) \u2014 full chain matches the September proven topology",
     "dmesg": "no faults; only 'ane 26bc04000.ane: loaded ane'"
   },
   "smoke": {
@@ -35,7 +41,11 @@
     "post_state": "wedged=0, driver bound, no fault lines, services active",
     "scope": "ONE bounded smoke restoring the September-proven execution state; NOT broader ANE acceptance (full ladder: 8-package compiler qualification -> schema-4 -> islands -> soak still pending)"
   },
-  "evidence": ["evidence/journal-before-v2-deploy.log", "evidence/journal-after-v2-load-smoke.log", "evidence/smoke.json"],
+  "evidence": [
+    "evidence/journal-before-v2-deploy.log",
+    "evidence/journal-after-v2-load-smoke.log",
+    "evidence/smoke.json"
+  ],
   "no_persistence": "ane.ko not installed to /lib/modules, no modprobe.d, no service; netconsole target runtime-only",
-  "gpu": "host healthy-clear for GPUparityroot-causeaudit corrected 12-round rerun (lock 1384 free)"
+  "gpu_state": "host healthy-clear for GPUparityroot-causeaudit corrected 12-round rerun (lock 1384 free)"
 }

@@ -1,0 +1,117 @@
+{
+  "clock": "time.perf_counter",
+  "endToEnd": {
+    "maxSeconds": 0.0003939409999986765,
+    "meanSeconds": 0.0003939409999986765,
+    "medianSeconds": 0.0003939409999986765,
+    "minSeconds": 0.0003939409999986765,
+    "note": "First program's first transfer through the last program's last readback per iteration; includes Python composition between programs, never program setup.",
+    "samples": [
+      0.0003939409999986765
+    ]
+  },
+  "host": {
+    "kernel": "7.1.13-3-2-ARCH",
+    "machine": "aarch64"
+  },
+  "iterations": 1,
+  "package": "/var/tmp/jwm1-ane-smoke/pkg/pkg",
+  "programs": [
+    {
+      "encoder": "h13-source-qualified",
+      "file": "program-0.anec",
+      "index": 0,
+      "iterations": 1,
+      "operation": "add",
+      "readbackSeconds": {
+        "maxSeconds": 9.64709999990987e-05,
+        "meanSeconds": 9.64709999990987e-05,
+        "medianSeconds": 9.64709999990987e-05,
+        "minSeconds": 9.64709999990987e-05,
+        "samples": [
+          9.64709999990987e-05
+        ]
+      },
+      "setupSeconds": 0.00026316800000358853,
+      "submitSeconds": {
+        "maxSeconds": 2.8737999997474617e-05,
+        "meanSeconds": 2.8737999997474617e-05,
+        "medianSeconds": 2.8737999997474617e-05,
+        "minSeconds": 2.8737999997474617e-05,
+        "samples": [
+          2.8737999997474617e-05
+        ]
+      },
+      "totalSeconds": {
+        "maxSeconds": 0.00012923699999589644,
+        "meanSeconds": 0.00012923699999589644,
+        "medianSeconds": 0.00012923699999589644,
+        "minSeconds": 0.00012923699999589644,
+        "samples": [
+          0.00012923699999589644
+        ]
+      },
+      "transferSeconds": {
+        "maxSeconds": 4.027999999323129e-06,
+        "meanSeconds": 4.027999999323129e-06,
+        "medianSeconds": 4.027999999323129e-06,
+        "minSeconds": 4.027999999323129e-06,
+        "samples": [
+          4.027999999323129e-06
+        ]
+      },
+      "warmup": 1
+    },
+    {
+      "encoder": "h13-source-qualified",
+      "file": "program-1.anec",
+      "index": 1,
+      "iterations": 1,
+      "operation": "mul",
+      "readbackSeconds": {
+        "maxSeconds": 9.597200000399653e-05,
+        "meanSeconds": 9.597200000399653e-05,
+        "medianSeconds": 9.597200000399653e-05,
+        "minSeconds": 9.597200000399653e-05,
+        "samples": [
+          9.597200000399653e-05
+        ]
+      },
+      "setupSeconds": 0.00011204499999450945,
+      "submitSeconds": {
+        "maxSeconds": 2.7285000001597837e-05,
+        "meanSeconds": 2.7285000001597837e-05,
+        "medianSeconds": 2.7285000001597837e-05,
+        "minSeconds": 2.7285000001597837e-05,
+        "samples": [
+          2.7285000001597837e-05
+        ]
+      },
+      "totalSeconds": {
+        "maxSeconds": 0.00012711900000539345,
+        "meanSeconds": 0.00012711900000539345,
+        "medianSeconds": 0.00012711900000539345,
+        "minSeconds": 0.00012711900000539345,
+        "samples": [
+          0.00012711900000539345
+        ]
+      },
+      "transferSeconds": {
+        "maxSeconds": 3.861999999799082e-06,
+        "meanSeconds": 3.861999999799082e-06,
+        "medianSeconds": 3.861999999799082e-06,
+        "minSeconds": 3.861999999799082e-06,
+        "samples": [
+          3.861999999799082e-06
+        ]
+      },
+      "warmup": 1
+    }
+  ],
+  "referenceCriteria": {
+    "y": "exact fp16 values; signed zeros equal, NaNs rejected"
+  },
+  "schema": "mil-hwxc.h13-linux-benchmark.v1",
+  "timingScope": "Wall time around libane calls via time.perf_counter. Every program is prepared (pyane_init, size validation, buffer allocation) before the first measured iteration and reported as setupSeconds, so no timed window contains initialization. A program's totalSeconds spans that program's first transfer through its last readback. endToEnd spans the first program's first transfer through the last program's last readback per iteration and therefore includes Python intermediate composition between programs. Final output unpacking and correctness checks are outside every timed window. Reference evaluation is also outside every timed window.",
+  "warmup": 1
+}
