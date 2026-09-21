@@ -130,3 +130,19 @@ recorded as dev_send_ns/dev_exec_ns/dev_read_ns in the runner log.
 Next (not started): zero-copy readback into the caller's MLX buffer
 (unpack directly into the preallocated output buffer instead of a shim
 Buffer + memcpy).
+
+## Follow-on landing (same session, measured)
+
+Battery 3 (tiles commit 1d7783929): inprocess 1905.6 ms — noise-level vs
+1908.5, all green; tile cache kept (harmless, removes per-submit
+alloc+zero). Battery 4 (zero-copy, commit 5d1ef2126): encoder_ane median
+**1524.3 ms** — −384.2 ms vs inprocess-with-copy (−20%), −1259 ms vs the
+worker baseline (−45%); submit walls attn 207.2 → 98.6 ms/pass, pv 74.7
+→ 45.2 ms/pass; 1 smoke + 1 warm + 6 meas, all gold-bit-exact + 104/104.
+
+Overhead question answered: the ~91 ms/pass shim overhead was staging
+copies (input assign + values-map copy + output Buffer + memcpy into the
+caller buffer). Borrowed input spans + output sinks removed almost all of
+it — attn pass is now 98.6 ms wall vs ~92 ms device phases, so the
+remaining cut lives in the device phases themselves (pack + ioctl +
+unpack), not in the shim.
