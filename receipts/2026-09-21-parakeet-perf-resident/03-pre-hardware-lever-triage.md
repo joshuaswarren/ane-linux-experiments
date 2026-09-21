@@ -7,7 +7,7 @@
 ## What this slice discovered pre-hardware
 
 The new instrumentation in `ane_resident_profiled.py` + the
-`vulkan_encoder_profile_wrapper.py` will produce, on real jwm1, a per-
+`vulkan_encoder_profile_wrapper.py` will produce, on real m1-test-host, a per-
 segment breakdown of:
 - `encode_ns` (parent CPU request-line build)
 - `write_call_ns` (parent os.write syscall)
@@ -105,12 +105,12 @@ hardware lease will produce the numbers. Three cases:
 
 In all three cases, the resident-client lever is bounded at < 1-5 ms
 (per the mock-worker numbers). The slice will report the real
-measurement after the jwm1 hardware lease, with whichever case
+measurement after the m1-test-host hardware lease, with whichever case
 applies, and recommend the appropriate next owner.
 
 ## What this slice WILL do on hardware lease
 
-1. Run `profiled_lease_run.sh` on jwm1 (`/tmp/parakeet-perf-resident/`),
+1. Run `profiled_lease_run.sh` on m1-test-host (`/tmp/parakeet-perf-resident/`),
    warm + 5 measured, `ANE_RESIDENT_PROFILE=1`.
 2. Aggregate per-segment breakdown across the 5 runs.
 3. Identify the largest non-worker-exec segment.
@@ -126,7 +126,7 @@ applies, and recommend the appropriate next owner.
 ## What this slice will NOT do
 
 - Touch `/tmp/mil-ln-rank3`, mil-hwx-compiler, or any compiler source.
-- Run GPU feeder analysis (parent-owned, FleetM1MaxGPU on jw16).
+- Run GPU feeder analysis (parent-owned, FleetM1MaxGPU on m1-max-test-host).
 - Claim any encoder-stage wall-clock improvement without hardware-
   measured evidence.
-- Re-prove the 104/104 pins on jwm1 (already proven by parent receipts).
+- Re-prove the 104/104 pins on m1-test-host (already proven by parent receipts).

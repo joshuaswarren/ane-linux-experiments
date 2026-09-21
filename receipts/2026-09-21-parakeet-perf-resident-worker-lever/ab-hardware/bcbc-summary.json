@@ -1,5 +1,5 @@
 {
- "schema": "jwm1-bcbc-replication/1",
+ "schema": "m1-test-host-bcbc-replication/1",
  "order": "B1,C1,C2,B2 (interleaved, counterbalanced)",
  "all_runs_kept": true,
  "arms": {

@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiled_lease_run.sh — Bounded jwm1 /dev/accel/accel0 lease with ANE_RESIDENT_PROFILE=1.
+# profiled_lease_run.sh — Bounded m1-test-host /dev/accel/accel0 lease with ANE_RESIDENT_PROFILE=1.
 # Acquires /tmp/m1-gpu.lock inode 27, runs the perf-battery under profiled
 # overlays, releases lock. Same identity pin as the baseline re-confirm.
 set -uo pipefail
@@ -7,7 +7,7 @@ set -uo pipefail
 LOCK=/tmp/m1-gpu.lock
 LOCK_TIMEOUT_S=1500
 TS=$(date +%Y%m%dT%H%M%S)
-BASE=/var/tmp/jwm1-ane-step2/fused-e2e/profiled-reconfirm-$TS
+BASE=/var/tmp/ane-runtime/fused-e2e/profiled-reconfirm-$TS
 LOG=$BASE/run.log
 mkdir -p "$BASE"
 chmod 755 "$BASE"
@@ -27,20 +27,20 @@ echo "LOCK_HELD $(date -u -Ins) pid=$$ ppid=$PPID" >> "$LOG"
   date -u -Ins
   hostname
   uname -r
-  echo "VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json"
+  echo "VK_DRIVER_FILES=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json"
   echo "MLX_OMARCHY_PLACED=AC"
   echo "ANE_ISLAND_MODE=\${ANE_ISLAND_MODE-<unset: code default resident-batch>}"
   echo "ANE_RESIDENT_PROFILE=1"
   sha256sum \
-    /var/tmp/jwm1-ane-step2/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker \
-    /var/tmp/jwm1-ane-step2/libane.so \
-    /tmp/mesa-sin-ftz-jwm1/drivers/libvulkan_asahi-e167.so \
+    /var/tmp/ane-runtime/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker \
+    /var/tmp/ane-runtime/libane.so \
+    /tmp/mesa-icd-overlay/drivers/libvulkan_asahi-e167.so \
     /tmp/parakeet-perf-resident/vulkan_encoder_profile_wrapper.py \
     /tmp/parakeet-perf-resident/ane_resident_profiled.py \
     /tmp/parakeet-perf-resident/mock_worker.py \
     /tmp/parakeet-perf-resident/test_profile_invariants.py \
-    /var/tmp/jwm1-v072rc1/venv/bin/python3
-  echo "driver-buildid: $(readelf -n /tmp/mesa-sin-ftz-jwm1/drivers/libvulkan_asahi-e167.so | sed -n 's/.*Build ID: //p')"
+    /var/tmp/runtime-venv/venv/bin/python3
+  echo "driver-buildid: $(readelf -n /tmp/mesa-icd-overlay/drivers/libvulkan_asahi-e167.so | sed -n 's/.*Build ID: //p')"
 } > "$BASE/identity.txt" 2>&1
 
 # Run profiled perf-battery (warm + 5 measured, same as parent protocol
@@ -49,20 +49,20 @@ echo "=== PROFILED_PERF_BATTERY_START $(date -u -Ins) ===" >> "$LOG"
 
 # Inline modified perf-battery that uses --encoder-runner overlay
 TS2=$(date +%Y%m%dT%H%M%S)
-PBASE=/var/tmp/jwm1-ane-step2/fused-e2e/profiled-$TS2
+PBASE=/var/tmp/ane-runtime/fused-e2e/profiled-$TS2
 mkdir -p "$PBASE"
 
-export VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json
+export VK_DRIVER_FILES=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json
 export MLX_OMARCHY_PLACED=AC
 export ANE_RESIDENT_PROFILE=1
 unset PYTHONPATH LD_LIBRARY_PATH HK_PERF HK_PERFTEST MLX_OMARCHY_GATED_BARRIERS MLX_OMARCHY_GPU_PROFILE ANE_OP_WALL MLX_OMARCHY_SPIRV_CACHE || true
 
-PY=/var/tmp/jwm1-v072rc1/venv/bin/python3
+PY=/var/tmp/runtime-venv/venv/bin/python3
 RUNNER=/tmp/parakeet-perf-resident/vulkan_encoder_profile_wrapper.py
-MODEL=/home/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
-WORKER=/var/tmp/jwm1-ane-step2/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
-LIBANE=/var/tmp/jwm1-ane-step2/libane.so
-RUN=/var/tmp/jwm1-ane-step2/fused-e2e/fused_e2e.py
+MODEL=<model-cache>/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+WORKER=/var/tmp/ane-runtime/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
+LIBANE=/var/tmp/ane-runtime/libane.so
+RUN=/var/tmp/ane-runtime/fused-e2e/fused_e2e.py
 
 run_one () { # name
   local name=$1
@@ -74,9 +74,9 @@ run_one () { # name
     --model "$MODEL" \
     --pkg /var/tmp/TdtLoopDefault/pkg \
     --encoder-runner "$RUNNER" \
-    --source /var/tmp/IslandsExecJwm1/encoder-source \
+    --source /var/tmp/IslandsExecM1TestHost/encoder-source \
     --ane-reference /var/tmp/EncoderParityAne/capture/encoder_hidden.npy \
-    --bundles /var/tmp/jwm1-ane-step2/bundles \
+    --bundles /var/tmp/ane-runtime/bundles \
     --worker "$WORKER" \
     --libane "$LIBANE" \
     --scratch "$scratch" --out "$out" \
@@ -159,7 +159,7 @@ def parent_stat(sp_field):
     }
 
 summary = {
-    "schema": "jwm1-profiled-perf-battery/1",
+    "schema": "m1-test-host-profiled-perf-battery/1",
     "placement_partition": "AC placed: islands A (island-attn-a-kt) + C (island-pv) on T8103 ANE per layer, B (island-select-8head) + remaining encoder ops on GPU via e167 fork",
     "profile_env": "ANE_RESIDENT_PROFILE=1",
     "runs": rows,

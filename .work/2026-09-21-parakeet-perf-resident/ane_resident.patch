@@ -1,4 +1,4 @@
---- ane_resident.py.orig	2026-09-21 (parent receipt: 2026-09-20-jwm1-ane-step5-e2e)
+--- ane_resident.py.orig	2026-09-21 (parent receipt: 2026-09-20-m1-test-host-ane-step5-e2e)
 +++ ane_resident.py.l1	2026-09-21 (ParakeetPerformance slice)
 @@ -163,11 +163,16 @@
          job = ["submit", bundle]

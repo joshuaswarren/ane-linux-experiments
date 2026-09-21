@@ -1,14 +1,14 @@
 === IDENTITY ===
 2026-09-21T11:26:34,073204504+00:00
-jwm1-linux
+m1-test-host
 7.1.13-3-2-ARCH
-VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json
+VK_DRIVER_FILES=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json
 MLX_OMARCHY_PLACED=AC
 ANE_ISLAND_MODE=${ANE_ISLAND_MODE-<unset: code default resident-batch>}
-944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf  /var/tmp/jwm1-ane-step2/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
-1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49  /var/tmp/jwm1-ane-step2/libane.so
-7087accecede1f556ed604d28fe88a8f6e5e90df202bc8cdf50c4cea51c76bfd  /tmp/mesa-sin-ftz-jwm1/drivers/libvulkan_asahi-e167.so
-789aaec31029fe625713b82ca24ae95eab47604e6a6992e7378f6a57f7e4af74  /var/tmp/encwall-v071/base/vulkan_encoder.py
-0e38e7b15a36d9a8244bd523ff6845f6b44cb7ad4a7444dc30e8177e97cabb97  /var/tmp/jwm1-ane-step2/fused-e2e/fused_e2e.py
-c6bc1ef497b896b7575c546b13f9bafe52e2066f184fdd3fec6af4b5b6349947  /var/tmp/jwm1-v072rc1/venv/bin/python3
+944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf  /var/tmp/ane-runtime/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
+1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49  /var/tmp/ane-runtime/libane.so
+7087accecede1f556ed604d28fe88a8f6e5e90df202bc8cdf50c4cea51c76bfd  /tmp/mesa-icd-overlay/drivers/libvulkan_asahi-e167.so
+789aaec31029fe625713b82ca24ae95eab47604e6a6992e7378f6a57f7e4af74  /var/tmp/encoder-overlay/base/vulkan_encoder.py
+0e38e7b15a36d9a8244bd523ff6845f6b44cb7ad4a7444dc30e8177e97cabb97  /var/tmp/ane-runtime/fused-e2e/fused_e2e.py
+c6bc1ef497b896b7575c546b13f9bafe52e2066f184fdd3fec6af4b5b6349947  /var/tmp/runtime-venv/venv/bin/python3
 driver-buildid: ac55e1bc3359f444d1746a058d83620fd8b0bbd4

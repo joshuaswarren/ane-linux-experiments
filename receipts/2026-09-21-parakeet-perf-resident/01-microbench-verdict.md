@@ -8,11 +8,11 @@ stage-matched performance parity path, implementation + measurements`)
 
 ## What parent asked for, in priority order
 
-1. Coordinate explicit hardware lease with `FleetM1Encoder` (jwm1) or
-   `FleetM1MaxGPU` (jw16). Do not take `/tmp/m1-gpu.lock` without ack.
+1. Coordinate explicit hardware lease with `FleetM1Encoder` (m1-test-host) or
+   `FleetM1MaxGPU` (m1-max-test-host). Do not take `/tmp/m1-gpu.lock` without ack.
 2. Keep 104/104 functional pins distinct from any cross-SoC native
    reference (the 137.951 ms M1 Max number is CROSS-SOC context, NOT
-   same-SoC parity evidence). The 259.9 ms jwm1 macOS-27 number is
+   same-SoC parity evidence). The 259.9 ms m1-test-host macOS-27 number is
    CROSS-OS-GENERATION and is **removed entirely** from this slice per
    Main directive. **No ratio-to-native is computed.**
 3. Report actual microbench source, measured bottleneck, real runtime
@@ -21,35 +21,35 @@ stage-matched performance parity path, implementation + measurements`)
 
 ## 1. Hardware lease status
 
-- jwm1 `/tmp/m1-gpu.lock` inode 27: **FREE** (verified
-  `flock -n /tmp/m1-gpu.lock echo ACQUIRED` over `ssh jwm1`).
-- jwm1 `/dev/accel/accel0`: present, no worker running, no other agent
+- m1-test-host `/tmp/m1-gpu.lock` inode 27: **FREE** (verified
+  `flock -n /tmp/m1-gpu.lock echo ACQUIRED` over `ssh m1-test-host`).
+- m1-test-host `/dev/accel/accel0`: present, no worker running, no other agent
   holding the device.
-- jw16: not in my lane. Parent owns jw16 scheduling per FleetM1Encoder's
+- m1-max-test-host: not in my lane. Parent owns m1-max-test-host scheduling per FleetM1Encoder's
   coordination note.
 - Explicit lease request sent to `FleetM1Encoder` via `hub`:
   "**I have NOT taken /tmp/m1-gpu.lock, NOT started any ANE worker, NOT
-  modified anything under /var/tmp/jwm1-ane-step2. Will not start until you
+  modified anything under /var/tmp/ane-runtime. Will not start until you
   ack with GO / DEFER / BLOCKED.**"
-- No destructive command executed on jwm1. No `pkill`/`kill` anywhere.
-  Local host: `omp-studio-local`. Target host for hardware: `jwm1` over `ssh`.
+- No destructive command executed on m1-test-host. No `pkill`/`kill` anywhere.
+  Local host: `omp-studio-local`. Target host for hardware: `m1-test-host` over `ssh`.
 
 ## 2. 104/104 pins and the (now-stripped) native references
 
 | quantity | value | where it comes from | scope |
 |---|---:|---|---|
-| 104/104 functional pins | n/a | `receipts/2026-09-20-jwm1-ane-step5-e2e/` (jwm1) + `.../evidence/jw16-parity-battery-20260921T003045/` (jw16) — 10/10 warm + measured on each SoC, all three golden hashes bit-exact | full ASR transcript correctness, both SoCs |
-| **Encoder stage median (jwm1)** | 5,243.345 ms (this run 2026-09-21) | `.../baseline-reconfirm/battery-summary.json`, AC placement, resident-batch transport | T8103 ANE + e167 GPU fork, Linux |
-| Encoder stage median (jw16) | 3,405.9 ms (inherited) | `.../jw16-parity-battery/.../battery-summary.json` | T6001 ANE + e167 GPU fork, Linux |
+| 104/104 functional pins | n/a | `receipts/2026-09-20-m1-test-host-ane-step5-e2e/` (m1-test-host) + `.../evidence/m1-max-test-host-parity-battery-20260921T003045/` (m1-max-test-host) — 10/10 warm + measured on each SoC, all three golden hashes bit-exact | full ASR transcript correctness, both SoCs |
+| **Encoder stage median (m1-test-host)** | 5,243.345 ms (this run 2026-09-21) | `.../baseline-reconfirm/battery-summary.json`, AC placement, resident-batch transport | T8103 ANE + e167 GPU fork, Linux |
+| Encoder stage median (m1-max-test-host) | 3,405.9 ms (inherited) | `.../m1-max-test-host-parity-battery/.../battery-summary.json` | T6001 ANE + e167 GPU fork, Linux |
 
 **Native macOS references are NOT a comparison divisor in this slice:**
 
-- 137.951 ms jw16 native macOS M1 Max single-shot encoder wall — CROSS-SOC
+- 137.951 ms m1-max-test-host native macOS M1 Max single-shot encoder wall — CROSS-SOC
   (T8103/M1 vs T6001/M1 Max); **NOT same-SoC parity evidence**.
-- 259.9 ms jwm1 native macOS-27.0/CoreML-3600 same-SoC T8103 — removed
+- 259.9 ms m1-test-host native macOS-27.0/CoreML-3600 same-SoC T8103 — removed
   entirely; CROSS-OS-GENERATION vs the M1 Ultra reference (macOS
   26.6.2 / CoreML 3520); per Main directive, no ratio computed.
-- 258 ms jw16 total transcription (not the encoder wall) — same
+- 258 ms m1-max-test-host total transcription (not the encoder wall) — same
   cross-SoC caveat, not used as a divisor.
 
 ## 3. Micro-bench source — what was actually run
@@ -57,7 +57,7 @@ stage-matched performance parity path, implementation + measurements`)
 - **File:** `.work/2026-09-21-parakeet-perf-resident/micro_bench.py`
   (worktree branch `agent/parakeet-perf-resident`).
 - **Reproducer:** `python3 .work/2026-09-21-parakeet-perf-resident/micro_bench.py`
-- **Host:** `omp-studio-local` (Debian 12, x86_64), Python 3.11. **NOT jwm1.**
+- **Host:** `omp-studio-local` (Debian 12, x86_64), Python 3.11. **NOT m1-test-host.**
 - **Touches /dev/accel?** **No.** Pure CPython `bytearray` construction
   in-process.
 - **Touches ANE?** **No.**
@@ -86,8 +86,8 @@ byte-equivalent, hash-checked). So the lever is byte-equivalent AND a
 regression — the textbook "optimization that wasn't" outcome.
 
 **Inheritance from parent receipts (the real measured bottleneck):**
-the jwm1 encoder stage 5,252.7 ms critical path decomposes as
-(`receipts/2026-09-20-jwm1-ane-step5-e2e/encoder-profile-receipt-v2.json` +
+the m1-test-host encoder stage 5,252.7 ms critical path decomposes as
+(`receipts/2026-09-20-m1-test-host-ane-step5-e2e/encoder-profile-receipt-v2.json` +
 `marshal-split-receipt.json` + `stage3-diag-receipt.json`):
 
 | segment | ms | % |
@@ -126,7 +126,7 @@ close in next step):
 - `back 79.6 ms` = `np.frombuffer + mx.array().reshape()` per output;
   doesn't separate the frombuffer copy from the mx.array allocation.
 
-What this lane WILL do next (in this lane, on jwm1):
+What this lane WILL do next (in this lane, on m1-test-host):
 
 1. Add explicit `time.monotonic_ns()` instrumentation inside
    `ane_resident.py:submit()` around (a) the pre-write `_write_bytes`
@@ -152,7 +152,7 @@ What this lane WILL do next (in this lane, on jwm1):
    `write_ns + read_residual_ns == round_ns`, (d) asserts all
    segments ≥ 0. The test FAILS pre-fix because the code lacks the
    instrumentation.
-5. Real jwm1 lease re-run with `ANE_RESIDENT_PROFILE=1`, capture
+5. Real m1-test-host lease re-run with `ANE_RESIDENT_PROFILE=1`, capture
    per-segment breakdown across 1 warm + 5 measured runs.
 6. From the measured breakdown, identify the **smallest** segment that
    has actual slack (e.g. `parent IPC wait after worker exec done`).
@@ -166,7 +166,7 @@ What this lane CANNOT do (out of scope):
 - Worker-side protocol changes (e.g. per-output stdout flush) —
   belongs to the ANE worker owner.
 - GPU feeder ops (const 783 + conv 297 ms) — belongs to the GPU
-  compute lane (FleetM1MaxGPU on jw16); this slice will share
+  compute lane (FleetM1MaxGPU on m1-max-test-host); this slice will share
   measurements, not take the implementation.
 - Compiler-emitted op coverage (ANI matmul/conv/silu/norm/linear/
   concat remaining) — FleetM1Encoder's lane.
@@ -203,7 +203,7 @@ What this lane CANNOT do (out of scope):
   `/tmp/m1-gpu.lock` flock inode 27, into
   `receipts/2026-09-21-parakeet-perf-resident/baseline-reconfirm/`. That
   is a baseline re-confirmation, not a perf claim, and is the only
-  measured action that lane can take on jwm1 hardware today.
+  measured action that lane can take on m1-test-host hardware today.
 - After that baseline, propose the next lever with measured evidence
   (or report no measurable positive lever found, which is also a valid
   result for the slice).

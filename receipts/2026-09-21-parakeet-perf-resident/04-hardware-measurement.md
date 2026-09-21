@@ -1,8 +1,8 @@
-# 04 — Hardware-measured end-to-end profile (jwm1)
+# 04 — Hardware-measured end-to-end profile (m1-test-host)
 
 **Lane:** `ParakeetPerformance`, branch `agent/parakeet-perf-resident`.
 **Date:** 2026-09-21.
-**Hardware:** jwm1-linux, `/dev/accel/accel0`, `/tmp/m1-gpu.lock` inode 27.
+**Hardware:** m1-test-host, `/dev/accel/accel0`, `/tmp/m1-gpu.lock` inode 27.
 **Lease grantor:** `FleetM1Encoder` (DEVICE RELEASE 2026-09-21T11:54Z).
 **Lease held:** 2026-09-21T11:54Z → 11:55Z (≈ 60 seconds; warm + 5 measured).
 **Resolved model:** `minimax-code/MiniMax-M3` (parent omp session).
@@ -24,7 +24,7 @@ overlay (`vulkan_encoder_profile_wrapper.py` +
 | `vulkan_encoder_profile_wrapper.py` | new on-disk artifact under `/tmp/parakeet-perf-resident/` | new |
 | `ane_resident_profiled.py` | new on-disk artifact under `/tmp/parakeet-perf-resident/` | new |
 
-`VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json` unchanged.
+`VK_DRIVER_FILES=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json` unchanged.
 `MLX_OMARCHY_PLACED=AC`, `ANE_ISLAND_MODE` unset (resident-batch default).
 
 ## Gate compliance (every measured run)
@@ -66,7 +66,7 @@ submit path; out of this lane's scope (parent / GPU feeder lanes).
 
 ## What the inherited decomposition had wrong
 
-The inherited `encoder-profile-receipt-v2.json` (jwm1, 2026-09-20) reported
+The inherited `encoder-profile-receipt-v2.json` (m1-test-host, 2026-09-20) reported
 `read_residual 1397.4 ms = worker round 978 + IPC wait 419`. This measurement
 shows that decomposition is **inaccurate**:
 
@@ -113,7 +113,7 @@ material to the 5.2 s wall.
 | segment | ms | recommended owner |
 |---|---:|---|
 | marshal mx.eval readiness wait (in marshal_eval_ns) | ~2,034 | GPU feeder / compiler lane |
-| const + conv GPU feeder (the 1,628 ms GAP) | ~1,628 | GPU compute / shader lane (FleetM1MaxGPU on jw16) |
+| const + conv GPU feeder (the 1,628 ms GAP) | ~1,628 | GPU compute / shader lane (FleetM1MaxGPU on m1-max-test-host) |
 | first_byte_ns (pipe + worker recv + exec + first IPC) | 890 | ANE worker owner (per-output stdout pre-flush) |
 | ANE compute (inside first_byte_ns; ≤ 430 ms upper bound) | ~430 | compiler lane (FleetM1Encoder) |
 | output_read_ns | 227 | worker owner (per-output stdout pre-flush would split this) |

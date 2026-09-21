@@ -1,5 +1,5 @@
 {
- "schema": "jwm1-basheval-ab/1",
+ "schema": "m1-test-host-basheval-ab/1",
  "order": "R1-base,R2-lever,R3-lever,R4-base (interleaved counterbalanced)",
  "all_runs_kept": true,
  "arms": {

@@ -1,6 +1,6 @@
 {
  "arm": "C-built-lever",
- "schema": "jwm1-ab-perf-battery/1",
+ "schema": "m1-test-host-ab-perf-battery/1",
  "runs": [
   {
    "run": "meas-1",

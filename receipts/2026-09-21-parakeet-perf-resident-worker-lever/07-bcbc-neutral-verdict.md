@@ -1,7 +1,7 @@
 # 07 — Interleaved B/C/C/B replication: NEUTRAL verdict
 
 **Lane:** `ParakeetPerformance`, branch `agent/parakeet-perf-worker-lever`.
-**Run:** `BCBC-20260921T073623` on jwm1, lock inode 27, held ~166 s,
+**Run:** `BCBC-20260921T073623` on m1-test-host, lock inode 27, held ~166 s,
 released and verified free (flock readback) at 12:39:31Z; runid-stamped
 RELEASE sent to EncoderHardwareContinuation.
 **Order:** B1 → C1 → C2 → B2 (interleaved, counterbalanced).

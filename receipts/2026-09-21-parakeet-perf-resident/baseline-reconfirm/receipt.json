@@ -1,10 +1,10 @@
 {
-  "schema": "jwm1-baseline-reconfirm/1",
+  "schema": "m1-test-host-baseline-reconfirm/1",
   "date": "2026-09-21",
   "lane": "ParakeetPerformance",
   "parent_branch": "agent/parakeet-perf-resident",
   "lease_window": {
-    "host": "jwm1-linux",
+    "host": "m1-test-host",
     "lock_path": "/tmp/m1-gpu.lock",
     "lock_inode": 27,
     "lock_acquired_utc": "2026-09-21T11:26:34,072419352+00:00",
@@ -22,7 +22,7 @@
     "encoder_runner_sha256": "789aaec31029fe625713b82ca24ae95eab47604e6a6992e7378f6a57f7e4af74",
     "fused_e2e_sha256": "0e38e7b15a36d9a8244bd523ff6845f6b44cb7ad4a7444dc30e8177e97cabb97",
     "venv_python_sha256": "c6bc1ef497b896b7575c546b13f9bafe52e2066f184fdd3fec6af4b5b6349947",
-    "vk_driver_files": "/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json",
+    "vk_driver_files": "/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json",
     "mlx_omarchy_placed": "AC",
     "ane_island_mode": "unset (code default resident-batch)"
   },
@@ -40,12 +40,12 @@
     "placed_bundles": ["island-attn-a-kt", "island-pv"]
   },
   "divisor": {
-    "REMOVED_259.9": "Per Main directive (2026-09-21 IRC): the 259.9 ms jwm1 macOS-27.0/CoreML-3600.25.2 same-SoC T8103 number (receipts/2026-09-18-t8103-divisor-macos27.md) is CROSS-OS-GENERATION relative to the macOS 26.6.2/CoreML-3520 software stack used for the original M1 Ultra reference. It is removed from this slice as an apples-to-apples divisor.",
+    "REMOVED_259.9": "Per Main directive (2026-09-21 IRC): the 259.9 ms m1-test-host macOS-27.0/CoreML-3600.25.2 same-SoC T8103 number (receipts/2026-09-18-t8103-divisor-macos27.md) is CROSS-OS-GENERATION relative to the macOS 26.6.2/CoreML-3520 software stack used for the original M1 Ultra reference. It is removed from this slice as an apples-to-apples divisor.",
     "cross_soc_context_only": {
-      "jw16_native_M1Max_encoder_median_ms": 137.951,
-      "jw16_native_M1Max_total_transcription_ms": 258,
-      "jw16_native_M1Max_runs": "20 (all 104/104 pin runs)",
-      "scope": "CROSS-SOC reference only: jwm1 (T8103/M1) Linux vs jw16 (T6001/M1 Max) macOS native. NOT same-SoC parity evidence.",
+      "m1-max-test-host_native_M1Max_encoder_median_ms": 137.951,
+      "m1-max-test-host_native_M1Max_total_transcription_ms": 258,
+      "m1-max-test-host_native_M1Max_runs": "20 (all 104/104 pin runs)",
+      "scope": "CROSS-SOC reference only: m1-test-host (T8103/M1) Linux vs m1-max-test-host (T6001/M1 Max) macOS native. NOT same-SoC parity evidence.",
       "comparison_rule_enforced": "Any 5243.345 / 137.951 number is INDICATIVE only; cross-SoC compiler/ANE schedule differences are not controlled for. NOT a parity claim. NOT a transport-attributable claim."
     },
     "no_ratio_claimed": "Per Main directive, no ratio-to-native is computed in this slice. The 5243.345 ms encoder-stage median is reported on its own, with stage decomposition inherited from parent receipts."
@@ -67,8 +67,8 @@
   "criterion": "104/104 + mel/hidden/transcript golden hashes bit-exact on every measured run; AC island FAIL preserved separately (unchanged criterion from parent receipts); no tolerance changes; no ULP relax; no bf16 precision loss",
   "artifacts": {
     "in_repo": "receipts/2026-09-21-parakeet-perf-resident/baseline-reconfirm/{run.log, identity.txt, battery-summary.json, receipt.json}",
-    "on_jwm1": "/var/tmp/jwm1-ane-step2/fused-e2e/baseline-reconfirm-20260921T062634/ (run.log, identity.txt)",
+    "on_m1-test-host": "/var/tmp/ane-runtime/fused-e2e/baseline-reconfirm-20260921T062634/ (run.log, identity.txt)",
     "lease_run_script": ".work/2026-09-21-parakeet-perf-resident/lease_run.sh",
-    "perf_battery_script_copy": ".work/2026-09-21-parakeet-perf-resident/perf-battery.sh (byte-identical to parent receipts/2026-09-20-jwm1-ane-step5-e2e/perf-battery.sh)"
+    "perf_battery_script_copy": ".work/2026-09-21-parakeet-perf-resident/perf-battery.sh (byte-identical to parent receipts/2026-09-20-m1-test-host-ane-step5-e2e/perf-battery.sh)"
   }
 }

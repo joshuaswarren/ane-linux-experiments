@@ -1,8 +1,8 @@
-# 06 — Worker lever hardware A/B measurement (jwm1)
+# 06 — Worker lever hardware A/B measurement (m1-test-host)
 
 **Lane:** `ParakeetPerformance`, branch `agent/parakeet-perf-worker-lever`.
 **Date:** 2026-09-21.
-**Hardware:** jwm1-linux, `/dev/accel/accel0`, `/tmp/m1-gpu.lock` inode 27.
+**Hardware:** m1-test-host, `/dev/accel/accel0`, `/tmp/m1-gpu.lock` inode 27.
 **Lease:** warm+5 per arm; ARM A at 07:11Z (arm A only) and 07:28Z (A re-run);
 ARM B+C together at 07:30Z (total 83 s under lock; lock released immediately).
 **Resolved model:** `minimax-code/MiniMax-M3` (parent omp session).
@@ -30,7 +30,7 @@ is the honest lever-only claim.
 
 ## Build provenance
 
-- Canonical omarchy-ane worktree: `/tmp/omarchy-ane-pinned` on jwm1,
+- Canonical omarchy-ane worktree: `/tmp/omarchy-ane-pinned` on m1-test-host,
   detached HEAD at `6fa243ac7241119a9eb229abbf8cb4dd8949f915`, clean
   (verified `git rev-parse HEAD` + `git status --porcelain` empty).
   Clone from public origin `https://github.com/joshuaswarren/omarchy-ane.git`.
@@ -83,10 +83,10 @@ compute, which no flush strategy can move).
 - `ab-hardware/A-prebuilt-summary.json` (this repo, this commit)
 - `ab-hardware/B-built-base-summary.json` (this repo, this commit)
 - `ab-hardware/C-built-lever-summary.json` (this repo, this commit)
-- On jwm1: `/var/tmp/jwm1-ane-step2/fused-e2e/ab-20260921T071102/`
-  (ARM A), `/var/tmp/jwm1-ane-step2/fused-e2e/ab-20260921T073054/`
+- On m1-test-host: `/var/tmp/ane-runtime/fused-e2e/ab-20260921T071102/`
+  (ARM A), `/var/tmp/ane-runtime/fused-e2e/ab-20260921T073054/`
   (ARMs B+C), each with per-arm `identity.txt` pins.
-- Binaries on jwm1 under `/tmp/parakeet-perf-resident/`:
+- Binaries on m1-test-host under `/tmp/parakeet-perf-resident/`:
   `mlx-omarchy-ane-worker-tools` (f039e5fc…),
   `mlx-omarchy-ane-worker-lever` (afd612c4…), plus
   `worker-base-prebuilt.bak` (944f2a86… backup).
@@ -96,4 +96,4 @@ compute, which no flush strategy can move).
 - The lever patch (`main_lever.cpp`) + scripts live on this branch for
   review. Applying it to the production tree is the omarchy-ane /
   mlx-omarchy owners' call; this lane has shipped the proof chain:
-  byte-equivalence (x86 test) + hardware A/B (aarch64 jwm1) + gates.
+  byte-equivalence (x86 test) + hardware A/B (aarch64 m1-test-host) + gates.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Aggregate the profiled per-segment breakdown from a profiled lease run.
 
-Reads /var/tmp/jwm1-ane-step2/fused-e2e/profiled-<TS>/out-meas-*/e2e-report.json
+Reads /var/tmp/ane-runtime/fused-e2e/profiled-<TS>/out-meas-*/e2e-report.json
 and computes median per-segment breakdown across the 5 measured runs.
 
 Outputs a JSON summary suitable for committing as a receipt.
@@ -104,8 +104,8 @@ def main():
         return out
 
     summary = {
-        "schema": "jwm1-profiled-perf-battery-aggregate/1",
-        "host": "jwm1-linux",
+        "schema": "m1-test-host-profiled-perf-battery-aggregate/1",
+        "host": "m1-test-host",
         "lock_inode": 27,
         "identity_pin": {
             "worker_sha256": "944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf",

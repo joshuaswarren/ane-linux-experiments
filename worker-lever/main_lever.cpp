@@ -113,7 +113,7 @@ struct ResidentJob {
   // Payloads carried on stdin/stdout instead of through files, in the
   // order the job named them. Staging a megabyte island input through
   // a file costs a write in the caller and a read here; measured on
-  // jwm1 that read alone was 14-19 ms per submit, more than the
+  // m1-test-host that read alone was 14-19 ms per submit, more than the
   // process launch a resident worker saves.
   std::vector<std::pair<std::string, size_t>> inline_inputs;
   std::vector<std::string> emits;

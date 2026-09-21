@@ -1,6 +1,6 @@
 {
-  "schema": "jwm1-profiled-perf-battery-aggregate/1",
-  "host": "jwm1-linux",
+  "schema": "m1-test-host-profiled-perf-battery-aggregate/1",
+  "host": "m1-test-host",
   "lock_inode": 27,
   "identity_pin": {
     "worker_sha256": "944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf",

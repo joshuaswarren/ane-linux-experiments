@@ -1,4 +1,4 @@
-ACQUIRE_LOCK_ATTEMPT 2026-09-21T11:26:34,069767276+00:00 host=jwm1-linux inode=27
+ACQUIRE_LOCK_ATTEMPT 2026-09-21T11:26:34,069767276+00:00 host=m1-test-host inode=27
 LOCK_HELD 2026-09-21T11:26:34,072419352+00:00 pid=87873 ppid=87407
 === PERF_BATTERY_START 2026-09-21T11:26:34,137569814+00:00 ===
 warm done 2026-09-21T06:26:41-05:00
@@ -13,7 +13,7 @@ meas-8 done 2026-09-21T06:27:37-05:00
 meas-9 done 2026-09-21T06:27:44-05:00
 meas-10 done 2026-09-21T06:27:50-05:00
 {
- "schema": "jwm1-perf-battery/1",
+ "schema": "m1-test-host-perf-battery/1",
  "placement_partition": "AC placed: islands A (island-attn-a-kt) + C (island-pv) on T8103 ANE per layer, B (island-select-8head) + remaining encoder ops on GPU via e167 fork; placement per run recorded from ane.bundles",
  "runs": [
   {
@@ -164,6 +164,6 @@ meas-10 done 2026-09-21T06:27:50-05:00
  "all_status_match": true,
  "all_prefix_104": true
 }
-=== BATTERY DONE /var/tmp/jwm1-ane-step2/fused-e2e/perf-battery-20260921T062634 ===
+=== BATTERY DONE /var/tmp/ane-runtime/fused-e2e/perf-battery-20260921T062634 ===
 === PERF_BATTERY_END 2026-09-21T11:27:50,878191045+00:00 rc=0 ===
 LOCK_RELEASE 2026-09-21T11:27:50,878950031+00:00

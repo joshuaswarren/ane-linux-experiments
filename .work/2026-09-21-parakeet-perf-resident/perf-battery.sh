@@ -1,22 +1,22 @@
 #!/bin/bash
-# perf-battery.sh — resident-batch (serve worker) full-ASR battery on jwm1.
-# Protocol per Main + jw16 window script: 1 warm + 10 measured runs.
+# perf-battery.sh — resident-batch (serve worker) full-ASR battery on m1-test-host.
+# Protocol per Main + m1-max-test-host window script: 1 warm + 10 measured runs.
 # COMPARISON RULE: encoder_ane STAGE median vs the 259.9 ms macOS 27 same-encoder
 # divisor (2026-09-17-parakeet-macos-timing-t8103) — NEVER total-ASR vs encoder
 # divisor mixing. Context caveat: macOS numbers are CoreML-context; same-encoder
 # claim only.
 set -uo pipefail
 
-RUN=/var/tmp/jwm1-ane-step2/fused-e2e
-PY=/var/tmp/jwm1-v072rc1/venv/bin/python3
-RUNNER=/var/tmp/encwall-v071/base/vulkan_encoder.py
-MODEL=/home/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
-WORKER=/var/tmp/jwm1-ane-step2/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
-LIBANE=/var/tmp/jwm1-ane-step2/libane.so
-DRIVER=/tmp/mesa-sin-ftz-jwm1/drivers/libvulkan_asahi-e167.so
-ICD=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json
+RUN=/var/tmp/ane-runtime/fused-e2e
+PY=/var/tmp/runtime-venv/venv/bin/python3
+RUNNER=/var/tmp/encoder-overlay/base/vulkan_encoder.py
+MODEL=<model-cache>/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+WORKER=/var/tmp/ane-runtime/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
+LIBANE=/var/tmp/ane-runtime/libane.so
+DRIVER=/tmp/mesa-icd-overlay/drivers/libvulkan_asahi-e167.so
+ICD=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json
 TS=$(date +%Y%m%dT%H%M%S)
-BASE=/var/tmp/jwm1-ane-step2/fused-e2e/perf-battery-$TS
+BASE=/var/tmp/ane-runtime/fused-e2e/perf-battery-$TS
 mkdir -p "$BASE"
 
 export VK_DRIVER_FILES=$ICD
@@ -42,9 +42,9 @@ run_one () { # name
     --model "$MODEL" \
     --pkg /var/tmp/TdtLoopDefault/pkg \
     --encoder-runner "$RUNNER" \
-    --source /var/tmp/IslandsExecJwm1/encoder-source \
+    --source /var/tmp/IslandsExecM1TestHost/encoder-source \
     --ane-reference /var/tmp/EncoderParityAne/capture/encoder_hidden.npy \
-    --bundles /var/tmp/jwm1-ane-step2/bundles \
+    --bundles /var/tmp/ane-runtime/bundles \
     --worker "$WORKER" \
     --libane "$LIBANE" \
     --scratch "$scratch" --out "$out" \
@@ -84,7 +84,7 @@ for d in sorted(glob.glob(base+"/out-meas-*")):
     })
 enc = [r["encoder_ane_ms"] for r in rows]
 summary = {
-    "schema": "jwm1-perf-battery/1",
+    "schema": "m1-test-host-perf-battery/1",
     "placement_partition": "AC placed: islands A (island-attn-a-kt) + C (island-pv) on T8103 ANE per layer, B (island-select-8head) + remaining encoder ops on GPU via e167 fork; placement per run recorded from ane.bundles",
     "runs": rows,
     "encoder_ane_median_all10_ms": statistics.median(enc),

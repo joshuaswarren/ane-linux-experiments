@@ -8,7 +8,7 @@ island-attn-a-kt and island-pv byte counts) and reports per-segment
 breakdown + delta vs the base case.
 
 The goal: BEFORE going to hardware, identify which lever has actual slack
-so the jwm1 re-run can pick the right one.
+so the m1-test-host re-run can pick the right one.
 
 Levers tested (env var, 0 = off, 1 = on):
   LEVER_NO_ASCONTIGUOUS=1  - drop np.ascontiguousarray (only if already contig)

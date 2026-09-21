@@ -1,5 +1,5 @@
 {
-  "schema": "jwm1-perf-battery/1",
+  "schema": "m1-test-host-perf-battery/1",
   "placement_partition": "AC placed: islands A (island-attn-a-kt) + C (island-pv) on T8103 ANE per layer, B (island-select-8head) + remaining encoder ops on GPU via e167 fork; placement per run recorded from ane.bundles",
   "runs": [
     {

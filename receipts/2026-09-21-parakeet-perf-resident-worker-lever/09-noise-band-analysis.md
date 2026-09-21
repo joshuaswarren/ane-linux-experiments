@@ -1,7 +1,7 @@
 # 09 — CPU-side analysis: empirical noise band from today's paired passes
 
 **Lane:** `ParakeetPerformance`. CPU-only analysis of existing receipts;
-no device use (EncoderHardwareContinuation holds jwm1 until their RELEASE).
+no device use (EncoderHardwareContinuation holds m1-test-host until their RELEASE).
 
 ## Same-binary paired-pass drift observed today (all gates-green runs)
 

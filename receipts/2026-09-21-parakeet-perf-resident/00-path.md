@@ -1,4 +1,4 @@
-# Parakeet stage-matched performance parity path on jwm1/jw16
+# Parakeet stage-matched performance parity path on m1-test-host/m1-max-test-host
 
 **Lane:** `ParakeetPerformance` (slice `Parakeet 104/104 functional pins AND
 stage-matched performance parity path, implementation + measurements`)
@@ -7,12 +7,12 @@ fork of `main` @ `4e7e2be`).
 **Resolved model:** `minimax-code/MiniMax-M3` (parent omp session).
 **Parent macros:** don't narrow to existing functional pass; no pin/tolerance
 weakening; no bf16 precision; no behavior change vs the 104/104 pins already
-proven on `receipts/2026-09-20-jwm1-ane-step5-e2e/` and
-`receipts/2026-09-20-jwm1-ane-step5-e2e/evidence/jw16-parity-battery-20260921T003045/`.
+proven on `receipts/2026-09-20-m1-test-host-ane-step5-e2e/` and
+`receipts/2026-09-20-m1-test-host-ane-step5-e2e/evidence/m1-max-test-host-parity-battery-20260921T003045/`.
 
 ## What this lane owns
 
-1. The 104/104 functional pins for full ASR on jwm1 (T8103) and jw16 (T6001),
+1. The 104/104 functional pins for full ASR on m1-test-host (T8103) and m1-max-test-host (T6001),
    inheriting the receipts above. We re-state them, do not re-prove them — the
    parent worker (`AsrFullGateVerification`) has already produced 10/10
    warm + measured runs with all three golden hashes (mel `5b54f4a9`, hidden
@@ -21,11 +21,11 @@ proven on `receipts/2026-09-20-jwm1-ane-step5-e2e/` and
    `mil-hwx-compiler` workspaces. FleetM1Encoder owns compiler; we coordinate
    via `hub` and never touch their tree.
 3. The **stage-matched** performance parity path: encoder stage on
-   jwm1 / jw16, with NO native parity claim. The 137.951 ms number
+   m1-test-host / m1-max-test-host, with NO native parity claim. The 137.951 ms number
    (`receipts/2026-09-17-parakeet-macos-timing-t8103` lineage) is the
-   jw16 native macOS M1 Max single-shot encoder wall — **CROSS-SOC**
+   m1-max-test-host native macOS M1 Max single-shot encoder wall — **CROSS-SOC**
    (T8103/M1 vs T6001/M1 Max) and **NOT same-SoC parity evidence** per
-   Main directive (2026-09-21 IRC). The 259.9 ms jwm1 macOS-27 same-SoC
+   Main directive (2026-09-21 IRC). The 259.9 ms m1-test-host macOS-27 same-SoC
    divisor is **removed entirely** from this slice because it is
    CROSS-OS-GENERATION (CoreML 3600 vs 3520) relative to the M1 Ultra
    reference. Per Main: **no ratio-to-native is computed; the
@@ -34,17 +34,17 @@ proven on `receipts/2026-09-20-jwm1-ane-step5-e2e/` and
 
 ## Current measured baseline (inherited, untouched)
 
-Source: `receipts/2026-09-20-jwm1-ane-step5-e2e/perf-battery-receipt.json`
+Source: `receipts/2026-09-20-m1-test-host-ane-step5-e2e/perf-battery-receipt.json`
 (warm + 10 measured, resident-batch transport, AC placement on T8103 ANE).
 
 | host | encoder_ane_ms median (all 10) | total_asr_ms median (all 10) | n |
 |---|---:|---:|---:|
-| jwm1 (T8103, restored, Linux) | 5243.345 (this run 2026-09-21) | 6589.852 | 10 |
-| jw16 (T6001, Linux) | 3405.9 (inherited 2026-09-21) | 4750.9 | 10 |
+| m1-test-host (T8103, restored, Linux) | 5243.345 (this run 2026-09-21) | 6589.852 | 10 |
+| m1-max-test-host (T6001, Linux) | 3405.9 (inherited 2026-09-21) | 4750.9 | 10 |
 
 **No native macOS divisor is reported here.** The 137.951 ms M1 Max
 native encoder number is CROSS-SOC context (T8103/M1 vs T6001/M1 Max)
-and is NOT same-SoC parity evidence. The 259.9 ms jwm1 native divisor
+and is NOT same-SoC parity evidence. The 259.9 ms m1-test-host native divisor
 is CROSS-OS-GENERATION (macOS 27.0/CoreML 3600 vs the M1 Ultra
 reference's macOS 26.6.2/CoreML 3520) and is removed entirely from
 this slice. Both AC-place + ANE-island pipelines are functional and
@@ -52,10 +52,10 @@ pinned at 104/104 + three golden sha; the encoder stage wall is reported
 on its own.
 
 ## Stage decomposition (inherited, from
-`receipts/2026-09-20-jwm1-ane-step5-e2e/encoder-profile-receipt-v2.json`
+`receipts/2026-09-20-m1-test-host-ane-step5-e2e/encoder-profile-receipt-v2.json`
 + `marshal-split-receipt.json` + `stage3-diag-receipt.json`)
 
-Non-overlapping critical path of the jwm1 5.252 s encoder stage:
+Non-overlapping critical path of the m1-test-host 5.252 s encoder stage:
 
 | segment | ms | % | source | lever-allowed? |
 |---|---:|---:|---|---|
@@ -133,7 +133,7 @@ pin gates, and the gain summed from the published decomposition.
 ### Expected cumulative gain (estimate, NOT measured)
 
 L1 + L2 + L3 in the most-favorable case: 30-50 + 50-150 + 30-50 =
-**110-250 ms saved** out of 5,252 ms (2-5 %). That brings the jwm1
+**110-250 ms saved** out of 5,252 ms (2-5 %). That brings the m1-test-host
 encoder_ane median to ~5,000-5,140 ms — a verified, gate-preserving
 improvement on the encoder stage wall alone.
 
@@ -151,5 +151,5 @@ computed in this slice.**
 - Do NOT re-prove 104/104 here — the parent receipts cover that.
 - Do NOT weaken any criterion: no ULP relax, no bf16, no new tolerance.
 - Commit + push the lever and its receipt. Label any unmeasured estimate
-  explicitly. Label the jwm1 lease-window run as "pending hardware" until
+  explicitly. Label the m1-test-host lease-window run as "pending hardware" until
   the run is real.

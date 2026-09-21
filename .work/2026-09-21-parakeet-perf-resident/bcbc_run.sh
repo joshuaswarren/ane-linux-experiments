@@ -1,5 +1,5 @@
 #!/bin/bash
-# bcbc_run.sh — Interleaved B/C/C/B replication on jwm1.
+# bcbc_run.sh — Interleaved B/C/C/B replication on m1-test-host.
 #
 # Per Main directive: ONE short interleaved run, order B -> C -> C -> B
 # (counterbalanced), warm + 5 measured each, ALL runs kept (no runs2-5
@@ -14,7 +14,7 @@ set -uo pipefail
 LOCK=/tmp/m1-gpu.lock
 LOCK_TIMEOUT_S=1200
 TS=$(date +%Y%m%dT%H%M%S)
-BASE=/var/tmp/jwm1-ane-step2/fused-e2e/bcbc-$TS
+BASE=/var/tmp/ane-runtime/fused-e2e/bcbc-$TS
 LOG=$BASE/run.log
 mkdir -p "$BASE"
 
@@ -25,16 +25,16 @@ if ! flock -w $LOCK_TIMEOUT_S 9; then
 fi
 echo "BCBC_LOCK_HELD $(date -u -Ins)" >> "$LOG"
 
-export VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json
+export VK_DRIVER_FILES=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json
 export MLX_OMARCHY_PLACED=AC
 export ANE_RESIDENT_PROFILE=1
 unset PYTHONPATH LD_LIBRARY_PATH HK_PERF HK_PERFTEST MLX_OMARCHY_GATED_BARRIERS MLX_OMARCHY_GPU_PROFILE ANE_OP_WALL MLX_OMARCHY_SPIRV_CACHE || true
 
-PY=/var/tmp/jwm1-v072rc1/venv/bin/python3
-MODEL=/home/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
-RUN=/var/tmp/jwm1-ane-step2/fused-e2e/fused_e2e.py
-LIBANE=/var/tmp/jwm1-ane-step2/libane.so
-RUNNER=/var/tmp/encwall-v071/base/vulkan_encoder.py
+PY=/var/tmp/runtime-venv/venv/bin/python3
+MODEL=<model-cache>/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+RUN=/var/tmp/ane-runtime/fused-e2e/fused_e2e.py
+LIBANE=/var/tmp/ane-runtime/libane.so
+RUNNER=/var/tmp/encoder-overlay/base/vulkan_encoder.py
 
 # Worker wrappers (LD_LIBRARY_PATH isolated to the worker process)
 mkdir -p /tmp/parakeet-perf-resident/wrapped
@@ -72,9 +72,9 @@ run_pass () { # label worker
       --model "$MODEL" \
       --pkg /var/tmp/TdtLoopDefault/pkg \
       --encoder-runner "$RUNNER" \
-      --source /var/tmp/IslandsExecJwm1/encoder-source \
+      --source /var/tmp/IslandsExecM1TestHost/encoder-source \
       --ane-reference /var/tmp/EncoderParityAne/capture/encoder_hidden.npy \
-      --bundles /var/tmp/jwm1-ane-step2/bundles \
+      --bundles /var/tmp/ane-runtime/bundles \
       --worker "$worker" \
       --libane "$LIBANE" \
       --scratch "$scratch" --out "$out" \
@@ -130,7 +130,7 @@ def med(rs): return statistics.median([r["encoder_ane_ms"] for r in rs])
 def segmed(s): return statistics.median(s) if s else None
 
 result = {
-  "schema": "jwm1-bcbc-replication/1",
+  "schema": "m1-test-host-bcbc-replication/1",
   "order": "B1,C1,C2,B2 (interleaved, counterbalanced)",
   "all_runs_kept": True,
   "arms": {k: {"n": len(v), "encoder_ane_median_ms": med(v),

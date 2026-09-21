@@ -1,7 +1,7 @@
 # 08 — Batch-eval lever: paired interleaved A/B (formally NEUTRAL, strong consistent structure)
 
 **Lane:** `ParakeetPerformance`, branch `agent/parakeet-perf-worker-lever`.
-**Run:** `basheval-20260921T074525` on jwm1, lock inode 27 held ~166 s,
+**Run:** `basheval-20260921T074525` on m1-test-host, lock inode 27 held ~166 s,
 released + flock-verified free 12:49:14Z, runid-stamped RELEASE to
 EncoderHardwareContinuation (their logical_and dispatches unblocked).
 **Order:** R1-base → R2-lever → R3-lever → R4-base (interleaved,

@@ -2,7 +2,7 @@
 """Micro-benchmark for ane_resident.submit() request-line allocation.
 
 This is a LOCAL micro-bench that does NOT touch /dev/accel — it only exercises
-the bytearray construction that L1 changes. Real jwm1 runs (with hash gates)
+the bytearray construction that L1 changes. Real m1-test-host runs (with hash gates)
 are the actual proof; this bench gives a deterministic per-round floor.
 
 Usage:

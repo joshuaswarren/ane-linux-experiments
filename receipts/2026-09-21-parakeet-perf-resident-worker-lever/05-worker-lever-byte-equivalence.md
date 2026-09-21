@@ -68,7 +68,7 @@ delta on real `/dev/accel/accel0`, I would need to:
 
 1. Build `mlx-omarchy-ane-worker` with the lever applied.
 2. Place the new binary at the path used by `perf-battery.sh`.
-3. Run the perf-battery under lease on jwm1.
+3. Run the perf-battery under lease on m1-test-host.
 4. Compare encoder_ane_ms median vs baseline (5243.345 ms).
 
 **Blocker:** `mlx/backend/omarchy/CMakeLists.txt` requires
@@ -90,12 +90,12 @@ Three options to unblock, presented to parent via hub 2026-09-21T12:01Z:
 
 ## Architecture mismatch (additional finding)
 
-My local host `omp-studio-local` is **x86_64**; jwm1 is **aarch64**.
-The prebuilt `mlx-omarchy-ane-worker` on jwm1 is aarch64; the
+My local host `omp-studio-local` is **x86_64**; m1-test-host is **aarch64**.
+The prebuilt `mlx-omarchy-ane-worker` on m1-test-host is aarch64; the
 `emit_byte_test` is built and run on local x86. This is fine for
 byte-equivalence proof (stdio semantics are platform-independent), but
 it also means I cannot run a measured timing test of the lever without
-the build gate opening on jwm1. There is no x86 ANE device on the
+the build gate opening on m1-test-host. There is no x86 ANE device on the
 fleet.
 
 ## What this branch ships (current state)
@@ -108,14 +108,14 @@ fleet.
 - `worker-lever/.gitignore` — exclude the compiled `emit_byte_test` binary
 
 The bare `main.cpp` and `main_lever.cpp` are not built into the
-`mlx-omarchy-ane-worker` binary on jwm1. The lever is NOT applied to
+`mlx-omarchy-ane-worker` binary on m1-test-host. The lever is NOT applied to
 the production worker. It is a documented, byte-equivalent, tested
 prototype awaiting the build-gate unblock to land.
 
 ## What this branch will do next
 
 1. Wait for parent's build-gate decision.
-2. On (1) or (2): build the lever worker on jwm1, run perf-battery
+2. On (1) or (2): build the lever worker on m1-test-host, run perf-battery
    under lease, commit the lever + measured delta + receipts.
 3. On (3): hold this branch open until the gate opens; do not force a
    merge of byte-equivalence-only work without measured hardware

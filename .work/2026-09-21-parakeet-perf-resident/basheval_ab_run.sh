@@ -12,7 +12,7 @@ set -uo pipefail
 LOCK=/tmp/m1-gpu.lock
 LOCK_TIMEOUT_S=1200
 TS=$(date +%Y%m%dT%H%M%S)
-BASE=/var/tmp/jwm1-ane-step2/fused-e2e/basheval-$TS
+BASE=/var/tmp/ane-runtime/fused-e2e/basheval-$TS
 LOG=$BASE/run.log
 mkdir -p "$BASE"
 
@@ -21,16 +21,16 @@ echo "BASHEVAL_ACQUIRE $(date -u -Ins) inode=$(stat -c %i $LOCK)" >> "$LOG"
 if ! flock -w $LOCK_TIMEOUT_S 9; then echo "LOCK_FAIL" >> "$LOG"; exit 2; fi
 echo "BASHEVAL_LOCK_HELD $(date -u -Ins)" >> "$LOG"
 
-export VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json
+export VK_DRIVER_FILES=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json
 export MLX_OMARCHY_PLACED=AC
 unset PYTHONPATH LD_LIBRARY_PATH HK_PERF HK_PERFTEST MLX_OMARCHY_GATED_BARRIERS MLX_OMARCHY_GPU_PROFILE ANE_OP_WALL MLX_OMARCHY_SPIRV_CACHE || true
 
-PY=/var/tmp/jwm1-v072rc1/venv/bin/python3
-MODEL=/home/joshuawarren/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
-RUN=/var/tmp/jwm1-ane-step2/fused-e2e/fused_e2e.py
-WORKER=/var/tmp/jwm1-ane-step2/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
-LIBANE=/var/tmp/jwm1-ane-step2/libane.so
-RUNNER_BASE=/var/tmp/encwall-v071/base/vulkan_encoder.py
+PY=/var/tmp/runtime-venv/venv/bin/python3
+MODEL=<model-cache>/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+RUN=/var/tmp/ane-runtime/fused-e2e/fused_e2e.py
+WORKER=/var/tmp/ane-runtime/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
+LIBANE=/var/tmp/ane-runtime/libane.so
+RUNNER_BASE=/var/tmp/encoder-overlay/base/vulkan_encoder.py
 RUNNER_LEVER=/tmp/parakeet-perf-resident/vulkan_encoder_basheval_wrapper.py
 
 run_pass () { # label runner
@@ -51,9 +51,9 @@ run_pass () { # label runner
       --model "$MODEL" \
       --pkg /var/tmp/TdtLoopDefault/pkg \
       --encoder-runner "$runner" \
-      --source /var/tmp/IslandsExecJwm1/encoder-source \
+      --source /var/tmp/IslandsExecM1TestHost/encoder-source \
       --ane-reference /var/tmp/EncoderParityAne/capture/encoder_hidden.npy \
-      --bundles /var/tmp/jwm1-ane-step2/bundles \
+      --bundles /var/tmp/ane-runtime/bundles \
       --worker "$WORKER" \
       --libane "$LIBANE" \
       --scratch "$scratch" --out "$out" \
@@ -94,7 +94,7 @@ def med(rs): return statistics.median([r["encoder_ane_ms"] for r in rs])
 base_pooled = statistics.median([r["encoder_ane_ms"] for r in R1+R4])
 lever_pooled = statistics.median([r["encoder_ane_ms"] for r in R2+R3])
 result = {
-  "schema": "jwm1-basheval-ab/1",
+  "schema": "m1-test-host-basheval-ab/1",
   "order": "R1-base,R2-lever,R3-lever,R4-base (interleaved counterbalanced)",
   "all_runs_kept": True,
   "arms": {k: {"n": len(v), "encoder_ane_median_ms": med(v),

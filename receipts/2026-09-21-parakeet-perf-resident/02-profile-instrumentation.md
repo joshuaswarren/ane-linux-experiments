@@ -102,10 +102,10 @@ Reproducer: `python3 .work/2026-09-21-parakeet-perf-resident/test_profile_invari
   both are small (~80 ms total per pass) and the marginal cost of a
   splitting micro-bench exceeds the actual gain.
 
-## Phase 2 (next): jwm1 hardware lease re-run with profile on
+## Phase 2 (next): m1-test-host hardware lease re-run with profile on
 
 - Script: `.work/2026-09-21-parakeet-perf-resident/profiled_lease_run.sh`
-- Staged at `/tmp/parakeet-perf-resident/` on jwm1.
+- Staged at `/tmp/parakeet-perf-resident/` on m1-test-host.
 - Acquires `/tmp/m1-gpu.lock` inode 27 (bounded 25 min), runs warm + 5
   measured with `ANE_RESIDENT_PROFILE=1` + the wrapper overlay, releases
   lock.
@@ -133,7 +133,7 @@ will share the data with the ANE worker owner.
 ## Status
 
 - Phase 1 (instrumentation + mock test): DONE, PASSING.
-- Phase 2 (jwm1 hardware lease): WAITING for FleetM1Encoder ack on second
+- Phase 2 (m1-test-host hardware lease): WAITING for FleetM1Encoder ack on second
   lease window. Lease request sent 2026-09-21T11:38Z, no ack yet.
 - Phase 3 (lever implementation): pending Phase 2 measurement.
 
@@ -157,5 +157,5 @@ sibling segment:
   is unset (verified by Phase 1 of the test).
 - The mock-worker test is NOT an ANE full-pipeline measurement. It only
   validates the wire-protocol timing invariants.
-- The hardware lease has not run yet. The real jwm1 per-segment
+- The hardware lease has not run yet. The real m1-test-host per-segment
   breakdown is pending.

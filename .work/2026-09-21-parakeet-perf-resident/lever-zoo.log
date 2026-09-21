@@ -6,4 +6,4 @@ Each arm: 48 rounds × 4 inputs × 2 outputs; mock worker exec 20ms
 === Per-pass totals (48 rounds, ms) ===
   baseline:    encode=0.10 ms, write=0.23 ms
 
-Saved /home/joshuawarren/src/ane-linux-experiments-parakeet-perf/.work/2026-09-21-parakeet-perf-resident/lever-zoo-summary.json
+Saved <repo-worktree>/.work/2026-09-21-parakeet-perf-resident/lever-zoo-summary.json
