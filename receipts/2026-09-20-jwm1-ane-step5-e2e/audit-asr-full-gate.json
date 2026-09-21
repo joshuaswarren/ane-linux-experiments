@@ -1,0 +1,43 @@
+{
+  "schema": "jwm1-step5-e2e-independent-audit/1",
+  "date": "2026-09-20",
+  "auditor": "AsrFullGateVerification (independent of M1RuntimeRestore)",
+  "subject": "Claimed jwm1 full Parakeet ASR 104/104 success in receipt.md (commit 4f633c4, raw evidence ce902ee)",
+  "verdict": {
+    "qualification": "FUNCTIONAL HASH PASS (Main-accepted)",
+    "identity_gate": "OPEN — runtime argv/env of the successful invocation is not persisted anywhere; explicitly inferred, not recorded",
+    "blanket_claim": false
+  },
+  "verified_on_device_readonly": {
+    "route": "ssh -J macstudio joshuawarren@192.168.3.66 (jwm1 tailnet down, LAN route per Main)",
+    "window_compliance": "no GPU/heavy workloads or transfers; NativeQ4 window respected; no further device window needed per Main",
+    "golden_hashes_recomputed_from_raw_run_artifacts": {
+      "mel": {"path": "/var/tmp/jwm1-ane-step2/fused-e2e/out-asr/mel.npy", "sha256": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde", "matches_claim": true, "matches_jw16_golden": true},
+      "encoder_hidden": {"path": "/var/tmp/jwm1-ane-step2/fused-e2e/out-asr/encoder_hidden.npy", "sha256": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7", "matches_claim": true, "matches_jw16_golden": true},
+      "transcript": {"path": "/var/tmp/jwm1-ane-step2/fused-e2e/out-asr/transcript.txt", "sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "matches_claim": true, "matches_jw16_golden": true, "text": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"}
+    },
+    "e2e_report": {"path": "/var/tmp/jwm1-ane-step2/fused-e2e/out-asr/e2e-report.json", "sha256": "70c5da9ae520eab5bedf6457044aba01b1f11fca11cf6305138900b03dbf0ab3", "equals_local_evidence_copy": true, "equals_receipt_pin": true, "status": "match", "total_pipeline_ms": 30769.106},
+    "full_asr_not_encoder_only": {"matching_prefix_length": 104, "actual_emissions": 104, "native_emissions": 104, "stages_present": ["audio_load", "mel_frontend", "encoder_ane", "decoder_load", "tdt_decode", "detokenize"], "transcript_must_match_exactly": true, "cpu_tensor_events": 0, "ane_submissions": 72, "ane_worker_starts": 72, "ane_timeouts": 0, "shape_parity": "identical field shape to passing jw16 2026-09-19 report (decoder_calls=0 there too)"},
+    "worker_identity": {"recorded_path": "/var/tmp/jwm1-ane-step2/ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker", "sha256_on_device": "944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf", "mtime": "2026-09-20 17:03 (unmodified before and after run)", "report_hashing": "fused_e2e.py:542 sha256_file(args.worker) at run time", "m1_transplant_claim_6b63261a": "REFUTED for this run — transplant lives separately at /var/tmp/jwm1-ane-step2/mlx-omarchy-ane-worker.new (18:00) and was never at the recorded path"},
+    "libane": {"path": "/var/tmp/jwm1-ane-step2/libane.so", "sha256": "1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49", "equals_report": true},
+    "libmlx": {"report_recorded": "c28a485f98b55aadf12c68ae6d373f308517177c0cf33ad3c77ea82a796e931e (jwm1-v072rc1 venv, verified on disk)", "receipt_prose_claim": "V071REL df3d4e74... — STALE PROSE, contradicts the run's own machine report"},
+    "driver_identity": {"icd": "/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json -> drivers/libvulkan_asahi-e167.so", "e167_sha256": "7087accecede1f556ed604d28fe88a8f6e5e90df202bc8cdf50c4cea51c76bfd", "e167_buildid": "ac55e1bc3359f444d1746a058d83620fd8b0bbd4", "stock_path": "/usr/lib/libvulkan_asahi.so", "stock_sha256": "57754e462f81d0bb227a71af97642b7542a1532c554a11b70c0593a08110f5db", "stock_buildid": "048ae88836f911a4587f152237447917f1c4cba6", "main_flag_resolution": "048ae888 is the STOCK BuildID; the e167 file is a distinct build by sha AND BuildID — flagged equivalence disproven"},
+    "device_state": {"/dev/accel/accel0": "present", "sddm": "active", "NetworkManager": "active", "sshd": "active", "ane_module": "Live, no wedge"}
+  },
+  "inferred_not_recorded": {
+    "runtime_argv_env": "NOT PERSISTED: no launcher .sh newer than 19:30 on jwm1, bash_history has no fused_e2e lines, journald logs no argv (only a 19:50:07 sudo symlink fix for bundles-conv), no stdout log of the successful run preserved (out-asr has report+artifacts only; receipt's encwall-out pointer is the segfault-era set)",
+    "vk_driver_files_activation": "INFERRED from crash determinism (stock driver SEGV'd reproducibly in this pipeline at 18:08, 3 cores preserved; 19:50 succeeded) — not a recorded fact",
+    "prior_invocation": "empty fused-e2e/out/ + scratch/ (19:42) show a non-producing invocation 8 min before the successful one; conflicting recollections likely conflate these attempts",
+    "timeline_note": "RESOLVED narrative committed 19:53:55 (4f633c4) BEFORE raw evidence entered the repo (19:57:55, ce902ee)"
+  },
+  "post_correction_verification": {
+    "evidence_worker_miscopy": "evidence/mlx-omarchy-ane-worker originally hashed 6b63261a (copy of the transplant); corrected by M1RuntimeRestore 2026-09-20 20:09:58",
+    "reverified": {"evidence/SHA256SUMS": "13/13 OK", "evidence/e2e-report.json": "70c5da9ae520eab5bedf6457044aba01b1f11fca11cf6305138900b03dbf0ab3", "evidence/mlx-omarchy-ane-worker": "944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf (464400 B, now matches run-recorded binary)"}
+  },
+  "prose_corrections_needed_in_receipt_md": [
+    "libmlx line: V071REL df3d4e74 -> actually jwm1-v072rc1 c28a485f per machine report",
+    "'resident worker' vs ane.worker_starts=72 (worker respawned per submission, not resident)",
+    "Evidence pointer should cite fused-e2e/out-asr (success artifacts) in addition to encwall-out (segfault-era)"
+  ],
+  "criterion": "no weakening — goldens required bit-exact and were; claimed-vs-verified separated throughout; unrecorded identity named as open scope"
+}
