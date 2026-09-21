@@ -7,3 +7,4 @@ receipts/**/BuildManifest.plist
 receipts/**/*.dump
 
 .omp/
+.private-patterns

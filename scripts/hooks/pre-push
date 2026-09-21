@@ -1,0 +1,19 @@
+#!/bin/sh
+# pre-push hook: block pushes that add private content (scripts/privacy-check.sh).
+# Enable enforcement in a clone: git config core.hooksPath scripts/hooks
+zero=0000000000000000000000000000000000000000
+HERE=$(cd "$(dirname "$0")" && pwd)
+CHECK="$HERE/../privacy-check.sh"
+[ -x "$CHECK" ] || CHECK=$(command -v privacy-check.sh)
+[ -x "$CHECK" ] || { echo "privacy-check: checker not found; install scripts/privacy-check.sh" >&2; exit 1; }
+while read local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue
+  if [ "$remote_sha" = "$zero" ]; then
+    base=$(git merge-base origin/HEAD "$local_sha" 2>/dev/null || echo "$local_sha^")
+    range="$base..$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+  sh "$CHECK" "$range" || exit 1
+done
+exit 0
