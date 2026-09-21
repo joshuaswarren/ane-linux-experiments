@@ -131,6 +131,31 @@ Next (not started): zero-copy readback into the caller's MLX buffer
 (unpack directly into the preallocated output buffer instead of a shim
 Buffer + memcpy).
 
+## Marshal / GPU-feeder lane (instrumentation + overlap trial)
+
+Runner instrumentation (feeder checkpoints at island boundaries, per-op
+CPU issue wall, per-input marshal drains — commit with this receipt):
+
+- The pass is CPU-issue-bound, not GPU-bound: between-island CPU issue
+  wall is ~56-78 ms per layer pair (~1.5 s/pass), while the GPU drain at
+  the island marshal eval is only ~25-38 ms per layer pair (L01-A
+  q_v drain 29.4 ms; other inputs <1.5 ms).
+- Op wall between islands is dominated by matmul: 47 statements,
+  1029 ms/pass (conv 128 ms, layer_norm 18 ms, linear 17 ms).
+- Overlap trial: MLX_OMARCHY_PIPE_OPS= (all-ops async_eval issue) =
+  1788.6 ms vs 1761.5 ms conv-only — no gain; async issue does not
+  shrink the synchronous apply() wall.
+- Conclusion: the remaining encoder_ane wall lives in the pure-Python
+  statement interpreter's apply() path (esp. the two per-layer matmul
+  statements). The lever is moving/fusing those ops (EncoderHardware-
+  Continuation's A→B fusion) or mx.compile — not submit transport,
+  which is now ~0.1 s/pass.
+
+Batteries (1 smoke + 1 warm + 3 meas, inprocess, all gold-bit-exact +
+104/104): instrumented conv-pipe 1761.5 ms; all-ops pipe 1788.6 ms
+(note: instrumentation adds per-statement wall overhead vs the 1524.3
+uninstrumented median).
+
 ## Follow-on landing (same session, measured)
 
 Battery 3 (tiles commit 1d7783929): inprocess 1905.6 ms — noise-level vs
