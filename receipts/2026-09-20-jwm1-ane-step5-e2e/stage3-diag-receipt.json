@@ -1,0 +1,33 @@
+{
+  "schema": "jwm1-stage3-diag-receipt/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "directive": "Main 2026-09-20: per-op GPU timing as standing goal; explicit stage-boundary sync diagnostic; profile perturbation check + unprofiled baseline; loop residual not automatically GPU execution; coordinate NativeQ4 windows; preserve hashes and exact A/C FAIL",
+  "window": "inside NativeQ4 explicit RELEASE after candidate-3 window (their candidate-3: gates PASS, perf-rejected +25% ctx1024 prefill)",
+  "runs": {"unprofiled_x3": [5149.402, 5268.578, 5244.626], "profiled_ANE_OP_WALL_x2": [5256.233, 5142.894], "all_gates": "5/5 match + 104/104 + goldens bit-exact"},
+  "perturbation_check": {
+    "unprofiled_median_ms": 5244.626,
+    "profiled_median_ms": 5199.5635,
+    "perturbation_ms": -45.06,
+    "conclusion": "ANE_OP_WALL timers cost nothing measurable; run-to-run drift band is ~+/-60 ms and dominates — all prior medians (5217.4/5222.2/5262.9/5245.1) are ONE population; internal RATIO findings (e.g., marshal split 97/3) unaffected by drift"
+  },
+  "stage_boundary_sync_diagnostic": {
+    "method": "marshal2 per-round eval_split across 48 rounds (offline, no new run needed)",
+    "result": "round 1 = 112.0 ms, then steady alternation ~63.8 ms (A rounds) / ~18.7 ms (C rounds); rounds 1-2 total 135.8 ms of 2033.6 ms",
+    "conclusion": "earlier-stage pending backlog is BOUNDED at ~<=30 ms (round-1 excess over steady state) = ~1.5% of eval wait; the eval wait is IN-STAGE per-layer GPU feeder execution materializing at each island submit; refuted that it is earlier-stage lazy backlog"
+  },
+  "per_op_wall_attribution": {
+    "op_wall_total_ms": {"prof-1": 5084, "prof-2": 5028},
+    "stage_wall_ms": 5252.7,
+    "table_value_sorted": {"matmul": 3916.5, "const": 782.9, "conv": 297.2, "linear": 26.4, "layer_norm": 16.7, "add": 9.6, "mul": 8.0, "transpose": 6.7, "slice_by_index": 5.7, "reshape": 3.5, "pad": 2.7, "select": 2.3, "softmax": 2.3, "split": 1.6, "silu": 1.3},
+    "interpretation": {
+      "matmul_3916": "the island submit path surfaces under matmul statement walls: eval-wait 2033.6 (GPU feeder completion) + session round 1714.7 (incl. ANE exec) + GPU-side matmul dispatch ~0.17 s — NOT a claim that ANE matmul compute is 3.9 s",
+      "const_782.9": "NEW: per-process const materialization costs ~0.78 s despite the const-cache docstring claiming dict-insert restores — real, previously unnamed, per-run cost; candidate for cross-process persistence (measured A/B required first)",
+      "conv_297.2": "conv class wall",
+      "qmm_share_for_NativeQ4": "no qmm/coopmat-shaped entry appears in the Parakeet encoder op-wall table — that class does not occur in this graph; the table is encoder-only and does not attribute their LLM decode residual"
+    }
+  },
+  "loop_residual_status": "residual 1391 ms now partitioned as: const 783 + conv 297 + linear/other ~90 + host bookkeeping ~220 (approx; exact bracketing of const/conv into the residual vs the eval-overlap model pending one more instrumented pass if Main directs)",
+  "correctness_separation": "exact A/C island FAIL preserved (plausible-not-confirmed accumulation-order root cause; no Apple-executed island golden exists on jwm1 — capture holds end-to-end tensors only; Mac-side Apple island capture is the identified follow-up); ±1 ULP observations are not an acceptance class; no tolerance changes",
+  "artifacts": {"in_repo": "evidence/stage3-diag-20260920T214902/ (diag-summary.json, identity.txt, log-prof-1/2.txt with full op_wall tables)", "on_jwm1": "/var/tmp/jwm1-ane-step2/fused-e2e/stage3-diag-20260920T214902/"}
+}

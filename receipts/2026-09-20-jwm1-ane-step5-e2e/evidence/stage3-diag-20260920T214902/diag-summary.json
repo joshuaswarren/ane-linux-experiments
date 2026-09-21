@@ -1,0 +1,68 @@
+{
+ "schema": "jwm1-stage3-diag/1",
+ "rows": [
+  {
+   "run": "prof-1",
+   "stage_ms": 5256.233,
+   "marshal": 2094.6,
+   "eval_split": 0.0,
+   "round": 1671.547,
+   "status": "match",
+   "prefix104": true,
+   "goldens": true
+  },
+  {
+   "run": "prof-2",
+   "stage_ms": 5142.894,
+   "marshal": 2140.4,
+   "eval_split": 0.0,
+   "round": 1595.825,
+   "status": "match",
+   "prefix104": true,
+   "goldens": true
+  },
+  {
+   "run": "unprof-1",
+   "stage_ms": 5149.402,
+   "marshal": 2085.4,
+   "eval_split": 0.0,
+   "round": 1654.898,
+   "status": "match",
+   "prefix104": true,
+   "goldens": true
+  },
+  {
+   "run": "unprof-2",
+   "stage_ms": 5268.578,
+   "marshal": 2085.0,
+   "eval_split": 0.0,
+   "round": 1696.258,
+   "status": "match",
+   "prefix104": true,
+   "goldens": true
+  },
+  {
+   "run": "unprof-3",
+   "stage_ms": 5244.626,
+   "marshal": 2076.0,
+   "eval_split": 0.0,
+   "round": 1675.472,
+   "status": "match",
+   "prefix104": true,
+   "goldens": true
+  }
+ ],
+ "unprofiled_stage_ms": [
+  5149.402,
+  5268.578,
+  5244.626
+ ],
+ "unprofiled_median_ms": 5244.626,
+ "profiled_stage_ms": [
+  5256.233,
+  5142.894
+ ],
+ "profiled_median_ms": 5199.5635,
+ "perturbation_ms": -45.0625,
+ "all_gates": true
+}
