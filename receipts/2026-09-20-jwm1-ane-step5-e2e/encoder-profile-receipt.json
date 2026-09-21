@@ -1,0 +1,33 @@
+{
+  "schema": "jwm1-encoder-stage-profile/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "purpose": "Source-profile the ~5.2 s warm encoder stage into measurable overhead classes (round/submission/execution/copy) from existing battery reports — no new device work",
+  "source": "perf-battery-20260920T210823 out-meas-1/5/10 e2e-report.json ane.log per-round fields (48 rounds each) + stage wall + execution counters",
+  "stage_wall_ms": {"meas-1": 5252.735, "meas-5": 5232.721, "meas-10": 5171.751},
+  "decomposition_ms": {
+    "ane_execution_exec_ms": {"meas-1": 1714.704, "meas-5": 1674.5, "meas-10": 1663.1, "share": "~32%"},
+    "marshal_input_to_wire_ns": {"meas-1": 2067.4, "meas-5": 2117.6, "meas-10": 2087.0, "share": "~40%"},
+    "read_ns": {"meas-1": 1366.2, "meas-5": 1330.3, "meas-10": 1321.0},
+    "write_ns": {"meas-1": 317.3, "meas-5": 312.9, "meas-10": 311.4},
+    "back_output_to_mx_ns": {"meas-1": 79.6, "meas-5": 79.4, "meas-10": 78.6},
+    "save_ms_sum": {"meas-1": 315.0, "meas-5": 332.0, "meas-10": 329.0},
+    "elapsed_sum": {"meas-1": 978.0, "meas-5": 935.0, "meas-10": 934.0},
+    "batch_open": 0.0,
+    "unexplained_after_all_ane_fields": {"meas-1": 2245.0, "meas-5": 2291.2, "meas-10": 2245.7, "attribution": "GPU feeder compute + host orchestration between rounds; stage carried 224 GPU commits with work (gpu_counter_delta), encoder_gpu_ops=1230"}
+  },
+  "io_volume_per_pass": {"input_MB": 164.5, "output_MB": 180.3, "rounds": 48, "note": "345 MB moved through per-round file write/read paths (launch-style per-round bins even in resident-batch rounds)"},
+  "finding_largest_overhead": {
+    "class": "HOST DATA MOVEMENT (marshal + read + write ~= 3.75 s, ~71% of stage) dominates ANE execution (1.66-1.71 s, ~32%)",
+    "single_largest_measured_bucket": "marshal_ns ~2.07-2.12 s (40%) — mx.eval + ascontiguous + tobytes per round",
+    "second": "unexplained ~2.25 s (GPU feeder not hidden behind ANE rounds; data-dependent serial chain per code comment)",
+    "ane_compute_rank": "third — the T8103 ANE execution itself is NOT the bottleneck of the encoder stage",
+    "optimization_levers_ranked": ["reduce/eliminate per-round wire copies (larger batched surfaces, zero-copy staging, persistent device buffers)", "overlap or shrink GPU feeder serialization", "drop intermediate save/load (save_ms ~0.32 s + write/read shares)"]
+  },
+  "caveats": [
+    "field nesting not fully resolved (elapsed_ms may include marshal/back; save_ms overlap possible) — sums are upper bounds per class; the exec vs host split is robust because exec_ms is measured separately by the worker",
+    "AC placement only (48 rounds); ABC would add 24 select rounds",
+    "warm battery; cold-run shader compile (17.9 s mel at 19:50) excluded by design"
+  ],
+  "context": "warm-10 baseline useful; ~20x encoder-stage gap vs macOS 259.9 ms divisor remains — this decomposition is the measurement base for closing it"
+}
