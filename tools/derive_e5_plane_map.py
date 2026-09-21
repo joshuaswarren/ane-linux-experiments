@@ -33,7 +33,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-DEFAULT_MINTS = REPO / "receipts/2026-09-17-t6021-h14g-oracle-mints"
+DEFAULT_MINTS = Path(os.environ["ANE_E5_MINTS_DIR"]) if os.environ.get("ANE_E5_MINTS_DIR") else None
 HOSTS = ["t6021-test-host-t6021-host", "studio-host-t6000-host"]
 GEOMS = ["oproj", "mm1", "mm2"]
 ARCHES = ["h14g", "h13"]

@@ -47,7 +47,7 @@ MODULE_PARM_DESC(allow_unqualified,
  * CPU1 2026-09-19; phase1 hang 09-18) and the kext text has no such
  * registers.  The kext-evidenced transport is MBI: SCRATCH0/1 command
  * buffer, SCRATCH7 wake 0xf7fbdff9 -> fw channel table (ack
- * 0x80402006), per-channel doorbell bits at +0x1844000.  Opt-in runs
+ * 0x08042006), per-channel doorbell bits at +0x1844000.  Opt-in runs
  * the handshake capture-only (no doorbell ring until the table pins
  * the channel bits).  Status-only bring-up still proves the
  * coprocessor alive (RVBAR/VERS/RTB status = the phase1 criteria). */
