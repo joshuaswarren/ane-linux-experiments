@@ -14,25 +14,25 @@ and route conclusions depend on:
     QmmVecQ4MultiSubgroupF16 412);
 
 so any future parser or route change that silently breaks the capture
-convention fails here. Raw capture: receipts/2026-09-19-gated-barriers-
-default-t6001-test-host.d/calib-v23.ndjson (sha256
+convention fails here. Raw capture: fixtures/calib-v23.ndjson (sha256
 438fefb858c39bc9bae19da2da21d0dfdeea64c84068b1e671e8c58bfa9783da).
 """
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 MICRO = REPO / "scripts/qmm_weight_curve_micro.py"
-CAPTURE = (REPO / "receipts/2026-09-19-gated-barriers-default-t6001-test-host.d/"
-           "calib-v23.ndjson")
+CAPTURE = Path(os.environ.get("ANE_CALIB_CAPTURE", REPO / "fixtures/calib-v23.ndjson"))
 EXPECTED_SHA = ("438fefb858c39bc9bae19da2da21d0dfdeea64c84068b1e671e8c58b"
                 "fa9783da")
 
 
 def test_capture_regression():
     import hashlib
+    import os
     import tempfile
     sha = hashlib.sha256(CAPTURE.read_bytes()).hexdigest()
     assert sha == EXPECTED_SHA, f"capture drifted: {sha}"
@@ -59,8 +59,9 @@ def test_capture_regression():
 
 def test_compiled_capture_regression():
     import hashlib
-    cap = (REPO / "receipts/2026-09-19-gated-barriers-default-t6001-test-host.d/"
-           "calibc-20260920T074637Z.ndjson")
+    import os
+    cap = Path(os.environ.get("ANE_CALIBC_CAPTURE",
+               REPO / "fixtures/calibc-20260920T074637Z.ndjson"))
     sha = hashlib.sha256(cap.read_bytes()).hexdigest()
     assert sha == ("53a6b7042ed5fc12c73b5688afa4acc1fc280178609fcd24f2f09"
                    "6f749dfce0c"), f"capture drifted: {sha}"

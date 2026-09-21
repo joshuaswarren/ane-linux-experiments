@@ -13,12 +13,12 @@ python3 scripts/test_profile_kernel_census.py
 """
 import json
 import subprocess
+import os
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-CENSUS = (REPO / "receipts/2026-09-19-gated-barriers-default-t6001-test-host.d/"
-          "analyze_kernel_census.py")
+CENSUS = Path(os.environ.get("ANE_CENSUS_SCRIPT", REPO / "fixtures/analyze_kernel_census.py"))
 
 ENUM_NAMES = {4: "CastBoolF32", 412: "QmmVecQ4MultiSubgroupF16"}
 
