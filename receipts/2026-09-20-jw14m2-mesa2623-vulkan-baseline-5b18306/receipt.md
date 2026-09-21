@@ -308,9 +308,13 @@ RMSNorm op (belongs to another op in the op-refs set); skipped, flagged to Disti
 - **G14C fused kernel follows SINGLE-ROUND rounding (99.95% bit-exact vs single-round; 1 of 12288 differs)**,
   while Distill's native Metal point (M1 Ultra H13D, mlx 0.32.2) was bit-identical to the TWO-ROUND
   composite. jw16 Vulkan matched my result class (maxabs 0.125 vs composite).
-- Reading: the bf16 RMSNorm weight-multiply rounding ORDER differs Metal vs Vulkan-fused on this fixture.
-  This is the numeric provenance the distill-model G14C-vs-native comparison needs: G14C Vulkan carries a
-  ~1-ulp composite delta by construction, NOT a G14C defect. Generic bf16 envelope (18 configs, hidden
+- Reading (NARROWED per Main): the rounding-order delta is NOT G14C-specific (jw16 Vulkan same class),
+  but it IS a real Linux-vs-native parity bug — the G14C fused kernel fails the chosen two-round contract
+  (2239/12288 elements differ from n1) and is being fixed by the postfix candidate wheel. Its 99.95%
+  single-round match does NOT prove all-rounding conformance. All 2239 mismatch cases (element idx, gpu
+  vs n1 values + bit patterns) are PRESERVED in `evidence/distill-rmsnorm/postfix-gate-mismatches.json`
+  as the postfix wheel's G14C gate: the candidate must clear these exact cases, no tolerance fit.
+- Awaiting the Distill postfix candidate wheel for the coordinated G14 postfix-fixture slot. Generic bf16 envelope (18 configs, hidden
   1024/2048/5120 × eps {1e-6,1e-5} × scale {1,1e-3,1e3}): gpu_fast bit-exact vs bf16-rounded-fp64-ref
   ≥ high fraction, max 0.5 ulp; naive path worse (0.5 ulp, lower bitmatch) — use the fused kernel.
 - Runtime pins: wheel 5b18306, libmlx c28a485f, mlx_lm 0.31.3, safetensors 0.8.0, numpy 2.5.3, fixture
