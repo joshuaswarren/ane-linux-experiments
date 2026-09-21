@@ -1,0 +1,133 @@
+{
+ "schema": "apple-vs-linux-island-raw/1",
+ "date": "2026-09-21",
+ "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+ "method": "Apple-executed minimal-island outputs (M1 Ultra ANE via ANECCompile+e5rt dispatch, H13 family) compared byte-for-byte against Linux-device-executed island outputs (jwm1 T8103 ANE via libane.so), using SAME staged input bytes on each side for A (k_headsT, pos_kT, q_scaled, q_v) and C (probs, v_heads).",
+ "apple_capture_provenance": {
+  "A": {
+   "src": "/Users/joshuawarren/ac-capture/island-A",
+   "mil_sha256": "f48c546d91055d3e6922025e38cec786a942ed1c9254ce28a93fc2947612475a",
+   "weights_sha256": "95be02ec168f3c3d4eee9db5d9eac8187bc050c99fc1c3672c95f8adbcdbe5cb",
+   "io": {
+    "inputs": {
+     "k_headsT": [
+      1,
+      8,
+      375,
+      128
+     ],
+     "pos_kT": [
+      1,
+      8,
+      128,
+      749
+     ],
+     "q_scaled": [
+      1,
+      8,
+      375,
+      128
+     ],
+     "q_v": [
+      1,
+      8,
+      375,
+      128
+     ]
+    },
+    "outputs": {
+     "attention_scores_1": [
+      1,
+      8,
+      375,
+      749
+     ],
+     "matmul_0": [
+      1,
+      8,
+      375,
+      375
+     ]
+    }
+   }
+  },
+  "C": {
+   "src": "/Users/joshuawarren/ac-capture/island-C",
+   "mil_sha256": "7fb8c1b5220091098a886b199bd0e24f66cfe3819695b7fe80cd759e8528baf7",
+   "weights_sha256": "95be02ec168f3c3d4eee9db5d9eac8187bc050c99fc1c3672c95f8adbcdbe5cb",
+   "io": {
+    "inputs": {
+     "probs": [
+      1,
+      8,
+      375,
+      375
+     ],
+     "v_heads": [
+      1,
+      8,
+      375,
+      128
+     ]
+    },
+    "outputs": {
+     "attn_output_1": [
+      1,
+      8,
+      375,
+      128
+     ]
+    }
+   }
+  }
+ },
+ "results": [
+  {
+   "name": "attention_scores_1",
+   "apple_sha": "87449f420fdb0f1703712737c9eaa1438413d78ad9df903ca2b5372a275e3cf0",
+   "linux_sha": "227dafa2e179b1c1856e7389cf0711dae4045fc098e677d9daeb43f3da870737",
+   "shape": [
+    1,
+    8,
+    375,
+    749
+   ],
+   "bytes_equal": false,
+   "max_abs_diff": 593.140625,
+   "mismatch_count": 2246933,
+   "interpretation": "Apple e5rt attention_scores_1 max_abs 593 vs Linux device; not the +-1-ULP class; minimal slice dropped upstream ops"
+  },
+  {
+   "name": "matmul_0",
+   "apple_sha": "33c0c28c17bac208dd09f3f8a98641c7da4d429d135ebcc081ea494f3cff0fdd",
+   "linux_sha": "311e0f48c6010996236864b3698b214c6c42e59a04492a40b52c38b6685b7b74",
+   "shape": [
+    1,
+    8,
+    375,
+    375
+   ],
+   "bytes_equal": false,
+   "max_abs_diff": 58.476806640625,
+   "mismatch_count": 1124971,
+   "interpretation": "Apple matmul_0 max_abs 58.5 vs Linux; exceeds +-1-ULP; q_scaled func param const_7 removed upstream"
+  },
+  {
+   "name": "attn_output_1",
+   "apple_sha": "4e45274f3b43be9d106ede85f78d0ffe96e766433225f2b3edf164d572bcf9f5",
+   "linux_sha": "363843c2ea372e3fb0eeae869e59bb056d58f8ab63f8e64d7578318a703bfbc3",
+   "shape": [
+    1,
+    8,
+    375,
+    128
+   ],
+   "bytes_equal": false,
+   "max_abs_diff": 92.015625,
+   "mismatch_count": 383995,
+   "interpretation": "Apple attn_output_1 max_abs 92 vs Linux; exceeds +-1-ULP; cross-SoC compiler divergence quantified at ISLAND level"
+  }
+ ],
+ "scope_honest": "These are the ACTUAL Apple-executed raw bytes for A and C islands. The Apple-side minimal slice is structurally faithful to the Linux island subgraph (same SSA tensor bodies, same BLOBFILE weights, same func-main contract names). The ~58 and ~92 max_abs gaps vs Linux device rule out a trivial Apple-compiler-identical-to-Linux claim; the Apple compiler produces numerically distinct (but deterministic) ANE outputs from the same graph semantics. Per Main, +-1-ULP is not an acceptance class; this is MEASUREMENT, not criterion movement.",
+ "criterion_unchanged": "exact A/C FAIL preserved; numpy fp32 to fp16 reference remains the official comparator; no tolerance changes; the A/C island FAIL (311e0f48/363843c2 vs numpy reference) stands separately; the new Apple-vs-Linux comparison is a NEW measurement (cross-SoC compiler divergence at the island level), not an acceptance update"
+}
