@@ -230,9 +230,13 @@ ADDENDUM 2b — Bonsai extension (raw prompt "Describe a lighthouse in one sente
   `prism_hadamard_qwen35` (`ModuleNotFoundError: mlx_lm.models.prism_hadamard_qwen35`). Loading it requires
   the Bonsai runtime lane's registration (Bonsai2RuntimeEnablement owns that) — catalog fact, not attempted
   further.
-- Matrix now 5 models × 3 builds (27B Bonsai pending their runtime): {0.5B, 2B, Bonsai-8B} bit-neutral
-  across ALL builds; {Ministral-8B, Qwen3.8-27B} split stock vs lineage. No arch-level pattern yet (2-bit
-  Bonsai insensitive, fp16-quant Ministral sensitive); sensitivity is per-model, empirically pinned.
+- Matrix now 5 models × 3 builds COMPLETE (Bonsai-8B e167 = `1d73d64e…` == stock == candidate; 27B Bonsai
+  pending their runtime): {0.5B, 2B, Bonsai-8B} bit-neutral across ALL THREE builds; {Ministral-8B,
+  Qwen3.8-27B} split stock vs lineage. No arch-level pattern yet (2-bit Bonsai insensitive, fp16-quant
+  Ministral sensitive); sensitivity is per-model, empirically pinned.
+- ctx4096 matched triple (stock/e167/candidate): TWO attempts clipped by external reboots (00:05Z fault
+  cycle; 02:14Z unannounced DTB/dart reboot mid-leg — zero driver-side failures; stock leg needs ~9 min,
+  first attempt hit my 540s bound). Deferred to a confirmed-stable window.
 
 ## Coordination (updated)
 
