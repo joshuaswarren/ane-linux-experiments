@@ -320,3 +320,30 @@ RMSNorm op (belongs to another op in the op-refs set); skipped, flagged to Disti
 - Runtime pins: wheel 5b18306, libmlx c28a485f, mlx_lm 0.31.3, safetensors 0.8.0, numpy 2.5.3, fixture
   3e24495a, script + logs in `evidence/distill-rmsnorm/`. Fixture leg PID was ephemeral (script exited on
   completion); durable log = `rmsnorm-fixture-g14c.log`.
+
+---
+
+# ADDENDUM 5 (2026-09-21 ~05:08Z): POSTFIX CANDIDATE WHEEL CLEARS THE G14C GATE — PASS
+
+Wheel: `mlx_omarchy-0.32.3.dev202609210458+ca3a8ed` sha `4e87f3fc26ecf656fe1ab8394d23f1856118f8c85b8f06bfbd06abd7ff0d9775`
+(jwm1 canonical build per Main: OMARCHY=ON/METAL=OFF/CPU=ON/CUDA=OFF), fetched sha-verified jwm1 → ws →
+jw14m2. Separate venv `/var/tmp/jw14-bench/venv-postfix` (pinned baseline venv untouched: libmlx c28a485f;
+postfix libmlx `9d9d73f6…`, deps identical from pip cache, fork wheel re-seated last).
+
+Gate (same fixture 3e24495a, eps 1e-6, bf16, harness `rmsnorm_fixture_g14c.py`):
+
+| implementation | vs n1 maxabs | vs n1 bitexact | mismatches/12288 |
+| --- | ---: | ---: | ---: |
+| **gpu_fast_rms_norm POSTFIX** | **0.0** | **1.0** | **0 — GATE PASS** |
+| gpu_naive_bf16 (unchanged path) | 0.25 | 0.7329 | 3282 |
+| cpu_tworound (reference invariant) | 0.0 | 1.0 | 0 |
+| cpu_singleround | 0.125 | 0.8178 | 2239 |
+
+- **All 2233 preserved baseline mismatch cases cleared bit-exactly; no tolerance fit.** The G14C fused
+  kernel is now bit-identical to the two-round composite — matching native Metal behavior class.
+- 0.5B digest pin under postfix wheel: `fee2baaebf7bae21` at 176.29 tok/s — unchanged (model-level output
+  survives the kernel rounding fix on this model).
+- Baseline (pre-fix) columns and the 2233-case gate fixture remain preserved in
+  `evidence/distill-rmsnorm/` (`postfix-gate-mismatches.json`, `rmsnorm-fixture-g14c.log`) for regression
+  gating; baseline venv/wheel pins unchanged.
+- GPU window: M2HybridBringup explicit grant; flock-held; baseline preservation verified post-run.
