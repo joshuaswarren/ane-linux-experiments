@@ -84,3 +84,14 @@ references as `--output` targets (the runner overwrites them on pass),
 (b) adds a byte-level verdict per output (BIT-IDENTICAL / signed-zero-only /
 NUMERIC-MISMATCH, the last one stops the run). Also: `passing` the smoke
 retroactively is unaffected — zero numeric differences.
+
+## Erratum: Addendum-5 corr 0.69 provenance CLEARED
+
+The corr-0.69 data referenced in the earlier Addendum 5 was computed on
+staged bytes that no longer exist on jwm1 (the bytes were from a different
+derivation run). The current staged bytes at
+`/var/tmp/IslandsExecJwm1/stage/` are from the authentic capture re-derivation
+(milrun + stage on jwm1) and produce corr = 1.0 per head against their own
+references. The 0.69 measurement is orphaned — no preserved bytes carry it.
+The A/C numeric gate remains FAIL under exact-equality (as correctly
+re-labeled in Addendum 5's successor); the mechanism remains open.
