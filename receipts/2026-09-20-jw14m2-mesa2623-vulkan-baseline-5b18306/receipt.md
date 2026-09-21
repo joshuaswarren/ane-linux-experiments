@@ -201,8 +201,9 @@ W16 reboot (ane_t6021 pinned+aliased) — GPU environment invariant under the pi
   model/prompt-dependent, and it is entirely VINTAGE-level: the `095cb7e1` fix is bit-neutral vs its own
   base on every model tested (4/4).
 - Same-base paired perf (long, 64-128 tok): fckey 4.0888/4.105/4.115/4.114 vs e167 4.1057/4.0872/4.0785
-  tok/s — overlapping bands, fix cost ≈ 0. Ministral same-base: fckey 9.665 vs e167 9.532 (+1.4%,
-  single-run).
+  tok/s — overlapping bands; Ministral same-base: fckey 9.665 vs e167 9.532 (+1.4%). All single-run or
+  few-run SCOPE statements — bands overlap, but "fix cost ≈ 0" is not an equivalence claim without more
+  rounds.
 - Catalog notes: SiddhJagani/Qwen3.8-2B snapshot ships no `chat_template` (chat-template harness path
   fails; raw-prompt mode used) — packaging fact for the model-catalog lane. 2B decode rates 44.9 (stock)
   vs 39.5 tok/s (candidate) on a 2B model are small-model noise; no perf claim.
@@ -249,11 +250,12 @@ ownership under `/tmp/jw14-gpu.lock`; Hybrid committed zero device actions for t
 | 14 | candidate (e167+095cb7) | 3.4663 | 317.04 | 12.86 | `8326e96ef17f40d5` |
 
 - **ALL THREE builds byte-identical at ctx4096** — including stock==lineage, which did NOT hold at
-  ctx1024/long. The vintage-level digest flip is therefore PROMPT-DEPENDENT (near-tie structure), not
-  monotonic with context depth. The fix remains bit-neutral vs its base at the largest tested context.
-- Same-base perf at ctx4096: fix delta −0.2% decode, prefill parity — consistent with ~0 everywhere.
-- Vintage decode delta vs stock: −6.8% (single-run), same band as ctx1024 (−8%) — vintage-level, not
-  fix-attributable.
+  ctx1024/long. The vintage-level digest flip is therefore **PROMPT-DEPENDENT** (proven: identical
+  outputs at ctx4096, divergent at ctx1024/long). The MECHANISM is not proven: a near-tie token-flip
+  account would require logit-margin data, which this harness does not record — treat mechanism as
+  hypothesis. The fix remains bit-neutral vs its base at the largest tested context.
+- Same-base perf at ctx4096: fix delta −0.2% decode, prefill parity — **single-run scope statement
+  only, not an equivalence claim** (no confidence interval from one round).
 - Two earlier ctx4096 attempts were clipped by external reboots (00:05Z fault cycle; 02:14Z probe-caused
   freeze, M2Hybrid-owned); Main brokered the 35-min uninterrupted reservation for this run. No driver-side
   errors occurred in any attempt.
