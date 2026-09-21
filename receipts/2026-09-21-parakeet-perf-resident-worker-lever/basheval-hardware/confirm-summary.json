@@ -1,0 +1,64 @@
+{
+ "schema": "m1-test-host-basheval-confirm/1",
+ "seed": 20260921,
+ "order": [
+  "lever",
+  "base",
+  "base",
+  "lever",
+  "base",
+  "lever"
+ ],
+ "all_runs_kept": true,
+ "per_pass": {
+  "P1-lever": {
+   "arm": "lever",
+   "median_ms": 4422.886,
+   "all_gates": true,
+   "n": 5
+  },
+  "P2-base": {
+   "arm": "base",
+   "median_ms": 5212.572,
+   "all_gates": true,
+   "n": 5
+  },
+  "P3-base": {
+   "arm": "base",
+   "median_ms": 5273.821,
+   "all_gates": true,
+   "n": 5
+  },
+  "P4-lever": {
+   "arm": "lever",
+   "median_ms": 3682.537,
+   "all_gates": true,
+   "n": 5
+  },
+  "P5-base": {
+   "arm": "base",
+   "median_ms": 5273.23,
+   "all_gates": true,
+   "n": 5
+  },
+  "P6-lever": {
+   "arm": "lever",
+   "median_ms": 5146.547,
+   "all_gates": true,
+   "n": 5
+  }
+ },
+ "pooled": {
+  "base_n": 15,
+  "lever_n": 15,
+  "base_median_ms": 5258.446,
+  "lever_median_ms": 4422.886,
+  "delta_median_ms": -835.5599999999995,
+  "base_min_ms": 4827.5,
+  "base_max_ms": 5329.868,
+  "lever_min_ms": 3587.289,
+  "lever_max_ms": 5200.425,
+  "overlap": true
+ },
+ "note": "RAW medians only - no threshold verdict. Effect + uncertainty reported; landing decision per Main on robustness."
+}
