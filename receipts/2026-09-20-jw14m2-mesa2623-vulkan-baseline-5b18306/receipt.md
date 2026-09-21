@@ -214,6 +214,12 @@ W16 reboot (ane_t6021 pinned+aliased) — GPU environment invariant under the pi
 `095cb7e1` is output-bit-neutral vs e167 on all tested models; vintage-level digest sensitivity exists and
 is model-dependent — catalog-wide numeric pins must record the driver build they were taken under.**
 
+MATRIX COMPLETION (same window): e167 legs added for the two bit-neutral models —
+Qwen2.5-0.5B e167 = `fee2baae…`, Qwen3.8-2B (raw prompt) e167 = `f4aa1220…`: both equal stock AND
+candidate. Full 3-driver × 4-model matrix: {0.5B, 2B} digest-identical across ALL THREE builds;
+{Ministral-8B, 27B} split stock vs {e167==candidate}. The vintage sensitivity boundary is model-level and
+sharp; the fix is bit-neutral universally.
+
 ## Coordination (updated)
 
 - M2BootImplementation authorized each window in-band and received the attempt-4 GPU yield; ownership then
