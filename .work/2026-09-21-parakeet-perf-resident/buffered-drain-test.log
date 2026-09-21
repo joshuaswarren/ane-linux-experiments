@@ -1,0 +1,6 @@
+=== Phase A: lever OFF (base) ===
+  10 rounds, all results captured
+=== Phase B: lever ON (buffered_drain) ===
+  10 rounds, all results captured
+  All 10 rounds: byte-identical, hash-identical
+=== ALL BYTE-EQUIVALENCE INVARIANTS PASS ===

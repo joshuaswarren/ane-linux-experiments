@@ -1,0 +1,47 @@
+[
+  {
+    "label": "baseline",
+    "env": {
+      "ANE_RESIDENT_PROFILE": "1"
+    },
+    "n_rounds": 48,
+    "medians_us": {
+      "encode_ns": {
+        "median_us": 1.98,
+        "min_us": 1.46,
+        "max_us": 10.18,
+        "p95_us": 5.28
+      },
+      "write_call_ns": {
+        "median_us": 4.8395,
+        "min_us": 3.79,
+        "max_us": 19.6,
+        "p95_us": 9.28
+      },
+      "first_byte_ns": {
+        "median_us": 20120.6685,
+        "min_us": 20111.573,
+        "max_us": 20181.643,
+        "p95_us": 20139.613
+      },
+      "output_read_ns": {
+        "median_us": 3.19,
+        "min_us": 2.46,
+        "max_us": 8.12,
+        "p95_us": 6.43
+      },
+      "header_lines_ns": {
+        "median_us": 0.0,
+        "min_us": 0.0,
+        "max_us": 0.0,
+        "p95_us": 0.0
+      },
+      "trailing_ns": {
+        "median_us": 0.15,
+        "min_us": 0.1,
+        "max_us": 0.25,
+        "p95_us": 0.19
+      }
+    }
+  }
+]
