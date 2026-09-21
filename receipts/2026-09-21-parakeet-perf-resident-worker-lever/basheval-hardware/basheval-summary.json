@@ -1,0 +1,36 @@
+{
+ "schema": "jwm1-basheval-ab/1",
+ "order": "R1-base,R2-lever,R3-lever,R4-base (interleaved counterbalanced)",
+ "all_runs_kept": true,
+ "arms": {
+  "R1_base": {
+   "n": 5,
+   "encoder_ane_median_ms": 5257.89,
+   "all_gates": true
+  },
+  "R2_lever": {
+   "n": 5,
+   "encoder_ane_median_ms": 5112.205,
+   "all_gates": true
+  },
+  "R3_lever": {
+   "n": 5,
+   "encoder_ane_median_ms": 5111.258,
+   "all_gates": true
+  },
+  "R4_base": {
+   "n": 5,
+   "encoder_ane_median_ms": 5225.007,
+   "all_gates": true
+  }
+ },
+ "paired": {
+  "base_pooled_median_ms": 5248.9310000000005,
+  "lever_pooled_median_ms": 5111.7315,
+  "lever_delta_ms": -137.19950000000063,
+  "R1_vs_R4_drift_ms": -32.88300000000072,
+  "R2_vs_R3_drift_ms": -0.9470000000001164
+ },
+ "noise_band_ms": 190,
+ "decision_rule": "|lever_delta| < 190 => NEUTRAL; lever_delta < -190 => real win; > +190 => regression"
+}
