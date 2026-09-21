@@ -1,0 +1,82 @@
+{
+ "arm": "C-built-lever",
+ "schema": "jwm1-ab-perf-battery/1",
+ "runs": [
+  {
+   "run": "meas-1",
+   "encoder_ane_ms": 5132.061,
+   "total_ms": 6483.256,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-2",
+   "encoder_ane_ms": 5039.261,
+   "total_ms": 6399.881,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-3",
+   "encoder_ane_ms": 5032.905,
+   "total_ms": 6384.5,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-4",
+   "encoder_ane_ms": 5207.271,
+   "total_ms": 6515.734,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-5",
+   "encoder_ane_ms": 5101.518,
+   "total_ms": 6445.485,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  }
+ ],
+ "encoder_ane_median_all5_ms": 5101.518,
+ "encoder_ane_median_runs2_5_ms": 5070.3895,
+ "total_median_all5_ms": 6445.485,
+ "all_goldens_bitexact": true,
+ "all_status_match": true,
+ "all_prefix_104": true
+}

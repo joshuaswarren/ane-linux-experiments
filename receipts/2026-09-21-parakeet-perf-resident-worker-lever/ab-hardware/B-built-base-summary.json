@@ -1,0 +1,82 @@
+{
+ "arm": "B-built-base",
+ "schema": "jwm1-ab-perf-battery/1",
+ "runs": [
+  {
+   "run": "meas-1",
+   "encoder_ane_ms": 5107.569,
+   "total_ms": 6478.282,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-2",
+   "encoder_ane_ms": 5120.516,
+   "total_ms": 6435.133,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-3",
+   "encoder_ane_ms": 5221.066,
+   "total_ms": 6616.175,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-4",
+   "encoder_ane_ms": 5164.259,
+   "total_ms": 6490.144,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-5",
+   "encoder_ane_ms": 5145.542,
+   "total_ms": 6515.212,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  }
+ ],
+ "encoder_ane_median_all5_ms": 5145.542,
+ "encoder_ane_median_runs2_5_ms": 5154.9005,
+ "total_median_all5_ms": 6490.144,
+ "all_goldens_bitexact": true,
+ "all_status_match": true,
+ "all_prefix_104": true
+}
