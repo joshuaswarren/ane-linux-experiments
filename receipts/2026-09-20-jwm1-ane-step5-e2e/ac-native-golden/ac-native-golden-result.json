@@ -1,0 +1,106 @@
+{
+ "schema": "ac-native-golden/1",
+ "date": "2026-09-20",
+ "criterion": "EXACT fp16 equality (+-0), unchanged \u2014 never adjusted from results",
+ "accumulation_class": "fp32-accumulate single rounding, K<=512, not chunked (static derivation)",
+ "authenticity": {
+  "A/q_v": "994117d96d9a54ab30d650ed117a0870934afc27a21c7c00dcc569a5f94c3a42",
+  "A/pos_kT": "7d659505b2eb495b0b96405ad20b07492cc0db594f5180f28687ee1bb77f04ab",
+  "A/q_scaled": "53330f1d9933991cdab727c8d53d705b37cec0843cb0eb72fe7e97b184f1d992",
+  "A/k_headsT": "3c49482206d9365efc4ac09d6e0d4ccb9bd2d4e0ac04ec554bfb5c2a74d07fa7",
+  "C/probs": "c2cbfaa9a03f66c20a53df2c470290cf740a13038f0e9f840c32728d7fe4a64c",
+  "C/v_heads": "e1f6e0db2cba181d88e85f26e08b50d4f60c6b181e7054eeb572b5184f4b1217"
+ },
+ "islands": {
+  "A_matmul_0": {
+   "output": "matmul_0",
+   "elements": 1125000,
+   "exact_pass": false,
+   "mismatch_count": 162265,
+   "max_abs": 0.00390625,
+   "ulp_histogram_top": {
+    "0": 962735,
+    "-1": 93837,
+    "1": 48217,
+    "-2": 3990,
+    "3": 3391,
+    "2": 3353,
+    "-6": 1066,
+    "6": 822
+   },
+   "per_head_corr": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "device_sha256": "311e0f48c6010996236864b3698b214c6c42e59a04492a40b52c38b6685b7b74"
+  },
+  "A_attention_scores_1": {
+   "output": "attention_scores_1",
+   "elements": 2247000,
+   "exact_pass": false,
+   "mismatch_count": 8369,
+   "max_abs": 0.25,
+   "ulp_histogram_top": {
+    "0": 2238631,
+    "1": 5968,
+    "-1": 2214,
+    "2": 51,
+    "-2": 27,
+    "-3": 19,
+    "3": 13,
+    "-4": 10
+   },
+   "per_head_corr": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "device_sha256": "227dafa2e179b1c1856e7389cf0711dae4045fc098e677d9daeb43f3da870737"
+  },
+  "C_attn_output_1": {
+   "output": "attn_output_1",
+   "elements": 384000,
+   "exact_pass": false,
+   "mismatch_count": 108391,
+   "max_abs": 0.0078125,
+   "ulp_histogram_top": {
+    "0": 275609,
+    "1": 42061,
+    "-1": 35457,
+    "2": 6655,
+    "-2": 5591,
+    "3": 3035,
+    "-3": 2504,
+    "4": 1602
+   },
+   "per_head_corr": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "device_sha256": "363843c2ea372e3fb0eeae869e59bb056d58f8ab63f8e64d7578318a703bfbc3"
+  }
+ },
+ "native_golden_crosscheck": {
+  "matmul_0_fresh_equals_staged_ref": true,
+  "attn_output_fresh_equals_staged_ref": true
+ },
+ "device_ms": 95.6,
+ "verdict_exact_criterion": "FAIL"
+}

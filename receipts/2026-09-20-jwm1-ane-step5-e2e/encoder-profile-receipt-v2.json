@@ -1,0 +1,37 @@
+{
+  "schema": "jwm1-encoder-stage-profile/2",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "supersedes": "encoder-profile-receipt.json v1 (retracted: additive-class percentages summed to 7.7 s against a 5.25 s wall — fields nest; dominates/ranking claims unsupported as stated)",
+  "method": "parent/child timing tree derived from CODE field definitions (vulkan_encoder.py _submit_resident :790-846; ane_resident.py submit :161-227 with explicit doc comments), then measured on existing battery reports (out-meas-1/5/10). Non-overlapping critical path reported. Main directive: tree before zero-copy architecture; smallest measured copy-removal first; no speculative overlap.",
+  "field_definitions_from_code": {
+    "marshal_ns": "host input serialization: mx.eval + ascontiguous + tobytes per round (parent, sibling)",
+    "elapsed_ns": "wraps session.submit(): write_ns (request+inline payloads to worker stdin) + child round; SIBLING of marshal",
+    "child elapsed_ms": "worker-internal: recv + stage + exec + read + send-back",
+    "child stage_ms": "worker input staging share",
+    "child save_ms": "worker output retrieval share",
+    "read_ns": "DEFINED AS elapsed_ns - write_ns (residual incl. worker compute wait)",
+    "back_ns": "host output conversion frombuffer + mx.array (parent, sibling)",
+    "ane.exec_ms": "SUM OF SESSION-ROUND WALL (exec_ns += elapsed), NOT device execution — v1 mislabeled this"
+  },
+  "non_overlapping_critical_path_ms": {
+    "stage_wall_meas_1": 5252.735,
+    "segments": [
+      {"segment": "marshal (host input serialization)", "ms": 2067.4, "pct": 39.4},
+      {"segment": "session round (write 317.3 + worker round 978.0 + parent-side IPC/handoff ~736.7 = ane.exec_ms)", "ms": 1714.7, "pct": 32.6},
+      {"segment": "back (host output conversion)", "ms": 79.6, "pct": 1.5},
+      {"segment": "GPU feeder + loop orchestration (residual)", "ms": 1391.0, "pct": 26.5}
+    ],
+    "sum_check": "2067.4 + 1714.7 + 79.6 + 1391.0 = 5252.7 EXACT",
+    "stability": "meas-5 and meas-10 within ~1.5% per segment (marshal 2117.6/2087.0, round 1674.5/1663.1, residual 2291.2/2245.7)"
+  },
+  "worker_internal_bound": "pure ANE device exec is NOT directly recorded; it nests inside worker elapsed_ms 978.0 ms, bounded above by ~430 ms after removing stage_ms 230.0 + save_ms 315.0 (recv/read/send shares unrecorded) => device exec <= ~8% of stage; ANE compute is not the encoder-stage bottleneck",
+  "io_volume_per_pass": {"input_MB": 164.5, "output_MB": 180.3, "rounds": 48, "note": "payloads travel inline on worker stdin/stdout (file round trip already removed per ane_resident.py docstring); remaining copies are host-side tobytes/frombuffer + pipe"},
+  "smallest_measured_copy_removal_candidates": [
+    "marshal tobytes per round: preallocate/reuse contiguous buffers or zero-copy export (preserves ownership: parent keeps mx arrays alive through round; lifetime: buffer consumed before next round mutates inputs; hash checks: output sha pins unchanged)",
+    "save_ms output retrieval share (315 ms sum): stream outputs once instead of retrieve+save",
+    "both require one measured A/B each with golden 104/104 + mel/hidden/transcript hash gates per run"
+  ],
+  "explicitly_not_claimed": ["no zero-copy architecture proposal before this tree", "no speculative overlap of GPU feeder (exact flow still being mapped)", "static marker/K derivation supports the existing exact contract; it is not proof all numerical paths are native-identical"],
+  "stability_sources": ["out-meas-1", "out-meas-5", "out-meas-10 reports"]
+}
