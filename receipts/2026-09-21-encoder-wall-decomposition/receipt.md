@@ -102,3 +102,26 @@ metric = per-island elapsed_ns split already in e2e-report.json.
   session's own earlier commands were killed; pid 12585
   (run-pd-dirmodel-persist.sh, GPUHardwareContinuation lane) identified
   as protected and left untouched.
+
+## Round 3: patched-worker pipeline battery — LANED (measured win)
+
+m1max-host full fused_e2e battery with worker-cli-v2-16 (raw write(2) emit,
+serve protocol intact), 1 warm + 5 meas, identity in
+/var/tmp/encwall-decomp/v2-20260921T173940/identity.txt (worker
+65aab8c1): encoder_ane median **3452.5 ms** vs 3486.7 ms with the
+stock worker measured the same session — **−34.2 ms (−1.0%)** — and
+every run green: 6/6 gold bit-exact (mel 5b54f4a9, hidden 38c73261,
+transcript db501a8c), 104/104 prefix, status match. llama-server
+stopped before, restored + verified active after.
+
+LANDED CHANGE: raw write(2) emit in overlay/tools/mlx-omarchy-ane-worker/
+main.cpp (patch: main.cpp.orig [m1-host lineage] / main-m1max-host.cpp [m1max-host]),
+built via the direct g++ CLI recipe. To propagate: apply the same patch
+to the canonical tools/mlx-omarchy-ane-worker/main.cpp and rebuild via
+build-wheel.sh lineage; the CMake target-name collision (backend defines
+mlx-omarchy-ane-worker before tools/) should also be fixed upstream so
+plain ninja builds the right binary.
+
+In-process ctypes shim: not implemented this run (budget); the scoped
+design in the previous section stands — C shim over AneWorker::submit
+linking worker_libane.cpp/bundle.cpp/manifest.cpp.
