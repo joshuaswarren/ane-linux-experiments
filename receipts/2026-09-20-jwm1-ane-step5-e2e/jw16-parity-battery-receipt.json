@@ -1,0 +1,31 @@
+{
+  "schema": "jw16-parity-battery/1",
+  "date": "2026-09-21",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "trigger": "Main's jw16 memory-health fix (paused experimental 459603, relocated 8 Gi /tmp nondestructive; 38 Gi available); Distill's post-fix op-diag + fast-ops suite released (0/12288 CPU, native Metal mismatches max_abs 0); Main sequenced jw16 ASR battery immediately after Distill RELEASE",
+  "protocol": "stop llm-inference -> flock /tmp/m1-gpu.lock -> run 1 warm + 10 measured AC placement -> unlock -> restart llm-inference -> health 200; TAKE/RELEASE pings issued (Main, GPUparity, Distill)",
+  "results": {
+    "runs": 10,
+    "gates_per_run": "status=match, matching_prefix=104, mel/hidden/transcript goldens bit-exact",
+    "all_gates": true,
+    "encoder_ane_ms": {"median_all10": 3405.8525, "median_runs2_10": 3409.415, "min": 2172.812, "max": 3566.844, "note": "meas-10 is an outlier at 2172 ms; measured run, gated; warm + all 10 reported verbatim"},
+    "total_ms_median_all10": 4750.945,
+    "placement": "AC (islands A+C on ANE, B + remaining encoder ops on GPU); 1 submission / 1 worker start per run",
+    "executor": "/var/tmp/V071REL-venv/bin/python fused_e2e.py; venv mlx-omarchy 0.32.3.dev202609210458+ca3a8ed (canonical wheel, pre-distill-fix rebuild per branch q38-rmsnorm-two-round @ 5a879c8e)"
+  },
+  "service_recovery": {
+    "stop": "sudo systemctl stop llm-inference",
+    "flock": "nonblocking /tmp/m1-gpu.lock acquired (nonblock) and held for the full battery",
+    "restart": "sudo systemctl restart llm-inference",
+    "post_run_health": "200 OK on /v1/models (authed) and /health; flock re-acquired by systemd-managed llama-server (production restored)"
+  },
+  "evidence": {
+    "run_pids": "background nohup launches under bash; per-run python child pids in jw16-parity-1.log; battery completed 00:30:51 CDT",
+    "log": "/tmp/jw16-parity-1.log on jwm1 (= /home/joshuawarren/jw16-battery-pull/jw16-parity-1.log); pulled to repo",
+    "outputs": "/tmp/jw16-parity-out/meas-1..10/e2e-report.json + mel.npy + encoder_hidden.npy + transcript.txt + token_ids.json + encoder_mask.npy + waveform.npy per run",
+    "summary": "/tmp/jw16-parity-out/battery-summary.json (also in repo evidence/)"
+  },
+  "divisor_honesty": "matched-native T6001/M1-Max divisor does NOT EXIST (verified earlier this cycle; jw16 macOS timing run pending, user OS-switch authorized, queued after Linux gates); reported baseline = M1 Ultra 292.2 ms whole-pipeline ANE CROSS-CHIP (caveat). This battery's encoder-stage medians 3405.9 ms are NOT divided against any divisor — cross-chip 292.2 cannot divide an encoder-stage ms; raw medians recorded only.",
+  "correctness": "exact A/C island FAIL preserved (separate); no tolerance changes; 104/104 + golden hash gates enforced per run",
+  "coordination": "EncoderFloor window still in flight (jwm1); restore-pinned-and-verify.sh staged on their RELEASE; Apple adapter delegate finalized the A and C island extractions on macstudio (compiled+evaluated successfully); T6001 native Mac retrieval queued after Linux gates"
+}

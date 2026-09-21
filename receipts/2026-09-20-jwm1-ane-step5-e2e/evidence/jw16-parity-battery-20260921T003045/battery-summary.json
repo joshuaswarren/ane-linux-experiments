@@ -1,0 +1,90 @@
+{
+ "schema": "jw16-parity-battery/1",
+ "runs": [
+  {
+   "run": 1,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3393.202,
+   "total_ms": 4744.195,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 2,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3454.941,
+   "total_ms": 4801.989,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 3,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3488.08,
+   "total_ms": 4819.09,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 4,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3402.29,
+   "total_ms": 4748.335,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 5,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3566.844,
+   "total_ms": 4910.256,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 6,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3368.721,
+   "total_ms": 4710.15,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 7,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3364.211,
+   "total_ms": 4702.401,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 8,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3409.415,
+   "total_ms": 4767.368,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 9,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 3416.897,
+   "total_ms": 4753.555,
+   "goldens_bitexact": true
+  },
+  {
+   "run": 10,
+   "status": "match",
+   "prefix": "104",
+   "encoder_ane_ms": 2172.812,
+   "total_ms": 3484.542,
+   "goldens_bitexact": true
+  }
+ ],
+ "encoder_ane_median_all10_ms": 3405.8525,
+ "encoder_ane_median_runs2_10_ms": 3409.415,
+ "total_median_all10_ms": 4750.945,
+ "all_gates": true,
+ "runs_count": 10
+}
