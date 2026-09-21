@@ -1,0 +1,97 @@
+{
+ "schema": "apple-remediation/1",
+ "date": "2026-09-21",
+ "host": "macstudio M1 Ultra (Mac13,2)",
+ "runtime": {
+  "aneforge_version": "0.1.dev1",
+  "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83",
+  "chip": "Apple M1 Ultra"
+ },
+ "input_shas": {
+  "A_q_v": "5fce9812b72d12e1e8bd20a9d5438749e6ddddcadc184d9fe8ec62c58bb2d0fb",
+  "A_k_headsT": "9291d21d78e93b9e28274b82e8429d37ab180f009f5e70c242713e8204fc0a57",
+  "A_pos_kT": "36d679743122f74bbef72a04590132ed88bc6716dcd6ff5effef726186dbe043",
+  "C_probs": "74d39036fd0f11e7c5a3e7e442af669cd831801a0f4e4996f7c59f5b858528f8",
+  "C_v_heads": "749e9687ed7dc3317c9f6ddc307dd2440768c33a7632ad5eccca8f82a38dec08"
+ },
+ "identity_test": {
+  "compile_ms": 993.3,
+  "eval_ms": 4.5,
+  "attention_scores_1_all_zero": true,
+  "matmul_0_exact_match": false,
+  "matmul_0_max_abs_dev_from_hand_computed": 7.62939453125e-06,
+  "pass": false
+ },
+ "A_rebuilt": {
+  "mil": "/Users/joshuawarren/ac-capture/island-A-correct/model.mil",
+  "mil_sha256": "fe2c3b41a5be6ea0814b3e2df7ab8cc6a61deb09ad1cca058f5bfd70def115e9",
+  "weights_bin": "symlink -> e5rt-pair3/weights.bin (sha 95be02ec168f3c3d4eee9db5d9eac8187bc050c99fc1c3672c95f8adbcdbe5cb)",
+  "func_params": [
+   "q_v",
+   "k_headsT",
+   "pos_kT"
+  ],
+  "const_7": "INLINE fp16 literal 0x1.0p-3 (=0.125); BLOBFILE path ABANDONED - pair3 blob offsets bind WRONG bytes (blob-record headers, not payload); see blob_binding_finding",
+  "compile_ms": 892.5,
+  "eval_ms": 4.1,
+  "outputs": {
+   "attention_scores_1": {
+    "sha256": "5d78e3b314f935cff00feab2f6776949a92557890dd48ba00dcf85f677dba986",
+    "max_abs": 0.03125,
+    "mean_abs": 4.028960029245354e-05,
+    "mismatch_frac": 0.024992434356920338,
+    "ulp_hist": {
+     "ulp0": 2190842,
+     "ulp1": 49762,
+     "ulp2": 2598,
+     "ulp3_5": 2127,
+     "gt5": 1671,
+     "total": 2247000
+    }
+   },
+   "matmul_0": {
+    "sha256": "6ed7e08419630af3abc6046ed7b7ba88de89e12de0d25028804ccb74113adc58",
+    "max_abs": 0.00390625,
+    "mean_abs": 4.0205974073614925e-05,
+    "mismatch_frac": 0.13162222222222222,
+    "ulp_hist": {
+     "ulp0": 976925,
+     "ulp1": 122050,
+     "ulp2": 10952,
+     "ulp3_5": 8328,
+     "gt5": 6745,
+     "total": 1125000
+    }
+   }
+  }
+ },
+ "C_reverify": {
+  "prior_run_sha256": "7da14973b68e5be561249817e17a48d7aa2b3c2d1936ab7900f9ffcc3468e30d",
+  "this_run_sha256": "7da14973b68e5be561249817e17a48d7aa2b3c2d1936ab7900f9ffcc3468e30d",
+  "byte_identical": true,
+  "compile_ms": 460.7,
+  "eval_ms": 1.4,
+  "output": {
+   "sha256": "7da14973b68e5be561249817e17a48d7aa2b3c2d1936ab7900f9ffcc3468e30d",
+   "max_abs": 0.0625,
+   "mean_abs": 7.030609413050115e-05,
+   "mismatch_frac": 0.0248671875,
+   "ulp_hist": {
+    "ulp0": 374451,
+    "ulp1": 8543,
+    "ulp2": 419,
+    "ulp3_5": 329,
+    "gt5": 258,
+    "total": 384000
+   }
+  }
+ },
+ "blob_binding_finding": {
+  "symptom": "BLOBFILE scalar bound a wrong value (effective 0.033975 vs expected 0.125; ratio 0.2718 constant across all outputs)",
+  "file_bytes_at_declared_offset": "0xBEEF sentinel + version (blob-record header), not payload",
+  "search": "neither fp16(0.125) nor effective-scalar bytes exist anywhere in the 64KB window; 0.125 absent from region",
+  "scope": "ALL 740 BLOBFILE refs in pair3-derived e5rt programs are suspect; params-only paths (C island, attention_scores_1) are proven correct",
+  "workaround": "inline typed scalar literals (fp16(0x1.0p-3)) instead of BLOBFILE for scalars; weight TENSORS still need a working blob path (open defect)"
+ },
+ "overall_pass": false
+}
