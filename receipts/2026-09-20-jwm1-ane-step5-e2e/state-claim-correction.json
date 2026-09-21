@@ -1,0 +1,13 @@
+{
+  "schema": "jwm1-state-claim-correction/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification",
+  "correction": {
+    "retracted_claim": "my 23:1x report to Main: 'fresh rootfs wiped ALL /var/tmp lane state — ane.ko, e167 driver, overlay lanes, bundles, libane.so, today's run artifacts GONE; ANE lane needs full device re-provisioning'",
+    "why_wrong": "I inferred from the fresh-OS reinstall label + uptime instead of inspecting the filesystem. Same boot (boot_id 0100e724-9d7b-4d5a-9d4a-5a145b0949ab — matches the debug-receipt core-dump path), up 7h31m, uptime proves no reinstall reboot occurred after the morning clean install",
+    "verified_actual_state": "ALL lane paths intact: /var/tmp/jwm1-ane-step2 complete (ane-v064-wt, bundles*/full/new, libane.so, fused-e2e incl. all overlay lanes + out-asr + every const-reuse/perf-battery run dir, island-run, schema4-bundle, soak); ane module Live; /dev/accel/accel0 present; e167+fckey drivers at /tmp/mesa-sin-ftz-jwm1/drivers — independently confirmed by Main's live SSH before my check",
+    "what_actually_changed": "ssh host keys + authorized_keys only (live rekey/reprovision ~23:00, no reboot): old LAN pin 1yW4MOFY... replaced by X+ry0MQX... (user-confirmed legitimate), authorized_keys reprovisioned id_rsa_2025-only. My id_app.pub re-provision restored the prior access state; host key re-pin done under user authorization"
+  },
+  "lesson": "verify filesystem state by observation before declaring loss — the receipts discipline I enforce on others applies to my own claims",
+  "receipts_unaffected": "all pushed repo receipts and pulled evidence were and remain authoritative"
+}
