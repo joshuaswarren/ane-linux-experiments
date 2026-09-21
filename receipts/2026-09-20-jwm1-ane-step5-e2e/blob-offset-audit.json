@@ -1,0 +1,26 @@
+{
+  "schema": "jwm1-blob-offset-audit/1",
+  "date": "2026-09-21",
+  "owner": "AsrFullGateVerification",
+  "trigger": "Main: STOP narrative; record payload_offset often ABSOLUTE file offset, not relative; verify with actual hexdump; no consolidation root cause without code + actual correct payload; actual native vs Linux arrays priority",
+  "verified_facts": {
+    "weights_bin_size": 1460376896,
+    "mil_blobfile_offset_for_const_7": 475477696,
+    "raw_bytes_at_declared_offset": "efbeadde 01000000 02000000 00000000 800ee001 00000000",
+    "parsed_as_blob_record": {
+      "magic": "0xdeadbeef",
+      "version": 1,
+      "byte_count": 2,
+      "data_offset_field": 31460992
+    },
+    "hypothesis_1_absolute": {"payload_at_abs_31460992": "fp16=0.033966064453125", "expected": 0.125, "match": false},
+    "hypothesis_2_relative": {"payload_at_declared_plus_31460992": "fp16=-0.498046875", "match": false},
+    "neither_interpretation_yields_0.125": "the BLOBFILE offset 475477696 does NOT point to fp16(0.125) under either absolute or relative data_offset interpretation",
+    "fp16_0125_occurrences": "31 even-aligned positions found in the file — the value exists but NOT at any position derivable from the declared BLOBFILE offset",
+    "first_20_fp16_in_file": "all near-zero / header data — the first blob record starts at the beginning of the file"
+  },
+  "interpretation": "The BLOBFILE offset 475477696 points to a blob record whose data_offset field (31460992) does NOT lead to fp16(0.125) under either absolute or relative interpretation. The consolidation (or the original emission) placed the const_7 payload at a different location than the MIL BLOBFILE offset resolves to. The identity test (effective scalar 0.034 instead of 0.125) confirms this: the e5rt dispatch read a wrong fp16 value from the wrong file position. This is a CONSOLIDATION/emitter bug — the BLOBFILE offsets in the MIL do not match the actual blob positions in the consolidated weights.bin.",
+  "what_is_needed_for_a_correct_fix": "trace the consolidation script (or the emitter) to determine the correct offset mapping: for each original per-file blob, what position does it occupy in the consolidated weights.bin? Then update the MIL BLOBFILE offsets to point at the correct absolute positions.",
+  "actual_native_vs_linux_arrays": "STILL PENDING — cannot do a valid Apple-vs-Linux comparison until the BLOBFILE offset mapping is corrected (or BLOBFILE is bypassed via inline scalars for the weight tensors too, which is impractical for 1.4 GB of weights). The inline-scalar Apple execution (already done) is the only valid Apple-executed measurement so far, and it used inline literals (not BLOBFILE) for the tested scalars, so those results are VALID but limited to the inline-scalar subset.",
+  "criterion": "exact A/C FAIL preserved; numpy reference remains the comparator; no tolerance changes"
+}
