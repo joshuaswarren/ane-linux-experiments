@@ -1,0 +1,12 @@
+=== Phase 1: baseline (profile OFF) ===
+  3 rounds, no profile keys: OK (3 records)
+=== Phase 2: profile ON ===
+  5 rounds OK. Sample profile[0]:
+    encode_ns: 4.43 us
+    write_call_ns: 8.95 us
+    first_byte_ns: 20157.08 us
+    output_read_ns: 7.25 us
+    header_lines_ns: 0.00 us
+    trailing_ns: 0.18 us
+    elapsed_ns: 20190.23 us
+=== ALL PROFILE INVARIANTS PASS ===
