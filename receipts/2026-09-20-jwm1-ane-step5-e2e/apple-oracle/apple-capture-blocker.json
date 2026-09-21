@@ -1,0 +1,21 @@
+{
+  "schema": "apple-ac-capture-blocker/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "job": "Apple-executed A/C island goldens via existing native tools (Main-authorized, no go/no-go)",
+  "state": {
+    "staged_and_preserved_on_macstudio": "/Users/joshuawarren/ac-capture/ (encoder-source 1.4 GB incl. model.mil + model-root blobs; capture inputs sha-pinned; driver ac-capture-mac.py; ANEForge venv)",
+    "attempt": "ANEForge _runtime.E5RT().compile(model.mil, inputs={input_features:(1,3000,128), attention_mask:(1,3000)}, outputs={encoder_hidden, encoder_mask}) on macstudio (M1 Ultra, H13D family — cross-SoC diagnostic, caveat explicit)",
+    "blocker": "e5rt compile fails at MIL parse: 'model.mil:1:8: Unexpected token type: got 1 when expecting FP' — the Linux-exported MIL uses a program(1) header with an EXTERNAL blob store (weights in model-root/), while e5rt expects a self-contained MIL+weight-pool container",
+    "bounded_attempt_exhausted": "runtime API audit done (E5RT.compile/Program.eval verified as the right entry points); dialect/container adapter is real dev work, not a config fix",
+    "adapter_options_ranked": [
+      "embed the model-root blob pool into the MIL container in the e5rt-expected layout (needs the e5rt container spec — ANEForge _compile.py emits its own nets; study its container writer)",
+      "Apple-side island sub-MIL extraction (replicate the Linux island extraction on the Apple compiler path)",
+      "mint-style synthetic capture for the batched-matmul geometry (loses authentic-input property; NOT equivalent)"
+    ]
+  },
+  "retraction": "state-claim-correction.json (19fb53a) stands; one wording amendment per Main: the ~23:00 key/authorized_keys change mechanism is NOT established as 'live rekey' — user-confirmed legitimate reinstall context + stale routing; same boot (0100e724) rules out a reinstall reboot; all lane state verified intact",
+  "correctness": "exact A/C island FAIL preserved (device-side measurement 311e0f48/363843c2 vs numpy reference); no tolerance changes; Apple-executed comparison pending the container adapter",
+  "coordination": "EncoderFloorPipelineFix macstudio window respected (held, fired only after their burst went quiet, co-tenancy noted); Distill informed of staging + jwm1 CPU build non-conflict",
+  "device_state": "jwm1 intact and idle (boot 0100e724, ane Live, accel0 present, all lane state present); macstudio: staged kit preserved, nothing running"
+}
