@@ -10,8 +10,11 @@ stage-matched performance parity path, implementation + measurements`)
 
 1. Coordinate explicit hardware lease with `FleetM1Encoder` (jwm1) or
    `FleetM1MaxGPU` (jw16). Do not take `/tmp/m1-gpu.lock` without ack.
-2. Keep 104/104 functional pins and the **same-stage divisor 137.951 ms
-   encoder wall** (NOT total transcription 258 ms) distinct in every claim.
+2. Keep 104/104 functional pins distinct from any cross-SoC native
+   reference (the 137.951 ms M1 Max number is CROSS-SOC context, NOT
+   same-SoC parity evidence). The 259.9 ms jwm1 macOS-27 number is
+   CROSS-OS-GENERATION and is **removed entirely** from this slice per
+   Main directive. **No ratio-to-native is computed.**
 3. Report actual microbench source, measured bottleneck, real runtime
    lever, and regression.
 4. Do NOT imply a CPU-only micro-bench is ANE full-pipeline parity.
@@ -31,18 +34,23 @@ stage-matched performance parity path, implementation + measurements`)
 - No destructive command executed on jwm1. No `pkill`/`kill` anywhere.
   Local host: `omp-studio-local`. Target host for hardware: `jwm1` over `ssh`.
 
-## 2. 104/104 pins vs 137.951 ms vs 258 ms
+## 2. 104/104 pins and the (now-stripped) native references
 
 | quantity | value | where it comes from | scope |
 |---|---:|---|---|
 | 104/104 functional pins | n/a | `receipts/2026-09-20-jwm1-ane-step5-e2e/` (jwm1) + `.../evidence/jw16-parity-battery-20260921T003045/` (jw16) — 10/10 warm + measured on each SoC, all three golden hashes bit-exact | full ASR transcript correctness, both SoCs |
-| **Encoder stage median (jwm1)** | 5,217.4 ms | `.../perf-battery-receipt.json`, AC placement, resident-batch transport | T8103 ANE + e167 GPU fork, Linux |
-| Encoder stage median (jw16) | 3,405.9 ms | `.../jw16-parity-battery/.../battery-summary.json` | T6001 ANE + e167 GPU fork, Linux |
-| **Encoder divisor (macOS M1 Max native)** | **137.951 ms median** | `receipts/2026-09-17-parakeet-macos-timing-t8103`, single-shot | **same-encoder stage only**, CoreML context, NOT end-to-end |
-| Total transcription (macOS) | ~258 ms | same receipt | full transcript wall, NOT the divisor |
+| **Encoder stage median (jwm1)** | 5,243.345 ms (this run 2026-09-21) | `.../baseline-reconfirm/battery-summary.json`, AC placement, resident-batch transport | T8103 ANE + e167 GPU fork, Linux |
+| Encoder stage median (jw16) | 3,405.9 ms (inherited) | `.../jw16-parity-battery/.../battery-summary.json` | T6001 ANE + e167 GPU fork, Linux |
 
-The slice compares **encoder stage wall** to **137.951 ms**, never to
-258 ms, never to total-ASR. Enforced in `00-path.md`.
+**Native macOS references are NOT a comparison divisor in this slice:**
+
+- 137.951 ms jw16 native macOS M1 Max single-shot encoder wall — CROSS-SOC
+  (T8103/M1 vs T6001/M1 Max); **NOT same-SoC parity evidence**.
+- 259.9 ms jwm1 native macOS-27.0/CoreML-3600 same-SoC T8103 — removed
+  entirely; CROSS-OS-GENERATION vs the M1 Ultra reference (macOS
+  26.6.2 / CoreML 3520); per Main directive, no ratio computed.
+- 258 ms jw16 total transcription (not the encoder wall) — same
+  cross-SoC caveat, not used as a divisor.
 
 ## 3. Micro-bench source — what was actually run
 
@@ -99,31 +107,69 @@ or ANE worker internals (out of this lane). The 6.45 ms regression on a
 meaningful signal — it is a single-digit-percent CPU-side overhead that
 the bench itself measured negative.
 
-## 5. Real runtime lever — none proven, none proposed
+## 5. Real runtime lever — end-to-end profile of read_residual/write_ns
 
-After the L1 micro-bench, the **only honest conclusion** is that this lane
-cannot propose a measured positive lever from the resident-client layer
-inside one bounded pass. The conditions under which a non-compiler lever
-becomes plausible:
+Per Main directive (2026-09-21 IRC): "profile read_residual 1397 ms and
+write 317 ms end-to-end, separating blocking execution/IPC/copies without
+double-counting, then implement smallest measured bottleneck fix with
+failing-first check and real 104 pin/time rerun under lease."
 
-- The `write_ns 317 ms` segment is bounded above by the request-line
-  encode + `os.write` syscall. The current code is already optimal.
-- The `back 79.6 ms` segment is bounded by `mx.array().reshape()` cost;
-  pre-allocation does not help because `mx.array` always allocates.
-- The `IPC wait 419 ms` segment requires a worker-side protocol change
-  (pre-flushed stdout per output) — that is **not** in this lane.
+What the inherited decomposition does NOT separate (gap this slice will
+close in next step):
 
-What this lane CAN recommend as next steps (NOT done, NOT measured, NOT
-parity):
+- `write_ns 317 ms` is one wall number; it does not separate (a)
+  parent CPU encode + `os.write` syscall cost, (b) pipe transport to
+  worker stdin, (c) worker recv overhead, (d) anything else.
+- `read_residual 1397 ms = round - write` lumps (a) blocking-on-
+  worker-exec 978 ms, (b) parent IPC wait after worker exec done, (c)
+  parent CPU copy of output bytes, all into one bucket.
+- `back 79.6 ms` = `np.frombuffer + mx.array().reshape()` per output;
+  doesn't separate the frombuffer copy from the mx.array allocation.
 
-1. Worker-side: have `mlx-omarchy-ane-worker` flush stdout per output
-   payload rather than per job. Bounded by 419 ms; unmeasured.
-2. GPU feeder moves (compiler lane, FleetM1Encoder): move `conv` 297 ms
-   and const 783 ms to ANE — would require compiler coverage of the
-   remaining encoder ops and is the dominant remaining lever
-   (parent-receipt scope; not this lane).
-3. Re-measurement after the parent-side lever lands, with the same
-   `perf-battery.sh` protocol.
+What this lane WILL do next (in this lane, on jwm1):
+
+1. Add explicit `time.monotonic_ns()` instrumentation inside
+   `ane_resident.py:submit()` around (a) the pre-write `_write_bytes`
+   call, (b) the per-output `_read_exact` calls, (c) the trailing
+   `_readline` that returns the job status line. Use a per-round
+   `record` dict extension (additive, no schema break) under a new
+   env var `ANE_RESIDENT_PROFILE=1` so the existing code path is
+   untouched when the flag is off.
+2. Add explicit timing inside `vulkan_encoder.py:_submit_resident`
+   around (a) `mx.eval + np.asarray + tobytes` per input, (b)
+   `session.submit` (already times this), (c) `np.frombuffer +
+   mx.array().reshape` per output. Same `ANE_RESIDENT_PROFILE=1`
+   guard.
+3. Build a **mock worker harness** (`tools/mock_resident_worker.py`)
+   that replays the exact wire protocol with synthetic data so the
+   instrumentation is unit-tested without `/dev/accel`. Failing-first
+   check: instrumented round-trip produces non-overlapping per-
+   segment breakdowns that sum to within 1 % of the round wall.
+4. Failing-first unit test:
+   `tests/test_resident_profile_invariants.py` that (a) runs N rounds
+   through the mock worker with the profile flag on, (b) asserts
+   `marshal_ns + round_ns + back_ns == wall_ns ± 1%`, (c) asserts
+   `write_ns + read_residual_ns == round_ns`, (d) asserts all
+   segments ≥ 0. The test FAILS pre-fix because the code lacks the
+   instrumentation.
+5. Real jwm1 lease re-run with `ANE_RESIDENT_PROFILE=1`, capture
+   per-segment breakdown across 1 warm + 5 measured runs.
+6. From the measured breakdown, identify the **smallest** segment that
+   has actual slack (e.g. `parent IPC wait after worker exec done`).
+   Implement a byte-equivalent lever there with a focused failing-
+   first test that proves the change moves the right thing.
+7. Re-measure under lease with hash gates intact (104/104 + mel/
+   hidden/transcript golden sha).
+
+What this lane CANNOT do (out of scope):
+
+- Worker-side protocol changes (e.g. per-output stdout flush) —
+  belongs to the ANE worker owner.
+- GPU feeder ops (const 783 + conv 297 ms) — belongs to the GPU
+  compute lane (FleetM1MaxGPU on jw16); this slice will share
+  measurements, not take the implementation.
+- Compiler-emitted op coverage (ANI matmul/conv/silu/norm/linear/
+  concat remaining) — FleetM1Encoder's lane.
 
 ## 6. Regression — what I am NOT claiming
 

@@ -40,16 +40,15 @@
     "placed_bundles": ["island-attn-a-kt", "island-pv"]
   },
   "divisor": {
-    "macos27_same_encoder_divisor_ms": 259.9,
-    "true_native_encoder_divisor_ms": 137.951,
-    "source": "receipts/2026-09-17-parakeet-macos-timing-t8103",
-    "scope": "macOS CoreML context, T8103 M1 Max native; same-encoder stage only, NOT end-to-end",
-    "comparison_rule": "encoder_ane_ms (Linux) vs same-encoder stage (macOS) — NEVER total-ASR vs encoder-divisor mixing"
-  },
-  "ratio_to_native_divisor": {
-    "vs_259.9_ms": 5243.345 / 259.9 = 20.17,
-    "vs_137.951_ms": 5243.345 / 137.951 = 38.01,
-    "honest_disclosure": "ratio to either divisor reflects full encoder stage wall (mx.eval readiness wait + GPU feeder + ANE + I/O) vs native one-shot core ANE+GPU pipeline; not a parity claim; not transport-attributable"
+    "REMOVED_259.9": "Per Main directive (2026-09-21 IRC): the 259.9 ms jwm1 macOS-27.0/CoreML-3600.25.2 same-SoC T8103 number (receipts/2026-09-18-t8103-divisor-macos27.md) is CROSS-OS-GENERATION relative to the macOS 26.6.2/CoreML-3520 software stack used for the original M1 Ultra reference. It is removed from this slice as an apples-to-apples divisor.",
+    "cross_soc_context_only": {
+      "jw16_native_M1Max_encoder_median_ms": 137.951,
+      "jw16_native_M1Max_total_transcription_ms": 258,
+      "jw16_native_M1Max_runs": "20 (all 104/104 pin runs)",
+      "scope": "CROSS-SOC reference only: jwm1 (T8103/M1) Linux vs jw16 (T6001/M1 Max) macOS native. NOT same-SoC parity evidence.",
+      "comparison_rule_enforced": "Any 5243.345 / 137.951 number is INDICATIVE only; cross-SoC compiler/ANE schedule differences are not controlled for. NOT a parity claim. NOT a transport-attributable claim."
+    },
+    "no_ratio_claimed": "Per Main directive, no ratio-to-native is computed in this slice. The 5243.345 ms encoder-stage median is reported on its own, with stage decomposition inherited from parent receipts."
   },
   "comparison_to_parent_baseline": {
     "parent_perf_battery_2026_09_20": {

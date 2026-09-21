@@ -21,11 +21,16 @@ proven on `receipts/2026-09-20-jwm1-ane-step5-e2e/` and
    `mil-hwx-compiler` workspaces. FleetM1Encoder owns compiler; we coordinate
    via `hub` and never touch their tree.
 3. The **stage-matched** performance parity path: encoder stage on
-   jwm1 / jw16 vs. the native macOS M1 Max oracle of **137.951 ms median
-   encoder wall** (`receipts/2026-09-17-parakeet-macos-timing-t8103`, T8103
-   macOS 27 same-encoder divisor). **NEVER total-ASR vs encoder-divisor**
-   mixing; that rule is enforced by the `encoder_ane_ms` field on every
-   measured run.
+   jwm1 / jw16, with NO native parity claim. The 137.951 ms number
+   (`receipts/2026-09-17-parakeet-macos-timing-t8103` lineage) is the
+   jw16 native macOS M1 Max single-shot encoder wall — **CROSS-SOC**
+   (T8103/M1 vs T6001/M1 Max) and **NOT same-SoC parity evidence** per
+   Main directive (2026-09-21 IRC). The 259.9 ms jwm1 macOS-27 same-SoC
+   divisor is **removed entirely** from this slice because it is
+   CROSS-OS-GENERATION (CoreML 3600 vs 3520) relative to the M1 Ultra
+   reference. Per Main: **no ratio-to-native is computed; the
+   encoder-stage wall is reported on its own**, with stage
+   decomposition inherited from parent receipts.
 
 ## Current measured baseline (inherited, untouched)
 
@@ -34,13 +39,17 @@ Source: `receipts/2026-09-20-jwm1-ane-step5-e2e/perf-battery-receipt.json`
 
 | host | encoder_ane_ms median (all 10) | total_asr_ms median (all 10) | n |
 |---|---:|---:|---:|
-| jwm1 (T8103, restored) | 5217.4 | 6569.0 | 10 |
-| jw16 (T6001) | 3405.9 | 4750.9 | 10 |
-| macOS M1 Max (T8103, native) | **137.951** (divisor) | ~258 (total transcription) | 20 |
+| jwm1 (T8103, restored, Linux) | 5243.345 (this run 2026-09-21) | 6589.852 | 10 |
+| jw16 (T6001, Linux) | 3405.9 (inherited 2026-09-21) | 4750.9 | 10 |
 
-Ratio to native encoder: jwm1 ~37.8×, jw16 ~24.7×. The AC-place + ANE-island
-pipeline is functional and pinned; the gap to the 138 ms native divisor is
-real and stage-level.
+**No native macOS divisor is reported here.** The 137.951 ms M1 Max
+native encoder number is CROSS-SOC context (T8103/M1 vs T6001/M1 Max)
+and is NOT same-SoC parity evidence. The 259.9 ms jwm1 native divisor
+is CROSS-OS-GENERATION (macOS 27.0/CoreML 3600 vs the M1 Ultra
+reference's macOS 26.6.2/CoreML 3520) and is removed entirely from
+this slice. Both AC-place + ANE-island pipelines are functional and
+pinned at 104/104 + three golden sha; the encoder stage wall is reported
+on its own.
 
 ## Stage decomposition (inherited, from
 `receipts/2026-09-20-jwm1-ane-step5-e2e/encoder-profile-receipt-v2.json`
@@ -121,16 +130,18 @@ pin gates, and the gain summed from the published decomposition.
 - **Total pipeline (mel + decoder + TDT + detok):** out of scope for the
   encoder-vs-native comparison.
 
-## Expected cumulative gain (estimate, not measured)
+### Expected cumulative gain (estimate, NOT measured)
 
 L1 + L2 + L3 in the most-favorable case: 30-50 + 50-150 + 30-50 =
 **110-250 ms saved** out of 5,252 ms (2-5 %). That brings the jwm1
-encoder_ane median to ~5,000-5,140 ms — far from the 138 ms divisor but a
-verified, gate-preserving improvement.
+encoder_ane median to ~5,000-5,140 ms — a verified, gate-preserving
+improvement on the encoder stage wall alone.
 
-The 20×-gap closure requires GPU feeder moves (out of lane) and ANE op
-coverage (compiler lane, FleetM1Encoder). The remaining gap after L1-L3
-honestly reported, not papered over.
+The 20-38×-style gap to any native macOS number is **NOT closed**
+without GPU feeder moves (out of lane, belong to GPU compute owner) and
+ANE op coverage (compiler lane, FleetM1Encoder). The remaining gap after
+L1-L3 is honestly reported, not papered over. **No ratio-to-native is
+computed in this slice.**
 
 ## What "OWN" means here
 

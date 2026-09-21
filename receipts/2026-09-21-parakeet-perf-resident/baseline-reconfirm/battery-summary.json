@@ -143,12 +143,10 @@
       "prefix_104": "104"
     }
   ],
-  "encoder_ane_median_all10_ms": 5243.345,
-  "encoder_ane_median_runs2_10_ms": 5238.92,
-  "total_median_all10_ms": 6589.852,
-  "macos27_same_encoder_divisor_ms": 259.9,
-  "divisor_context_caveat": "macOS CoreML context; same-encoder stage claim only, not end-to-end",
-  "all_goldens_bitexact": true,
-  "all_status_match": true,
-  "all_prefix_104": true
+ "encoder_ane_median_all10_ms": 5243.345,
+ "encoder_ane_median_runs2_10_ms": 5238.92,
+ "total_median_all10_ms": 6589.852,
+ "all_goldens_bitexact": true,
+ "all_status_match": true,
+ "all_prefix_104": true
 }
