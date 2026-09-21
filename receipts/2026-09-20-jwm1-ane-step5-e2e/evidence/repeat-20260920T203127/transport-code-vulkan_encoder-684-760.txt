@@ -1,0 +1,74 @@
+# Transport-mode proof — vulkan_encoder.py lines 684-760 (sha256 789aaec31029fe625713b82ca24ae95eab47604e6a6992e7378f6a57f7e4af74)
+# Pulled from /var/tmp/encwall-v071/base/vulkan_encoder.py on jwm1, 2026-09-20 ~20:35 CDT
+# Decisive lines: 698-708 (mode doc), 737-744 (default resident-batch, only launch|resident-batch valid)
+
+# Island bundles the encoder handlers may submit to. The resident session
+# preloads exactly the registered sites: the static defaults below, extended
+# at index time with every bundle the placed set can submit (the oproj
+# family registers island-oproj-L* per layer).
+RESIDENT_BUNDLES = (
+    "island-attn-a-kt",
+    "island-select-8head",
+    "island-pv",
+)
+class AneIsland:
+    """One bounded submit to the physical ANE through mlx-omarchy-ane-worker.
+    ANE_ISLAND_MODE picks the path:
+    launch (default) -- one process per submit: the worker CLI takes a
+    single bundle and a single input set, so a 24-layer encoder needs one
+    launch per island per layer.
+    resident-batch -- one private ``--serve`` worker for the whole pass and
+    ONE batch scope: every layer's island submit is a round inside a single
+    deadline-bounded batch (ANE_ISLAND_BATCH_DEADLINE_MS, default 120000).
+    One process, one bundle load, one bounded unit for all 72 submits; a
+    failed round or a deadline miss ends the session and is reported, never
+    retried.
+    """
+    def __init__(self, worker: Path, libane: Path, bundles: Path, scratch: Path,
+                 deadline_ms: int = 20000):
+        self.worker = worker
+        self.libane = libane
+        self.bundles = bundles
+        self.scratch = scratch
+        self.deadline_ms = deadline_ms
+        self.scratch.mkdir(parents=True, exist_ok=True)
+        self.submissions = 0
+        self.worker_starts = 0
+        self.rounds = 0
+        self.input_bytes = 0
+        self.output_bytes = 0
+        self.exec_ns = 0
+        # Host-side split around the timed submit: marshal_ns covers turning
+        # input mx tensors into wire bytes (mx.eval + ascontiguous + tobytes),
+        # back_ns covers turning output bytes into mx tensors (frombuffer +
+        # mx.array). Everything ane_exec does not explain between the island
+        # statement and its result lives in these two or in session open.
+        self.marshal_ns = 0
+        self.back_ns = 0
+        self.timeouts = 0
+        self.batch_open_ns = 0
+        self.log: list[dict] = []
+        # Default transport is the serve worker (spawn paid once): jw16
+        # measured resident-batch beating launch by ~730-830 ms with all
+        # pins EXACT - the per-submit spawn+init+bundle cost is not
+        # hideable behind GPU feeder compute (data-dependent serial chain,
+        # no independent GPU work during spawn windows).
+        self._mode = os.environ.get("ANE_ISLAND_MODE", "resident-batch")
+        if self._mode not in ("launch", "resident-batch"):
+            raise EncoderRunError(
+                f"ANE_ISLAND_MODE {self._mode!r} is not launch or resident-batch"
+            )
+        self._batch_deadline_ms = int(
+            os.environ.get("ANE_ISLAND_BATCH_DEADLINE_MS", "120000")
+        )
+        self.resident_bundles = set(RESIDENT_BUNDLES)
+        self._session = None
+    def close(self) -> None:
+        """Release the resident session; a no-op on the launch path."""
+        if self._session is None:
+            return
+        session, self._session = self._session, None
+        try:
+            session.end_batch()
+        except Exception as error:
+            raise EncoderRunError(f"resident batch close failed: {error}") from error
