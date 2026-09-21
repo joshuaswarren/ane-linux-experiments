@@ -1,0 +1,37 @@
+{
+  "schema": "jwm1-sigsegv-catalog-pincheck-applegolden/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "sigsegv_catalog": {
+    "classification": "REAL stock-driver defect, cataloged with runtime identity (Main-corrected wording; not dismissible as a harness-only artifact)",
+    "defect": "stock Mesa 26.2.3 libvulkan_asahi.so SEGV_MAPERR in pipeline creation for mlx-omarchy custom kernels (Parakeet encoder graph)",
+    "offending_binary": {"path": "/usr/lib/libvulkan_asahi.so", "sha256": "57754e462f81d0bb227a71af97642b7542a1532c554a11b70c0593a08110f5db", "build_id": "048ae88836f911a4587f152237447917f1c4cba6"},
+    "host_runtime": {"host": "jwm1-linux", "kernel": "7.1.13-3-2-ARCH", "mesa": "26.2.3", "python": "3.14.7"},
+    "stack": "frames 0-6 all inside libvulkan_asahi.so (+0x30cb04/+0x13d838/+0x13e414/+0x13e934 region, pipeline creation path); captured via coredumpctl (cores 42271/42332/42458, 21:57-22:00 CDT, preserved)",
+    "reproduction": "deterministic without the e167 fork pin; cache-independent (bisected); independent second reproduction of the 18:08 debug-receipt crash signature",
+    "workaround": "e167 fork driver (sha 7087acce, BuildID ac55e1bc) runs the identical graph clean",
+    "fail_closed_launcher_pin": {
+      "implemented_in": "const-reuse-lane/fused_e2e.py (active lane harness)",
+      "behavior": "before any GPU submit: read /proc/self/maps for libvulkan_asahi*; refuse stock catalog sha by name (named E2eError, no crash); refuse sha mismatch if MLX_OMARCHY_EXPECTED_VULKAN_SHA256 set; record+print mapped driver otherwise",
+      "verified_fail_path": "no VK_DRIVER_FILES -> E2eError 'stock libvulkan_asahi mapped (cataloged SEGV...)' BEFORE any submit (verified on device)",
+      "verified_pass_path": "ICD pinned -> '[driver-pin] mapped=.../libvulkan_asahi-e167.so sha=7087acce...' + full run green 104/104 (verified on device)",
+      "rollout_note": "shared base harness (fused-e2e/fused_e2e.py) rollout is a harness-owner decision — flagged to Main"
+    },
+    "mesa_owner_coordination": "catalog entry sent to GPUparityroot-causeaudit (Mesa lane) — no unsafe re-probe required; cores preserved"
+  },
+  "apple_golden_inspection": {
+    "existing_capture_IS_apple_executed": {
+      "producer": "CoreML end-to-end, compute_units=ane",
+      "device": "Apple M1 Ultra (Mac13,2)",
+      "framework": "coreml 3520.5.1, macOS 26.6.2 (25G83)",
+      "timestamp": "2026-09-12T15:48:00Z, reference_commit 75aec2a",
+      "encoder_hidden_sha256": "7e442034cb42521f7b76ec9645e8d0082899a5f551ea8d046c62a9283cc6e4e5",
+      "status": "ALREADY the pinned golden_capture in every run — Apple full-encoder ANE golden exists and is in use"
+    },
+    "what_is_missing": "island-level (A/C) Apple-executed outputs — CoreML end-to-end exposes no intermediates; requires the macOS .anec-runner dev item extended to the batched-matmul island template (208 TDs, graph e0daeb7f) with authentic staged inputs and compiler pinned c2cf32e4",
+    "oracle_verification": "existing mint.sh/make_capture.py do NOT match: synthetic single geometries {oproj,mm1,mm2} via standalone ane-compile-hwx bridge; scoped dev item deferred pending Main priority",
+    "recorded_hashes": {"executed_graph": "e0daeb7fd056f79f97a1552a1e11b0a92146dd480dcec216fac750613ea1b745", "toolchain": "c2cf32e4aa0200d72cecbce203bf6b47f50f729e", "capture_manifest_sha256s": "see manifest.sha256 (all 11 files, verified)", "staged_inputs": "stage-manifest.json sha-pinned (A: q_v/pos_kT/q_scaled/k_headsT; C: probs/v_heads)", "outputs": "A_matmul_0.out 311e0f48, C_attn_output_1 363843c2 (device, this lane)"}
+  },
+  "multipass_scope_note": "5 encoder passes + one ASR tail is NOT 5 full-ASR runs — scoped correctly in multipass-receipt.json; any speed claim requires matched-native warm resident-mode comparison (pending)",
+  "criterion": "exact A/C island FAIL preserved until actual Apple-executed island evidence exists; no tolerance changes"
+}
