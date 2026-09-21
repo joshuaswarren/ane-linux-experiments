@@ -1,0 +1,28 @@
+{
+  "schema": "jw16-identity-verification/1",
+  "date": "2026-09-21",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "trigger": "Main flagged identity inconsistency: 'canonical ca3a8ed' vs my '5a879c8e wheel' vs 'V071REL env' need exact installed dist/lib sha/maps not label",
+  "actual_identity_observed": {
+    "dist_pinned": "0.32.3.dev202609190758+50eeb29 (50eeb29 wheel, NOT ca3a8ed)",
+    "mlx_core_module_origin": "/var/tmp/V071REL-venv/lib/python3.14/site-packages/mlx/core.cpython-314-aarch64-linux-gnu.so",
+    "mlx_core_sha256": "211710c72b7672438763219d4ec5923e6c75df6041ade645cffe79fd0c2cecbc (unchanged bytes; the changed-compiler gate on jwm1 shipped ca3a8ed; jw16 venv is the older 50eeb29 — this is what the battery ACTUALLY ran under)",
+    "loaded_libmlx_path": "/var/tmp/V071REL-venv/lib/python3.14/site-packages/mlx/lib/libmlx.so",
+    "loaded_libmlx_sha256": "df3d4e74c597956c5b80f1ce4f5b3268114c40f1ccf8aa275732a74863acd95e",
+    "loaded_libvulkan_asahi": "/usr/lib/libvulkan_asahi.so sha b1ad6306b596f6ac8ee4823b31cdbe194c19f9a71df12651a3dbe80... (STOCK driver — the jw16 battery ran with NO VK_DRIVER_FILES, mapping to the cataloged SEGV-driver — this battery was successful because the encoder graph on jw16's 50eeb29 wheel does NOT trigger the same Honeykrisp pipeline-creation crash as the jwm1 ca3a8ed pair3 work; the SEGV catalog still applies to jwm1 — do NOT extrapolate this jw16 success to jwm1)",
+    "ane_module": "Live, srcversion E1B035ACD965D9CB62F91AC, /dev/accel/accel0 present",
+    "worker_binary": "/var/tmp/jw16-oproj-place/mlx-omarchy-ane-worker sha 6b63261aa65021e6c1b18de822d952c78f3c1f6b546e2f1e7d7b689754ce6c97 (jw16 transplant; NOT the 944f2a86 jwm1-native one — I noted earlier that my known-working identity assumed jwm1 worker sha; jw16's worker is the jw16-oproj transplant)",
+    "libane_binary": "/var/tmp/jw16-oproj-place/libane-strict-fill.so sha 04a176532b60d47285aa051a8c0635b8742b0126d37d4eaacb53577779aa73de (NOT the jwm1 1ab9d95d libane.so)",
+    "fused_e2e_script": "/var/tmp/ParakeetE2EJw16/fused_e2e.py sha 0e38e7b15a36d9a8244bd523ff6845f6b44cb7ad4a7444dc30e8177e97cabb97 (matches jwm1 source; shared via the relay)",
+    "bundles_used": "/var/tmp/jw16-conv-place/bundles-conv/*/manifest.json shas recorded per run in evidence/jw16-parity-battery-20260921T003045/meas-*-e2e-report.json"
+  },
+  "corrections_to_pushed_receipt_001f564": [
+    "Wheel label: the jw16 battery ran under 50eeb29 (NOT ca3a8ed) — the ca3a8ed was jwm1's changed-compiler gate; my report mislabeled the jw16 wheel",
+    "libmlx sha: jw16 df3d4e74 (NOT 9d9d73f6 which is jwm1 ca3a8ed)",
+    "Worker sha: jw16 6b63261a (jw16-oproj transplant; NOT 944f2a86 which is jwm1-native)",
+    "Libane sha: jw16 04a17653 (NOT 1ab9d95d which is jwm1 libane.so)",
+    "Driver: jw16 ran with NO VK_DRIVER_FILES (stock /usr/lib/libvulkan_asahi mapped) — the cataloged stock SEGV was NOT triggered on jw16 (the encoder graph on 50eeb29 succeeds); the SIGSEGV catalog applies to jwm1, NOT jw16"
+  ],
+  "no_speed_claim": "encoder-stage medians 3405.9 / total 4750.9 ms are recorded verbatim; no divisor divided (T6001 native pending per Main)",
+  "verification_method": "pip show mlx-omarchy + sha256sum of core + child python probe of /proc/self/maps for libmlx/libvulkan_asahi (per Main's 'need actual maps not label')"
+}
