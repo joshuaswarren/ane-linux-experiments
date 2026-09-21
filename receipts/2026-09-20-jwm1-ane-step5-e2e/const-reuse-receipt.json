@@ -1,0 +1,24 @@
+{
+  "schema": "jwm1-const-reuse-boundary/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "directives_answered": [
+    "const source audit + measured reuse of the EXISTING cache (no cross-process architecture)",
+    "actual cache hit/miss/count/bytes traced, docstring-contradiction question resolved",
+    "explicit boundary mx.eval diagnostic (replaces the <=30 ms inference)",
+    "overhead language corrected: n=3 vs n=2 within noise = 'no detectable overhead', not 'timers free'"
+  ],
+  "boundary_diagnostic": {"boundary_reeval_ms": 0.011, "method": "explicit mx.eval of encoder-stage inputs immediately before stage entry, then re-eval timed", "conclusion": "NO pending GPU work crosses the encoder stage boundary — rigorous replacement for the earlier round-1-excess inference"},
+  "const_cache_reuse": {
+    "mechanism_traced": "eval_const stores values[name] into const_values when flag on (vulkan_encoder.py:1220-1227); run() restores self.values = dict(self.const_values) and resets non-const stmts (:1886-1893); pass-2 const statements are dict inserts",
+    "const_wall_pass1_ms": 937.5,
+    "const_wall_pass2_ms": 2.1,
+    "reuse_ratio": "~446x — docstring contradiction RESOLVED: restore is genuinely cheap; the 937 ms is one-time per-process materialization of 1865 consts (1,205,531,988 bytes = ~1.206 GB, matching the ~1.15 GB residency comment)",
+    "why_batteries_paid_it_every_run": "single-pass harness (one fused_e2e invocation = one pass) can never hit the cache by construction; cache only amortizes across in-process passes",
+    "smallest_lever_if_wanted": "multi-pass in-process driving (reuse existing cache as-is) — no cross-process persistence architecture needed or proposed"
+  },
+  "pass2_verification": {"hidden_bitidentical_to_pass1": true, "pass2_total_ms_note": "receipt field said 4918445.3 due to a x1000 unit slip in the overlay patch; corrected value 4918.4 ms (pass 2 slightly faster than pass 1 as expected without const materialization)"},
+  "segfault_note": "first driver attempt (custom direct-EncoderRunner python drive) segfaulted in-process regardless of cache flag (bisection: cache=0 also SIGSEGV) — abandoned for the proven fused_e2e overlay stack; overlay lane: const-reuse-lane/ (fused_e2e.py two-pass patch + base vulkan_encoder.py + ane_resident.py)",
+  "criterion": "exact A/C island FAIL preserved separately; full-ASR 104/104 pass separate; no tolerance changes",
+  "artifacts": {"on_jwm1": "/var/tmp/jwm1-ane-step2/fused-e2e/const-reuse-run-20260920T220207/ (const-reuse-result.json, stdout.log, e2e-report.json)", "in_repo": "const-reuse-driver.py, const-reuse-run.sh, this receipt"}
+}
