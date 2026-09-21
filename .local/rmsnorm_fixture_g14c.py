@@ -76,6 +76,16 @@ def cmp(name, got):
         rel = np.sqrt(np.sum((got.astype(np.float64) - ref32.astype(np.float64)) ** 2)) / np.sqrt(np.sum(ref32.astype(np.float64) ** 2))
         row["vs_fp32ref_maxabs"] = float(d_ref.max())
         row["vs_fp32ref_relL2"] = float(rel)
+    # PRESERVED MISMATCH CASES for the postfix-candidate gate (Main-directed):
+    # every element where the GPU output differs from the chosen-contract
+    # composite (n1), with got/n1 values — the postfix wheel must clear these.
+    mis = np.nonzero(got.view(np.uint32).ravel() != n1_np.view(np.uint32).ravel())[0]
+    row["mismatch_vs_n1"] = [{"idx": int(i),
+                              "gpu": float(got.ravel()[i]),
+                              "n1": float(n1_np.ravel()[i]),
+                              "gpu_bits": hex(int(got.view(np.uint32).ravel()[i])),
+                              "n1_bits": hex(int(n1_np.view(np.uint32).ravel()[i]))} for i in mis]
+    row["mismatch_count_vs_n1"] = int(mis.size)
     return row
 
 rows = [cmp("gpu_fast_rms_norm", gpu_fast32), cmp("gpu_naive_bf16", gpu_naive),
