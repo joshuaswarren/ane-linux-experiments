@@ -1,0 +1,14 @@
+{
+  "schema": "jwm1-op-wall-retake/1",
+  "date": "2026-09-21",
+  "owner": "AsrFullGateVerification",
+  "compiler": "ca3a8ed (canonical wheel, libmlx 9d9d73f6 BF16 RMSNorm shader parity fix)",
+  "comparison_baseline": "5b18306 (stage3-diag-20260920T214902, old compiler)",
+  "per_op_wall_ms": {
+    "new_ca3a8ed": {"total": 5049, "matmul": 3903.0, "const": 773.0, "conv": 286.0, "linear": 25.4, "layer_norm": 16.4, "add": 9.8, "mul": 8.5, "transpose": 7.0, "slice_by_index": 5.6},
+    "old_5b18306": {"total": 5084, "matmul": 3916.5, "const": 782.9, "conv": 297.2, "linear": 26.4, "layer_norm": 16.7, "add": 9.6, "mul": 8.0, "transpose": 6.7, "slice_by_index": 5.7}
+  },
+  "finding": "Per-op walls UNCHANGED within noise (all deltas < 2%); the ca3a8ed BF16 RMSNorm shader parity fix does not alter the encoder-stage op-wall distribution. The matmul-dominated profile (77%) persists — optimization target remains the island submit path, not the new compiler.",
+  "gates": "status=match, 104/104, goldens bit-exact confirmed on the new compiler",
+  "criterion": "unchanged"
+}
