@@ -285,3 +285,34 @@ ownership under `/tmp/jw14-gpu.lock`; Hybrid committed zero device actions for t
 - Host (persistent): `/var/tmp/mesa-095cb/` (driver aade2693, ICD, probe), `/var/tmp/jw14-bench/`
   (venv c28a485f libmlx, harness pins in `logs/pins.sha`, leg logs)
 
+
+
+---
+
+# ADDENDUM 4 (2026-09-21 ~04:36Z): Distill BF16 RMSNorm matched fixture on G14C (Main-directed, Distill spec)
+
+Fixture: Distill's `oprefs_cpu.safetensors` sha `3e24495a…` (jw16 → workstation → jw14m2, sha-verified each
+hop); x [6,2048] bf16 recorded embed output (flat 12288 in file), w0 [2048] bf16 checkpoint weight, n1
+[6,2048] bf16 CPU-composite reference; eps 1e-6, bf16 in/out. Harness `rmsnorm_fixture_g14c.py` (torch-free
+manual safetensors parse). Note: the bundle's `n1_fp32ref` is 73728 elems — shape does not match the [6,2048]
+RMSNorm op (belongs to another op in the op-refs set); skipped, flagged to Distill.
+
+| implementation | vs n1 maxabs | vs n1 bitexact | vs two-round | vs single-round |
+| --- | ---: | ---: | ---: | ---: |
+| gpu_fast_rms_norm (G14C Vulkan, fused) | 0.125 (1 bf16 ulp at \|out\|≈21.7-33) | 0.8183 | 0.8183 | **0.9995** |
+| gpu_naive bf16 (explicit ops, G14C) | 0.25 | 0.7329 | 0.7329 | 0.6855 |
+| cpu_tworound (my ref, Distill formula) | 0.0 | 1.0 | 1.0 | 0.8178 |
+| cpu_singleround | 0.125 | 0.8178 | 0.8178 | 1.0 |
+
+- My cpu_tworound reproduces Distill's n1 composite EXACTLY (0.0/1.0) — reference implementations agree.
+- **G14C fused kernel follows SINGLE-ROUND rounding (99.95% bit-exact vs single-round; 1 of 12288 differs)**,
+  while Distill's native Metal point (M1 Ultra H13D, mlx 0.32.2) was bit-identical to the TWO-ROUND
+  composite. jw16 Vulkan matched my result class (maxabs 0.125 vs composite).
+- Reading: the bf16 RMSNorm weight-multiply rounding ORDER differs Metal vs Vulkan-fused on this fixture.
+  This is the numeric provenance the distill-model G14C-vs-native comparison needs: G14C Vulkan carries a
+  ~1-ulp composite delta by construction, NOT a G14C defect. Generic bf16 envelope (18 configs, hidden
+  1024/2048/5120 × eps {1e-6,1e-5} × scale {1,1e-3,1e3}): gpu_fast bit-exact vs bf16-rounded-fp64-ref
+  ≥ high fraction, max 0.5 ulp; naive path worse (0.5 ulp, lower bitmatch) — use the fused kernel.
+- Runtime pins: wheel 5b18306, libmlx c28a485f, mlx_lm 0.31.3, safetensors 0.8.0, numpy 2.5.3, fixture
+  3e24495a, script + logs in `evidence/distill-rmsnorm/`. Fixture leg PID was ephemeral (script exited on
+  completion); durable log = `rmsnorm-fixture-g14c.log`.

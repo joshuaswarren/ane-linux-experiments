@@ -1,0 +1,41 @@
+[rtmod] SUBMIT tid=2073 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=2073 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+fixture keys: {'a': ((192,), 'f32-view'), 'b': ((192,), 'f32-view'), 'conv_out': ((49152,), 'f32-view'), 'gate_logits': ((1536,), 'f32-view'), 'gdn_k': ((12288,), 'f32-view'), 'gdn_out': ((24576,), 'f32-view'), 'gdn_q': ((12288,), 'f32-view'), 'gdn_v': ((24576,), 'f32-view'), 'gn': ((24576,), 'f32-view'), 'l0_out': ((12288,), 'f32-view'), 'mlp_out': ((12288,), 'f32-view'), 'n1': ((12288,), 'f32-view'), 'n1_fp32ref': ((73728,), 'f32-view'), 'n2': ((12288,), 'f32-view'), 'qkv': ((49152,), 'f32-view'), 'r_attn': ((12288,), 'f32-view'), 'w0': ((2048,), 'f32-view'), 'x': ((12288,), 'f32-view'), 'z': ((24576,), 'f32-view')}
+shapes: (6, 2048) (2048,) (6, 2048) None
+[
+ {
+  "impl": "gpu_fast_rms_norm",
+  "vs_n1_maxabs": 0.125,
+  "vs_n1_bitexact_frac": 0.8182779947916666,
+  "vs_tworound_bitexact_frac": 0.8182779947916666,
+  "vs_singleround_bitexact_frac": 0.99951171875,
+  "out_abs_max": 33.0
+ },
+ {
+  "impl": "gpu_naive_bf16",
+  "vs_n1_maxabs": 0.25,
+  "vs_n1_bitexact_frac": 0.73291015625,
+  "vs_tworound_bitexact_frac": 0.73291015625,
+  "vs_singleround_bitexact_frac": 0.6854654947916666,
+  "out_abs_max": 33.25
+ },
+ {
+  "impl": "cpu_tworound",
+  "vs_n1_maxabs": 0.0,
+  "vs_n1_bitexact_frac": 1.0,
+  "vs_tworound_bitexact_frac": 1.0,
+  "vs_singleround_bitexact_frac": 0.8177897135416666,
+  "out_abs_max": 33.0
+ },
+ {
+  "impl": "cpu_singleround",
+  "vs_n1_maxabs": 0.125,
+  "vs_n1_bitexact_frac": 0.8177897135416666,
+  "vs_tworound_bitexact_frac": 0.8177897135416666,
+  "vs_singleround_bitexact_frac": 1.0,
+  "out_abs_max": 33.0
+ }
+]
+[rtmod] COMMIT-NOOP
