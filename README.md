@@ -19,6 +19,52 @@ The out-of-box install plan is [docs/omarchy-ane-out-of-box-plan.md](docs/omarch
 
 Older Qwen speed and parity numbers are in `receipts/` and [crossover results](docs/crossover-results.md).
 
+## Qwen3.8 MLX decode and prefill matrix (2026-09-21)
+
+Measured Qwen3.8 decode and prefill rates on Apple M-series laptops with the
+mlx runtime: Apple Metal on macOS and the omarchy Vulkan backend on Asahi
+Linux. Same physical SoC is paired across both operating systems where a
+switch was possible. Numbers are greedy (temperature 0) with a fixed
+100-prompt corpus, 32 generated tokens, warmup runs, then measured repeats;
+each receipt records the runtime distribution and version, the OS, the model
+and tokenizer hashes, the selected backend and adapter evidence, thermal
+readings, medians with dispersion, and an ordered per-record token hash.
+
+The 2-bit-identical model file (Qwen3.8-2B, 4-bit mlx, 1,059,404,429 bytes)
+is byte-identical on every host. Results are preliminary until each cell is
+re-run with the corrected metadata harness; the run script is
+`benchmarks/qwen38-mlx-bench.py` (native runtime) and
+`benchmarks/qwen38-serve-bench.py` (OpenAI-compatible server clients).
+
+| Hardware | OS | Model | Backend | Prefill (tok/s, median) | Decode (tok/s, median) |
+|---|---|---|---|---|---|
+| M1, 8 GB | Omarchy (Asahi) | Qwen3.8-2B 4-bit | mlx omarchy Vulkan | 17.8 (preliminary) | 18.4 (preliminary) |
+| M1 Max, 64 GB | Omarchy (Asahi) | Qwen3.8-2B 4-bit | mlx omarchy Vulkan (adapter: Apple M1 Max G13C) | 36.6 (52.6 pure 512, single-run) | 34.2 |
+| M2 Max | Omarchy (Asahi) | Qwen3.8-2B 4-bit | mlx omarchy Vulkan (adapter: Apple M2 Max G14C) | 47.2 (75.8 pure 512, single-run) | 45.0 |
+| M1 Max, 64 GB | Omarchy (Asahi) | Qwen3.8-27B Q4_K_M | llama.cpp Vulkan (production server) | n/a (TTFT 2.3 s median) | 7.2 |
+
+Notes and honesty rules for this table:
+
+- The mlx omarchy backend refuses any non-Apple Vulkan physical device by
+  default (admission check in the shipped runtime), and a loader trace during
+  execution names the Apple adapter (M1 Max G13C / M2 Max G14C) as the
+  enumerated device, so the measured cells ran on the Apple GPU, not llvmpipe.
+- Prompt-through-first-token rates and pure prefill (512-token prompt, no
+  generated token, recorded as `pure`; single run, prompt derived from the
+  same corpus file by join-and-repeat to 512 tokens) are separate metrics; the prefill
+  column is prompt-through-first-token unless marked pure. The 27B row is an
+  API-client measurement of a thinking model whose 32 generated tokens are
+  mostly reasoning tokens; TTFT is given in seconds instead, and the rate is
+  an SSE chunk rate until a usage-verified rerun.
+- Outputs are deterministic per host across passes. Token streams are NOT
+  byte-identical across hosts, so no cross-operating-system or cross-SoC
+  ratio is claimed as parity: with verified identical inputs, 8 of 10
+  prompts matched byte-exactly and 2 diverged at token 19 or later.
+- macOS cells are pending an owner-approved operating system window; they
+  will be added with the same protocol when measured.
+- Raw per-run receipts stay outside the repository.
+
+
 ## Qwen reference workflow
 
 The locked macOS reference uses the real
