@@ -1,0 +1,32 @@
+{
+  "schema": "jwm1-perf-battery-receipt/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "window": "Ran inside NativeQ4ExactReproduction's explicit handoff: literal RELEASE message 'RELEASE — candidate-2 window complete, jwm1 free' received 21:0x CDT after their candidate-2 gated window (their outcome: correctness PASS, perf-rejected — their lane, separate)",
+  "protocol": "warm + 10 measured runs, resident-batch transport (ANE_ISLAND_MODE unset; code default proven vulkan_encoder.py:741), identity pinned once per battery",
+  "identity": {
+    "env_allowlist": {"VK_DRIVER_FILES": "/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json", "MLX_OMARCHY_PLACED": "AC", "ANE_ISLAND_MODE": "unset (code default resident-batch)", "LD_LIBRARY_PATH": "", "PYTHONPATH": ""},
+    "binaries": {"worker": "944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf", "libane": "1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49", "driver": "7087accecede1f556ed604d28fe88a8f6e5e90df202bc8cdf50c4cea51c76bfd (BuildID ac55e1bc — NOT stock 048ae888)", "encoder_runner": "789aaec31029fe625713b82ca24ae95eab47604e6a6992e7378f6a57f7e4af74", "fused_e2e": "0e38e7b15a36d9a8244bd523ff6845f6b44cb7ad4a7444dc30e8177e97cabb97", "venv_python": "c6bc1ef497b896b7575c546b13f9bafe52e2066f184fdd3fec6af4b5b6349947"}
+  },
+  "placement_partition": "AC placed per run (report ane.bundles = [island-attn-a-kt, island-pv] all 10 runs): islands A + C on T8103 ANE (24 layers x 2 = 48 ANE rounds via 1 serve worker), island B (island-select-8head) + remaining encoder ops on GPU via e167 fork",
+  "correctness_gates_all_runs": {"status": "match x10", "matching_prefix": "104 x10", "mel_hidden_transcript_bitexact": "10/10", "cpu_tensor_events": 0, "submissions_worker_starts": "1/1 x10", "timeouts": 0},
+  "encoder_stage_distribution_ms": {
+    "runs_in_order": [5252.735, 5259.929, 5111.830, 5259.236, 5232.721, 5181.039, 5078.371, 5273.757, 5202.030, 5171.751],
+    "min": 5078.371,
+    "median_all10": 5217.3755,
+    "median_runs2_10": 5202.030,
+    "max": 5273.757,
+    "spread_pct": "~3.7 (tight, stable)"
+  },
+  "total_asr_distribution_ms": {"median_all10": 6569.031, "note": "recorded for completeness; NOT used for divisor comparison per Main"},
+  "divisor_comparison": {
+    "macos27_same_encoder_divisor_ms": 259.9,
+    "source": "2026-09-17-parakeet-macos-timing-t8103",
+    "os_context_caveat": "macOS figure is CoreML-context same-encoder stage; not end-to-end and not same software stack",
+    "measured_vs_divisor_x": "~20.1x (5217.4 / 259.9)",
+    "claim_scope": "HONEST CURRENT BASELINE of the AC-partition encoder stage on the restored jwm1 Linux stack (e167 GPU fork + ANE islands). NOT a parity claim; NOT transport- or placement-attributable vs the historical ABC 72/72 diagnostic; cause attribution (GPU feeder ops, per-op submit costs, fusion gaps) requires the decomposition work Main scoped next"
+  },
+  "artifacts": {"on_jwm1": "/var/tmp/jwm1-ane-step2/fused-e2e/perf-battery-20260920T210823/ (identity.txt, battery-summary.json, out-meas-1..10/ with e2e-report.json + npy artifacts, log-*.txt, out-warm/)", "in_repo": "evidence/perf-battery-20260920T210823/ (battery-summary.json, identity.txt)", "script": "perf-battery.sh"},
+  "no_criterion_weakening": "104/104 + three golden bit-exact hashes enforced as a pass gate on EVERY measured run; all 10 passed",
+  "next": "A/C authentic-native-golden tests (owned); accumulation-order criterion derivation, no tolerance changes; device released back to shared pool"
+}

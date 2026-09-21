@@ -1,0 +1,154 @@
+{
+ "schema": "jwm1-perf-battery/1",
+ "placement_partition": "AC placed: islands A (island-attn-a-kt) + C (island-pv) on T8103 ANE per layer, B (island-select-8head) + remaining encoder ops on GPU via e167 fork; placement per run recorded from ane.bundles",
+ "runs": [
+  {
+   "run": "meas-1",
+   "encoder_ane_ms": 5252.735,
+   "total_ms": 6618.322,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-10",
+   "encoder_ane_ms": 5171.751,
+   "total_ms": 6516.964,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-2",
+   "encoder_ane_ms": 5259.929,
+   "total_ms": 6595.928,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-3",
+   "encoder_ane_ms": 5111.83,
+   "total_ms": 6432.603,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-4",
+   "encoder_ane_ms": 5259.236,
+   "total_ms": 6570.622,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-5",
+   "encoder_ane_ms": 5232.721,
+   "total_ms": 6575.893,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-6",
+   "encoder_ane_ms": 5181.039,
+   "total_ms": 6546.815,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-7",
+   "encoder_ane_ms": 5078.371,
+   "total_ms": 6426.15,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-8",
+   "encoder_ane_ms": 5273.757,
+   "total_ms": 6625.741,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-9",
+   "encoder_ane_ms": 5202.03,
+   "total_ms": 6567.44,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  }
+ ],
+ "encoder_ane_median_all10_ms": 5217.3755,
+ "encoder_ane_median_runs2_10_ms": 5202.03,
+ "total_median_all10_ms": 6569.031,
+ "macos27_same_encoder_divisor_ms": 259.9,
+ "divisor_context_caveat": "macOS CoreML context; same-encoder stage claim only, not end-to-end",
+ "all_goldens_bitexact": true,
+ "all_status_match": true,
+ "all_prefix_104": true
+}
