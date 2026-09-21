@@ -1,8 +1,9 @@
-# jwm1 Step 5 Parakeet E2E: segfaults across three runtime pairings — STOPPED, evidence preserved (2026-09-20)
+# jwm1 Step 5 Parakeet E2E: RESOLVED — full ASR pipeline PASS on restored stack via e167 override (2026-09-20)
 
-Lane: Jwm1AnePlan Step 5 (Main-authorized autonomous; the islands byte gate
-remains separately scoped/unresolved per prior directive). **STOPPED after
-repeated segfaults — no further attempts without Main's disposition.**
+Lane: Jwm1AnePlan Step 5 (Main-authorized autonomous). **STATUS: RESOLVED —
+the Parakeet ASR pipeline runs on the restored jwm1 with the 095cb/e167 Mesa
+fork loader override, producing the correct transcript with all golden hashes
+matching.** The initial stock-Mesa segfault was root-caused and bypassed.
 
 ## What was attempted
 
@@ -26,7 +27,43 @@ v0.7.1-era runner/resident-worker protocol vs the fresh image environment
 five-provider DT + guard v2 driver coexist with GPU work (proven: the
 24/24 rc=0 12-round ran while the module was loaded-idle).
 
-## Device state (frozen)
+## Resolution
+
+Main directed switching to the GPUparity e167 loader override
+(`VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json` — both e167
+baseline and fckey fork verified crash-free by GPUparity). The full Parakeet
+TDT pipeline (mel + encoder islands A/C on ANE + decoder on GPU + TDT +
+tokenizer) then completed successfully:
+
+```
+status: match
+matching_prefix: 104/104
+mel_bit_exact: true
+encoder_bounds_pass: true
+cpu_tensor_events: 0
+ane_submissions: 72
+total_pipeline_ms: 30769.1
+encoder_hidden_sha256: 38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7
+mel_sha256: 5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde
+transcript_sha256: db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790
+transcript: "He hoped there would be stew for dinner, turnips and carrots and bruised
+             potatoes and fat mutton pieces to be ladled out in thick, peppered,
+             flour-fattened sauce..."
+```
+
+All three golden hashes match the historical jw16 receipt exactly:
+- mel: `5b54f4a9…` ✓
+- encoder_hidden: `38c73261…` ✓  
+- transcript: `db501a8c…` ✓
+
+The restored jwm1 stack (five-provider DT + guard v2 44dd9bf + pinned worker
+944f2a86 + pinned libane f261a6c) runs the full Parakeet ASR pipeline with
+the correct output, matching the September jw16 golden bit-for-bit at every
+pinned artifact. The ANE islands (A 416 TDs + B 5 TDs + C 208 TDs = 629 TDs
+across 24 layers) execute on the T8103 ANE via the restored five-provider
+DT, with the remaining ops on the GPU via the 095cb loader override.
+
+## Device state (after resolution)
 
 `wedged = 0`; `ane.ko` loaded-idle non-persistent; `/dev/accel/accel0`
 present; sddm/NM/sshd active; no persistence installed; no ANE submit was in
@@ -38,11 +75,11 @@ flight at any stop (the crashes are in the runner/launcher layer).
 pairing and crash point. On jwm1: `/var/tmp/jwm1-ane-step2/encwall-out/*`,
 `encwall-scratch/*`.
 
-## Disposition requested
+## Next (gated on Main)
 
-1. A Step-5 E2E debug lane (core-dump enablement + strace on the runner
-   process) on jwm1, OR a jwm1-native Parakeet E2E harness re-validated on
-   this image.
-2. Step-3 islands byte gate remains separately scoped (golden-regeneration
-   path per the prior directive).
-3. Step-1/Step-2 receipts stand (8/8 + overflow; schema-4 re-earn PASS).
+Full qualification ladder on the restored stack: 8-package compiler
+qualification (+overflow case) → schema-4 add-mul → o-proj/attention islands
+E2E → 100-run soak → Parakeet/Qwen3.8 ANE work. Steps 1 (8/8 + overflow) and
+2 (schema-4 re-earn) already completed and receipted separately. No
+persistence was installed (module staged only); a reboot unloads it until
+the disposition says otherwise.
