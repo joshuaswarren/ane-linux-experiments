@@ -1,0 +1,12 @@
+program(1.3)
+[buildInfo = dict<string, string>({{"coremlc-component-MIL", "3520.4.1"}, {"coremlc-version", "3520.5.1"}})]
+{
+    func main<ios18>(tensor<fp16, [4, 16]> t0) {
+        tensor<int32,[1]> t1_ax = const()[name=string("t1_ax"), val=tensor<int32,[1]>([1])];
+        bool t1_kd = const()[name=string("t1_kd"), val=bool(true)];
+        tensor<fp16, [4, 1]> t1_nrm = reduce_l2_norm(axes=t1_ax, keep_dims=t1_kd, x=t0)[name=string("t1_nrm")];
+        fp16 t1_ep = const()[name=string("t1_ep"), val=fp16(0x1.1000000000000p-20)];
+        tensor<fp16, [4, 1]> t1_sn = maximum(x=t1_nrm, y=t1_ep)[name=string("t1_sn")];
+        tensor<fp16, [4, 16]> t1 = real_div(x=t0, y=t1_sn)[name=string("t1")];
+    } -> (t1);
+}

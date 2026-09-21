@@ -1,0 +1,16 @@
+compile(mask=0x4) err=11
+Traceback (most recent call last):
+  File "/Users/joshuawarren/ac-capture/ac-capture-mac.py", line 130, in <module>
+    main()
+    ~~~~^^
+  File "/Users/joshuawarren/ac-capture/ac-capture-mac.py", line 71, in main
+    prog = rt.compile(
+        str(SRC / "model.mil"),
+    ...<2 lines>...
+        cache_dir="/Users/joshuawarren/ac-capture/e5rt-cache",
+    )
+  File "/Users/joshuawarren/src/ANEForge/aneforge/_runtime.py", line 277, in compile
+    raise RuntimeError(
+      f"ane_e5rt_program_compile failed (mil={mil_path}, mask=0x{device_mask:x}). "
+      "See stderr for the actual Espresso error.")
+RuntimeError: ane_e5rt_program_compile failed (mil=/Users/joshuawarren/ac-capture/e5rt-pair3/model.mil, mask=0x4). See stderr for the actual Espresso error.
