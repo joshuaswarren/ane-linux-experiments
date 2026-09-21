@@ -1,0 +1,32 @@
+--- ane_resident.py.orig	2026-09-21 (parent receipt: 2026-09-20-m1-test-host-ane-step5-e2e)
++++ ane_resident.py.l1	2026-09-21 (ParakeetPerformance slice)
+@@ -163,11 +163,16 @@
+         job = ["submit", bundle]
+         in_bytes = 0
+         ordered = list(inputs.items())
+         for name, payload in ordered:
+             job += ["--inline", f"{name}={len(payload)}"]
+             in_bytes += len(payload)
+         for name in outputs:
+             job += ["--emit", name]
+
+-        request = bytearray(" ".join(job).encode() + b"\n")
+-        for _, payload in ordered:
+-            request += payload
++        # ParakeetPerformance L1: build the request line + payload body in
++        # ONE pre-sized bytearray instead of bytearray()+bytearray() copies.
++        # Sizes are known when job is built, so allocate once and fill by
++        # slice assignment. The wire bytes are IDENTICAL to the original
++        # (verified by hash on a captured request). bytes(request) at write
++        # time is unchanged.
++        line_bytes = " ".join(job).encode() + b"\n"
++        total = len(line_bytes) + sum(len(p) for _, p in ordered)
++        request = bytearray(total)
++        request[:len(line_bytes)] = line_bytes
++        offset = len(line_bytes)
++        for _, payload in ordered:
++            request[offset:offset + len(payload)] = payload
++            offset += len(payload)
+
+         started = time.monotonic_ns()
+         self._write_bytes(bytes(request))
