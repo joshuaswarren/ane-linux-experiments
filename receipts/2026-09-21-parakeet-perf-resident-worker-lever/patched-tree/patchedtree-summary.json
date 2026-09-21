@@ -1,0 +1,58 @@
+{
+ "schema": "patched-tree-run/1",
+ "runner": "vulkan_encoder_batcheval_runtime.py sha c7ba295c2a002372f8d3ed5e5417f1c5b82cb02a60d550c15bc234cc87748364",
+ "n": 5,
+ "encoder_ane_median_ms": 5084.151,
+ "all_gates": true,
+ "boundary_check": {
+  "mel_frontend_median_ms": 243.944,
+  "note": "compare vs base-trial mel_frontend median (~237-260ms band from today's base runs); encoder-wall-only change must not shift non-encoder stages"
+ },
+ "runs": [
+  {
+   "encoder_ane_ms": 5047.093,
+   "mel_frontend_ms": 243.944,
+   "decoder_ms": null,
+   "tdt_ms": 830.792,
+   "total_ms": 6392.166,
+   "goldens": true,
+   "status": "match"
+  },
+  {
+   "encoder_ane_ms": 5084.151,
+   "mel_frontend_ms": 246.328,
+   "decoder_ms": null,
+   "tdt_ms": 833.08,
+   "total_ms": 6474.846,
+   "goldens": true,
+   "status": "match"
+  },
+  {
+   "encoder_ane_ms": 5179.259,
+   "mel_frontend_ms": 246.913,
+   "decoder_ms": null,
+   "tdt_ms": 831.659,
+   "total_ms": 6552.121,
+   "goldens": true,
+   "status": "match"
+  },
+  {
+   "encoder_ane_ms": 5141.572,
+   "mel_frontend_ms": 223.634,
+   "decoder_ms": null,
+   "tdt_ms": 831.403,
+   "total_ms": 6464.48,
+   "goldens": true,
+   "status": "match"
+  },
+  {
+   "encoder_ane_ms": 5043.978,
+   "mel_frontend_ms": 213.772,
+   "decoder_ms": null,
+   "tdt_ms": 832.873,
+   "total_ms": 6374.738,
+   "goldens": true,
+   "status": "match"
+  }
+ ]
+}
