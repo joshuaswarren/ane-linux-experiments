@@ -1,0 +1,75 @@
+{
+  "schema": "jwm1-baseline-reconfirm/1",
+  "date": "2026-09-21",
+  "lane": "ParakeetPerformance",
+  "parent_branch": "agent/parakeet-perf-resident",
+  "lease_window": {
+    "host": "jwm1-linux",
+    "lock_path": "/tmp/m1-gpu.lock",
+    "lock_inode": 27,
+    "lock_acquired_utc": "2026-09-21T11:26:34,072419352+00:00",
+    "lock_released_utc": "2026-09-21T11:27:50,878950031+00:00",
+    "lock_held_seconds": 76.8,
+    "lease_grantor": "FleetM1Encoder",
+    "lease_grant_message": "GO - explicit bounded lease grant, starting NOW through 30 min from now",
+    "verifies_release": true
+  },
+  "identity_pin": {
+    "worker_sha256": "944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf",
+    "libane_sha256": "1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49",
+    "driver_sha256": "7087accecede1f556ed604d28fe88a8f6e5e90df202bc8cdf50c4cea51c76bfd",
+    "driver_buildid": "ac55e1bc3359f444d1746a058d83620fd8b0bbd4",
+    "encoder_runner_sha256": "789aaec31029fe625713b82ca24ae95eab47604e6a6992e7378f6a57f7e4af74",
+    "fused_e2e_sha256": "0e38e7b15a36d9a8244bd523ff6845f6b44cb7ad4a7444dc30e8177e97cabb97",
+    "venv_python_sha256": "c6bc1ef497b896b7575c546b13f9bafe52e2066f184fdd3fec6af4b5b6349947",
+    "vk_driver_files": "/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json",
+    "mlx_omarchy_placed": "AC",
+    "ane_island_mode": "unset (code default resident-batch)"
+  },
+  "protocol": "warm + 10 measured, resident-batch transport (ANE_ISLAND_MODE unset; code default vulkan_encoder.py:741), identity pinned once per battery; AC placed (island-attn-a-kt + island-pv on T8103 ANE, B + remaining encoder ops on GPU via e167 fork)",
+  "result": {
+    "all_status_match": true,
+    "all_prefix_104": true,
+    "all_goldens_bitexact": true,
+    "encoder_ane_ms_runs_in_order": [5250.123, 5103.291, 5257.564, 5236.788, 5238.920, 5264.494, 5317.798, 5247.770, 5220.149, 5100.838],
+    "encoder_ane_median_all10_ms": 5243.345,
+    "encoder_ane_median_runs2_10_ms": 5238.920,
+    "total_asr_median_all10_ms": 6589.852,
+    "worker_starts_per_run": 1,
+    "submissions_per_run": 1,
+    "placed_bundles": ["island-attn-a-kt", "island-pv"]
+  },
+  "divisor": {
+    "macos27_same_encoder_divisor_ms": 259.9,
+    "true_native_encoder_divisor_ms": 137.951,
+    "source": "receipts/2026-09-17-parakeet-macos-timing-t8103",
+    "scope": "macOS CoreML context, T8103 M1 Max native; same-encoder stage only, NOT end-to-end",
+    "comparison_rule": "encoder_ane_ms (Linux) vs same-encoder stage (macOS) — NEVER total-ASR vs encoder-divisor mixing"
+  },
+  "ratio_to_native_divisor": {
+    "vs_259.9_ms": 5243.345 / 259.9 = 20.17,
+    "vs_137.951_ms": 5243.345 / 137.951 = 38.01,
+    "honest_disclosure": "ratio to either divisor reflects full encoder stage wall (mx.eval readiness wait + GPU feeder + ANE + I/O) vs native one-shot core ANE+GPU pipeline; not a parity claim; not transport-attributable"
+  },
+  "comparison_to_parent_baseline": {
+    "parent_perf_battery_2026_09_20": {
+      "encoder_ane_median_all10_ms": 5217.4,
+      "spread_pct": 3.7
+    },
+    "this_run_2026_09_21": {
+      "encoder_ane_median_all10_ms": 5243.345,
+      "spread_pct": "~4.0 (range 5100.838 - 5317.798)"
+    },
+    "delta_ms": 25.945,
+    "delta_pct": 0.50,
+    "interpretation": "within parent-measured noise band; re-confirms inherited baseline, no drift"
+  },
+  "no_code_changes": "No source code under overlay/tools/coreml/ane_resident.py or vulkan_encoder.py was modified for this run. The L1 speculative lever was rejected by local micro-bench (6.45 ms regression) and is NOT applied. This run is the unmodified production code path, identical binary identity to perf-battery-receipt.json.",
+  "criterion": "104/104 + mel/hidden/transcript golden hashes bit-exact on every measured run; AC island FAIL preserved separately (unchanged criterion from parent receipts); no tolerance changes; no ULP relax; no bf16 precision loss",
+  "artifacts": {
+    "in_repo": "receipts/2026-09-21-parakeet-perf-resident/baseline-reconfirm/{run.log, identity.txt, battery-summary.json, receipt.json}",
+    "on_jwm1": "/var/tmp/jwm1-ane-step2/fused-e2e/baseline-reconfirm-20260921T062634/ (run.log, identity.txt)",
+    "lease_run_script": ".work/2026-09-21-parakeet-perf-resident/lease_run.sh",
+    "perf_battery_script_copy": ".work/2026-09-21-parakeet-perf-resident/perf-battery.sh (byte-identical to parent receipts/2026-09-20-jwm1-ane-step5-e2e/perf-battery.sh)"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "l1-microbench/1",
+  "date": "2026-09-21",
+  "host": "omp-studio-local",
+  "method": "bytearray construction bench: original bytearray+=\u200avs L1 pre-sized bytearray+slice; 48 synthetic rounds (24 A + 24 C) with real input byte sizes",
+  "byte_equivalence": "PASS (48/48 rounds)",
+  "per_pass_ms": {
+    "orig_median": 73.12,
+    "orig_min": 72.41,
+    "orig_max": 73.68,
+    "l1_median": 79.57,
+    "l1_min": 79.05,
+    "l1_max": 79.83,
+    "median_delta_ms": -6.45,
+    "verdict": "REJECTED - L1 is 6.45 ms SLOWER per pass; original request += payload is already optimized (CPython memcpy path); pre-sized bytearray + slice assignment adds bounds-check overhead"
+  },
+  "implication": "non-compiler levers in the submission path are bounded ~0-50 ms; the 2033.6 ms marshal mx.eval readiness wait is the dominant cost and is owned by GPU feeder / compiler, not the resident client",
+  "reproduced": "python3 .work/2026-09-21-parakeet-perf-resident/micro_bench.py"
+}
