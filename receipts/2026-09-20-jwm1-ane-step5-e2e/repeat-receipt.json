@@ -1,0 +1,77 @@
+{
+  "schema": "jwm1-step5-e2e-clean-repeat/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "purpose": "Clean full-ASR repeat with EXPLICIT argv/env capture and during-run /proc/<pid>/maps driver/library proof — closing the identity scope left open by the 19:50 run",
+  "window": "NativeQ4ExactReproduction CPU-only phase (GPU idle, no flock holder), before its gated window; coordinated directly per Main",
+  "runs": [
+    {
+      "name": "repeat-20260920T201848",
+      "rc": 0,
+      "total_pipeline_ms": 6649.343,
+      "ane": {"submissions": 1, "worker_starts": 1, "timeouts": 0},
+      "golden_mel_match": true,
+      "golden_hidden_match": true,
+      "golden_transcript_match": true,
+      "matching_prefix_length": 104,
+      "actual_emissions": 104,
+      "native_emissions": 104,
+      "tokens_match": true,
+      "durations_match": true,
+      "frame_indices_match": true,
+      "first_divergence": null,
+      "cpu_tensor_events": 0,
+      "report_sha256": "df67200411b0dcecff032eeaf80201b782f8aaa32dbb63ece829016b1261e485",
+      "maps_capture": "FAILED (mapper $!/sort flush race — data lost; superseded by repeat2)",
+      "evidence_dir": "evidence/repeat-20260920T201848/"
+    },
+    {
+      "name": "repeat-20260920T203127",
+      "rc": 0,
+      "total_pipeline_ms": 6571.073,
+      "ane": {"submissions": 1, "worker_starts": 1, "timeouts": 0},
+      "golden_mel_match": true,
+      "golden_hidden_match": true,
+      "golden_transcript_match": true,
+      "matching_prefix_length": 104,
+      "actual_emissions": 104,
+      "native_emissions": 104,
+      "cpu_tensor_events": 0,
+      "report_sha256": "f27988ec69c16cc3fdb518fc4a32f8c907574bc6d753cfdb34ec5775eb9d070f",
+      "maps_capture": "OK — decisive in-process proof",
+      "evidence_dir": "evidence/repeat-20260920T203127/"
+    }
+  ],
+  "runtime_identity_captured": {
+    "argv": "full command line logged (evidence/*/argv.txt): venv python + fused_e2e.py + all 13 flags (audio fixture.flac, golden capture, model b650695c snapshot, pkg TdtLoopDefault, encoder-runner encwall-v071/base/vulkan_encoder.py, source IslandsExecJwm1, ane-reference capture hidden, bundles jwm1-ane-step2/bundles, worker 944f2a86 path, libane, scratch, out, deadline-ms 20000)",
+    "env_allowlist": {"VK_DRIVER_FILES": "/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json", "MLX_OMARCHY_PLACED": "AC", "LD_LIBRARY_PATH": "", "PYTHONPATH": "", "note": "allowlist only per Main: VK_DRIVER_FILES/LD_LIBRARY_PATH/PYTHONPATH/MLX_*/OMP_* — no tokens/secrets captured"},
+    "binary_identities_pre_and_post_identical": {
+      "worker_944f2a86": "ane-v064-wt/.work/mlx/build-ane-device/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker",
+      "libane_1ab9d95d": "/var/tmp/jwm1-ane-step2/libane.so",
+      "libmlx_c28a485f": "jwm1-v072rc1 venv",
+      "mlx_core_211710c7": "jwm1-v072rc1 venv",
+      "driver_7087acce_buildid_ac55e1bc": "/tmp/mesa-sin-ftz-jwm1/drivers/libvulkan_asahi-e167.so (ICD points here)",
+      "encoder_runner_789aaec3": "/var/tmp/encwall-v071/base/vulkan_encoder.py",
+      "fused_e2e_0e38e7b1": "/var/tmp/jwm1-ane-step2/fused-e2e/fused_e2e.py",
+      "venv_python_c6bc1ef4": "/var/tmp/jwm1-v072rc1/venv/bin/python3"
+    },
+    "during_run_proc_maps_proof": {
+      "runner_pid_30882_mapped": ["/tmp/mesa-sin-ftz-jwm1/drivers/libvulkan_asahi-e167.so", "/var/tmp/jwm1-v072rc1/venv/lib/python3.14/site-packages/mlx/lib/libmlx.so"],
+      "worker_pid_30946_mapped": ["/var/tmp/jwm1-ane-step2/libane.so"],
+      "conclusion": "the e167 fork driver (BuildID ac55e1bc, NOT stock 048ae888) was loaded in the runner process during execution; libane was loaded in the ANE worker process — runtime driver/library identity proven from /proc, not prose or pre/post on-disk only"
+    }
+  },
+  "worker_mode_note": "both repeats ran 1 submission / 1 worker start (resident-style transport within the run) under explicitly captured env (MLX_OMARCHY_PLACED=AC, no ANE_ISLAND_MODE override), whereas the 19:50 run recorded 72/72 — outputs bit-identical under both transports; 19:50's exact env remains unrecorded history",
+  "comparison_context": {
+    "cold_19_50_run": "30769.106 ms total (cold SPIRV/shaders, 72 one-shot worker spawns)",
+    "warm_repeats": "6649.343 / 6571.073 ms",
+    "macOS_27_divisor": "259.9 ms same-encoder claim (2026-09-17-parakeet-macos-timing-t8103) — NOT directly comparable: different pipeline context (CoreML vs this stack); caveat preserved per Main; any perf claim requires same-context measurement",
+    "perf_next": "resident-serve worker transport as performance lever AFTER NativeQ4 release signal; measured battery (warm + N measured runs) per jw16 10-run protocol; schema exact, no mixed-compile perf claim"
+  },
+  "ac_native_golden_ownership": "A/C authentic-native-golden future tests owned by this lane; no tolerance changes — exact-equality criterion per bc046c3 accumulation-class finding",
+  "hashes": {
+    "golden_mel": "5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde",
+    "golden_hidden": "38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7",
+    "golden_transcript": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790"
+  }
+}

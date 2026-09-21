@@ -1,0 +1,3 @@
+pid=30882 /tmp/mesa-sin-ftz-jwm1/drivers/libvulkan_asahi-e167.so
+pid=30882 /var/tmp/jwm1-v072rc1/venv/lib/python3.14/site-packages/mlx/lib/libmlx.so
+pid=30946 /var/tmp/jwm1-ane-step2/libane.so

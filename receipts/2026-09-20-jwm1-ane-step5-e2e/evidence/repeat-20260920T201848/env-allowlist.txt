@@ -1,0 +1,6 @@
+date: 2026-09-20T20:18:48,542114676-05:00
+host: jwm1-linux 7.1.13-3-2-ARCH
+VK_DRIVER_FILES=/tmp/mesa-sin-ftz-jwm1/jwm1-e167-icd.json
+LD_LIBRARY_PATH=
+PYTHONPATH=
+MLX_OMARCHY_PLACED=AC

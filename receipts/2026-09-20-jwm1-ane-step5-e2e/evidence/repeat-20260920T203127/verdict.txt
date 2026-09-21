@@ -1,0 +1,14 @@
+5b54f4a9a2ba3434cd69b6e48e6780d3bcb6c635d9ce85cda3d85c60f2455bde  /var/tmp/jwm1-ane-step2/fused-e2e/out-asr-repeat-20260920T203127/mel.npy
+38c73261f29230276ed76f1fc017b76b024156d79218bd5f1347fdc7e7d43ec7  /var/tmp/jwm1-ane-step2/fused-e2e/out-asr-repeat-20260920T203127/encoder_hidden.npy
+db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790  /var/tmp/jwm1-ane-step2/fused-e2e/out-asr-repeat-20260920T203127/transcript.txt
+1d1cc5a90a558d89afcae924a3ca802a958924123034bb23991bee1a7e0b2e4d  /var/tmp/jwm1-ane-step2/fused-e2e/out-asr-repeat-20260920T203127/token_ids.json
+f27988ec69c16cc3fdb518fc4a32f8c907574bc6d753cfdb34ec5775eb9d070f  /var/tmp/jwm1-ane-step2/fused-e2e/out-asr-repeat-20260920T203127/e2e-report.json
+golden-mel-match:    YES
+golden-hidden-match: YES
+golden-transcript-match: YES
+"actual_emissions": 104
+"matching_prefix_length": 104
+"native_emissions": 104
+status: match
+cpu_tensor_events: 0 ane_submissions: 1 worker_starts: 1 timeouts: 0
+total_pipeline_ms: 6571.073
