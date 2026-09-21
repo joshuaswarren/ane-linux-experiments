@@ -1,0 +1,166 @@
+warm done 2026-09-21T00:07:45-05:00
+meas-1 done 2026-09-21T00:07:52-05:00
+meas-2 done 2026-09-21T00:07:59-05:00
+meas-3 done 2026-09-21T00:08:06-05:00
+meas-4 done 2026-09-21T00:08:13-05:00
+meas-5 done 2026-09-21T00:08:20-05:00
+meas-6 done 2026-09-21T00:08:27-05:00
+meas-7 done 2026-09-21T00:08:34-05:00
+meas-8 done 2026-09-21T00:08:41-05:00
+meas-9 done 2026-09-21T00:08:48-05:00
+meas-10 done 2026-09-21T00:08:54-05:00
+{
+ "schema": "jwm1-perf-battery/1",
+ "placement_partition": "AC placed: islands A (island-attn-a-kt) + C (island-pv) on T8103 ANE per layer, B (island-select-8head) + remaining encoder ops on GPU via e167 fork; placement per run recorded from ane.bundles",
+ "runs": [
+  {
+   "run": "meas-1",
+   "encoder_ane_ms": 5110.016,
+   "total_ms": 6456.331,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-10",
+   "encoder_ane_ms": 5153.87,
+   "total_ms": 6408.621,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-2",
+   "encoder_ane_ms": 5247.117,
+   "total_ms": 6615.96,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-3",
+   "encoder_ane_ms": 5321.678,
+   "total_ms": 6657.692,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-4",
+   "encoder_ane_ms": 5263.521,
+   "total_ms": 6595.478,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-5",
+   "encoder_ane_ms": 5116.054,
+   "total_ms": 6435.068,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-6",
+   "encoder_ane_ms": 5073.378,
+   "total_ms": 6427.813,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-7",
+   "encoder_ane_ms": 5151.302,
+   "total_ms": 6569.508,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-8",
+   "encoder_ane_ms": 5276.066,
+   "total_ms": 6608.599,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  },
+  {
+   "run": "meas-9",
+   "encoder_ane_ms": 5155.558,
+   "total_ms": 6480.292,
+   "mel/hidden/trx_bitexact": true,
+   "submissions": 1,
+   "worker_starts": 1,
+   "placed_bundles": [
+    "island-attn-a-kt",
+    "island-pv"
+   ],
+   "status": "match",
+   "prefix_104": "104"
+  }
+ ],
+ "encoder_ane_median_all10_ms": 5154.714,
+ "encoder_ane_median_runs2_10_ms": 5155.558,
+ "total_median_all10_ms": 6524.9,
+ "macos27_same_encoder_divisor_ms": 259.9,
+ "divisor_context_caveat": "macOS CoreML context; same-encoder stage claim only, not end-to-end",
+ "all_goldens_bitexact": true,
+ "all_status_match": true,
+ "all_prefix_104": true
+}
+=== BATTERY DONE /var/tmp/jwm1-ane-step2/fused-e2e/perf-battery-20260921T000738 ===

@@ -1,0 +1,23 @@
+{
+  "schema": "jwm1-changed-compiler-gate/1",
+  "date": "2026-09-21",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "trigger": "DistillMoEEnablement rebuilt the canonical GPU wheel (previous build was OMARCHY_OFF CPU-only); Main ordered the changed-compiler full-ASR gate on the new wheel",
+  "change_under_gate": {
+    "wheel": "mlx_omarchy-0.32.3.dev202609210458+ca3a8ed-cp314-cp14-linux_aarch64.whl (mtime 00:01:19 — Main's 'finished 00:01')",
+    "changed_component": "libmlx.so sha256 9d9d73f616cf2d1cb602107a03b6d8dfb5700bd73a5902b131bbd79cbcff0148 (was c28a485f on the old 5b18306 wheel)",
+    "unchanged": "mlx core binding 211710c7; ANE worker 944f2a86; libane 1ab9d95d; e167 driver 7087acce/ac55e1bc",
+    "reversibility": "full old-wheel mlx package + dist-info backed up at /var/tmp/jwm1-ane-step2/mlx-backup-oldwheel/ (5b18306)",
+    "install": "pip install --force-reinstall --no-deps into the pinned v072rc1 venv; dist now 0.32.3.dev202609210458+ca3a8ed"
+  },
+  "gate_results": {
+    "gates_per_run": "status=match, matching_prefix 104, mel/hidden/transcript goldens bit-exact (5b54f4a9/38c73261/db501a8c)",
+    "runs": "warm + 10 measured, 10/10 ALL GATES GREEN",
+    "encoder_ane_ms": {"median_all10": 5154.714, "median_runs2_10": 5155.558, "note": "vs old-compiler 5217.4 median — ~62 ms (~1.2%), within/near the ±60 ms drift band; recorded, NOT claimed as an improvement"},
+    "total_median_ms": 6524.9,
+    "placement": "AC per run (island-attn-a-kt + island-pv), 1 submission/1 worker start"
+  },
+  "evidence": {"gate_pid": 51641, "log": "/var/tmp/jwm1-ane-step2/changed-compiler-gate.log (copied to evidence/)", "battery_dir": "/var/tmp/jwm1-ane-step2/fused-e2e/perf-battery-20260921T000738/", "identity_pin": "evidence/changed-compiler-gate-20260921T000738/identity.txt (e167 ICD, AC placement, all binary shas)"},
+  "coordination": {"encoder_floor": "venv now carries the new wheel — GLU/select/cast/transpose device qualification can run on it; my stage3 op-wall tables (evidence/stage3-diag-20260920T214902/log-prof-*.txt) were taken on the OLD compiler and should be re-taken for the new one if op-class attribution is needed", "distill": "gate result closes the loop on their rebuild"},
+  "correctness": "exact A/C island FAIL preserved separately; no tolerance changes; hashes enforced per run"
+}
