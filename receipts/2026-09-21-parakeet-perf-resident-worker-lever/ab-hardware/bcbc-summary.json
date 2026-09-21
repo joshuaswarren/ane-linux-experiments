@@ -1,0 +1,198 @@
+{
+ "schema": "jwm1-bcbc-replication/1",
+ "order": "B1,C1,C2,B2 (interleaved, counterbalanced)",
+ "all_runs_kept": true,
+ "arms": {
+  "B1": {
+   "n": 5,
+   "encoder_ane_median_ms": 5208.376,
+   "all_gates": true,
+   "runs": [
+    {
+     "run": "meas-1",
+     "encoder_ane_ms": 5131.724,
+     "total_ms": 6519.735,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-2",
+     "encoder_ane_ms": 5229.903,
+     "total_ms": 6593.009,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-3",
+     "encoder_ane_ms": 5231.975,
+     "total_ms": 6568.596,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-4",
+     "encoder_ane_ms": 5114.104,
+     "total_ms": 6432.266,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-5",
+     "encoder_ane_ms": 5208.376,
+     "total_ms": 6561.152,
+     "goldens": true,
+     "status": "match"
+    }
+   ]
+  },
+  "C1": {
+   "n": 5,
+   "encoder_ane_median_ms": 5178.859,
+   "all_gates": true,
+   "runs": [
+    {
+     "run": "meas-1",
+     "encoder_ane_ms": 5197.702,
+     "total_ms": 6592.629,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-2",
+     "encoder_ane_ms": 5123.764,
+     "total_ms": 6500.502,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-3",
+     "encoder_ane_ms": 5178.859,
+     "total_ms": 6552.063,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-4",
+     "encoder_ane_ms": 5155.696,
+     "total_ms": 6487.417,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-5",
+     "encoder_ane_ms": 5189.558,
+     "total_ms": 6542.989,
+     "goldens": true,
+     "status": "match"
+    }
+   ]
+  },
+  "C2": {
+   "n": 5,
+   "encoder_ane_median_ms": 5234.906,
+   "all_gates": true,
+   "runs": [
+    {
+     "run": "meas-1",
+     "encoder_ane_ms": 5234.906,
+     "total_ms": 6594.355,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-2",
+     "encoder_ane_ms": 5214.154,
+     "total_ms": 6529.571,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-3",
+     "encoder_ane_ms": 5228.156,
+     "total_ms": 6575.312,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-4",
+     "encoder_ane_ms": 5242.702,
+     "total_ms": 6575.378,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-5",
+     "encoder_ane_ms": 5236.088,
+     "total_ms": 6584.574,
+     "goldens": true,
+     "status": "match"
+    }
+   ]
+  },
+  "B2": {
+   "n": 5,
+   "encoder_ane_median_ms": 5127.323,
+   "all_gates": true,
+   "runs": [
+    {
+     "run": "meas-1",
+     "encoder_ane_ms": 5118.327,
+     "total_ms": 6461.466,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-2",
+     "encoder_ane_ms": 5165.727,
+     "total_ms": 6492.471,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-3",
+     "encoder_ane_ms": 5142.348,
+     "total_ms": 6499.361,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-4",
+     "encoder_ane_ms": 5127.323,
+     "total_ms": 6464.061,
+     "goldens": true,
+     "status": "match"
+    },
+    {
+     "run": "meas-5",
+     "encoder_ane_ms": 5112.896,
+     "total_ms": 6538.417,
+     "goldens": true,
+     "status": "match"
+    }
+   ]
+  }
+ },
+ "paired": {
+  "B_pooled_median_ms": 5137.036,
+  "C_pooled_median_ms": 5205.928,
+  "B1_vs_B2_delta_ms": -81.05299999999988,
+  "C1_vs_C2_delta_ms": 56.04699999999957,
+  "C_vs_B_pooled_delta_ms": 68.89199999999983
+ },
+ "per_segment_stdout_cost_ms": {
+  "B_pooled": {
+   "first_byte": null,
+   "output_read": null,
+   "write_call": null,
+   "trailing": null
+  },
+  "C_pooled": {
+   "first_byte": null,
+   "output_read": null,
+   "write_call": null,
+   "trailing": null
+  }
+ },
+ "noise_band_ms": 190,
+ "decision_rule": "if abs(C_vs_B_pooled_delta_ms) < noise_band_ms => NEUTRAL (bench receipt only, no perf claim)"
+}
