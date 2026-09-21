@@ -1,0 +1,45 @@
+{
+  "schema": "apple-island-audit/1",
+  "date": "2026-09-21",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "trigger": "Main flagged that prior 'cross-SoC compiler divergence' claim relied on a non-semantically-equal Apple minimal slice (q_scaled const_7=0.125 removed upstream) — audit the EXACT original semantics and re-measure with proper per-input boundaries + numpy reference",
+  "method": "Compare vs (a) numpy fp32 EXACT-semantics reference using the SAME staged input bytes and the orchestrator's runtime semantics (q_v @ pos_kT; (q_v*0.125) @ k_headsT; probs @ v_heads); (b) Linux-device outputs from the same staged inputs",
+  "input_boundaries_verified": {
+    "A_k_headsT": {"bytes": 768000, "shape": [1,8,128,375], "sha256_prefix": "3c49482206d9365e", "head_fp16_first5": [-3.71, -1.817, -0.1114, -0.2251, 0.9844], "note": "already-transposed key (orchestrator contract)"},
+    "A_pos_kT": {"bytes": 1533952, "shape": [1,8,128,749], "sha256_prefix": "7d659505b2eb495b", "head_fp16_first5": [23.98, 24.42, 24.9, 25.02, 24.66]},
+    "A_q_scaled": {"bytes": 768000, "shape": [1,8,375,128], "sha256_prefix": "53330f1d9933991c", "head_fp16_first5": [-0.045, -0.0258, -0.01409, 0.0078, -0.003225]},
+    "A_q_v": {"bytes": 768000, "shape": [1,8,375,128], "sha256_prefix": "994117d96d9a54ab", "head_fp16_first5": [-0.8457, -0.2915, -0.15, 0.04108, -0.03104]},
+    "C_probs": {"bytes": 2250000, "shape": [1,8,375,375], "sha256_prefix": "c2cbfaa9a03f66c2", "head_fp16_first5": [0.0012245, 0.001327, 0.001456, 0.001609, 0.001205]},
+    "C_v_heads": {"bytes": 768000, "shape": [1,8,375,128], "sha256_prefix": "e1f6e0db2cba181d", "head_fp16_first5": [2.334, -3.172, 1.934, 0.8677, 1.445]},
+    "byte_identity_apple_vs_linux_inputs": "no Apple-side input files exist for islands A/C (the Apple minimal MIL declares inputs as func params; the BYTE identity the Apple ANE compiler consumed during eval is not preserved as a file; what we have are the 4/2 input .npy files staged on macstudio at /Users/joshuawarren/ac-capture/island-{A,C}/ (those are the bytes the Apple runtime received — the apple-side input_byte provenance is recorded; sha256s of the input .npy files were not pre-computed by the Apple driver but the bytes are the SAME bytes copied from the jwm1 stage dir)"
+  },
+  "comparison_against_numpy_exact_semantics": {
+    "A_attention_scores_1": {
+      "formula": "numpy(q_v, pos_kT) head-batched fp32 matmul, store fp16",
+      "apple_vs_numpy": {"max_abs": 593.1406, "mean_abs": 93.922, "mismatches": 2246933, "of": 2247000},
+      "linux_dev_vs_numpy": {"max_abs": 0.25, "mean_abs": 0.000041, "mismatches": 8400, "of": 2247000},
+      "apple_vs_linux_dev": {"max_abs": 593.1406, "mismatches": 2246933, "of": 2247000}
+    },
+    "A_matmul_0": {
+      "formula": "numpy((q_v * 0.125), k_headsT) head-batched fp32 matmul, store fp16",
+      "apple_vs_numpy": {"max_abs": 57.9404, "mean_abs": 9.167, "mismatches": 1124952, "of": 1125000},
+      "linux_dev_vs_numpy": {"max_abs": 4.5156, "mean_abs": 1.058, "mismatches": 1124472, "of": 1125000},
+      "apple_vs_linux_dev": {"max_abs": 58.4768, "mismatches": 1124971, "of": 1125000}
+    },
+    "C_attn_output_1": {
+      "formula": "numpy(probs, v_heads) head-batched fp32 matmul, store fp16",
+      "apple_vs_numpy": {"max_abs": 92.0156, "mean_abs": 15.507, "mismatches": 383996, "of": 384000},
+      "linux_dev_vs_numpy": {"max_abs": 0.0078, "mean_abs": 0.000122, "mismatches": 108391, "of": 384000},
+      "apple_vs_linux_dev": {"max_abs": 92.0156, "mismatches": 383995, "of": 384000}
+    }
+  },
+  "interpretation": {
+    "apple_vs_numpy": "Apple outputs DEVIATE DRAMATICALLY from the numpy EXACT-semantics reference (max_abs 593 / 58 / 92 — orders of magnitude beyond the +-1-ULP accumulation-order class). This is NOT a subtle compiler-divergence measurement — it indicates the Apple minimal slice is NOT consuming the same inputs/output semantics as the numpy computation (and/or the Apple execution is hitting a fundamentally different numeric path: possibly overflow/saturation — values up to 58/93 vs inputs bounded ~1e-2 to 1e1 suggest potential fp16 saturation in a non-Linux ANE path; or the slice's internal layout differs from the standalone numpy computation in ways not captured by the input bytes alone).",
+    "linux_dev_vs_numpy": "Linux device outputs are within the known accumulation-order class (max_abs 0.25 = 1 fp16 ULP at magnitude 2^9 for attn_scores_1, etc.) — Linux/mil-hwxc on T8103 ANE matches the numpy reference to within fp16 quantization (the previously-recorded A/C exact FAIL of 311e0f48/363843c2 was the device output, and the measured-vs-numpy delta is the known +-1-ULP class).",
+    "apple_vs_linux_dev": "The Apple output is NOT a numerical re-derivation of the same graph with a different compiler — it is a structurally different result. Until the Apple minimal slice is verified to consume the EXACT same inputs + produce the SAME intermediate tensors (verified bit-for-bit), no 'compiler divergence' claim is defensible."
+  },
+  "self_check_finding": "The Apple outputs as captured ARE byte-deterministic (Apple sha256 of attention_scores_1.npy = 5d78e3b3... reproducible) — the Apple e5rt dispatch DID produce a result. But that result is not numerically equivalent to the numpy reference or to the Linux device output under the same input semantics. The A_attention_scores_1 Apple value range is [-59.06, 56.78] which is suspicious for an attention-pre-mask tensor (typical scale should be much smaller); this suggests the Apple slice's internal order/profile differs from the q_v @ pos_kT plain matmul.",
+  "remediation_required_per_Main": "REDO the Apple minimal MIL with EXACT original semantics: do NOT remove q_scaled const_7 (=0.125) — instead INCLUDE the upstream mul and the const const_7 in the slice; verify the slice's func params match the orchestrator's binding names; flush+sync via the e5rt dispatch; re-execute; then re-compare against the numpy reference on the SAME exact inputs. Until then, NO 'Apple compiler identity' claim and NO 'cross-SoC delta' measurement.",
+  "criterion": "exact A/C FAIL preserved; numpy fp32->fp16 reference remains the official comparator; no tolerance changes; prior 'cross-SoC compiler divergence' claim RETRACTED pending the corrected Apple slice",
+  "next_step": "rebuild the A minimal MIL with full upstream (const_7 mul included, no q_scaled func param substitution, func params match the orchestrator binding exactly); re-execute on macstudio; re-audit"
+}
