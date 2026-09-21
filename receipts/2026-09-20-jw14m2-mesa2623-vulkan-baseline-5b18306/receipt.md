@@ -234,9 +234,33 @@ ADDENDUM 2b — Bonsai extension (raw prompt "Describe a lighthouse in one sente
   pending their runtime): {0.5B, 2B, Bonsai-8B} bit-neutral across ALL THREE builds; {Ministral-8B,
   Qwen3.8-27B} split stock vs lineage. No arch-level pattern yet (2-bit Bonsai insensitive, fp16-quant
   Ministral sensitive); sensitivity is per-model, empirically pinned.
-- ctx4096 matched triple (stock/e167/candidate): TWO attempts clipped by external reboots (00:05Z fault
-  cycle; 02:14Z unannounced DTB/dart reboot mid-leg — zero driver-side failures; stock leg needs ~9 min,
-  first attempt hit my 540s bound). Deferred to a confirmed-stable window.
+
+---
+
+# ADDENDUM 3 (2026-09-21 ~02:17-02:52Z): ctx4096 matched triple — uninterrupted 35-min window (Main-brokered, M2Hybrid explicit handoff)
+
+Qwen3.8-27B-4bit, prompt ctx4096 (4076 tokens), 128 tok, compileON, fixed harness, same pins; sole device
+ownership under `/tmp/jw14-gpu.lock`; Hybrid committed zero device actions for the full window (kept).
+
+| leg | driver | decode tok/s | prefill s | prefill tok/s | ids sha256_16 |
+| --- | --- | --- | ---: | ---: | --- |
+| 12 | stock 26.2.3 | 3.7205 | 318.81 | 12.78 | `8326e96ef17f40d5` |
+| 13 | e167 (no fix) | 3.4722 | 320.68 | 12.71 | `8326e96ef17f40d5` |
+| 14 | candidate (e167+095cb7) | 3.4663 | 317.04 | 12.86 | `8326e96ef17f40d5` |
+
+- **ALL THREE builds byte-identical at ctx4096** — including stock==lineage, which did NOT hold at
+  ctx1024/long. The vintage-level digest flip is therefore PROMPT-DEPENDENT (near-tie structure), not
+  monotonic with context depth. The fix remains bit-neutral vs its base at the largest tested context.
+- Same-base perf at ctx4096: fix delta −0.2% decode, prefill parity — consistent with ~0 everywhere.
+- Vintage decode delta vs stock: −6.8% (single-run), same band as ctx1024 (−8%) — vintage-level, not
+  fix-attributable.
+- Two earlier ctx4096 attempts were clipped by external reboots (00:05Z fault cycle; 02:14Z probe-caused
+  freeze, M2Hybrid-owned); Main brokered the 35-min uninterrupted reservation for this run. No driver-side
+  errors occurred in any attempt.
+- ctx4096 pin: `8326e96ef17f40d5` (n=128) is the jw14m2 G14C reference for this prompt under ANY of the
+  three builds.
+- ctx4096 note: two earlier triple attempts were clipped by external reboots (00:05Z fault cycle, 02:14Z
+  probe-caused freeze) before the Main-brokered uninterrupted window below — see ADDENDUM 3.
 
 ## Coordination (updated)
 
