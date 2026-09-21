@@ -1,0 +1,20 @@
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=657566 cv=30 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=657566 cv=31 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=657566 cv=32 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+ok
+/usr/lib/python3.14/unittest/suite.py:84: ResourceWarning: unclosed file <_io.BufferedReader name=8>
+  return self.run(*args, **kwds)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/suite.py:84: ResourceWarning: unclosed file <_io.BufferedReader name=6>
+  return self.run(*args, **kwds)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+
+----------------------------------------------------------------------
+Ran 2 tests in 5.437s
+
+OK
+[rtmod] COMMIT-NOOP
