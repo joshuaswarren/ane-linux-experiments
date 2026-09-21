@@ -1,0 +1,25 @@
+{
+  "schema": "jwm1-marshal-split-instrumentation/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "directive": "Main 2026-09-20: separate mx.eval/readiness time from ndarray materialization under fixed placement; additive wall, no overlap assumptions; no architectural shared-buffer design until split proved (unified memory does not guarantee safe zero-copy ownership)",
+  "instrumentation": "encwall-marshal2 overlay (isolated copy of encwall-v071/base): per-tensor monotonic split of the marshal loop into eval_split_ns (mx.eval — pending GPU execution + sync wait) and mat_split_ns (np.asarray materialization + tobytes host copy); per-round keys added to island.log; conversion path otherwise byte-identical to base",
+  "runs": "warm + 5 measured, 21:35-21:36 CDT, inside NativeQ4 explicit grant (candidate-3 wheel building CPU-side)",
+  "gates": "5/5 status=match, 104/104, mel/hidden/transcript bit-exact, 1 submission/1 worker start",
+  "marshal_split_ms": [
+    {"run": "meas-1", "stage": 5262.9, "marshal": 2097.9, "eval_readiness": 2033.6, "materialization": 63.2},
+    {"run": "meas-2", "stage": 5247.3, "marshal": 2143.4, "eval_readiness": 2079.1, "materialization": 63.3},
+    {"run": "meas-3", "stage": 5292.4, "marshal": 2101.3, "eval_readiness": 2035.5, "materialization": 64.7},
+    {"run": "meas-4", "stage": 5277.5, "marshal": 2159.7, "eval_readiness": 2094.2, "materialization": 64.4},
+    {"run": "meas-5", "stage": 5071.8, "marshal": 2056.3, "eval_readiness": 1993.2, "materialization": 62.1}
+  ],
+  "finding": {
+    "eval_readiness_share": "~97% of the marshal segment (1993-2094 ms) is mx.eval/readiness WAIT — pending GPU execution + synchronization, not host copying",
+    "materialization_share": "~63 ms (~3%) is the actual ndarray host copy of the 164.5 MB — the '164 MB copy bottleneck' framing is DEAD",
+    "consequence": "the encoder stage is GPU-feeder/execution-bound end to end: non-overlapping view = GPU execution+wait ~3.4-3.5 s (~66%: eval-readiness wait + 1391 ms loop residual) + session round 1.71 s (write/IPC/worker incl. ANE exec) + back 0.08 s",
+    "architecture_bar": "shared-buffer/zero-copy designs are UNMOTIVATED by this data (63 ms ceiling) and unsafe by default (unified memory does not guarantee safe zero-copy ownership) — per Main, such design stays off the table until a proved copy cost justifies it"
+  },
+  "caveat": "mx.eval wait may include earlier stage GPU work still in flight (audio/mel tensors evaluated lazily) — the wait is real stage time either way; further attribution (which GPU ops dominate the 3.4 s) requires per-op GPU timing, next instrumentation if Main directs",
+  "gates_note": "exact A/C island FAIL preserved separately; full-ASR 104/104 pass separate; no criterion movement",
+  "artifacts": {"on_jwm1": "/var/tmp/jwm1-ane-step2/fused-e2e/perf-battery-marshal2-20260920T213542/ + encwall-marshal2/", "in_repo": "this receipt"}
+}
