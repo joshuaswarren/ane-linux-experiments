@@ -179,6 +179,41 @@ build, staged `/var/tmp/mesa-095cb/` + dedicated ICD) under identical protocol:
 cost vs its own base. Diagnostic-label rescinded for the attribution question; stock-vs-lineage deltas
 remain vintage-level.**
 
+---
+
+# ADDENDUM 2 (2026-09-20 ~00:10-00:35Z, post-W16-boot): raw numeric qualification across installed models
+
+Main-directed gap work: greedy generation digest pins (bench_decode.py `f5062d88`, mlx_lm protocol,
+64 tokens, prompt long — except q38-2B raw-prompt literal, see below) for installed HF-cache models under
+stock vs candidate-lineage driver; wheel 5b18306, HF_HUB_OFFLINE, temp 0 seed 0 warmup 4. Post-reboot
+invariance check first: stock Qwen3.8-27B long leg reproduced digest `735b8de2…` at 4.496 tok/s after the
+W16 reboot (ane_t6021 pinned+aliased) — GPU environment invariant under the pinned-ANE state.
+
+| model (installed snapshot) | stock digest | e167 digest | candidate (e167+095cb7) digest | reading |
+| --- | --- | --- | --- | --- |
+| Qwen2.5-0.5B-Instruct-4bit | `fee2baaebf7bae21` | not run | `fee2baaebf7bae21` | vintage bit-neutral |
+| SiddhJagani/Qwen3.8-2B-mlx-4Bit (raw prompt; snapshot lacks chat_template) | `f4aa12200cd64eb8` | not run | `f4aa12200cd64eb8` | vintage bit-neutral |
+| Ministral-3-8B-Instruct-2512-4bit | `94efc5f2530311cc` (A/A stable: 9.897/9.821 tok/s) | `99f33e795153f7c5` (9.532) | `99f33e795153f7c5` (9.665) | **vintage FLIPS digest; fix bit-neutral vs its base** |
+| Qwen3.8-27B-4bit (128 tok, long+ctx, legs 1-10) | `735b8de2…`/`0e0c0824…` | `1e10ee14…`/`1731d831…` | `1e10ee14…`/`1731d831…` | vintage FLIPS; fix bit-neutral |
+
+- Pattern: the devel-vintage trig/precision lineage changes greedy outputs for SOME models
+  (Ministral-3-8B, Qwen3.8-27B) and not others (Qwen2.5-0.5B, Qwen3.8-2B at these prompts) — sensitivity is
+  model/prompt-dependent, and it is entirely VINTAGE-level: the `095cb7e1` fix is bit-neutral vs its own
+  base on every model tested (4/4).
+- Same-base paired perf (long, 64-128 tok): fckey 4.0888/4.105/4.115/4.114 vs e167 4.1057/4.0872/4.0785
+  tok/s — overlapping bands, fix cost ≈ 0. Ministral same-base: fckey 9.665 vs e167 9.532 (+1.4%,
+  single-run).
+- Catalog notes: SiddhJagani/Qwen3.8-2B snapshot ships no `chat_template` (chat-template harness path
+  fails; raw-prompt mode used) — packaging fact for the model-catalog lane. 2B decode rates 44.9 (stock)
+  vs 39.5 tok/s (candidate) on a 2B model are small-model noise; no perf claim.
+- Ops: the fckey ICD json is named `icd-asahi-fckey.json` (renamed from `icd-asahi-095cb.json`, same sha
+  `bb3c439e…`; symmetric with `icd-asahi-e167.json`). A transient "failed to open JSON" in one leg batch
+  was my own wrong-filename bug, not host state — the `.so`s and jsons survived all reboots in /var/tmp.
+
+**Addendum-2 verdict: raw numeric pins established for 4 installed models across 3 driver builds.
+`095cb7e1` is output-bit-neutral vs e167 on all tested models; vintage-level digest sensitivity exists and
+is model-dependent — catalog-wide numeric pins must record the driver build they were taken under.**
+
 ## Coordination (updated)
 
 - M2BootImplementation authorized each window in-band and received the attempt-4 GPU yield; ownership then
