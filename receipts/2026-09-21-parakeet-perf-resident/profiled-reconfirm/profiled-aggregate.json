@@ -1,0 +1,196 @@
+{
+  "schema": "jwm1-profiled-perf-battery-aggregate/1",
+  "host": "jwm1-linux",
+  "lock_inode": 27,
+  "identity_pin": {
+    "worker_sha256": "944f2a86cea719c4c10f6cd1a08c4c6df50b001cac0e381c38ca1f26277920cf",
+    "libane_sha256": "1ab9d95debcc8b5fee3b6653dfce0b50412bc7efef43c2d2167dc83ce270ca49",
+    "driver_sha256": "7087accecede1f556ed604d28fe88a8f6e5e90df202bc8cdf50c4cea51c76bfd",
+    "driver_buildid": "ac55e1bc3359f444d1746a058d83620fd8b0bbd4",
+    "placement": "AC (island-attn-a-kt + island-pv on T8103 ANE)",
+    "transport": "resident-batch (ANE_ISLAND_MODE unset)",
+    "profile_env": "ANE_RESIDENT_PROFILE=1"
+  },
+  "runs": [
+    {
+      "run": "out-meas-1",
+      "encoder_ane_ms": 5249.507,
+      "total_ms": 6666.658,
+      "goldens_bitexact": true,
+      "mel_bitexact": true,
+      "hidden_bitexact": true,
+      "transcript_bitexact": true,
+      "matching_prefix": null,
+      "round_count": 48,
+      "round_profiles_with_session_profile": 48
+    },
+    {
+      "run": "out-meas-2",
+      "encoder_ane_ms": 5252.924,
+      "total_ms": 6591.54,
+      "goldens_bitexact": true,
+      "mel_bitexact": true,
+      "hidden_bitexact": true,
+      "transcript_bitexact": true,
+      "matching_prefix": null,
+      "round_count": 48,
+      "round_profiles_with_session_profile": 48
+    },
+    {
+      "run": "out-meas-3",
+      "encoder_ane_ms": 5271.827,
+      "total_ms": 6627.198,
+      "goldens_bitexact": true,
+      "mel_bitexact": true,
+      "hidden_bitexact": true,
+      "transcript_bitexact": true,
+      "matching_prefix": null,
+      "round_count": 48,
+      "round_profiles_with_session_profile": 48
+    },
+    {
+      "run": "out-meas-4",
+      "encoder_ane_ms": 5266.568,
+      "total_ms": 6610.581,
+      "goldens_bitexact": true,
+      "mel_bitexact": true,
+      "hidden_bitexact": true,
+      "transcript_bitexact": true,
+      "matching_prefix": null,
+      "round_count": 48,
+      "round_profiles_with_session_profile": 48
+    },
+    {
+      "run": "out-meas-5",
+      "encoder_ane_ms": 5282.252,
+      "total_ms": 6607.872,
+      "goldens_bitexact": true,
+      "mel_bitexact": true,
+      "hidden_bitexact": true,
+      "transcript_bitexact": true,
+      "matching_prefix": null,
+      "round_count": 48,
+      "round_profiles_with_session_profile": 48
+    }
+  ],
+  "gates": {
+    "all_goldens_bitexact": true,
+    "all_status_match": true,
+    "n_runs_with_prefix_104": 0,
+    "total_rounds_collected": 240,
+    "total_session_profiles": 240
+  },
+  "encoder_ane_ms": {
+    "median": 5266.568,
+    "min": 5249.507,
+    "max": 5282.252
+  },
+  "total_ms": {
+    "median": 6610.581,
+    "min": 6591.54,
+    "max": 6666.658
+  },
+  "per_segment_vulkan_encoder_ms": {
+    "marshal_eval_ns": {
+      "n": 240,
+      "median": 46032932.0,
+      "median_ms": 46.032932,
+      "min_ms": 9.362396,
+      "max_ms": 116.956729,
+      "p95_ms": 66.372009,
+      "sum_ms": 10448.140568
+    },
+    "session_round_ns": {
+      "n": 240,
+      "median": 28839677.5,
+      "median_ms": 28.8396775,
+      "min_ms": 10.414839,
+      "max_ms": 59.647115,
+      "p95_ms": 56.812243,
+      "sum_ms": 8560.99799
+    },
+    "back_conv_ns": {
+      "n": 240,
+      "median": 930423.0,
+      "median_ms": 0.930423,
+      "min_ms": 0.20583,
+      "max_ms": 3.272866,
+      "p95_ms": 3.057703,
+      "sum_ms": 393.141391
+    },
+    "sum_ns": {
+      "n": 240,
+      "median": 74370531.5,
+      "median_ms": 74.3705315,
+      "min_ms": 21.146797,
+      "max_ms": 158.907328,
+      "p95_ms": 126.772285,
+      "sum_ms": 19402.279949
+    }
+  },
+  "per_segment_parent_side_ns": {
+    "encode_ns": {
+      "n": 240,
+      "median": 663656.0,
+      "median_ms": 0.663656,
+      "min_ms": 0.151123,
+      "max_ms": 1.041734,
+      "p95_ms": 0.988818,
+      "sum_ms": 158.781165
+    },
+    "write_call_ns": {
+      "n": 240,
+      "median": 6653834.0,
+      "median_ms": 6.653834,
+      "min_ms": 2.969079,
+      "max_ms": 9.369772,
+      "p95_ms": 7.086265,
+      "sum_ms": 1535.987934
+    },
+    "first_byte_ns": {
+      "n": 240,
+      "median": 18537441.0,
+      "median_ms": 18.537441,
+      "min_ms": 5.949366,
+      "max_ms": 37.12655,
+      "p95_ms": 34.896582,
+      "sum_ms": 5084.116159
+    },
+    "output_read_ns": {
+      "n": 240,
+      "median": 4734759.0,
+      "median_ms": 4.734759,
+      "min_ms": 0.451035,
+      "max_ms": 15.084141,
+      "p95_ms": 14.382234,
+      "sum_ms": 1743.782055
+    },
+    "header_lines_ns": {
+      "n": 240,
+      "median": 0.0,
+      "median_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "p95_ms": 0.0,
+      "sum_ms": 0.0
+    },
+    "trailing_ns": {
+      "n": 240,
+      "median": 875.0,
+      "median_ms": 0.000875,
+      "min_ms": 0.000292,
+      "max_ms": 0.004209,
+      "p95_ms": 0.001,
+      "sum_ms": 0.210337
+    },
+    "sum_ns": {
+      "n": 240,
+      "median": 28176125.0,
+      "median_ms": 28.176125,
+      "min_ms": 10.069469,
+      "max_ms": 58.994666,
+      "p95_ms": 56.130588,
+      "sum_ms": 8364.096485
+    }
+  }
+}
