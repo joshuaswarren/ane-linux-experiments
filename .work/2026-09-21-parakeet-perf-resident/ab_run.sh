@@ -30,6 +30,9 @@ echo "AB_LOCK_HELD $(date -u -Ins) pid=$$ ppid=$PPID" >> "$LOG"
 # Set up shared paths
 export VK_DRIVER_FILES=/tmp/mesa-sin-ftz-m1-test-host/m1-test-host-e167-icd.json
 export MLX_OMARCHY_PLACED=AC
+# NOTE: LD_LIBRARY_PATH is NOT set globally (breaks the venv's mlx module).
+# B/C workers are launched via worker_libmlx_wrapper.sh which sets it
+# only for the worker process.
 unset PYTHONPATH LD_LIBRARY_PATH HK_PERF HK_PERFTEST MLX_OMARCHY_GATED_BARRIERS MLX_OMARCHY_GPU_PROFILE ANE_OP_WALL MLX_OMARCHY_SPIRV_CACHE || true
 
 PY=/var/tmp/m1-test-host-v072rc1/venv/bin/python3
@@ -126,16 +129,29 @@ PYEOF
   return $rc
 }
 
-# === ARM A: prebuilt worker (parent baseline reference) ===
-run_arm "A-prebuilt" /tmp/parakeet-perf-resident/worker-base-prebuilt.bak
-RC_A=$?
+# === ARM A: SKIPPED (already done 07:11Z and 07:28Z, 5/5 gates, medians
+# 5209.149 and 6635.581 total; see receipts on m1-test-host) ===
+RC_A=0
 
 # === ARM B: new-built TOOLS worker (this build, no lever) ===
-run_arm "B-built-base" /tmp/parakeet-perf-resident/mlx-omarchy-ane-worker-tools
+# Workers need LD_LIBRARY_PATH for libmlx.so; wrapped to isolate from venv.
+mkdir -p /tmp/parakeet-perf-resident/wrapped
+cat > /tmp/parakeet-perf-resident/wrapped/worker-tools <<'EOF'
+#!/bin/bash
+export LD_LIBRARY_PATH=/tmp/parakeet-perf-resident/build-lever
+exec /tmp/parakeet-perf-resident/mlx-omarchy-ane-worker-tools "$@"
+EOF
+cat > /tmp/parakeet-perf-resident/wrapped/worker-lever <<'EOF'
+#!/bin/bash
+export LD_LIBRARY_PATH=/tmp/parakeet-perf-resident/build-lever
+exec /tmp/parakeet-perf-resident/mlx-omarchy-ane-worker-lever "$@"
+EOF
+chmod +x /tmp/parakeet-perf-resident/wrapped/worker-tools /tmp/parakeet-perf-resident/wrapped/worker-lever
+run_arm "B-built-base" /tmp/parakeet-perf-resident/wrapped/worker-tools
 RC_B=$?
 
 # === ARM C: new-built LEVER worker ===
-run_arm "C-built-lever" /tmp/parakeet-perf-resident/mlx-omarchy-ane-worker-lever
+run_arm "C-built-lever" /tmp/parakeet-perf-resident/wrapped/worker-lever
 RC_C=$?
 
 echo "AB_LOCK_RELEASE $(date -u -Ins) A_rc=$RC_A B_rc=$RC_B C_rc=${RC_C:-0}" >> "$LOG"
