@@ -1,0 +1,38 @@
+{
+  "schema": "jwm1-multipass-const-reuse/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "directive": "Main 2026-09-20: proven fused_e2e in-process multipass with existing cache reuse; warm+measured repeated full-ASR 104/104 all pins; actual cache hit counts/memory growth/normalized timings; no inference-only speedup claim; SIGSEGV minimal repro+stack bounded; Apple oracle version verification",
+  "multipass_run": {
+    "stack": "PROVEN fused_e2e overlay lane (const-reuse-lane/): base vulkan_encoder.py + ane_resident.py + two-pass/multipass patched fused_e2e.py; standard CLI invocation",
+    "rc": 0,
+    "full_asr_gate": {"status": "match", "matching_prefix": 104, "actual_emissions": 104, "native_emissions": 104, "transcript_match": true, "mel_bit_exact": true, "encoder_bounds_pass": true, "cpu_tensor_events": 0, "ane_submissions": 1, "total_pipeline_ms": 6930.345},
+    "boundary_reeval_ms": 0.008,
+    "const_materialize_pass1_ms": 942.9,
+    "consts_total": 1977,
+    "cache_passes": [
+      {"pass": 2, "encoder_ms": 4907.2, "const_wall_ms": 2.2, "hit": 1977, "miss": 0, "rss_mb": 1247.1},
+      {"pass": 3, "encoder_ms": 4874.5, "const_wall_ms": 2.2, "hit": 1977, "miss": 0, "rss_mb": 1247.1},
+      {"pass": 4, "encoder_ms": 4905.2, "const_wall_ms": 2.3, "hit": 1977, "miss": 0, "rss_mb": 1247.1},
+      {"pass": 5, "encoder_ms": 4951.0, "const_wall_ms": 2.3, "hit": 1977, "miss": 0, "rss_mb": 1247.1}
+    ],
+    "pass1_hidden_sha256": "f4dbfff3c91da384431b21bf53efae8c6c7f075bf27b19393fa310703644199f",
+    "all_passes_hidden_sha_identical": true,
+    "memory_growth": "NONE (RSS 1249.3 -> 1247.1 MB across 5 passes; cache restore is dict-insert of existing buffers)",
+    "normalized_timings": "cache-hit encoder passes 4874.5-4951.0 ms (spread ~1.6%), no trend; const restore 2.2-2.3 ms/pass vs 942.9 ms one-time materialization — the only measured const-reuse effect; NO inference-only speedup claim",
+    "honest_scope": "multi-pass value = amortizes 942.9 ms const materialization across in-process passes; single-pass full-ASR latency is unchanged by the cache (materialization is per-process mandatory)"
+  },
+  "sigsegv_minimal_repro": {
+    "finding": "SIGSEGV (SEGV_MAPERR) in /usr/lib/libvulkan_asahi.so — the STOCK Mesa driver (BuildID 048ae888, sha 57754e46) — same pipeline-creation signature as the 18:08 debug-receipt crash, now reproduced from an independent code path",
+    "root_cause": "custom direct-EncoderRunner driver did NOT set VK_DRIVER_FILES -> loader picked stock Mesa -> Honeykrisp pipeline-creation SEGV; cache-INDEPENDENT (cache=0 bisection also crashed)",
+    "stack": "frames 0-6 all inside libvulkan_asahi.so (+0x30cb04 region, pipeline creation path per debug-receipt)",
+    "disposition": "environment misconfiguration in the abandoned driver, NOT a public-API bug in mlx/vulkan_encoder; documented and closed; proven harness always sets the e167 ICD",
+    "coredumps": "systemd-coredump entries 42271/42332/42458 (21:57-22:00 CDT)"
+  },
+  "apple_oracle_verification": {
+    "finding": "existing mac oracle (receipts/2026-09-17-t6021-h14g-oracle-mints mint.sh + make_capture.py) does NOT match the H13 A/C contract: geometries are {oproj, mm1, mm2} synthetic index-encoded single matmuls via the standalone ane-compile-hwx bridge — no batched-matmul island support, no authentic-input staging",
+    "consequence": "Apple-executed A/C island goldens require NEW oracle development: extend mint geometry to the batched-matmul island template (208 TDs, graph e0daeb7f), stage the authentic inputs, and pin the compiler to c2cf32e4 (matching the executed bundles) — scoped dev item, deferred pending Main priority",
+    "interim": "numpy fp32->fp16 reference remains the only native comparator; exact A/C FAIL preserved; accumulation-order plausible-not-confirmed"
+  },
+  "artifacts": {"on_jwm1": "/var/tmp/jwm1-ane-step2/fused-e2e/const-reuse-run-20260920T220705/ + const-reuse-lane/", "in_repo": "const-reuse-run.sh, const-reuse-driver.py, this receipt", "cpus": "coredumps preserved under systemd-coredump for the closed SIGSEGV item"}
+}
