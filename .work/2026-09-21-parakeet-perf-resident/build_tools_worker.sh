@@ -5,10 +5,10 @@
 set -e
 cd /tmp/parakeet-perf-resident/build-lever
 OUT=/tmp/parakeet-perf-resident/mlx-omarchy-ane-worker-tools
-SRC=/var/tmp/m1-test-host-ane-step2/ane-v064-wt/.work/mlx/tools/mlx-omarchy-ane-worker/main.cpp
-WORKER_LIBANE=/var/tmp/m1-test-host-ane-step2/ane-v064-wt/.work/mlx/mlx/backend/omarchy/ane/worker_libane.cpp
+SRC=/var/tmp/ane-runtime/ane-v064-wt/.work/mlx/tools/mlx-omarchy-ane-worker/main.cpp
+WORKER_LIBANE=/var/tmp/ane-runtime/ane-v064-wt/.work/mlx/mlx/backend/omarchy/ane/worker_libane.cpp
 INCLUDES=(
-  -I/var/tmp/m1-test-host-ane-step2/ane-v064-wt/.work/mlx
+  -I/var/tmp/ane-runtime/ane-v064-wt/.work/mlx
   -I/tmp/omarchy-ane-pinned/libane
   -I/tmp/parakeet-perf-resident/build-lever
 )

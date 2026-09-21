@@ -15,7 +15,7 @@ set -uo pipefail
 LOCK=/tmp/m1-gpu.lock
 LOCK_TIMEOUT_S=2400
 TS=$(date +%Y%m%dT%H%M%S)
-BASE=/var/tmp/m1-test-host-ane-step2/fused-e2e/ab-$TS
+BASE=/var/tmp/ane-runtime/fused-e2e/ab-$TS
 LOG=$BASE/run.log
 mkdir -p "$BASE"
 
@@ -28,18 +28,18 @@ fi
 echo "AB_LOCK_HELD $(date -u -Ins) pid=$$ ppid=$PPID" >> "$LOG"
 
 # Set up shared paths
-export VK_DRIVER_FILES=/tmp/mesa-sin-ftz-m1-test-host/m1-test-host-e167-icd.json
+export VK_DRIVER_FILES=/tmp/mesa-icd-overlay/m1-test-host-e167-icd.json
 export MLX_OMARCHY_PLACED=AC
 # NOTE: LD_LIBRARY_PATH is NOT set globally (breaks the venv's mlx module).
 # B/C workers are launched via worker_libmlx_wrapper.sh which sets it
 # only for the worker process.
 unset PYTHONPATH LD_LIBRARY_PATH HK_PERF HK_PERFTEST MLX_OMARCHY_GATED_BARRIERS MLX_OMARCHY_GPU_PROFILE ANE_OP_WALL MLX_OMARCHY_SPIRV_CACHE || true
 
-PY=/var/tmp/m1-test-host-v072rc1/venv/bin/python3
-MODEL=$HOME/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
-RUN=/var/tmp/m1-test-host-ane-step2/fused-e2e/fused_e2e.py
-LIBANE=/var/tmp/m1-test-host-ane-step2/libane.so
-DRIVER=/tmp/mesa-sin-ftz-m1-test-host/drivers/libvulkan_asahi-e167.so
+PY=/var/tmp/runtime-venv/venv/bin/python3
+MODEL=<model-cache>/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+RUN=/var/tmp/ane-runtime/fused-e2e/fused_e2e.py
+LIBANE=/var/tmp/ane-runtime/libane.so
+DRIVER=/tmp/mesa-icd-overlay/drivers/libvulkan_asahi-e167.so
 
 run_arm () { # arm_name worker_path
   local arm=$1
@@ -71,10 +71,10 @@ run_arm () { # arm_name worker_path
       --golden /var/tmp/EncoderParityAne/capture \
       --model "$MODEL" \
       --pkg /var/tmp/TdtLoopDefault/pkg \
-      --encoder-runner /var/tmp/encwall-v071/base/vulkan_encoder.py \
-      --source /var/tmp/IslandsExecm1-test-host/encoder-source \
+      --encoder-runner /var/tmp/encoder-overlay/base/vulkan_encoder.py \
+      --source /var/tmp/IslandsExecM1TestHost/encoder-source \
       --ane-reference /var/tmp/EncoderParityAne/capture/encoder_hidden.npy \
-      --bundles /var/tmp/m1-test-host-ane-step2/bundles \
+      --bundles /var/tmp/ane-runtime/bundles \
       --worker "$worker" \
       --libane "$LIBANE" \
       --scratch "$scratch" --out "$out" \
