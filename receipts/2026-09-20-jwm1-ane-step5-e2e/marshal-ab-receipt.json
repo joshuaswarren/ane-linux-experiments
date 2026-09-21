@@ -1,0 +1,27 @@
+{
+  "schema": "jwm1-marshal-ab-receipt/1",
+  "date": "2026-09-20",
+  "owner": "AsrFullGateVerification (sole ANE execution/perf owner per Main)",
+  "experiment": "Marshal copy-removal A/B: eliminate np.ascontiguousarray+bytes copies in island input marshal, keep np.asarray (device->host conversion)",
+  "arm_a_baseline": "perf-battery-20260920T210823 (unmodified runner, marshal 2067.4 ms, stage median 5217.4 ms)",
+  "arm_b": {
+    "runner": "/var/tmp/jwm1-ane-step2/fused-e2e/encwall-marshal-ab/vulkan_encoder.py (isolated overlay; shared encwall-v071/base UNTOUCHED)",
+    "change": "ascontiguousarray only-if-needed + payload as memoryview of uint8 view (zero-copy into payload dict); keep[] list preserves buffer lifetime through session.submit",
+    "micro_check": {"old_ms": 0.031, "new_ms": 0.001, "payload_bit_identical": true, "tensor": "A_q_scaled 768000 B"},
+    "first_attempt_defect": "payload as numpy ndarray broke bytearray += (numpy broadcast (160,) vs (768000,)); fixed with memoryview (buffer protocol)",
+    "runs": "warm + 10 measured, 21:29-21:30 CDT, inside NativeQ4 explicit grant",
+    "gates": "10/10 status=match, 104/104, mel/hidden/transcript bit-exact",
+    "marshal_ms": {"meas-1": 2037.6, "meas-5": 2030.5},
+    "stage_median_all10_ms": 5222.1555,
+    "total_median_all10_ms": 6546.826
+  },
+  "verdict": {
+    "hypothesis": "REJECTED - removing tobytes/ascontiguous copies saves ~30 ms of 2067 ms marshal (~1.4%), stage unchanged within noise (5222.2 vs 5217.4 median, +0.09%)",
+    "root_of_marshal_cost": "np.asarray(value) itself - the mlx->numpy device-to-host conversion/sync of 164.5 MB per pass, not the byte-level copies after it",
+    "consequence": "next lever is architectural (avoid mx->host round trip for island inputs: host-byte production upstream or shared-buffer handoff), NOT further byte-copy elimination; per Main: no speculative overlap, exact flow known first",
+    "patch_disposition": "overlay kept for the record, NOT promoted to shared encwall-v071/base (no measurable win)"
+  },
+  "hashes_gates": "104/104 + three golden bit-exact hashes enforced per run, 10/10 pass; exact A/C island FAIL preserved separately (unchanged criterion)",
+  "session_round_nesting_fix": "applied to encoder-profile-receipt-v2.json: write_ns 317.3 and read_residual 1397.4 (= elapsed - write_ns) partition the 1714.7 round; child worker round 978.0 + parent read/IPC wait 419.4 partition the read_residual; v1 double-count removed",
+  "open": ["TemplateAccumulationScout (correctness source investigation) running", "GPU feeder residual 1391 ms decomposition (next profile target)"]
+}

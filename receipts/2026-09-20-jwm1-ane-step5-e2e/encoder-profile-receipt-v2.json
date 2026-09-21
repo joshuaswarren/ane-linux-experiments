@@ -18,11 +18,12 @@
     "stage_wall_meas_1": 5252.735,
     "segments": [
       {"segment": "marshal (host input serialization)", "ms": 2067.4, "pct": 39.4},
-      {"segment": "session round (write 317.3 + worker round 978.0 + parent-side IPC/handoff ~736.7 = ane.exec_ms)", "ms": 1714.7, "pct": 32.6},
+      {"segment": "session round elapsed = ane.exec_ms", "ms": 1714.7, "pct": 32.6, "nesting": "parent segment; children INSIDE it: write_ns 317.3 (request bytes to worker stdin) + read_residual 1397.4 (== elapsed - write_ns per code), and inside read_residual: child worker round elapsed_ms 978.0 (recv+stage+exec+read+send-back) + parent-side read/IPC wait 419.4"},
       {"segment": "back (host output conversion)", "ms": 79.6, "pct": 1.5},
       {"segment": "GPU feeder + loop orchestration (residual)", "ms": 1391.0, "pct": 26.5}
     ],
-    "sum_check": "2067.4 + 1714.7 + 79.6 + 1391.0 = 5252.7 EXACT",
+    "sum_check": "2067.4 + 1714.7 + 79.6 + 1391.0 = 5252.7 EXACT (top level); nested check: 317.3 + 1397.4 = 1714.7 and 978.0 + 419.4 = 1397.4 — v1 double-counted write outside the round; corrected per Main",
+    "nesting_labels": "write_ns is measured INSIDE session.submit before the read loop (ane_resident.py:196); read_ns is DEFINED as elapsed - write_ns (:209); child fields copied from session.log[-1] (:214-216 doc)",
     "stability": "meas-5 and meas-10 within ~1.5% per segment (marshal 2117.6/2087.0, round 1674.5/1663.1, residual 2291.2/2245.7)"
   },
   "worker_internal_bound": "pure ANE device exec is NOT directly recorded; it nests inside worker elapsed_ms 978.0 ms, bounded above by ~430 ms after removing stage_ms 230.0 + save_ms 315.0 (recv/read/send shares unrecorded) => device exec <= ~8% of stage; ANE compute is not the encoder-stage bottleneck",
