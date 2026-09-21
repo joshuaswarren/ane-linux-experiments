@@ -220,6 +220,20 @@ candidate. Full 3-driver × 4-model matrix: {0.5B, 2B} digest-identical across A
 {Ministral-8B, 27B} split stock vs {e167==candidate}. The vintage sensitivity boundary is model-level and
 sharp; the fix is bit-neutral universally.
 
+ADDENDUM 2b — Bonsai extension (raw prompt "Describe a lighthouse in one sentence.", 64 tok):
+
+| model | stock | candidate (e167+095cb7) | reading |
+| --- | --- | --- | --- |
+| prism-ml/Ternary-Bonsai-8B-mlx-2bit | `1d73d64e2da97975` (8.32 tok/s) | `1d73d64e2da97975` (7.92 tok/s) | vintage bit-neutral — 5th model |
+
+- prism-ml/Ternary-Bonsai-2-27B-mlx-2bit is NOT loadable by mlx_lm 0.31.3: custom arch
+  `prism_hadamard_qwen35` (`ModuleNotFoundError: mlx_lm.models.prism_hadamard_qwen35`). Loading it requires
+  the Bonsai runtime lane's registration (Bonsai2RuntimeEnablement owns that) — catalog fact, not attempted
+  further.
+- Matrix now 5 models × 3 builds (27B Bonsai pending their runtime): {0.5B, 2B, Bonsai-8B} bit-neutral
+  across ALL builds; {Ministral-8B, Qwen3.8-27B} split stock vs lineage. No arch-level pattern yet (2-bit
+  Bonsai insensitive, fp16-quant Ministral sensitive); sensitivity is per-model, empirically pinned.
+
 ## Coordination (updated)
 
 - M2BootImplementation authorized each window in-band and received the attempt-4 GPU yield; ownership then
