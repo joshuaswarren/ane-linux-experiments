@@ -255,3 +255,23 @@ exclusive window): fused 3618.9 vs unfused 3573.4 ms encoder_ane median
 arms all pins green (1 smoke + 1 warm + 6 meas). Verdict: fused A->B is
 platform-neutral — the -107 ms win is j16-only; j1's GPU add+select was
 never a meaningful cost. Identity: fused-20260921T202356.
+
+## j1 fresh decomposition (3573 ms stack, clean exclusive window)
+
+decomp-20260921T202639 (inprocess, fused off, 1 warm + 3 meas, all pins
+green; encoder_ane median 3611.6 ms). Per-pass buckets:
+
+- ANE submit walls: 352.1 ms total (attn 279.9 + pv 72.3); inside them
+  device phases send 58.6 / exec 40.2 / read 225.2 — read dominates
+  (attn 203.1 ms = 8.5 ms per readback, vs j16 ~0.6 ms).
+- Marshal (GPU drain at island-input eval): 1942.9 ms — dominant.
+- Feeder CPU issue wall: 3480.8 ms (overlaps GPU), op split: matmul 47
+  stmts = 2373.1 ms, const 1983 stmts = 745.2 ms (!), conv 282.4 ms.
+
+j1 levers, in order: (1) feeder matmul GPU work (~1.9 s of the pass is
+GPU drain behind CPU issue — same A->B/C->O fusion lever as j16, and
+j1's GPU is ~2.3x slower per feeder op); (2) const materialization:
+~2000 consts cost 745 ms/pass of host array creation + upload — a
+per-process const cache or chunked blob upload is a backend-level win;
+(3) island readbacks: attn read 8.5 ms/submit on j1 vs ~0.6 ms on j16 —
+worth one probe of the libane read path (tile unpack vs ioctl) on T8103.
