@@ -40,3 +40,46 @@ m1-host = m1-host (proxy host, Linux/Asahi), m2-host = m2-host (parked at m1n1 p
 
 ## ESP restore
 (pending — boot.bin.pre-proxy 153170e0…ad1ff5 restore per RUNBOOK step 6 after the run)
+
+---
+
+# INSTALL + RUN OUTCOME — M2SwufInstallRun (2026-09-22 08:47–09:10 CDT, macOS route)
+
+m1-host = m1-host, m2-host = m2-host. Install route = (B) macOS slice (no proxy link ever existed, so (A) was impossible).
+
+## Step 1 — image transport (08:47–08:53)
+- Source: m1-host:/var/tmp/m2proxy-staging/boot.bin.proxy-swuf, sha256 6dc0ec5d20f6069ddebab7e06a79e2ea3430c58c364321afbf840aff7274ebb4 — verified on m1-host, workstation (~/tmp/m2swuf/), and m2-host macOS (/tmp/) — all three identical.
+- m2-host macOS pre-login SSH up 08:52 (m2-host-lan → M2-HOST.local, macOS 27.0, arm64).
+
+## Step 2 — ESP swap on m2-host macOS (08:53)
+- ESP identified: disk0s4 "EFI - OMARC", FAT32, 524.3 MB (NOT Apple's disk0s1 APFS_ISC). User mount refused; `sudo diskutil mount disk0s4` OK → /Volumes/EFI - OMARC.
+- Prior state verified: m1n1/boot.bin sha256 9ad086536d4b4f871530ad5231bf8eea8063bbf5ff9189ae713584ed74158fdd (= proxy-only, as staged).
+- Backup written: m1n1/boot.bin.proxy-only.bak (sha re-verified 9ad08653…, 1114112 B).
+- Patched image written: m1n1/boot.bin (884736 B) + side copy m1n1/boot.bin.proxy-swuf; on-ESP sha256 re-verified 6dc0ec5d…4ebb4. boot.bin.old untouched.
+- `diskutil eject disk0s4` failed ("Unmount of disk0 failed…" — whole-disk eject); partition itself unmounted cleanly (verified "disk0s4 was already unmounted").
+
+## Step 3 — reboot into patched default (08:57:30)
+- Announced to all 08:55 (~2 min ahead). `sudo /sbin/shutdown -r now` accepted 08:57:30 ("Shutdown NOW!").
+- Post-reboot: m2-host times out on LAN 192.0.2.0 AND tailnet 203.0.113.1 → NOT macOS, NOT Omarchy ⇒ parked on proxy-swuf as designed.
+
+## Step 4 — bring-up over the charge cable: NO ENUMERATION (08:57–09:10)
+linkcheck readbacks on m1-host (verbatim, all identical):
+```
+08:59:40 roles: port0:host [device] port0-partner: port1:[host] device port1-partner: partners: port0=attached port1=attached roothubs:2 ttyACM:none
+09:00:13 (same)
+09:00:50 (same)
+09:02:37 (same)
+09:03:46 (same)
+```
+- m1-host dmesg: PD/CC partner attached the whole time (port0:host), but ZERO device-attach events after 08:57:52 (m1-host's own xhci bus re-register) — no 05ac:1905, no 1209:316d, no cdc_ncm, no ttyACM. m1n1-proxy-watcher: "No entries" (never fired).
+- Key contrast (from M2ProxyRun's earlier capture): during the macOS window the SAME cable/port enumerated 05ac:1905 "Mac" (high-speed NCM) — cable + xHCI + signalling are proven good. After parking on proxy-swuf, the M2 produces no USB device whatsoever.
+- Conclusion: the SWUF outcome is unobservable without console, but the m1n1-side gadget never came up — consistent with a silent m1n1 usb_phy_bringup / dwc3 gadget failure on T6021 (all failure paths are silent 'continue'), independent of the role swap. Checklist (ane_bringup.py) never ran; no RTKit handshake; no SCRATCH7 poll.
+
+## Consequence + recovery state
+- Chainload return (omarchy-now.sh --chainload) is IMPOSSIBLE: it needs the dead gadget. boot.bin IS the parked image ⇒ every m2-host boot re-parks.
+- Only return path: physical boot picker (hold power) → choose macOS (NOT Omarchy). Then restore via macOS SSH:
+  `sudo cp /var/tmp/m2proxy-staging/boot.bin.pre-proxy /Volumes/ESP/m1n1/boot.bin` → expect sha256 153170e065383767a47bc234e02344ecdc09d03f4003d92e6a2d6e464fad1ff5, reboot once.
+- ESP state right now: boot.bin = proxy-swuf (6dc0ec5d), boot.bin.proxy-only.bak = 9ad08653, boot.bin.pre-proxy = 153170e0 on the Linux root (/var/tmp/m2proxy-staging/) — RESTORE PENDING, not yet executed.
+
+## Outcome
+INSTALL: COMPLETE and verified. RUN: FAILED — no proxy enumeration, checklist never fired, blocked on console-less m1n1 T6021 USB bring-up. m2-host parked; recovery requires hands (boot picker → macOS).
