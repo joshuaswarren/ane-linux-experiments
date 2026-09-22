@@ -304,7 +304,8 @@ def main():
     step_c_map_selene(u, hw, fw_blob)
     step_d_run_poll(hw)
     if hw.dry or hw.mock:
-        log("dry-run", RESULT="READS-ONLY DONE (no RUN written)")
+        log("dry-run", RESULT="MOCK DONE (rtkit skipped, no real writes)"
+            if hw.mock else "READS-ONLY DONE (no RUN written)")
         return
     step_e_rtkit(u, hw)
     log("done", RESULT="OK", next_step="TQ contract on running selene "
