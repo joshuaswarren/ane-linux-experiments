@@ -197,3 +197,53 @@ that matters remains B->C / C->O capture.
   builds (same mismatch counts 162265/8369/108391 vs fresh numpy fp32
   GEMM references, ~1-ULP scale) — harness-vs-device skew, not module
   behavior. The 104-pin gate is the e2e battery, green.
+
+## Addendum 3: full-encoder hwx DECODED (B->C / C->O byte-source)
+
+Artifact: mac-desktop hwx-fp16-single-v10/model.hwx (460423168 B, sha256
+prefix 020428fca545648f, compile status=0, single program, softmax/LN
+in-graph; EncoderIslandCost capture). Decoder:
+.work/2026-09-22-encoder-fusion-bc/decode_encoder_hwx.py over
+tools/hwxv2-to-anec primitives; outputs encoder-v10-tasks.ndjson
+(13701 tasks, header td_count agrees) and
+encoder-v10-softmax-ln-windows.json (full register maps, tasks 330-344
+and 540-559).
+
+Structure: 13701 tasks, ~571/layer x 24 layers. Surface-size census
+(tile-DMA src/dst totals) maps 1:1 onto graph tensors: 2304000 B =
+[1,8,375,375] fp16 (scores/add/probs), 2256000 = same padded
+(2250000+6000), 4608000/4512000 = [1,8,375,750]/749 rel-pos surfaces,
+17976000/18000000 = their f32 matmul partials, 768000/770048 =
+[375,1024] fp16 (LN/projections), 1572864 = [375,2048] conv module,
+3080192 = [375,4096] FFN.
+
+B->C softmax family (period 568 tasks, ~15 tasks/layer, L2-resident —
+the 2.25 MB surface is re-read in place, no DRAM round-trip):
+- fill/broadcast writes (cfg 0x100/0x14a, dst 2304000, 375 rows)
+- max-reduce: reads 3000 rows of 2304000, writes padded 2256000
+  (cfg 0x87a / major-op 0x13900)
+- scalar reduces + broadcast subtract (cfg 0x842/0x500842/0x852)
+- exp + normalize in place on 2304000 (cfg 0x100372/0x500172, 3000
+  src rows, 125-row dst chunks), followed by six+ 125-row chunked
+  sum-reduce reads (cfg 0x342).
+Byte-source register maps for the whole window are in
+encoder-v10-softmax-ln-windows.json (tasks 540-559).
+
+C->O layer_norm family (24x, 2 tasks + staging): staging write 768000,
+in-place normalize read/write 768000↔768000 (cfg 0x148), immediately
+followed by the o-proj matmul partial task (770048 padded input, 128
+src rows -> 2304000 dst, cfg 0x100841). Register maps in the same JSON
+(tasks 330-344).
+
+Assessment — execute Apple's program directly vs re-emit:
+EXECUTE DIRECTLY. The softmax is not one task but a ~15-task L2-resident
+micro-pipeline; re-emitting it as island bundles would reintroduce a
+submit wall per island (~50-100 ms/submit on m1-host, x24 layers) to
+reproduce work Apple already chains through L2 at zero IPC. Same for LN
+(2 tasks). The right use of this hwx on Linux is hwxv2-to-anec conversion
+and libane submission of the whole program (the converter was built for
+exactly this), with the decoded streams as the reference for any partial
+placement. A partial-island route using these streams is the fallback
+only if full-program submit hits KMD limits (460 MB program, 13701 TDs
+vs the 416/208-TD islands submitted so far — td_count batched submit
+already supports full arrays).
