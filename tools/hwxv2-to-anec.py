@@ -6,6 +6,9 @@ import struct
 import sys
 from dataclasses import dataclass
 
+# Apple v10 containers are consumed with libane's tile_shift at 9, so the
+# header's tile counts are 512-B units.
+TILE_UNIT = 0x200
 TILE_SIZE = 0x4000
 # The first record header of a task is a register write to 0x01f800. Its top
 # byte carries the record's word count, which differs between macOS build
@@ -460,6 +463,13 @@ def _build_header(
     in_shape: tuple[int, int, int, int],
     out_shape: tuple[int, int, int, int],
 ) -> bytes:
+    """Build the Linux anec header for one converted HWX.
+
+    Tile counts are emitted in 512-B units: the macOS 26 container is
+    consumed by libane built with tile_shift 9, and 0x4000-unit counts
+    leave the command buffer 32x undersized so the engine fetches weights
+    past the mapped BO and stalls with no completion event.
+    """
     in_n, in_ch, in_h, in_w = in_shape
     out_n, out_ch, out_h, out_w = out_shape
     in_plane, in_row = derive_strides(
@@ -473,8 +483,8 @@ def _build_header(
     if len(input_sections) + len(output_sections) > 28:
         raise ValueError("ANEC supports at most 28 input and output ports")
     tiles = [0] * 32
-    tiles[0] = (image.content_size + TILE_SIZE - 1) // TILE_SIZE
-    tiles[3] = (image.workspace_size + TILE_SIZE - 1) // TILE_SIZE
+    tiles[0] = (image.content_size + TILE_UNIT - 1) // TILE_UNIT
+    tiles[3] = (image.workspace_size + TILE_UNIT - 1) // TILE_UNIT
     dst_count = len(output_sections)
     input_shapes = [(in_n, in_ch, in_h, in_w)] * len(input_sections)
     output_shapes = [(out_n, out_ch, out_h, out_w)] * len(output_sections)
@@ -488,12 +498,12 @@ def _build_header(
         shape = output_shapes[index]
         shape_bytes = shape[0] * shape[1] * out_plane
         required = max(size, shape_bytes)
-        tiles[4 + index] = max(1, (required + TILE_SIZE - 1) // TILE_SIZE)
+        tiles[4 + index] = max(1, (required + TILE_UNIT - 1) // TILE_UNIT)
     for index, size in enumerate(input_sizes):
         shape = input_shapes[index]
         shape_bytes = shape[0] * shape[1] * in_plane
         required = max(size, shape_bytes)
-        tiles[4 + dst_count + index] = max(1, (required + TILE_SIZE - 1) // TILE_SIZE)
+        tiles[4 + dst_count + index] = max(1, (required + TILE_UNIT - 1) // TILE_UNIT)
     nchw = [0] * (32 * 6)
     for index, shape in enumerate(output_shapes):
         nchw[(4 + index) * 6:(4 + index) * 6 + 6] = [*shape, out_plane, out_row]
@@ -502,7 +512,12 @@ def _build_header(
     return struct.pack(
         "<QIIQQII32I192Q",
         image.content_size,
-        image.td_size,
+        # TQ_SIZE1 encodes (td_size >> 2) - 1 in a 7-bit field: anything
+        # above 0x1f8 overflows into the neighbouring register field and
+        # the firmware never dispatches the bootstrap task. The bootstrap
+        # only needs the first 0x1f8 bytes of task 0; the firmware walks
+        # the rest of the stream by the next pointers.
+        min(image.td_size, 0x1F8),
         image.td_count,
         image.task_stream_size,
         image.kernel_size,
@@ -535,6 +550,76 @@ def _write_content(
             start = chunk_end
 
 
+def patch_task_nid(content: bytearray, tsk_size: int, nid: int = 0x40) -> int:
+    """Stamp the FIFO nid into every task header of one converted payload.
+
+    Apple's macOS 26 streams carry nid bits (hdr0 16..23) = 0; the Linux
+    task manager routes every task to the FIFO named by those bits and its
+    finish event matches `nid << 16 | (td_count - 1)`, so a stream whose
+    tasks name no FIFO is fetched, stalls, and never signals completion
+    (tm completion failed: -110, finish lines=0). The island compiler
+    writes nid 0x40 on every task; the low 16 counter bits and the
+    first/last flag bits are Apple's own and are preserved.
+    """
+    patched = 0
+    offset = 0
+    seen = set()
+    while offset + 0x20 <= tsk_size and offset not in seen:
+        seen.add(offset)
+        hdr0 = struct.unpack_from("<I", content, offset)[0]
+        struct.pack_into("<I", content, offset, hdr0 | (nid << 16))
+        patched += 1
+        nxt = struct.unpack_from("<I", content, offset + 0x1C)[0]
+        if not nxt or nxt + 0x20 > tsk_size:
+            break
+        offset = nxt
+    return patched
+
+
+def _rewire_channel(channel: int, dst_count: int) -> int:
+    """Map a surface channel between Apple's and libane's role layouts.
+
+    Apple binds surface channels by role where they fall in the stream:
+    sources on the first surface channels, destinations after them. The
+    Linux runtime's staging ordinals are the reverse: destinations at
+    channels 4..4+dst_count-1, sources after those. A stream kept on
+    Apple's wiring makes the engine DMA its inputs from buffers sized for
+    outputs and written by nobody, which runs off the end of the bound BO
+    and stalls with no completion event. Surfaces below channel 4
+    (command/workspace) never move.
+    """
+    if 4 <= channel < 4 + dst_count:
+        return channel + dst_count
+    if 4 + dst_count <= channel < 4 + dst_count * 2:
+        return channel - dst_count
+    return channel
+
+
+def rewire_surface_channels(content: bytearray, tsk_size: int, dst_count: int) -> int:
+    """Rewrite each task's selector word to the runtime's role layout."""
+    rewired = 0
+    offset = 0
+    seen = set()
+    shifts = (0, 6, 12)
+    while offset + 0x20 <= tsk_size and offset not in seen:
+        seen.add(offset)
+        sel = struct.unpack_from("<I", content, offset + 32)[0]
+        new = sel
+        for shift in shifts:
+            channel = (sel >> shift) & 0x1F
+            mapped = _rewire_channel(channel, dst_count)
+            if mapped != channel:
+                new = (new & ~(0x1F << shift)) | (mapped << shift)
+        if new != sel:
+            struct.pack_into("<I", content, offset + 32, new)
+            rewired += 1
+        nxt = struct.unpack_from("<I", content, offset + 0x1C)[0]
+        if not nxt or nxt + 0x20 > tsk_size:
+            break
+        offset = nxt
+    return rewired
+
+
 def convert_hwx(
     data: bytes,
     in_ch: int,
@@ -553,6 +638,9 @@ def convert_hwx(
     payload = kernel_payload(image, blob)
     if payload is not None:
         content[image.kernel_offset:image.kernel_offset + image.kernel_size] = payload
+    patched = patch_task_nid(content, image.task_stream_size)
+    rewire_surface_channels(content, image.task_stream_size,
+                            len(image.output_sections or (1,)))
     return header + b"\0" * (ANEC_HEADER_SIZE - len(header)) + bytes(content)
 
 
