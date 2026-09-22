@@ -246,3 +246,12 @@ FUSED_AB=1, interleaved 1 smoke + 1 warm + 6 meas: respelled source
 both arms all pins green (104/104, gold bit-exact). The trailing bool
 boundary cast stayed off the ANE path per EHC's contract. Identity:
 respell-20260921T195419. PASS reported to EHC for their receipt.
+
+## j1 fused A/B — clean post-rebind window (lock-gated)
+
+Ran via a lock-gated wrapper (waited 27 min for /tmp/m1-gpu.lock, then an
+exclusive window): fused 3618.9 vs unfused 3573.4 ms encoder_ane median
+(parity, +45 ms within window noise), total 4974.0 vs 4904.0 ms. Both
+arms all pins green (1 smoke + 1 warm + 6 meas). Verdict: fused A->B is
+platform-neutral — the -107 ms win is j16-only; j1's GPU add+select was
+never a meaningful cost. Identity: fused-20260921T202356.
