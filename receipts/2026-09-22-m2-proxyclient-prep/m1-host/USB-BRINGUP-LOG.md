@@ -90,3 +90,28 @@ updates/ane.ko 82411a46bbeca04f IS the correct cached-BO 104-pin build
 (param-bearing; writecombine=N present; bit-reproducible from
 /var/tmp/ane-6fa-src). The 4ebcfc10 sha I was hunting was the superseded
 pre-param build. No swap required; boot autoloads the verified build.
+
+## M2ProxyRun session, 09:00 — PD role root cause + SWUF image (M2SwufInstallRun takes over)
+
+- Cable attempts 08:26–08:48 (TB, charge-only, A-to-C behind VIA 2109:0817 hub —
+  hub + Realtek LAN enumerated fine): ZERO signalling from the M2 in every case,
+  not even descriptor errors. On every attach the M2 (m1n1) wins PD source and
+  m1-host settles UFP/device; preferred_role=source ignored by the CD3218.
+  phy-apple-atc logs "USB4 not implemented; falling back to USB2" — USB4 was
+  NOT the blocker. Charge cable w/ phone test + M2 power-cycle with cable
+  attached also produced nothing.
+- Source findings (m1n1 v1.6.1 + checkout .work/m1n1): stock m1n1 never sends a
+  data-role swap 4CC (tps6598x.c = SSPS + IRQ mask only), CD3218 stays in Apple
+  boot policy (prefers source). No stage-2 USB skip in 1.6.1 (main.c:128-139
+  unconditionally usb_init+usb_iodev_init before uartproxy), no SoC gating
+  anywhere in the USB path (usb.c:36-39 paths; idx 0..7, silent continue;
+  phy/i2c bring-up failures print only to an invisible console).
+- Fix built: "SWUF" (swap-to-UFP) issued on every hpm after IRQ masking in
+  usb_init_i2c (usb.c), one 500 ms-delayed retry. Image staged on m1-host:
+  /var/tmp/m2proxy-staging/boot.bin.proxy-swuf
+  sha256 6dc0ec5d20f6069ddebab7e06a79e2ea3430c58c364321afbf840aff7274ebb4
+  (build tag 4184923-dirty; no chainload config → parks at proxy like 9ad08653).
+- m2-host side now suspect for zero signalling; M2SwufInstallRun owns the macOS
+  ESP install of proxy-swuf + the run. My watchers left on m1-host:
+  m2proxyrun-poll.sh (30 s linkcheck + cdc_acm fallback, running);
+  3 s hub-port watcher stopped at 09:00.
