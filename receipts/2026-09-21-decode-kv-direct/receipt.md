@@ -378,3 +378,34 @@ configurations: densewin alone (723/tok, 1531.9 ms) and old+ring
 (729/tok, 1539.7 ms); the combination is not additive. Decision on
 which to promote belongs to Main; both configurations hold the bf16
 reference stream bit-for-bit.
+
+## Addendum 12: final ranked decode dispatch table — M1 host, densewin wheel
+
+Last 21690 decode dispatches (30 intervals, 723/token) aggregated by
+kernel ordinal (enum order from compute.h):
+
+| kernel | dispatches/token | decode gpu ms | share |
+| --- | ---: | ---: | ---: |
+| QmmVecQ4MultiSubgroupBF16 | 93.3 | 628.5 | 40.3% |
+| QmmVecQ4WordSubgroupBF16 | 18.5 | 309.8 | 19.8% |
+| FastRmsNormBF16 | 111.7 | 96.9 | 6.2% |
+| ElementwiseBF16 | 93.1 | 93.0 | 6.0% |
+| GatedDeltaDecodeBF16 | 17.5 | 74.3 | 4.8% |
+| CastBF16F32 | 99.0 | 68.4 | 4.4% |
+| ElementwiseF32 | 75.6 | 64.5 | 4.1% |
+| CopyGeneralBF16 | 69.9 | 55.9 | 3.6% |
+| CastF32BF16 | 52.4 | 44.9 | 2.9% |
+| MatmulF32 | 11.7 | 32.6 | 2.1% |
+| QmmVecSubgroupBF16 | 17.5 | 21.9 | 1.4% |
+| FusedChainF32 | 17.5 | 21.9 | 1.4% |
+| ConvBF16 | 17.4 | 20.9 | 1.3% |
+| Swiglu/BinaryVec/other | ~40 | ~60 | ~3.9% |
+
+Ranked next levers from this table:
+1. Qmm dequant-GEMV family (60.1% of decode GPU, 111.8 dispatches/tok)
+   — fused dequant-in-GEMM / weight-layout work; biggest single pool.
+2. CopyGeneralBF16 69.9/tok (3.6%) — consumer now named (Concatenate,
+   GDN conv-state window; ring patch measured -18/tok, committed).
+3. Cast sandwich remnants (CastBF16F32 4.4% + CastF32BF16 2.9%) —
+   f32 interiors in RMSNorm/attention scales; strided-input fixes.
+4. FastRmsNormBF16 111.7/tok — fold into consumers (norm->rope).
