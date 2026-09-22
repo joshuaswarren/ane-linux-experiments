@@ -171,3 +171,83 @@ Open items, with state:
 4. m1-host is now on GpuTlbKernel's TLB2M test kernel — the numbers above are
    pre-reboot stock-kernel measurements; re-run the raw arm if cross-kernel
    comparability is ever claimed.
+
+## 5. ADDENDUM (DecodeDispatchCut3) — m1max-host raw-gates A/B, rope-pair bf16 landed + measured, conv-ring status
+
+Hosts: m1-host went dark (no-route, LAN+Tailscale, ~10:26, past the power-cycle
+fallback; physical eyes requested) so the m1max-host (M1) legs ran on m1max-host per Main.
+Kernel on m1max-host for every number below: `7.1.13-3-2-ARCH` (stock for that host;
+no TLB experiment kernels). GPU lock flock honored; llama-server stopped in
+window; MLX_DISABLE_COMPILE=1; France×16 / 32 tok profile; 10-prompt cadence.
+
+### Raw-gates arm, m1max-host (A/B, both wheels diag, dc7ca4a0 vs 822d186)
+
+| metric | baseline dc7ca4a0 | raw arm 822d186 | delta |
+| --- | ---: | ---: | ---: |
+| dispatches/decode-token | 723 (22,413/31) | **561** (17,391/31) | −162/tok (−22.4%) |
+| decode gpu_busy | 1435.2 ms | 1220.2 ms | −215.0 ms (−15.0%) |
+| decode tok/s (median) | 33.9 | **35.36** | +4.3% |
+| ttft tok/s (median) | 47.47 | 47.75 | +0.6% |
+| GatedDeltaDecodeBF16 | — | 594/31-step set, fused | 0 GDN fallbacks (spy) |
+
+Identity (teacher-forced greedy, 10 prompts × 32 steps, vs
+/tmp/q38c/logits-integ-m1max-host.json, same host/driver/model): 2 first-flips
+(prompt 1 step 14, prompt 7 step 19; margins 0.125 / 0.125 — bf16 quantum),
+8/10 prompts flip-free 32/32, downstream flips cascade. Same documented
+equivalence class as §4 (receipts/2026-09-22-qwen38-correctness §3/§4).
+Artifacts: m1max-host /var/tmp/decodecut/{logits-rawbf16b.json, analyze-rawbf16b.txt,
+analyze-baseline-dc7ca4a0.txt, cadence-*.json, window-*.log}; mirrors in
+.local/decodecut3/ here.
+
+### Rope-pair bf16 via fast_trio (LANDED, measured — zero net on Qwen3.8)
+
+Port committed on m1-host worktree files + m1max-host branch `agent/decode-dispatch-cut`
+@ 822d186 (wheel 0.32.3.dev202609221548+diag.822d186):
+- `shaders/fast_trio.comp` gains `USE_BF16` rope-pair bodies copied from
+  fast_rope.comp's USE_BF16 form: 32-bit word IO (uint16 blocks are
+  llvmpipe-lossy), RNE bf16 rope_round, pair-granular main where each
+  invocation owns one packed output word (dims%4==0, even output row bases
+  host-guarded; r1/r2 sign branch preserved — bit-exact).
+- `FastTrioRopePairBF16` enum (append-only, id 438) + compute.cpp case +
+  CMake `fast_trio_rope_pair_bf16` target; `dispatch_rope_pair` dtype gate now
+  f16-or-bf16 with kv-window dtype parity and word-alignment refusals;
+  fused_chain plan gate accepts bf16 rope nodes.
+- Shader compiles clean in all 4 real variants (glslangValidator -V);
+  bf16 arithmetic verified bit-exact against the eager composition in numpy
+  (half-split and traditional, positions 0/137.5/1023).
+- MEASURED: in-model `pairs_planned=0` — Qwen3.8's RoPE nodes are
+  shape(-2)x256 with rotation dims=64 (passthrough tails, correctly excluded
+  by the pair contract since dc7ca4a0), so the f16 pair never fired on this
+  model either and the bf16 twin saves 0 dispatches here. The −6..18/tok
+  scope in §4 item 2 was model-specific; the arm is correct and dormant for
+  Qwen3.8, applicable to models with full-rotation rope at even dims.
+- The raw-arm numbers above therefore include zero rope-pair effect:
+  −162/tok is all GDN raw-gates, matching §4's −162/tok on the other host.
+
+### m1max-host transport note (provenance)
+
+m1-host's branch objects were unreachable, so m1max-host's branch was reconstructed
+from the receipt's working copies (.local/decodecut/src == 6056969a, verified
+by diff against m1-host's pre-edit tree): overlay copies + a generated
+patches/mlx-gated-delta-raw-gates.patch (registered in prepare-mlx.sh) +
+scripts/patch-mlx-lm-gdn-raw.py. Commit f4b7cb8f amended to 822d186 with the
+rope-pair files and a prepare-mlx.sh tail repair (an earlier splice had
+dropped the staging mv — first wheel silently built stale sources; caught
+because mx.fast.gated_delta_update_raw was absent from the installed wheel).
+
+### Conv-ring (item 3)
+
+Ring is default-on in the venv qwen3_5.py on this lineage and was active in
+both §4 A/B arms and both m1max-host arms (identical CopyGeneralBF16 behavior);
+all four identity gates passed with it on → decision KEEP default-on stands.
+The same-lineage ring-off −18/tok delta from Addendum 11 was NOT re-measured
+(m1-host dark; old-wheel number stands as the estimate).
+
+### Open
+
+1. m1-host recovery + (optional) repeat of the raw arm there on stock kernel for
+   kernel-name-matched numbers; commit the m1-host rope-pair working-tree files
+   to its branch (currently uncommitted on the dark host; mirrors committed
+   on m1max-host 822d186 and archived in .local/decodecut3/).
+2. CastBF16F32 (72/tok) / FastRmsNormBF16 (115/tok) consumer-side bf16
+   variants — next ranked lever, not started.
