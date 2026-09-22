@@ -93,8 +93,10 @@ the image was given explicitly via `--image PATH`; the refusal names the
 override and prints `pacman -Q m1n1 uboot-asahi` as the parity check.
 
 The watcher also self-terminates its own run: after each checklist pass (or
-abort) it invokes `omarchy-now.sh --chainload`, so once the return image is
-staged every cable-in ends with the box back in Omarchy.
+abort) it invokes `omarchy-now.sh --chainload --image /boot/efi/m1n1/boot.bin`
+(Main's 2026-09-22 override: the proxy host's image is explicitly trusted so a
+cable-in can never strand the box at the logo), so every cable-in ends with
+the box back in Omarchy.
 
 or, from m2-host's side once it boots Linux again, verify and clean up
 (this restore is what stops future reboots from re-parking at the proxy):
