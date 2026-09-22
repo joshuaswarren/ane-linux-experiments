@@ -302,3 +302,19 @@ dtype) as a single device array; each const is a slice view (Blobs
 .dtype_view + batched _eval_const path). Measured const statement wall
 on j1: 745.2 -> 351.2 ms (-53%). Most of the remainder is host-side
 np/memmap work; the upload count dropped from ~1983 to a handful.
+
+## Cached mapping made permanent (Main directive)
+
+omarchy-ane branch agent/ane-cached-bo-mapping (commit afb23dd on the
+j16 repo): ane_drv.c maps BOs cached by default, module param
+writecombine=1 opt-out, with the DART-coherency + 45x rationale in the
+comment. j16 rebuilt from the branch (~/src/omarchy-ane/ane/ane.ko),
+module reloaded (writecombine=N), verification battery on T6001: fused
+1233.0 / unfused 1310.9 ms encoder_ane median — all pins green; cached
+mapping costs nothing on T6001. j16 llama-server restored, health ok.
+j1: /var/tmp/ane-6fa-src/ane/src/ane_drv.c synced to the committed
+version (with the param), ane.ko rebuilt (756624 bytes, 21:41).
+Rebind script (workstation ane-linux-experiments-parakeet-perf
+native-divisor-t8103/rebind_and_verify.sh, commit 0d383ab) now insmods
+/var/tmp/ane-6fa-src/ane/ane.ko instead of the stock
+j1-ane-restore copy; ParakeetPerformance notified (they execute it).
