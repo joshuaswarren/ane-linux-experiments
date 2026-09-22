@@ -304,3 +304,20 @@ is backend-side: make that consumer accept the strided row (the fused
 kernels already take explicit strides) or keep the slice-update write
 the row directly. This is a separate lane from kv-direct; the
 attribution trace ships in copy.cpp under MLX_OMARCHY_COPY_TRACE.
+
+## Addendum 9: consumer identification attempt — needs a symbolized build
+
+Added backtrace_symbols_fd to the trace (first 40 copies). The wheel's
+libmlx.so is stripped, so frames resolve to "libmlx.so" only — no
+consumer identification. To finish: rebuild with -g (CMAKE_BUILD_TYPE
+RelWithDebInfo or -DCMAKE_CXX_FLAGS=-g) and addr2line the captured
+frames, or extend the encoder's dispatch record to carry the
+MLX primitive name (trace::prim_counts already names primitives in
+eval.cpp — plumb the current primitive into the dispatch record).
+
+The stride fingerprints from the shape trace remain the strongest
+lead: the 4096-byte copies read (2048,1,128,1) views — a (1,1,16,128)
+slice of a 2048-stride parent, i.e. one time-step of a (·,·,·,128)
+row-major cache/conv buffer whose 16-lane axis strides 128 — consumed
+somewhere that forces a General contiguity copy instead of passing
+strides.
