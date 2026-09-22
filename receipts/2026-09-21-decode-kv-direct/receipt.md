@@ -321,3 +321,32 @@ slice of a 2048-stride parent, i.e. one time-step of a (·,·,·,128)
 row-major cache/conv buffer whose 16-lane axis strides 128 — consumed
 somewhere that forces a General contiguity copy instead of passing
 strides.
+
+## Addendum 10: consumer named — Concatenate (GDN conv-state rolling window)
+
+With trace::current_prim plumbed into the copy record (eval.cpp sets a
+thread_local around eval_gpu; copy.cpp prints it), the consumer
+aggregate over one tokid run:
+
+| n | consumer |
+| ---: | --- |
+| 3054 | Concatenate |
+| 286 | SliceUpdate |
+| 285 | ScaledDotProductAttention |
+| 179 | RMSNorm |
+| 148 | Reshape |
+| 30 | Full |
+
+The dominant 4096-byte ExpandDims copies AND the 36 KB copies are
+Concatenate: the GDN conv-state rolling window in the vendored
+mlx-lm gated_delta.py (concatenate([conv_state, qkv], axis=1) then
+mx.contiguous(conv_input[:, -n_keep:, :]) per GDN layer per token, and
+the keys/values ArraysCache growth).
+
+Fix design (python, vendored mlx-lm patch, not a backend kernel):
+replace the concat-per-token conv window with a preallocated rolling
+buffer — cache[0] holds (B, N, conv_dim) with a write offset; each step
+slice-update one qkv row (one 12 KB write) and run conv1d on the
+contiguous 4-row window slice. CopyGeneralBF16 site (1) and (2)
+disappear (36/token + 7/token); the SliceUpdate it adds is already the
+primitive the kv-direct planner handles. Backend kernel work: none.
