@@ -115,3 +115,23 @@ pre-param build. No swap required; boot autoloads the verified build.
   ESP install of proxy-swuf + the run. My watchers left on m1-host:
   m2proxyrun-poll.sh (30 s linkcheck + cdc_acm fallback, running);
   3 s hub-port watcher stopped at 09:00.
+
+## M2ProxyRun session, 09:10 — macOS-NCM proof + SWUF-park result
+
+- 09:05: m2-host (in macOS during ESP install) enumerated on m1-host usb 1-1
+  high-speed as 05ac:1905 "Mac" (Apple NCM, serial WR1CQCYQ67), cdc_ncm bound,
+  usb0 registered (t=2008/2061s; disconnect t=2322s = reboot). PROOF: cable,
+  hub/port, xHCI, high-speed signalling and descriptor exchange all work
+  end-to-end on this link.
+- After m2-host rebooted parked on boot.bin.proxy-swuf (6dc0ec5d): 10+ min
+  watching, NO device from the M2 (no 1209:316d, no 05ac). m1n1's CDC-ACM
+  gadget is dead on this T6021 — consistent with a silent usb_phy_bringup /
+  dwc3 gadget failure (all failure paths are silent 'continue' in m1n1).
+  m1n1-side diff vs v1.6.1: usb.c identical except named PHY defines + SWUF
+  patch; usb_dwc3.c identical.
+- m2-host unreachable over ssh (parked). m1-host rebooted to macOS at 09:08
+  (FleetMacOSUnattendedAccess, Main GO) — macOS is now the proxy host;
+  M2ProxyMacosHost owns the run from there and will log which device
+  (05ac:1905 vs 1209:316d) enumerates — the decisive differential.
+- On next m1-host Linux boot: m1n1-proxy-watcher (enabled) + poll logs at
+  /var/tmp/m2proxy/state/{m2proxyrun-poll,m2proxyrun-3s}.log come back.
