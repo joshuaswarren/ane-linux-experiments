@@ -72,7 +72,7 @@ def changed_new_blobs(repo, c):
     --no-renames forces renames to A+D pairs; -z keeps raw paths intact
     (spaces/newlines preserved); --root -m covers root and merge commits."""
     raw = run(["git", "-C", repo, "diff-tree", "--root", "-m", "-r",
-               "--no-renames", "--no-commit-id", "--name-status", "-z", c])
+               "--no-renames", "--no-commit-id", "--raw", "-z", c])
     recs = raw.split(b"\0")
     out = []
     i = 0
@@ -84,6 +84,8 @@ def changed_new_blobs(repo, c):
             continue
         fields = meta.split(b" ")
         status = (fields[4] if len(fields) >= 5 else meta)[:1]
+        if len(fields) >= 5 and fields[1] == b"160000":
+            continue  # gitlink (nested worktree/submodule pointer): no blob to scan
         if status in (b"A", b"M", b"T"):
             out.append((path, None, c))
     return out
