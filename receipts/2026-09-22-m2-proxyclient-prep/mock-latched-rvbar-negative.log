@@ -1,0 +1,21 @@
+06:28:16 [a] step=adt-dump begin=True
+06:28:16 [a] path=/arm-io/ane compatible=ane,t8020
+06:28:16 [a] path=/arm-io/ane reg=0 base=0x284000000 size=0x2000000
+06:28:16 [a] path=/arm-io/ane reg=1 base=0x28e004000 size=0x4034
+06:28:16 [a] path=/arm-io/ane reg=2 base=0x28e010000 size=0x4000
+06:28:16 [a] path=/arm-io/dart-ane0 compatible=dart,t8110
+06:28:16 [a] path=/arm-io/dart-ane0 reg=0 base=0x285800000 size=0x400000
+06:28:16 [a] path=/arm-io/dart-ane0 reg=1 base=0x285810000 size=0x400000
+06:28:16 [a] path=/arm-io/dart-ane0 reg=2 base=0x285820000 size=0x400000
+06:28:16 [a] path=/arm-io/dart-ane0 reg=3 base=0x285804000 size=0x400000
+06:28:16 [a] path=/arm-io/pmgr compatible=pmgr,t6021
+06:28:16 [a] path=/arm-io/pmgr reg=0 base=0x23b700000 size=0x10000
+06:28:16 [a] step=adt-dump done=True
+06:28:16 [fw] path=<repo>/scripts/m2-proxyclient/../../tools/ane-hunter/fixtures/t602x_ane0_fw_selene_rc4x.macho size=1720320
+06:28:16 [b] step=power-cycle begin=True
+06:28:16 [b] pmgr=ane_cpu cycled via ADT gates
+06:28:16 [r64] addr=0x285050000 value=0x10000000001
+06:28:16 [b] rvbar_pre=0x10000000001 mode_bits=False
+06:28:16 [w64] addr=0x285050000 value=0x81010000000001
+06:28:16 [r64] addr=0x285050000 value=0x10000000001
+06:28:16 [b] RESULT=ABORT reason=RVBAR readback 0x10000000001 != 0x81010000000001 — write not accepted

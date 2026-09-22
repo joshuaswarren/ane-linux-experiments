@@ -1,0 +1,5 @@
+selftest OK: ane0 range0 0x84000000 -> 0x284000000 (32 MiB), compatible ane,t8020, 4 dart-ane window(s)
+selftest OK: 8 x 0x285C00000 (stride 0x160), engine table 0x284000000, TQ stride 0x2C, TM offsets ['0x20420', '0x20800', '0x20804', '0x20810']
+selftest OK: 0 TM/TQ sites in K14 text, 6 guard records (incl. 0xB38/0xB98/0xBF8 <- 0x01FF01FF), 78 noise sites
+selftest OK: plan engine=0x284000000 tm=0x285c00000, 5 reads incl. 0x285C20804/0x285C20420; probe script at /tmp/ane-hunter-selftest-probe.py
+selftest OK: header written to /tmp/ane_consts_t6021.h

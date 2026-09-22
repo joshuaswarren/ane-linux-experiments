@@ -1,0 +1,19 @@
+OK   engine base 0x284000000
+OK   engine size 32 MiB
+OK   RVBAR 0x285050000 == engine+0x1050000
+OK   CPU_CONTROL 0x285400044 == ASC block 0x285400000 + 0x44 (s22 on-box)
+OK   SCRATCH7 0x285840064 == engine+0x1840064
+OK   SCRATCH6 0x285840060
+OK   TM block engine+0x1C00000 == 0x285C00000 (hunter)
+OK   desc addr engine+0x1C20400 == 0x285C20400 (hunter)
+OK   dart-ane0 base 0x285800000
+OK   rvbar(fw DVA) == 0x0081010000000001 (night-summary target)
+OK   latched 0x10000000001 == DVA part + enable bit; mode bits add 0x0081<<48
+OK   ADT contains "name" = <"ane0">
+OK   ADT contains "name" = <"dart-ane0">
+OK   ADT contains dart,t8110
+OK   ADT contains ane,t8020
+OK   ADT contains "pre-loaded" = <01000000>
+OK   ADT ane0 window0 base 0x84000000 == 0x84000000
+OK   ADT ane0 window0 size 0x2000000 == 0x2000000
+VALIDATION PASS
