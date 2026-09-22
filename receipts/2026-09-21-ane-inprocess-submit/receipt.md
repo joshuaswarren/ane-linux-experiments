@@ -318,3 +318,12 @@ Rebind script (workstation ane-linux-experiments-parakeet-perf
 native-divisor-t8103/rebind_and_verify.sh, commit 0d383ab) now insmods
 /var/tmp/ane-6fa-src/ane/ane.ko instead of the stock
 j1-ane-restore copy; ParakeetPerformance notified (they execute it).
+
+## Autoload permanence (post dwc3-recovery reboot)
+
+A subsequent Main-ordered reboot autoloaded the STOCK module from
+/lib/modules/7.1.13-3-2-ARCH/updates/ane.ko. Fixed at the root: cached
+build INSTALLED into the autoload path (stock backed up at
+/var/tmp/ane-stock-backup-82411a46.ko), depmod -a, modprobe reloaded,
+writecombine=N confirmed. Post-reboot sanity: attn read ~1.0 ms/submit
+(cached profile). No rebind insmod dance needed on future boots.
