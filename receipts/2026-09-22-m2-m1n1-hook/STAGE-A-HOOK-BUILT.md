@@ -11,11 +11,11 @@ Omarchy chainload proceeds untouched. The full text log is injected into the
 FDT at `/chosen/ane-bringup-log` (kboot.c, `dt_set_chosen` path), readable
 from Linux at `/proc/device-tree/chosen/ane-bringup-log`.
 
-- `images/boot.bin.ane-dry` (3,126,775 B, sha512 5031a95c…) — dry mode:
+- `images/boot.bin.ane-dry` (6,231,126 B, sha512 5031a95c…) — dry mode:
   ADT presence check + readbacks only (RVBAR, SCRATCH0/1/6/7, CPU_CONTROL,
   CPU_STATUS), then chainload. For the first boot: proves the mechanism and
   the FDT log path.
-- `images/boot.bin.ane-write` (4,847,095 B, sha512 53f6dbdf…) — write arm:
+- `images/boot.bin.ane-write` (7,951,446 B, sha512 53f6dbdf…) — write arm:
   (b) pmgr ane power cycle via ADT gates (`pmgr_adt_power_disable/enable`,
   which poll ACTUAL to target), dart-ane0 enable; RVBAR write64
   `0x0081010000000001` + readback (abort-to-chainload on mismatch);
