@@ -1,0 +1,20 @@
+Return-to-Omarchy post-run hook for watch.sh (deployed copy: /var/tmp/m2proxy/watch.sh)
+
+Apply inside the `if [ -n "$dev" ] && [ "$dev" != "$last_dev" ]; then` block,
+immediately AFTER the `scp -q "$log" ...` line and BEFORE `last_dev=$dev`:
+
+        # Return-to-Omarchy: once the checklist ran (or aborted), chainload the
+        # pre-proxy boot.bin so m2-host boots Omarchy instead of staying parked.
+        # omarchy-now.sh exits non-zero BEFORE stopping the watcher if the
+        # return image is missing or sha-mismatched, so the watcher survives.
+        if [ -x "$M2ROOT/omarchy-now.sh" ]; then
+            echo "=== return-to-Omarchy ===" >>"$log"
+            "$M2ROOT/omarchy-now.sh" --chainload >>"$log" 2>&1 \
+                || echo "omarchy-now rc=$? (image missing/sha mismatch/device gone; watcher stays up)" >>"$log"
+        fi
+
+Notes:
+- No ESP write: chainload.py loads the payload into the running m1n1 and jumps.
+- On success the device leaves the proxy; the watcher loop just sees it vanish
+  and resets last_dev, so the next cable-in runs the checklist again.
+- Only ONE checklist run per cable-in — intended (the box returns to Omarchy).
