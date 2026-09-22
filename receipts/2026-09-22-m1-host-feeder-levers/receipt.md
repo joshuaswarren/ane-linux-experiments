@@ -247,3 +247,26 @@ placement. A partial-island route using these streams is the fallback
 only if full-program submit hits KMD limits (460 MB program, 13701 TDs
 vs the 416/208-TD islands submitted so far — td_count batched submit
 already supports full arrays).
+
+## Addendum 4: whole-program exec, first attempt (Main order)
+
+- EHC root-caused IslandCost's 24.5 MB channel spans: Apple's v10 anec
+  encodes tiles[] in 512-B units; libane shifts <<14 (16 KB). Bindings
+  correct, unit convention differs. Fix (a): rebuilt libane with
+  tile_shift = <<9 (512 B) — libane-tile512/libane_tile512.so (71296 B)
+  staged at /var/tmp/encwall-decomp/libane_tile512.so on m1-host; with
+  it, libane reports the CORRECT surfaces: in 768000/768000,
+  out 480256/480256 (hidden padded), row stride in = 256 B.
+- First submit: ane_exec rc=-1, submit wall 1000 ms (deadline/refused),
+  followed by a heap corruption (double free) in the raw-ctypes script
+  after the refusal — consistent with EHC's warning that raw staging
+  paths are unproven for Apple containers. The refusal reason needs the
+  firmware/marshal error surface (next lane step: capture the KMD/fw
+  response, e.g. strace/ioctl errno + dmesg, and check whether the
+  13701-TD chain exceeds a firmware limit or the tile-unit change also
+  needs the TD-stream's own tile fields rescaled).
+- State: converter + staging contract verified down to surface sizes;
+  submit refusal is the remaining blocker for direct execution. Fallback
+  per Main: split by layer boundaries (24 programs) — the per-layer task
+  boundaries are derivable from encoder-v10-tasks.ndjson (period-568
+  cycle, LN/softmax windows decoded).
