@@ -1,0 +1,20 @@
+#version 460
+layout(local_size_x = 64) in;
+shared float a[512];
+shared float b[512];
+layout(set = 0, binding = 0, std430) buffer Bin { uint v[]; } bin_b;
+void main() {
+  uint lid = gl_LocalInvocationID.x;
+  a[lid] = uintBitsToFloat(0x3f800000u + lid);
+  b[lid] = uintBitsToFloat(0x40000000u + lid);
+  b[256u + lid] = uintBitsToFloat(0x40400000u + lid);
+  barrier();
+  // read b[256+lid] with offset iadd(lid*4, 3072) and b[lid] with 2048
+  bin_b.v[lid] = floatBitsToUint(b[lid]);
+  bin_b.v[64u + lid] = floatBitsToUint(b[256u + lid]);
+  bin_b.v[128u + lid] = floatBitsToUint(a[lid]);
+  // store into b[384+lid] (offset 2048+1536+4*lid) then read back
+  b[384u + lid] = uintBitsToFloat(0x40800000u + lid);
+  barrier();
+  bin_b.v[192u + lid] = floatBitsToUint(b[384u + lid]);
+}
