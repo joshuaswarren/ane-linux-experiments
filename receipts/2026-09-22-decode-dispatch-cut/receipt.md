@@ -104,3 +104,70 @@ End-to-end change, all committed on `agent/decode-dispatch-cut`:
 - m1-host branch `agent/decode-dispatch-cut` @ 393b7712 (local, not pushed)
 - Local repo: .local/decodecut/ (all harness + patch scripts, this receipt's
   working copies)
+
+## 4. ADDENDUM (DecodeDispatchCut2, addendum) — gate CLOSED, A/B landed on m1-host
+
+Root cause of the "beta-leg ulp mismatch" was NOT rounding: the 10-binding
+decode dispatch bound the tail one slot late (`SIn←hf`, `SOut←out`), so every
+standalone probe compared garbage against garbage — the earlier "g-leg
+bit-exact" result was two broken outputs coinciding, and the in-model logits
+run was dominated by the fallback. Three fixes, all committed on
+`agent/decode-dispatch-cut` (m1-host worktree /var/tmp/integ-wt):
+
+- `14930789` binding slot order corrected (5=SIn h0, 6=YBuf out, 7=SOut hf;
+  3/4 and 8/9 overridden per mode) and the shader's extra bf16 rounds on
+  exp(A_log)/g removed (eager keeps g f32 end to end).
+- `6056969a` in-model `dt_bias` is bf16 in the Qwen3.8 checkpoint, so the
+  f32-only raw contract never fused (957 dispatches/tok, 12.3 tok/s, all 18
+  raw calls/step falling back — proven with GDN_FALLBACK_DEBUG=1). Contract
+  now accepts bf16 dt_bias (DtBuf slot retyped to uint16 words), and the
+  prologue replicates the eager chain's bf16 roundings on x = a + dt_bias
+  and softplus(x) (verified with a mx dtype-chain probe: x bf16, softplus
+  bf16, g f32; the all-f32 chain drifted up to 9.7e-4).
+
+Identity (teacher-forced greedy, 10 prompts × 32 steps, vs
+/tmp/q38c/logits-integ-m1host.json, same host/driver/model): 3 first-flips
+(margins 0.125 / 0.125 / 0.0 — bf16 quantum ≤ 0.25 class), max |Δ logit|
+before first divergence 0.25, downstream flips cascade. This is the
+documented equivalence class (receipts/2026-09-22-qwen38-correctness §3/§4).
+
+A/B, m1-host (M1 Max, stock kernel, flock windows, France×16 / 32 tok,
+10-prompt cadence):
+
+| metric | baseline dc7ca4a0 | raw arm 6056969a | delta |
+| --- | --- | --- | --- |
+| dispatches/decode-token | 705 (21,855/31) | **543** (16,833/31) | −162/tok (−23%) |
+| decode gpu_busy | 942.6 ms | 758 ms | −184 ms (−19.5%) |
+| decode tok/s (median) | 53.55 | **62.58** | +16.8% |
+| ttft tok/s (median) | 60.08 | 65.94 | +9.8% |
+| GatedDeltaDecodeBF16 | 594/step-set | 594 (fused, 0 fallbacks) | — |
+
+Artifacts: m1-host /var/tmp/decodecut/{cadence-rawfix4.json, prof-rawfix4.jsonl,
+analyze-rawfix4.txt, logits-fix2.json, spy3.out, gate_class.py, ab-final.sh};
+wheels 0.32.3.dev202609221337+diag.393b771 (interim) and 0.32.3.dev202609221401+
+diag.1493078 (bf16-dt, the measured arm).
+
+Open items, with state:
+1. m1max-host A/B: BLOCKED — m1max-host was taken to macOS for the T6021
+   ANE bring-up (M2UartProxy lane) mid-flight and has since returned to
+   Linux; m1max-host worktree sits at dc7ca4a0 with the model cached.
+   Steps: bundle-transport 6056969a from m1-host (git bundle over scp), apply
+   patch-mlx-lm-gdn.py + patch-mlx-lm-gdn-raw.py to a fresh venv, build
+   diag wheel there (scripts/build-wheel.sh --diagnostics), run baseline +
+   raw arms with /tmp/q38c window protocol.
+2. rope-pair bf16 via fast_trio: NOT STARTED (design done). fast_trio.comp
+   is f16-only by an #error; the bf16 port should copy fast_rope.comp's
+   USE_BF16 pair-granular form (whole-word outputs, plain stores, host-guards
+   dims%4==0 + even offsets), add FastTrioRopePairBF16 (compute.h + compute.cpp
+   case + CMake omarchy_shader with -DUSE_BF16=1 -DTRIO_ROPE_PAIR=1), and
+   extend dispatch_rope_pair's dtype gate. Scoped ≈ −6..18/tok (pair fuses
+   2 rope dispatches → 1); dispatch_rope_pair currently refuses bf16 at
+   "dtype not f16" (primitives.cpp ~7802).
+3. conv-ring default-on: the ring IS live in the venv qwen3_5.py and was
+   active in BOTH A/B arms (identical CopyGeneralBF16 n=1993 both arms), and
+   both gate runs passed with it on → decision: KEEP default-on (identity in
+   the documented class on this lineage). Same-lineage ring-off count delta
+   not re-measured (Addendum 11's −18/tok stands as the old-wheel number).
+4. m1-host is now on GpuTlbKernel's TLB2M test kernel — the numbers above are
+   pre-reboot stock-kernel measurements; re-run the raw arm if cross-kernel
+   comparability is ever claimed.
