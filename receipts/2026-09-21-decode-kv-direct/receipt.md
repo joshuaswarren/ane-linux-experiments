@@ -282,3 +282,25 @@ attribute CopyGeneralBF16 decode dispatches to their call site (buffer
 sizes + stack attribution in the encoder) before any further
 producer-direct work; the kv-direct machinery in this branch is
 implemented, abort-safe, and idle.
+
+## Addendum 8: CopyGeneralBF16 attribution (MLX_OMARCHY_COPY_TRACE, one full tokid run)
+
+Top sites by occurrence (counts are for one prefill + 32 decode tokens):
+
+| n | bytes each | producer prim | out shape | site |
+| ---: | ---: | --- | --- | --- |
+| 2196 | 4096 | ExpandDims (of a strided cache-slice view, strides 2048,1,128,1) | 1,1,16,128 | contiguity copy of a strided (1,16,T,128) cache-slice row — ~36/token |
+| 465 | 36864 | none (pre-materialized strided view) | 1,3,6144 | GDN conv-state window copy (conv_kernel window of the 6144 conv dim), ~7/token prefill-side |
+| 411 | 12288 | none | — | same family, 3-step window |
+| 298 | 262144 | none | — | large GDN/prefill-window copies |
+| 273 | 4096 | none | 1,1,16,128 | the same cache-slice row copy with a materialized producer |
+
+Total copied: 203.3 MB per generation. The dominant site (~36 copies of
+4 KB per token, ~75% of all CopyGeneralBF16 dispatches) is a
+contiguity copy of a strided one-step cache-slice view produced by an
+ExpandDims — i.e. a consumer calling contiguous()/refusing strided
+input on a (1,16,1,128) row of a preallocated K/V-shaped cache. The fix
+is backend-side: make that consumer accept the strided row (the fused
+kernels already take explicit strides) or keep the slice-update write
+the row directly. This is a separate lane from kv-direct; the
+attribution trace ships in copy.cpp under MLX_OMARCHY_COPY_TRACE.
