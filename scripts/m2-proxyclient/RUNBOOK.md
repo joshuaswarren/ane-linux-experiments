@@ -22,7 +22,98 @@ Verified against:
 | `ane_bringup.py` | the session script (a)–(e); `--dry-run` = reads only |
 | `mock_proxy.py` | stub ASC; happy path + `--mock-latched-rvbar` negative path |
 
+## Physical instruction for Joshua (the ONLY manual step)
+
+Use a USB-C data cable (any quality USB-C/USB-C cable; avoid charge-only). On
+**m2-host (the M2 MacBook Pro)** use the **left-rear USB-C port** (the
+one nearest the hinge on the left side); on **the proxy host (the 16"
+M1 laptop)** any USB-C port works. Plug one end into each machine. That is the
+whole action: m2-host will be sitting at the m1n1 proxy (after the staged
+cutover below), the cable enumerates the proxy as `/dev/ttyACM*` on proxy-host
+within ~5 s, and the watcher service (`m1n1-proxy-watcher`) fires the entire
+checklist automatically — you should see nothing on either screen except,
+optionally, the proxy host's log: `journalctl -u m1n1-proxy-watcher -f`. Receipts land
+in `/var/tmp/m2proxy/receipts/2026-09-22-m2-proxyclient-prep/` on proxy-host and
+sync to the workstation `receipts/` dir of the same name.
+
 ## Boot side (one-time, m2-host)
+
+### Staged cutover on m2-host (as of 2026-09-22 06:55 — files staged, NOT installed)
+
+m2-host's live boot payload is `/boot/efi/m1n1/boot.bin`
+(m1n1 + DTBs + gzip u-boot + appended config, written by `update-m1n1`).
+iBoot loads that exact file each boot, so a same-path file swap is the
+whole switch — the Apple boot-object blessing is untouched and the Omarchy
+default is restored by copying one file back.
+
+Already staged on m2-host in `/var/tmp/m2proxy-staging/`:
+
+| file | sha256 | what |
+|---|---|---|
+| `boot.bin.pre-proxy` | `153170e0…ad1ff5` | exact copy of the live Omarchy boot.bin (the return image) |
+| `boot.bin.proxy-only` | `9ad08653…4158fd` | bare `/usr/lib/asahi-boot/m1n1.bin` (m1n1 1.6.1, proxy compiled in, NO chainload config → sits at the USB proxy forever) |
+
+Cutover (operator, when Joshua is ready to plug the cable):
+
+```sh
+ssh m2-host
+sudo cp /var/tmp/m2proxy-staging/boot.bin.proxy-only /boot/efi/m1n1/boot.bin
+sudo reboot
+```
+
+After reboot the box idles at the m1n1 proxy: no Linux, no ssh, no display
+output — the ONLY way in is the USB cable to proxy-host, which is exactly the
+armed state we want. Nothing is lost; the watchdog/freezes classes do not
+exist here (no Linux kernel runs).
+
+Return to Omarchy (from proxy-host, over the same proxy — no cable swapping):
+
+```sh
+omarchy-now.sh            # dry-run: prints image/sha/device status, changes nothing
+omarchy-now.sh --chainload  # stops the watcher, chainloads boot.bin.pre-proxy, boots Omarchy
+```
+
+`omarchy-now.sh` lives at `/var/tmp/m2proxy/omarchy-now.sh` (symlinked into
+`~/.local/bin` on proxy-host). It verifies the return image against sha
+`153170e0…ad1ff5` BEFORE stopping the watcher — a missing or mismatched
+image is a clean no-op that leaves the watcher running. The chainload
+(`proxyclient/tools/chainload.py`) loads the pre-proxy boot.bin into the
+running m1n1 and jumps to it; the ESP is never written.
+
+The watcher also self-terminates its own run: after each checklist pass (or
+abort) it invokes `omarchy-now.sh --chainload`, so once the return image is
+staged every cable-in ends with the box back in Omarchy.
+
+or, from m2-host's side once it boots Linux again, verify and clean up
+(this restore is what stops future reboots from re-parking at the proxy):
+
+```sh
+ssh m2-host 'sudo cp /var/tmp/m2proxy-staging/boot.bin.pre-proxy /boot/efi/m1n1/boot.bin && sudo sha256sum /boot/efi/m1n1/boot.bin'
+# expect 153170e065383767a47bc234e02344ecdc09d03f4003d92e6a2d6e464fad1ff5
+# then reboot once to confirm stock Omarchy boots; afterwards the next
+# `update-m1n1` run (kernel/agent update) will rewrite boot.bin normally.
+```
+
+The proxy-only image is deleted with `/var/tmp/m2proxy-staging/` once the
+experiment window closes. `boot.bin.old` (update-m1n1's own backup) was not
+touched.
+
+### Host tooling already live on proxy-host (2026-09-22 06:55, all verified)
+
+- venv `/var/tmp/m2proxy-venv` (pyserial 3.5, construct, pyelftools);
+  m1n1 proxyclient at `~/src/m1n1` (symlinked into
+  `/var/tmp/m2proxy/scripts/.work-m1n1-proxyclient`); scripts + selene
+  fixture under `/var/tmp/m2proxy/`.
+- udev rule `/etc/udev/rules.d/99-m1n1-proxy.rules`: m1n1 CDC gadget
+  (VID `1209` PID `316d`, per `src/usb_dwc3.c`) → MODE 0666, no
+  ModemManager claim.
+- systemd service `m1n1-proxy-watcher` (active, `Restart=always`) running
+  `/var/tmp/m2proxy/watch.sh`: polls every 2 s for a `1209:316d` ttyACM*,
+  and on first appearance runs the full checklist (a)–(e) — constants →
+  device → `--dry-run` → `--mock` sanity → THE RUN — tee'd to
+  `/var/tmp/m2proxy/receipts/2026-09-22-m2-proxyclient-prep/run-<stamp>.log`
+  and scp'd to the workstation receipt dir of the same name. Abort file
+  `/tmp/ane-bringup.abort` still kills any poll instantly.
 
 1. **m1n1 stage 2 with the proxy enabled.** m2-host already chainloads through
    the Asahi bootstrap; build/install m1n1 with the default config — the m1n1
