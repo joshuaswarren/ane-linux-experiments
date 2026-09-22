@@ -1,0 +1,25 @@
+MODE=0 shape=512x2048x6144
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":6144,"gx":64,"gy":16,"ms_med":13.183,"ms_min":13.066,"tflops_med":0.977,"tflops_min":0.986,"checksum":1108324632231936,"mismatch":-1,"maxdiff":-1}
+MODE=0 shape=512x2048x2048
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":2048,"gx":64,"gy":16,"ms_med":4.563,"ms_min":4.454,"tflops_med":0.941,"tflops_min":0.964,"checksum":1108324632231936,"mismatch":-1,"maxdiff":-1}
+MODE=0 shape=512x6144x2048
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":6144,"k":2048,"gx":192,"gy":16,"ms_med":13.368,"ms_min":13.218,"tflops_med":0.964,"tflops_min":0.975,"checksum":3324973896695808,"mismatch":-1,"maxdiff":-1}
+MODE=1 shape=512x2048x6144
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":6144,"gx":64,"gy":16,"ms_med":21.911,"ms_min":21.635,"tflops_med":0.588,"tflops_min":0.596,"checksum":1108324632231936,"mismatch":-1,"maxdiff":-1}
+MODE=1 shape=512x2048x2048
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":2048,"gx":64,"gy":16,"ms_med":7.013,"ms_min":6.893,"tflops_med":0.612,"tflops_min":0.623,"checksum":1108324632231936,"mismatch":-1,"maxdiff":-1}
+MODE=1 shape=512x6144x2048
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":6144,"k":2048,"gx":192,"gy":16,"ms_med":19.931,"ms_min":19.879,"tflops_med":0.646,"tflops_min":0.648,"checksum":3324973896695808,"mismatch":-1,"maxdiff":-1}
+MODE=3 shape=512x2048x6144
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":6144,"gx":64,"gy":16,"ms_med":21.575,"ms_min":21.364,"tflops_med":0.597,"tflops_min":0.603,"checksum":1108324632231936,"mismatch":-1,"maxdiff":-1}
+MODE=3 shape=512x2048x2048
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":2048,"gx":64,"gy":16,"ms_med":7.598,"ms_min":7.276,"tflops_med":0.565,"tflops_min":0.590,"checksum":1108324632231936,"mismatch":-1,"maxdiff":-1}
+MODE=3 shape=512x6144x2048
+{"cand":"base.spv","ref":"","device":"Apple M1 (G13G B1)","m":512,"n":6144,"k":2048,"gx":192,"gy":16,"ms_med":19.955,"ms_min":19.875,"tflops_med":0.646,"tflops_min":0.648,"checksum":3324973896695808,"mismatch":-1,"maxdiff":-1}
+LEVERA
+leverA shape=512x2048x6144
+{"cand":"leverA.spv","ref":"base.spv","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":6144,"gx":64,"gy":16,"ms_med":14.378,"ms_min":14.098,"tflops_med":0.896,"tflops_min":0.914,"checksum":1108324632231936,"mismatch":0,"maxdiff":-1}
+leverA shape=512x2048x2048
+{"cand":"leverA.spv","ref":"base.spv","device":"Apple M1 (G13G B1)","m":512,"n":2048,"k":2048,"gx":64,"gy":16,"ms_med":4.850,"ms_min":4.748,"tflops_med":0.885,"tflops_min":0.905,"checksum":1108324632231936,"mismatch":0,"maxdiff":-1}
+leverA shape=512x6144x2048
+{"cand":"leverA.spv","ref":"base.spv","device":"Apple M1 (G13G B1)","m":512,"n":6144,"k":2048,"gx":192,"gy":16,"ms_med":13.363,"ms_min":13.314,"tflops_med":0.964,"tflops_min":0.968,"checksum":3324973896695808,"mismatch":0,"maxdiff":-1}
