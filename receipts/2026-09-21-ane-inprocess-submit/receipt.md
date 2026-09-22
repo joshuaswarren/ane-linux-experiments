@@ -275,3 +275,30 @@ j1's GPU is ~2.3x slower per feeder op); (2) const materialization:
 per-process const cache or chunked blob upload is a backend-level win;
 (3) island readbacks: attn read 8.5 ms/submit on j1 vs ~0.6 ms on j16 —
 worth one probe of the libane read path (tile unpack vs ioctl) on T8103.
+
+## Landing: readback fix + const batching (j1), Main items (2)+(3)
+
+(3) READBACK ROOT-CAUSED AND FIXED: split timing in the libane device
+(ANE_READ_SPLIT=1, worker_libane.cpp) attributes the T8103 readback to
+the memcpy out of the mapped tile: ~20 ms for the 4.5 MB attention
+scores tile (~225 MB/s), unpack only 0.2-0.4 ms. Cause: ane_drv.c maps
+every BO writecombine (pgprot_writecombine) — uncached reads on T8103.
+Fix: map cached (drop the writecombine call), rebuild ane.ko, reload.
+Probe: attn submit read 30 ms -> 0.67 ms (~45x). Data correctness is
+gated by the full battery (stale cache lines would corrupt gold):
+j1 fused battery on the cached module (exclusive window, lock-held):
+fused-off 3468.7 / duplicate-arm 3478.0 ms encoder_ane median, 6 meas
+per arm, ALL PINS GREEN (104/104, gold bit-exact) — cached reads return
+correct data on this fabric. CAVEAT: the cached ane.ko is NOT
+persistent across reboots; rebind runs must insmod
+/var/tmp/ane-6fa-src/ane/ane.ko (sha 4ebcfc10...; stock writecombine
+module otherwise loads). Upstream fix: make the cached mapping the
+driver default (or per-BO flag) in omarchy-ane ane_drv.c.
+j1 measured effect vs the pre-fix same-config window: encoder_ane
+3573-3611 -> 3468-3478 ms; total pipeline 4904-4940 -> 4770-4833 ms.
+
+(2) CONST MATERIALIZATION: blobs are now uploaded once per (blob file,
+dtype) as a single device array; each const is a slice view (Blobs
+.dtype_view + batched _eval_const path). Measured const statement wall
+on j1: 745.2 -> 351.2 ms (-53%). Most of the remainder is host-side
+np/memmap work; the upload count dropped from ~1983 to a handful.
