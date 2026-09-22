@@ -1,5 +1,5 @@
 diff --git a/README.md b/README.md
-index 7bf8a48ee..57542e25d 100644
+index 7bf8a48ee..abf6018fc 100644
 --- a/README.md
 +++ b/README.md
 @@ -17,7 +17,8 @@ One-command install on an M1 running Omarchy, the first model download, the stre
@@ -12,7 +12,7 @@ index 7bf8a48ee..57542e25d 100644
  
  The serving catalog CLI (`omarchy mlx serve`; approve-first downloads,
  memory-aware admission) and the Laya typed-decisions server
-@@ -138,20 +139,31 @@ is pending. Do not assume it fits merely because the package installs.
+@@ -138,22 +139,33 @@ is pending. Do not assume it fits merely because the package installs.
  
  Qwen3.8-2B (4-bit mlx) decode and prefill measured on Apple M-series
  laptops: Apple Metal on macOS (upstream mlx 0.32.2) and the omarchy
@@ -50,8 +50,11 @@ index 7bf8a48ee..57542e25d 100644
  |---|---|---|---|---|
 -| M1, 8 GB | Omarchy / omarchy Vulkan | 17.9 | 21.5 | 18.4 |
 -| M1 Max, 64 GB | Omarchy / omarchy Vulkan | 36.6 | 52.6 | 34.2 |
-+| M1, 8 GB | Omarchy / omarchy Vulkan | 25.12 | 32.88 | 34.30 |
++| M1, 16 GB | Omarchy / omarchy Vulkan | 25.12 | 32.88 | 34.30 |
 +| M1 Max, 64 GB | Omarchy / omarchy Vulkan | 61.89 | 238.32 | 57.59 |
  | M2 Max, 96 GB | Omarchy / omarchy Vulkan | 47.2 | 75.8 | 45.0 |
- | M1, 8 GB | macOS 27.0 / upstream Metal | 101.3 | 345.4 | 49.5 |
+-| M1, 8 GB | macOS 27.0 / upstream Metal | 101.3 | 345.4 | 49.5 |
++| M1, 16 GB | macOS 27.0 / upstream Metal | 101.3 | 345.4 | 49.5 |
  | M1 Max, 64 GB | macOS 27.0 / upstream Metal | 359.2 | 1019.7 | 179.5 |
+ | M2 Max, 96 GB | macOS 27.0 / upstream Metal | 423.8 | 1234.7 | 220.6 |
+ 
