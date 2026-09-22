@@ -1,0 +1,2152 @@
+[rtmod] EV-SIGNAL tid=253703 ev=0xaaabbeff89e0 val=1 st=0 host=0
+[rtmod] EV-SIGNAL path=host-signal
+[rtmod] COMMIT-NOOP
+[rtmod] DISPATCH kernel=192 count=16384 gx=64 gy=1 gz=1
+[rtmod] DISPATCH kernel=192 count=16384 gx=64 gy=1 gz=1
+[rtmod] DISPATCH kernel=193 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=418 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=1 waits=0 sigs=1 cmds=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=2 waits=1 sigs=1 cmds=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=3 waits=1 sigs=1 cmds=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=127139840 gx=7760 gy=16 gz=1
+[rtmod] EV-SIGNAL tid=253703 ev=0xaaabc7dcbdf0 val=1 st=0 host=0
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] EV-WAIT tid=253703 ev=0xaaabc7dcbdf0 val=1 cnt=0 resv=4
+[rtmod] DISPATCH kernel=192 count=16384 gx=64 gy=1 gz=1
+[rtmod] DISPATCH kernel=192 count=16384 gx=64 gy=1 gz=1
+[rtmod] DISPATCH kernel=193 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=418 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=5 waits=1 sigs=1 cmds=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=6 waits=1 sigs=1 cmds=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=7 waits=1 sigs=1 cmds=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=18432 gx=72 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=154 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=3145728 gx=12288 gy=1 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=433 count=8192 gx=1 gy=32 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=55 count=262144 gx=1024 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=16 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=LogAddExp count=8192
+[rtmod] DISPATCH kernel=2 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=8192 gx=32 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=8192 gx=32 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=437 count=128 gx=16 gy=8 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=8192 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=2097152 gx=128 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=262144 gx=16 gy=16 gz=1
+[rtmod] DISPATCH kernel=223 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=131072 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=524288 gx=2048 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=ScaledDotProductAttention count=1048576
+[rtmod] DISPATCH kernel=0 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=262144 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=2097152 gx=16 gy=16 gz=8
+[rtmod] DISPATCH kernel=33 count=2097152 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=24 count=1048576 gx=8 gy=16 gz=8
+[rtmod] DISPATCH kernel=10 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=1048576
+[rtmod] DISPATCH kernel=2 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=1048576 gx=4096 gy=1 gz=1
+[rtmod] FEW name=Multiply count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=432 count=3145728 gx=192 gy=16 gz=1
+[rtmod] DISPATCH kernel=408 count=3145728 gx=3072 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=1048576 gx=64 gy=16 gz=1
+[rtmod] FEW name=Add count=1048576
+[rtmod] DISPATCH kernel=405 count=1048576 gx=1024 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=1048576 gx=512 gy=1 gz=1
+[rtmod] DISPATCH kernel=432 count=127139840 gx=7760 gy=16 gz=1
+[rtmod] EV-SIGNAL tid=253703 ev=0xaaabbf373c50 val=1 st=0 host=0
+[rtmod] SUBMIT-ENTER tid=253703
+[rtmod] SUBMIT tid=253703 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] EV-WAIT tid=253703 ev=0xaaabbf373c50 val=1 cnt=0 resv=8
+PREFILL wall_s=1.8807 tok_per_s=272.23
+[rtmod] COMMIT-NOOP
+[rtmod] JOIN tid=253703 reason=explicit last=8
