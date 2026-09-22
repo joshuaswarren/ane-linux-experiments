@@ -197,3 +197,42 @@ Cumulative j16: encoder_ane median 2783.6 -> 1260.1 ms (-54.7%),
 total pipeline 4142.1 -> 2578.2 ms. The residual wall is real GPU
 compute of the non-placed matmuls — the A->B fusion (EncoderHardware
 Continuation) is the remaining lever, plus a j1 replay.
+
+## Fused A->B integration (EHC package, Main-directed)
+
+MLX_OMARCHY_FUSED_AB=1 splices EHC's out_ab package (p0 apple-parity-
+broadcast add, p1 boolean select; bd composed in-memory) in place of the
+GPU add (matrix_bd) + GPU mask select: the add statement is skipped, the
+select dispatches to the out_ab ANE package consuming s1/s2/fill/mask
+and emitting z. Package staged into each host's bundles dir as out_ab
+and loaded through the same in-process shim alongside the resident
+bundles. Commit 601df6695.
+
+- j16: fused 1755.9 vs unfused 1863.3 ms encoder_ane median (-107 ms,
+  -5.8%), 1 smoke + 1 warm + 6 meas, both arms all pins green.
+- j1: fused 3546.7 vs unfused 3538.9 ms — parity (the j1 GPU
+  add+select was already cheap relative to its feeder). Both arms all
+  pins green. NOTE: j1's numbers are contention-sensitive — three
+  same-day windows on similar code swung 3776/5216 -> 32755/13391/
+  12277/13391/3538 ms; only same-window interleaved deltas are
+  trustworthy on that host right now.
+
+## Matmul kernel probe (Main question)
+
+The exact runner chain (fp16->fp32 upcast, [8,375,64]@[8,375,64]T,
+fp16 downcast) runs 0.83 ms isolated = 173.9 GFLOPS; direct fp16 matmul
+0.48 ms = 298.2 GFLOPS; fp16 1024^3 = 1471 GFLOPS. The kernel is
+healthy — the per-statement 30-110 ms walls are async-queue drain
+points, not slow kernels and not CPU execution. No mlx-omarchy backend
+matmul fix indicated; remaining lever is op placement (A->B fusion) and
+issue cadence (all-ops pipe on j16; pathological on j1 e167 — see
+below). Microbench: mmbench.py in this directory.
+
+## j1 e167 driver note
+
+The driver survived at /var/tmp/mesa-e167-j1/ (icd.json +
+libvulkan_asahi.so sha-verified against the build tree) but the first
+fused-j1 attempt segfaulted with stock mesa because the derived battery
+script lacked the VK_DRIVER_FILES export — re-added. Other lanes have
+also staged rev-* mesa variants into that directory; the icd.json still
+points at the e167 build.
