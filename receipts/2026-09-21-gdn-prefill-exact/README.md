@@ -75,7 +75,38 @@ layer; snapshot scratch 7.3 MB/call allocation). This is the next thing
 to profile (omarchy rtmod SUBMIT spam in the candidate log shows thousands
 of tiny serialized command buffers during the bench).
 
-## Root-cause state for the digest
+## Root-cause state for the digest (updated after Main's honeykrisp finding)
+
+Main's Mesa lane proved NoContraction IS honored on the current driver, so
+the divergence is inside the shader vs gated_delta_ops rounding ORDER, not
+the driver. Ground-truth progress (numpy strict-f32 sims, gpu-host):
+
+- `sim_probe.py` fixed for per-head k indexing; ops continuation
+  consistency verified (ops(T=1) state + one more plain step == ops(T=2)
+  state, exact).
+- mx sum over the last axis of a MATERIALIZED f32 array is sequential
+  ascending (matches the shader; `sim8/sim10`: mx == numpy-sequential
+  exactly, != numpy pairwise).
+- The ops reference computes kv as `(state * k).sum(-1)` in ONE lazy graph;
+  when mx batches/fuses the multiply into the reduce, the effective
+  reduction result can differ from the materialize-then-sum path by up to
+  0.4 on cancellation-heavy rows (`sim9` vs `sim10`/`sim11`: the same
+  products summed after materialization match the shader exactly, the
+  batched-fused evaluation of the same graph did not). Eval-batch-dependent
+  reduction plans are the prime suspect for the digest flip: the model's
+  per-token graph is built and evaluated batched, so its kv sums do not
+  necessarily run in the shader's sequential order.
+- Next concrete step: dump the model's ACTUAL kv reduction order under the
+  bench's exact batching (instrument `gated_delta_step_ops` with a
+  materializing `.astype` no-op or eval barrier to A/B the digest), and if
+  the fused order is confirmed different, replicate that order in
+  `gated_delta_prefill.comp`'s kv/output loops.
+- Also unresolved from this lane: fast(T=1) on a non-contiguous T-slice
+  returned NaN state (`sim5`) - the composed C++ fallback mishandles
+  non-contiguous inputs; harmless in-model (fallback count 0) but a real
+  primitive bug worth a separate ticket.
+
+## Root-cause state for the digest (original)
 
 1. f32 gates through the wrapper: DONE and verified (bisect `beta=0` case
    bit-exact vs ops proves the kernel sees unrounded f32 decay). The old
