@@ -175,3 +175,25 @@ contract note predicted), failing the strict bit-exact gate, and
 never a cost, while out_ab's 2x2.25 MB fp16 + 1.1 MB bool input
 marshal per submit is. FUSED_AB stays OFF on this host; the lever
 that matters remains B->C / C->O capture.
+
+## Addendum 2: module provenance audit (Main-requested)
+
+- 4ebcfc10 was a superseded build sha (m2-proxyclient-prep bring-up log
+  already noted this); the in-process receipt naming it is stale.
+- The pre-audit m1-host module (82411a46, built from the a2265b0b ane_drv.c
+  tree) and a rebuild from exact afb23dd branch sources compile to the
+  IDENTICAL object: ko sha 84a87acebd8004179a558ee84b3ffb4912426b7a8f0
+  32c765a323b56b9fd7b9e either way — behavior never differed.
+- m1-host now runs the clean afb23dd-source build: ko 84a87ace..., source
+  ane_drv.c 28406348c8df9e62f47d5f97671c5c22d00fd2d7e4f208afe7f9e76f1e0
+  b318e (= afb23dd:ane/src/ane_drv.c), installed at
+  /lib/modules/7.1.13-3-2-ARCH/updates/ane.ko + depmod, modprobe-loaded,
+  writecombine=N. m1max-host unchanged: updates ko 182a97e4e0f04fdf2a7b21c53f3
+  8d8c7a1cc8e79e12fb86559e2cd3f98932d8 from its afb23dd HEAD tree.
+- Rebind verification: load gate PASS; full fused_e2e battery gold
+  bit-exact (38c73261 / db501a8c, status match) under the new module.
+  CAVEAT, pre-existing not a regression: ac-native-golden-test's
+  verdict_exact_criterion FAILs identically under the old and new
+  builds (same mismatch counts 162265/8369/108391 vs fresh numpy fp32
+  GEMM references, ~1-ULP scale) — harness-vs-device skew, not module
+  behavior. The 104-pin gate is the e2e battery, green.
