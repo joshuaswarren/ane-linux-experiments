@@ -62,7 +62,8 @@ def gen(text):
             if not choices:
                 continue
             delta = choices[0].get("delta") or {}
-            piece = delta.get("content") or delta.get("reasoning_content") or ""
+            piece = (delta.get("content") or delta.get("reasoning_content")
+                     or delta.get("reasoning") or "")
             if piece:
                 n_content_chunks += 1
                 if ttft is None:
