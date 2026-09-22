@@ -350,3 +350,31 @@ slice-update one qkv row (one 12 KB write) and run conv1d on the
 contiguous 4-row window slice. CopyGeneralBF16 site (1) and (2)
 disappear (36/token + 7/token); the SliceUpdate it adds is already the
 primitive the kv-direct planner handles. Backend kernel work: none.
+
+## Addendum 11: rolling conv-state ring patch — implemented, identity held, measured
+
+scripts/patch-mlx-lm-convring.py (this repo): idempotent qwen3_5.py
+venv patch; decode-only (S==1, no lengths) ring buffer in cache[0]
+slot (B,260,6144), one 12 KB slice-update row per step, conv1d on the
+contiguous 4-row slice, prefill/lengthed paths unchanged.
+
+A/B on the M1 host (both arms carry the ring patch; wheel is the only
+variable; results kvdirect4-{before,after}):
+
+| arm | wheel | decode gpu_busy | dispatches/token | CopyGeneralBF16 n | identity |
+| --- | --- | ---: | ---: | ---: | --- |
+| old wheel + ring | 5b183060 | 1539.677 ms | 729 (21870) | 4110 | reference stream |
+| new wheel + ring | diag.densewin | 1539.444 ms | 729 | 4110 | identical |
+
+Reference points without the ring: old wheel 1576.7 ms / 747 /tok /
+4650; densewin 1531.9 ms / 723 /tok / 4639.
+
+Reading: the ring removes ~18 CopyGeneralBF16 dispatches/token and
+~37 ms decode gpu on the old wheel (-2.4%); on top of densewin it is
+neutral-to-noise (+6 dispatches/tok of slice-update writes, gpu within
+0.5%). The two levers overlap substantially — the concat family and
+the rope sandwich share downstream copy traffic. Best measured
+configurations: densewin alone (723/tok, 1531.9 ms) and old+ring
+(729/tok, 1539.7 ms); the combination is not additive. Decision on
+which to promote belongs to Main; both configurations hold the bf16
+reference stream bit-for-bit.
