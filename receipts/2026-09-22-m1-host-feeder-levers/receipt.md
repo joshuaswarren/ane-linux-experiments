@@ -133,3 +133,45 @@ capture remains gated on Joshua's `sudo kill 2400`.
    ab-fusedab-j1.sh on m1-host; also re-baseline m1max-host "fused" with a run
    that actually submits out_ab.
 3. Convert the 50 MatmulF32 dispatches to the coopmat route (profile §2).
+
+## Addendum (same session, later windows)
+
+### Pointwise-conv coopmat route: identity-exact, wall parity
+
+The two per-layer MatmulF32 families are the ConvModule pointwise 1x1
+convs: conv1 [2048,1024,1] (8 MB as f32) and conv2 [1024,1024,1] (4 MB),
+run through apply_conv's f32 upcast (24x2 dispatches ~7+4 ms, ~264 ms
+GPU/pass plus ~300 MB f32 weight copies). Landed a fast path: 1x1
+groups=1 fp16 convs dispatch through _linear_f16_coopmat_kernel +
+_leftover_chain_kernel (x [1,C,T] -> lhs [T,C], W -> rhs [Cout,C]).
+Identity: gold bit-exact (hidden 38c73261, transcript db501a8c,
+mel 5b54f4a9) in every run. Interleaved A/B (kab-20260922T072635,
+1 warm + 3 meas/arm, both arms ALL GREEN): coopmat 3509.6 vs f32
+3498.6 ms encoder_ane median - parity (+11 ms, window noise). The GPU
+busy it removes sits inside issue-bound gaps; keep the route (frees
+264 ms GPU busy + the f32 copies for when the pass becomes GPU-bound
+after B->C/C->O fusion) - it does not move today's wall.
+
+### bdscale fused A->B: executes end-to-end for the first time; verdict DO NOT LAND on this host
+
+With EHC's converted out_ab bundle (provenance-gated
+h13_package_to_bundle export; staged at bundles-fused/out_ab,
+manifest_version 4 bundle dialect) the fused arm runs: out_ab submits
+24x/pass alongside islands A/C (fusedab-20260922T072751). Results,
+same-window interleaved 1 warm + 3 meas/arm:
+
+| arm | encoder_ane median | out_ab submits | hidden hash | transcript |
+| --- | ---: | ---: | --- | --- |
+| A unfused | 5486.6 ms | 0 | 38c73261 (gold) | match |
+| B fused | 6922.5 ms | 24 | 2db8a063 | match |
+
+(Both arms inflated ~2 s vs the quiet-window 3.5 s baseline by
+concurrent lane load; the paired delta is the decision number.)
+Verdict: transcript and 104-prefix correct, but (a) encoder_hidden
+diverges from gold (1-ULP phantom deltas from the ANE add's
+ties-toward+inf rounding vs the GPU f32 add - the caveat EHC's
+contract note predicted), failing the strict bit-exact gate, and
+(b) +1436 ms paired: on T8103 the GPU add+select pair it removes was
+never a cost, while out_ab's 2x2.25 MB fp16 + 1.1 MB bool input
+marshal per submit is. FUSED_AB stays OFF on this host; the lever
+that matters remains B->C / C->O capture.
