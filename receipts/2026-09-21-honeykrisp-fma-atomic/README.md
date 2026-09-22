@@ -84,10 +84,18 @@ kernel side) stands; nothing to fix in the driver.
 
 ## Digest check
 
-Driver code is UNCHANGED (no commits), so the gpu-host-A 2B identity anchor must
-hold. Verified live: `ab-tipanchor.json` / `window-anchor.log`
-(MesaDivergenceVerdict protocol, 4 rounds, Qwen3.8-2B, ctx1024) —
-expected `d655d4c3d1ccb030`.
+Driver code is UNCHANGED (no commits to mesa-1), so the identity anchor must
+hold. Verified live on gpu-host-A (MesaDivergenceVerdict protocol,
+`run_anchor_gpu-host-A.sh` → `ab-tipanchor.json`, `window-anchor.log`; 4 rounds,
+Qwen3.8-2B, wheel 1deb70f1, tip driver):
+
+- ctx1024 tip ids `d655d4c3d1ccb030` — **matches the fleet anchor** (all rounds).
+- short tip ids `910a2a0c9aa39bf7` (self-pinned, identical every round).
+- decode 30.48 tok/s / prefill 53.33 tok/s ctx1024 medians — in line with the
+  verdict receipt's tip legs.
+- `llm-inference.service` restored by the script's cleanup; /health
+  `{"status":"ok"}` after load (the script's own 2-minute poll gave up early;
+  health confirmed manually one minute later).
 
 ## Housekeeping
 
