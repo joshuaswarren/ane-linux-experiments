@@ -244,3 +244,22 @@ recording per-side rejection reason (the RopePairScanTrace pattern).
 Environment: M1 host venv holds diag.densewin (identity-verified); M1
 Max host A/B from Addendum 4 still queued on the lock — its script now
 needs its NEW glob updated from pairfix3 to densewin before it fires.
+
+## Addendum 6: trace verdict — no SliceUpdate pairs form on this model
+
+MLX_OMARCHY_KV_TRACE (commit after d3177f10e) prints per-pair refusal
+reasons from the direct-plan loop. On the pinned 2B bf16 decode it
+prints NOTHING: state->slice_update_pairs is empty — the K/V cache
+updates never form planable SliceUpdate pairs, so the entire
+producer-direct machinery (quantized OR dense) never engages, and the
+CopyGeneralBF16 mass comes from whatever update path mlx-lm's
+ArraysCache/KVCache actually takes on this model. The -24
+dispatches/token and -2.8% decode gpu_busy that DID land come from the
+direct bf16 rotate alone; identity held in every measured arm.
+
+Next lever, corrected: instrument/inspect the actual cache-update op
+sequence on this model (profile the SliceUpdate/concat path — likely a
+concat-based cache like ArraysCache, not slice-update pairs), then aim
+the producer-direct write at the real update primitive. The dense-GEMV
+window work (d3177f10e) stays valid and becomes reachable once pairs
+(or their replacement) exist.
