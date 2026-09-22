@@ -263,3 +263,22 @@ concat-based cache like ArraysCache, not slice-update pairs), then aim
 the producer-direct write at the real update primitive. The dense-GEMV
 window work (d3177f10e) stays valid and becomes reachable once pairs
 (or their replacement) exist.
+
+## Addendum 7: in-place widening measured — flat; the copies are not the KV slice updates
+
+Widened the in-place proof to view-only extra consumers (the returned
+keys[..., :offset] slice; commit after kvtrace, wheel diag.inplace2)
+and restored the dense fresh-copy fallback. A/B result: IDENTICAL to
+pairfix3/densewin — decode 21690 dispatches (723/tok), gpu_busy 1527.5
+ms, CopyGeneralBF16 n=4639, identity 32/32 both arms.
+
+Conclusion across three candidate wheels: the ~4639-run CopyGeneralBF16
+mass (p50 30 us, 2048-element rows) does NOT respond to any kv-window
+or in-place change, i.e. it does not come from the KV cache slice
+updates at all. The landed, reproducible win remains the direct bf16
+rotate: -24 dispatches/token, -2.8% decode gpu_busy, identity
+bit-identical in every arm. The next investigation must first
+attribute CopyGeneralBF16 decode dispatches to their call site (buffer
+sizes + stack attribution in the encoder) before any further
+producer-direct work; the kv-direct machinery in this branch is
+implemented, abort-safe, and idle.
