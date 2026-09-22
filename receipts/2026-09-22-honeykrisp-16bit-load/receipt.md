@@ -90,3 +90,22 @@ low-half-first — fixed to low-first in test copies, but masked by Defect B
 - M1 Max llama-server: stopped for GPU work, restored degraded, health ok.
 - M1 host: lane scratch venvs/probes only; other venvs untouched; no
   llama-server there. No other machines were touched.
+
+## Addendum (same session): basis-vector evidence + branch recovery
+
+Basis-vector probe (x = unit vector e_k, K=64 N=8, clean store build):
+outputs are nonzero for k positions whose correct nibble is 0, can be NEGATIVE
+although every nibble and x value are non-negative, and show non-integer
+scale ratios — i.e. part of the kernel's x traffic reads values that are not
+the activation row. Lane-0 word-0 reads were proven correct; the lane>0 word
+reads of the qmv (non-fast) loop are the unverified remainder. Defect B
+narrows to per-lane x addressing/visibility in the non-MULTI bf16 Q4_WORD
+loop: check the laneInSlot word stride against the descriptor bound range and
+the x_base math first.
+
+Branch recovery (hygiene): the lost lane is recreated as local branch
+`agent/q4-gemv-xpack` (tip 557ae14a12, worktree q4xpack-recover off
+bf16-decode-gdn): recovered production diff (qmm_vec.comp bf16 Q4_QUAD_LOAD
+with corrected low-half-first unpack + primitives.cpp packed_q4_x bf16 gate),
+the candidate bench shaders, and the fair --bf16eq gate fix. Carries a
+KNOWN-ISSUE note for Defect B; do not promote until identity passes.
