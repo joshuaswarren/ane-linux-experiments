@@ -49,7 +49,8 @@ Teacher-forced logits (raw greedy re-run recording top-8 per step,
 > The original attribution below ("platform property, M1 vs M1 Max") was
 > WRONG on cause. PrefillProfileAttack found that every m1-host cadence cell
 > in this audit and in the integration receipt ran **stock Mesa 26.2.3 (no
-> coopmat)**. On the Honeykrisp tip driver (git-7faf04c065) m1-host produces
+> coopmat)**. On the Honeykrisp tip driver (git-7faf04c065, `joshuaswarren/mesa-1`
+> `honeykrisp-omarchy`) m1-host produces
 > digest `ac1b2695…` — **exactly m1max-host's** — with ttft 46.4 /
 > decode 34.3 / prefill-512 120.9 tok/s
 > (artifacts `m1-host:/var/tmp/ppa/{baseline-m1-host.json,baseline-m1-host-tip.json}`,
