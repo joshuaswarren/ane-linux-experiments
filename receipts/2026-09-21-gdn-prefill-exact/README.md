@@ -136,7 +136,17 @@ if teacher-forced agreement is near-tie and the stream is deterministic
   windows: 5e0930351bb6d6d5653dacba88642b9b6744330fe1bb68689b01f1292d3c63db
   - the proposed new reference digest for the routed prefill path, per the
   re-anchored gate.
-- Corpus sweep: ABORTED after ~2.5 h without completing. The
+- Corpus sweep COMPLETE (teacher_forced_kv.py, KV-cached greedy, 10
+  prompts x (512-token prompt + 32 generated), gpu-host): per-prompt max
+  |logit diff| 0.28-0.39 (bf16 logit granularity class), 6 argmax flips in
+  ~5430 positions, EVERY flip margin 0.0 (exact top-1 logit ties - the
+  near-tie criterion is met with maximum headroom), and the fused passes
+  bit-identical on every prompt. Per Main's re-anchored gate the fused
+  stream is accepted as the reference for this path: reference digest
+  5e0930351bb6d6d5653dacba88642b9b6744330fe1bb68689b01f1292d3c63db.
+  (First sweep attempt was aborted for using a no-KV-cache loop; see
+  git history.)
+- Earlier: a no-KV-cache sweep attempt ABORTED after ~2.5 h without completing. The
   teacher_forced.py greedy loop re-feeds the full sequence each step with
   no KV cache (hours-long here) and starved the GPU lock; killed, resident
   server restored and health-verified. Relaunch with TF_GEN=8 and 3
