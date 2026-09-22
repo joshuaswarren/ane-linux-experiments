@@ -209,3 +209,38 @@ was queued on /tmp/m1-gpu.lock behind another lane's window at session
 end; it self-completes into /var/tmp/kvdirect/ab.log and
 /var/tmp/M1 Max host-pd-receipts/kvdirect-{before,after}/ (before =
 4517642 wheel, after = diag.pairfix3, identity runs both arms).
+
+## Addendum 5: dense-GEMV values window — implemented, not yet engaging
+
+Commit d3177f10e (branch agent/decode-kv-direct): plan_values_window now
+accepts a dense decode GEMV member as the values terminal (same
+view-chain proof, same geometry); DenseGemvGroup carries per-member
+windows; the dense eval branch installs in-place storage and commits;
+dispatch_dense_gemv_group takes a window array and sets the shader's
+per-member window mode; matmul_vec_multi_bf16.comp scatters each
+4-group of the row to (window offset) + (e/head_dim)*row_gap +
+e%head_dim (flags bit 4096<<i, matrix_n=row gap, matrix_m=head dim).
+
+Measured A/B (M1 host, before=5b183060, after=diag.densewin):
+identical to the pairfix3 A/B — decode 21690 dispatches (723/tok),
+gpu_busy 1528.5 ms, CopyGeneralBF16 n=4639 (unchanged), identity 32/32
+identical to the reference stream in both arms. The dense window is
+implemented but still not engaging: no additional dispatch or GPU-time
+change beyond the already-landed direct rotate.
+
+Open debugging leads, in order:
+1. Is v_proj actually in a dense GROUP on this model (needs >=2 bf16
+   Matmuls sharing the aliased x view, kDenseVecMultiWeights>=2)? If
+   q/k/v are split across streams or the x alias check fails, the
+   dense path never plans, and dense_roles is empty at classify time.
+2. The view chain from the cache update to the Matmul node may pass
+   through an op outside {Reshape, Transpose} (e.g. an explicit
+   as_strided/contiguous from the transpose materialization).
+3. The update use_count==1 check: the transposed values view may have a
+   second tape consumer.
+Trace hook needed: env-gated fprintf in the kv_direct plan loop
+recording per-side rejection reason (the RopePairScanTrace pattern).
+
+Environment: M1 host venv holds diag.densewin (identity-verified); M1
+Max host A/B from Addendum 4 still queued on the lock — its script now
+needs its NEW glob updated from pairfix3 to densewin before it fires.
