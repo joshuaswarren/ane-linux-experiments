@@ -74,11 +74,23 @@ omarchy-now.sh --chainload  # stops the watcher, chainloads boot.bin.pre-proxy, 
 ```
 
 `omarchy-now.sh` lives at `/var/tmp/m2proxy/omarchy-now.sh` (symlinked into
-`~/.local/bin` on proxy-host). It verifies the return image against sha
+`~/.local/bin` on the proxy host). It verifies the return image against sha
 `153170e0…ad1ff5` BEFORE stopping the watcher — a missing or mismatched
 image is a clean no-op that leaves the watcher running. The chainload
 (`proxyclient/tools/chainload.py`) loads the pre-proxy boot.bin into the
 running m1n1 and jumps to it; the ESP is never written.
+
+Image resolution: `--image PATH` > `/var/tmp/m2proxy/boot.bin.pre-proxy` >
+the proxy host's own `/boot/efi/m1n1/boot.bin`. The local fallback works
+because `update-m1n1` concatenates m1n1 + u-boot-nodtb + all apple dtbs, so
+the same file boots the m2-host's t6021; its u-boot then loads grub from
+m2-host's ESP as normal. Version parity (proxy host vs m2-host, from the
+staging receipt): m1n1 1.6.1-1 = 1.6.1-1; uboot-asahi 2026.07.asahi2-1;
+no separate asahi-dtbs package (dtbs ship inside the m1n1/uboot builds).
+The hashes nevertheless differ (local 41a39ac7… vs 153170e0… — each host's
+`update-m1n1` embeds its own config), so a sha mismatch is refused unless
+the image was given explicitly via `--image PATH`; the refusal names the
+override and prints `pacman -Q m1n1 uboot-asahi` as the parity check.
 
 The watcher also self-terminates its own run: after each checklist pass (or
 abort) it invokes `omarchy-now.sh --chainload`, so once the return image is
