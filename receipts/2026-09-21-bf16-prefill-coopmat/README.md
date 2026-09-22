@@ -108,3 +108,47 @@ Raw model-bench JSON receipts (per-record tokens, model paths, host
 metadata) contain private-infrastructure identifiers and live only in
 the local `private/` subdirectory of this receipt (gitignored by the
 privacy guard); the tables above are the durable record.
+
+## Follow-up item: chunked GDN prefill scan (GatedDeltaPrefillBF16)
+
+Commit cdb546c81/86c298621 (branch bf16-prefill-coopmat-925cf):
+`gated_delta_prefill.comp` + enum/table/dispatch. One workgroup per
+(b=0, v-head), one thread per Dv row, state cloned h0->hf and updated
+in place (same [B,Hv,Dv,Dk] f32 layout as the decode kernel), per-token
+math matches the fast.cpp fallback promoted to f32, scalar or per-Dk
+decay via push-constant flag. Eligibility = decode gate extended to
+T>1 (mask still falls back).
+
+Measurements (M1Max host, T=512, H=16, Dk=Dv=128, B=1, direct
+mx.fast.gated_delta_update call):
+
+| leg | ms |
+|---|---|
+| composed fallback (baseline wheel 5b18306) | 446.4 |
+| fused prefill scan (candidate wheel 86c2986) | 41.6 (10.7x) |
+
+Output max abs diff vs f32 fallback: 1.4e-4 (bf16 store rounding).
+Mask-free greedy model bench on the candidate wheel: digest
+cceba7527e064f49... IDENTICAL to baseline; prefill 73.0 tok/s (flat,
+see below).
+
+## Why end-to-end prefill did not move, and the blocker
+
+mlx-lm (0.31.3) `gated_delta.py` only reaches `mx.fast.
+gated_delta_update` when `mx.metal.is_available()`; on Linux every
+call - prefill AND decode - goes to the pure-mlx `gated_delta_ops`.
+The backend primitive is dead code for the model today.
+
+A venv-level routing patch (call the primitive on Linux, ops as
+escape hatch) was measured and REJECTED: prefill regressed to
+57.8 tok/s and the greedy digest flipped (5e093035... vs reference
+cceba7527e064f49...) because the model's prefill passes an SSM mask,
+which routes to the primitive's composed masked fallback whose
+numerics differ from `gated_delta_ops`. Patch reverted; the shipped
+candidate remains digest-identical.
+
+Path to realize the 10.7x: (a) teach GatedDeltaUpdate to accept the
+SSM mask (all-true mask = maskless fast path; per-token mask in the
+scan kernel is one extra load), and (b) land the mlx-lm one-line
+Linux routing. Both are follow-up work; contract with BF16Decode
+Kernels (state layout, decay-before-kv-dot) is agreed in-session.
