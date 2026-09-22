@@ -1,0 +1,554 @@
+diff --git a/Makefile b/Makefile
+index 1ee603e..0215029 100644
+--- a/Makefile
++++ b/Makefile
+@@ -125,6 +125,8 @@ OBJECTS := \
+ 	adt.o \
+ 	afk.o \
+ 	aic.o \
++	ane_bringup.o \
++	ane_selene_fw.o \
+ 	asc.o \
+ 	bootlogo_48.o bootlogo_128.o bootlogo_256.o \
+ 	chainload.o \
+diff --git a/data/ane_selene_fw.bin b/data/ane_selene_fw.bin
+new file mode 100644
+index 0000000..d7b86b0
+Binary files /dev/null and b/data/ane_selene_fw.bin differ
+diff --git a/src/ane_bringup.c b/src/ane_bringup.c
+new file mode 100644
+index 0000000..9bd6ed6
+--- /dev/null
++++ b/src/ane_bringup.c
+@@ -0,0 +1,377 @@
++/* SPDX-License-Identifier: MIT */
++
++/* Boot-time ANE (t6021, m2-host) bring-up inside m1n1, no USB needed.
++ *
++ * Constant provenance: ane-linux-experiments
++ *   scripts/m2-proxyclient/t6021_consts.py (validated) and
++ *   receipts/2026-09-21-t6021-host-tm/NIGHT-SUMMARY.md (kext ANE_Init chain).
++ * Addresses are CPU-physical as seen from m1n1 stage 1.
++ *
++ * Global deadline: ANE_TIMEOUT_MS after entry, after which the hook aborts
++ * whatever it was doing and lets the normal chainload proceed. m1n1 has no
++ * watchdog here; this is the only safety net.
++ */
++
++#include "ane_bringup.h"
++
++#include <stdarg.h>
++
++#include "adt.h"
++#include "dapf.h"
++#include "dart.h"
++#include "malloc.h"
++#include "pmgr.h"
++#include "string.h"
++#include "tunables.h"
++#include "types.h"
++#include "utils.h"
++#include "vsprintf.h"
++#include "wdt.h"
++
++#define ANE_ENGINE 0x284000000UL
++#define ASC_CPU_CONTROL (ANE_ENGINE + 0x1400044)
++#define ASC_CPU_STATUS (ANE_ENGINE + 0x1400048)
++#define ASC_RVBAR (ANE_ENGINE + 0x1050000)
++#define ASC_SCRATCH(i) (ANE_ENGINE + 0x1840000 + 4 * (i))
++
++#define RVBAR_MODE 0x0081000000000001ULL
++#define RVBAR_DVA_MASK 0xff7eFFFFFFFFFF80ULL
++#define FW_DVA 0x10000000000ULL
++
++#define READY_MAGIC 0x08042006u
++#define WAKE_MAGIC 0xf7fbdff9u
++
++#define ANE_POLL_MAX 1000
++#define ANE_POLL_MS 1
++#define ANE_TIMEOUT_MS 10000
++
++#define ANE_LOG_SIZE 12288
++
++extern u8 _binary_build_ane_selene_fw_bin_start[];
++extern u8 _binary_build_ane_selene_fw_bin_end[];
++
++static char ane_log[ANE_LOG_SIZE];
++static size_t ane_log_len;
++static u64 ane_deadline_ticks;
++
++#ifndef ANE_BRINGUP_WRITE
++#define ANE_BRINGUP_WRITE 0
++#endif
++
++static bool ane_expired(void)
++{
++    return timeout_expired(ane_deadline_ticks);
++}
++
++static void alog(const char *fmt, ...)
++{
++    va_list args;
++    char buf[256];
++    int n;
++
++    if (ane_log_len + 2 >= ANE_LOG_SIZE)
++        return;
++    ane_log[ane_log_len++] = '|';
++
++    va_start(args, fmt);
++    n = vsnprintf(buf, sizeof(buf), fmt, args);
++    va_end(args);
++    if (n < 0)
++        return;
++    if ((size_t)n > sizeof(buf) - 1)
++        n = sizeof(buf) - 1;
++    if (ane_log_len + n >= ANE_LOG_SIZE)
++        n = ANE_LOG_SIZE - 1 - ane_log_len;
++    memcpy(ane_log + ane_log_len, buf, n);
++    ane_log_len += n;
++    /* pin: every entry is also on the console so a hang leaves the exact
++     * last step visible on the UART */
++    printf("ANE: %.*s\n", n, buf);
++}
++
++/* log-then-read: the "reading <reg>" pin is committed (buffer + console)
++ * BEFORE the MMIO access, so a fabric hang on an unpowered island leaves
++ * the guilty register named as the last line. */
++static u32 logged_r32(const char *name, u64 addr)
++{
++    alog("reading %s@%09lx", name, addr);
++    u32 v = read32(addr);
++    alog("%s=%08x", name, v);
++    return v;
++}
++
++static u64 logged_r64(const char *name, u64 addr)
++{
++    alog("reading %s@%09lx", name, addr);
++    u64 v = read64(addr);
++    alog("%s=%09lx", name, v);
++    return v;
++}
++
++static u64 ane_wdt_base;
++
++#define ANE_WDT_COUNT 0x10
++#define ANE_WDT_ALARM 0x14
++#define ANE_WDT_CTL 0x1c
++/* m1n1 wdt.c defines WDT_COUNT/ALARM/CTL privately; mirror here (same
++ * layout as drivers/watchdog/apple_wdt.c: WD1 block). WD2_BITE_TIME
++ * (0x24) is unused by everyone and lives in the same MMIO window; it is
++ * our warm-reset-persistent attempt marker. */
++#define ANE_WDT2_BITE_TIME 0x24
++#define ANE_WDT_MAGIC 0x414e4531u /* "ANE1" */
++
++/* Pure decision: skip the hook when the previous attempt started but
++ * never finished (marker left set by a hang or WDT bite). */
++static bool ane_should_skip(u32 marker)
++{
++    return marker == ANE_WDT_MAGIC;
++}
++
++static u32 ane_wdt2_read_marker(void)
++{
++    return read32(ane_wdt_base + ANE_WDT2_BITE_TIME);
++}
++
++static void ane_wdt2_write_marker(u32 v)
++{
++    write32(ane_wdt_base + ANE_WDT2_BITE_TIME, v);
++}
++
++/* Arm the primary WDT with a self-calibrated timeout (ticks measured at
++ * runtime), as a last-resort escape if an engine access hangs the fabric.
++ * NOTE: no sticky reset-reason register is wired yet, so a WDT bite will
++ * boot straight back into this hook; the 10 s in-hook deadline already
++ * bounds all bounded sections — the WDT covers only unbounded fabric
++ * hangs. Arm only around the unbounded-risk window, disarm immediately
++ * after. */
++static bool ane_wdt_arm(void)
++{
++    int path[8];
++    int node = adt_path_offset_trace(adt, "/arm-io/wdt", path);
++    if (node < 0 || adt_get_reg(adt, path, "reg", 0, &ane_wdt_base, NULL))
++        return false;
++
++    u32 rate;
++    write32(ane_wdt_base + ANE_WDT_COUNT, 0);
++    udelay(100000);
++    rate = read32(ane_wdt_base + ANE_WDT_COUNT) * 10; /* ticks per second */
++    if (!rate || rate > 100000000u)
++        rate = 24000000u; /* fallback: 24 MHz */
++    u32 alarm = rate * 30;                          /* 30 s */
++    if (!alarm)
++        return false;
++    write32(ane_wdt_base + ANE_WDT_ALARM, alarm);
++    write32(ane_wdt_base + ANE_WDT_COUNT, 0);
++    write32(ane_wdt_base + ANE_WDT_CTL, 4); /* enable */
++    ane_wdt2_write_marker(ANE_WDT_MAGIC);
++    alog("wdt armed rate=%u alarm=%u", rate, alarm);
++    return true;
++}
++
++static void ane_wdt_disarm(void)
++{
++    if (ane_wdt_base) {
++        write32(ane_wdt_base + ANE_WDT_CTL, 0);
++        ane_wdt2_write_marker(0);
++    }
++    alog("wdt disarmed");
++}
++
++static void ane_dump_scratch(const char *when)
++{
++    alog("dump %s begin", when);
++    u32 s0 = logged_r32("s0", ASC_SCRATCH(0));
++    u32 s1 = logged_r32("s1", ASC_SCRATCH(1));
++    u32 s6 = logged_r32("s6", ASC_SCRATCH(6));
++    u32 s7 = logged_r32("s7", ASC_SCRATCH(7));
++    u32 ctl = logged_r32("ctl", ASC_CPU_CONTROL);
++    u32 st = logged_r32("st", ASC_CPU_STATUS);
++    u64 rv = logged_r64("rvbar", ASC_RVBAR);
++    alog("dump %s s0=%08x s1=%08x s6=%08x s7=%08x ctl=%08x st=%08x rvbar=%09lx",
++         when, s0, s1, s6, s7, ctl, st, rv);
++}
++
++static bool ane_poll_ready(const char *name, u32 target)
++{
++    for (int i = 0; i < ANE_POLL_MAX; i++) {
++        if (ane_expired()) {
++            alog("poll %s abort=deadline", name);
++            return false;
++        }
++        if (read32(ASC_SCRATCH(7)) == target) {
++            alog("poll %s tries=%d match=%08x", name, i + 1, target);
++            return true;
++        }
++        mdelay(ANE_POLL_MS);
++    }
++    alog("poll %s tries=%d NOMATCH last=%08x", name, ANE_POLL_MAX,
++         read32(ASC_SCRATCH(7)));
++    return false;
++}
++
++void ane_bringup_run(void)
++{
++    bool wdt = false;
++    ane_log_len = 0;
++    ane_deadline_ticks = timeout_calculate(ANE_TIMEOUT_MS * 1000);
++
++#if ANE_BRINGUP_WRITE
++    alog("mode=write t6021 m2-host");
++#else
++    alog("mode=dry t6021 m2-host");
++#endif
++
++    /* v4 guard: locate the WDT and check the attempt marker. If the
++     * previous run started but never finished (hang or WDT bite), skip
++     * the hook entirely and let the normal chainload run. */
++    {
++        int path[8];
++        int node = adt_path_offset_trace(adt, "/arm-io/wdt", path);
++        if (node >= 0 &&
++            adt_get_reg(adt, path, "reg", 0, &ane_wdt_base, NULL) == 0) {
++            u32 marker = ane_wdt2_read_marker();
++            alog("wdt marker=%08x", marker);
++            if (ane_should_skip(marker)) {
++                ane_wdt2_write_marker(0);
++                alog("hook skipped: reset during previous attempt "
++                     "(hang or watchdog bite)");
++                goto done_skip;
++            }
++        } else {
++            alog("wdt node missing - no skip guard");
++        }
++    }
++
++    /* step a: ADT presence */
++    int an = adt_path_offset(adt, "/arm-io/ane");
++    int dn = adt_path_offset(adt, "/arm-io/dart-ane0");
++    alog("adt ane=%d dart=%d", an, dn);
++    if (an < 0 || dn < 0)
++        goto done;
++    {
++        char compat[64] = "?";
++        u32 len = 0;
++        const void *p = adt_getprop(adt, an, "compatible", &len);
++        if (p && len && len <= sizeof(compat))
++            memcpy(compat, p, len), compat[sizeof(compat) - 1] = 0;
++        alog("ane compat=%s", compat);
++    }
++
++    /* v2 rule: raise the pmgr chain FIRST (pmgr writes are safe; reads of
++     * unpowered ANE windows hang the fabric). pmgr_adt_power_enable walks
++     * parents recursively and polls ACTUAL. Applies to dry mode too. */
++    if (pmgr_adt_power_enable("/arm-io/ane"))
++        alog("pmgr ane enable FAIL");
++    if (pmgr_adt_power_enable("/arm-io/dart-ane0"))
++        alog("pmgr dart enable FAIL");
++    mdelay(10);
++    alog("pmgr chain up");
++
++    /* WDT covers the register window; disarmed at done: */
++    wdt = ane_wdt_arm();
++
++    ane_dump_scratch("pre");
++
++#if ANE_BRINGUP_WRITE
++    /* step b: full power cycle (disable -> enable), then RVBAR */
++    if (pmgr_adt_power_disable("/arm-io/ane"))
++        alog("pmgr ane disable FAIL");
++    mdelay(50);
++    if (pmgr_adt_power_enable("/arm-io/ane"))
++        alog("pmgr ane enable FAIL");
++    alog("pmgr cycled");
++
++    /* RVBAR with mode bits; write64/readback */
++    u64 rvbar = RVBAR_MODE | (FW_DVA & RVBAR_DVA_MASK);
++    u64 rvbar_pre = logged_r64("rvbar-pre", ASC_RVBAR);
++    (void)rvbar_pre;
++    write64(ASC_RVBAR, rvbar);
++    alog("rvbar wr=%09lx", rvbar);
++    u64 rvbar_post = logged_r64("rvbar-post", ASC_RVBAR);
++    if (rvbar_post != rvbar) {
++        alog("rvbar MISMATCH abort");
++        ane_dump_scratch("post");
++        goto done;
++    }
++
++    /* step c: map selene at FW_DVA via dart-ane0 SID 0 */
++    dart_dev_t *dart = dart_init_adt("/arm-io/dart-ane0", 0, 0, true);
++    if (!dart) {
++        alog("dart init FAIL");
++        goto done;
++    }
++    alog("dart vm_base=%09lx", dart_vm_base(dart));
++    if (dapf_init("/arm-io/dart-ane0", 1))
++        alog("dapf init FAIL");
++    else
++        alog("dapf inst0 ok");
++    /* proxyclient ane hack: reg instances 1/2 need instance-0's TTBR0 */
++    for (int inst = 1; inst <= 2; inst++) {
++        dart_dev_t *dr = dart_init_adt("/arm-io/dart-ane0", inst, 0, true);
++        if (!dr) {
++            alog("dart inst%d init FAIL", inst);
++            continue;
++        }
++        dart_share_ttbr0(dart, dr);
++        alog("dart inst%d ttbr0 shared", inst);
++        dart_shutdown(dr);
++    }
++    size_t fw_size = _binary_build_ane_selene_fw_bin_end - _binary_build_ane_selene_fw_bin_start;
++    void *fw = memalign(SZ_16K, fw_size);
++    if (!fw) {
++        alog("fw alloc FAIL size=%lx", fw_size);
++        dart_shutdown(dart);
++        goto done;
++    }
++    memcpy(fw, _binary_build_ane_selene_fw_bin_start, fw_size);
++    if (dart_map(dart, FW_DVA, fw, fw_size))
++        alog("dart map FAIL dva=%09lx size=%lx", FW_DVA, fw_size);
++    else
++        alog("dart map dva=%09lx size=%lx", FW_DVA, fw_size);
++    dart_shutdown(dart);
++
++    /* step d: CPU_CONTROL 0 -> 0x10, poll SCRATCH7 (kext Poll A) */
++    write32(ASC_CPU_CONTROL, 0);
++    logged_r32("ctl-after-0", ASC_CPU_CONTROL);
++    write32(ASC_CPU_CONTROL, 0x10);
++    logged_r32("ctl-after-10", ASC_CPU_CONTROL);
++    if (ane_poll_ready("A-READY", READY_MAGIC)) {
++        ane_dump_scratch("ready");
++        /* step f: publish fw DVA then wake, poll B */
++        alog("publish s0=%08x s1=%08x wake=%08x", (u32)FW_DVA,
++             (u32)(FW_DVA >> 32), WAKE_MAGIC);
++        write32(ASC_SCRATCH(0), (u32)FW_DVA);
++        write32(ASC_SCRATCH(1), (u32)(FW_DVA >> 32));
++        write32(ASC_SCRATCH(7), WAKE_MAGIC);
++        if (ane_poll_ready("B-ACK", READY_MAGIC))
++            alog("READY-ACK");
++        else
++            alog("wake NO-ACK st=%08x", read32(ASC_CPU_STATUS));
++        ane_dump_scratch("post");
++    } else {
++        u32 ctl = logged_r32("ctl-noREADY", ASC_CPU_CONTROL);
++        u32 st = logged_r32("st-noREADY", ASC_CPU_STATUS);
++        alog("no READY ctl=%08x st=%08x", ctl, st);
++    }
++#else
++    /* dry: readbacks only, prove the FDT log path */
++    alog("dry readbacks only");
++#endif
++
++done_skip:
++    alog("END");
++    return;
++done:
++    if (wdt)
++        ane_wdt_disarm();
++    ane_dump_scratch("end");
++    alog("elapsed=%s", ane_expired() ? "deadline-hit" : "ok");
++    alog("END");
++}
++
++const char *ane_bringup_log(size_t *len)
++{
++    if (len)
++        *len = ane_log_len;
++    return ane_log;
++}
+diff --git a/src/ane_bringup.h b/src/ane_bringup.h
+new file mode 100644
+index 0000000..3eb038a
+--- /dev/null
++++ b/src/ane_bringup.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: MIT */
++
++#ifndef ANE_BRINGUP_H
++#define ANE_BRINGUP_H
++
++#include <stdbool.h>
++#include <stddef.h>
++
++/* Boot-time T6021 ANE bring-up. Runs from run_actions() before the payload
++ * chainload; a text log of everything it observed/did is later attached to
++ * the FDT passed to Linux as /chosen/ane-bringup-log.
++ *
++ * ANE_BRINGUP_WRITE (build-cfg): 0 = dry mode, reads and ADT dumps only.
++ *                               1 = full arm (power cycle, RVBAR, RUN).
++ */
++void ane_bringup_run(void);
++const char *ane_bringup_log(size_t *len);
++
++#endif
+diff --git a/src/dart.c b/src/dart.c
+index abb0201..6bb66a0 100644
+--- a/src/dart.c
++++ b/src/dart.c
+@@ -730,6 +730,11 @@ u64 dart_find_iova(dart_dev_t *dart, s64 start, size_t len)
+     return DART_PTR_ERR;
+ }
+ 
++void dart_share_ttbr0(dart_dev_t *dart, dart_dev_t *other)
++{
++    write32(DART_TTBR(other, 0), read32(DART_TTBR(dart, 0)));
++}
++
+ void dart_shutdown(dart_dev_t *dart)
+ {
+     if (!dart->locked && !dart->keep)
+diff --git a/src/dart.h b/src/dart.h
+index cc91f14..124ddec 100644
+--- a/src/dart.h
++++ b/src/dart.h
+@@ -30,6 +30,8 @@ void *dart_translate_silent(dart_dev_t *dart, uintptr_t iova);
+ u64 dart_search(dart_dev_t *dart, void *paddr);
+ u64 dart_find_iova(dart_dev_t *dart, s64 start, size_t len);
+ void dart_shutdown(dart_dev_t *dart);
++/* copy TTBR0 of `dart` into `other` (same DART, other reg instance) */
++void dart_share_ttbr0(dart_dev_t *dart, dart_dev_t *other);
+ u64 dart_vm_base(dart_dev_t *dart);
+ 
+ #endif
+diff --git a/src/kboot.c b/src/kboot.c
+index 17c650e..cf18e23 100644
+--- a/src/kboot.c
++++ b/src/kboot.c
+@@ -3,6 +3,7 @@
+ #include <stdint.h>
+ 
+ #include "kboot.h"
++#include "ane_bringup.h"
+ #include "adt.h"
+ #include "assert.h"
+ #include "clk.h"
+@@ -278,7 +279,6 @@ static int dt_set_chosen(void)
+         u64 end = ((u64)initrd_start) + initrd_size;
+         if (fdt_setprop_u64(dt, node, "linux,initrd-end", end))
+             bail("FDT: couldn't set chosen.linux,initrd-end property\n");
+-
+         if (fdt_add_mem_rsv(dt, (u64)initrd_start, initrd_size))
+             bail("FDT: couldn't add reservation for the initrd\n");
+ 
+@@ -292,6 +292,14 @@ static int dt_set_chosen(void)
+     if (node < 0)
+         bail("FDT: /chosen node not found in devtree\n");
+ 
++    {
++        size_t ane_len = 0;
++        const char *ane_log = ane_bringup_log(&ane_len);
++        if (ane_len &&
++            fdt_setprop(dt, node, "ane-bringup-log", ane_log, ane_len + 1))
++            printf("FDT: couldn't set chosen.ane-bringup-log\n");
++    }
++
+     if (is_mac) {
+         if (fdt_setprop(dt, node, "asahi,iboot1-version", system_firmware.iboot,
+                         strlen(system_firmware.iboot) + 1))
+diff --git a/src/main.c b/src/main.c
+index d4e828c..46c3038 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -17,6 +17,7 @@
+ #include "mcc.h"
+ #include "memory.h"
+ #include "nvme.h"
++#include "ane_bringup.h"
+ #include "payload.h"
+ #include "pcie.h"
+ #include "pmgr.h"
+@@ -117,6 +118,8 @@ void run_actions(void)
+ #endif
+ #endif
+ 
++    ane_bringup_run();
++
+     printf("Checking for payloads...\n");
+ 
+     if (payload_run() == 0) {
+diff --git a/tests/ane_skip_test.c b/tests/ane_skip_test.c
+new file mode 100644
+index 0000000..f9e4dd6
+--- /dev/null
++++ b/tests/ane_skip_test.c
+@@ -0,0 +1,38 @@
++/* Host unit test for ane_should_skip (mirrors src/ane_bringup.c logic). */
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++#define ANE_WDT_MAGIC 0x414e4531u
++
++static bool ane_should_skip(uint32_t marker)
++{
++    return marker == ANE_WDT_MAGIC;
++}
++
++int main(void)
++{
++    int fails = 0;
++    /* marker set by a run that started and never finished -> skip */
++    if (!ane_should_skip(ANE_WDT_MAGIC)) {
++        printf("FAIL: magic must trigger skip\n");
++        fails++;
++    }
++    /* zeroed marker (clean state / cleared at done) -> run */
++    if (ane_should_skip(0)) {
++        printf("FAIL: zero must not skip\n");
++        fails++;
++    }
++    /* arbitrary other values (iBoot garbage, other tools) -> run */
++    for (uint32_t v = 1; v < ANE_WDT_MAGIC; v += 0x11111111u) {
++        if (v == ANE_WDT_MAGIC)
++            continue;
++        if (ane_should_skip(v)) {
++            printf("FAIL: %08x must not skip\n", v);
++            fails++;
++        }
++    }
++    printf(fails ? "ANE_SKIP_TEST FAIL\n" : "ANE_SKIP_TEST PASS\n");
++    return fails ? 1 : 0;
++}
