@@ -178,3 +178,34 @@ pair main locally (llvmpipe reproduces the value contract for the f16
 twin; check whether it does for bf16 pairs), and only then re-run the
 A/B windows.
 
+
+## Addendum 3: why the producer-direct KV window refuses — the dense-GEMV gate
+
+Source-level finding (fused_chain.cpp): plan_values_window classifies the
+values side only through the QUANTIZED GEMV groups (gemv_groups) — the
+update chain must end in an Add that is a QuantizedMatmul member's
+epilogue. In the 2B full-attention layers, v comes from a plain dense
+bf16 Linear served by dense_gemv_groups (dispatch_dense_gemv_group),
+which has no sum_window/epilogue support at all. The values side is
+therefore never classifiable on this model, no DirectPlan is formed,
+and every layer/token falls back to the merged SliceUpdatePair
+dispatch that materializes the full-cache copy — this predates the
+bf16 work (it is why the CopyGeneralBF16 mass existed at all).
+
+Next lever (concrete): add producer-direct window write support to the
+DENSE decode GEMV path — a strided-row store variant of the dense bf16
+GEMV shader (matmul_vec bf16 family) plus a sum_window analog on
+DenseGemvGroup members, then the existing rope-side fence/plumbing
+(already bf16-clean in this branch) fires unchanged. Expected: removes
+the ~4640-run CopyGeneralBF16 mass (~2.0% full-run GPU, ~2 copies x 6
+layers x per-token in decode) on top of the measured -24
+dispatches/token and -2.8% decode gpu_busy from the direct rotate.
+
+## Addendum 4: M1 Max host A/B
+
+The A/B is staged durably (~/gdn-harness/{profile_generate,profile_
+analyze,tokid}.py; script /var/tmp/kvdirect/kvdirect-ab-M1 Max host.sh) and
+was queued on /tmp/m1-gpu.lock behind another lane's window at session
+end; it self-completes into /var/tmp/kvdirect/ab.log and
+/var/tmp/M1 Max host-pd-receipts/kvdirect-{before,after}/ (before =
+4517642 wheel, after = diag.pairfix3, identity runs both arms).
