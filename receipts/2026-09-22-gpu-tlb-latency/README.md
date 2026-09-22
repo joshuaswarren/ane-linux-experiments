@@ -71,12 +71,35 @@ gate_up 31791->32708, down 32333->32417 — i.e. unchanged within run
 noise (gate_up: 155 vs 151 GB/s), as expected for an alignment-only
 change. Logs: `gemv-old.txt`, `gemv-new.txt`.
 
-## Staged, needs reboot window (kernel)
+## PREMISE CORRECTION (2026-09-22 late)
 
-`staged-uat-block-pte.patch` — 2 MiB block mapping for
-`drivers/gpu/drm/asahi/pgtable.rs` `map_pages` (compile-untested; no
-kernel source tree or reboot available this session). Before it can
-help, two prerequisites must also land:
+The "2 MiB UAT block PTEs" premise from the assignment is FALSE. UAT is
+ARM64-style 3-level with 16 KiB pages: leaf index bits 14-24, L1 index
+bits 25-35 — an L1 entry covers 2^25 = **32 MiB**, not 2 MiB
+(UAT_PGBIT=14, UAT_LVBIT=11; m1n1 hw/uat.py LEVELS confirms; m1n1 never
+creates block descriptors; the kernel driver contains no block code).
+There is no 2 MiB granularity in this geometry, so a block-PTE change
+cannot help 4.9-6 MB weight BOs at all. `staged-uat-block-pte.patch` is
+retained only as a record of the invalidated approach.
+
+## Active kernel experiment (real lever)
+
+PTE **contiguous hint**: UAT PTE bit 52 is unassigned (m1n1 PTE layout:
+OS=55, UXN=54, PXN=53; Rust HIGH_BITS start at 52) and UAT tracks the
+ARM64 PTE format closely — bit 52 is ARM64's `cont` bit, which coalesces
+16 consecutive aligned leaf PTEs into ONE TLB entry (16x smaller TLB
+working set; a 6 MB stream drops from 384 entries to 24). Requirements:
+16-page physically-contiguous runs + VA alignment (mesa commit landed).
+Implementation: `asahi.uat_experiment` module param bit 0 gates PTE_CONT
+in `pgtable.rs map_pages` (default 0 = stock behavior; unaligned VA or
+phys automatically falls back to plain 16K entries). Booted with
+CONFIG_TRANSPARENT_HUGEPAGE=y so shmem/mTHP provides 2 MiB folios for
+the physical contiguity. Status: built on m1max-host (tree
+/var/tmp/kernel-tlb/linux, LOCALVERSION -TLB2MCTG, on top of
+GpuTlbKernel's block-mapping tree); results appended below.
+
+The following earlier staged-patch notes are superseded; kept for
+provenance. Prerequisites once were:
 
 1. Contiguous physical backing: BOs are shmem-backed (`gem.rs`
    shmem::Object, sg_vec paths in mmu.rs); a 2 MiB block PTE needs a
