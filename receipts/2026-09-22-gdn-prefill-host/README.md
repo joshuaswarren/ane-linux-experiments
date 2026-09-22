@@ -1,5 +1,20 @@
 # 2026-09-22 — GDN prefill host path: strided-input fallback elimination
 
+> **Digest correction (re-issued 2026-09-22, post-correctness-audit).** The
+> `5e093035...` digest column below is **void**: it was measured on the
+> f6db574c wheel, which produces degenerate all-zero token streams under the
+> full-model protocol (every gate/digest keyed to it was a false pass on
+> invalid output; see taste 2026-09-03). The healthy routed-prefill reference
+> digests are the per-host integrated-wheel digests in
+> [`receipts/2026-09-22-qwen38-correctness`](../2026-09-22-qwen38-correctness/README.md):
+> m1max-host `ac1b269553a220ee66d59011decad4740c90f7027ff42deca5b4c4484e2b48f1`,
+> m1-host `e173e037aed127c6e1cdfae2c2f1709a02e201263101f852c2f0631c5dc480b8`
+> (dc7ca4a0 wheel; cross-host equality is not a property of the healthy path).
+> The **wall-clock tok/s numbers in this receipt stand** — they were cadence
+> timings, not digest-derived, and the correctness audit confirmed the
+> integrated wheel decodes coherent text with zero teacher-forced argmax
+> flips vs the ops reference. All other acceptance content unchanged.
+
 Lane: GdnPrefillHost. Target: GatedDeltaPrefillBF16 host path
 (`overlay/mlx/backend/omarchy/primitives.cpp` `GatedDeltaUpdate::eval_gpu`).
 Branch `bf16-prefill-gdn-exact` (worktree `m1max-host:/var/tmp/gdn-exact-wt`),

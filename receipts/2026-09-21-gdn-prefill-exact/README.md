@@ -1,5 +1,21 @@
 # 2026-09-21 — GDN prefill exact (GatedDeltaPrefillBF16 digest + wall)
 
+> **Digest correction (re-issued 2026-09-22, post-correctness-audit).** The
+> "proposed new reference digest" below,
+> `5e0930351bb6d6d5653dacba88642b9b6744330fe1bb68689b01f1292d3c63db`, is
+> **void as a reference**: it was later shown to be the hash of degenerate
+> all-zero token streams (the f6db574c-era wheel generates token 0 forever
+> under the full-model protocol), so the "fused stream accepted as
+> reference" acceptance is a false pass on invalid output (see taste
+> 2026-09-03). The corrected routed-prefill references are the per-host
+> healthy digests in
+> [`receipts/2026-09-22-qwen38-correctness`](../2026-09-22-qwen38-correctness/README.md):
+> m1max-host `ac1b2695...`, m1-host `e173e037...` (dc7ca4a0 integrated
+> wheel; coherent text, zero teacher-forced argmax flips vs the ops
+> reference). The per-feature measurements in this receipt (logit deltas
+> ≤ 0.39, exact-tie flips, wall numbers) are unaffected by the digest issue
+> and stand as evidence of the fused-vs-ops equivalence class.
+
 Lane: GdnPrefillExact. Target: fused GDN prefill on the omarchy Vulkan
 backend with the greedy token digest identical to the ops reference
 `cceba7527e064f49...` (30 greedy records, gpu-host protocol), and prefill-512
