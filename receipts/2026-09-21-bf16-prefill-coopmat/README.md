@@ -152,3 +152,28 @@ SSM mask (all-true mask = maskless fast path; per-token mask in the
 scan kernel is one extra load), and (b) land the mlx-lm one-line
 Linux routing. Both are follow-up work; contract with BF16Decode
 Kernels (state layout, decay-before-kv-dot) is agreed in-session.
+
+## GDN routing outcome (final, honest)
+
+With f32 gates accepted (86c298621 + da3e8a4d) and the mlx-lm Linux
+route applied, the model exercises the fused scan; measured
+prefill-512 = 57.8 tok/s with digest 5e093035... — i.e. SLOWER than
+the ops path (73.0) and NOT digest-identical to the cceba7527e064f49
+reference. Two independent causes:
+
+1. Numerics: the fused scan (and the C++ composed fallback) deviate
+   from `gated_delta_ops` by ~1e-4 (reduction order / bf16 rounding
+   points); near-tie greedy argmax flips make the token stream
+   diverge. Matching the cceba75 reference stream requires ops-exact
+   reductions, which a fused kernel does not reproduce.
+2. Speed: the routed primitive regresses end-to-end wall by ~1.9 s;
+   per-layer overhead in the primitive path (settle/synchronize and
+   output staging) exceeds the 0.5 s kernel savings at this model
+   size.
+
+Decision recorded for Main: keep `gated_delta_ops` as the Linux model
+path (it owns the reference stream); the fused GatedDeltaPrefillBF16
+kernel ships in the backend as a mask-aware primitive (leg-level
+10.7x) for callers that reach mx.fast directly, and is available for a
+future chunked-scan rewrite that matches ops reductions bit-for-bit
+if the identity gate is re-anchored to a fixed digest.
