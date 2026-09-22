@@ -171,3 +171,29 @@ caller buffer). Borrowed input spans + output sinks removed almost all of
 it — attn pass is now 98.6 ms wall vs ~92 ms device phases, so the
 remaining cut lives in the device phases themselves (pack + ioctl +
 unpack), not in the shim.
+
+## Marshalling lane verdict + all-ops pipe landing
+
+Device-placement question answered: creation is GPU-anchored
+(mx.set_default_device(gpu) precedes every statement) and CPU matmul of
+the island shapes costs ~47 ms while the GPU equivalent is ~2-4 ms — but
+the decisive measurement is different. Per-statement traces with
+eval-after probes (MLX_OMARCHY_STMT_TRACE=1) show the slow statements
+(the 47 attention-scores-family matmuls NOT covered by the placed
+islands) block 30-110 ms inside apply() with eval-after ~0.1 ms: the
+array is already materialized when apply returns. That is async-queue
+backpressure — the issuing thread stalls while the GPU drains the
+previously scheduled conv-only work. It is neither CPU-device execution
+nor Python interpreter overhead.
+
+Consequence: issue EVERYTHING asynchronously. All-ops pipe
+(MLX_OMARCHY_PIPE_OPS=) measured encoder_ane median 1228.7 ms (3 meas)
+and the confirmation battery with the new default 1260.1 ms (6 meas) —
+vs 1717-1868 ms conv-only instrumented and 1524.3 ms conv-only
+uninstrumented. All runs gold-bit-exact + 104/104. Landed as the
+inprocess-mode default (worker modes keep conv-only; commit 6aa310528).
+
+Cumulative j16: encoder_ane median 2783.6 -> 1260.1 ms (-54.7%),
+total pipeline 4142.1 -> 2578.2 ms. The residual wall is real GPU
+compute of the non-placed matmuls — the A->B fusion (EncoderHardware
+Continuation) is the remaining lever, plus a j1 replay.
