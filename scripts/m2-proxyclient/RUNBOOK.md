@@ -198,3 +198,75 @@ Interpreting the run:
   ioremap, kernel-context ps-cycle) do not exist on this path.
 - Log every step; the script's stdout is the receipt (tee to
   `receipts/2026-09-22-m2-proxyclient-prep/`).
+
+## 2026-09-22 addendum — host-role determinism + re-park procedure (M2ProxyLive, live USB debugging on proxy-host)
+
+### proxy-host host-role mechanics (asahi kernel, cd321x/tps6598x PD)
+
+- The asahi cd321x driver exposes no Type-C data-role-set: sysfs
+  `echo host > /sys/class/typec/portN/data_role` returns EPERM whenever the
+  write would actually change the role (a same-role write is a no-op that
+  does NOT re-trigger dwc3). Chip-level 4CC `SWDF` written to the PD
+  controller (i2c-0 addr 0x38/0x3f reg 0x08) was accepted but did not flip.
+- Initial data role is decided by the VBUS/source arbitration: whoever wins
+  source wins DFP (host). Two laptops re-roll this on every plug and every
+  boot. Empirically reliable setup:
+  **proxy-host on its own charger (any other port) + data cable on the other
+  port** — an externally powered proxy-host keeps VBUS and settles host/DFP.
+- dwc3-apple glue driver state machine (drivers/usb/dwc3/dwc3-apple.c):
+  dwc3 core probe is DEFERRED until the first cable-connect event
+  (DWC3_APPLE_PROBE_PENDING -> connect -> core probe -> xhci). Forcing the
+  probe by writing role files out of order leaves the core in a failed state
+  (`DWC3 controller soft reset failed` -110, then every retry -EBUSY on
+  0x38228c100) that ONLY a reboot clears.
+- Therefore the deterministic bring-up is: boot proxy-host (charger attached) with
+  the data cable ALREADY PLUGGED at proxy-host's end, then unplug/wait 5 s/replug
+  the data cable so the kernel sees a fresh connect event in host role.
+  Never write the data_role files.
+
+### `m2proxy-linkcheck` (deployed on proxy-host: /usr/local/bin/m2proxy-linkcheck)
+
+One line: per-port data_role, partner usb_mode, root-hub count, ttyACM
+device; rc 0 only when the m1n1 gadget is enumerated. Healthy link reads:
+
+```
+roles: port0:[host] device port1:host [device] partners: port0=usb3 port1= roothubs:2 ttyACM:/dev/ttyACM0
+```
+
+- `port0-partner usb_mode=usb3` with `roothubs:0` = link up, gadget
+  presenting, but dwc3 never initialized (wedged or pre-connect event):
+  unplug/replug the data cable once; if still 0 root hubs, reboot proxy-host.
+
+### Re-park procedure (redo the experiment after m2-host returns to Omarchy)
+
+The proxy park is one file: `/boot/efi/m1n1/boot.bin` on m2-host.
+
+```sh
+# 1. stage the proxy image (idempotent; staged copy already verified)
+ssh m2-host 'sudo cp /var/tmp/m2proxy-staging/boot.bin.proxy-only /boot/efi/m1n1/boot.bin \
+  && sha256sum /boot/efi/m1n1/boot.bin'   # expect 9ad08653…4158fd
+
+# 2. reboot m2-host (operator: Main standing GO covers the cutover reboot)
+ssh m2-host 'sudo reboot'
+#    box parks at the m1n1 proxy (Asahi logo, no ssh)
+
+# 3. within ~60 s the m1n1 USB gadget attaches; proxy-host host side:
+ssh proxy-host 'm2proxy-linkcheck'   # want roothubs:2 and ttyACM:/dev/ttyACM0
+#    (if roothubs:0: replug data cable once; if still 0: reboot proxy-host)
+
+# 4. watcher fires automatically: journalctl -u m1n1-proxy-watcher -f
+#    receipt: /var/tmp/m2proxy/receipts/2026-09-22-m2-proxyclient-prep/run-*.log
+#    -> scp'd to workstation receipts/2026-09-22-m2-proxyclient-prep/
+
+# 5. return to Omarchy (post-run hook does this automatically; manual form):
+ssh proxy-host 'omarchy-now --chainload --image /boot/efi/m1n1/boot.bin'
+#    -> chainloads proxy-host's boot.bin into the RUNNING m1n1 (no ESP write),
+#       m2-host boots Omarchy; ssh returns in ~60 s
+
+# 6. restore the Omarchy ESP default for future boots:
+ssh m2-host 'sudo cp /var/tmp/m2proxy-staging/boot.bin.pre-proxy /boot/efi/m1n1/boot.bin \
+  && sha256sum /boot/efi/m1n1/boot.bin'   # expect 153170e0…ad1ff5
+```
+
+Total redo time once the link is proven: ~5 minutes. Every step leaves a
+receipt (sha lines, linkcheck line, run log, omarchy-now log block).
