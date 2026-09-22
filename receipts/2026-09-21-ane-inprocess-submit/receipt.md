@@ -327,3 +327,15 @@ build INSTALLED into the autoload path (stock backed up at
 /var/tmp/ane-stock-backup-82411a46.ko), depmod -a, modprobe reloaded,
 writecombine=N confirmed. Post-reboot sanity: attn read ~1.0 ms/submit
 (cached profile). No rebind insmod dance needed on future boots.
+
+## Module sha provenance correction (post M2ProxyLive audit)
+
+The autoload build sha 82411a46bbeca04f is the CACHED-BO param build,
+not stock: a fresh make from the param-bearing source reproduces it
+byte-for-byte, updates/ane.ko matches, the loaded module exposes
+sysfs writecombine=N (the stock build has no such param), and the
+post-install probe shows the cached readback profile (~1.0 ms/submit).
+The 4ebcfc10 sha was the earlier pre-param cached build (20:52 raw
+patch, 755056 bytes) — superseded by the param build (756624 bytes,
+first built 21:41). Boot autoload = cached. Verified again after the
+provenance challenge; no swap needed.
