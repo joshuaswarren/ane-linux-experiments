@@ -1,4 +1,4 @@
-# 2026-09-21: decode kv-direct (c) bf16 producer-direct cache write — NO-LAND verdict
+# 2026-09-21: decode kv-direct (c) bf16 producer-direct cache write — PARTIAL LAND verdict — bf16 direct rotate landed; kv-window leg open
 
 Lane: DecodeKvDirect. Base: `mlx-omarchy` `bf16-decode-gdn` tip 1af87a50d.
 Candidate branch: local `agent/decode-kv-direct` @ 649b315 (worktree
@@ -113,9 +113,41 @@ out-of-place rope store, and its key side keeps the kv-direct window.
 With (c) not landing, the remaining decode CopyGeneralBF16 mass (2.2% GPU on
 M1 host, ~24 dispatches/token for the f16 sandwich + cache copies in the
 current wheel) still points at the kv-copy elimination as the right lever —
-via a sound bf16 store mechanism, not atomics.
+via a sound bf16 store mechanism — now proven to be the pair-granular
+word store below (the atomicOr theory was wrong; see Addendum 2).
 
-## Addendum: pair-granular rewrite iteration (same session, later)
+## Addendum 2: pair-granular store PASSES — A/B measured (same session)
+
+The Mesa lane proved atomicOr sound and that ropediag7's "transposed"
+diffs reproduce with the stock wheel: my diagnostic's composed reference
+applied the position axis over the wrong axis for transposed layouts
+(time is shape(-2) in-kernel; the script indexed the N axis). The
+pair-granular kernel was correct once the r2 side used the mirrored
+rotation index (commits 495482535 + fixups). Ground truth:
+
+tokid with the diag.pairfix3 wheel reproduces the bf16 reference stream
+token-for-token (760 1156 369 9859 ... 248046 198).
+
+A/B on the M1 host (same protocol; before = 5b183060, after =
+diag.pairfix3, results kvdirect-{before,after}):
+
+| arm | decode gpu_busy | dispatches/token | CastF32BF16 n | CopyGeneralBF16 n | identity |
+| --- | ---: | ---: | ---: | ---: | --- |
+| before | 1576.746 ms | 747 (22410) | 3958 | 4650 | reference stream |
+| after | 1531.929 ms (−2.8%) | 723 (21690, −24/tok) | 3563 | 4639 | identical, 32/32 |
+
+The −24 dispatches/token are the deleted bf16 rope f32 sandwich
+(cast-in + cast-out x 2 ropes x 6 full-attn layers = 24) plus the
+per-token margin; CastF32BF16 n drops by the predicted ~384. The
+producer-direct KV window (the in-place cache-copy elimination) did NOT
+engage for bf16: CopyGeneralBF16 n is essentially unchanged (−11), so
+the values/rope window planners still refuse the bf16 pair somewhere
+upstream of the fences. That leg remains open work; the landed win is
+the direct bf16 rotate (no f32 interior) with bit-identical output.
+
+M1 host venv left with diag.pairfix3 (identity-verified).
+
+## Addendum 1: pair-granular rewrite iteration
 
 Per review steer, the atomicOr store was replaced by a pair-granular
 bf16 main (each invocation owns whole output words and computes both
