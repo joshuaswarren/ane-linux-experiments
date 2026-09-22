@@ -1,0 +1,44 @@
+// Minimal atomicOr lane-loss reproducer shader (GLSL compute, Vulkan).
+//
+// N = 256 invocations; invocation i atomicOrs exactly one 16-bit half
+// into word i/2 of an SSBO pre-filled with 0xBAD0BAD0. Even lanes OR
+// 0x0000 | tag(i), odd lanes OR tag(i) << 16, where tag(i) = 0x0400 + i
+// (a nonzero, NaN-free bf16-ish pattern with zero upper bits per half).
+// After one dispatch every word must equal
+//   0x(tag(2w+1) << 16) | tag(2w)
+// regardless of arrival order, because the two ORs are disjoint-half and
+// both halves are written exactly once.
+//
+// Observed on Apple M1 / M1 Max, Asahi Mesa Vulkan (Honeykrisp fork):
+// sporadic words retain 0xBAD0 half-words or mixed garbage - i.e. one
+// lane's atomicOr never lands. Failure is nondeterministic across runs
+// and scales with invocation count.
+//
+// Push constant: uint n;  (invocation count; dispatch ceil(n/256) groups
+// of 256; guard threads with i >= n)
+
+#version 460
+
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+layout(set = 0, binding = 0, buffer Output {
+  uint values[];
+} out_data;
+
+layout(push_constant) uniform Params {
+  uint n;
+} pc;
+
+void main() {
+  uint i = gl_GlobalInvocationID.x;
+  if (i >= pc.n) {
+    return;
+  }
+  uint tag = 0x0400u + i;
+  uint word = i >> 1u;
+  if ((i & 1u) == 0u) {
+    atomicOr(out_data.values[word], tag);
+  } else {
+    atomicOr(out_data.values[word], tag << 16u);
+  }
+}

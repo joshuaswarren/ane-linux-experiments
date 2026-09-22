@@ -114,3 +114,35 @@ With (c) not landing, the remaining decode CopyGeneralBF16 mass (2.2% GPU on
 M1 host, ~24 dispatches/token for the f16 sandwich + cache copies in the
 current wheel) still points at the kv-copy elimination as the right lever —
 via a sound bf16 store mechanism, not atomics.
+
+## Addendum: pair-granular rewrite iteration (same session, later)
+
+Per review steer, the atomicOr store was replaced by a pair-granular
+bf16 main (each invocation owns whole output words and computes both
+lanes; plain stores, no atomics) — commits 495482535 + two fixups in
+`agent/decode-kv-direct`. Host guards: even rotation half, even
+passthrough extent, passthrough count halved to word granularity.
+
+Empirical status on the M1 host (shape matrix /tmp/ropediag7.py):
+
+- contiguous non-passthrough and contiguous passthrough: CORRECT
+  (maxdiff 0.016-0.019, bf16 rounding) after fixing the r2 side to use
+  the mirrored rotation index (element - half_dims).
+- ALL head-seq-transposed layouts: still wrong (maxdiff ~3-7,
+  deterministic, no NaN). The loads/theta/out addressing are
+  symbol-for-symbol the std kernel's head_seq_transpose formulas, so
+  the remaining defect is not yet understood; it needs the in-repo
+  rope value tests (which run per-device) rather than more remote
+  guesswork.
+
+Verdict stands: NO-LAND. M1 host venv restored to the 5b183060 baseline
+wheel and re-verified against the reference stream after every
+iteration. The atomicOr lane-loss reproducer package
+(atomicor-lane-loss/) is handed to the Mesa divergence lane.
+
+Next step for this lane: add a bf16 transposed-layout case to the
+in-repo fast_rope value tests, debug the head_seq_transpose leg of the
+pair main locally (llvmpipe reproduces the value contract for the f16
+twin; check whether it does for bf16 pairs), and only then re-run the
+A/B windows.
+
