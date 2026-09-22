@@ -409,3 +409,22 @@ Ranked next levers from this table:
 3. Cast sandwich remnants (CastBF16F32 4.4% + CastF32BF16 2.9%) —
    f32 interiors in RMSNorm/attention scales; strided-input fixes.
 4. FastRmsNormBF16 111.7/tok — fold into consumers (norm->rope).
+
+## Addendum 13: M1 Max host A/B — environment invalid, numbers retracted
+
+The queued M1 Max host window ran (before=4517642, after=diag.densewin) but
+both arms are degenerate on this venv: ID-BEFORE = 248068 followed by
+zeros (the OLD gdn-lineage wheel generates garbage here), ID-AFTER
+loops (248046 198 repeated), the before profile produced no analysis
+lines, and the after decode counts (289/tok) do not match any known
+good configuration. /tmp/gdn-venv-M1 Max host has been mutated by multiple
+lanes (wheel swaps, routing-file copies from /tmp) and cannot produce
+a trustworthy before/after on this model.
+
+M1 Max host requires a clean setup before any decode numbers: fresh venv (or
+pip-verified mlx-lm 0.31.3), the gated_delta fast-route patch
+re-applied from scripts/patch-mlx-lm-gdn.py, the conv-ring patch if
+desired, and one identity gate against the M1 host reference stream
+modulo the known chat-template think-block difference. The densewin
+wheel is staged at /var/tmp/kvdirect/dist (diag.densewin, built on
+the M1 Max host). No M1 Max host claims are made from this session.
