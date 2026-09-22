@@ -1,0 +1,12 @@
+### m1max-host
+[p0] "\n\n<think>\n\n</think>\n\nSeasons change on Earth because the Earth's axis is tilted at approximately 23.5 degrees relative to its orbital plane around the"
+[p1] "\n\n<think>\n\n</think>\n\n# Why Seasons Change on Earth\n\n## The Main Reason: Earth's Orbit\n\nImagine Earth is a ball spinning around a sun. It"
+[p7] "\n\n<think>\n\n</think>\n\n## Common Mistake\n\n**Mistake:** People often think that Earth's *axial tilt* (23.5°"
+[p9] "\n\n<think>\n\n</think>\n\n# Why Seasons Change on Earth\n\n## Step 1: Earth's orbit around the Sun\nEarth travels in a slightly elliptical ("
+
+### m1-host
+[p0] "\n\n<think>\n\n</think>\n\nSeasons change on Earth because the Earth's axis is tilted at approximately 23.5 degrees relative to its orbital plane around the"
+[p1] "\n\n<think>\n\n</think>\n\n# Why Seasons Change on Earth\n\n## The Big Picture\n\nImagine a giant ball spinning around a sun. That's what Earth does."
+[p7] "\n\n<think>\n\n</think>\n\n## Common Mistake\n\n**Mistake:** People often think that seasons change because the Earth's **axial tilt** (about"
+[p9] "\n\n<think>\n\n</think>\n\n# Why Seasons Change on Earth\n\n## Step 1: Earth's Orbit Around the Sun\n\nEarth travels in a slightly elliptical ("
+
