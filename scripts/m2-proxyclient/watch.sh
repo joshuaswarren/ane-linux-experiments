@@ -62,7 +62,7 @@ while :; do
         # return image is missing or sha-mismatched, so the watcher survives.
         if [ -x "$M2ROOT/omarchy-now.sh" ]; then
             echo "=== return-to-Omarchy ===" >>"$log"
-            "$M2ROOT/omarchy-now.sh" --chainload >>"$log" 2>&1
+            "$M2ROOT/omarchy-now.sh" --chainload --image /boot/efi/m1n1/boot.bin >>"$log" 2>&1
             rc2=$?
             [ $rc2 -eq 0 ] || echo "omarchy-now rc=$rc2 (image missing/sha mismatch/device gone; watcher stays up)" >>"$log"
         last_dev=$dev
