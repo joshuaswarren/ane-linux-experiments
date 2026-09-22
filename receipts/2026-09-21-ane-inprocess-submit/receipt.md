@@ -236,3 +236,13 @@ fused-j1 attempt segfaulted with stock mesa because the derived battery
 script lacked the VK_DRIVER_FILES export — re-added. Other lanes have
 also staged rev-* mesa variants into that directory; the icd.json still
 points at the e167 build.
+
+## Mask-lowering respell gate (EHC logical_and -> fp16 mul)
+
+Runner parser extended for the protobuf-reexported MIL text (string()
+attr literals, inlined quoted constants; commit 703cf142d). Gate on j16,
+FUSED_AB=1, interleaved 1 smoke + 1 warm + 6 meas: respelled source
+1538.6 ms vs current source 1564.6 ms encoder_ane median (-26 ms),
+both arms all pins green (104/104, gold bit-exact). The trailing bool
+boundary cast stayed off the ANE path per EHC's contract. Identity:
+respell-20260921T195419. PASS reported to EHC for their receipt.
