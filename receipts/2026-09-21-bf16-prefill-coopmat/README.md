@@ -177,3 +177,40 @@ kernel ships in the backend as a mask-aware primitive (leg-level
 10.7x) for callers that reach mx.fast directly, and is available for a
 future chunked-scan rewrite that matches ops reductions bit-for-bit
 if the identity gate is re-anchored to a fixed digest.
+
+## Overhead decomposition (Main follow-up request, measured)
+
+Direct timed calls (candidate wheel da3e8a4, T=512, 20 reps, means):
+
+| variant | ms |
+|---|---|
+| fused scan, no mask argument | 42.84 |
+| fused scan, mask argument (scalar mask) | 42.88 |
+| composed C++ masked fallback (pre-fix) | n/a (not on fast path) |
+| gated_delta_ops (model's Linux path) | 446.4 |
+
+Mask handling is free (+0.04 ms): the +1.9 s routed-run regression is
+NOT the kernel, the mask binding, or load+skip. Remaining delta
+isolates to the mx.fast wrapper and primitive-host layer:
+
+1. NUMERICS (explains the digest flip): fast.cpp's gated_delta_update
+   casts every input to out_dtype before creating the primitive —
+   compute_g's float32 gates get rounded to bf16 before the kernel
+   sees them. gated_delta_ops keeps gates in f32. One rounding of the
+   decay per token is enough to flip near-tie greedy argmax; the
+   stream moves to 5e093035 regardless of fused-vs-fallback. Follow-up
+   spec: extend patches/mlx-gated-delta-mask.patch to pass gates
+   through in their own dtype (the primitive already accepts f32 g via
+   flags bit2) — that removes the wrapper-induced rounding and is the
+   prerequisite for any identity re-anchoring.
+2. SPEED (explains 57.8 vs 73.0): per-layer host work in the
+   primitive path (output/state allocation via allocate_omarchy,
+   binding construction, per-call dispatch of a 512-iteration kernel
+   serialized over only 16 workgroups) exceeds the 0.4 ms/layer
+   kernel saving at 2B scale; the ops path rides mx.compile-fused
+   per-step graphs that batch better. Follow-up spec: chunked
+   two-pass scan (prefix-decay materialization, grid over heads x
+   token-chunks) to raise parallelism 16x, and reuse of the hf
+   allocation across cache updates.
+
+Venv restored to pristine mlx-lm (ops path, reference stream).
