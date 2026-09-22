@@ -83,3 +83,9 @@ linkcheck readbacks on m1-host (verbatim, all identical):
 
 ## Outcome
 INSTALL: COMPLETE and verified. RUN: FAILED — no proxy enumeration, checklist never fired, blocked on console-less m1n1 T6021 USB bring-up. m2-host parked; recovery requires hands (boot picker → macOS).
+
+## Closure (09:4x CDT — macOS-host differential)
+- m2-host rebooted to Omarchy Linux after the macOS experiment; m1-host watcher active, link partners attached, still zero M2 devices.
+- macOS-host run result (M2ProxyMacosHost): NOTHING enumerated from parked m2-host there either — system_profiler/ioreg show zero USB devices, no /dev/cu.usbmodem. Bring-up never started (no transport; no RVBAR/READY readings).
+- Differential CLOSED: cable + hub + both hosts' xHCI proven good (05ac:1905 macOS-NCM enumeration earlier). The fault is definitively inside the parked m1n1 image's USB gadget bring-up on this T6021 (silent usb_phy_bringup/dwc3 failure).
+- m2-host ESP NOT yet restored: still parked on proxy-swuf (6dc0ec5d). No transport exists, so restore goes via the physical boot-picker lane (next lane: M2M1n1Hook per Main; return image boot.bin.pre-proxy 153170e0…ad1ff5 staged on m2-host).
