@@ -124,6 +124,31 @@ the driver. Ground-truth progress (numpy strict-f32 sims, gpu-host):
    fix that first when resuming: it is the ground truth that decides which
    side rounds differently.
 
+## Re-anchored gate (Main decision): fused stream becomes the reference
+if teacher-forced agreement is near-tie and the stream is deterministic
+
+- Teacher-forced, prompt p001 (512-token prompt + 64 generated, fused vs
+  ops logits on the same tokens): max |logit diff| 0.3125, argmax flips 0,
+  fused passes bit-identical (determinism held). Script:
+  teacher_forced.py; free-running check: divergence_locate.py (ops and
+  fused greedy streams identical over 512 + 96 tokens on p001).
+- Full-bench fused digest is stable across three independent gpu-host
+  windows: 5e0930351bb6d6d5653dacba88642b9b6744330fe1bb68689b01f1292d3c63db
+  - the proposed new reference digest for the routed prefill path, per the
+  re-anchored gate.
+- Corpus sweep: ABORTED after ~2.5 h without completing. The
+  teacher_forced.py greedy loop re-feeds the full sequence each step with
+  no KV cache (hours-long here) and starved the GPU lock; killed, resident
+  server restored and health-verified. Relaunch with TF_GEN=8 and 3
+  prompts, or port the greedy loop to a KV-cache step API first.
+- The free-running digest flip's entry point is still unproven: p001 shows
+  zero divergence, so it lives in another prompt or in long-context
+  decode. Where it enters is moot under the re-anchored gate unless flips
+  turn out to be non-near-tie.
+- Separate primitive bug found en route: fast(T=1) on a non-contiguous
+  T-slice returns a NaN state - the composed C++ fallback mishandles
+  non-contiguous inputs (in-model fallback count 0, so latent).
+
 ## m1-host
 
 Not started — gpu-host is not green.
