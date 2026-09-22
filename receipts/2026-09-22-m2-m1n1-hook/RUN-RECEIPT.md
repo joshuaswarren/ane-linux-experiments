@@ -78,3 +78,23 @@ v3 differences vs v1/v2 (m1n1-ane-hook-v3-wdtsafe.patch vs upstream main
   images staged.
 - M2 booting Omarchy after every iteration: proven once (bridge + restore);
   v1 iteration ended in the documented hang + recovery.
+
+## v4 (Main-mandated reset-skip) — the ONLY images allowed to boot next
+
+- images/boot.bin.ane-dry-v4  sha256 b0feef2f96412ce61752e189a943498f1c5a9938f7536c10a3ed5250df591271
+- images/boot.bin.ane-write-v4 sha256 f2a214af1b1e279900a34678ecd85f5a0dfd25064b7e46b188b3d75c570aac25
+- Mechanism: WD2_BITE_TIME (WDT block +0x24, unused by everyone per
+  apple_wdt.c) holds the warm-reset attempt marker 0x414e4531 ("ANE1"),
+  written when the WDT arms, cleared at done/disarm. At hook entry the
+  marker is read: if set, the previous attempt started but never finished
+  (fabric hang or WDT bite) — hook skips itself, logs
+  "hook skipped: reset during previous attempt" into the FDT chosen log,
+  clears the marker, and chainloads Linux normally.
+- Decision function unit-tested host-side: ANE_SKIP_TEST PASS
+  (tests/ane_skip_test.c in the m1n1 checkout; patch
+  m1n1-ane-hook-v4-resetskip.patch).
+- Caveat kept honest: WD2 register retention across a warm machine reset is
+  the design assumption; the first v4 dry boot logs the marker value at
+  entry ("wdt marker="), which will confirm or refute retention on real
+  hardware. If retention proves false, the fallback guard is the console
+  pin trail (every read logged before execution).
