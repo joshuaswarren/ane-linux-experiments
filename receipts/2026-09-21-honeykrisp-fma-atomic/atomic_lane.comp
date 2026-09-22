@@ -1,0 +1,14 @@
+// atomicOr lane-loss reproducer, hardcoded n=65536 (no push constants).
+// Out buffer zero-filled by harness; invocation i atomicOrs tag 0x0400+i
+// into half of word i/2. A lost lane leaves a zero half-word.
+#version 460
+layout(local_size_x = 256) in;
+layout(set = 0, binding = 1, std430) buffer Output { uint values[]; };
+void main() {
+  uint i = gl_GlobalInvocationID.x;
+  if (i >= 65536u) return;
+  uint tag = 0x0400u + i;
+  uint word = i >> 1u;
+  if ((i & 1u) == 0u) atomicOr(values[word], tag);
+  else atomicOr(values[word], tag << 16u);
+}
