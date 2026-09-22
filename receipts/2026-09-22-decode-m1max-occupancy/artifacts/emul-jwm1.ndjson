@@ -1,0 +1,9 @@
+{"k":"emul","cols":3072,"split":1,"subgroups":3072,"med_ns":57924,"true_gb_s":24.61}
+{"k":"emul","cols":3072,"split":2,"subgroups":6144,"med_ns":61861,"true_gb_s":23.04}
+{"k":"emul","cols":3072,"split":4,"subgroups":12288,"med_ns":97038,"true_gb_s":14.69}
+{"k":"emul","cols":2048,"split":1,"subgroups":2048,"med_ns":37330,"true_gb_s":25.46}
+{"k":"emul","cols":2048,"split":2,"subgroups":4096,"med_ns":44530,"true_gb_s":21.34}
+{"k":"emul","cols":2048,"split":4,"subgroups":8192,"med_ns":59043,"true_gb_s":16.09}
+{"k":"emul","cols":6144,"split":1,"subgroups":6144,"med_ns":71064,"true_gb_s":40.12}
+{"k":"emul","cols":6144,"split":2,"subgroups":12288,"med_ns":78017,"true_gb_s":36.54}
+{"k":"emul","cols":6144,"split":4,"subgroups":24576,"med_ns":93928,"true_gb_s":30.35}
