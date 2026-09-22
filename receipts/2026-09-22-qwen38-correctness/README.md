@@ -43,7 +43,28 @@ Teacher-forced logits (raw greedy re-run recording top-8 per step,
   quantization steps at the operating logit magnitude (~16–20). The integrated
   kernels are numerically equivalent to the ops reference within bf16 rounding.
 
-## 3. Cross-host digest divergence: root cause = pre-existing bf16 near-tie flips, not a kernel bug
+## 3. Cross-host digest divergence: root cause = bf16 near-tie flips triggered by the m1-host DRIVER STACK, not a kernel bug
+
+> **CORRECTION (2026-09-22, later same day — lane PrefillProfileAttack).**
+> The original attribution below ("platform property, M1 vs M1 Max") was
+> WRONG on cause. PrefillProfileAttack found that every m1-host cadence cell
+> in this audit and in the integration receipt ran **stock Mesa 26.2.3 (no
+> coopmat)**. On the Honeykrisp tip driver (git-7faf04c065) m1-host produces
+> digest `ac1b2695…` — **exactly m1max-host's** — with ttft 46.4 /
+> decode 34.3 / prefill-512 120.9 tok/s
+> (artifacts `m1-host:/var/tmp/ppa/{baseline-m1-host.json,baseline-m1-host-tip.json}`,
+> same on m1max-host under /var/tmp/ppa; receipt to follow from that lane).
+> The mechanism identified below (ulp-level top-1 tie flips, gaps ≤ 0.25,
+> deterministic per configuration) stands; the trigger is the driver stack
+> (different shader codegen / coopmat availability), not the silicon. The
+> "byte-identical across hosts is impossible" consequence is likewise
+> withdrawn: with matched driver stacks the hosts ARE digest-identical.
+> Per-host digest comparison and numerical-equivalence gates remain the
+> correct acceptance bar for correctness screening, but the README should
+> state the cross-host identity requirement holds on a pinned driver stack.
+
+Original (pre-correction) bisect, retained for the record — it established
+that none of the INTEGRATED features is the differentiator:
 
 Feature bisect on m1-host (dc7ca4a0 wheel, 1-pass × 10 prompts, per-prompt
 streams in `private/m1-host-bisect/`):
@@ -66,12 +87,12 @@ through argmax flips at top-2 gaps ≤ 0.25 (bf16 quantum). Logit-level agreemen
 across hosts on matched steps: max |Δ chosen logit| = 0.25 over 294 steps —
 no host produces wrong logits.
 
-Consequence: the README invariant "Linux cells byte-identical within a build"
-is falsified at the cross-host level and was never true of the healthy ops path
-either (the earlier apparent cross-host equality, 5e093035 on both hosts, was
-equality of degenerate hashes). Digests should be compared per host, per build.
-Numerical-equivalence gates (logit deltas ≤ 2 bf16 ulp, coherent decoding)
-are the correct acceptance bar, not cross-host digest equality.
+Consequence (superseded by the correction above for the cross-host claim,
+still true of this audit's data): within this audit's stock-Mesa m1-host
+environment the healthy ops path also diverged across hosts, and the earlier
+apparent cross-host equality (5e093035 on both hosts) was equality of
+degenerate hashes. On a pinned Honeykrisp tip stack, cross-host digest
+identity is achievable and is the right README invariant.
 
 ## 4. Per-feature verdicts
 
