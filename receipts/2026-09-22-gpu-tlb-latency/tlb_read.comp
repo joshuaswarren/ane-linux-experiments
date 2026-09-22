@@ -1,0 +1,30 @@
+#version 460
+// Pointer-chase latency probe: src32[idx+3] holds the next index, so each
+// 16-byte read depends on the previous read. time/step = load latency
+// including any page-table walk. Stride patterns are baked into the data
+// by the CPU fill (dense / stride16k / stride2m / hot16k pages).
+layout(local_size_x = 32) in;
+layout(set = 0, binding = 0, std430) readonly buffer Src { uint words[]; } src;
+layout(set = 0, binding = 1, std430) writeonly buffer Sink { uint values[]; } sink;
+
+layout(push_constant) uniform Pc {
+  uint steps;    // chase steps per invocation
+  uint nwords;   // word count (multiple of 4)
+  uint spacing;  // 0 = tight start; else per-lane start stride in words
+} pc;
+
+void main() {
+  uint g = gl_GlobalInvocationID.x;
+  uint idx = (pc.spacing != 0u) ? (g * pc.spacing) : (g * 4u);
+  idx &= (pc.nwords - 4u);
+  uint acc = 0u;
+  for (uint j = 0u; j < pc.steps; ++j) {
+    uint a = src.words[idx];
+    uint b = src.words[idx + 1u];
+    uint c = src.words[idx + 2u];
+    uint nxt = src.words[idx + 3u];
+    acc ^= a ^ b ^ c ^ nxt;
+    idx = nxt & (pc.nwords - 4u);
+  }
+  sink.values[g & 1023u] = acc ^ g;
+}

@@ -1,0 +1,114 @@
+From: GpuTlbLatency <agent@omarchy>
+Subject: [STAGED, compile-untested] drm/asahi: UAT L1 block PTEs (2 MiB) in map_pages
+
+EXPERIMENTAL DRAFT. Not built, not run. Requires: contiguous 2 MiB-aligned
+physical backing for BOs (shmem gives neither today), block-aware
+unmap/reprot/coredump walkers, reboot to test. See
+receipts/2026-09-22-gpu-tlb-latency/README.md for the measured motivation.
+
+Rust patch against drivers/gpu/drm/asahi/pgtable.rs (AsahiLinux linux,
+asahi branch, ~v7.1). UAT levels: 3, page 16 KiB, L1 block covers
+1 << (UAT_PGBIT + UAT_LVBIT) == 2 MiB. Valid PTE type value is 3 for both
+next-table and leaf/block descriptors; the level disambiguates, so a block
+descriptor is `block_phys | prot.as_pte() | PTE_TYPE_LEAF_TABLE | pte_bits`
+with the physical address masked to L1-block alignment granularity
+(!block_mask, not !UAT_PGMSK).
+
+---
+--- a/drivers/gpu/drm/asahi/pgtable.rs
++++ b/drivers/gpu/drm/asahi/pgtable.rs
+@@
+ const UAT_LVSZ: usize = UAT_NPTE;
+ const UAT_LVMSK: u64 = (UAT_LVSZ - 1) as u64;
+ 
++/// Size covered by a level-1 block descriptor: 2 MiB.
++const UAT_BLOCKSZ: u64 = 1 << (UAT_PGBIT + UAT_LVBIT) as u64;
++const UAT_BLOCKMSK: u64 = UAT_BLOCKSZ - 1;
++
+@@ impl UatPageTable
+     pub(crate) fn map_pages(
+         &mut self,
+         iova_range: Range<u64>,
+         mut phys: PhysicalAddr,
+         prot: Prot,
+         one_page: bool,
+     ) -> Result {
+         ...
+         let pte_bits = self.pte_bits();
+ 
++        // Fast path: map whole L1 blocks when IOVA, physical address and
++        // length are all 2 MiB aligned. This collapses 128 16 KiB leaf
++        // PTEs into one L1 block descriptor per 2 MiB, cutting the
++        // per-stream TLB working set 128x for large weight BOs.
++        if !one_page
++            && (iova_range.start | iova_range.end | (phys as u64)) & UAT_BLOCKMSK == 0
++        {
++            return self.map_blocks(iova_range, phys, prot, pte_bits);
++        }
++
+         self.with_pages(iova_range, true, false, |iova, ptes| {
+@@
+     }
++
++    fn map_blocks(
++        &mut self,
++        iova_range: Range<u64>,
++        mut phys: PhysicalAddr,
++        prot: Prot,
++        pte_bits: u64,
++    ) -> Result {
++        debug_assert!(iova_range.start & UAT_BLOCKMSK == 0);
++        debug_assert!(iova_range.end & UAT_BLOCKMSK == 0);
++        let mut iova = iova_range.start & UAT_IASMSK;
++        let end = ((iova_range.end - 1) & UAT_IASMSK) + 1;
++        while iova < end {
++            // Walk levels 2 (top) and 1, stopping at the L1 PTE.
++            let upidx = ((iova >> (UAT_PGBIT + UAT_LVBIT) as u64) & UAT_LVMSK) as usize;
++            let upt_phys = {
++                let ttp = unsafe { Page::borrow_phys_unchecked(&self.ttb) };
++                let ttep = ttp.with_pointer_into_page_raw(upidx * PTE_SIZE, PTE_SIZE)?;
++                let ttpte = unsafe { &*(ttep as *const _ as *const Pte) };
++                let mut v = ttpte.load(Ordering::Relaxed);
++                if v == 0 {
++                    let pt_page = Page::alloc_page(GFP_KERNEL | __GFP_ZERO)?;
++                    let pt_paddr = Page::into_phys(pt_page);
++                    v = pt_paddr | PTE_TYPE_LEAF_TABLE;
++                    ttpte.store(v, Ordering::Relaxed);
++                }
++                if v & PTE_TYPE_BITS != PTE_TYPE_LEAF_TABLE {
++                    pr_err!("map_blocks: bad L2 PTE {:#x} at {:#x}\n", v, iova);
++                    return Err(EINVAL);
++                }
++                v & self.oas_mask & (!UAT_PGMSK as u64)
++            };
++            {
++                let upt = unsafe { Page::borrow_phys_unchecked(&upt_phys) };
++                upt.with_pointer_into_page(upidx * PTE_SIZE, PTE_SIZE, |p| {
++                    let ptep = p as *const _ as *const Pte;
++                    let l1pte = unsafe { &*ptep };
++                    let old = l1pte.load(Ordering::Relaxed);
++                    if old != 0 {
++                        pr_err!(
++                            "map_blocks: L1 entry {:#x} occupied (PTE {:#x}) at IOVA {:#x}\n",
++                            iova, old, iova
++                        );
++                        return Err(EINVAL);
++                    }
++                    l1pte.store(phys | prot.as_pte() | pte_bits, Ordering::Relaxed);
++                    Ok(())
++                })?;
++            }
++            phys += UAT_BLOCKSZ as PhysicalAddr;
++            iova += UAT_BLOCKSZ;
++        }
++        Ok(())
++    }
+
+NOTE: unmap_pages()/reprot_pages()/coredump iterate leaf PTEs via
+with_pages() and will mis-handle block entries; they must gain a
+block-aware path (freeing is the critical one: an L1 block PTE must be
+cleared there, not treated as a table pointer). step_map() in mmu.rs
+should pass block-aligned contiguous sg runs (sg_vec ranges >= 2 MiB,
+both addresses aligned) down this path; shmem-backed BOs currently
+rarely satisfy the physical-contiguity requirement, which is the main
+missing prerequisite.

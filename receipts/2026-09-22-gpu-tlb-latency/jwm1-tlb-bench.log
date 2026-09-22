@@ -1,0 +1,72 @@
+{
+    "ICD": {
+        "api_version": "1.4.359",
+        "library_arch": "64",
+        "library_path": "/var/tmp/mesa-e167-jwm1/tip.so"
+    },
+    "file_format_version": "1.0.1"
+}
+{"memtype":"local","mode":"dense","lanes":1024,"steps":512,"ms_med":0.582,"ns_per_step":1137.4}
+{"memtype":"local","mode":"dense","lanes":4096,"steps":512,"ms_med":0.759,"ns_per_step":1483.0}
+{"memtype":"local","mode":"dense","lanes":16384,"steps":512,"ms_med":2.094,"ns_per_step":4090.2}
+{"memtype":"local","mode":"dense","lanes":65536,"steps":512,"ms_med":4.429,"ns_per_step":8650.1}
+{"memtype":"local","mode":"stride16k","lanes":1024,"steps":512,"ms_med":0.447,"ns_per_step":873.2}
+{"memtype":"local","mode":"stride16k","lanes":4096,"steps":512,"ms_med":0.820,"ns_per_step":1600.6}
+{"memtype":"local","mode":"stride16k","lanes":16384,"steps":512,"ms_med":1.505,"ns_per_step":2938.7}
+{"memtype":"local","mode":"stride16k","lanes":65536,"steps":512,"ms_med":7.668,"ns_per_step":14976.9}
+{"memtype":"local","mode":"stride2m","lanes":1024,"steps":512,"ms_med":0.711,"ns_per_step":1388.1}
+{"memtype":"local","mode":"stride2m","lanes":4096,"steps":512,"ms_med":0.955,"ns_per_step":1864.8}
+{"memtype":"local","mode":"stride2m","lanes":16384,"steps":512,"ms_med":1.912,"ns_per_step":3733.5}
+{"memtype":"local","mode":"stride2m","lanes":65536,"steps":512,"ms_med":6.752,"ns_per_step":13188.2}
+{"memtype":"local","mode":"hot16k","lanes":1024,"steps":512,"ms_med":0.563,"ns_per_step":1099.2}
+{"memtype":"local","mode":"hot16k","lanes":4096,"steps":512,"ms_med":0.589,"ns_per_step":1151.1}
+{"memtype":"local","mode":"hot16k","lanes":16384,"steps":512,"ms_med":2.116,"ns_per_step":4133.6}
+{"memtype":"local","mode":"hot16k","lanes":65536,"steps":512,"ms_med":4.670,"ns_per_step":9120.7}
+{"memtype":"local","mode":"dense_spread","lanes":1024,"steps":512,"ms_med":0.937,"ns_per_step":1829.4}
+{"memtype":"local","mode":"dense_spread","lanes":4096,"steps":512,"ms_med":2.849,"ns_per_step":5565.4}
+{"memtype":"local","mode":"dense_spread","lanes":16384,"steps":512,"ms_med":16.742,"ns_per_step":32700.2}
+{"memtype":"local","mode":"dense_spread","lanes":65536,"steps":512,"ms_med":84.387,"ns_per_step":164817.9}
+{"memtype":"local","mode":"stride16k_spread","lanes":1024,"steps":512,"ms_med":1.033,"ns_per_step":2018.3}
+{"memtype":"local","mode":"stride16k_spread","lanes":4096,"steps":512,"ms_med":2.654,"ns_per_step":5183.6}
+{"memtype":"local","mode":"stride16k_spread","lanes":16384,"steps":512,"ms_med":15.332,"ns_per_step":29946.0}
+{"memtype":"local","mode":"stride16k_spread","lanes":65536,"steps":512,"ms_med":69.481,"ns_per_step":135705.0}
+{"memtype":"local","mode":"stride2m_spread","lanes":1024,"steps":512,"ms_med":1.905,"ns_per_step":3721.0}
+{"memtype":"local","mode":"stride2m_spread","lanes":4096,"steps":512,"ms_med":3.186,"ns_per_step":6221.8}
+{"memtype":"local","mode":"stride2m_spread","lanes":16384,"steps":512,"ms_med":25.766,"ns_per_step":50323.4}
+{"memtype":"local","mode":"stride2m_spread","lanes":65536,"steps":512,"ms_med":123.440,"ns_per_step":241093.6}
+{"memtype":"local","mode":"hot16k_spread","lanes":1024,"steps":512,"ms_med":0.895,"ns_per_step":1747.3}
+{"memtype":"local","mode":"hot16k_spread","lanes":4096,"steps":512,"ms_med":2.356,"ns_per_step":4601.7}
+{"memtype":"local","mode":"hot16k_spread","lanes":16384,"steps":512,"ms_med":4.752,"ns_per_step":9280.8}
+{"memtype":"local","mode":"hot16k_spread","lanes":65536,"steps":512,"ms_med":18.504,"ns_per_step":36140.4}
+{"memtype":"host","mode":"dense","lanes":1024,"steps":512,"ms_med":0.608,"ns_per_step":1188.2}
+{"memtype":"host","mode":"dense","lanes":4096,"steps":512,"ms_med":0.772,"ns_per_step":1508.1}
+{"memtype":"host","mode":"dense","lanes":16384,"steps":512,"ms_med":1.781,"ns_per_step":3477.7}
+{"memtype":"host","mode":"dense","lanes":65536,"steps":512,"ms_med":4.360,"ns_per_step":8515.4}
+{"memtype":"host","mode":"stride16k","lanes":1024,"steps":512,"ms_med":0.476,"ns_per_step":928.8}
+{"memtype":"host","mode":"stride16k","lanes":4096,"steps":512,"ms_med":0.836,"ns_per_step":1633.6}
+{"memtype":"host","mode":"stride16k","lanes":16384,"steps":512,"ms_med":1.465,"ns_per_step":2861.6}
+{"memtype":"host","mode":"stride16k","lanes":65536,"steps":512,"ms_med":7.805,"ns_per_step":15243.6}
+{"memtype":"host","mode":"stride2m","lanes":1024,"steps":512,"ms_med":0.689,"ns_per_step":1346.0}
+{"memtype":"host","mode":"stride2m","lanes":4096,"steps":512,"ms_med":0.959,"ns_per_step":1873.5}
+{"memtype":"host","mode":"stride2m","lanes":16384,"steps":512,"ms_med":2.087,"ns_per_step":4075.6}
+{"memtype":"host","mode":"stride2m","lanes":65536,"steps":512,"ms_med":6.717,"ns_per_step":13119.5}
+{"memtype":"host","mode":"hot16k","lanes":1024,"steps":512,"ms_med":0.561,"ns_per_step":1095.2}
+{"memtype":"host","mode":"hot16k","lanes":4096,"steps":512,"ms_med":0.621,"ns_per_step":1211.9}
+{"memtype":"host","mode":"hot16k","lanes":16384,"steps":512,"ms_med":2.668,"ns_per_step":5210.7}
+{"memtype":"host","mode":"hot16k","lanes":65536,"steps":512,"ms_med":4.672,"ns_per_step":9126.0}
+{"memtype":"host","mode":"dense_spread","lanes":1024,"steps":512,"ms_med":0.908,"ns_per_step":1773.6}
+{"memtype":"host","mode":"dense_spread","lanes":4096,"steps":512,"ms_med":2.774,"ns_per_step":5417.4}
+{"memtype":"host","mode":"dense_spread","lanes":16384,"steps":512,"ms_med":18.735,"ns_per_step":36592.8}
+{"memtype":"host","mode":"dense_spread","lanes":65536,"steps":512,"ms_med":95.010,"ns_per_step":185567.1}
+{"memtype":"host","mode":"stride16k_spread","lanes":1024,"steps":512,"ms_med":1.054,"ns_per_step":2057.9}
+{"memtype":"host","mode":"stride16k_spread","lanes":4096,"steps":512,"ms_med":2.624,"ns_per_step":5124.6}
+{"memtype":"host","mode":"stride16k_spread","lanes":16384,"steps":512,"ms_med":17.268,"ns_per_step":33727.3}
+{"memtype":"host","mode":"stride16k_spread","lanes":65536,"steps":512,"ms_med":78.600,"ns_per_step":153515.0}
+{"memtype":"host","mode":"stride2m_spread","lanes":1024,"steps":512,"ms_med":1.957,"ns_per_step":3823.0}
+{"memtype":"host","mode":"stride2m_spread","lanes":4096,"steps":512,"ms_med":3.197,"ns_per_step":6244.6}
+{"memtype":"host","mode":"stride2m_spread","lanes":16384,"steps":512,"ms_med":29.055,"ns_per_step":56748.2}
+{"memtype":"host","mode":"stride2m_spread","lanes":65536,"steps":512,"ms_med":138.860,"ns_per_step":271211.5}
+{"memtype":"host","mode":"hot16k_spread","lanes":1024,"steps":512,"ms_med":0.873,"ns_per_step":1704.8}
+{"memtype":"host","mode":"hot16k_spread","lanes":4096,"steps":512,"ms_med":2.370,"ns_per_step":4628.6}
+{"memtype":"host","mode":"hot16k_spread","lanes":16384,"steps":512,"ms_med":4.779,"ns_per_step":9334.4}
+{"memtype":"host","mode":"hot16k_spread","lanes":65536,"steps":512,"ms_med":18.402,"ns_per_step":35941.9}
