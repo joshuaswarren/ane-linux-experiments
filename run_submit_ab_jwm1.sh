@@ -45,6 +45,30 @@ log "BASE_LIB=$BASE_LIB"
 sha256sum "$BASE_LIB" | tee -a "$LOG"
 
 # 1. Build candidate
+if [ ! -f "$MSRC/build/build.ninja" ]; then
+  log "configuring meson build in $MSRC/build"
+  # mirror the deployed mesa-e167 build config if discoverable, else minimal
+  REF=$(ls -d /var/tmp/mesa-e167*/mesa-src/build /var/tmp/mesa-e167*/build 2>/dev/null | head -1)
+  if [ -n "$REF" ] && [ -f "$REF/meson-info/intro-buildoptions.json" ]; then
+    OPTS=$(python3 - "$REF" <<'PYEOF'
+import json, sys
+d = json.load(open(sys.argv[1] + "/meson-info/intro-buildoptions.json"))
+keep = ("vulkan-drivers","gallium-drivers","mesa-clc","buildtype","glx",
+        "platforms","egl","gbm","llvm","video-codecs","vulkan-layers")
+for o in d:
+    if o["name"] in keep and o["value"] not in ("auto", []):
+        v = o["value"]
+        v = ",".join(v) if isinstance(v, list) else str(v).lower()
+        print(f"-D{o['name']}={v}", end=" ")
+PYEOF
+)
+    log "mirroring options from $REF: $OPTS"
+  else
+    OPTS="-Dvulkan-drivers=asahi -Dgallium-drivers= -Dglx=disabled -Dplatforms= -Degl=disabled -Dgbm=disabled -Dbuildtype=debugoptimized"
+    log "no reference build found; using minimal options"
+  fi
+  meson setup "$MSRC/build" $OPTS 2>&1 | tail -2 | tee -a "$LOG"
+fi
 log "building candidate in $MSRC"
 ninja -C "$MSRC/build" 2>&1 | tail -3 | tee -a "$LOG"
 SO="$MSRC/build/src/asahi/vulkan/libvulkan_asahi.so"
