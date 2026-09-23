@@ -135,3 +135,22 @@ it. That lock is the blocker to firmware READY.
   not an execution problem: the code runs the whole time.
 - The 113-118 s boots include this 60 s wait. The 146 s boot was slow for
   another reason, not because the wait ran only then.
+
+## PD trace boot (reboot 22:14:58 UTC)
+
+- Image 43ec6090, stage 2 v1.6.1-pdtrace. Linux up 22:16:53.
+- Reads at t0, t10, and t50 are identical, so the port state is static for
+  the whole minute. Nothing changes while the wait runs.
+- MODE (0x03) is 41505020 = "APP " on hpm 0, 1, and 5. All three PD chips
+  are alive and in application mode, none dead or in boot.
+- STATUS (0x1a), first byte: h0 0x0d, h1 0xdd, h5 0x00. By the standard
+  TPS6598x fields (bit 0 plug present, bits 3:1 conn state): h0 and h1 have
+  plug present and conn state 6, h5 has neither.
+- POWER_STATUS (0x3f): h0 0x3f, h1 0x7f, h5 0x00.
+- DATA_STATUS (0x5f): h0 0x85004186, h1 0x03000080, h5 0x00000000.
+- drd DCTL: d0, d1, d2 all read 0x80f00000, RUN_STOP (bit 31) set. All three
+  dwc3 controllers are in device mode and running. There is no drd5, and no
+  hpm2, so the hpm digit does not pair a port to its controller.
+- h5 is the port that sees no cable at all. jwm1 saw the cable attached but
+  no CC partner and VBUS off, so the M2 port facing it presents no Rd. h5,
+  which detects nothing, is the candidate for that port.
