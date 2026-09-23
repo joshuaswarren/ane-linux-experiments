@@ -8,3 +8,10 @@ Built in dg-alarm-py314:sep23 with M1N1_VERSION_TAG=v1.6.1.
 - stock boot.bin: a3f533b9 (first 1114112 bytes are 9ad08653, then STACKBOOT payloads)
 
 Behavior: 60 s proxy wait with dots, then normal payload boot on timeout.
+
+## Window five: gate dropped, wait proven in binary
+
+- main.c: display/sip0 gate replaced with if (1).
+- config.h: FB_SILENT_MODE off, EARLY_PROXY_TIMEOUT 60.
+- part 9f04394f (1163264 B): all four wait strings present.
+- boot 7ac6f874 with stock payload tail b73cd565.
