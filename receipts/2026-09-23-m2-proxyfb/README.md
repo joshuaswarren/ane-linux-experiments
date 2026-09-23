@@ -25,3 +25,10 @@ Behavior: 60 s proxy wait with dots, then normal payload boot on timeout.
 
 - src/usb.c: usbdbg lines for each hpm path with idx and ok/FAIL, and each phy bringup idx.
 - part 6c7e4e3c, boot ff485221 with stock tail.
+
+## ANE reservation build
+
+- kboot.c: dt_reserve_asc_firmware("/arm-io/ane", NULL, "ane", true, 0)
+  plus tolerant reserve when the FDT ane node is absent.
+- part 3c0cd558, boot 31bd993e with stock tail. Tag v1.6.1-aneresv.
+- Proxy wait 60 s and usbdbg prints kept.
