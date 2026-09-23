@@ -46,7 +46,7 @@ D="$D" BASE_LIB="$BASE_LIB" python3 - <<'PYEOF'
 import json, os
 d, lib = os.environ["D"], os.environ["BASE_LIB"]
 with open(f"{d}/base.icd.json", "w") as f:
-    json.dump({"ICD": {"library_path": lib, "api_version": "1.4.359"}}, f)
+    json.dump({"ICD": {"library_path": lib, "api_version": "1.4.359"}, "file_format_version": "1.0.1"}, f)
 PYEOF
 sha256sum "$BASE_LIB" | tee -a "$LOG"
 
@@ -82,7 +82,7 @@ SO="$MSRC/build/src/asahi/vulkan/libvulkan_asahi.so"
 SHA=$(sha256sum "$SO" | cut -c1-8)
 cp "$SO" "$D/libvulkan_asahi.so.cand-$SHA"
 cat > "$D/cand.icd.json" <<EOF
-{"ICD":{"library_path":"$D/libvulkan_asahi.so.cand-$SHA","api_version":"1.4.359"}}
+{"file_format_version":"1.0.1","ICD":{"library_path":"$D/libvulkan_asahi.so.cand-$SHA","api_version":"1.4.359"}}
 EOF
 log "candidate .so sha256:$SHA at $D (no system changes yet)"
 
