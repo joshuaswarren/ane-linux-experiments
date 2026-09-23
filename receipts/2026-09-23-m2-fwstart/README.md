@@ -154,3 +154,74 @@ holds the real reset vector, RUN does not start the firmware, and no
 safe pmgr operation clears the RVBAR lock so the mode bits can be
 written. The built boot image would hit the same lock. Not booted.
 ESP still stock. Driver left HELD; a stock reboot reclaims it.
+
+## 8. macOS capture and the Linux read-back
+
+macOS 27.0, build 26A428, AppleH11ANEInterface 10.19.2 loaded.
+H11ANEIn registered, active, FirmwareLoaded=Yes. No /dev/mem, so
+RVBAR, CPU_STATUS, EDDEVARCH, and TCR were not readable there.
+Dumps: ane0-dt.txt, dart-ane0-dt.txt, h11ane.txt.
+
+ane0 segment-ranges (32-byte records):
+- TEXT phys 0x1000092c000, iova 0, remap 0x10000000000, size 0xe8000
+- DATA phys 0x1000150c000, iova 0xe8000, remap 0x100000e8000, size 0x284000
+pre-loaded=1. No asc-dram-mask, no region-base.
+dart-ane0 vm-base=0x10000000000, sid=`00 00 00 00 0f 00 00 00`,
+bypass-15 present.
+
+Back on stock Linux (boot.bin a3f533b9, default Omarchy):
+- All nine islands ACTUAL=0xf.
+- SID 15 TCR=0 TTBR=0 on all three dart-ane instances. Disabled, not
+  BYPASS. Stream 0 is translate. Streams 32-35 are past the 16-SID
+  PARAMS4 limit and read 0.
+- EDDEVARCH=0, EDPRCR=0. Core clock gated.
+- 0x100009fc000 is `asc-firmware@100009fc000`, no-map, size 0x934000,
+  phandle 0x209, referenced by nobody. It overlaps the tail of the
+  macOS TEXT range.
+- ioremap_np of 0x1000092c000 reads `d10005ea 924005ed f1000d5f
+  54000d22`, not the firmware reset branch `0x14000081`. Those bytes
+  are not in the selene file. 0x1000150c000 is all zeros.
+
+RUN was not issued. The firmware is not at the macOS phys, and SID 15
+is not in the macOS bypass state. Writing TEXT would also spill
+0x18000 bytes into the asc-firmware reserved region.
+
+## 9. Host-TM and mailbox, after the stock reboot
+
+Stock Linux, boot.bin a3f533b9. Hardware experiments stopped here.
+
+Power. All eight domains the ane node references, plus unreferenced
+ane_sys@260, read ACTUAL=0xf via ioremap_np. ane_sys and ane_cpu
+0x1f0003ff. ane_sys_mpm, ane_td, ane_base, ane_set1-4 0x000003ff.
+The Linux DT has no clocks property. The ADT clock-ids 318-321 are
+venc_pipe4/5 and venc_me0/1 at 0x290288008/010/018/020. Those four
+and their parents were ACTUAL=0. pm_runtime_get on the provider
+devices returned -EACCES. A parent-first TARGET=0xf write raised
+venc_sys (0x0f000300 -> 0x0f0003ff) and venc_dma (0x300 -> 0x3ff);
+the four then read ACTUAL=0xf with no new write.
+
+Engine layout. The ADT and the Linux DT list the same three ranges:
+engine 0x284000000/0x2000000, pmgr 0x28e080000/0x4034, set
+0x28e08c000/0x4000. No TM sub-block. H13's TM is +0x20000 inside a
+0x24000 slice. That offset from the 32MB base is 0x284020004. One
+ioremap_np read there hung the machine; the watchdog brought stock
+Linux back. No value was logged. The H13 slice translated into the
+32MB region is 0x285c04000, the named kill window. Not read.
+
+SID 15. Firmware staged in DRAM, first word 0x14000081. SID 15 TCR
+0x9 and a valid TTBR on all three dart-ane instances (0x10039129,
+then a fresh table 0x100201b9). Walk of IOVA 1<<40 hit that page.
+
+RUN. CPU_STATUS 0x2a -> 0x28, SCRATCH7 stayed 0, no READY. Same
+result with the VENC domains up. DART ERROR bit 31 stayed clear.
+t8110 ERROR is flag bit 31, stream bits 27:20, code bits 14:0.
+dart1 0x00f00000 is stream 15, code 0, flag 0, addr 0x3fe39dcbbdb.
+dart2 0x00700000 is stream 7, code 0, flag 0, addr 0x3bacedea7f6.
+dart0 addr 0x100000dca10 (1<<40+0xdca10), stream 0, code 0, flag 0.
+Not a live SID 15 translation fault. The words did not change after
+the second RUN.
+
+Mailbox 0x285408000. A2I and I2A both 0x00020001 (ENABLE, EMPTY).
+No HELLO. MGMT set-IOP-power ON (type 6, state 0x20) on A2I left
+A2I at 0x00100101, EMPTY clear, message unconsumed. I2A stayed
+empty. No reply in 2 s. CPU_STATUS still 0x28.
