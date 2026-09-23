@@ -474,3 +474,34 @@ B7 RECIPE:
 4. Observability: fw writes SCRATCH1=0xc440 / SCRATCH2=0x100 BEFORE READY —
    after the patch any progress is host-visible via SCRATCH1/2; log all
    eight scratch words after every B7 attempt.
+
+### 7.10 Post-B7: x22 stamp eliminated as sole cause; next host-side discriminator
+
+M2FwStart B7 (x22 patched to 0x10000000000, patched-buffer sha 00220713...)
+STILL parked before fn 0x71a4 — stamp alone is not the cause. Eliminated
+list now receipt-anchored on their side: DART config/stream, aperture lock,
+eight-island power, RVBAR latch shape, pre-CPU table, VENC rail chain
+(VENC_SYS 0x1f0003ff + leaves 0x3ff raisable from Linux), fw-MMU stamp.
+
+ROM-side note (their discriminator 2): the ASC boot ROM is chip ROM — NOT
+present in any captured binary (kext, selene, styx all checked); static
+decode of ROM-internal expectations is impossible from our sources. What
+static analysis CAN add: selene's early path (0x204-0x590) reads only
+image-local data through PC-relative addressing (stamp pair, config words
+at [0xedf90]/[0xedf98] via the 0x808/0x818 helpers) — all served by the
+alias — and builds page tables into VM 0x104000-0x110000 (48 KiB, 16 KiB
+granule math, bfc #0,#14). The shipped file has those regions ALL ZERO.
+
+**HOST-SIDE SPLIT DISCRIMINATOR (no hardware risk, no reboot):** after the
+next attempt, BEFORE rmmod, read the staging buffer at VM-layout offset
+0x104000..0x110000 (the fw page-table region):
+- all zero  -> fw never reached the table builder (~0x4e4): park is at the
+  ROM jump / entry fetch / first instructions — the fetch path itself.
+- nonzero descriptors -> fw built tables (park is post-MMU-on: fault-spin
+  via VBAR 0x0, whose handlers re-enter the reset strap at 0x204 -> quiet
+  infinite loop).
+Also verify the B7 patcher placement: read back the staged copy at alias
+offset 0x423C-0x4244 and confirm it reads 00 00 00 00 00 01 00 00 (w1=0x100
+at +4). A file-layout vs VM-layout offset mixup (0x823C vs 0x423C) is a
+cheap silent patcher bug worth ruling out — the stamp must live at alias
+offset 0x423C because the pre-MMU read is PC-relative.
