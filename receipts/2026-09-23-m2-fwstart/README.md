@@ -125,3 +125,32 @@ engine read. No RESET bit. No engine read while an island is off.
   u-boot). ESP still `a3f533b9`, matches the Linux backup. Not installed.
 - Pre-boot read-only recheck on Linux: all nine ps words ACTUAL=0xf at the
   addresses the hook uses. `RVBAR` still `0x10000000001`.
+
+## 7. Linux-side start, after the boot was held
+
+No `/dev/mem`. Modules built in the ALARM chroot against the M2's
+7.1.13 headers and loaded with `insmod`.
+
+- RVBAR write of `0x0000010000004001` read back `0x0000010000000001`.
+  The address bit does not stick while the island is up. Restored.
+- TARGET=0 on ane_cpu, pmgr word only: ACTUAL went to 0 (`ps=0f000300`)
+  and back to 0xf. Box stayed up. RVBAR after was still
+  `0x0000010000000001`, bit0 set. A power cycle does not clear the lock.
+- RESET bit, no engine read until ACTUAL was back and RESET was clear:
+  ACTUAL never left 0xf, RVBAR unchanged, box stayed up.
+- Live DT `ane-alias-iova` is IOVA `0x10000000000` size 16MB, not a
+  physical region. Physical `0x10000000000` is a hole (iomem jumps from
+  `0x1303057fff` to reserved `0x10000230000`). T6001 ADT segment-ranges
+  use IOVAs 0 and `0xf4000`, not `1<<40`.
+- Existing rtclient (vermagic match) with `fw_load=1 fw_start=1
+  fw_load_stamp_base=0x10000000000`: alias `0x10000000000` <- 320 pages,
+  roundtrip OK, stamp sha `00220713`, RUN issued, no SCRATCH7 READY,
+  no dart fault, CPU_STATUS `0x28`, driver HELD. All three dart-ane
+  instances share TTBR `0x10005f69` and translate that IOVA to
+  `0x100a1a08000`, whose first word is the reset branch `0x14000081`.
+
+Hard blocker: the latched entry is fully mapped on every ANE DART and
+holds the real reset vector, RUN does not start the firmware, and no
+safe pmgr operation clears the RVBAR lock so the mode bits can be
+written. The built boot image would hit the same lock. Not booted.
+ESP still stock. Driver left HELD; a stock reboot reclaims it.
