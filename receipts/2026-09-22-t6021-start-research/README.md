@@ -386,3 +386,30 @@ stop_after=4 + venc_gates=1, table_mode default 2 (single variable vs B3);
 on READY: full run on the restored stock dtb with ane_mailbox_poll.ko bound
 first, then rtkit + endpoint bitmap. Their B5 ps-word before/after values
 will be appended here when reported.
+
+### 7.7 B5/B5b live values + the B6 parent-rail decode (final row)
+
+M2FwStart B5/B5b (fresh boot, refusals clean, box healthy, stock vehicle
+restored; full trace: receipts/2026-09-22-t6021-fw-start-debug/captures/
+fwdebug-b5 b5b/ on lane/t6021-fw-debug):
+- ps-regs[15] scan 0x290288000+000/008/010/018/020 = 0x00000300 each (idle ps
+  signature — decode confirmed live); +028..+038 = 0 (not ps words).
+- Raise: every word incl. +000 latches TARGET (0x300 -> 0x30f) but
+  ACTUAL[7:4] stays 0 through 10 ms polls — power-up not granted for the
+  entire block including the leaves.
+
+Parent-chain decode (this lane, ADT devices table, same validated rule):
+| id | device | flag | parent | map/index | ps addr |
+|---|---|---|---|---|---|
+| 317 | VENC_DMA | 0x0 | 299 | 15/0 | 0x290288000 |
+| 299 | VENC_SYS | 0x22 (REAL) | 519 | 11/28 | **0x2902803e0** |
+| 519 | AVEMSR-V | 0x10 VIRTUAL | none (alias 0) | 0/0 | — no write |
+
+**B6 = raise VENC_SYS 0x2902803e0 BEFORE the leaf gates** — ps power-up
+grants parents-first (genpd / m1n1 pmgr_set_mode_recursive semantics; the
+macOS provider call walks parents inside enableDeviceClock(318), which is
+why one kext call sufficed there and leaf-only writes latch TARGET without
+ACTUAL). AVEMSR-V is virtual with no parents: 0x2902803e0 is the top of the
+writable chain. Context, DO NOT TOUCH (ISP cluster, same window2, map14 =
+0x290284000+idx*8): ISP_VIS 313 @+0x18, ISP_BE 314 @+0x20, ISP_RAW 315
+@+0x28, ISP_CLR 316 @+0x30.
