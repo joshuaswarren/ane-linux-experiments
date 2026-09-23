@@ -413,3 +413,12 @@ ACTUAL). AVEMSR-V is virtual with no parents: 0x2902803e0 is the top of the
 writable chain. Context, DO NOT TOUCH (ISP cluster, same window2, map14 =
 0x290284000+idx*8): ISP_VIS 313 @+0x18, ISP_BE 314 @+0x20, ISP_RAW 315
 @+0x28, ISP_CLR 316 @+0x30.
+
+Chain completeness note (Main task row): the alias field across these
+records is a u16 parent PAIR — VENC_ME0 (320) carries parents (319, 318)
+packed as 0x013E013F, so every leaf funnels through VENC_DMA (317) /
+VENC_SYS (299). VENC_SYS flag 0x22 = the same real-ps class as ANE_SYS
+(id 60), which Linux genpd raises successfully today — therefore the chain
+ends in a ps word Linux can raise: **0x2902803e0**. Raise order: 0x2902803e0
+first, poll ACTUAL, then the four leaves. Decoded per Main task; register
+list + raise order delivered to M2FwStart (canonical message) and to Main.
