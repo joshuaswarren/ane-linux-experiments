@@ -32,3 +32,30 @@ Behavior: 60 s proxy wait with dots, then normal payload boot on timeout.
   plus tolerant reserve when the FDT ane node is absent.
 - part 3c0cd558, boot 31bd993e with stock tail. Tag v1.6.1-aneresv.
 - Proxy wait 60 s and usbdbg prints kept.
+
+## Reservation boot 31bd993e did not return (20:30:41 UTC)
+
+- No ssh on jw14m2-linux 4+ min after the reboot (baseline 113-146 s).
+- Cause in my patch (diff against the pristine v1.6.1 kboot.c): the T6021
+  ADT node is `/arm-io/ane0` (macOS ioreg `"name" = <"ane0">`), not
+  `/arm-io/ane`. My change removed the early `return 0` for a missing FDT
+  node, so the call reached `adt_path_offset("/arm-io/ane")`, which fails,
+  and `bail()` returned -1. That makes `kboot_prepare_dt` fail
+  (payload.c:345 "Failed to prepare FDT!"), `payload_run` returns -1, and
+  main.c:129-140 prints "No valid payload found" and parks in
+  `uartproxy_run` with no timeout. jwm1 was offline, so no host.
+- Recovery: boot picker to macOS (Joshua), then write from macOS.
+
+## Fixed build aneresv2
+
+- kboot.c reset to pristine v1.6.1, plus `dt_reserve_ane_firmware()`: ADT
+  `/arm-io/ane0` then `/arm-io/ane`; each segment becomes a no-map
+  `ane-firmware@<phys>` reserved node. Every failure prints and returns;
+  the function returns void, so it cannot block the boot.
+  `dt_set_memory` skips no-map nodes, so the RAM-map bails do not apply.
+- part 37265871 (1163264 B), boot 8d0eac03 with stock tail b73cd565.
+  Strings checked in the binary: PROXY60, usbdbg, "ANE: reserved",
+  "ane-firmware@", "/arm-io/ane0", tag v1.6.1-aneresv2.
+- Note: macOS-boot phys 0x1000092c000 is a hole outside Linux RAM, so a
+  reservation does not change what Linux can overwrite there. The value of
+  this boot is that the node names give this boot's ADT segment phys.
