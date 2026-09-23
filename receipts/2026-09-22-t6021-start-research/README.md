@@ -375,3 +375,14 @@ If poll A stays silent: the next item is not a register — it is G6/Item3
 0x100 bytes, surface+0x84=0x40) and the P5 pool word. Note: a working alias
 predicts NO dart fault, so B4's clean fault log is consistent with "fetch
 succeeded, firmware stuck early" — the shape a missing rail produces.
+
+### 7.6 B5 decode acked and adopted (final update)
+
+M2FwStart acked §7 in writing: "Ack + adopted." Coded as omarchy-ane 8a36246
+(`fw_start_venc_gates`): raises 318-321 at 0x290288008/10/18/20 with
+read-logged before/after, TARGET RMW (never 0), poll ACTUAL 100 µs/10 ms,
+abort before any engine write on failure. B5 run design: fresh boot +
+stop_after=4 + venc_gates=1, table_mode default 2 (single variable vs B3);
+on READY: full run on the restored stock dtb with ane_mailbox_poll.ko bound
+first, then rtkit + endpoint bitmap. Their B5 ps-word before/after values
+will be appended here when reported.
