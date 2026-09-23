@@ -1,0 +1,13 @@
+Loading models from ~/mac-window-014205/mac-reference-bundle/models (compute: cpu)...
+Models ready in 0.02 s
+Transcribing 10.44 s of audio...
+
+----- timing -----
+audio:       10.435 s
+inference:    0.476 s
+  mel:        0.014 s
+  encoder:    0.345 s
+  decode:     0.116 s   (decoder + joint loop)
+  detok:      0.000 s
+RTFx:         21.91x
+tokens:     101

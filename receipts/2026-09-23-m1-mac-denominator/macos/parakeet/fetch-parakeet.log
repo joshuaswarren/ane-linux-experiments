@@ -1,0 +1,7 @@
+encoder.mlpackage/Data/com.apple.CoreML/model.mlmodel: OK
+encoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin: OK
+decoder.mlpackage/Data/com.apple.CoreML/model.mlmodel: OK
+decoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin: OK
+joint.mlpackage/Data/com.apple.CoreML/model.mlmodel: OK
+joint.mlpackage/Data/com.apple.CoreML/weights/weight.bin: OK
+tokenizer.json: OK
