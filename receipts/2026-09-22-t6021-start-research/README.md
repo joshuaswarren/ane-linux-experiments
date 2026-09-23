@@ -302,3 +302,76 @@ M2FwStart live addenda acked back into this receipt (2026-09-22):
   that route for EP ids; EPMAP capture at handshake is the path.
 - No device contact, no ssh to any host; all evidence on-disk binaries,
   fetched upstream sources, and prior live receipts.
+
+---
+
+## 7. Addendum — B4 result and the B5 clock-gate decode (same day, later)
+
+M2FwStart live result B4 (repaired dtb): pre-CPU table 0xB38/0xB98/0xBF8 ←
+0x01FF01FF fired clean from kernel context; CPU_CONTROL RUN clean
+(CPU_STATUS 0x2a → 0x28, STOPPED cleared); poll A timed out with zero
+SCRATCH7 activity and zero dart faults; box alive. Table eliminated as the
+wedge; RUN itself is no longer the wedge either. The remaining suspect is
+§2 step #6 — the clock-gate group.
+
+### 7.1 The pmgr id → register decode rule (this lane)
+
+Device records in the ADT pmgr `devices` table decode as:
+`ps_addr = ps-regs[map].window + ps-regs[map].off + index*8`
+(dumper fields: map = ps-regs index, index = addr_offset×8).
+
+Validated on seven known anchors:
+| device | map/index | ps-regs entry | computed | authority |
+|---|---|---|---|---|
+| ANE_SYS | 6/12 | [6]=reg0+0x200 | 0x28e080260 | overlay ane_sys@260 |
+| ANE_CPU | 6/28 | [6] | 0x28e0802e0 | overlay ane_cpu@2e0 |
+| ANE_SYS_MPM | 8/0 | [8]=reg0+0x4000 | 0x28e084000 | overlay @4000 |
+| ANE_TD | 8/1 | [8] | 0x28e084008 | overlay @4008 |
+| ANE_BASE | 8/2 | [8] | 0x28e084010 | overlay @4010 |
+| ANE_SET1 | 8/3 | [8] | 0x28e084018 | overlay @4018 |
+| ANE_SET4 | 8/6 | [8] | 0x28e084030 | overlay @4030 |
+
+pmgr reg windows (dump order): [0]=0x28e080000, [1]=0x29e280000,
+[2]=0x290280000, [3]=0x28e680000, [4]=0x28e000000 …
+
+### 7.2 The kext clock/power path is provider calls, not MMIO
+
+`0xfffffe00095d1d20-0x95d1d90`: `ldr w2,[x20,#0x8f0]` (id from ADT
+clock-ids) → vtable +0x8a8 (enableDeviceClock) → provider object dev+0x810,
+vtable +0x8b0 (enableDevicePower), same id. No kext-side MMIO; the write is
+the standard pmgr ps op (TARGET[3:0]=0xf | AUTO_ENABLE bit28, poll
+ACTUAL[7:4]==0xf) — same shape as pmgr-pwrstate.c.
+
+### 7.3 The ane0 clock-ids are VENC gates — the B5 addresses
+
+ADT devices table decode of ane0 `clock-ids [318 319 320 321]`:
+**318=VENC_PIPE4, 319=VENC_PIPE5, 320=VENC_ME0, 321=VENC_ME1** — all map 15
+(ps-regs[15] = window2 + 0x8000 = 0x290288000), index 1..4. Apple wires
+ane0's clock-ids to the VENC power gates on T6021 (ANE in the VENC complex
+on this die). Kernel-writable B5 addresses (ps TARGET RMW 0xf|AUTO_ENABLE,
+poll ACTUAL, 100 µs, never TARGET=0):
+
+| id | device | ps addr |
+|---|---|---|
+| 318 | VENC_PIPE4 | 0x290288008 |
+| 319 | VENC_PIPE5 | 0x290288010 |
+| 320 | VENC_ME0 | 0x290288018 |
+| 321 | VENC_ME1 | 0x290288020 |
+
+Plain pmgr ps words (kernel-genpd op class), not the ane_cpu island —
+outside the s24 fatal class.
+
+### 7.4 Gate 473 (ANE-SYS-V) — CLOSED as "no register exists"
+
+flag 0x10 = VIRTUAL → no ps word anywhere; enable = parent-walk only
+(m1n1 pmgr.c PMGR_FLAG_VIRTUAL skip; XNU same). Parents already raised by
+genpd. [FACT for the no-write semantics; parent-chain decode MEDIUM]
+
+### 7.5 B5 discriminator and fallback
+
+Enable 318-321 BEFORE CPU_CONTROL 0→0x10, rerun the identical contract core.
+If poll A stays silent: the next item is not a register — it is G6/Item3
+(FW_INIT boot-args surface identity; SetupFWInitBootArgs template dev+0x998,
+0x100 bytes, surface+0x84=0x40) and the P5 pool word. Note: a working alias
+predicts NO dart fault, so B4's clean fault log is consistent with "fetch
+succeeded, firmware stuck early" — the shape a missing rail produces.
