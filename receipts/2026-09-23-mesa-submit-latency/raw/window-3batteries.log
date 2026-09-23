@@ -1,0 +1,514 @@
+[2026-09-23T02:15:38-05:00] default ICD registry:
+[2026-09-23T02:15:38-05:00]   /usr/share/vulkan/icd.d/asahi_icd.json -> /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T02:15:38-05:00] VK_DRIVER_FILES=<unset>
+-rwxr-xr-x 1 root root 63244232 Sep 22 07:51 /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T02:15:38-05:00] resolving baseline via vulkaninfo
+[2026-09-23T02:15:38-05:00] BASE_LIB=/usr/local/lib/libvulkan_asahi.so.7faf04c
+09e3527dee4a365ee29085637c266291396666afb0039a6932b5be9dc7dd6a80  /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T02:15:38-05:00] building candidate in /var/tmp/mesa-submit-src
+ninja: Entering directory `/var/tmp/mesa-submit-src/build'
+[1/6] Generating src/git_sha1.h with a custom command
+[2026-09-23T02:15:38-05:00] candidate .so sha256:57148342 at /var/tmp/mesa-submit-lat (no system changes yet)
+[2026-09-23T02:15:38-05:00] building microbench
+/usr/bin/ld: /tmp/ccm5oHzW.o: in function `submit_signal.constprop.0':
+vk-submit-lat.c:(.text+0x29c): undefined reference to `vkResetCommandBuffer'
+/usr/bin/ld: vk-submit-lat.c:(.text+0x2c0): undefined reference to `vkBeginCommandBuffer'
+/usr/bin/ld: vk-submit-lat.c:(.text+0x2d4): undefined reference to `vkCmdBindPipeline'
+/usr/bin/ld: vk-submit-lat.c:(.text+0x300): undefined reference to `vkCmdPushConstants'
+/usr/bin/ld: vk-submit-lat.c:(.text+0x314): undefined reference to `vkCmdDispatch'
+/usr/bin/ld: vk-submit-lat.c:(.text+0x31c): undefined reference to `vkEndCommandBuffer'
+/usr/bin/ld: vk-submit-lat.c:(.text+0x39c): undefined reference to `vkQueueSubmit'
+/usr/bin/ld: /tmp/ccm5oHzW.o: in function `main':
+vk-submit-lat.c:(.text.startup+0x1b8): undefined reference to `vkCreateInstance'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x1d8): undefined reference to `vkEnumeratePhysicalDevices'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x1fc): undefined reference to `vkGetPhysicalDeviceQueueFamilyProperties'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x220): undefined reference to `vkGetPhysicalDeviceQueueFamilyProperties'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x358): undefined reference to `vkCreateDevice'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x378): undefined reference to `vkGetDeviceQueue'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x3b0): undefined reference to `vkCreateShaderModule'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x400): undefined reference to `vkCreatePipelineLayout'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x488): undefined reference to `vkCreateComputePipelines'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x49c): undefined reference to `vkDestroyShaderModule'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x4d8): undefined reference to `vkCreateBuffer'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x4ec): undefined reference to `vkGetBufferMemoryRequirements'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x4f8): undefined reference to `vkGetPhysicalDeviceMemoryProperties'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x5dc): undefined reference to `vkAllocateMemory'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x5f4): undefined reference to `vkBindBufferMemory'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x61c): undefined reference to `vkGetBufferDeviceAddress'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x674): undefined reference to `vkCreateSemaphore'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x6a8): undefined reference to `vkCreateCommandPool'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x6e0): undefined reference to `vkAllocateCommandBuffers'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x734): undefined reference to `vkGetPhysicalDeviceProperties2'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x834): undefined reference to `vkWaitSemaphores'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x94c): undefined reference to `vkWaitSemaphores'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0xa48): undefined reference to `vkWaitSemaphores'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0xb44): undefined reference to `vkWaitSemaphores'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0xc58): undefined reference to `vkWaitSemaphores'
+/usr/bin/ld: /tmp/ccm5oHzW.o:vk-submit-lat.c:(.text.startup+0xd88): more undefined references to `vkWaitSemaphores' follow
+/usr/bin/ld: /tmp/ccm5oHzW.o: in function `main':
+vk-submit-lat.c:(.text.startup+0xeac): undefined reference to `vkQueueSubmit'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0xef0): undefined reference to `vkWaitSemaphores'
+/usr/bin/ld: vk-submit-lat.c:(.text.startup+0x10f0): undefined reference to `vkWaitSemaphores'
+collect2: error: ld returned 1 exit status
+[2026-09-23T02:15:38-05:00] bench build failed
+[2026-09-23T02:16:18-05:00] waiting for flock
+[2026-09-23T02:16:18-05:00] flock held by 4897
+[2026-09-23T02:16:18-05:00] default ICD registry:
+[2026-09-23T02:16:18-05:00]   /usr/share/vulkan/icd.d/asahi_icd.json -> /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T02:16:18-05:00] VK_DRIVER_FILES=<unset>
+-rwxr-xr-x 1 root root 63244232 Sep 22 07:51 /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T02:16:18-05:00] resolving baseline via vulkaninfo
+[2026-09-23T02:16:18-05:00] BASE_LIB=/usr/local/lib/libvulkan_asahi.so.7faf04c
+09e3527dee4a365ee29085637c266291396666afb0039a6932b5be9dc7dd6a80  /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T02:16:18-05:00] building candidate in /var/tmp/mesa-submit-src
+ninja: Entering directory `/var/tmp/mesa-submit-src/build'
+[1/6] Generating src/git_sha1.h with a custom command
+[2026-09-23T02:16:18-05:00] candidate .so sha256:57148342 at /var/tmp/mesa-submit-lat (no system changes yet)
+[2026-09-23T02:16:18-05:00] building microbench
+[2026-09-23T02:16:18-05:00] == bench base ==
+vkCreateInstance failed
+[2026-09-23T02:16:18-05:00] == bench cand-off ==
+vkCreateInstance failed
+[2026-09-23T02:16:18-05:00] == bench cand-p300 ==
+vkCreateInstance failed
+[2026-09-23T02:16:18-05:00] == bench cand-p1000 ==
+vkCreateInstance failed
+[2026-09-23T02:16:18-05:00] == bench base-again ==
+vkCreateInstance failed
+[2026-09-23T02:16:18-05:00] == golden base ==
+[2026-09-23T02:16:21-05:00] == golden cand ==
+[2026-09-23T02:16:22-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1968.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1298.671, "stages_ms": {"audio_load": 6.992, "mel_frontend": 188.096, "encoder_ane": 518.687, "decoder_load": 58.505, "tdt_decode": 475.736, "detokenize": 50.656}, "ane": {"exec_ms": 141.045, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 376.44, "close_ms": 0.043, "open_ms": 376.44, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1511.1, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 922.444, "stages_ms": {"audio_load": 3.207, "mel_frontend": 60.849, "encoder_ane": 252.402, "decoder_load": 59.267, "tdt_decode": 501.766, "detokenize": 44.953}, "ane": {"exec_ms": 251.53, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.155, "close_ms": 0.065, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1496.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 906.405, "stages_ms": {"audio_load": 3.172, "mel_frontend": 63.206, "encoder_ane": 228.437, "decoder_load": 58.527, "tdt_decode": 501.317, "detokenize": 51.745}, "ane": {"exec_ms": 227.58, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.154, "close_ms": 0.078, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1550.4, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 959.774, "stages_ms": {"audio_load": 3.177, "mel_frontend": 62.409, "encoder_ane": 269.697, "decoder_load": 63.84, "tdt_decode": 509.412, "detokenize": 51.239}, "ane": {"exec_ms": 268.769, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.175, "close_ms": 0.078, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T02:16:28-05:00] == golden cand ==
+/var/tmp/msub-gold-base-r2/run-1: status=match total=1298.671 tdt_wall=475.736 vk_subs=146 us_per_sub=3258
+/var/tmp/msub-gold-base-r2/run-2: status=match total=922.444 tdt_wall=501.766 vk_subs=146 us_per_sub=3437
+/var/tmp/msub-gold-base-r2/run-3: status=match total=906.405 tdt_wall=501.317 vk_subs=146 us_per_sub=3434
+/var/tmp/msub-gold-base-r2/run-4: status=match total=959.774 tdt_wall=509.412 vk_subs=146 us_per_sub=3489
+[2026-09-23T02:16:29-05:00] == done ==
+[2026-09-23T03:11:07-05:00] waiting for flock
+[2026-09-23T03:11:07-05:00] flock held by 14506
+[2026-09-23T03:11:07-05:00] default ICD registry:
+[2026-09-23T03:11:07-05:00]   /usr/share/vulkan/icd.d/asahi_icd.json -> /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:11:07-05:00] VK_DRIVER_FILES=<unset>
+-rwxr-xr-x 1 root root 63244232 Sep 22 07:51 /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:11:07-05:00] resolving baseline via vulkaninfo
+[2026-09-23T03:11:07-05:00] BASE_LIB=/usr/local/lib/libvulkan_asahi.so.7faf04c
+09e3527dee4a365ee29085637c266291396666afb0039a6932b5be9dc7dd6a80  /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:11:07-05:00] building candidate in /var/tmp/mesa-submit-src
+ninja: Entering directory `/var/tmp/mesa-submit-src/build'
+[1/6] Generating src/git_sha1.h with a custom command
+[2026-09-23T03:11:07-05:00] candidate .so sha256:57148342 at /var/tmp/mesa-submit-lat (no system changes yet)
+[2026-09-23T03:11:07-05:00] building microbench
+[2026-09-23T03:11:07-05:00] == bench base ==
+vkCreateInstance failed
+[2026-09-23T03:11:07-05:00] == bench cand-off ==
+vkCreateInstance failed
+[2026-09-23T03:11:07-05:00] == bench cand-p300 ==
+vkCreateInstance failed
+[2026-09-23T03:11:07-05:00] == bench cand-p1000 ==
+vkCreateInstance failed
+[2026-09-23T03:11:07-05:00] == bench base-again ==
+vkCreateInstance failed
+[2026-09-23T03:11:07-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1959.6, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1288.895, "stages_ms": {"audio_load": 7.428, "mel_frontend": 183.639, "encoder_ane": 518.179, "decoder_load": 59.867, "tdt_decode": 466.946, "detokenize": 52.836}, "ane": {"exec_ms": 142.622, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.271, "close_ms": 0.069, "open_ms": 374.271, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1471.1, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 886.388, "stages_ms": {"audio_load": 3.232, "mel_frontend": 60.606, "encoder_ane": 259.888, "decoder_load": 48.817, "tdt_decode": 459.543, "detokenize": 54.302}, "ane": {"exec_ms": 258.965, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.196, "close_ms": 0.089, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1474.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 885.583, "stages_ms": {"audio_load": 3.168, "mel_frontend": 60.405, "encoder_ane": 253.943, "decoder_load": 49.493, "tdt_decode": 468.321, "detokenize": 50.253}, "ane": {"exec_ms": 253.097, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.174, "close_ms": 0.051, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1470.4, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 882.457, "stages_ms": {"audio_load": 3.158, "mel_frontend": 60.288, "encoder_ane": 262.9, "decoder_load": 45.978, "tdt_decode": 458.359, "detokenize": 51.773}, "ane": {"exec_ms": 261.497, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.177, "close_ms": 0.132, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:11:14-05:00] == golden cand ==
+[2026-09-23T03:11:15-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1944.8, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1267.853, "stages_ms": {"audio_load": 7.118, "mel_frontend": 185.424, "encoder_ane": 518.916, "decoder_load": 56.995, "tdt_decode": 450.561, "detokenize": 48.839}, "ane": {"exec_ms": 142.0, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 375.648, "close_ms": 0.067, "open_ms": 375.648, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1500.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 872.334, "stages_ms": {"audio_load": 3.218, "mel_frontend": 60.467, "encoder_ane": 219.017, "decoder_load": 50.21, "tdt_decode": 487.016, "detokenize": 52.407}, "ane": {"exec_ms": 217.928, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.152, "close_ms": 0.061, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1527.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 907.816, "stages_ms": {"audio_load": 3.197, "mel_frontend": 61.825, "encoder_ane": 235.009, "decoder_load": 58.661, "tdt_decode": 497.274, "detokenize": 51.85}, "ane": {"exec_ms": 234.123, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.17, "close_ms": 0.076, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1502.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 887.84, "stages_ms": {"audio_load": 3.128, "mel_frontend": 61.09, "encoder_ane": 280.43, "decoder_load": 46.311, "tdt_decode": 450.294, "detokenize": 46.586}, "ane": {"exec_ms": 279.022, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.153, "close_ms": 0.131, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:11:21-05:00] == golden cand ==
+/var/tmp/msub-gold-base-r1/run-1: status=match total=1288.895 tdt_wall=466.946 vk_subs=146 us_per_sub=3198
+/var/tmp/msub-gold-base-r1/run-2: status=match total=886.388 tdt_wall=459.543 vk_subs=146 us_per_sub=3148
+/var/tmp/msub-gold-base-r1/run-3: status=match total=885.583 tdt_wall=468.321 vk_subs=146 us_per_sub=3208
+/var/tmp/msub-gold-base-r1/run-4: status=match total=882.457 tdt_wall=458.359 vk_subs=146 us_per_sub=3139
+/var/tmp/msub-gold-base-r2/run-1: status=match total=1267.853 tdt_wall=450.561 vk_subs=146 us_per_sub=3086
+/var/tmp/msub-gold-base-r2/run-2: status=match total=872.334 tdt_wall=487.016 vk_subs=146 us_per_sub=3336
+/var/tmp/msub-gold-base-r2/run-3: status=match total=907.816 tdt_wall=497.274 vk_subs=146 us_per_sub=3406
+/var/tmp/msub-gold-base-r2/run-4: status=match total=887.84 tdt_wall=450.294 vk_subs=146 us_per_sub=3084
+[2026-09-23T03:11:22-05:00] == done ==
+[2026-09-23T03:14:10-05:00] waiting for flock
+[2026-09-23T03:14:10-05:00] flock held by 15186
+[2026-09-23T03:14:10-05:00] default ICD registry:
+[2026-09-23T03:14:10-05:00]   /usr/share/vulkan/icd.d/asahi_icd.json -> /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:14:10-05:00] VK_DRIVER_FILES=<unset>
+-rwxr-xr-x 1 root root 63244232 Sep 22 07:51 /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:14:10-05:00] resolving baseline via vulkaninfo
+[2026-09-23T03:14:10-05:00] BASE_LIB=/usr/local/lib/libvulkan_asahi.so.7faf04c
+09e3527dee4a365ee29085637c266291396666afb0039a6932b5be9dc7dd6a80  /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:14:10-05:00] building candidate in /var/tmp/mesa-submit-src
+ninja: Entering directory `/var/tmp/mesa-submit-src/build'
+[1/6] Generating src/git_sha1.h with a custom command
+[2026-09-23T03:14:11-05:00] candidate .so sha256:57148342 at /var/tmp/mesa-submit-lat (no system changes yet)
+[2026-09-23T03:14:11-05:00] building microbench
+[2026-09-23T03:14:11-05:00] == bench base ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel (git-7faf04c065)", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 19}
+{"mode": "noopsleep", "n": 2000, "min_us": 416, "p50_us": 500, "p90_us": 500, "p99_us": 584, "mean_us": 0.49}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 19.62, "drain_us": 28592.03}
+{"mode": "rtsleep", "n": 2000, "min_us": 103165, "p50_us": 168497, "p90_us": 172580, "p99_us": 214371, "mean_us": 166.77, "mean_submit_us": 28.64}
+{"mode": "rtpoll", "n": 2000, "min_us": 104415, "p50_us": 147122, "p90_us": 161913, "p99_us": 192746, "mean_us": 148.09}
+{"mode": "rthybrid", "n": 2000, "min_us": 91040, "p50_us": 132247, "p90_us": 138456, "p99_us": 168330, "mean_us": 128.65}
+{"mode": "emptyrt", "n": 1000, "min_us": 1000, "p50_us": 1167, "p90_us": 1375, "p99_us": 5333, "mean_us": 1.31}
+{"mode": "nanowake200us", "n": 500, "min_us": 225912, "p50_us": 254787, "p90_us": 260161, "p99_us": 262203, "mean_us": 255.66}
+{"done": true}
+[2026-09-23T03:14:12-05:00] == bench cand-off ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 28}
+{"mode": "noopsleep", "n": 2000, "min_us": 625, "p50_us": 708, "p90_us": 709, "p99_us": 792, "mean_us": 0.69}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.52, "drain_us": 27383.97}
+{"mode": "rtsleep", "n": 2000, "min_us": 95457, "p50_us": 168080, "p90_us": 181705, "p99_us": 225120, "mean_us": 170.74, "mean_submit_us": 29.87}
+{"mode": "rtpoll", "n": 2000, "min_us": 77499, "p50_us": 137122, "p90_us": 149997, "p99_us": 168789, "mean_us": 136.25}
+{"mode": "rthybrid", "n": 2000, "min_us": 82873, "p50_us": 135622, "p90_us": 146955, "p99_us": 160997, "mean_us": 132.29}
+{"mode": "emptyrt", "n": 1000, "min_us": 958, "p50_us": 1167, "p90_us": 1542, "p99_us": 6083, "mean_us": 1.35}
+{"mode": "nanowake200us", "n": 500, "min_us": 231412, "p50_us": 254828, "p90_us": 260245, "p99_us": 262078, "mean_us": 255.60}
+{"done": true}
+[2026-09-23T03:14:13-05:00] == bench cand-p300 ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 28}
+{"mode": "noopsleep", "n": 2000, "min_us": 666, "p50_us": 709, "p90_us": 750, "p99_us": 834, "mean_us": 0.73}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.54, "drain_us": 26137.38}
+{"mode": "rtsleep", "n": 2000, "min_us": 83790, "p50_us": 135914, "p90_us": 161663, "p99_us": 192496, "mean_us": 134.41, "mean_submit_us": 27.52}
+{"mode": "rtpoll", "n": 2000, "min_us": 78498, "p50_us": 135372, "p90_us": 139122, "p99_us": 166455, "mean_us": 129.32}
+{"mode": "rthybrid", "n": 2000, "min_us": 78665, "p50_us": 135372, "p90_us": 138914, "p99_us": 168205, "mean_us": 129.14}
+{"mode": "emptyrt", "n": 1000, "min_us": 1041, "p50_us": 1208, "p90_us": 1542, "p99_us": 5417, "mean_us": 1.32}
+{"mode": "nanowake200us", "n": 500, "min_us": 251662, "p50_us": 255370, "p90_us": 260286, "p99_us": 263036, "mean_us": 255.82}
+{"done": true}
+[2026-09-23T03:14:14-05:00] == bench cand-p1000 ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 25}
+{"mode": "noopsleep", "n": 2000, "min_us": 583, "p50_us": 625, "p90_us": 667, "p99_us": 750, "mean_us": 0.65}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.95, "drain_us": 26593.95}
+{"mode": "rtsleep", "n": 2000, "min_us": 80749, "p50_us": 135955, "p90_us": 143914, "p99_us": 179121, "mean_us": 128.90, "mean_submit_us": 22.10}
+{"mode": "rtpoll", "n": 2000, "min_us": 90707, "p50_us": 131373, "p90_us": 138205, "p99_us": 164288, "mean_us": 125.64}
+{"mode": "rthybrid", "n": 2000, "min_us": 82332, "p50_us": 133289, "p90_us": 138372, "p99_us": 168496, "mean_us": 129.42}
+{"mode": "emptyrt", "n": 1000, "min_us": 1041, "p50_us": 1208, "p90_us": 1417, "p99_us": 5125, "mean_us": 1.31}
+{"mode": "nanowake200us", "n": 500, "min_us": 250328, "p50_us": 255286, "p90_us": 260245, "p99_us": 262328, "mean_us": 255.73}
+{"done": true}
+[2026-09-23T03:14:15-05:00] == bench base-again ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel (git-7faf04c065)", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 25}
+{"mode": "noopsleep", "n": 2000, "min_us": 541, "p50_us": 625, "p90_us": 625, "p99_us": 709, "mean_us": 0.62}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.80, "drain_us": 27527.72}
+{"mode": "rtsleep", "n": 2000, "min_us": 121205, "p50_us": 168288, "p90_us": 175455, "p99_us": 213329, "mean_us": 167.79, "mean_submit_us": 28.84}
+{"mode": "rtpoll", "n": 2000, "min_us": 100039, "p50_us": 142830, "p90_us": 160538, "p99_us": 185246, "mean_us": 142.54}
+{"mode": "rthybrid", "n": 2000, "min_us": 81498, "p50_us": 135330, "p90_us": 139706, "p99_us": 171497, "mean_us": 130.00}
+{"mode": "emptyrt", "n": 1000, "min_us": 1000, "p50_us": 1167, "p90_us": 1375, "p99_us": 4500, "mean_us": 1.26}
+{"mode": "nanowake200us", "n": 500, "min_us": 227453, "p50_us": 254870, "p90_us": 260328, "p99_us": 262203, "mean_us": 255.67}
+{"done": true}
+[2026-09-23T03:14:16-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1931.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1207.432, "stages_ms": {"audio_load": 8.765, "mel_frontend": 136.73, "encoder_ane": 518.608, "decoder_load": 50.065, "tdt_decode": 442.287, "detokenize": 50.978}, "ane": {"exec_ms": 142.734, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.619, "close_ms": 0.037, "open_ms": 374.619, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1518.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 880.43, "stages_ms": {"audio_load": 3.181, "mel_frontend": 30.562, "encoder_ane": 212.493, "decoder_load": 66.935, "tdt_decode": 513.974, "detokenize": 53.285}, "ane": {"exec_ms": 211.646, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.14, "close_ms": 0.122, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1449.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 830.339, "stages_ms": {"audio_load": 3.165, "mel_frontend": 30.827, "encoder_ane": 207.749, "decoder_load": 56.979, "tdt_decode": 487.538, "detokenize": 44.081}, "ane": {"exec_ms": 206.993, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.145, "close_ms": 0.106, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1426.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 798.465, "stages_ms": {"audio_load": 3.17, "mel_frontend": 31.295, "encoder_ane": 206.934, "decoder_load": 46.333, "tdt_decode": 459.509, "detokenize": 51.224}, "ane": {"exec_ms": 206.059, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.188, "close_ms": 0.136, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:14:23-05:00] == golden cand ==
+{
+{"label": "cand", "run": 1, "rc": 0, "wall_ms": 19663.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 19004.455, "stages_ms": {"audio_load": 64.483, "mel_frontend": 17928.735, "encoder_ane": 514.499, "decoder_load": 46.369, "tdt_decode": 402.035, "detokenize": 48.333}, "ane": {"exec_ms": 142.191, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 371.148, "close_ms": 0.055, "open_ms": 371.148, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 2, "rc": 0, "wall_ms": 1357.8, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 772.303, "stages_ms": {"audio_load": 3.172, "mel_frontend": 28.959, "encoder_ane": 244.61, "decoder_load": 44.283, "tdt_decode": 400.038, "detokenize": 51.241}, "ane": {"exec_ms": 243.787, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.145, "close_ms": 0.084, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 3, "rc": 0, "wall_ms": 1336.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 749.762, "stages_ms": {"audio_load": 3.171, "mel_frontend": 31.24, "encoder_ane": 168.615, "decoder_load": 47.884, "tdt_decode": 449.205, "detokenize": 49.647}, "ane": {"exec_ms": 167.75, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.145, "close_ms": 0.148, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 4, "rc": 0, "wall_ms": 1397.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 811.681, "stages_ms": {"audio_load": 3.124, "mel_frontend": 29.438, "encoder_ane": 233.701, "decoder_load": 47.358, "tdt_decode": 450.798, "detokenize": 47.263}, "ane": {"exec_ms": 232.898, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.161, "close_ms": 0.083, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:14:47-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1868.8, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1190.692, "stages_ms": {"audio_load": 7.125, "mel_frontend": 137.197, "encoder_ane": 516.661, "decoder_load": 46.334, "tdt_decode": 432.206, "detokenize": 51.169}, "ane": {"exec_ms": 141.337, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.089, "close_ms": 0.045, "open_ms": 374.089, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1546.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 899.419, "stages_ms": {"audio_load": 3.207, "mel_frontend": 29.025, "encoder_ane": 245.565, "decoder_load": 64.229, "tdt_decode": 502.108, "detokenize": 55.285}, "ane": {"exec_ms": 244.759, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.163, "close_ms": 0.081, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1531.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 890.006, "stages_ms": {"audio_load": 3.173, "mel_frontend": 29.413, "encoder_ane": 248.261, "decoder_load": 57.864, "tdt_decode": 498.821, "detokenize": 52.474}, "ane": {"exec_ms": 247.524, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.144, "close_ms": 0.074, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1519.8, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 861.473, "stages_ms": {"audio_load": 3.154, "mel_frontend": 31.0, "encoder_ane": 225.395, "decoder_load": 58.173, "tdt_decode": 493.244, "detokenize": 50.507}, "ane": {"exec_ms": 224.636, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.13, "close_ms": 0.075, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:14:54-05:00] == golden cand ==
+{
+{"label": "cand", "run": 1, "rc": 0, "wall_ms": 1843.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1186.799, "stages_ms": {"audio_load": 7.243, "mel_frontend": 136.107, "encoder_ane": 517.368, "decoder_load": 48.808, "tdt_decode": 426.445, "detokenize": 50.829}, "ane": {"exec_ms": 141.604, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.469, "close_ms": 0.067, "open_ms": 374.469, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 2, "rc": 0, "wall_ms": 1469.7, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 880.354, "stages_ms": {"audio_load": 3.248, "mel_frontend": 28.781, "encoder_ane": 251.842, "decoder_load": 67.158, "tdt_decode": 478.998, "detokenize": 50.327}, "ane": {"exec_ms": 251.064, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.157, "close_ms": 0.084, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 3, "rc": 0, "wall_ms": 1387.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 802.981, "stages_ms": {"audio_load": 3.206, "mel_frontend": 28.79, "encoder_ane": 245.382, "decoder_load": 45.691, "tdt_decode": 429.163, "detokenize": 50.748}, "ane": {"exec_ms": 244.602, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.166, "close_ms": 0.074, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 4, "rc": 0, "wall_ms": 1380.7, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 795.197, "stages_ms": {"audio_load": 3.155, "mel_frontend": 30.136, "encoder_ane": 243.488, "decoder_load": 48.984, "tdt_decode": 424.459, "detokenize": 44.974}, "ane": {"exec_ms": 242.708, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.166, "close_ms": 0.077, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+/var/tmp/msub-gold-base-r1/run-1: status=match total=1207.432 tdt_wall=442.287 vk_subs=146 us_per_sub=3029
+/var/tmp/msub-gold-base-r1/run-2: status=match total=880.43 tdt_wall=513.974 vk_subs=146 us_per_sub=3520
+/var/tmp/msub-gold-base-r1/run-3: status=match total=830.339 tdt_wall=487.538 vk_subs=146 us_per_sub=3339
+/var/tmp/msub-gold-base-r1/run-4: status=match total=798.465 tdt_wall=459.509 vk_subs=146 us_per_sub=3147
+/var/tmp/msub-gold-cand-r1/run-1: status=match total=19004.455 tdt_wall=402.035 vk_subs=146 us_per_sub=2754
+/var/tmp/msub-gold-cand-r1/run-2: status=match total=772.303 tdt_wall=400.038 vk_subs=146 us_per_sub=2740
+/var/tmp/msub-gold-cand-r1/run-3: status=match total=749.762 tdt_wall=449.205 vk_subs=146 us_per_sub=3077
+/var/tmp/msub-gold-cand-r1/run-4: status=match total=811.681 tdt_wall=450.798 vk_subs=146 us_per_sub=3088
+/var/tmp/msub-gold-base-r2/run-1: status=match total=1190.692 tdt_wall=432.206 vk_subs=146 us_per_sub=2960
+/var/tmp/msub-gold-base-r2/run-2: status=match total=899.419 tdt_wall=502.108 vk_subs=146 us_per_sub=3439
+/var/tmp/msub-gold-base-r2/run-3: status=match total=890.006 tdt_wall=498.821 vk_subs=146 us_per_sub=3417
+/var/tmp/msub-gold-base-r2/run-4: status=match total=861.473 tdt_wall=493.244 vk_subs=146 us_per_sub=3378
+/var/tmp/msub-gold-cand-r2/run-1: status=match total=1186.799 tdt_wall=426.445 vk_subs=146 us_per_sub=2921
+/var/tmp/msub-gold-cand-r2/run-2: status=match total=880.354 tdt_wall=478.998 vk_subs=146 us_per_sub=3281
+/var/tmp/msub-gold-cand-r2/run-3: status=match total=802.981 tdt_wall=429.163 vk_subs=146 us_per_sub=2939
+/var/tmp/msub-gold-cand-r2/run-4: status=match total=795.197 tdt_wall=424.459 vk_subs=146 us_per_sub=2907
+[2026-09-23T03:15:01-05:00] == done ==
+[2026-09-23T03:20:00-05:00] waiting for flock
+[2026-09-23T03:20:00-05:00] flock held by 15960
+[2026-09-23T03:20:00-05:00] default ICD registry:
+[2026-09-23T03:20:00-05:00]   /usr/share/vulkan/icd.d/asahi_icd.json -> /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:20:00-05:00] VK_DRIVER_FILES=<unset>
+-rwxr-xr-x 1 root root 63244232 Sep 22 07:51 /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:20:00-05:00] resolving baseline via vulkaninfo
+[2026-09-23T03:20:00-05:00] BASE_LIB=/usr/local/lib/libvulkan_asahi.so.7faf04c
+09e3527dee4a365ee29085637c266291396666afb0039a6932b5be9dc7dd6a80  /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:20:00-05:00] building candidate in /var/tmp/mesa-submit-src
+[10/39] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_meta_copy_fill_update.c.o
+[11/39] Compiling C object src/vulkan/runtime/libvulkan_runtime.a.p/vk_pipeline.c.o
+ninja: build stopped: subcommand failed.
+[2026-09-23T03:20:03-05:00] candidate .so sha256:57148342 at /var/tmp/mesa-submit-lat (no system changes yet)
+[2026-09-23T03:20:03-05:00] building microbench
+[2026-09-23T03:20:03-05:00] == bench base ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel (git-7faf04c065)", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 19}
+{"mode": "noopsleep", "n": 2000, "min_ns": 375, "p50_ns": 500, "p90_ns": 500, "p99_ns": 584, "mean_us": 0.49}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 19.73, "drain_us": 25599.15}
+{"mode": "rtsleep", "n": 2000, "min_ns": 93332, "p50_ns": 168622, "p90_ns": 175456, "p99_ns": 216204, "mean_us": 161.54, "mean_submit_us": 27.47}
+{"mode": "rtpoll", "n": 2000, "min_ns": 78707, "p50_ns": 147206, "p90_ns": 170455, "p99_ns": 190331, "mean_us": 146.84}
+{"mode": "rthybrid", "n": 2000, "min_ns": 79791, "p50_ns": 134789, "p90_ns": 139664, "p99_ns": 157914, "mean_us": 129.68}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1000, "p50_ns": 1167, "p90_ns": 1542, "p99_ns": 5333, "mean_us": 1.33}
+{"mode": "nanowake200us", "n": 500, "min_ns": 251662, "p50_ns": 255288, "p90_ns": 260287, "p99_ns": 262329, "mean_us": 255.75}
+{"done": true}
+[2026-09-23T03:20:04-05:00] == bench cand-off ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 25}
+{"mode": "noopsleep", "n": 2000, "min_ns": 542, "p50_ns": 625, "p90_ns": 625, "p99_ns": 750, "mean_us": 0.62}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 19.98, "drain_us": 27444.95}
+{"mode": "rtsleep", "n": 2000, "min_ns": 101415, "p50_ns": 166914, "p90_ns": 172122, "p99_ns": 214079, "mean_us": 166.59, "mean_submit_us": 28.54}
+{"mode": "rtpoll", "n": 2000, "min_ns": 79957, "p50_ns": 138622, "p90_ns": 160580, "p99_ns": 186830, "mean_us": 139.88}
+{"mode": "rthybrid", "n": 2000, "min_ns": 83623, "p50_ns": 123373, "p90_ns": 137165, "p99_ns": 156623, "mean_us": 123.95}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1000, "p50_ns": 1167, "p90_ns": 1416, "p99_ns": 5250, "mean_us": 1.29}
+{"mode": "nanowake200us", "n": 500, "min_ns": 251662, "p50_ns": 255328, "p90_ns": 260329, "p99_ns": 262246, "mean_us": 255.76}
+{"done": true}
+[2026-09-23T03:20:05-05:00] == bench cand-p300 ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 25}
+{"mode": "noopsleep", "n": 2000, "min_ns": 583, "p50_ns": 625, "p90_ns": 667, "p99_ns": 750, "mean_us": 0.66}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.60, "drain_us": 26830.46}
+{"mode": "rtsleep", "n": 2000, "min_ns": 94999, "p50_ns": 135998, "p90_ns": 141456, "p99_ns": 182705, "mean_us": 132.63, "mean_submit_us": 22.80}
+{"mode": "rtpoll", "n": 2000, "min_ns": 101206, "p50_ns": 135706, "p90_ns": 139164, "p99_ns": 178163, "mean_us": 131.13}
+{"mode": "rthybrid", "n": 2000, "min_ns": 84374, "p50_ns": 135998, "p90_ns": 146873, "p99_ns": 169914, "mean_us": 133.47}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1041, "p50_ns": 1250, "p90_ns": 1416, "p99_ns": 5375, "mean_us": 1.33}
+{"mode": "nanowake200us", "n": 500, "min_ns": 247829, "p50_ns": 255121, "p90_ns": 260287, "p99_ns": 262162, "mean_us": 255.78}
+{"done": true}
+[2026-09-23T03:20:06-05:00] == bench cand-p1000 ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 28}
+{"mode": "noopsleep", "n": 2000, "min_ns": 625, "p50_ns": 709, "p90_ns": 750, "p99_ns": 834, "mean_us": 0.74}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.80, "drain_us": 26730.38}
+{"mode": "rtsleep", "n": 2000, "min_ns": 101832, "p50_ns": 136706, "p90_ns": 146498, "p99_ns": 182663, "mean_us": 134.77, "mean_submit_us": 22.97}
+{"mode": "rtpoll", "n": 2000, "min_ns": 67791, "p50_ns": 91873, "p90_ns": 137123, "p99_ns": 148164, "mean_us": 101.40}
+{"mode": "rthybrid", "n": 2000, "min_ns": 67874, "p50_ns": 79582, "p90_ns": 82582, "p99_ns": 111498, "mean_us": 79.96}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1124, "p50_ns": 1250, "p90_ns": 1375, "p99_ns": 5833, "mean_us": 1.36}
+{"mode": "nanowake200us", "n": 500, "min_ns": 208913, "p50_ns": 254912, "p90_ns": 260288, "p99_ns": 263245, "mean_us": 255.54}
+{"done": true}
+[2026-09-23T03:20:07-05:00] == bench base-again ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel (git-7faf04c065)", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 19}
+{"mode": "noopsleep", "n": 2000, "min_ns": 416, "p50_ns": 500, "p90_ns": 500, "p99_ns": 584, "mean_us": 0.49}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 19.68, "drain_us": 26858.62}
+{"mode": "rtsleep", "n": 2000, "min_ns": 120623, "p50_ns": 172747, "p90_ns": 186872, "p99_ns": 222954, "mean_us": 173.23, "mean_submit_us": 29.05}
+{"mode": "rtpoll", "n": 2000, "min_ns": 100499, "p50_ns": 161706, "p90_ns": 172414, "p99_ns": 197621, "mean_us": 153.13}
+{"mode": "rthybrid", "n": 2000, "min_ns": 80957, "p50_ns": 97331, "p90_ns": 114790, "p99_ns": 164830, "mean_us": 103.14}
+{"mode": "emptyrt", "n": 1000, "min_ns": 999, "p50_ns": 1250, "p90_ns": 1458, "p99_ns": 6000, "mean_us": 1.38}
+{"mode": "nanowake200us", "n": 500, "min_ns": 218413, "p50_ns": 254829, "p90_ns": 260162, "p99_ns": 262746, "mean_us": 255.49}
+{"done": true}
+[2026-09-23T03:20:08-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1967.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1248.225, "stages_ms": {"audio_load": 8.802, "mel_frontend": 133.548, "encoder_ane": 521.78, "decoder_load": 60.554, "tdt_decode": 470.364, "detokenize": 53.177}, "ane": {"exec_ms": 143.226, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 377.251, "close_ms": 0.045, "open_ms": 377.251, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1533.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 893.947, "stages_ms": {"audio_load": 3.196, "mel_frontend": 32.664, "encoder_ane": 231.896, "decoder_load": 64.785, "tdt_decode": 506.508, "detokenize": 54.899}, "ane": {"exec_ms": 231.005, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.199, "close_ms": 0.133, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1493.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 853.739, "stages_ms": {"audio_load": 3.174, "mel_frontend": 28.533, "encoder_ane": 250.699, "decoder_load": 46.238, "tdt_decode": 473.17, "detokenize": 51.925}, "ane": {"exec_ms": 249.78, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.142, "close_ms": 0.053, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1469.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 820.069, "stages_ms": {"audio_load": 3.187, "mel_frontend": 30.027, "encoder_ane": 247.831, "decoder_load": 41.115, "tdt_decode": 444.98, "detokenize": 52.93}, "ane": {"exec_ms": 246.559, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.144, "close_ms": 0.123, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:20:15-05:00] == golden cand ==
+{
+{"label": "cand", "run": 1, "rc": 0, "wall_ms": 1908.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1192.728, "stages_ms": {"audio_load": 7.308, "mel_frontend": 132.873, "encoder_ane": 519.058, "decoder_load": 60.495, "tdt_decode": 422.542, "detokenize": 50.452}, "ane": {"exec_ms": 142.877, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.954, "close_ms": 0.041, "open_ms": 374.954, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 2, "rc": 0, "wall_ms": 1521.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 879.772, "stages_ms": {"audio_load": 3.183, "mel_frontend": 31.498, "encoder_ane": 243.56, "decoder_load": 64.833, "tdt_decode": 485.03, "detokenize": 51.667}, "ane": {"exec_ms": 242.755, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.187, "close_ms": 0.045, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 3, "rc": 0, "wall_ms": 1424.8, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 769.892, "stages_ms": {"audio_load": 3.187, "mel_frontend": 30.692, "encoder_ane": 198.795, "decoder_load": 49.383, "tdt_decode": 438.839, "detokenize": 48.995}, "ane": {"exec_ms": 197.902, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.161, "close_ms": 0.062, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 4, "rc": 0, "wall_ms": 1364.7, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 723.315, "stages_ms": {"audio_load": 3.165, "mel_frontend": 29.787, "encoder_ane": 193.288, "decoder_load": 49.264, "tdt_decode": 398.031, "detokenize": 49.779}, "ane": {"exec_ms": 192.549, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.146, "close_ms": 0.052, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:20:21-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1967.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1255.211, "stages_ms": {"audio_load": 7.284, "mel_frontend": 134.017, "encoder_ane": 519.169, "decoder_load": 59.175, "tdt_decode": 485.525, "detokenize": 50.041}, "ane": {"exec_ms": 141.212, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 376.683, "close_ms": 0.06, "open_ms": 376.683, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1540.4, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 898.68, "stages_ms": {"audio_load": 3.213, "mel_frontend": 30.791, "encoder_ane": 248.788, "decoder_load": 64.904, "tdt_decode": 496.725, "detokenize": 54.258}, "ane": {"exec_ms": 247.944, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.168, "close_ms": 0.132, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1541.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 881.341, "stages_ms": {"audio_load": 3.172, "mel_frontend": 31.62, "encoder_ane": 258.356, "decoder_load": 58.71, "tdt_decode": 476.854, "detokenize": 52.63}, "ane": {"exec_ms": 257.587, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.153, "close_ms": 0.126, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1534.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 876.793, "stages_ms": {"audio_load": 3.527, "mel_frontend": 31.368, "encoder_ane": 269.434, "decoder_load": 53.506, "tdt_decode": 467.357, "detokenize": 51.601}, "ane": {"exec_ms": 268.143, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.13, "close_ms": 0.091, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:20:28-05:00] == golden cand ==
+{
+{"label": "cand", "run": 1, "rc": 0, "wall_ms": 1924.8, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1212.066, "stages_ms": {"audio_load": 7.218, "mel_frontend": 133.363, "encoder_ane": 518.674, "decoder_load": 61.857, "tdt_decode": 440.218, "detokenize": 50.737}, "ane": {"exec_ms": 142.488, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.938, "close_ms": 0.059, "open_ms": 374.938, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 2, "rc": 0, "wall_ms": 1423.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 770.173, "stages_ms": {"audio_load": 3.183, "mel_frontend": 30.091, "encoder_ane": 207.825, "decoder_load": 47.223, "tdt_decode": 430.005, "detokenize": 51.845}, "ane": {"exec_ms": 207.024, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.165, "close_ms": 0.077, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 3, "rc": 0, "wall_ms": 1490.4, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 846.966, "stages_ms": {"audio_load": 3.168, "mel_frontend": 29.826, "encoder_ane": 229.445, "decoder_load": 57.822, "tdt_decode": 478.562, "detokenize": 48.143}, "ane": {"exec_ms": 228.671, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.162, "close_ms": 0.077, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 4, "rc": 0, "wall_ms": 1522.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 869.186, "stages_ms": {"audio_load": 3.135, "mel_frontend": 29.22, "encoder_ane": 250.358, "decoder_load": 64.036, "tdt_decode": 479.171, "detokenize": 43.267}, "ane": {"exec_ms": 249.544, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.143, "close_ms": 0.137, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+/var/tmp/msub-gold-base-r1/run-1: status=match total=1248.225 tdt_wall=470.364 vk_subs=146 us_per_sub=3222
+/var/tmp/msub-gold-base-r1/run-2: status=match total=893.947 tdt_wall=506.508 vk_subs=146 us_per_sub=3469
+/var/tmp/msub-gold-base-r1/run-3: status=match total=853.739 tdt_wall=473.17 vk_subs=146 us_per_sub=3241
+/var/tmp/msub-gold-base-r1/run-4: status=match total=820.069 tdt_wall=444.98 vk_subs=146 us_per_sub=3048
+/var/tmp/msub-gold-cand-r1/run-1: status=match total=1192.728 tdt_wall=422.542 vk_subs=146 us_per_sub=2894
+/var/tmp/msub-gold-cand-r1/run-2: status=match total=879.772 tdt_wall=485.03 vk_subs=146 us_per_sub=3322
+/var/tmp/msub-gold-cand-r1/run-3: status=match total=769.892 tdt_wall=438.839 vk_subs=146 us_per_sub=3006
+/var/tmp/msub-gold-cand-r1/run-4: status=match total=723.315 tdt_wall=398.031 vk_subs=146 us_per_sub=2726
+/var/tmp/msub-gold-base-r2/run-1: status=match total=1255.211 tdt_wall=485.525 vk_subs=146 us_per_sub=3326
+/var/tmp/msub-gold-base-r2/run-2: status=match total=898.68 tdt_wall=496.725 vk_subs=146 us_per_sub=3402
+/var/tmp/msub-gold-base-r2/run-3: status=match total=881.341 tdt_wall=476.854 vk_subs=146 us_per_sub=3266
+/var/tmp/msub-gold-base-r2/run-4: status=match total=876.793 tdt_wall=467.357 vk_subs=146 us_per_sub=3201
+/var/tmp/msub-gold-cand-r2/run-1: status=match total=1212.066 tdt_wall=440.218 vk_subs=146 us_per_sub=3015
+/var/tmp/msub-gold-cand-r2/run-2: status=match total=770.173 tdt_wall=430.005 vk_subs=146 us_per_sub=2945
+/var/tmp/msub-gold-cand-r2/run-3: status=match total=846.966 tdt_wall=478.562 vk_subs=146 us_per_sub=3278
+/var/tmp/msub-gold-cand-r2/run-4: status=match total=869.186 tdt_wall=479.171 vk_subs=146 us_per_sub=3282
+[2026-09-23T03:20:35-05:00] == done ==
+[2026-09-23T03:22:50-05:00] waiting for flock
+[2026-09-23T03:22:50-05:00] flock held by 16608
+[2026-09-23T03:22:50-05:00] default ICD registry:
+[2026-09-23T03:22:50-05:00]   /usr/share/vulkan/icd.d/asahi_icd.json -> /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:22:50-05:00] VK_DRIVER_FILES=<unset>
+-rwxr-xr-x 1 root root 63244232 Sep 22 07:51 /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:22:50-05:00] resolving baseline via vulkaninfo
+[2026-09-23T03:22:50-05:00] BASE_LIB=/usr/local/lib/libvulkan_asahi.so.7faf04c
+09e3527dee4a365ee29085637c266291396666afb0039a6932b5be9dc7dd6a80  /usr/local/lib/libvulkan_asahi.so.7faf04c
+[2026-09-23T03:22:50-05:00] building candidate in /var/tmp/mesa-submit-src
+ninja: Entering directory `/var/tmp/mesa-submit-src/build'
+[1/6] Generating src/git_sha1.h with a custom command
+[2026-09-23T03:22:50-05:00] candidate .so sha256:09bc5d20 at /var/tmp/mesa-submit-lat (no system changes yet)
+[2026-09-23T03:22:50-05:00] building microbench
+[2026-09-23T03:22:51-05:00] == bench base ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel (git-7faf04c065)", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 19}
+{"mode": "noopsleep", "n": 2000, "min_ns": 416, "p50_ns": 500, "p90_ns": 500, "p99_ns": 584, "mean_us": 0.49}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.17, "drain_us": 26903.73}
+{"mode": "rtsleep", "n": 2000, "min_ns": 112415, "p50_ns": 166956, "p90_ns": 171622, "p99_ns": 213746, "mean_us": 165.12, "mean_submit_us": 28.09}
+{"mode": "rtpoll", "n": 2000, "min_ns": 90582, "p50_ns": 134539, "p90_ns": 158539, "p99_ns": 178247, "mean_us": 131.17}
+{"mode": "rthybrid", "n": 2000, "min_ns": 84457, "p50_ns": 136539, "p90_ns": 148623, "p99_ns": 173705, "mean_us": 135.34}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1041, "p50_ns": 1208, "p90_ns": 1375, "p99_ns": 5459, "mean_us": 1.31}
+{"mode": "nanowake200us", "n": 500, "min_ns": 242579, "p50_ns": 255371, "p90_ns": 260413, "p99_ns": 263120, "mean_us": 255.77}
+{"done": true}
+[2026-09-23T03:22:52-05:00] == bench cand-off ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 28}
+{"mode": "noopsleep", "n": 2000, "min_ns": 583, "p50_ns": 667, "p90_ns": 709, "p99_ns": 792, "mean_us": 0.69}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.40, "drain_us": 26298.62}
+{"mode": "rtsleep", "n": 2000, "min_ns": 105207, "p50_ns": 175164, "p90_ns": 183914, "p99_ns": 215829, "mean_us": 171.63, "mean_submit_us": 28.48}
+{"mode": "rtpoll", "n": 2000, "min_ns": 105456, "p50_ns": 148414, "p90_ns": 167956, "p99_ns": 182706, "mean_us": 149.59}
+{"mode": "rthybrid", "n": 2000, "min_ns": 80124, "p50_ns": 136164, "p90_ns": 139456, "p99_ns": 156706, "mean_us": 131.80}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1000, "p50_ns": 1208, "p90_ns": 1375, "p99_ns": 5625, "mean_us": 1.31}
+{"mode": "nanowake200us", "n": 500, "min_ns": 251662, "p50_ns": 255246, "p90_ns": 260287, "p99_ns": 264204, "mean_us": 255.82}
+{"done": true}
+[2026-09-23T03:22:53-05:00] == bench cand-p300 ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 25}
+{"mode": "noopsleep", "n": 2000, "min_ns": 625, "p50_ns": 667, "p90_ns": 708, "p99_ns": 792, "mean_us": 0.68}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.35, "drain_us": 26034.29}
+{"mode": "rtsleep", "n": 2000, "min_ns": 80082, "p50_ns": 135498, "p90_ns": 142915, "p99_ns": 179997, "mean_us": 130.57, "mean_submit_us": 22.65}
+{"mode": "rtpoll", "n": 2000, "min_ns": 85165, "p50_ns": 126040, "p90_ns": 138748, "p99_ns": 170955, "mean_us": 121.87}
+{"mode": "rthybrid", "n": 2000, "min_ns": 97040, "p50_ns": 137164, "p90_ns": 148872, "p99_ns": 167789, "mean_us": 135.62}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1042, "p50_ns": 1209, "p90_ns": 1417, "p99_ns": 5166, "mean_us": 1.33}
+{"mode": "nanowake200us", "n": 500, "min_ns": 240246, "p50_ns": 254954, "p90_ns": 260163, "p99_ns": 262163, "mean_us": 255.66}
+{"done": true}
+[2026-09-23T03:22:54-05:00] == bench cand-p1000 ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 19}
+{"mode": "noopsleep", "n": 2000, "min_ns": 458, "p50_ns": 541, "p90_ns": 542, "p99_ns": 625, "mean_us": 0.54}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 19.23, "drain_us": 30066.31}
+{"mode": "rtsleep", "n": 2000, "min_ns": 75832, "p50_ns": 131539, "p90_ns": 152248, "p99_ns": 178622, "mean_us": 123.73, "mean_submit_us": 20.79}
+{"mode": "rtpoll", "n": 2000, "min_ns": 79624, "p50_ns": 137123, "p90_ns": 148581, "p99_ns": 180331, "mean_us": 135.82}
+{"mode": "rthybrid", "n": 2000, "min_ns": 80124, "p50_ns": 136290, "p90_ns": 140498, "p99_ns": 170248, "mean_us": 132.48}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1041, "p50_ns": 1208, "p90_ns": 1542, "p99_ns": 5750, "mean_us": 1.34}
+{"mode": "nanowake200us", "n": 500, "min_ns": 251662, "p50_ns": 254871, "p90_ns": 260205, "p99_ns": 262370, "mean_us": 255.76}
+{"done": true}
+[2026-09-23T03:22:55-05:00] == bench base-again ==
+{"device": "Apple M1 (G13G B1)", "driver": "Honeykrisp", "driver_id": 26, "driver_version": "Mesa 26.3.0-devel (git-7faf04c065)", "api": "1.4"}
+{"mode": "clock", "ns_per_call": 28}
+{"mode": "noopsleep", "n": 2000, "min_ns": 625, "p50_ns": 667, "p90_ns": 709, "p99_ns": 792, "mean_us": 0.69}
+{"mode": "submitonly", "n": 2000, "per_submit_us": 20.47, "drain_us": 24713.89}
+{"mode": "rtsleep", "n": 2000, "min_ns": 97748, "p50_ns": 171331, "p90_ns": 185206, "p99_ns": 219746, "mean_us": 170.12, "mean_submit_us": 30.17}
+{"mode": "rtpoll", "n": 2000, "min_ns": 90915, "p50_ns": 147498, "p90_ns": 169205, "p99_ns": 185247, "mean_us": 147.53}
+{"mode": "rthybrid", "n": 2000, "min_ns": 93499, "p50_ns": 135122, "p90_ns": 139164, "p99_ns": 169123, "mean_us": 130.44}
+{"mode": "emptyrt", "n": 1000, "min_ns": 1000, "p50_ns": 1208, "p90_ns": 1542, "p99_ns": 5666, "mean_us": 1.32}
+{"mode": "nanowake200us", "n": 500, "min_ns": 219455, "p50_ns": 255412, "p90_ns": 260246, "p99_ns": 263829, "mean_us": 255.66}
+{"done": true}
+[2026-09-23T03:22:56-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1930.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1250.611, "stages_ms": {"audio_load": 8.712, "mel_frontend": 138.429, "encoder_ane": 518.975, "decoder_load": 45.057, "tdt_decode": 487.682, "detokenize": 51.757}, "ane": {"exec_ms": 142.218, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 375.515, "close_ms": 0.071, "open_ms": 375.515, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1491.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 872.167, "stages_ms": {"audio_load": 3.199, "mel_frontend": 30.744, "encoder_ane": 244.83, "decoder_load": 51.257, "tdt_decode": 487.674, "detokenize": 54.462}, "ane": {"exec_ms": 244.048, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.16, "close_ms": 0.057, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1564.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 929.381, "stages_ms": {"audio_load": 3.178, "mel_frontend": 29.596, "encoder_ane": 250.091, "decoder_load": 64.181, "tdt_decode": 530.766, "detokenize": 51.569}, "ane": {"exec_ms": 249.324, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.148, "close_ms": 0.08, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1500.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 842.274, "stages_ms": {"audio_load": 3.173, "mel_frontend": 30.855, "encoder_ane": 244.319, "decoder_load": 47.009, "tdt_decode": 464.492, "detokenize": 52.426}, "ane": {"exec_ms": 243.282, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.147, "close_ms": 0.084, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:23:03-05:00] == golden cand ==
+{
+{"label": "cand", "run": 1, "rc": 0, "wall_ms": 19674.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 18970.612, "stages_ms": {"audio_load": 64.576, "mel_frontend": 17876.991, "encoder_ane": 516.895, "decoder_load": 55.145, "tdt_decode": 409.102, "detokenize": 47.903}, "ane": {"exec_ms": 141.185, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.484, "close_ms": 0.039, "open_ms": 374.484, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 2, "rc": 0, "wall_ms": 1396.6, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 754.579, "stages_ms": {"audio_load": 3.234, "mel_frontend": 30.377, "encoder_ane": 211.808, "decoder_load": 44.065, "tdt_decode": 413.879, "detokenize": 51.216}, "ane": {"exec_ms": 211.0, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.141, "close_ms": 0.077, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 3, "rc": 0, "wall_ms": 1481.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 851.733, "stages_ms": {"audio_load": 3.166, "mel_frontend": 31.443, "encoder_ane": 226.747, "decoder_load": 61.857, "tdt_decode": 479.019, "detokenize": 49.501}, "ane": {"exec_ms": 225.875, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.162, "close_ms": 0.127, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 4, "rc": 0, "wall_ms": 1385.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 743.017, "stages_ms": {"audio_load": 3.124, "mel_frontend": 31.218, "encoder_ane": 244.992, "decoder_load": 39.422, "tdt_decode": 374.381, "detokenize": 49.88}, "ane": {"exec_ms": 243.596, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.139, "close_ms": 0.134, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:23:27-05:00] == golden base ==
+{
+{"label": "base", "run": 1, "rc": 0, "wall_ms": 1957.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1276.86, "stages_ms": {"audio_load": 7.345, "mel_frontend": 135.494, "encoder_ane": 518.684, "decoder_load": 62.598, "tdt_decode": 501.265, "detokenize": 51.475}, "ane": {"exec_ms": 142.731, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 374.678, "close_ms": 0.065, "open_ms": 374.678, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 2, "rc": 0, "wall_ms": 1559.6, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 925.964, "stages_ms": {"audio_load": 3.205, "mel_frontend": 32.385, "encoder_ane": 251.822, "decoder_load": 65.498, "tdt_decode": 518.223, "detokenize": 54.832}, "ane": {"exec_ms": 251.016, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.174, "close_ms": 0.067, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 3, "rc": 0, "wall_ms": 1450.9, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 806.585, "stages_ms": {"audio_load": 3.172, "mel_frontend": 28.547, "encoder_ane": 196.053, "decoder_load": 47.548, "tdt_decode": 480.723, "detokenize": 50.542}, "ane": {"exec_ms": 194.723, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.142, "close_ms": 0.136, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "base", "run": 4, "rc": 0, "wall_ms": 1493.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 836.755, "stages_ms": {"audio_load": 3.166, "mel_frontend": 31.291, "encoder_ane": 248.947, "decoder_load": 47.301, "tdt_decode": 454.767, "detokenize": 51.283}, "ane": {"exec_ms": 248.101, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.16, "close_ms": 0.132, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+[2026-09-23T03:23:34-05:00] == golden cand ==
+{
+{"label": "cand", "run": 1, "rc": 0, "wall_ms": 1890.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1174.106, "stages_ms": {"audio_load": 8.247, "mel_frontend": 135.644, "encoder_ane": 516.485, "decoder_load": 49.067, "tdt_decode": 414.522, "detokenize": 50.141}, "ane": {"exec_ms": 141.363, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 373.896, "close_ms": 0.036, "open_ms": 373.896, "reused": false, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 2, "rc": 0, "wall_ms": 1501.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 886.71, "stages_ms": {"audio_load": 3.196, "mel_frontend": 31.469, "encoder_ane": 244.631, "decoder_load": 60.552, "tdt_decode": 495.207, "detokenize": 51.654}, "ane": {"exec_ms": 243.764, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.152, "close_ms": 0.137, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 3, "rc": 0, "wall_ms": 1541.7, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 910.82, "stages_ms": {"audio_load": 3.191, "mel_frontend": 31.1, "encoder_ane": 259.036, "decoder_load": 65.637, "tdt_decode": 503.113, "detokenize": 48.742}, "ane": {"exec_ms": 258.206, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.168, "close_ms": 0.135, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+{
+{"label": "cand", "run": 4, "rc": 0, "wall_ms": 1535.5, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 884.914, "stages_ms": {"audio_load": 3.168, "mel_frontend": 32.299, "encoder_ane": 249.576, "decoder_load": 58.721, "tdt_decode": 491.89, "detokenize": 49.259}, "ane": {"exec_ms": 248.766, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.164, "close_ms": 0.079, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "host"}
+/var/tmp/msub-gold-base-r1/run-1: status=match total=1250.611 tdt_wall=487.682 vk_subs=146 us_per_sub=3340
+/var/tmp/msub-gold-base-r1/run-2: status=match total=872.167 tdt_wall=487.674 vk_subs=146 us_per_sub=3340
+/var/tmp/msub-gold-base-r1/run-3: status=match total=929.381 tdt_wall=530.766 vk_subs=146 us_per_sub=3635
+/var/tmp/msub-gold-base-r1/run-4: status=match total=842.274 tdt_wall=464.492 vk_subs=146 us_per_sub=3181
+/var/tmp/msub-gold-cand-r1/run-1: status=match total=18970.612 tdt_wall=409.102 vk_subs=146 us_per_sub=2802
+/var/tmp/msub-gold-cand-r1/run-2: status=match total=754.579 tdt_wall=413.879 vk_subs=146 us_per_sub=2835
+/var/tmp/msub-gold-cand-r1/run-3: status=match total=851.733 tdt_wall=479.019 vk_subs=146 us_per_sub=3281
+/var/tmp/msub-gold-cand-r1/run-4: status=match total=743.017 tdt_wall=374.381 vk_subs=146 us_per_sub=2564
+/var/tmp/msub-gold-base-r2/run-1: status=match total=1276.86 tdt_wall=501.265 vk_subs=146 us_per_sub=3433
+/var/tmp/msub-gold-base-r2/run-2: status=match total=925.964 tdt_wall=518.223 vk_subs=146 us_per_sub=3549
+/var/tmp/msub-gold-base-r2/run-3: status=match total=806.585 tdt_wall=480.723 vk_subs=146 us_per_sub=3293
+/var/tmp/msub-gold-base-r2/run-4: status=match total=836.755 tdt_wall=454.767 vk_subs=146 us_per_sub=3115
+/var/tmp/msub-gold-cand-r2/run-1: status=match total=1174.106 tdt_wall=414.522 vk_subs=146 us_per_sub=2839
+/var/tmp/msub-gold-cand-r2/run-2: status=match total=886.71 tdt_wall=495.207 vk_subs=146 us_per_sub=3392
+/var/tmp/msub-gold-cand-r2/run-3: status=match total=910.82 tdt_wall=503.113 vk_subs=146 us_per_sub=3446
+/var/tmp/msub-gold-cand-r2/run-4: status=match total=884.914 tdt_wall=491.89 vk_subs=146 us_per_sub=3369
+[2026-09-23T03:23:41-05:00] == done ==

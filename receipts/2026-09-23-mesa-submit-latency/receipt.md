@@ -74,10 +74,81 @@ immediately; WAIT_ANY/WAIT_ALL/WAIT_PENDING flags unchanged. Standalone
 control-flow test (5 cases) in receipts-raw; full validation is the jwm1
 build + golden.
 
-## 4. Measurements (jwm1, window TBD)
+## 4. Measurements (jwm1, 2026-09-23, three same-window interleaved batteries)
 
-[placeholder — filled after the measurement window]
+Raw: `raw/window-3batteries.log` (514 lines, all arms + all golden passes),
+`raw/samples.cand-p300.{rtsleep,rtpoll}` (2000 samples each, ns).
+Bench arms run back-to-back under one `/tmp/m1-gpu.lock` hold; golden
+passes interleaved base/cand within each battery. All percentiles below
+are warm medians of the blocking-wait round trip (`rtsleep` = submit +
+blocking timeline wait, n=2000).
+
+### Microbenchmark breakdown (base = 7faf04c)
+
+| mode | base | cand knob off | cand poll 300 µs |
+| --- | ---: | ---: | ---: |
+| rtsleep mean | 161.5–173.2 µs | 166.5–170.7 µs | **132.6–134.4 µs (−20%)** |
+| rtpoll mean | 146.8–153.1 µs | 139.9 µs | 129.3–131.1 µs |
+| noopsleep mean | 0.49 µs | 0.62 µs | 0.66 µs |
+| emptyrt mean | 1.26–1.33 µs | 1.29–1.35 µs | 1.32–1.36 µs |
+| submitonly | 19.6–20.8 µs/submit | 20.0 µs | 20.5–20.8 µs |
+| nanowake(200 µs) | 255 µs p50 | 255 µs | 255 µs |
+
+- A/A sanity: knob-off candidate ≡ base (166.5 vs 170.1 µs, inside noise).
+- The blocking wait on an **already-signaled** point costs ~0.5 µs — the
+  ioctl floor is negligible; the ~170 µs rtsleep is firmware pickup +
+  kernel completion publish + host wake. Busy-polling recovers ~35 µs of
+  host wake per round trip (rtsleep − rtpoll).
+- Per-submit userland cost is ~20 µs; sync overhead per TDT submission is
+  ~170 µs — **~5% of the 3.3 ms golden per-submission wall**, not the
+  1.3–1.5 ms the derived number suggested.
+
+### Parakeet golden (warm medians; every run status=match, 104 emissions,
+### transcript sha db501a8c… bit-exact in all 16 runs across 3 batteries)
+
+| battery | build identity | base TDT | cand TDT | Δ |
+| --- | --- | ---: | ---: | ---: |
+| A | pre-backoff .so (fresh cache for cand) | 495.5 ms | 439.9 ms | −55.6 ms |
+| B | **same .so both arms (A/B noise floor)** | 475.0 ms | 458.7 ms | **−16.3 ms** |
+| C | backoff .so | 484.2 ms | 485.5 ms | +1.3 ms |
+
+Battery B is a build-identical A/B: **the same-window noise floor at
+n=6 warm runs/arm is ~±16 ms**. The candidate's true effect predicted
+from the bench (35 µs × 146 submissions ≈ 5 ms) is below that floor and
+is not resolvable in the golden. The −55.6 ms in battery A was noise.
 
 ## 5. Verdict
 
-[placeholder]
+**No install.** The mechanism works (rtsleep −20%, A/A clean) but the
+end-to-end win (~5 ms on a ~480 ms TDT bucket, ~1% of total pipeline)
+is below the measured noise floor; the acceptance bar ("install only on
+a win") is not met. System default remains
+`/usr/local/lib/libvulkan_asahi.so.7faf04c` (sha 09e3527d), untouched
+throughout; candidate staged only at
+`/var/tmp/mesa-submit-lat/libvulkan_asahi.so.cand-09bc5d20` (+ `cand.icd.json`).
+
+Preserved for later use: `hk/submit-latency` (mesa-1, commits
+c0da9a1896c, 229e872ba07 + fixes) is a zero-default opt-in
+(`HK_SUBMIT_POLL_US=<µs>`) — any launcher can enable it without a wheel
+change if a future loop shape (e.g. device-chained decode) makes the
+wake path dominant.
+
+Notes:
+- The "19.6 s first-ever cand run" in batteries A/C is a **build-identity
+  artifact**, not the poll knob: tarball builds lack git metadata
+  (driver version string loses the `git-…` suffix), so the mel frontend's
+  per-driver caches miss and ~17.7 s of one-time kernel translation is
+  paid once per build identity. It reproduced identically for cache-cold
+  builds regardless of knob state; battery C's cold run showed it with
+  the backoff active. Install candidates must be built from a git
+  checkout for stable identity.
+- The miss backoff (229e872ba07) is kept as defense-in-depth: poll
+  budgets would otherwise burn on long waits (shader-compile sync
+  storms); with backoff the candidate's bench numbers are unchanged
+  (132.6 µs) while long-wait phases fall back to sleeping after one
+  budget.
+
+Commits: mesa-1 `hk/submit-latency` = 7faf04c + c0da9a1896c + 229e872ba07
+(+ `asahi/hk: backoff state is plain 8-aligned uint64…`). This repo:
+`agent/mesa-submit-latency` = tool (764ee01), runbook (ec34d3e, 72bf154,
+f042cf4 + fixes), receipt (43d9701 + this).
