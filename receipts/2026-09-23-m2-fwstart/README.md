@@ -106,3 +106,22 @@ and needs Joshua at the console, so it waits for Main's go-ahead.
 - Read-only snapshot (islands up, ACTUAL 0xf all eight): `CPU_STATUS 0x2a`,
   `CPU_CONTROL 0`, `RVBAR 0x10000000001`, `VERS 0xe3044`, `RTB_STATUS 1`,
   scratch all zero.
+
+## 6. Fixed images built, not booted
+
+Built off-device in the macstudio ALARM chroot (`dg-alarm-py314:sep23`,
+`/alarmroot`, rustc 1.93.1, gcc 16.1.1, `make ARCH= RELEASE=1 BUILDSTD=1`).
+Hook source: `ane_bringup.c` in this directory. WDT is armed before any
+island write. Nine islands (the eight plus parent `ane_sys`) are raised
+with `pmgr_set_mode(TARGET=0xf)` and each ACTUAL is checked before any
+engine read. No RESET bit. No engine read while an island is off.
+
+- dry m1n1 `ce11e652…` 1,130,496 B, contains `mode=dry` / `islands up`,
+  no `mode=write`. Assembled `boot.bin.dry-islands` sha `a2e3b68c…`.
+- write m1n1 `da6f039a…` 2,834,432 B, contains `mode=write` /
+  `cycle ane_cpu off`, no `mode=dry`. Assembled `boot.bin.write-islands`
+  sha `df31b635…`.
+- Both payload tails equal the stock tail (sha `b73cd565`, 110 dtbs, gzip
+  u-boot). ESP still `a3f533b9`, matches the Linux backup. Not installed.
+- Pre-boot read-only recheck on Linux: all nine ps words ACTUAL=0xf at the
+  addresses the hook uses. `RVBAR` still `0x10000000001`.
