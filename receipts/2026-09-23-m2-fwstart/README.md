@@ -225,3 +225,18 @@ Mailbox 0x285408000. A2I and I2A both 0x00020001 (ENABLE, EMPTY).
 No HELLO. MGMT set-IOP-power ON (type 6, state 0x20) on A2I left
 A2I at 0x00100101, EMPTY clear, message unconsumed. I2A stayed
 empty. No reply in 2 s. CPU_STATUS still 0x28.
+
+## 10. Engage-row candidates, read only
+
+The macOS ADT ane0 IODeviceMemory has the same three ranges as the
+Linux DT. It carries no PS, PWGATE, PTD, or ANEHAL whitebox range.
+Only ANE (0x284000000) and PS (0x28E080000) bases are proven.
+
+Reads via ioremap_np, no writes:
+- PS 0x170 amcc2 0x1f0003ff, PS 0x2c8 pmp 0x1f0000ff, PS 0x2e0
+  ane_cpu 0x1f0003ff. All ACTUAL=0xf. No missing domain here.
+- pmgr+0x4000 through 0x4030 0x000003ff (the inferred PWGATE
+  0x4008-0x4030 rows, already ACTUAL=0xf).
+- pmgr+0xc000 (SET+0) 0x00000000; pmgr+0xc008 through 0xc038
+  0x80000000. No known power-state shape.
+- engine+0x570/0x5b8/0x5c0/0x1a9c not read: sub-block base unproven.
