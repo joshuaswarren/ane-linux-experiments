@@ -12,7 +12,6 @@ BSRC=${2:?bench source dir on jwm1 (tools/vk-submit-lat)}
 D=${3:-/var/tmp/mesa-submit-lat}
 VENV=/var/tmp/v072-venv-fused
 PY=$VENV/bin/python
-DRIVER=$VENV/bin/python\ /var/tmp/pk-sess-driver.py
 LOG=$D/window.log
 log(){ printf "[%s] %s\n" "$(date -Is)" "$*" | tee -a "$LOG"; }
 exec 8>/tmp/m1-gpu.lock
@@ -97,6 +96,7 @@ run_bench cand-p1000 "$D/cand.icd.json" 1000
 run_bench base-again "$BASE_LIB"      0
 
 # 3. Golden A/B: pass-interleaved, same window. Warm = runs 2+.
+# Parent already holds /tmp/m1-gpu.lock (fd 8) — no nested flock here.
 gold(){ arm=$1; out=$2
   log "== golden $arm =="
   if [ "$arm" = base ]; then
@@ -104,8 +104,8 @@ gold(){ arm=$1; out=$2
   else
     export VK_DRIVER_FILES=$D/cand.icd.json HK_SUBMIT_POLL_US=300
   fi
-  flock /tmp/m1-gpu.lock -c "$DRIVER --venv $VENV --out-root $out --runs 4 --label $arm 2>/dev/null | grep '^{'" \
-    | tee -a "$LOG"
+  "$PY" /var/tmp/pk-sess-driver.py --venv $VENV --out-root $out --runs 4 \
+    --label $arm 2>/dev/null | grep '^{' | tee -a "$LOG"
 }
 gold base      /var/tmp/msub-gold-base-r1
 gold cand      /var/tmp/msub-gold-cand-r1
