@@ -89,19 +89,24 @@ gold base      /var/tmp/msub-gold-base-r2
 gold cand      /var/tmp/msub-gold-cand-r2
 unset VK_DRIVER_FILES HK_SUBMIT_POLL_US
 
-# 4. Pin check: transcript sha + emissions in every run dir
+# 4. Analysis: status pin + TDT wall/submissions + total per run
 for d in /var/tmp/msub-gold-*-r1 /var/tmp/msub-gold-*-r2; do
   for r in "$d"/run-*; do
     [ -f "$r/transcribe-report.json" ] || continue
     python3 - "$r" <<'PYEOF'
-import json, sys, hashlib, pathlib
+import json, sys, pathlib
 r = pathlib.Path(sys.argv[1])
 rep = json.load(open(r / "transcribe-report.json"))
-s = json.dumps(rep)
-tr = rep.get("transcript") or rep.get("text") or ""
-sha = hashlib.sha256(tr.encode()).hexdigest()
-print(f"{r}: tdt={rep.get('stages_ms',{}).get('tdt_decode')} "
-      f"total={rep.get('wall_ms') or rep.get('total_ms')} tr_sha={sha[:8]}")
+stages = {s["stage"]: s for s in rep.get("stages", [])}
+tdt = stages.get("tdt_decode", {})
+subs = tdt.get("gpu_counter_delta", {}).get("vk_submissions")
+wall = tdt.get("wall_ms")
+total = rep.get("timing", {}).get("total_pipeline_ms")
+per_sub = (wall / subs) if (wall and subs) else None
+print(f"{r}: status={rep.get('status')} total={total} "
+      f"tdt_wall={wall} vk_subs={subs} "
+      f"us_per_sub={1000*per_sub:.0f}" if per_sub else
+      f"{r}: status={rep.get('status')} total={total} tdt_wall={wall} subs={subs}")
 PYEOF
   done
 done | tee -a "$LOG"
