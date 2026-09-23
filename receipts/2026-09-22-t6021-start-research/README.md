@@ -505,3 +505,25 @@ offset 0x423C-0x4244 and confirm it reads 00 00 00 00 00 01 00 00 (w1=0x100
 at +4). A file-layout vs VM-layout offset mixup (0x823C vs 0x423C) is a
 cheap silent patcher bug worth ruling out — the stamp must live at alias
 offset 0x423C because the pre-MMU read is PC-relative.
+
+### 7.11 VBAR decode (pre-committed for B8's split outcome)
+
+Exception handlers at VBAR=0 (VBAR_EL1 <- 0x0 @0x28c-0x290, i.e. VM 0):
+- slot 0x000 (sync SP0): `b 0x204` — re-enters the reset strap (quiet re-init
+  loop; any fault re-runs the boot until it faults again).
+- slot 0x080 (IRQ SP0) and 0x100 (FIQ SP0): `mrs x28,ESR_EL1; mrs x29,
+  FAR_EL1; mrs x30,ELR_EL1; b self` — **capture the fault triple into
+  x28/x29/x30 and spin forever**. The remaining slots are `udf` traps
+  (defined recursion into the same spin family).
+Consequences:
+1. Any post-MMU abort is a QUIET park (no output, no host-visible write) —
+   consistent with every observed signature.
+2. On any later vehicle that can read core registers (m1n1 debug, JTAG),
+   x28/x29/x30 after a park = ESR/FAR/ELR at the first fault — the single
+   most valuable recovery target; no reboot or re-run needed to read it.
+3. Post-MMU path 0x590-0x744 has no memory hazards beyond the alias-served
+   table region: non-core0 cores take the per-core-SP tail (MPIDR aff0);
+   core0 checks x15==0x24 (chip-revision selector) before TCR math and the
+   tail. So IF B8's split reads nonzero (tables built), the park is the
+   0x590-onward fetch/abort loop and x28/x29/x30 on a debug vehicle name it
+   in one read.
