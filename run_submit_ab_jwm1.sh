@@ -42,6 +42,12 @@ for f in /usr/share/vulkan/icd.d/*.json; do
   [ -f "$lib" ] && BASE_LIB=$lib && break
 done
 log "BASE_LIB=$BASE_LIB"
+D="$D" BASE_LIB="$BASE_LIB" python3 - <<'PYEOF'
+import json, os
+d, lib = os.environ["D"], os.environ["BASE_LIB"]
+with open(f"{d}/base.icd.json", "w") as f:
+    json.dump({"ICD": {"library_path": lib, "api_version": "1.4.359"}}, f)
+PYEOF
 sha256sum "$BASE_LIB" | tee -a "$LOG"
 
 # 1. Build candidate
@@ -76,7 +82,7 @@ SO="$MSRC/build/src/asahi/vulkan/libvulkan_asahi.so"
 SHA=$(sha256sum "$SO" | cut -c1-8)
 cp "$SO" "$D/libvulkan_asahi.so.cand-$SHA"
 cat > "$D/cand.icd.json" <<EOF
-{"ICD":{"library_path":"$D/libvulkan_asahi.so.cand-$SHA","api_version":"1.3.0"}}
+{"ICD":{"library_path":"$D/libvulkan_asahi.so.cand-$SHA","api_version":"1.4.359"}}
 EOF
 log "candidate .so sha256:$SHA at $D (no system changes yet)"
 
@@ -90,11 +96,11 @@ run_bench(){ tag=$1; lib=$2; pol=$3
   env VK_DRIVER_FILES="$lib" HK_SUBMIT_POLL_US="$pol" \
     "$MB" --n 2000 --samples "$D/samples.$tag" 2>&1 | tee -a "$LOG"
 }
-run_bench base       "$BASE_LIB"      0
+run_bench base       "$D/base.icd.json" 0
 run_bench cand-off   "$D/cand.icd.json" 0
 run_bench cand-p300  "$D/cand.icd.json" 300
 run_bench cand-p1000 "$D/cand.icd.json" 1000
-run_bench base-again "$BASE_LIB"      0
+run_bench base-again "$D/base.icd.json" 0
 
 # 3. Golden A/B: pass-interleaved, same window. Warm = runs 2+.
 # Parent already holds /tmp/m1-gpu.lock (fd 8) — no nested flock here.
