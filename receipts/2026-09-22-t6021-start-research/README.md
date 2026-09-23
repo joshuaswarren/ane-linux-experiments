@@ -527,3 +527,63 @@ Consequences:
    tail. So IF B8's split reads nonzero (tables built), the park is the
    0x590-onward fetch/abort loop and x28/x29/x30 on a debug vehicle name it
    in one read.
+
+### 7.12 M1 comparison (Main gate): no Linux driver starts ANE firmware on ANY SoC — and the m1n1 write-arm register set
+
+Premise correction (Main's question "what does T8103/T6001 get that T6021
+lacks"): **no Linux driver starts the ANE CPU on any SoC.**
+- The t8103 oracle (`m1n1 fw/ane.py`, W7's source, re-verified this lane):
+  `power_up()` writes ONLY the island ps SET words 0xf (line 66-71); grep
+  finds NO CPU_CONTROL (engine+0x1400044) and NO RVBAR (0x1050000) write in
+  the file. The H13 flow is host-task-manager: the fw is not on the
+  inference path at all.
+- The Asahi ane-accel driver (t8103/t6000) has no rtkit, no fw load, no CPU
+  start (fw-start receipt §1).
+- arm-b §1.4: with iBoot-released selene (bit0=1) the kext NEVER touches the
+  boot path — iBoot both stages and releases selene on macOS boots
+  ("pre-loaded"=<1>).
+So T8103/T6001 Linux "works" because the H13 host-TM model needs no firmware
+RPC; T6021 has a firmware-owned TM and selene is REQUIRED — and the Asahi
+boot chain never stages/releases it (iBoot-main is the replaced stage).
+T6021 does not lack a driver feature; it lacks iBoot-main's ANE init.
+
+### 7.13 ROM-handoff register set for the m1n1 write-arm (and the mode-bits park theory)
+
+Good news first: **selene consumes NO physical-base register from the ROM.**
+The load base is the in-image stamp at vm 0x423C (§7.9); every other entry
+value (x9/x13/x14/x15/x17/x20/x21, TCR/MAIR/TTBR/SP) is computed in-image
+from the stamp, image config words ([0xedf90]/[0xedf98], [0xb4150] per-core
+SP table), MPIDR, and ID_AA64MMFR0. x0 (the one ROM register) is only saved
+and forwarded (x7->x11->C-main x5) — its semantics are downstream and macOS
+tolerates whatever iBoot leaves, so the write-arm needs no secret register
+values.
+
+The write-arm obligation list (B9), in order:
+1. Quiesce-context power-cycle of ane_cpu (ps@2e0 TARGET 0 -> poll -> 0xf):
+   the ONLY lawful latch clear (bit0 must read 0 before RVBAR is writable —
+   s23 write-ignored-while-set; s24 forbids the ps cycle from kernel).
+2. Stage selene at a CONTIGUOUS carveout, VM-layout; patch vm 0x423C pair to
+   the carveout's dart-ane0 IOVA base (0x10000000000) — §7.9 recipe.
+3. dart-ane0: stream-0 mapping carveout IOVA -> carveout PA; TTBR shared to
+   inst1/2; TCR translate + ENABLE (v6 arm already does this).
+4. **RVBAR (engine+0x1050000) writeq WITH THE KEXT MODE BITS**:
+   0x0081000000000001 | (entry & 0xFF7EFFFFFFFFF800), entry = 0x10000000000.
+   The kext compose formula (rvbar-width receipt) already encodes this; our
+   live latch 0x10000000001 lacks bits 55/48 exactly.
+5. CPU_CONTROL 0 -> 0x10; poll SCRATCH7 == 0x08042006; B8 split readback.
+
+**Mode-bits park theory (now the prime suspect for the ROM-entry park):**
+the live latch 0x10000000001 lacks bits 55/48; a plausible ROM semantic is
+that the mode bits route the ROM's entry FETCH through the DART (or select
+translate-vs-bypass). Without them the ROM fetches the entry physical /
+unrouted -> nothing at 0x10000000000 -> pre-selene park with zero SCRATCH,
+zero dart faults (bypass = no DART involvement), STOPPED cleared — exactly
+B8's verdict "park in the ROM entry path", and exactly why B7's in-image
+patch changed nothing (selene never ran to read it).
+Cheaper-fix check: no ADT flag or boot policy can substitute — `pre-loaded`
+is an iBoot OUTPUT, not a policy input; the latch reset requires the
+quiesce power-cycle. The macOS-side provenance read (their discriminator 1)
+cannot observe the macOS-state latch (warm reboots re-run iBoot1 which
+re-stamps it), so B9 above is itself the decisive experiment: if mode bits
++ lawful latch clear moves the park, root cause lands; if not, the fault
+triple (x28/x29/x30, §7.11) on a debug vehicle is next.
