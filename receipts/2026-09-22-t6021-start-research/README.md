@@ -605,3 +605,30 @@ step_c_map_selene maps len(fw_blob) flat (0x1a0000, no VM segmentation, no
 zero-fill) — fix before that route is ever used. Note also the two
 validator trees disagree on the constant (omarchy-ane 0x500000 = pinned
 authority per boot.c cfg_size; tools/ 0x400000 legacy).
+
+### 7.15 H13 architecture correction (AnePerfRoute, primary evidence) — refines §7.12's framing
+
+AnePerfRoute (lane/ane-perf-route) corrected the "H13 host-TM model"
+framing with primary evidence, and this lane accepts it: the H13
+architecture is the SAME iBoot-preload + kext-RPC family as H14 —
+BuildManifest enumerates ANE firmware per family (h13_ane_fw_styx_j5x.im4p,
+t600x_ane0/1/2/3_fw_eos_jc3x.im4p per-engine, selene/t602x, erebus/t603x);
+the H13 kext (9.512.0 fixture) carries full RTBuddy client infra + Chinook
+ASC registers, and its init fn @0xfffffe000931ffc4 does RVBAR write
+(engine+0x1050000, same offset) unless dev+0xdb bit0 is latched,
+CPU_CONTROL 0->0x10 via helper 0x9353050, polls SCRATCH7==0x08042006, then
+CSNE_CMD_CH_PROPERTY_WRITE (0x001f) incl. FW perf mode. Zero TM/TQ sites in
+the H13 kext (their kext_scan; matches our K14 finding). The "host-TM"
+description was specific to Eileen's m1n1 experiment flow (fw-less direct
+TM MMIO), NOT the macOS architecture.
+UNCHANGED conclusions that gate on this: no Linux driver starts the ANE CPU
+on any SoC (verified independently); T6021 lacks iBoot-main ANE init in the
+Asahi chain, not a driver feature; the write-arm B9 recipe stands. New
+cross-SoC datum: SCRATCH7 poll constant 0x08042006 on H13 = H14 — the Apple
+boot-contract constants are family-stable.
+Fixture provenance (their question a): selene rc4x = extracted from the
+macOS 26A428 build on the j414c target as an unwrapped Mach-O
+(sha 9f7915c4...), not from the kext and not a BuildManifest im4p; styx
+(w2/) = same macOS-extraction family, prior lane. BuildManifest im4p hashes
+are the bit-exact boot authority — compare before trusting a fixture for
+boot-chain work.
