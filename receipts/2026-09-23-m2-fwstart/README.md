@@ -240,3 +240,31 @@ Reads via ioremap_np, no writes:
 - pmgr+0xc000 (SET+0) 0x00000000; pmgr+0xc008 through 0xc038
   0x80000000. No known power-state shape.
 - engine+0x570/0x5b8/0x5c0/0x1a9c not read: sub-block base unproven.
+
+## 11. ISP/PRORES raise, restore, and mailbox decode
+
+Reads first. ISP words and prores all ACTUAL=0: isp_cpu/isp_fe/
+isp_vis/isp_be/isp_raw/isp_clr 0x00000300, dprx 0x00000200, prores
+0x00000300, prores children 0. VENC 0x8008-0x8018 were already
+ACTUAL=0xf from the earlier raise.
+
+Approved raise, labeled words only. No DT parent existed for the ISP
+nodes except prores under afnc3_lw0. TARGET=0xf writes: the six ISP
+words latched target (0x30f, dprx 0x2ff) with ACTUAL 0. prores went
+0x300 -> 0x3ff (ACTUAL 0xf). RUN with a new SID 15 TTBR 0x10097771:
+SCRATCH7 0, CPU_STATUS 0x00, no READY. A2I 0x00100101, I2A
+0x00020001. DART ERRORs unchanged.
+
+Restore in reverse order. prores 0x3ff -> 0x900 (ACTUAL 0; was-clkgated
+sticky, not a reopen). All six ISP words back to 0x300/0x200.
+ISP and dprx marked target-latched with ACTUAL 0: gated by another
+controller, not a provable ANE prerequisite.
+
+Mailbox. Mainline ASC layout: FULL bit 16, EMPTY bit 17. A2I
+0x00100101 = FIFOCNT 1, FULL 1, EMPTY 0. The IOP-power-ON message is
+still sitting unconsumed in our send FIFO. I2A 0x00020001: FIFO
+empty, the core has emitted nothing. The core is not consuming.
+
+CPU_STATUS 0x00: no RUNNING, no STOPPED, no IDLE. 0x28 parked with
+STOPPED clear but WFI; 0x00 after the ISP-touching RUN is a state
+with no processor bit set at all.
