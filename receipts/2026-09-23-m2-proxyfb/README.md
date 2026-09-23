@@ -15,3 +15,8 @@ Behavior: 60 s proxy wait with dots, then normal payload boot on timeout.
 - config.h: FB_SILENT_MODE off, EARLY_PROXY_TIMEOUT 60.
 - part 9f04394f (1163264 B): all four wait strings present.
 - boot 7ac6f874 with stock payload tail b73cd565.
+
+## Window six: self-identifying build
+
+- Tag v1.6.1-proxy60-4184923, banner PROXY60 line before the wait.
+- part e5d6777c, boot with stock tail appended (sha below at write time).
