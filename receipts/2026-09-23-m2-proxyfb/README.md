@@ -119,3 +119,19 @@ it. That lock is the blocker to firmware READY.
   sip0 line. It produced neither output nor the 60 s it should have added.
   That contradiction is unresolved. Settling it needs one more boot with a
   marker that cannot be missed, and MaxDispatch is on the box now.
+
+## Trace breadcrumb boot (reboot 22:07:52 UTC)
+
+- Image d740845b, stage 2 v1.6.1-trace. Linux up 22:09:49 (117 s).
+- /proc/device-tree/chosen/asahi,m1n1-trace:
+  trace:S1@338197435;S2@338197454;S3@338659166;S4@1778751031;
+- S1 after usb_init, S2 at the marker, S3 before the wait loop, S4 before
+  the payload. All four ran.
+- Tick deltas at the 24 MHz counter: S1 to S2 is 19 ticks, S2 to S3 is
+  461712 ticks (19 ms), S3 to S4 is 1440091865 ticks = 60.00 s.
+- So the wait runs its full 60 s and then boots the payload. The counter is
+  correct. No proxy connected (it took the timeout path to S4, not the
+  early return). The framebuffer going static is a display refresh problem,
+  not an execution problem: the code runs the whole time.
+- The 113-118 s boots include this 60 s wait. The 146 s boot was slow for
+  another reason, not because the wait ran only then.
