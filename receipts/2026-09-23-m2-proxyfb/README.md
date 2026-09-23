@@ -59,3 +59,47 @@ Behavior: 60 s proxy wait with dots, then normal payload boot on timeout.
 - Note: macOS-boot phys 0x1000092c000 is a hole outside Linux RAM, so a
   reservation does not change what Linux can overwrite there. The value of
   this boot is that the node names give this boot's ADT segment phys.
+
+## aneresv2 boot and the preloaded firmware
+
+- Boot 8d0eac03 returned (21:09:39 UTC, stage 2 v1.6.1-aneresv2).
+- Reserved nodes, no-map, apple,asc-mem:
+  ane-firmware@10000848000 size 0xc4000 (TEXT),
+  ane-firmware@10001400000 size 0x438000 (DATA).
+  This boot's ADT places ANE elsewhere than macOS
+  (0x1000092c000/0x1000150c000, sizes 0xe8000/0x284000).
+- TEXT word 0 is 0x14000081, the firmware reset branch. DATA holds
+  structured data. iBoot preloads the ANE firmware on the Linux boot.
+- The firmware's own stamp at TEXT+0x423c is 0x100000c4000, so it expects
+  its data at IOVA 1<<40 + 0xc4000, directly after its text.
+- It is not the selene file: 744964 of 802816 text bytes differ. selene's
+  __TEXT is 0xe8000 and its __DATA vm address is 0xe8000, matching the
+  macOS segment sizes, not this preload. The stamp is the layout to trust.
+- phys 0x10000000000 (the bypass fetch target) begins "ffOH", a firmware
+  object header, not code.
+- SID 0 page table base 0x10012418000 is all zeros.
+
+## RUN attempts
+
+- VENC words read 0 after boot; the ANE islands read ACTUAL 0xf. genpd
+  returned -13; the direct TARGET 0xf write raised VENC. All 15 power
+  words then read ACTUAL 0xf before any engine access.
+- Bypass, SID 15 TCR 0x6: RUN moved STATUS 0x2a to 0x28. No DART fault
+  (bit 31 never set), SCRATCH7 0, I2A empty. The core fetched the header.
+- Translate, SID 15 TCR 0x9, TTBR read back on all three, walk verified:
+  IOVA 1<<40 to TEXT phys, IOVA 0x100000c4000 to DATA phys. The core was
+  already running. CPU_CONTROL 0 for 3 s left STATUS at 0x28. m1n1's ASC
+  has only the RUN bit, so there is no reset short of a power cycle, and
+  the ps@2e0 cycle is the one that freezes the box. Not re-run.
+- Fresh boot (21:16:33 UTC), core confirmed in reset (CTL 0, STATUS 0x2a),
+  map installed first, one RUN: STATUS 0x2a to 0x28 again. CTL 0x10,
+  SCRATCH7 0, I2A empty, no fault. Identical to the bypass result.
+
+## Blocker
+
+The core leaves STOPPED on RUN but parks at 0x28 with no mailbox traffic
+no matter what SID 15 maps. A non-code header and the real firmware,
+mapped where the firmware's own stamp places its data, give the same park.
+The core is not executing. RVBAR is latched at 0x10000000001, missing the
+kext mode bits 0x0081<<48, and bit 0 holds the lock. Nothing safe clears
+it. That lock is the blocker to firmware READY.
