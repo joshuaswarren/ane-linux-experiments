@@ -632,3 +632,15 @@ macOS 26A428 build on the j414c target as an unwrapped Mach-O
 (w2/) = same macOS-extraction family, prior lane. BuildManifest im4p hashes
 are the bit-exact boot authority — compare before trusting a fixture for
 boot-chain work.
+
+### 7.16 Cross-SoC mode-bit confirmation (AnePerfRoute)
+
+The H13 kext's RVBAR compose site ORs the same mode-bit constant:
+0x8100000000000001 (movk #0x81 lsl #48 @0x93203bc in the H13 fixture) —
+identical 0x0081<<48 family value as the T6021 kext target (§7.13 step 4).
+Two consequences: (1) the mode-bit constant is family-stable H13/H14, so
+the m1n1 write-arm's B9 RVBAR value (0x0081<<48 | entry-fold) carries
+cross-SoC corroboration; (2) the live T6021 latch 0x10000000001 (no
+0x0081<<48) deviates from what ANY Apple kext generation expects at handoff
+— strengthens §7.13's mode-bits park theory (ROM entry fetch unrouted
+without them).
