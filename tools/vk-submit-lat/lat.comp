@@ -1,0 +1,9 @@
+#version 450
+#extension GL_EXT_buffer_reference : require
+#extension GL_EXT_scalar_block_layout : require
+layout(buffer_reference, std430, scalar) buffer Out { uint data[]; };
+layout(push_constant) uniform PC { Out out_buf; } pc;
+layout(local_size_x = 32) in;
+void main() {
+    pc.out_buf.data[gl_GlobalInvocationID.x] = gl_GlobalInvocationID.x;
+}
