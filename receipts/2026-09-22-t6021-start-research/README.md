@@ -587,3 +587,21 @@ cannot observe the macOS-state latch (warm reboots re-run iBoot1 which
 re-stamps it), so B9 above is itself the decisive experiment: if mode bits
 + lawful latch clear moves the park, root cause lands; if not, the fault
 triple (x28/x29/x30, §7.11) on a debug vehicle is next.
+
+### 7.14 Correction to §7.13 obligation 2 — staged footprint is the full VM span (M2Boot9)
+
+§7.13's "contiguous VM-layout staging" underspecified the SIZE. The staged
+carveout must be the FULL VM footprint **0x500000**, not the 0x1a0000 flat
+blob: __TEXT vm 0 vmsize 0xe8000, __DATA vm 0xe8000 vmsize 0x284000 (file
+only 0xb8000), __DATA_CONST vm 0x36c000 vmsize 0 — image vmsize ends
+0x36c000, and the FWIM surface semantic carries the tail to 0x500000
+(ANE_FW_BUF_SIZE, ane_fw_validate.h:23-26 + config+0x138; segment pins at
+:52-53). Zero-fill BSS/tail; blob copied to segment offsets; stamp at vm
+0x423C = FW_DVA. Staging the flat blob only would fault-park selene on its
+first BSS/surface access post-MMU — silent, indistinguishable from the ROM
+park. M2Boot9's B9 arm already stages 0x500000 zero-filled.
+Latent same-class bug flagged: scripts/m2-proxyclient/ane_bringup.py
+step_c_map_selene maps len(fw_blob) flat (0x1a0000, no VM segmentation, no
+zero-fill) — fix before that route is ever used. Note also the two
+validator trees disagree on the constant (omarchy-ane 0x500000 = pinned
+authority per boot.c cfg_size; tools/ 0x400000 legacy).
