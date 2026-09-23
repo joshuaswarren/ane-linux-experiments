@@ -103,3 +103,19 @@ mapped where the firmware's own stamp places its data, give the same park.
 The core is not executing. RVBAR is latched at 0x10000000001, missing the
 kext mode bits 0x0081<<48, and bit 0 holds the lock. Nothing safe clears
 it. That lock is the blocker to firmware READY.
+
+## Window eight (reboot 21:22:02 UTC)
+
+- Jwm1UsbHost armed all five capture pieces first. Stage 2 came back
+  v1.6.1-aneresv2. ssh up 21:23:56, 114 s after the reboot.
+- No ACM link. The PD capture shows one 0.4 s data blip at 16:22:09 local,
+  before m1n1 entry, so that was iBoot. After that the chip read flat.
+  No xhci, no ACM, at any point.
+- The camera frames (read directly, not from a report) show the m1n1
+  console through "Boot policy: sip0 = 0" and then the greeter drawn over
+  it. No PROXY60 banner and no usbdbg line in any frame.
+- The binary does contain the banner: built 15:36 from main.c last touched
+  14:22, and the banner printf sits in an unconditional block right after the
+  sip0 line. It produced neither output nor the 60 s it should have added.
+  That contradiction is unresolved. Settling it needs one more boot with a
+  marker that cannot be missed, and MaxDispatch is on the box now.
