@@ -422,3 +422,55 @@ VENC_SYS (299). VENC_SYS flag 0x22 = the same real-ps class as ANE_SYS
 ends in a ps word Linux can raise: **0x2902803e0**. Raise order: 0x2902803e0
 first, poll ACTUAL, then the four leaves. Decoded per Main task; register
 list + raise order delivered to M2FwStart (canonical message) and to Main.
+
+### 7.8 Pre-READY firmware flow + the load-base stamp (M2FwStart's discriminator 3)
+
+Flow from CPU release to the selene READY write (selene rc4x VM addresses,
+direct disasm of the shipped image):
+1. Reset 0x0 -> 0x204: memset _rtk_boot, page tables, TTBR0/1 (0x4ac/0x4b4),
+   MMU on @0x590 (reset-vector receipt + this disasm).
+2. ASM tail 0x744: SP per-core, `br 0x891c4` with ROM/asm handoff x0-x5.
+3. C main 0x891c4: PAC keys, init calls 0x880fc x2, then the boot main.
+4. Boot main **fn 0x71a4** (owns the READY site 0x7360): bl 0x28ec0 registers
+   7 callbacks into global 0x1efe80 and returns immediately (non-blocking);
+   bl 0x5328 returns constant 0xc440; scratch-object writes (global
+   0x1ec4f8; write vtable+0x30 salt 0x5bdd, read vtable+0x28 salt 0x78f7):
+   **slot1 <- 0xc440 (constant), slot2 <- 0x100 (constant)**, slot3 <- arg,
+   slot4 <- arg byte, then slot7 <- 0x08042006 READY; poll for 0xf7fbdff9.
+
+Nothing inside fn 0x71a4 blocks before READY. B4/B5b read SCRATCH all-zero
+=> the park is BEFORE fn 0x71a4 (between MMU-enable, ASM tail, or early C
+main init).
+
+### 7.9 THE LOAD-BASE STAMP — root-cause candidate for the park
+
+- Reset @0x298-0x2b4 reads a 64-bit stamp from the image: `adr x0,#16292`
+  targets **vm 0x423C**; `ldp w0,w1,[x0]` -> x22 = w0 + (w1<<32); pair==0
+  defaults x22 = **0xe8000** (link base — identity VM==PA assumption).
+- @0x2b8-0x2c4: x25 = x22 - 0xe8000 (PA of VM 0). @0x450-0x474: the fw's L1
+  table PHYS pointer x20 = (0x104000 - 0xe8000) + x22 — ALL fw MMU tables
+  map VM 0..0x36c000 -> PA x22...
+- **VERIFIED: the shipped file's pair at vm 0x423C is 0000000000000000**
+  (bytes read directly). Every exact-image staged copy ships x22=0 -> the fw
+  believes it is at PHYS 0xe8000. macOS's iBoot must either load at PA
+  0xe8000 or patch this pair in its staged copy (the shipped file is a
+  template).
+- WHY B4/B5b PARK: staged copy keeps pair=0 -> fw tables map VM->PA
+  0xe8000.. while the CPU runs at PC 0x1000005xx (the alias region). The
+  first instruction fetch after `msr SCTLR_EL1` (MMU on @0x590) goes through
+  the fw's OWN tables — 0x10000000000 is unmapped there -> instruction abort
+  -> VBAR (VM 0) also unreachable at the running PC -> spin. Matches the
+  full B4/B5b signature: STOPPED clears, zero SCRATCH, zero dart faults
+  (DART served the pre-MMU fetch; the abort is internal to the ASC MMU).
+
+B7 RECIPE:
+1. Patch the staged copy's 8 bytes at FILE offset 0x823C (= __TEXT fileoff
+   0x4000 + vm 0x423C) to x22 = 0x0000010000000000: w0@0x823C = 0x00000000,
+   w1@0x8240 = 0x00000100. The fw then maps VM i -> PA 0x10000000000+i and
+   the DART alias composes into identity-through-alias.
+2. Patch AFTER the sha-pinned validate; re-hash the patched image.
+3. Stage physically CONTIGUOUS (the table builder's 16 KiB granule math may
+   emit block mappings; scatter is a secondary fault source).
+4. Observability: fw writes SCRATCH1=0xc440 / SCRATCH2=0x100 BEFORE READY —
+   after the patch any progress is host-visible via SCRATCH1/2; log all
+   eight scratch words after every B7 attempt.
