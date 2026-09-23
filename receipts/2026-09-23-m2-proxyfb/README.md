@@ -20,3 +20,8 @@ Behavior: 60 s proxy wait with dots, then normal payload boot on timeout.
 
 - Tag v1.6.1-proxy60-4184923, banner PROXY60 line before the wait.
 - part e5d6777c, boot with stock tail appended (sha below at write time).
+
+## Window seven: USB debug prints
+
+- src/usb.c: usbdbg lines for each hpm path with idx and ok/FAIL, and each phy bringup idx.
+- part 6c7e4e3c, boot ff485221 with stock tail.
