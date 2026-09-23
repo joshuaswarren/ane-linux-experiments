@@ -13,6 +13,7 @@ D=${3:-/var/tmp/mesa-submit-lat}
 VENV=/var/tmp/v072-venv-fused
 PY=$VENV/bin/python
 LOG=$D/window.log
+mkdir -p "$D"
 log(){ printf "[%s] %s\n" "$(date -Is)" "$*" | tee -a "$LOG"; }
 exec 8>/tmp/m1-gpu.lock
 log "waiting for flock"
@@ -82,7 +83,7 @@ log "candidate .so sha256:$SHA at $D (no system changes yet)"
 # 2. Microbenchmark, 4 arms back-to-back
 MB=$D/vk-submit-lat
 log "building microbench"
-gcc -O2 -o "$MB" "$BSRC/vk-submit-lat.c" 2>&1 | tee -a "$LOG" \
+gcc -O2 -o "$MB" "$BSRC/vk-submit-lat.c" -lvulkan -lpthread 2>&1 | tee -a "$LOG" \
   || { log "bench build failed"; flock -u 8; exit 3; }
 run_bench(){ tag=$1; lib=$2; pol=$3
   log "== bench $tag =="
