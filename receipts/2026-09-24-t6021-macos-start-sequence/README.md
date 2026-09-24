@@ -593,3 +593,41 @@ phys 0x28e093cc <- 0 on the set window 0x28e08c000. Rationale: it is the
 only non-pmgr, non-DART, non-CPU, non-mailbox machine write the kext
 makes before ANE_Init that Linux is not confirmed to make. If the live
 box already shows 3/0 there, report and close.
+
+## 20. Write path for the PWGATE word: plain store, RB-polled, cacheability unproven (Main lane)
+
+(1) validatePWGATEReg (0xfffffe00094df6bc): polls the SAME register it
+was asked about. `ldr w8,[x8,x23]` (x8=dev+0x220 base, x23=offset arg);
+`and w8,w21` (mask); `cmp w20` (expected); loop up to 0x1388 iterations
+with a 10 us delay per iteration (mov w0,#0xa; bl delay). For the
+T6021 index-7 path: +0x12cc <- 3 then poll (+0x12cc & 3)==3;
++0x13cc <- 0 then poll (+0x13cc & 1)==0. On timeout it logs and
+continues (no panic). [STATIC-CONFIRMED]
+
+(2) Write helper: NONE. The write is a plain `str w9,[x8,#0x12cc]`
+(kext 0xfffffe00094de558) with x8 = dev+0x220 read via
+`ldr x8,[x19,#0x220]`, guarded only by `cbz x8` (map present). There is
+no IOMemoryDescriptor write method, no device-power-state check, no
+lock, no barrier (no dsb/dmb/isb) between the store and the poll. The
+kext relies on the memory type of the mapping for ordering.
+[STATIC-CONFIRMED]
+
+(3) Memory type: the kext maps index 2 via provider->slot+0x710
+(mapDeviceMemoryWithIndex(2, options=0)) then IOMemoryMap
+getVirtualAddress. With options=0 the IOKit ARM64 default for device
+memory is kIOMapInhibitCache -> Device-nGnRnE (strongly ordered, no
+buffering). No explicit cache-mode flag is passed at the call site.
+[STATIC-CONFIRMED options=0; INFERENCE that IOKit maps it as Device].
+Linux observer: ioremap_np -> Device-nGnRnE as well. The Linux and
+macOS memory types MATCH; ordering is not the discriminator.
+
+Note the observer's `pwg` window is 0x28e092000 (an assumed base, not
+the provider index-2 base; section 19's correction applies). If the
+write-3/readback-0 was through that window it was to an unbound
+address. The kext's own write latches only after EnableANEClocksAndPower's
+PS TARGET sequence on the SAME path (the +0x12cc write comes AFTER the
+0x8008/0x8010/0x8018 PS raise + ACTUAL poll). A vendor register that
+reads 0 after a write of 3, under Device memory with no error, is a
+clock-gated register: the fabric domain that owns it isn't up when
+Linux writes. The correct test order is PS raise -> poll ACTUAL -> then
+the PWGATE write, exactly as the kext sequences it.
