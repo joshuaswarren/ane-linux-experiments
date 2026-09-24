@@ -84,3 +84,33 @@ Per the mesa-repo-migration rule, this branch lives on
 `joshuaswarren/mesa-1`. The honeykrisp fork's CI continues to use the
 default (empty) override; the new code path is gated behind the
 `-Dhk-build-id=<hex>` option.
+
+## Branch status (commit time)
+
+- Branch: `agent/jwm1-vkcreate-buildid-override`
+- Base: `f2cc0d3a` (AGX_SUBMIT_TRACE), i.e. 5 commits behind
+  `remotes/origin/honeykrisp-omarchy` `e5cf3aadb8` (the upstream
+  production branch tip on jw16's clone).
+- Rebase onto current production: not attempted in-session (jw16's
+  git fetch hung; the agent session has no push auth to origin
+  either, so the rebase can only be done by whoever pushes). My
+  changes touch different files than the 5 production-ahead commits
+  (mine: meson.options, hk_instance.c, meson.build; theirs:
+  cdm-barrier trim commits, sin FPZ, coopmat default), so the rebase
+  is expected to apply cleanly with no conflicts. The patch file
+  survives any rebase because it's a 3-file diff against an
+  identified base.
+- Push to `joshuaswarren/mesa-1`: blocked — push URL is
+  `https://github.com/joshuaswarren/mesa-1.git`, no stored credentials
+  in the agent session, ssh-agent has no matching key. Joshua can
+  push directly:
+  ```
+  cd ~/src/mesa-1
+  git fetch /var/tmp/jwm1-vkcreate-wt agent/jwm1-vkcreate-buildid-override
+  git push origin agent/jwm1-vkcreate-buildid-override
+  ```
+  Or apply the patch file (sha256
+  861a35131e9bb8f71c5379108afac316613b36e925f9780859377875853dbd9e):
+  ```
+  git am 0001-hk-build-id-meson-override-for-the-vkCreateIns.patch
+  ```
