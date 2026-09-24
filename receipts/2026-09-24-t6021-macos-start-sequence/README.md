@@ -531,3 +531,59 @@ No SRAM copy exists in the kext path, no SRAM region exists in the ADT,
 and the kext builds the full TEXT DART map with RVBAR pointing at the
 DART IOVA — pointless if the core executed from SRAM. An ASC-local
 tightly-coupled SRAM may exist as hardware, but nothing loads it.
+
+## 19. Non-pmgr/DART/CPU/mbox registers on the 13.5 path: the T6021 list (Main lane)
+
+Boundary statement first. Enumerated every 32/64-bit store whose target
+is a machine register on the executed path power_on_hardware ->
+EnableANEClocksAndPower (T6021 index 7) -> ANE_Init, by scanning each
+function body and classifying each store base. NOT covered (named so
+nobody re-runs this blind): vtable-called helpers behind braa/blraa
+(DART iovmInsert, perf-controller calls), cold-fail blocks, power_off /
+stop / deInit, ANE_Show/Debug paths, user-client and external-method
+dispatch, the perf-counter writer StartPerformanceCounters (per-domain
+0x1c09078/0x1c05058 writes, not on the boot path), and Tunables/data
+fields (all dev+0x3xxx structs).
+
+The complete T6021 non-excluded register list, power_on_hardware through
+the bl to ANE_Init (0xfffffe00094e08ac):
+
+1. PS TARGET/ACTUAL via dev+0x200 (pmgr-mapped ps window):
+   PS+0x8008/0x8010/0x8018 <- 0xf + validatePSReg ACTUAL==0xff
+   (kext 0xfffffe00094de598-0x94de60c, validate 0xfffffe00094df614).
+   Which index-7 path: version 0xa0 -> tab[7] -> 0x94de53c. pmgr by
+   window: EXCLUDED from this list (already match Linux genpd).
+2. PWGATE via dev+0x220 (set-window-mapped register block):
+   conditional on dev+0x3814 bit1 (default 3, bit1=SET on T6021 boot path
+   since the boot-arg read at start() 0xfffffe00094c9428 fails and
+   0xfffffe00094c91cc stores w8=3):
+   PWGATE+0x12cc <- 3 + validatePWGATEReg(3,3),
+   PWGATE+0x13cc <- 0 + validatePWGATEReg(0,1)
+   (kext 0xfffffe00094de554-0x94de58c, validate 0xfffffe00094df6bc).
+   dev+0x220 is built in start() 0xfffffe00094c94f0 from the set-window
+   provider chain (map+getVirtualAddress); the live T6021 set window is
+   phys 0x28e08c000 len 0x4000. So: phys 0x28e092cc <- 3 and
+   phys 0x28e093cc <- 0 (Linux-relative to its own set mapping).
+   [STATIC-CONFIRMED code+value+address; Linux status OPEN]
+3. Pre-CPU ENGINE table via dev+0x1e8 (engine base 0x284000000):
+   ENGINE+0x938/0xa18/0xaf8(+0xaf8) <- 0x01ff01ff
+   (kext 0xfffffe00094df544-0x94df554; the version>=0x80 gate at
+   0xfffffe00094df570 fires for 0xa0, version-gated 0x738/0x798/0x7f8
+   skipped). [STATIC-CONFIRMED; the B4 lane already proved 0xB38/0xB98/
+   0xBF8 clean from kernel context — this is the same table family at
+   the T6021 offsets]
+4. ANE_Init scratch clear + CPU_CONTROL + SCRATCH7 poll (section 12;
+   mailbox untouched: inbox/outbox enables are stubs). Not repeated.
+5. AFE+0x80: RETRACTED (section 16). No other ASCWRAP/coprocessor-config
+   write exists: the outbox-enable/class-0x980 RMW (engine+0x1408114 bit
+   0) is the mailbox item already listed, and no AIC/IRQ, firewall,
+   watchdog, ED/DP-debug, GPIO clock-enable, or tunables store appears
+   in ANY scanned body on this path. clk-enable GPIOs (0x1840050+ family)
+   are the ANE_Init scratch clears, not clocks.
+
+Ranked test (the single remaining unknown with a physical address):
+PWGATE set+0x12cc <- 3 and set+0x13cc <- 0, i.e. phys 0x28e092cc <- 3,
+phys 0x28e093cc <- 0 on the set window 0x28e08c000. Rationale: it is the
+only non-pmgr, non-DART, non-CPU, non-mailbox machine write the kext
+makes before ANE_Init that Linux is not confirmed to make. If the live
+box already shows 3/0 there, report and close.
