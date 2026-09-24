@@ -166,3 +166,50 @@ The static path cannot observe iBoot's own RVBAR write (value and timing).
 M2FwStart-2's hv trace covers exactly that: the write to engine+0x1050000
 between power-on and kext load, which should carry the 0x0081<<48 bits on
 a macOS boot and thereby confirm §1.3's consequence live.
+
+## 6. Parent-ordered follow-up (live M2 result folded in)
+
+Live result (Main, 2026-09-24): engine base 0x284000000, RUN accepted,
+CPU_STATUS 0x2a -> 0x28, outbox write read back 0x00020001 (bit 0 armed),
+then one I2A word 0x000a0000_00000000 at t+0 and 60 s of silence.
+
+1. **Pre-RUN clock/PS order.** `AppleASCWrapV4::initialize`
+   (0xfffffe0008bc4f10) maps the wrapper registers from the ADT reg
+   entries first; `RTBuddy::_changePowerState` (0xfffffe000b6afe18)
+   raises provider domains before calling the slave's `startCPU`
+   (slot +0x888). The ANE kext calls `enableAneSysClock`, then
+   `enableDeviceClock`/`enableDevicePower` for the single ADT clock-id in
+   dev+0x8f0 (0xfffffe00095d1d20-0x95d1d90); the provider call walks
+   parents, so the VENC_SYS rail must grant before the 318-321 leaves can
+   latch ACTUAL. Live box confirms the shape: eight ANE islands
+   `available` on devlinks while VENC_SYS TARGET never reaches 0xf and
+   leaves report without ACTUAL. Linux order: VENC_SYS ps 0x2902803e0
+   TARGET 0xf first, poll ACTUAL, then leaves, then islands, then engine
+   MMIO. [STATIC-CONFIRMED] call order; [INFERENCE, HIGH] VENC_SYS-first.
+
+2. **Image fetch.** macOS is always the preloaded branch:
+   `_hasiBootFirmware` true -> `_dartMapiBootFirmware` maps the ADT
+   segments, dev+0x130 done. Live ADT `segment-ranges` decodes to IOVA
+   0x10000000000 = TEXT phys 0x1000092c000 len 0xe8000, IOVA
+   0x100000e8000 = DATA phys 0x1000150c000 len 0x284000, pre-loaded=1.
+   No SART exists in the ANE path (only ANS2/NVMe has one); DART-only on
+   dart-ane0 stream 0. No boot-arg or pool surface is written before RUN;
+   SCRATCH publish and wake come after READY. [STATIC-CONFIRMED] branch
+   structure and segment decode; [INFERENCE, HIGH] park-on-mismatch.
+
+3. **I2A 0x000a0000_00000000.** `RTBuddyManagementEndpoint::_messageHandler`
+   (0xfffffe000b6c44f8) extracts bits [55:52] as the message type and
+   routes type 1 to `_handleHello` (0xfffffe000b6c5194), type 8 to
+   `_handleEPRollCall`. Type 0xa routes nowhere: the firmware posted once
+   but did not send HELLO. HELLO itself must carry version min/max 0xc in
+   the low halfwords and is answered with a HELLO_REPLY shaped
+   0x20000c000c with the endpoint count in the high half. Verdict: the
+   core left STOPPED and posted a non-HELLO management word, then went
+   quiet — fetch or earliest-boot park, not a mailbox-shape problem.
+   [STATIC-CONFIRMED] dispatch and HELLO shape; [INFERENCE] the 0xa word
+   is a non-HELLO management message.
+
+All three items were delivered to M2FwStart-2 over hub as produced.
+Constraint noted for the retest: no driver bound to 284000000.ane and
+STRICT_DEVMEM=y, so the attempt must go through the installed omarchy-ane
+driver path, not mmap.
