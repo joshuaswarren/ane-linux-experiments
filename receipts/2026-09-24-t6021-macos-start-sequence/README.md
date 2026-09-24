@@ -302,3 +302,16 @@ byte-identical to 13.5 payload DATA vm 0xc4000 (4096/4096, sha
 2b35a8ad). iBoot does not patch DATA: no boot-args area in the first
 4 KB, no host-provided DATA content. Remaining fetch-side variables are
 the segment mapping and clocks, not DATA. [MEASURED + STATIC-CONFIRMED]
+
+## 11. First out-of-map access: payload overruns macOS-boot DATA mapping (Main lane, 2026-09-24)
+
+13.5 payload DATA: vm 0xc4000 vmsize 0x438000 (file 0x3e8000, zerofill
+0x50000 from vm 0x4ac000, end 0x4fc000). macOS-boot segment mapping
+covers DATA vm 0xe8000-0x36c000 only (len 0x284000). Overrun 0x190000
+(vm 0x36c000-0x4fc000): any firmware touch there (BSS tail, heap,
+page tables) faults internally -> VBAR capture -> silent 0x28 park
+with no DART error. Stacks (~vm 0xc1aca18) are inside the mapped,
+file-backed range. Staging requirements: map the FULL 0x4fc000 VM span
+at the DATA IOVA, and zero-fill vm 0x4ac000-0x4fc000 (garbage there
+reads as pointers). Pre-C-main touches no fixed MMIO (verified clean
+0x204-0x900) and no host DATA. [STATIC-CONFIRMED]
