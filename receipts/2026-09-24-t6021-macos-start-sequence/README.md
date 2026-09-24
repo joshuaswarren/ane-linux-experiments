@@ -678,3 +678,24 @@ ps parent chain (ADT devices table, §7.7 rule): 318 PIPE4 -> 317;
 0x290288000 -> 0x290288008/10/18 (ME1 @+0x8020 is not on the index-7
 path). Then PWGATE index-2 +0x12cc <- 3 / +0x13cc <- 0 (base from the
 provider's reg entry [2]), then CPU_CONTROL. [STATIC-CONFIRMED order]
+
+## 23. PWGATE base: section-19 correction withdrawn; PWGATE is non-gating (Main lane)
+
+start() x22 is the IOService provider arg, which for H11ANEIn IS the
+ane0@84000000 nub. Its index-2 memory = the "set" window 0x28e08c000.
+The section-19 "some other parent, base unbound" correction was wrong;
+M2FwStart-2's base (0x28e08c000 + 0x12cc / + 0x13cc) is the kext's third
+map. [STATIC-CONFIRMED provider identity from x22 = start(provider)]
+
+PWGATE +0x12cc <- 3 / +0x13cc <- 0 reads back 0/0 on Linux even with
+VENC up. validatePWGATEReg polls (v&3)==3 / (v&1)==0 for 0x1388 x 10us
+and then LOGS AND CONTINUES into ANE_Init — the kext does not gate the
+CPU release on this readback. A stuck PWGATE is tolerated by the kext;
+it is not a stop condition and not the release blocker. [STATIC-CONFIRMED]
+
+With VENC_SYS/VENC_DMA/PIPE4/PIPE5/ME0 all 0x3ff, every register the
+kext writes before ANE_Init is now accounted for on the Linux side.
+Release directed: scratch clear (engine+0x1840050..0x184006c), skip
+RVBAR (bit0 set), CPU_CONTROL 0 then 0x10, poll engine+0x184006c for
+0x08042006, 60 s, log CPU_STATUS + outbox. This is the first Linux
+release with the kext's full pre-RUN register set.
