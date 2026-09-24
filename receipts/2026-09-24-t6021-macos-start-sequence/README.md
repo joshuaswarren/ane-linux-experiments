@@ -699,3 +699,30 @@ Release directed: scratch clear (engine+0x1840050..0x184006c), skip
 RVBAR (bit0 set), CPU_CONTROL 0 then 0x10, poll engine+0x184006c for
 0x08042006, 60 s, log CPU_STATUS + outbox. This is the first Linux
 release with the kext's full pre-RUN register set.
+
+## 24. VENC-up release negative: the register set is closed, RVBAR is the remaining variable (Main lane)
+
+M2FwStart-2 (omarchy-ane 2512a6d), fresh boot, full kext pre-RUN set
+incl. VENC_SYS/VENC_DMA/PIPE4/PIPE5/ME0 at 0x3ff, scratch cleared
+(0x1840068/0x184006c incl.), CPU_CONTROL 0 -> 0x10: STATUS 0x2a -> 0x28,
+SCRATCH7 0, outbox empty, ERROR words unchanged, 60 s. PWGATE 3/0 still
+0/0 (non-gating, section 23). [MEASURED]
+
+Conclusion: every host-side register the 13.5 kext writes before and at
+ANE_Init is now matched on Linux, and the core still parks. The
+discriminator is therefore not a host register. It is the one word the
+kext deliberately leaves alone on this box: RVBAR. ANE_Init reads
+engine+0x1050000 and, with bit 0 set (live latch 0x10000000001), skips
+its own compose — which would write (entry & 0xFF7EFFFFFFFFF800) |
+0x0081<<48 = 0x8100000000000001, the H13/H14 family value (09-22 §7.16).
+macOS never runs on a latch missing 0x0081<<48 because iBoot writes it;
+the Linux boot inherits a latch without those bits and the
+skip-if-locked rule preserves it. [STATIC-CONFIRMED kext logic;
+INFERENCE, HIGH that the missing mode bits are the fetch-park cause]
+
+Not repairable from the static side or from EL1 (locked RVBAR; ane_cpu
+power-cycle is s24-fatal from kernel context, §7.12/§7.13). Remaining
+move is dynamic: the m1n1 hv trace on a macOS boot capturing iBoot's
+write to engine+0x1050000 (value + timing). If it carries 0x0081<<48,
+the fix is a pre-kernel (m1n1) RVBAR compose before the lock, not a
+driver change. Static lane closed on this question.
