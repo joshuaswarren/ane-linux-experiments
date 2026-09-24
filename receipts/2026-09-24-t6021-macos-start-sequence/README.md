@@ -315,3 +315,42 @@ mapped exactly that — mapping requirement WITHDRAWN. OPEN: the
 zerofill (vm 0x4ac000-0x4fc000 must read zero; garbage reads as
 pointers). Stacks (~vm 0xc1aca18) stand as mapped and file-backed. Pre-C-main touches no fixed MMIO (verified clean
 0x204-0x900) and no host DATA. [STATIC-CONFIRMED]
+
+## 12. 13.5 kext: writes before CPU_CONTROL (Main lane, 2026-09-24)
+
+Source: 13.5 kernelcache, com.apple.driver.AppleH11ANEInterface
+(H11ANEIn). The 13.5 ANE kext starts the ASC itself in
+H11ANEIn::ANE_Init (0xfffffe00094e0cfc); it does not go through the
+A7IOP/RTBuddy startCPU path. [STATIC-CONFIRMED]
+
+Ordered writes in ANE_Init, engine base 0x284000000, before and
+including the CPU release. Offsets are the T6021 (ane-type 0xa0)
+column of the per-version tables at 0xfffffe00073a0148+ (index
+(version-0x40)>>4 = 6). [STATIC-CONFIRMED]
+
+1. Clear eight scratch registers to 0: engine+0x1840050, +0x1840054,
+   +0x1840058, +0x1840060, +0x1840064, +0x1840068, +0x184006c, and the
+   eighth from the same table column. Code 0xfffffe00094e0e34-0x94e0e58.
+2. RVBAR (engine+0x1050000): read, and write
+   (entry & 0xFF7EFFFFFFFFF800) | (0x81<<48) ONLY if bit 0 is clear.
+   Code 0xfffffe00094e0e68-0x94e0f18. On the live box the latch has bit 0
+   set, so this write is skipped. The kext never rewrites a locked RVBAR.
+3. CPU_CONTROL (engine+0x1400044): write 0, then write 0x10 (bit 4).
+   Code 0xfffffe00094e0f24-0x94e0f34. This is the release.
+4. Entry-address register (engine+0x1840068): written only if dev+0x94
+   is nonzero. dev+0x94 is a boot-arg (start() 0xfffffe00094cbb1c), zero
+   on a normal boot, so this write does not happen. Code 0xfffffe00094e0f38.
+5. Poll engine+0x184006c for 0x08042006 (READY), up to 1000 iterations.
+   Code 0xfffffe00094e0f54-0x94e1018.
+
+Conclusion: on the preloaded, RVBAR-latched path the kext writes NO fetch
+base before the CPU release. The fetch address is entirely iBoot's RVBAR
+latch (0x10000000001 = lock bit | IOVA 0x10000000000, the ADT
+segment-ranges TEXT IOVA). The kext's only translation setup is
+H11ANEIn::mapFwCTRRRegion (0xfffffe00094cd210), which DART-maps the ADT
+segment-ranges through the ane mapper (dev+0x248) before ANE_Init runs;
+the IOVA base comes from the mapper's own reservation, not from a kext
+register write. [STATIC-CONFIRMED] the no-fetch-base conclusion;
+[INFERENCE] that the fetch succeeds only if the DART already translates
+the RVBAR IOVA, which iBoot must have programmed since the kext's
+reservation base is not pinned to 0x10000000000 by any kext-side constant.
