@@ -1,0 +1,30 @@
+phys	width	value	kext_addr	kind	safety	note
+0x28e0802e0	4	0x0000000f	0x95d0e08	WR	PS-SAFE	ane_cpu TARGET; genpd-owned; DO NOT reissue
+0x28e08c000	4	0x0000000f exp 0xff mask 0xff	0x95d0e40	WR+VAL	PS-SAFE	validated gate
+0x28e08c008	4	0x0000000f	0x95d0ed8	WR	PS-SAFE	validate at next VAL row
+0x28e0803c8	4	0x0000000f exp 0xff mask 0xff	0x95d0f30	WR+VAL	PS-SAFE	
+0x28e09359c	4	0x00000000 exp 0 mask 3	0x95d0f88	WR+VAL	SAFE	first non-ps write T6021 path; T6001 third-window base TBD
+0x28e0803c8	4	0x00000000	0x95d0fe0	WR	PS-SAFE	clear variant
+0x28e08c000	4	0x0000000f exp 0xff mask 0xff	0x95d1020	WR+VAL	PS-SAFE	
+0x28e09448c	4	0x00000000 exp 0 mask 3 (shared tail 0x95d14e0)	0x95d1078	WR+VAL	SAFE	
+0x28e08c008	4	0x0000000f exp 0xff mask 0xff	0x95d1094	WR+VAL	PS-SAFE	
+0x28e0922dc	4	RD then RMW AND-clear bits30/31; exp 0 mask 0x30000000	0x95d121c	RD+WR+VAL	SAFE	only RMW in list
+0x28e0802e0	4	0x00000000	0x95d1294	WR	PS-SAFE	clear variant
+0x28e08c000	4	0x0000000f exp 0xff mask 0xff	0x95d12f0	WR+VAL	PS-SAFE	
+0x28e09596c	4	0x00000000 exp 0 mask 3 (shared tail)	0x95d133c	WR+VAL	SAFE	
+0x28e090000	4	0x0000000f exp 0xff mask 0xff	0x95d1438	WR+VAL	PS-SAFE	
+0x28e094d8c	4	0x00000000 exp 0 mask 3	0x95d149c	WR+VAL	SAFE	two consecutive WR sites 0x95d149c/0x95d14d4
+0x28e08c000	4	0x00000000	0x95d1518	WR	PS-SAFE	clear
+0x28e09e000	4	0x00000000 exp 0 mask 3	0x95d1560	WR+VAL	SAFE	PWGATE-window 0xc000, distinct from PS 0xc000
+0x28e08c008	4	0x00000000 exp 0xff mask 0xff	0x95d15a4	WR+VAL	PS-SAFE	clear + validate
+0x28e090000	4	0x0000000f exp 0xff mask 0xff	0x95d15f4	WR+VAL	PS-SAFE	
+0x28e095b6c	4	0x00000000 exp 0 mask 3	0x95d164c	WR+VAL	SAFE	
+0x28e090000	4	0x00000000	0x95d169c	WR	PS-SAFE	clear tail
+0x285050000	8	SKIP iff bit0 set else 0x0081000000000001|(entry&0xff7efffffffff800)	ANE_Init legacy only	COND	UNSAFE-READ ok (read64 proven); WRITE forbidden when latched	RVBAR: read allowed, write skipped live
+0x285400044	4	0 then 0x10	_runCPU 0x8bc5180	WR	SAFE	CPU release; observer already does this
+0x285408114	4	RMW set bit0	_enableOutbox 0x8bc5628	WR	SAFE	outbox enable; 0x20001 readback = armed
+0x285840048	4	0 x8 + SCRATCH6 sel	InitANEScratch 0x960f2a8	WR	SAFE	zero all eight on RTBuddy path
+0x285400048	4	READ ONLY poll	-	RD	UNSAFE	CPU_STATUS reads: T6001 STOPPED-gate artifact risk; read once, compare, no poll loop
+0x285010000	4	NEVER	-	NONE	UNSAFE	unclocked CoreSight: reads hang (rung 7)
+0x285050000+ASCWRAP	-	NEVER (T6001)	-	NONE	UNSAFE	T6001 ASCWRAP-class reads hard-reset (h13-fw-perf 2b)
+pmgr>SET+0x38 (T6001)	4	NEVER (T6001)	-	NONE	UNSAFE	T6001 pmgr grant beyond SET+0x38 read-hostile (4 resets)
