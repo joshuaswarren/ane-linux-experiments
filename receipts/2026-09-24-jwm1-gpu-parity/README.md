@@ -311,3 +311,22 @@ pre-prune patched stack (bit-exact at full length).
 FINAL ROW (n=100): decode 37.36 / ttft 49.98 / prefill-512 234.14 /
 e2e 1.0893 s vs macOS 47.05 / 99.12 / 343.73 / 0.7898 =
 0.79x / 0.50x / 0.68x / 0.72x — all FAIL, decode gap now 1.27x.
+
+## CORRECTED patched-path budget (profiler field mapping decoded)
+
+The profiler's `e` field = ComputeKernel enum, `h` = host cost ns,
+`op` = params.operation. The "unnamed-elementwise 45.7%" bucket is
+NOT a cast chain: it is **QmmVecQ4MultiSubgroupBF16** (enum 414; 96
+launches/tok across grids 768/256/260/640 = FFN/attn/GDN q4 weight
+streams; 18.2 ms/tok profiled) + FusedChainF32 (enum 312, 18/tok,
+already fused). The GDN state is ALREADY f32-resident (cache creates
+state dtype=mx.float32; the raw kernel takes/returns it directly);
+the casts were already folded (raw route + FastNormGatedBF16 +
+GdnConvDecodeBF16). The state-cast fusion has no target.
+
+Corrected budget (real ms/tok): q4-GEMV ~11.8 (roofline floor,
+85-95% efficient — effectively closed at bit level), GPU idle ~7.7
+(23%; 507 dispatches x 2 barriers, CDM per-launch sink ~2.3-2.6 ms
+therein), named swarm ~8 (RMSNorm 8.3%, GatedDeltaUpdate 5.9%,
+Multiply 3.5%, AsType 2.7%). Redirect: the barrier-sink stale-pair
+instrumentation is the next bit-exact lever.
