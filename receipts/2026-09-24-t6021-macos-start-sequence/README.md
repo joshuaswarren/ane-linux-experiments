@@ -823,3 +823,52 @@ message into the dispatcher risks wedging the service loop that is
 currently healthy. Read-only next: AIC enable for line 0x374; extend
 the DATA capture to cover BSS (vm 0x4fa000+); then the boot-args
 surface question.
+
+## 27. READY/HELLO preconditions traced; first unmet = BSS above the capture (Main lane)
+
+READY (0x08042006) sites in payload TEXT (movz #0x2006 + movk #0x804<<16
+pairs): 0x63a8, 0x66a0, 0x6c28, 0x71f0, 0x1515c, 0x1f2ac, 0x1f750. Every
+one is a vtable call through a BSS-resident object ([x25]+0x30 write
+path with w1=7; 0x1515c variant ORs bit0 when w20!=0), or a polled
+compare (0x1f750) / struct store (0x1f2ac: [x19,#0xc] <- READY after a
+0x14-entry dispatch walk). No site writes SCRATCH MMIO directly; all
+need live BSS objects + (for 0x6c28) an endpoint-config struct
+[x19+0x150..0x1b0] with [sp,#0x38]!=0 and [x19,#0x98]!=0.
+[STATIC-CONFIRMED]
+
+HELLO/I2A send: the live outbox is EMPTY, so no HELLO was ever written.
+The park instruction is consistent with the wfi spin at payload 0x71bc
+(the event-wait: notify [x0,#0x120] subscribers, arm via 0x65398 with
+(0,6,1), wfi, b-spin; wakes only on IRQ; CPU_STATUS 0x28 =
+STOPPED-clear + IDLE-set fits wfi). The wake IRQ that matters is the
+ASC INBOX (A2I 0x8800/0x8808, host AIC line raw 0x374). All firmware
+MMIO goes through the runtime MMIO-base table (register-held bases),
+so no static imm scan can name the send site; the path is only
+reachable through the BSS dispatch. [STATIC-CONFIRMED loop shape;
+IRQ identity INFERENCE from transport design]
+
+Live-vs-precondition check (data_venc.bin): the ONLY DATA regions the
+firmware wrote are {0x5d42-flags, 0x6850-table-head, 0x167d0-stack,
+0x1c000-dispatch}. An endpoint-config struct written anywhere in DATA
+would appear as a fifth region — absent, so the 0x6c28 endpoint-config
+sequence never completed: [x19,#0x98] (endpoint object) is still NULL.
+[INFERENCE from absence]
+
+First unmet precondition: NOT nameable from the current capture. The
+capture is 0x430000 B (SEG1+0x0..0x430000 = vm 0xc4000..0x4f4000) but
+every BSS arena the preconditions live in is ABOVE it: stack/heap
+0x4fa000/0x4fae10 (the live stack's own pointers prove use),
+dispatch-list head [0x4faa20], flags 0x4fab69/0x4fab74, subscriber
+arrays. File state there is zerofill; live state is UNKNOWN — a 0x6000+
+blind spot exactly where the blocker must be. [FACT sizes; INFERENCE
+that the blocker is inside]
+
+Coordinated reads (sent to M2FwStart-2): (1) /proc/irq/884 ABSENT is
+EXPECTED, not evidence — the mailbox driver is unbound, and the IRQ the
+firmware waits on wakes the ASC core through ASC/AIC fabric, not
+through a Linux IRQ line; do not chase it. (2) Extend the DATA reader
+to cover SEG1+0x436000..0x438000 (DATA vm 0x4fa000..0x4fc000, 8 KB) plus
+stack to 0x17000: if BSS dispatch heads/endpoint objects are populated,
+the firmware is past endpoint-config and the blocker is the HELLO-send
+path; if zeros, endpoint bringup never completed. (3) Boot-args surface
+(G6/Item3) stays second priority behind the BSS read.
