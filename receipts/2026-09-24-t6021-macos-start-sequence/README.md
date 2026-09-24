@@ -354,3 +354,63 @@ register write. [STATIC-CONFIRMED] the no-fetch-base conclusion;
 [INFERENCE] that the fetch succeeds only if the DART already translates
 the RVBAR IOVA, which iBoot must have programmed since the kext's
 reservation base is not pinned to 0x10000000000 by any kext-side constant.
+
+## 13. mapFwCTRRRegion: DART translation the kext builds (Main lane, 2026-09-24)
+
+iBoot leaves all three ANE DARTs empty (ENABLE=0, TTBRs 0). The kext
+builds the translation in H11ANEIn::mapFwCTRRRegion (0xfffffe00094cd210),
+called from H11ANEIn::start (0xfffffe00094ca4a0) BEFORE ANE_Init's
+CPU_CONTROL write. [STATIC-CONFIRMED]
+
+### What it maps, and where
+
+- Reads ADT "segment-ranges" (dev+0x180 provider, getProperty "segment-ranges"
+  at 0xfffffe00094cd28c). Two 32-byte entries: TEXT and DATA, each
+  phys/size/IOVA. Builds an IOMultiMemoryDescriptor and calls the ane
+  mapper (dev+0x248) iovmMapMemory (vtable slot 0x890) then iovmInsert
+  (slot 0x8a0) per segment with prot=3. Code 0xfffffe00094cd464-0x94cd684.
+- The mapper is dart-ane0 (ADT node, compatible "dart,t8110", page-size
+  0x4000, vm-base 0x10000000000, vm-size 0x30000000000). SID property
+  "sid" = <0, 15>: SID 0 is the translated stream, SID 15 is the bypass
+  stream ("bypass-15" present). The kext maps into SID 0. [STATIC-CONFIRMED]
+  from the ADT dump /tmp/m2kstart/dart-ane0-dt.txt.
+
+### PTE format (T8110 DART2, from the PPL builder)
+
+The actual PTE write is in XNU's PPL IOMMU driver (__PPLTEXT
+0xfffffe0008bf9820): PTE = (phys >> 12) & 0x3ffffffc, then one protection
+bit inserted at bit 31 (bfi w24, w23, #31, #1). No other protection or
+attribute bits are set. So a mapped firmware page is:
+  valid (bit 0 set by the builder's caller path), bit 31 = the single
+  prot flag, and bits 1/2/3 (NO_CACHE/NO_WRITE/NO_READ) all CLEAR.
+[STATIC-CONFIRMED] the builder writes only bit 31 besides the address.
+
+### The difference from Linux
+
+Linux io-pgtable-dart (APPLE_DART2) sets bit 1 (NO_CACHE) on any mapping
+that lacks IOMMU_CACHE. The ANE firmware map goes through iommu_map
+without IOMMU_CACHE, so Linux marks the firmware pages uncached. macOS's
+PPL builder never sets that bit: the firmware TEXT and DATA are mapped
+cached. A cached-vs-uncached mismatch on the fetch path is a candidate
+for the silent fetch fault. [INFERENCE, HIGH] pending a read of the live
+PTE to confirm bit 1 is clear on macOS and set on Linux.
+
+### SID and instance programming
+
+registerMapper (AppleT8110DART::registerMapper, 0xfffffe0009bfef98) calls
+the PPL SID-config writer (0xfffffe0008bfe380), which writes per-SID:
+  TTBR at hw_base + 0x1400 + sid*4 (the shifted table address),
+  TCR/config at hw_base + 0x1000 + sid*4 (value from the SID context,
+  bit 31 cleared).
+enableTranslation (0xfffffe0009bff354) writes the enable/disable command
+through the PPL (cmd 0x8114/0x8115). TLB invalidate is a write of 0 to
+hw_base+0x80 (0xfffffe0008bfe590). [STATIC-CONFIRMED]
+
+### Order relative to CPU_CONTROL
+
+1. H11ANEIn::start: mapFwCTRRRegion (DART map, SID 0, cached PTEs).
+2. Later, on power-on: ANE_Init clears scratch, skips the locked RVBAR,
+   writes CPU_CONTROL 0 then 0x10, polls SCRATCH7.
+The DART translation is fully in place before the CPU release. There is
+no separate "mark as firmware/code" register write; the only distinction
+is the PTE attribute bits above. [STATIC-CONFIRMED]
