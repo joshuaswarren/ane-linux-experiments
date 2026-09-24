@@ -631,3 +631,28 @@ reads 0 after a write of 3, under Device memory with no error, is a
 clock-gated register: the fabric domain that owns it isn't up when
 Linux writes. The correct test order is PS raise -> poll ACTUAL -> then
 the PWGATE write, exactly as the kext sequences it.
+
+## 21. PS window correction: the 0x8008/0x8010/0x8018 writes are VENC, not ANE (Main lane)
+
+M2FwStart-2's index-7 retest wrote 0xf to 0x28e088008/10/18 and read
+0x2f forever (TARGET latched, ACTUAL not granted). Root cause is the
+window, not the write. dev+0x200 is provider index-1 (start()
+0xfffffe00094c9038, slot+0x710 w1=1, options=0, no explicit length).
+The receipt that decoded the T6021 pmgr devices table
+(receipts/2026-09-22-t6021-start-research §7.3, §7.7) already placed
+the kext's +0x8008/+0x8010/+0x8018 in ps-regs[15] = window2 + 0x8000 =
+0x290288000: VENC_PIPE4 @0x290288008, VENC_PIPE5 @0x290288010, VENC_ME0
+@0x290288018 (+VENC_ME1 @0x290288020). 0x28e088008 is not a ps word.
+[STATIC-CONFIRMED kext offsets + prior receipt decode; the live window
+identity is M2FwStart-2's to confirm from the provider's reg entry [1].]
+
+validatePSReg (0xfffffe00094df614): ldr w8,[ps+off]; and mask; cmp
+expected; 0x1388 x 10us; log+continue. All three index-7 writes use
+mask=expected=0xff: it waits for the low byte to read 0xff (TARGET 0xf
+and ACTUAL 0xf). 0x2f = TARGET latched / ACTUAL 0 is the leaf-only
+signature §7.7 already recorded live: power-up grants parents-first.
+Parent chain: VENC_DMA(317) -> VENC_SYS(299, real ps, map 11/28 =
+0x2902803e0) -> AVEMSR-V(519, virtual, no write). Correct order:
+0x2902803e0 <- 0xf, poll low byte 0xff; then 0x290288008/10/18 <- 0xf,
+poll each; THEN the PWGATE pair on provider index-2 (base bound from
+the provider's reg entry [2], not assumed 0x28e08c000).
