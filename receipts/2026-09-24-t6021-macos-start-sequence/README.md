@@ -213,3 +213,52 @@ All three items were delivered to M2FwStart-2 over hub as produced.
 Constraint noted for the retest: no driver bound to 284000000.ane and
 STRICT_DEVMEM=y, so the attempt must go through the installed omarchy-ane
 driver path, not mmap.
+
+## 7. Post-RUN to HELLO: nothing from the host (M2 offline, committed for the resume)
+
+Live state this answers: RUN via ioremap accepted, STATUS 0x2a -> 0x28,
+single I2A word 0x000a0000_00000000, 60 s silence, SCRATCH all zero,
+outbox 0x20001.
+
+1. **No host-to-IOP A2I send between `_runCPU` and HELLO**
+   [STATIC-CONFIRMED]. `startCPUWithOptions` (0xfffffe0008bc87bc) ends at
+   `_runCPU` and returns; `RTBuddy::_performPowerStateChangeGated`
+   proceeds to `RTBuddyFirmware::fixup`, `_setIopStatus(4)`, mailbox-IRQ
+   enable, `wakeQuiesced`, `_iopValidate` — then waits. ANE
+   `SetupFWInitBootArgs` is called only from `SetupEndpoints`
+   (0xfffffe00095fe8a0), which runs after the firmware announces itself.
+   The only pre-handshake A2I word the host sends is the HELLO_REPLY, and
+   only after a valid HELLO.
+
+2. **No SCRATCH or shared-memory write before RUN on this path**
+   [STATIC-CONFIRMED]. `InitANEScratchRegisters` (zeroes eight words via
+   write32 slot +0x18) runs only in the skipped legacy branch. The first
+   thing the firmware reads is what iBoot left: RVBAR entry, mapped
+   segments, clocks. The legacy READY poll (SCRATCH7 == 0x08042006,
+   1000 x 1 ms, 0xfffffe00095e99e4-0x95e9b8c, with a conditional pre-write
+   of dev+0x44c when config+0xec is nonzero) does not run on the RTBuddy
+   path; the wait there is the HELLO with iopStatus 4
+   (kRtbIopStatusWaitingForVersion).
+
+3. **I2A 0x000a0000_00000000, corrected decode** [STATIC-CONFIRMED].
+   Type field is bits [55:52] (`ubfx x21,x20,#0x34,#4` at
+   0xfffffe000b6c4520): type = 0, next nibble [51:48] = 0xa. Type 0 is in
+   no routed case (1 = `_handleHello` 0xfffffe000b6c5194, 4 = PingAck,
+   7 = `_handlePowerAck`, 8 = `_handleEPRollCall`, 0xb, 0xc) and falls to
+   the cold path logging `invalid management message %llx received:
+   type, status` with NO reply sent. Supersedes the §6 item-3 decode (type
+   0xa), which misread the nibble. Valid HELLO needs version min/max 0xc
+   in the low halfwords and is answered with HELLO_REPLY shaped
+   0x20000c000c with the endpoint count in the high half. Verdict: the
+   firmware posted one non-HELLO word and never sent HELLO — fetch or
+   earliest-boot park, and RTBuddy waits forever.
+
+4. **No FIFO pop or IRQ ack gates the firmware** [STATIC-CONFIRMED].
+   `_outbox` (0xfffffe0008bc5504) reads the I2A pair at wrap+0x8830 and
+   `_inbox` (0xfffffe0008bc5520) writes the A2I pair at wrap+0x8800; the
+   polled `getMailbox` path works without interrupts, and the IRQ handler
+   only logs plus runs the command gate. Outbox 0x20001 with bit 0 set is
+   the armed state, not a failure.
+
+Ordered answer delivered to M2FwStart-2 over hub. M2 offline (macOS use);
+M2FwStart-2 reads this branch on resume.
