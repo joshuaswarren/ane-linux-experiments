@@ -446,3 +446,18 @@ SID-enable quote status: NOT YET — enableTranslation
 0xfffffe000857d900; the stream-enable register write itself is not yet
 decoded. bit0=SID0 is inferred from Linux ENABLE=0xfffe + ADT
 sid=<0,15>, not from kext code.
+
+## 15. dev+0x3880 = ANE AFE range; the write is AFE+0x80 <- 1 (Main lane)
+
+dev+0x3880 is built in H11ANEIn::start (0xfffffe00094cae08-0x94cae3c):
+IOMemoryDescriptor (dev+0x3870) -> IOMemoryMap (dev+0x3868) ->
+getVirtualAddress stored at dev+0x3880. The cstring neighborhood names
+this range family "AFE". The power_on_hardware write at kext
+0xfffffe00094e0738 is AFE+0x80 <- 1, gated (start() 0xfffffe00094cab94:
+version==0xa0 requires dev+0xec==0xe0; version 0x60/0x80 unconditionally).
+dev+0xec is the kext-internal "ane-subtype" id (boot-arg 'aneType',
+else derived; default 0 per start() 0xfffffe00094c8868-0x94c8870) — so on
+a default boot the AFE+0x80 write does NOT fire. [STATIC-CONFIRMED
+addresses and gates; AFE functional meaning INFERENCE from the name.]
+Linux writes nothing to AFE+0x80. Test sent to M2FwStart-2: read the AFE
+phys base from the live tree, write 1 to AFE+0x80, 60 s SCRATCH7 poll.
