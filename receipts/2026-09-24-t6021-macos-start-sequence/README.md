@@ -294,3 +294,11 @@ recoverable only via core-register access (m1n1 debug/JTAG), never via a
 reserved-DATA read — do not task a DATA read for it. ROM x0 audit:
 x0→x7→x11→C-main x5, feeding only table-size/mask arithmetic pre-MMU,
 never stored; ROM-provided, not host-writable pre-RUN. [STATIC-CONFIRMED]
+
+## 10. Live DATA == payload DATA (Main lane, 2026-09-24)
+
+4 KB at PA 0x10001400000 (gated observer read, M2FwStart-2) is
+byte-identical to 13.5 payload DATA vm 0xc4000 (4096/4096, sha
+2b35a8ad). iBoot does not patch DATA: no boot-args area in the first
+4 KB, no host-provided DATA content. Remaining fetch-side variables are
+the segment mapping and clocks, not DATA. [MEASURED + STATIC-CONFIRMED]
