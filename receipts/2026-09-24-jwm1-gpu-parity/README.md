@@ -291,3 +291,23 @@ Two defects found + fixed (commit 4ac67cdd3, pushed to origin/main):
 Proof: fresh venv from wheel 9fb8b67 + documented steps -> both routes
 apply, raw op present, one contract pass decode 35.87 / ttft 52.38 /
 prefill 232.45, pin 486872c4 == the main-lineage release-gate digest.
+
+## VOCAB-PRUNE LANDED ON MLX-OMARCHY MAIN (5a7b371e3, second landing)
+
+Greedy head lineage (a213ea10a via agent/vocab-prune-wire) merged into
+main: two build blockers fixed (fuzz-3 for the shifted greedy hunk;
+regenerated mlx-fast-greedy-argmax.patch against the current upstream
+tree — the old patch's hunks no longer matched), whole-bundle dir
+wired. Squash-landed as 5a7b371e3 (tree-identical to the certified
+merge 1a0d67f19; side-lineage intermediate commits carried historical
+macOS paths the per-commit privacy gate rejects).
+
+Gate cycle on t8103: fresh venv (wheel f252747) + GDN fast route + raw
+route + greedy-prune: greedy_quantized_argmax=True,
+gated_delta_update_raw=True. 3-pass digest bc519c03 == f9d7bb2-lineage
+certified 3-pass; 10-pass n=100: pin dbf704971617fdfc == the
+pre-prune patched stack (bit-exact at full length).
+
+FINAL ROW (n=100): decode 37.36 / ttft 49.98 / prefill-512 234.14 /
+e2e 1.0893 s vs macOS 47.05 / 99.12 / 343.73 / 0.7898 =
+0.79x / 0.50x / 0.68x / 0.72x — all FAIL, decode gap now 1.27x.
