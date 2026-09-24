@@ -21,7 +21,7 @@ WT=/var/tmp/jwm1-gpu-parity-wt
 if [ "${SKIP_WHEEL_REBUILD:-0}" = "1" ]; then
   echo "SKIP_WHEEL_REBUILD=1, using stashed wheel from raw/sdpa-hd256/wheels/"
   WHL=$(ls -1 "${SDPA_RAW}/wheels/"*+f9d7bb2*.whl 2>/dev/null | grep -v diag | head -1)
-  [ -z "${WHL}" ] && { echo "no stashed prod wheel in ${SDPA_RAW}/wheels/"; ls -la "${SDPA_RAW}/wheels/; exit 1; }
+  [ -z "${WHL}" ] && { echo "no stashed prod wheel in ${SDPA_RAW}/wheels/"; ls -la "${SDPA_RAW}/wheels/"; exit 1; }
   echo "stashed prod wheel: ${WHL}"
 else
   ( cd "${WT}" && DEV_RELEASE=1 MLX_OMARCHY_WORK_DIR=/dev/shm/m1-sdpabuild ./scripts/build-wheel.sh 2>&1 ) | tee "${SDPA_RAW}/build.log"
@@ -38,7 +38,7 @@ echo "== PHASE 2: build diag wheel at f9d7bb21d =="
 if [ "${SKIP_WHEEL_REBUILD:-0}" = "1" ]; then
   echo "SKIP_WHEEL_REBUILD=1, using stashed diag wheel from raw/sdpa-hd256/wheels/"
   DWHL=$(ls -1 "${SDPA_RAW}/wheels/"*+diag.f9d7bb2*.whl 2>/dev/null | head -1)
-  [ -z "${DWHL}" ] && { echo "no stashed diag wheel in ${SDPA_RAW}/wheels/"; ls -la "${SDPA_RAW}/wheels/; exit 1; }
+  [ -z "${DWHL}" ] && { echo "no stashed diag wheel in ${SDPA_RAW}/wheels/"; ls -la "${SDPA_RAW}/wheels/"; exit 1; }
   echo "stashed diag wheel: ${DWHL}"
 else
   ( cd "${WT}" && MLX_OMARCHY_SOURCE_COMMIT=f9d7bb21d MLX_OMARCHY_WORK_DIR=/dev/shm/m1-profbuild ./scripts/build-wheel.sh --diagnostics 2>&1 ) | tee "${PROFILE_RAW}/diag-build.log"
@@ -68,7 +68,8 @@ done
 
 # Phase 4 — ctl contract (baseline).
 echo "== PHASE 4: ctl contract (baseline) =="
-bash /var/tmp/jwm1-gpu-parity-wt-ane/receipts/2026-09-24-jwm1-gpu-parity/tools/run_contract_window.sh /var/tmp/v072-venv-fused ctl 2>&1 | tee "${CONTRACT_RAW}/ctl.log"
+MODEL_SNAP="${MODEL_SNAP:-$HOME/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/snapshots/0867d98bfb174b042d88461c0e7c97b86b34b381}"
+bash /var/tmp/jwm1-gpu-parity-wt-ane/receipts/2026-09-24-jwm1-gpu-parity/tools/run_contract_window.sh /var/tmp/v072-venv-fused "${MODEL_SNAP}" ctl 2>&1 | tee "${CONTRACT_RAW}/ctl.log"
 
 # Phase 5 — cand contract (SDPA port).
 echo "== PHASE 5: cand contract (SDPA port) =="
@@ -141,6 +142,13 @@ echo "== PHASE 7: profile decode + prefill on installed path =="
     --profile "${PROFILE_RAW}/prof-${TAG2}.jsonl" \
     --markers "${PROFILE_RAW}/markers-${TAG2}.jsonl" \
     --out-prefix "${PROFILE_RAW}/analyze-${TAG2}"
+  # Budget-first deliverable (Main directive): per-token budget that sums
+  # to the measured wall. 17.46 tok/s baseline => 57.27 ms/token.
+  python3 /var/tmp/jwm1-gpu-parity-wt-ane/receipts/2026-09-24-jwm1-gpu-parity/tools/budget_report.py \
+    --profile "${PROFILE_RAW}/prof-${TAG2}.jsonl" \
+    --markers "${PROFILE_RAW}/markers-${TAG2}.jsonl" \
+    --wall-ms 57.27 \
+    --out "${PROFILE_RAW}/budget-${TAG2}.md"
 ) 9>"${LOCK}"
 
 # Phase 8 — SDPA per-shape microbench on cand.

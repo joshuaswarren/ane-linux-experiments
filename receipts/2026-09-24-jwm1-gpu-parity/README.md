@@ -250,3 +250,44 @@ min by reusing the stashed wheels), but requires that the stashed
 wheels actually load — they'll load because pip install on
 `/var/tmp/.../*.whl` reads from the btrfs root, not /dev/shm, and
 the wheels themselves don't depend on /dev/shm content.
+
+## FINAL ROW (patched serving stack, n=100, 2026-09-24 ~16:24 CDT)
+
+New installed Qwen path: wheel 9fb8b67/f9d7bb2 lineage + mlx-lm 0.31.3
++ GDN fast route + GDN raw route (mx.fast.gated_delta_update_raw=True);
+greedy-prune patch self-guarded inert (kernel not in this lineage).
+
+| metric | old row | NEW | macOS | ratio | verdict | delta |
+| --- | ---: | ---: | ---: | ---: | --- | ---: |
+| decode tok/s | 17.46 | 36.37 | 47.05 | 0.77x | FAIL | +108% |
+| ttft tok/s | 20.19 | 50.06 | 99.12 | 0.51x | FAIL | +148% |
+| pure prefill tok/s (512) | 28.68 | 219.2 | 343.73 | 0.64x | FAIL | +664% |
+| e2e s | 2.4195 | 1.1145 (min 1.079 max 1.147) | 0.7898 | 0.71x | FAIL | -54% |
+
+Pin: dbf704971617fdfc — IDENTICAL to the jw16 T6001 10-pass pin
+(cross-host digest identity under the raw-route composition; the old
+bea37f48 row was the eager-composition stream).
+
+## Patched-path budget (directive 3)
+
+dispatches/tok 903 -> 507; Multiply 168 -> 60 launches (38.7% -> 3.5%);
+fused GatedDeltaUpdate 18/tok (one per GDN layer) 5.9%; qmm 23.4%;
+new top bucket: unnamed-elementwise 45.7% (114/tok); idle 16% -> 23%.
+Roofline 22.0 ms/tok; patched wall 27.5 ms = 80% of roofline.
+Next lever: vocab-prune kernel lineage (a213ea10a; kernel not yet in
+main — self-guarded inert today) + the remaining elementwise/qmm split.
+
+## Fresh-install proof (directive 1) — installer fixed on mlx-omarchy main
+
+Two defects found + fixed (commit 4ac67cdd3, pushed to origin/main):
+1. apply-mlx-lm-patches.sh ROOT resolution was wrong for the installed
+   layout (script at $PREFIX root): patches silently missed and the
+   error misreported as "mlx-lm version mismatch". Now detects the
+   installed layout first, errors loudly (exit 4/5) on failure.
+2. The installer shipped only the GDN fast route. Added
+   patches/mlx-lm-gated-delta-raw.patch (14 lines, self-guarded) and
+   apply it by default; install.sh vendors it.
+
+Proof: fresh venv from wheel 9fb8b67 + documented steps -> both routes
+apply, raw op present, one contract pass decode 35.87 / ttft 52.38 /
+prefill 232.45, pin 486872c4 == the main-lineage release-gate digest.
