@@ -138,3 +138,35 @@ deletion of 12057 lines upstream could include touching
 src/asahi/vulkan/hk_instance.c's surrounding code (e.g. includes
 section, build_id.c helpers). Treat this as "verify before push" not
 "verified".
+
+## Push + rebase reality (in-session, 2026-09-24 13:18)
+
+The `mesa-1` repo is configured as a GitHub partial clone
+(`remote.origin.partialclonefilter = blob:none`, set explicitly in
+.git/config — see Mesa's `promisor` settings). A fresh `git fetch`
+or `git clone` against origin therefore does NOT materialize file
+blobs: only commit/tree metadata comes down. To verify the patch
+applies cleanly to current origin/honeykrisp-omarchy, the fetching
+side must override the filter:
+
+  # either disable the filter:
+  GIT_NO_PARTIAL_CLONE_PROMOISE=1 git fetch origin honeykrisp-omarchy
+  # or pick a partial filter that includes the touched paths:
+  git fetch --filter=blob:limit=50m origin honeykrisp-omarchy
+
+After that, the standard apply check works:
+
+  cd /path/to/fresh/checkout/of/origin/honeykrisp-omarchy
+  git apply --check 0001-hk-build-id-meson-override-for-the-vkCreateIns.patch
+
+In-session verification on jw16's mesa-1 clone was attempted via
+the local `\$WORKTREE` repo as a fetch source,
+but that fetch hit the `couldn't find remote ref` error because
+the source repo's `origin` is the GitHub URL (not a local path),
+and a `git init` + `git remote add file:///path` was attempted but
+the FETCH_HEAD was empty because the source still has the partial
+filter set. The patch + branch + worktree remain the durable
+artifacts; the push-side rebase + apply-check is left to whoever
+has the GitHub auth (Joshua).
+
+End of in-session Mesa work on jwm1-vkcreate-buildid-override.
