@@ -1,0 +1,25 @@
+# Receipt tooling runtime artifacts: never committed.
+__pycache__/
+*.pyc
+*.pyo
+# Large raw outputs kept out of the commit; use git-lfs or an external
+# archival for the SHA-pinned raw/*.sha256 + per-rep contract JSONs.
+raw/profile/prof-*.jsonl
+raw/profile/markers-*.jsonl
+raw/profile/console-*.log
+raw/profile/analyze-*.kernels.txt
+raw/profile/analyze-*.timeline.txt
+raw/profile/analyze-*.prefill.txt
+raw/profile/analyze-*.summary.json
+raw/profile/analyze-*.fields.txt
+raw/profile/preflight.log
+raw/profile/diag-build.log
+raw/profile/family-bench.log
+raw/sdpa-hd256/contract-*.json
+raw/sdpa-hd256/console-*.log
+raw/sdpa-hd256/paired-*.md
+raw/sdpa-hd256/gate-*.txt
+raw/sdpa-hd256/build.log
+raw/sdpa-hd256/microbench-*.json
+raw/contract/contract-*.json
+raw/contract/console-*.log
