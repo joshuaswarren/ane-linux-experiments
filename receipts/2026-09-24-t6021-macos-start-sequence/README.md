@@ -477,3 +477,57 @@ to run the write. dev+0xec (ane-subtype) is a version selector inside the
 kext's own switch tables, default 0, and cannot gate fetch. No remaining
 static register candidate in power_on_hardware: PS matches, ENABLE full,
 mapper active, PTE exact. [STATIC-CONFIRMED retraction]
+
+## 17. CPU_STATUS 0x2a vs 0x28: what the bits actually say (Main lane)
+
+Bit authority: m1n1 proxyclient/m1n1/hw/asc.py R_CPU_STATUS (the only
+bit-level source; Asahi rtkit and the 13.5 kext never decode the bits):
+  IDLE=5, FIQ_NOT_PEND=3 (guess), IRQ_NOT_PEND=2 (guess), STOPPED=1,
+  RUNNING=0. m1n1's is_running() = NOT STOPPED.
+
+- 0x2a (pre-RUN, matches ane_t6021.h:87 comment): RUNNING=0, STOPPED=1,
+  FIQ_NOT_PEND=1, IDLE=1. Stopped and idle. [FACT under m1n1 map]
+- 0x28 (post-RUN): RUNNING=0, STOPPED=0, FIQ_NOT_PEND=0, IDLE=1.
+  STOPPED cleared; RUNNING bit still 0; IDLE still set.
+  [FACT bits; semantics below are INFERENCE]
+
+The 13.5 kext never branches on CPU_STATUS for boot: the only
+CPU_STATUS read in H11ANEIn text is the mov w1,#0x48 site in
+DumpANERegisters (0xfffffe00094e2f7c), a log dump. The kext's boot
+decision is the SCRATCH7 poll for 0x08042006, not CPU_STATUS.
+[STATIC-CONFIRMED]
+
+Verdict on premise 1: "0x28 means the CPU runs" is UNPROVEN and, under
+the bit map, likely wrong in the strong sense. 0x28 = not-stopped +
+idle + RUNNING-bit-clear: exactly what a core looks like sitting in a
+wfi-for-IRQ loop, clock-gated, or halted before fetch — the RUN bit
+cleared STOPPED (the write was accepted) without any instruction
+necessarily executing. The fetch-fault theory survives (nothing in 0x28
+contradicts "never fetched"), but the premise must be restated:
+STOPPED cleared proves the CPU_CONTROL write landed, not that the CPU
+executes. Caveat: FIQ/IRQ_NOT_PEND are m1n1 guesses; IDLE=5's exact
+semantics (WFI vs clock gate) are undocumented.
+
+## 18. DRAM vs SRAM: execution is from DRAM through the DART (Main lane)
+
+- ADT ane0: no sram/iram/local-mem property; IODeviceMemory is engine
+  (32 MB) + pmgr + set only. segment-ranges points TEXT/DATA at DRAM
+  phys (0x10000a5c000-class). [FACT, ane0-dt.txt]
+- 13.5 ANE kext cstrings: no "sram" string anywhere in the kext.
+  [FACT]
+- ANE_Init (0xfffffe00094e0cfc) contains no SRAM copy step: clear
+  scratch, RVBAR-if-unlocked, CPU_CONTROL, boot-arg entry reg,
+  SCRATCH7 poll. Nothing copies TEXT anywhere. [STATIC-CONFIRMED]
+- 13.5 payload reset (0x204-0x900): zero MMIO reads pre-main; it builds
+  its own MMU tables over the loaded segments and executes in place
+  (reset head vm0 = b +0x204). [STATIC-CONFIRMED]
+- Live DATA == payload DATA byte-identical across the RUN attempt
+  proves the DRAM contents survive island power-gating: DRAM is not
+  gated with the ANE domain, so "iBoot's copy was lost at power-gate"
+  is FALSIFIED. [MEASURED]
+
+Verdict on premise 2: execute-from-DRAM-through-DART [INFERENCE, HIGH].
+No SRAM copy exists in the kext path, no SRAM region exists in the ADT,
+and the kext builds the full TEXT DART map with RVBAR pointing at the
+DART IOVA — pointless if the core executed from SRAM. An ASC-local
+tightly-coupled SRAM may exist as hardware, but nothing loads it.
