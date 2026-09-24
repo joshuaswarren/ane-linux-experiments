@@ -321,6 +321,27 @@ Gate battery 1 (window 20260924T191439Z, trap-restored):
   any kv-direct group (kv-direct keeps the exact unfused stream); full
   battery rerun; ANY digest miss = final-REJECT.
 
+## 9. ADDENDUM 4: norm-fold FINAL-REJECT (kv-direct refuted; probable root class)
+
+Bounded iteration (wheel bfbf7581, sha256 a5bb05e6...; planner excludes
+kv-direct groups from the prologue; branch tip 8b5610e6): battery
+20260924T200550Z — buildEq PASS bc519c03 @ 77.28; gate 1 **FAIL
+44/320 flips, max|d_top1| 10.375, prompt 7 — BYTE-IDENTICAL signature
+to the pre-fix run**. kv-direct hypothesis refuted; final-REJECT per
+protocol; v072 untouched through both batteries; service restored +
+completion probe ok after each window.
+
+Probable root-cause class (for any future lane): the identical flip
+signature across a shader-context change matches the mode-0 saga's
+driver-pipeline wall — the same GLSL reduction text lowered inside a
+different (larger) shader pipeline produces different bits
+(uscstudy/copycast receipts: "same GLSL text produced different sigmoid
+bits across kernels"). If so, no source-level exactness discipline in
+the prologue can close it; the discriminator would be a SPIR-V-level
+diff of the two lowered pipelines. Patch series for both iterations
+preserved off-box (normfold-patches/ + normfold-patches2/ in the pushed
+lane/jw16-lsink2-clean branch); mlx-omarchy branch tip 8b5610e6.
+
 Preservation: patch series 16df8b6b..aafbf4ee committed off-box in
 ane-linux-experiments lane/jw16-lsink2-clean @ 96bdf76
 (receipts/2026-09-24-launch-sink2/normfold-patches/); push to the
