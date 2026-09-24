@@ -19,16 +19,24 @@ bash /var/tmp/jwm1-gpu-parity-wt-ane/receipts/2026-09-24-jwm1-gpu-parity/tools/p
 echo "== PHASE 1: build SDPA-port wheel =="
 WT=/var/tmp/jwm1-gpu-parity-wt
 ( cd "${WT}" && DEV_RELEASE=1 MLX_OMARCHY_WORK_DIR=/dev/shm/m1-sdpabuild ./scripts/build-wheel.sh 2>&1 ) | tee "${SDPA_RAW}/build.log"
-WHL=$(ls -1 "${WT}"/dist/*+f9d7bb21*.whl 2>/dev/null | head -1)
+WHL=$(ls -1 "${WT}"/dist/*+f9d7bb2*.whl 2>/dev/null | grep -v diag | head -1)
 [ -z "${WHL}" ] && { echo "no SDPA wheel produced"; exit 1; }
 echo "SDPA wheel: ${WHL}"
+# Stash the prod wheel so Phase 2's `rm -rf dist/` doesn't wipe it.
+mkdir -p "${SDPA_RAW}/wheels"
+cp "${WHL}" "${SDPA_RAW}/wheels/$(basename ${WHL})"
 
 # Phase 2 — build the diagnostics wheel (same source commit, --diagnostics).
-echo "== PHASE 2: build diag wheel at f9d7bb21 =="
-( cd "${WT}" && MLX_OMARCHY_SOURCE_COMMIT=f9d7bb21 MLX_OMARCHY_WORK_DIR=/dev/shm/m1-profbuild ./scripts/build-wheel.sh --diagnostics 2>&1 ) | tee "${PROFILE_RAW}/diag-build.log"
-DWHL=$(ls -1 "${WT}"/dist/*+diag.f9d7bb21*.whl 2>/dev/null | head -1)
-[ -z "${DWHL}" ] && { echo "no diag wheel produced"; exit 1; }
+echo "== PHASE 2: build diag wheel at f9d7bb21d =="
+( cd "${WT}" && MLX_OMARCHY_SOURCE_COMMIT=f9d7bb21d MLX_OMARCHY_WORK_DIR=/dev/shm/m1-profbuild ./scripts/build-wheel.sh --diagnostics 2>&1 ) | tee "${PROFILE_RAW}/diag-build.log"
+DWHL=$(ls -1 "${WT}"/dist/*+diag.f9d7bb2*.whl 2>/dev/null | head -1)
+[ -z "${DWHL}" ] && { echo "no diag wheel produced in ${WT}/dist"; ls -la "${WT}"/dist/; exit 1; }
 echo "diag wheel: ${DWHL}"
+# Phase 2 wiped dist/ and thus our stashed copy in WT/dist is gone, but
+# we already copied to ${SDPA_RAW}/wheels/ above. Use the stashed path
+# from here on.
+WHL="${SDPA_RAW}/wheels/$(basename ${WHL})"
+echo "using stashed prod wheel: ${WHL}"
 
 # Phase 3 — create cand + diag venvs from the production venv's mlx-lm.
 echo "== PHASE 3: venvs =="

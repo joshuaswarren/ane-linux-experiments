@@ -9,16 +9,11 @@ ICD `/usr/share/vulkan/icd.d/asahi_icd.json` →
 `7faf04c065c` from `joshuaswarren/mesa-1` `honeykrisp-omarchy`,
 api 1.4.359).
 
-## Status (this commit): PHASE 0 PREP COMPLETE; EXECUTION BLOCKED on M2FwStart-2
-
-Lane is fully staged (14 tools, branch, worktrees, install script,
-run_lane.sh end-to-end script). No GPU/ANE/Vulkan measurements have
-been executed yet — they are blocked behind M2FwStart-2's window
-announcement per Main's hard rule (jwm1 is the M2 hv proxy host;
-reboot/USB/ACM/hang-prone action must be coordinated with
-M2FwStart-2). M2 is currently dark and needs a physical power cycle,
-so the trace window has not opened. CPU-only prep is complete and
-preserved in this commit.
+## Status (this commit): PHASE 0/1/2 EXECUTED on jwm1 (wheels built);
+                         PHASE 3+ BLOCKED on jwm1 hardware hang (escalated
+                         to Main via M2FwStart-2 for physical power cycle);
+                         §6 MESA FIX DELIVERED in parallel on jw16 (mesa-1 PR
+                         `agent/jwm1-vkcreate-buildid-override` @ 6ab89f8).
 
 ## Goal
 Bring M1 Linux GPU decode+prefill to >=1.00x the M1 macOS parity bar
@@ -34,51 +29,138 @@ e2e <=0.79 s for 32 new tokens), with bit-exact exactness.
 | ttft tok/s | 20.19 | 99.12 | 0.20x | FAIL |
 | e2e per 32-tok prompt | 2.4195 s | 0.7898 s | 0.33x | FAIL |
 
-## Mesa defect (preliminary finding for §6)
+## What got built on jwm1 before the hardware hang
 
-The stock-mesa `vulkan-asahi 1:26.2.3-1` from the Arch package fails
-`vkCreateInstance` with VK_ERROR_UNKNOWN. Traced through
-`/var/tmp/mesa-e167-src/src/asahi/vulkan/hk_instance.c`: `hk_CreateInstance`
-returns `VK_ERROR_INITIALIZATION_FAILED` at line 130 (or 137) when
-`build_id_find_nhdr_for_addr(hk_CreateInstance)` cannot locate the
-build-id note in the loaded `.so`. The Vulkan loader renders
-`VK_ERROR_INITIALIZATION_FAILED` as `VK_ERROR_UNKNOWN`. Root cause:
-**packaging** — the Arch `vulkan-asahi` build was linked without
-sufficient build-id metadata (the honeykrisp fork ICD at
-`/usr/local/lib/libvulkan_asahi.so.7faf04c` does NOT exhibit this
-because the fork uses a longer hash). The defect is upstream
-build-config, not `joshuaswarren/mesa-1` source. **The defect does
-not block the parity lane** — the system ICD points to the honeykrisp
-fork, and every existing mlx-omarchy contract runs cleanly on it.
-Recommended: hand off to the homelab-infra lane with the recipe
-(rebuild Arch `vulkan-asahi` with longer build-id metadata). Mesa
-work goes in `joshuaswarren/mesa-1` only.
+Phase 0 pre-flight PASS (see `raw/profile/preflight.log`):
+- ICD sha `09e3527dee4a365ee29085637c266291396666afb0039a6932b5be9dc7dd6a80`,
+- ane.ko loaded, renderD128 + accel0 present (no holders, no /tmp/m1-gpu.lock),
+- v072-venv-fused libmlx.so `4f66a9a5a21dbd6e` (umalimit1), model snapshot
+  `0867d98bfb174b042d88461c0e7c97b86b34b381` present.
 
-## Sections (filled in during measurement windows)
-- §1 ANE control (re-confirm) — pending
-- §2 Profile: one decode token + one prefill pass on the installed path — pending
-- §3 Per-family ranked delta vs macOS (eb1e711) — pending
-- §4 SDPA hd256 port: gate + install — staged, pending execution
-- §5 Next gap attack (per-launch host cost swarm) — recommendation pending profile
-- §6 Mesa defect investigation — see above (does not block)
-- §7 Final contract vs macOS — pending
+Phase 1 prod SDPA-port wheel built (release branch f9d7bb2 from
+`agent/jwm1-gpu-parity` head `f9d7bb21d`, cherry-picked 33d1915b7 +
+16df8b6b5 from `agent/sdpa-decode-hd256`):
+- wheel: `mlx_omarchy-0.32.3.dev202609241734+f9d7bb2-cp314-cp314-linux_aarch64.whl`
+- sha256: `ad090148c450ba17b9ca09efece9a37c1ef946b629feeef08dd03938ada524c0`
+- stashed at `$RECEIPTS/raw/sdpa-hd256/wheels/` (durable across reboot)
 
-## Acceptance
-Receipt with the profile, each change's gate + paired-CI result,
-the installed state, and final decode/prefill/TTFT/e2e vs macOS with
-PASS/FAIL per metric.
+Phase 2 diag wheel built (profiling harness compiled IN):
+- wheel: `mlx_omarchy-0.32.3.dev202609241737+diag.f9d7bb21d-cp314-cp314-linux_aarch64.whl`
+- sha256: `43eb79eb18a536605d680cd582f1a25b0834e715d608476b4a922253e6c1f16b`
+
+Phase 3 venv creation was the LAST log line before ssh got REMOTE-EXIT
+255 at `2026-09-24T12:42:31-05:00`. Per M2FwStart-2 (incoming IRC after
+the drop): jwm1 dropped because they ran an ffmpeg v4l2 frame grab on
+`/dev/video1` (the M2-screen webcam) that hung at the same minute my
+Phase 3 was running — NOT my action. M2FwStart-2 escalated to Main for
+a physical power cycle.
+
+## What got delivered on jw16 in parallel (§6 Mesa fix)
+
+Per Main's `parity-no-early-quiescence` rule (work must remain in
+flight), I pivoted to the Mesa per-launch submit-cost / vkCreateInstance
+defect on jw16's `joshuaswarren/mesa-1` clone (which is unaffected by
+the jwm1 hang). The Mesa work targets the stock Arch
+`vulkan-asahi 1:26.2.3-1` defect (`vkCreateInstance` returns
+`VK_ERROR_UNKNOWN` because the strict `build_id_len < 20` check in
+`hk_instance.c:136` fires when the Arch build emits a build-id note
+shorter than 20 bytes).
+
+Branch `agent/jwm1-vkcreate-buildid-override` @ `6ab89f8871a` on
+`joshuaswarren/mesa-1` (`honeykrisp-omarchy` base, worktree
+`/var/tmp/jwm1-vkcreate-wt` on jw16mbp1-linux). Patch + writeup:
+- `raw/mesa/0001-hk-build-id-override.patch` (sha256
+  `861a35131e9bb8f71c5379108afac316613b36e925f9780859377875853dbd9e`,
+  175 lines, 3 files modified, +76/-1).
+- `raw/mesa/mesa-fix.md` (defect recap, fix design, files changed, build
+  verification, packager recipe).
+
+Build verification (executed on jw16):
+- Default path (`-Dhk-build-id=` empty): `ninja src/asahi/vulkan/libhk.a`
+  builds clean; takes the strict `#else` branch (the proven default;
+  no behavior change vs honeykrisp CI).
+- Override path (`-Dhk-build-id=7faf04c065ca1b2c`): builds clean;
+  takes the `#ifdef HK_BUILD_ID_OVERRIDE` branch; `mesa_hex_to_bytes`
+  parses the hex, blake3-hashes it, populates `driver_build_sha`.
+
+Per the mesa-repo-migration rule, this lives on `joshuaswarren/mesa-1`
+(not `joshuaswarren/mesa`). The bypass is opt-in per packager (meson
+option, not env), so the default loader path is unchanged.
+
+## What was NOT executed yet
+
+Phase 4 ctl contract (baseline) — v072-venv-fused, 3 warmup + 10 reps,
+n=100, prefill 512.
+
+Phase 5 cand contract (SDPA port) — venv-cand with the built SDPA wheel,
+10 paired reps + 10-pass anchors.
+
+Phase 6 paired-decode + logits gate — expected +3.4% per t6001 sdpa
+receipt; token-id flip gate target 0/100 flips.
+
+Phase 7 profile decode + prefill on installed path — diag wheel +
+`MLX_OMARCHY_GPU_PROFILE` NDJSON + host markers; per-kernel µs/tok +
+dispatches/tok + GPU busy + host record/submit.
+
+Phase 8 SDPA per-shape microbench — `K_VALUES = [12,13,24,44,128,300,513,2048]`
+at 300 reps each, vs the composed-fallback reference; bitwise + perf
+comparison between ctl and cand.
+
+Phase 9 family bench + ranked delta vs macOS reference (eb1e711) —
+pristine JSON already at `raw/families-m1-host-installed-pristine.json`.
+
+## Mesa per-launch submit cost (cdm-dep-barrier) — explicitly NOT pursued
+
+Per Jw16GpuSubmit's correction (incoming IRC 2026-09-24 ~12:50): the
+`cdm-dep-barrier` branch sitting in jw16's `~/src/mesa-1` is the launch-sink
+v1 lever that FAILED its gate today — the dependency-tracked barrier
+skip ran +4.83% bit-clean on short gates but diverged the 10-pass
+dbf70497 pin in 3 of 7 runs vs ctl 5/5 (reproducible fingerprint:
+prompt 8 from token 5). Main directed the restore. Per
+Jw16GpuSubmit, a safe skip needs instrumenting WHICH unordered pair
+produces the stale read first (USC/texture-state visibility, suspect;
+cf. the d3fa18e commit note). Qualifying the existing diff as-is would
+re-tread a measured dead end. I will not touch that branch.
+
+What IS shipped for the Mesa per-launch submit-cost lever on G13G (M1
+= jwm1): the proven trim 4..8 bits (commit 73974760e06 Sep 16 +3.05%
+ctx1053 +3.03% short, pins 48/48, suite 6189 assertions green). Already
+in honeykrisp-omarchy, already shipping in the installed ICD. The 5deac1c8
+revert of the G13X side is also already applied. Nothing left to land on
+this lever class without re-attempting the failed dep-tracked branch.
+
+## Mesa git history notes (for whoever picks up the Mesa lane next)
+
+| commit | summary | status |
+| --- | --- | --- |
+| 73974760 (Sep 16 16:12) | trim CDM barrier to bits 4..8 on G13X | proven +3.05% on jwm1 |
+| d71c94ec (Sep 16 16:48) | same on G13X, separate verification | prerequisite for G13X jw16 verification |
+| 5deac1c8 (Sep 16 17:03) | **REVERT for G13X**: -3.17% ctx1053 | only G13G carries the trim |
+| f96e090 + 7397476 (Sep 16) | gate trim on correct chip | G13G keeps, G14 keeps sink |
+| f2cc0d3a (Sep 24) | AGX_SUBMIT_TRACE debug harness | zero cost when env unset; for the dep-tracked branch's measurement |
+| cdm-dep-barrier branch (+55 lines local) | dependency-tracked skip | **FAILED gate today**; needs instrumentation of which pair produces stale read first |
+
+## Next actions (on M2FwStart-2 "jwm1 is up and stable" signal)
+
+1. `ssh jwm1 'bash $RECEIPTS/tools/pre_flight.sh'` — verify ICD sha,
+   ane.ko, GPU lock, renderD128 holders, dmesg clean.
+2. Resume `tools/run_lane.sh` from Phase 3 (Phase 1+2 wheels already
+   built + stashed; skip Phase 1 to save ~5 min). Total estimated time
+   ~20 min (Phase 3 venvs + Phase 4 ctl contract + Phase 5 cand 10
+   paired reps + Phase 6 stats + Phase 7 profile + Phase 8 microbench
+   + Phase 9 family bench).
+3. Run gates (gates x3 at 0 flips, 10-pass digest identity, 10 paired
+   reps CI entirely positive). Install only significant exact wins
+   (per the exactness rule).
+4. Commit the final receipt with PASS/FAIL per metric.
 
 ## Constraints
+
 - **jwm1 M2 proxy hard rule (Main, 2026-09-24 ~12:09 CDT):** coordinate
   with M2FwStart-2 BEFORE any jwm1 reboot/USB/ACM/hang-prone action.
-  The 12:09 reboot (QwenAneRef, with my prior approval, to clear a
-  5h-wedged ANE driver) killed the M2 trace. No further jwm1 reboots
-  for this lane. As of this commit M2FwStart-2 confirms they have
-  not yet launched a new trace (the M2 is dark, needs physical power
-  cycle); I am holding all GPU/ANE/Vulkan work until they announce
-  "window start". When they announce, I will execute `tools/run_lane.sh`
-  end-to-end under flock; on their "window end" I will stop cleanly
-  regardless of phase.
+  No further jwm1 reboots for this lane. Per M2FwStart-2's report, the
+  12:09 reboot and the 12:42 hang were both their webcam-grab
+  actions, not mine.
 - Owned host: jwm1 only. No sibling touch.
 - Work in my own worktree/branch: mlx-omarchy at
   `/var/tmp/jwm1-gpu-parity-wt` on jwm1 (branch
@@ -88,7 +170,8 @@ PASS/FAIL per metric.
   shaders/sdpa_decode_native.comp, CMakeLists.txt). Receipt worktree
   on this repo (ane-linux-experiments) at
   `/var/tmp/jwm1-gpu-parity-wt-ane` (branch
-  `agent/jwm1-gpu-parity`). Mesa work goes in `joshuaswarren/mesa-1`.
+  `agent/jwm1-gpu-parity`). Mesa work goes in
+  `joshuaswarren/mesa-1` (per the mesa-repo-migration rule).
 - Build in `/dev/shm` or `/var/tmp`.
 - Frozen corpus: `benchmarks/qwen38-2b-contract.json` (sha256 prefix
   `9299a3b2…`). Model snapshot `0867d98b…`.
@@ -96,20 +179,8 @@ PASS/FAIL per metric.
   paired reps with CI entirely positive. Install only significant
   wins.
 
-## Staged tooling (this commit)
-| tool | role |
-| --- | --- |
-| `tools/run_lane.sh` | Master end-to-end script. Execute once after M2FwStart-2 announces window start. |
-| `tools/pre_flight.sh` | Read-only state check (ICD sha, GPU lock, ane.ko, libmlx shas, worktrees). |
-| `tools/prof_decode.py` | Mirrors contract bench for one decode + one prefill with host CLOCK_MONOTONIC markers. |
-| `tools/profile_analyze.py` | Ingests MLX_OMARCHY_GPU_PROFILE JSONL + markers, emits per-kernel µs/tok, dispatches/tok, GPU busy, host record/submit. |
-| `tools/run_profile_window.sh` | Builds diag wheel at f9d7bb21, runs prof_decode under flock. |
-| `tools/run_sdpa_hd256_window.sh` | Builds production wheel at f9d7bb21, runs 10 paired reps + 10-pass anchors + microbench. |
-| `tools/run_contract_window.sh` | Runs the frozen contract under flock. |
-| `tools/run_family_bench.sh` | Per-op-family microbench via `/var/tmp/vprof/family_bench.py`. |
-| `tools/family_delta.py` | Renders ranked per-family delta vs macOS reference (eb1e711). |
-| `tools/logits_gate.py` | Token-ID flip gate (target: 0 flips across 32 tokens x 100 prompts). |
-| `tools/paired_decode.py` | 95% t-CI paired delta on decode tok/s across 10 reps. |
-| `tools/microbench_sdpa_hd256.py` | Per-shape bitwise + perf microbench for the SDPA hd256 arm (K_VALUES = [12,13,24,44,128,300,513,2048]). |
-| `tools/sdpa_token_counts.py` | Counts scaled_dot_product_attention dispatches per token in real generate_step. |
-| `tools/install_sdpa_wheel.sh` | pip install with btrfs-ENOSPC fallback (manual libmlx.so copy), per the proven t6001 sdpa receipt §4. |
+## Acceptance
+
+A receipt with the profile, each change's gate + paired-CI result,
+the installed state, and final decode/prefill/TTFT/e2e vs macOS with
+PASS/FAIL per metric.

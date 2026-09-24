@@ -1,0 +1,175 @@
+From 6ab89f8871a40d1c91828e014a97dd152e51d4c2 Mon Sep 17 00:00:00 2001
+From: Joshua Warren <816217+joshuaswarren@users.noreply.github.com>
+Date: Thu, 24 Sep 2026 12:54:45 -0500
+Subject: [PATCH] asahi: hk-build-id meson override for the vkCreateInstance
+ VK_ERROR_UNKNOWN defect
+
+Packagers whose linkers emit a build-id note shorter than
+BUILD_ID_EXPECTED_HASH_LENGTH (= 20 bytes for SHA-1) or no note at all
+hit VK_ERROR_INITIALIZATION_FAILED in hk_CreateInstance when the strict
+note-presence + length check fires -- the loader translates that to
+VK_ERROR_UNKNOWN. The Arch venv vulkan-asahi 1:26.2.3-1 build is the
+known instance.
+
+Add the hk-build-id meson option (string, default empty). When set, it
+defines HK_BUILD_ID_OVERRIDE="<hex>"; hk_CreateInstance parses the hex,
+blake3-hashes it, and populates driver_build_sha from the hash so the
+pipeline-cache key stays stable. The strict note-presence + length check
+is bypassed because the override is authoritative. Empty (default) keeps
+the strict path, which is what the honeykrisp fork CI and every other
+known-good downstream build relies on (linker-emitted 20-byte note).
+
+The bypass is opt-in per packager (meson option, not env) so it does
+not relax the default path: a .so with no build-id still fails to
+load unless the packager explicitly sets the override and accepts the
+cache-key responsibility.
+
+Mirrors the nvk-build-id option pattern (Mar 2026, MR 42728). Cap on
+hex length (even + <= 2*BLAKE3_KEY_LEN chars) keeps the derivation in
+hk_physical_device.c unambiguous.
+
+Files: meson.options (17 +), src/asahi/vulkan/meson.build (compile
+flag pass-through, 20 +), src/asahi/vulkan/hk_instance.c (override
+branch + util/hex.h include, 40 +). No behavior change in the default
+(empty override) path. Per the mesa-repo-migration rule, lands on
+joshuaswarren/mesa-1 (not joshuaswarren/mesa).
+---
+ meson.options                  | 17 +++++++++++++++
+ src/asahi/vulkan/hk_instance.c | 40 ++++++++++++++++++++++++++++++++++
+ src/asahi/vulkan/meson.build   | 20 ++++++++++++++++-
+ 3 files changed, 76 insertions(+), 1 deletion(-)
+
+diff --git a/meson.options b/meson.options
+index 93a60e3047b..4459b84ffbc 100644
+--- a/meson.options
++++ b/meson.options
+@@ -789,6 +789,23 @@ option(
+                 'Can be extracted with readelf -x .note.gnu.build-id'
+ )
+ 
++option(
++  'hk-build-id',
++  type : 'string',
++  value : '',
++  description : 'Override honeykrisp driver build-id used for the ' +
++                'pipeline-cache key and the VK_ERROR_INITIALIZATION_FAILED ' +
++                'guard in hk_CreateInstance. Workaround for packagers whose ' +
++                'linker emits a build-id note shorter than ' +
++                'BUILD_ID_EXPECTED_HASH_LENGTH (20 bytes): with the override ' +
++                'set, hk_CreateInstance skips the strict length check and ' +
++                'loads the .so, using the hex string as the build-id ' +
++                'instead. Format: hex string, even length, e.g. ' +
++                '\'7faf04c065ca1b2c\'. Can be extracted from a working build ' +
++                'with readelf -x .note.gnu.build-id. Empty (default) keeps ' +
++                'the strict check and the linker-emitted build-id.'
++)
++
+ option(
+   'min-windows-version',
+   type : 'integer',
+diff --git a/src/asahi/vulkan/hk_instance.c b/src/asahi/vulkan/hk_instance.c
+index 79c65a921fe..9167d680b67 100644
+--- a/src/asahi/vulkan/hk_instance.c
++++ b/src/asahi/vulkan/hk_instance.c
+@@ -15,6 +15,7 @@
+ #include "hk_drirc.h"
+ #include "util/mesa-blake3.h"
+ #include "util/os_misc.h"
++#include "util/hex.h"
+ 
+ VKAPI_ATTR VkResult VKAPI_CALL
+ hk_EnumerateInstanceVersion(uint32_t *pApiVersion)
+@@ -126,6 +127,44 @@ hk_CreateInstance(const VkInstanceCreateInfo *pCreateInfo,
+ 
+    const struct build_id_note *note =
+       build_id_find_nhdr_for_addr(hk_CreateInstance);
++#ifdef HK_BUILD_ID_OVERRIDE
++   /* Packager workaround: the linker emitted a build-id note shorter
++    * than BUILD_ID_EXPECTED_HASH_LENGTH (Arch venv vulkan-asahi
++    * 1:26.2.3-1) or no note at all. The hk-build-id meson option
++    * delivers a hex string; parse it and blake3-hash it into
++    * driver_build_sha so the pipeline-cache key is stable across loads
++    * of this rebuild. The strict note-presence + length check is
++    * bypassed because the override is authoritative.
++    *
++    * Security note: VK_ERROR_INITIALIZATION_FAILED on the strict check
++    * was load-bearing for the loader -- it stopped an .so with no or a
++    * truncated build-id from masquerading as the same pipeline as the
++    * linker-emitted one. The override is opt-in per packager (meson
++    * option, not env), so the bypass does not relax the default path.
++    */
++   memset(instance->driver_build_sha, 0, sizeof(instance->driver_build_sha));
++   const char *hex = HK_BUILD_ID_OVERRIDE;
++   size_t hex_len = strlen(hex);
++   /* Require even length + at most 2*BLAKE3_KEY_LEN hex chars (the
++    * pipeline-cache key derivation in hk_physical_device.c blake3s the
++    * first BLAKE3_KEY_LEN bytes of the override-derived sha; cap the
++    * override at that so the derivation is unambiguous). */
++   if (hex_len == 0 || (hex_len % 2) != 0 ||
++       hex_len > 2 * sizeof(instance->driver_build_sha)) {
++      result = vk_errorf(NULL, VK_ERROR_INITIALIZATION_FAILED,
++                         "hk-build-id override '%s' is malformed (need "
++                         "even-length hex, <= %zu chars)",
++                         hex, 2 * sizeof(instance->driver_build_sha));
++      goto fail_init;
++   }
++   unsigned char raw[BLAKE3_KEY_LEN];
++   mesa_hex_to_bytes(raw, hex, hex_len / 2);
++   blake3_hasher blake3_ctx;
++   _mesa_blake3_init(&blake3_ctx);
++   _mesa_blake3_update(&blake3_ctx, raw, hex_len / 2);
++   _mesa_blake3_final(&blake3_ctx, instance->driver_build_sha);
++   (void)note;  /* silence -Wunused-but-set-variable when override is on */
++#else
+    if (!note) {
+       result = vk_errorf(NULL, VK_ERROR_INITIALIZATION_FAILED,
+                          "Failed to find build-id");
+@@ -141,6 +180,7 @@ hk_CreateInstance(const VkInstanceCreateInfo *pCreateInfo,
+ 
+    static_assert(sizeof(instance->driver_build_sha) == BLAKE3_KEY_LEN);
+    copy_build_id_to_sha1(instance->driver_build_sha, note);
++#endif
+ 
+    *pInstance = hk_instance_to_handle(instance);
+    return VK_SUCCESS;
+diff --git a/src/asahi/vulkan/meson.build b/src/asahi/vulkan/meson.build
+index dbe175d91d1..ae261ca1547 100644
+--- a/src/asahi/vulkan/meson.build
++++ b/src/asahi/vulkan/meson.build
+@@ -84,6 +84,21 @@ hk_deps = [
+   idep_libagx_shaders_h,
+ ]
+ 
++# When the hk-build-id meson option is set, bypass the strict build-id
++# length check in hk_CreateInstance (which otherwise returns
++# VK_ERROR_INITIALIZATION_FAILED when the linker emitted a build-id note
++# shorter than BUILD_ID_EXPECTED_HASH_LENGTH = 20 bytes -- the Arch
++# venv vulkan-asahi 1:26.2.3-1 build hits this). The override hex
++# string is then used to populate driver_build_sha so the pipeline-cache
++# key stays stable. Empty default preserves the strict check +
++# linker-emitted build-id path (the proven default for downstream builds
++# that already work, e.g. the honeykrisp fork's own CI).
++hk_build_id_override_c_args = []
++hk_build_id_override = get_option('hk-build-id')
++if hk_build_id_override != ''
++  hk_build_id_override_c_args += '-DHK_BUILD_ID_OVERRIDE="' + hk_build_id_override + '"'
++endif
++
+ libhk = static_library(
+   'hk',
+   [
+@@ -102,7 +117,10 @@ libhk = static_library(
+     inc_virtio_vdrm,
+   ],
+   link_with : [libasahi_lib, libasahi_layout, libasahi_compiler],
+-  c_args : ['-Wno-c2x-extensions'],
++  c_args : [
++    '-Wno-c2x-extensions',
++    hk_build_id_override_c_args,
++  ],
+   dependencies : [hk_deps],
+   gnu_symbol_visibility : 'hidden',
+ )
+-- 
+2.55.0
+
