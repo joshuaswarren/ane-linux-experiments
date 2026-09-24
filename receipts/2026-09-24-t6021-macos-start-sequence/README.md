@@ -283,3 +283,14 @@ different image from the 26 fixture). Entry = first TEXT byte
   [STATIC-CONFIRMED]
 - DATA compare (live PA 0x10001400000 4 KB vs payload vm 0xc4000)
   requested from M2FwStart-2; deltas would name the boot-args area.
+
+## 9. Fault-triple: register-only, no PA to read (Main lane, 2026-09-24)
+
+13.5 payload vector table (vm 0x0): capture slots at 0x80/0x100/0x180 do
+mrs x28,ESR_EL1 / mrs x29,FAR_EL1 / mrs x30,ELR_EL1 then b self. No store
+to memory, no flag, no counter; sync slots re-enter at 0x204. No str
+x7/x11/x28/x29/x30 exists in 0x204-0x900. The ESR/FAR/ELR triple is
+recoverable only via core-register access (m1n1 debug/JTAG), never via a
+reserved-DATA read — do not task a DATA read for it. ROM x0 audit:
+x0→x7→x11→C-main x5, feeding only table-size/mask arithmetic pre-MMU,
+never stored; ROM-provided, not host-writable pre-RUN. [STATIC-CONFIRMED]
