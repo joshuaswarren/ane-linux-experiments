@@ -342,6 +342,40 @@ diff of the two lowered pipelines. Patch series for both iterations
 preserved off-box (normfold-patches/ + normfold-patches2/ in the pushed
 lane/jw16-lsink2-clean branch); mlx-omarchy branch tip 8b5610e6.
 
+## 10. ADDENDUM 5: SDPA k=512 corrective merged; enqueue-bound next lever
+
+- SdpaK512 lane (delegated): the k=512 "new arm" premise was REFUTED by
+  microbench — and the measurement exposed that the shipped window
+  (k_len <= 2048, primitives.cpp:12056) ALREADY engages the width-256
+  arm across the whole contract decode (k=512..544), where it LOSES to
+  the composition ~500 vs ~340-350 us (43-48%), bitwise-identical
+  outputs at every k both directions. Cost models: arm = 60-70 us
+  fixed + 0.86 us/key (DRAM-latency-bound walk); composition = ~270 us
+  fixed + 0.15 us/key; crossover k~300. Key-split p1/p2 ruled out for
+  composition-exactness (ascending-key PV chain + strided exp-sum tree
+  cannot split without rounding changes). Winning follow-up design:
+  software-pipelined K/V prefetch inside the single-workgroup walk
+  (bit-identity by construction; projects arm(512) < 150 us).
+- CORRECTIVE MERGED: cherry-pick 250d556b on mlx-omarchy origin/main
+  (fast-forward from 9fb8b675; diff = cap hunk only, restores the
+  documented k<=128 window). Battery: gates x3 fold-off 0 flips
+  (0.125 deterministic top1 base delta, argmax-invariant); 3-pass
+  cand x3 = bc519c03; 10-pass ctl + cand x2 = dbf70497; fold-ON
+  control moves the digest (cceba752) isolating the fold as the only
+  token-mover. Recorded per Main: "corrective, end-to-end neutral
+  (CI [-0.001, +0.173], host-enqueue-bound)" — no end-to-end speedup
+  claimed; paired CI +0.086 +- 0.122 (8/10 pairs positive, max 0.4%);
+  family row sdpa[k=512] 505.65 -> 335.93 us/launch (-33.6%).
+- NEXT LEVER (Main assignment): decode is HOST-ENQUEUE-BOUND at
+  ~77 tok/s (~13 ms/token; route-insensitive). First enqueue-profile
+  window failed on instruments (py-spy ptrace_scope=1 attach denial;
+  perf record has no --sleep option); corrected window
+  (/var/tmp/lsink2/enqueue-window2.sh: py-spy launch mode under sudo +
+  perf attach to the discovered pid) is staged for the next window.
+- Box custody: handed to T6001AscDebug for the stalled-ANE fault-state
+  reads (Main priority, M2-blocking); GPU measurement paused until
+  "jw16 released"; enqueue-window2.sh fires on release.
+
 Preservation: patch series 16df8b6b..aafbf4ee committed off-box in
 ane-linux-experiments lane/jw16-lsink2-clean @ 96bdf76
 (receipts/2026-09-24-launch-sink2/normfold-patches/); push to the
