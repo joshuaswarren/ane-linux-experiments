@@ -184,3 +184,69 @@ this lever class without re-attempting the failed dep-tracked branch.
 A receipt with the profile, each change's gate + paired-CI result,
 the installed state, and final decode/prefill/TTFT/e2e vs macOS with
 PASS/FAIL per metric.
+# README addendum (to be merged into receipts/2026-09-24-jwm1-gpu-parity/README.md)
+
+## Phase 3 venv state was wiped by the 12:09 power cycle
+
+After Main's 2026-09-24 ~12:09 CDT power cycle (Joshua physically
+power-cycled jwm1), `/dev/shm/m1-sdpa256/` was wiped (tmpfs, by
+design on power cycle). What's durable on jwm1's persistent btrfs root
+(`/var/tmp/jwm1-gpu-parity-wt-ane/...` and `/var/tmp/jwm1-gpu-parity-wt/dist/`)
+SURVIVED the power cycle:
+
+- `raw/profile/preflight.log` (Phase 0 state capture)
+- `raw/profile/diag-build.log` (Phase 2 build log)
+- `raw/sdpa-hd256/build.log` (Phase 1 build log)
+- `raw/sdpa-hd256/wheels/mlx_omarchy-0.32.3.dev202609241734+f9d7bb2-cp314-cp314-linux_aarch64.whl`
+  (sha256 ad090148c450ba17b9ca09efece9a37c1ef946b629feeef08dd03938ada524c0)
+- `raw/sdpa-hd256/wheels/mlx_omarchy-0.32.3.dev202609241737+diag.f9d7bb21d-cp314-cp314-linux_aarch64.whl`
+  (sha256 43eb79eb18a536605d680cd582f1a25b0834e715d608476b4a922253e6c1f16b)
+- `/var/tmp/jwm1-gpu-parity-wt/dist/mlx_omarchy-...-diag....whl` (also
+  durable; the /var/tmp/jwm1-gpu-parity-wt/dist diag wheel is the
+  same one stashed at raw/sdpa-hd256/wheels/, copy-on-write identical).
+- `/var/tmp/jwm1-gpu-parity-wt-ane/receipts/2026-09-24-jwm1-gpu-parity/`
+  (the receipt worktree).
+
+What was LOST:
+- `/dev/shm/m1-sdpa256/venv-cand` (Phase 3 venv for the SDPA-port
+  wheel — incomplete before the disconnect).
+- `/dev/shm/m1-sdpa256/venv-diag` (Phase 3 venv for the diag wheel —
+  incomplete before the disconnect).
+- `/dev/shm/m1-sdpabuild/` (Phase 1 build dir; needed to rebuild prod
+  wheel on the resumed run).
+- `/dev/shm/m1-profbuild/` (Phase 2 build dir; needed to rebuild
+  diag wheel on the resumed run).
+
+## Corrected resume sequence
+
+On M2FwStart-2 WINDOW END announcement (and the ICD/renderD128/ane.ko
+pre-check):
+
+1. `ssh jwm1 'bash $RECEIPTS/tools/pre_flight.sh'` — verify state (ICD
+   sha, ane.ko, GPU lock, renderD128 holders, dmesg clean).
+2. Rebuild the prod + diag wheels from source (Phase 1 + Phase 2 take
+   ~5 min each on M1). /dev/shm/{m1-sdpabuild,m1-profbuild} will be
+   re-created by the build script. The previously-built wheels on the
+   btrfs root CAN be reused as the install source for the venvs
+   (Phase 3) — `pip install --force-reinstall --no-deps $STASH_WHL` —
+   instead of rebuilding. Total saved: ~10 min.
+
+   The run_lane.sh `WHL` variable resolves from `WT/dist/` (which is
+   the on-btrfs root, durable across the power cycle, NOT /dev/shm),
+   and Phase 2's `rm -rf WT/dist/` was reverted by the stash fix in
+   f6b2ca3 (Phase 1 copies to `raw/sdpa-hd256/wheels/` before Phase 2
+   wipes dist). So the wheels ARE durable across power cycles. The
+   /dev/shm wipe only loses venvs and build dirs.
+
+3. `pip install --force-reinstall --no-deps $WHL` into fresh venvs
+   (Phase 3, ~1 min).
+4. `pip install mlx-lm==0.31.3` into each venv (Phase 3, ~30 s).
+5. Phase 4 ctl contract + Phase 5 cand contract + Phase 6 gate +
+   Phase 7 profile + Phase 8 microbench + Phase 9 family bench (the
+   original run_lane.sh Phases 4-9). ~20 min total.
+
+The corrected resume is faster than the original plan (saves ~10
+min by reusing the stashed wheels), but requires that the stashed
+wheels actually load — they'll load because pip install on
+`/var/tmp/.../*.whl` reads from the btrfs root, not /dev/shm, and
+the wheels themselves don't depend on /dev/shm content.
