@@ -262,3 +262,24 @@ outbox 0x20001.
 
 Ordered answer delivered to M2FwStart-2 over hub. M2 offline (macOS use);
 M2FwStart-2 reads this branch on resume.
+
+## 8. 13.5 payload reset path (Main lane, 2026-09-24)
+
+Source: 13.5 ane0 payload (/tmp/anestatic/fw13-ane0.payload, sha
+a9c4b771; geometry TEXT vm0/0xc4000, DATA vm0xc4000/0x438000 — a
+different image from the 26 fixture). Entry = first TEXT byte
+(`b +0x204`, live head 81 00 00 14).
+
+- Reset: EL3-drop veneer (eret) or direct EL1; VBAR_EL1 = image base;
+  own page tables into heap (TTBR0/1, TCR from ID_AA64MMFR0, MAIR,
+  SCTLR MMU-on); per-core SP; C main via BSS slot.
+- NO pre-main loop waits on anything external: zero MMIO reads in
+  0x204-0x900 (no pmgr/DART/ASC/scratch/mailbox immediates, no MMIO
+  adrp targets). Inputs are image-local literals, ID regs, MPIDR, ROM
+  x0; the map-base chain is runtime BSS from the loaded-segment layout.
+- First external wait is post-C-main (HELLO/mailbox or wfi-for-IRQ).
+  Verdict: a 0x28 park with zero SCRATCH = pre-C-main park
+  (fetch/MMU/EL fault) in the VBAR fault-capture, not a handshake wait.
+  [STATIC-CONFIRMED]
+- DATA compare (live PA 0x10001400000 4 KB vs payload vm 0xc4000)
+  requested from M2FwStart-2; deltas would name the boot-args area.
