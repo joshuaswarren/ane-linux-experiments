@@ -1,0 +1,168 @@
+# T6021 (M2 Max) ANE start sequence from the macOS 26 kernelcache
+
+Date: 2026-09-24 · AneStaticStart · static path (no device touched)
+
+Source: `/tmp/m2kstart/kc.level9.gz`, macOS 26 kernelcache for T6021/J414c
+(raw 0x7744000 bytes). Parsed as an MH_FILESET: the ANE driver is
+`com.apple.driver.AppleH11ANEInterface`, with the ASC base classes in
+`com.apple.driver.AppleA7IOP`, `com.apple.driver.AppleA7IOP-ASCWrap-v4`,
+and the management protocol in `com.apple.driver.RTBuddy`.
+All code addresses below are kernelcache VAs in this image. The driver
+carries ~11k symbols, so the start path is named-function analysis backed
+by direct disassembly, not guesswork.
+
+Notation: [STATIC-CONFIRMED] = disassembled from this kernelcache.
+[INFERENCE] = a conclusion drawn from confirmed code. Confidence (HIGH /
+MEDIUM) follows each step.
+
+## 0. Chip selection: T6021 takes the RTBuddy path
+
+`ANEHWDeviceConfig::initializeANESoCConfig` reads the ADT `ane-type`
+property and switches on it. The T6021 ane0 ADT carries `ane-type = 0xa0`
+(device-tree capture in
+`receipts/2026-09-23-m2-macos-denominator/m2-macos-window/ane-evidence/ane0-devicetree.txt`),
+which lands on the branch at `0xfffffe0009613fc8` that stores version
+`0x80` [STATIC-CONFIRMED, HIGH].
+
+That version selects the RTBuddy start path (`dev+0x780 = 1`, set by
+`InitializeRTBuddyClient` success in `InitializeProvider`). Once set, the
+kext never issues the legacy RVBAR/CPU_CONTROL writes; the legacy code is
+still present but dead for this chip [STATIC-CONFIRMED, HIGH].
+
+## 1. Ordered sequence: power-on to first RTKit HELLO
+
+All ANE engine-relative offsets are into the 0x284000000 aperture.
+
+1. **Power domains via the PMGR provider, not direct MMIO**
+   [STATIC-CONFIRMED, HIGH].
+   `EnableANEClocksAndPower` →
+   `enableAneSysClock` → `enableDeviceClock` / `enableDevicePower` with the
+   ADT `clock-ids` at code `0xfffffe00095d1d20-0x95d1d90` (provider-call
+   form, no kext-side MMIO). Separate per-island `power_on_hardware_gated`
+   (`0xfffffe00096076e4`) calls `EnableANEClocksAndPower(true, true)`,
+   conditionally `EnableMPMClocksAndPower`, then `ANE_Init`.
+   Linux equivalent: the genpd raise. The known gap stands: ADT clock-ids
+   318-321 (VENC gates) plus the parent VENC_SYS word have no Linux pmgr
+   domain; only the m1n1 `pmgr_adt_power_enable("/arm-io/ane")` walk covers
+   them.
+
+2. **RTBuddy power-state change, not a kext MMIO script**
+   [STATIC-CONFIRMED, HIGH].
+   `EnableCPUClocksAndPower` on the RTBuddy path reduces to
+   `ChangePowerState(1)` + `ValidatePowerOnState`
+   (`0xfffffe00095d09bc-0x95d09d0`). The actual bringup runs inside
+   `RTBuddy::_performPowerStateChangeGated`, which calls the slave's
+   `startCPU` (AppleA7IOP vtable slot +0x888) rather than touching ASC
+   registers itself.
+
+3. **Firmware mapping / latched-RVBAR handling**
+   [STATIC-CONFIRMED, HIGH].
+   `AppleA7IOP::startCPUWithOptions` (`0xfffffe0008bc87bc`):
+   - `_mapFirmware` checks `_hasiBootFirmware` (`dev+0x128 != 0`). If iBoot
+     left a firmware descriptor, it DART-maps those segments
+     (`_dartMapiBootFirmware`).
+   - With no iBoot descriptor it reads RVBAR (engine+0x1050000) and
+     succeeds only if bit 0 (the lock) is already set; otherwise it panics
+     (no silent path). It never rewrites a locked RVBAR.
+   - The RVBAR compose `0x0081<<48 | (entry & 0xFF7EFFFFFFFFF800)` —
+     matching the Linux driver's `ane_t6021_rvbar_compose` and the prior
+     H13 cross-check — exists in this image ONLY in `ANE_Init`'s legacy
+     branch (`0xfffffe00095e9868-0x95e9988`). That branch is skipped when
+     `dev+0x780 = 1`. The constant `0x81<<48` appears in exactly two
+     `movz` sites in the entire `__TEXT_EXEC`: `ANE_Init` and the unrelated
+     camera `AppleH13CamIn::ISP_StartFirmware`.
+
+   Consequence: on T6021 the kext never programs RVBAR. The latch content
+   — including the 0x0081<<48 mode bits — is an iBoot product. macOS boots
+   always take the preloaded path (`pre-loaded = 1` in the T6021 ADT);
+   a Linux boot that bypasses iBoot-main gets whatever the surviving latch
+   holds, and nothing in the macOS driver repairs or rewrites it.
+
+4. **Mailbox init: only the outbox control is touched**
+   [STATIC-CONFIRMED, HIGH].
+   `_disableAllInterrupts`, `_enableInboxInterrupt`,
+   `_enableOutboxInterrupt` are empty stubs (bare `ret`) in ASC wrap v4.
+   `_enableOutbox` read-modify-writes engine+0x1408114, setting bit 0.
+   ASC register file (from `AppleASCWrapV4`, engine+0x1400000 base):
+   CPU_CONTROL +0x44, CPU_STATUS +0x48, inbox/outbox ctrl +0x110/+0x114,
+   mailboxes +0x800/+0x808/+0x830/+0x838 — consistent with the live
+   offsets the Linux driver already uses.
+
+5. **CPU release: one RMW of CPU_CONTROL**
+   [STATIC-CONFIRMED, HIGH].
+   `AppleASCWrapV4::_runCPU(true)` (`0xfffffe0008bc5180`) reads
+   CPU_CONTROL (engine+0x1400044) via the register accessor and writes
+   back with bit 4 set (`ORR w9, w0, #0x10`). `stopCPU` clears bit 4, then
+   clears bit 5. `supportReleaseOnEntry` returns 0 for this wrap — there is
+   no release-on-entry handshake; RUN is the whole start.
+
+6. **RTKit HELLO follows from the firmware, not the kext**
+   [STATIC-CONFIRMED, MEDIUM].
+   After RUN the kext waits for management traffic on EP0 (HELLO/EPMAP);
+   the ANE_Init tail (`commandWakeup`, shared-memory surface allocation,
+   endpoint setup) runs after the firmware announces itself. HELLO never
+   precedes a real CPU release.
+
+## 2. Asked-for items: what Linux does NOT do
+
+- **pmgr/PS sequencing order**: the macOS path delegates sequencing to the
+  PMGR provider (`enableDevicePower`/`enableDeviceClock` + the RTBuddy
+  power-state machine). There is no kext-issued `TARGET=0xf` script for
+  T6021 [STATIC-CONFIRMED, HIGH].
+- **`ane-power` or SPMI step**: no SPMI string exists in the ANE kext, and
+  no power function references one. None in the macOS start
+  [STATIC-CONFIRMED, MEDIUM].
+- **Coprocessor config register before CPU_CONTROL**: nothing runs between
+  the outbox enable and `_runCPU` in `startCPUWithOptions`
+  [STATIC-CONFIRMED, MEDIUM].
+- **Secure-state / TZ handshake**: `setSecureModeEnabled` is called only
+  from the SEP-client power handlers, not the normal start path
+  [STATIC-CONFIRMED, MEDIUM].
+- **Latched-RVBAR case**: the kext handles it by _not touching it_ — the
+  map path requires the lock bit and panics without it, and the compose
+  path is legacy-only on this chip [STATIC-CONFIRMED, HIGH]. This matches
+  the live box: RVBAR latched at `0x10000000001` with mode bits missing,
+  no kext path that would fix it. Clearing the latch needs the ane_cpu
+  island power cycle, which stays forbidden from kernel context (s24).
+
+## 3. Diff against the Linux driver's current start path
+
+What already matches: the genpd raise (all eight islands, ACTUAL=0xf gate),
+non-posted engine mapping, scratch zeroing, the SCRATCH7 READY poll
+constant `0x08042006`, the wake constant, the mailbox offsets, and the
+skip-if-locked RVBAR behavior.
+
+What differs:
+1. Linux never writes `CPU_CONTROL` RUN (engine+0x1400044 bit 4) — that is
+   the single missing start write, and it is also the write the ba1a1e7
+   receipt's evidence says parks at STATUS 0x28 when the latch lacks the
+   mode bits [INFERENCE, HIGH].
+2. Linux has no provider for the VENC clock-ids 318-321 / VENC_SYS parent
+   rail — the one macOS power step with no Linux counterpart
+   [STATIC-CONFIRMED power step; gap inference HIGH from prior B5/B6
+   receipts].
+3. Linux should NOT add a coprocessor config write, SPMI step, secure
+   handshake, or extra mailbox init — the kernelcache shows none of these
+   on this chip's path [STATIC-CONFIRMED, MEDIUM].
+4. The legacy-path RVBAR compose in `ANE_Init` confirms (not changes) the
+   Linux compose formula; it also confirms there is no kext-side repair
+   for a mode-bit-less latch [STATIC-CONFIRMED, HIGH].
+
+## 4. Deliverables and method
+
+- Hub delivery to M2FwStart-2: sent this session (sequence + addresses).
+- Method: python + capstone disassembly of the fileset kernelcache
+  (MH_FILESET, per-kext LC parsing, symtab load, c++filt names, vtable
+  resolution through DYLD_CHAINED_PTR_ARM64E auth-pointer decode, adrp/add
+  string-xref scan). Tools available on this host were enough: llvm-objdump
+  was not needed and radare2/Ghidra were absent.
+- Nothing written outside this receipt and `/tmp/anestatic` scratch.
+  No Apple binaries or large artifacts in git. `Never use --no-verify`
+  honored: no bypass flags used.
+
+## 5. Open item for the dynamic trace
+
+The static path cannot observe iBoot's own RVBAR write (value and timing).
+M2FwStart-2's hv trace covers exactly that: the write to engine+0x1050000
+between power-on and kext load, which should carry the 0x0081<<48 bits on
+a macOS boot and thereby confirm §1.3's consequence live.
