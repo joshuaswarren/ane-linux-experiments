@@ -114,3 +114,27 @@ default (empty) override; the new code path is gated behind the
   ```
   git am 0001-hk-build-id-meson-override-for-the-vkCreateIns.patch
   ```
+
+## Rebase status (in-session, 2026-09-24 13:09)
+
+In-session attempt to rebase `agent/jwm1-vkcreate-buildid-override`
+(6ab89f8) onto `remotes/origin/honeykrisp-omarchy`
+(`e5cf3aadb8`) ran for ~6.5 minutes, consumed ~3.5 minutes of CPU,
+but never produced a final tree state (the rebase processed a 92-file
+diff with +1309/-12057 — i.e. 5 upstream commits with major tree
+changes including ~12k lines deleted, which is much heavier than the
+small Mesa patch I added). Killed the rebase; the branch stays at
+6ab89f8 against base f2cc0d3a.
+
+Implication for whoever pushes: the in-session rebase did NOT
+verify that my diff applies cleanly to current upstream. The branch
+is committed locally + the patch file survives as a portable
+artifact, but the push-side rebase should be verified before the
+patch is sent upstream. The patch's three touched files (meson.options,
+src/asahi/vulkan/hk_instance.c, src/asahi/vulkan/meson.build) are
+not modified by the 5 upstream commits (cdm-barrier trim work,
+sin FPZ, coopmat default), so a clean apply is likely; but the
+deletion of 12057 lines upstream could include touching
+src/asahi/vulkan/hk_instance.c's surrounding code (e.g. includes
+section, build_id.c helpers). Treat this as "verify before push" not
+"verified".
