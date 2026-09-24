@@ -781,3 +781,45 @@ missing input is the HOST side of the RTKit handshake — not AMCC config,
 not PWGATE, not a shmem pointer. SCRATCH7/READY never fired because the
 boot handshake never began, not because the firmware faulted.
 [STATIC-CONFIRMED code paths; LIVE state proves execution past fetch]
+
+## 26. The host kick: the kext sends nothing; do NOT hand-write INBOX (Main lane)
+
+Q1 (wake source): the parked loop (payload 0x6bdc4: check [flag+0x2a at
+0xc9df8], call 0x76160, dispatch [table+0xce0] fn pointer, IRQ
+housekeeping 0x75d08/0x7619c/0x65630, repeat) is the firmware's
+cooperative scheduler built around svc #0 yield and daif-guarded flag
+checks — not a WFI on a single line. External work arrives as the ASC
+INBOX IRQ (A2I INBOX engine+0x8800/0x8808, EP in msg1; host AIC line is
+ADT raw 0x374). The kext's _enableInboxInterrupt/_enableOutboxInterrupt
+are empty stubs (bare ret) in ASC wrap v4 — the kext never configures
+any IRQ, doorbell, or SCRATCH write on this path, and no AIC/IRQ,
+firewall, watchdog, or ED/DP store exists in any scanned boot-path body
+(section 19 boundaries). The per-wake check is the pending flags at
+SEG1+0x5d42 (live: counts 2 / 0x40 / 0x100-class) plus the 319-pair
+dispatch table at SEG1+0x1c000. [STATIC-CONFIRMED code + LIVE flags]
+
+Q2 (kext post-RUN writes): NONE. After CPU_CONTROL 0 then 0x10
+(0xfffffe00094e0f2c/0x94e0f34) the only instruction before the
+SCRATCH7 poll is the boot-arg entry write, skipped when dev+0x94 == 0
+(0xfffffe00094e0f38-0x94e0f44). Post-READY the path is logging +
+command-gate only. There is no kext-side first-message sequence to
+copy — the kext's first A2I traffic is lazy (first user request).
+[STATIC-CONFIRMED]
+
+Q3 (HELLO direction): firmware-unprompted (standard RTKit) — PROVEN by
+Q2: since the kext sends nothing, macOS can only work if the firmware
+speaks first. Our firmware sits in the service loop with the outbox
+EMPTY, so it is stuck INSIDE boot-before-HELLO, not awaiting a kick
+macOS sends. Ranked blockers: (i) the boot-args/shared surface never
+published (G6/Item3; K14 flow publishes cmd-buffer base via SCRATCH0/1
++ wake 0xf7fbdff9 -> SCRATCH7; all scratch reads 0 here); (ii) the
+host AIC enable for the ANE line; (iii) BSS dispatch fn-ptrs possibly
+NULL (DATA vm 0x4fa000-area, OUTSIDE the 0x430000 live capture —
+extend the window to read it).
+
+Manual-kick verdict: DO NOT hand-write INBOX. There is no known-good
+first word (the kext never sends one pre-READY), and a malformed first
+message into the dispatcher risks wedging the service loop that is
+currently healthy. Read-only next: AIC enable for line 0x374; extend
+the DATA capture to cover BSS (vm 0x4fa000+); then the boot-args
+surface question.
