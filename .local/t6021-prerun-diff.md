@@ -1,4 +1,4 @@
-# T6021 pre-RUN diff: macOS kext writes vs Linux — first missing write
+# T6021 pre-RUN diff: macOS kext writes vs Linux — first missing write (CORRECTED)
 
 Date: 2026-09-24 · AneStaticStart. All kext addresses are macOS 26/J414c
 kernelcache VAs (fileset parse + capstone, vtable-resolved). Linux side is
@@ -35,7 +35,22 @@ trace, not assumed.
    (T6021 subtype-0 values from `__const+0xa40/0xa50/0xa60`:
    0x1840048, 0x184004c, 0x1840050, 0x1840054, 0x1840058, 0x184005c,
    0x1840060, 0x1840064). No 1-pulse, no wake. [STATIC-CONFIRMED]
-3. **RVBAR: skipped, never written** (compose site exists only in the
+3. **RVBAR: skipped, never written**
+
+## 4. CORRECTION (M2 wedge): the 0x2e0-family writes are pmgr ps through ANERegisterControl
+
+The 0x2e0/0xc000/0xc008/0x3c8 writes resolve through the PS register
+control (getDeviceMemoryWithIndex selecting the 0x28e080000 window):
+0x2e0 = phys 0x28e0802e0 = ps_ane_cpu TARGET. Item 1 of the prior
+version is therefore a no-op and is struck — Linux already owns this
+word via genpd, and rewriting it wedges the box.
+
+Corrected first missing non-ps write: **write32 PWGATE+0x159c = 0**
+(phys 0x28e09359c, third IODeviceMemory window base 0x28e092000) at
+0xfffffe00095d0f88-0x95d0f94 in `EnableCPUClocksAndPower`, with readback
+validate (expect 0, mask 3) at 0xfffffe00095d0fb0, on the same T6021
+case-5 subtype path. Reg index: PWGATE device-memory index (PS index + 1).
+[STATIC-CONFIRMED site/value/validate; INFERENCE that it gates execution.] (compose site exists only in the
    legacy `ANE_Init` branch; `_setIORVBAR` has no callers anywhere in
    `__TEXT_EXEC`; `_mapFirmware` only READS the lock). [STATIC-CONFIRMED]
 4. **Mailbox: nothing before RUN** (`_disableAllInterrupts`,
