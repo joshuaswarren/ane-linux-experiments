@@ -306,12 +306,12 @@ the segment mapping and clocks, not DATA. [MEASURED + STATIC-CONFIRMED]
 ## 11. First out-of-map access: payload overruns macOS-boot DATA mapping (Main lane, 2026-09-24)
 
 13.5 payload DATA: vm 0xc4000 vmsize 0x438000 (file 0x3e8000, zerofill
-0x50000 from vm 0x4ac000, end 0x4fc000). macOS-boot segment mapping
-covers DATA vm 0xe8000-0x36c000 only (len 0x284000). Overrun 0x190000
-(vm 0x36c000-0x4fc000): any firmware touch there (BSS tail, heap,
-page tables) faults internally -> VBAR capture -> silent 0x28 park
-with no DART error. Stacks (~vm 0xc1aca18) are inside the mapped,
-file-backed range. Staging requirements: map the FULL 0x4fc000 VM span
-at the DATA IOVA, and zero-fill vm 0x4ac000-0x4fc000 (garbage there
-reads as pointers). Pre-C-main touches no fixed MMIO (verified clean
+0x50000 from vm 0x4ac000, end 0x4fc000). CORRECTION: the 0xe8000/0x284000 ranges are the 26-geometry sources
+(26 selene fixture + macOS-boot segment-ranges then), NOT the live
+13.5 mapping. The live 13.5 ADT entry1 (PA 0x10001400000 -> IOVA
+0x100000c4000, size 0x438000) already covers the full 13.5 DATA span
+vm 0xc4000-0x4fc000 including zerofill, and the remap-exact test
+mapped exactly that — mapping requirement WITHDRAWN. OPEN: the
+zerofill (vm 0x4ac000-0x4fc000 must read zero; garbage reads as
+pointers). Stacks (~vm 0xc1aca18) stand as mapped and file-backed. Pre-C-main touches no fixed MMIO (verified clean
 0x204-0x900) and no host DATA. [STATIC-CONFIRMED]
