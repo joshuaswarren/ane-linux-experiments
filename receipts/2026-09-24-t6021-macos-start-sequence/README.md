@@ -387,13 +387,14 @@ attribute bits are set. So a mapped firmware page is:
 
 ### The difference from Linux
 
-Linux io-pgtable-dart (APPLE_DART2) sets bit 1 (NO_CACHE) on any mapping
-that lacks IOMMU_CACHE. The ANE firmware map goes through iommu_map
-without IOMMU_CACHE, so Linux marks the firmware pages uncached. macOS's
-PPL builder never sets that bit: the firmware TEXT and DATA are mapped
-cached. A cached-vs-uncached mismatch on the fetch path is a candidate
-for the silent fetch fault. [INFERENCE, HIGH] pending a read of the live
-PTE to confirm bit 1 is clear on macOS and set on Linux.
+Linux io-pgtable-dart (APPLE_DART2) sets bit 1 (NO_CACHE) on a mapping
+unless IOMMU_CACHE is passed. The ANE fw alias (ane_t6021_fwload.c:133,
+:161) passes IOMMU_CACHE only when dev_is_dma_coherent(ane->dev). macOS's
+PPL builder never sets bit 1 at all. So IF the ANE device is not
+DMA-coherent, Linux maps the firmware uncached and macOS maps it cached —
+a candidate for the silent fetch fault. If it is coherent, both map cached
+and this difference vanishes. [INFERENCE] conditional on the coherent flag;
+confirm with a live PTE read (bit 1 clear = cached).
 
 ### SID and instance programming
 
