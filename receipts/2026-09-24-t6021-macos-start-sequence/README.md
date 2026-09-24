@@ -461,3 +461,19 @@ a default boot the AFE+0x80 write does NOT fire. [STATIC-CONFIRMED
 addresses and gates; AFE functional meaning INFERENCE from the name.]
 Linux writes nothing to AFE+0x80. Test sent to M2FwStart-2: read the AFE
 phys base from the live tree, write 1 to AFE+0x80, 60 s SCRATCH7 poll.
+
+## 16. RETRACTED: the AFE+0x80 test (Main lane, 2026-09-24)
+
+The section-15 claim ("write 1 to AFE+0x80") is withdrawn. Re-derivation:
+dev+0x3880's IOMemoryMap is built in start() (0xfffffe00094cae08) only if
+the IORegistry lookup for the dev+0x1a8 provider object succeeds
+(0xfffffe00094caf9c-0x94caff4). M2FwStart-2 confirms the live ane nub
+exposes only three ranges (engine 0x284000000/0x2000000, pmgr
+0x28e080000/0x4034, set 0x28e08c000/0x4000) — no AFE range — so the
+lookup has nothing to attach and dev+0x3880 stays empty. AFE+0x80 has no
+verified physical address; do not re-derive "AFE phys ~0x284xxx000" (AFE
+is a separate nub range, not an engine offset). M2FwStart-2 was told not
+to run the write. dev+0xec (ane-subtype) is a version selector inside the
+kext's own switch tables, default 0, and cannot gate fetch. No remaining
+static register candidate in power_on_hardware: PS matches, ENABLE full,
+mapper active, PTE exact. [STATIC-CONFIRMED retraction]
