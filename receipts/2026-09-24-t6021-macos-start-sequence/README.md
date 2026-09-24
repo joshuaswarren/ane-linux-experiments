@@ -415,3 +415,34 @@ hw_base+0x80 (0xfffffe0008bfe590). [STATIC-CONFIRMED]
 The DART translation is fully in place before the CPU release. There is
 no separate "mark as firmware/code" register write; the only distinction
 is the PTE attribute bits above. [STATIC-CONFIRMED]
+
+## 14. power_on_hardware before ANE_Init (Main lane, 2026-09-24)
+
+H11ANEIn::power_on_hardware (0xfffffe00094e062c) reaches ANE_Init via bl
+at 0xfffffe00094e08ac. Ordered HW-relevant writes before that call,
+T6021 (version 0xa0, switch index 7):
+
+1. PS TARGET: EnableANEClocksAndPower (0xfffffe00094ddd64) writes 0xf to
+   dev+0x200 + {0xc000,0xc008,0xc010,0xc018,0xc020,0xc028} (tail beyond
+   0xc028 not yet fully read), each followed by validatePSReg
+   (0xfffffe00094df614) polling ACTUAL==0xff. [STATIC-CONFIRMED] Linux
+   genpd raise already covers this. NOT missing.
+2. Wake write: *(dev+0x3880)+0x80 <- 1 (kext 0xfffffe00094e0738).
+   Fires if version==0x60/0x80, else requires dev+0xec==0xe0; for 0xa0
+   the condition is UNCONFIRMED. Target mapping unidentified.
+   [STATIC-CONFIRMED write; effect INFERENCE; condition OPEN].
+3. Mapper setActive (kIODARTFunctionSetActive) on dev+0x248 (kext
+   0xfffffe00094e07b8); dev+0x250 copy skipped for 0xa0 (version>=0xb0
+   gate). [STATIC-CONFIRMED] Linux domain-attach equivalence unverified.
+4. Slot-0x170 call on dev+0x190 (kext 0xfffffe00094e086c), target
+   unidentified, likely command-queue not HW. [OPEN].
+5. Kernel debug-trace calls — not HW. Ignored.
+
+Ranking by likelihood of gating fetch/clock: (1) SID-0 stream enable
+[INFERENCE]; (2) wake write [condition open]; (3) mapper-setActive
+equivalence [write confirmed, Linux side unverified].
+SID-enable quote status: NOT YET — enableTranslation
+(0xfffffe0009bff354) issues PPL cmd 0x8114/0x8115 via trampoline
+0xfffffe000857d900; the stream-enable register write itself is not yet
+decoded. bit0=SID0 is inferred from Linux ENABLE=0xfffe + ADT
+sid=<0,15>, not from kext code.
