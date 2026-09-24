@@ -560,11 +560,17 @@ the bl to ANE_Init (0xfffffe00094e08ac):
    PWGATE+0x12cc <- 3 + validatePWGATEReg(3,3),
    PWGATE+0x13cc <- 0 + validatePWGATEReg(0,1)
    (kext 0xfffffe00094de554-0x94de58c, validate 0xfffffe00094df6bc).
-   dev+0x220 is built in start() 0xfffffe00094c94f0 from the set-window
-   provider chain (map+getVirtualAddress); the live T6021 set window is
-   phys 0x28e08c000 len 0x4000. So: phys 0x28e092cc <- 3 and
-   phys 0x28e093cc <- 0 (Linux-relative to its own set mapping).
-   [STATIC-CONFIRMED code+value+address; Linux status OPEN]
+   dev+0x220 is built in start() 0xfffffe00094c94f0 from the PARENT
+   provider (start() x22 = the IOService provider arg; slot +0x710 call
+   with w1=2 on the provider at kext 0xfffffe00094c9494), then
+   map+getVirtualAddress. CORRECTION: the "set" base is the provider's
+   index-2 published memory, NOT the ane nub's own 0x28e08c000 range —
+   the section-19 "live phys 0x28e092cc/0x28e093cc" assumed base
+   0x28e08c000 without proof and is WITHDRAWN. The writes stand as
+   provider-set +0x12cc <- 3 / +0x13cc <- 0 with the base unbound;
+   naming the provider node and its index-2 memory (likely the
+   pmgr-adjacent fabric/ANE-parent nub) needs that node's reg list.
+   [STATIC-CONFIRMED code+value+method; BASE CORRECTED, phys OPEN]
 3. Pre-CPU ENGINE table via dev+0x1e8 (engine base 0x284000000):
    ENGINE+0x938/0xa18/0xaf8(+0xaf8) <- 0x01ff01ff
    (kext 0xfffffe00094df544-0x94df554; the version>=0x80 gate at
