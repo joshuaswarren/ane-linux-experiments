@@ -289,3 +289,41 @@ installed stack.
   from source (16df8b6b/33d1915b commit messages: the hd256 arm engages
   k=12..128 by measured crossover, the bench contract decodes at
   k=512..544 where the composition is the faster arm; digest-immune).
+
+## 8. ADDENDUM 3: norm-into-GEMV fold — gate 1 divergence, kv-direct lead
+
+Implementation (branch agent/t6001-norm-swarm, commits 465667ca design,
+74a516c4 shader variant + enum + cmake, f585e032 host fold +
+reader-safety match + MLX_OMARCHY_FUSED_GEMV_NORM gate, 057a4420/
+5f9a9b5c GLSL reserved-word fixes, e7549835 fast::RMSNorm namespace
+qualification, 4039fcfd diagnostic scope knobs, aafbf4ee receipt).
+The fold deletes the standalone FastRmsNormBF16 dispatch feeding a
+GEMV group and reproduces it statement-for-statement in a shared-memory
+prologue (binding 19 = norm weight, flags bit 15, shared normed row
+packed in stored-row word order; host refuses rows > 8192 and
+scalar-weight norms).
+
+Gate battery 1 (window 20260924T191439Z, trap-restored):
+- Build-equivalence arm (NORM=0): PASS, bc519c03 @ 77.05 tok/s.
+- Gate 1 candidate (fold active): **FAIL — 44/320 argmax flips,
+  max|d_top1| = 10.375** (p1@step14 x18, p4@19 x13, p7@19 x13);
+  battery aborted per protocol; 10-pass + contract arms not reached.
+- Proven clean: the fold fires in-model (−270 dispatches/token = all
+  standalone norms gone, stream structurally clean); per-class micro
+  tests (trio/swiglu/single/pair, 4 seeds, K=2048) byte-identical
+  fold-on vs fold-off; SPIR-V reduction op-identical to fast_norm
+  (FMul+FAdd, tree, FDiv, InverseSqrt, no FMA contraction); kill
+  switch pins the old stream exactly.
+- Localization lead: kv-direct sum-window × norm-prologue interaction
+  on the qkv group (only untested combination); scope knobs behave
+  globally-chaotic (all-on 44, no-trio 36, no-epi 76, all-off 0).
+- One bounded iteration authorized: planner refuses the prologue for
+  any kv-direct group (kv-direct keeps the exact unfused stream); full
+  battery rerun; ANY digest miss = final-REJECT.
+
+Preservation: patch series 16df8b6b..aafbf4ee committed off-box in
+ane-linux-experiments lane/jw16-lsink2-clean @ 96bdf76
+(receipts/2026-09-24-launch-sink2/normfold-patches/); push to the
+mlx-omarchy origin is blocked by the fleet privacy hook over
+services/community-data/test/unit/pii.test.ts in shared main ancestry
+(reported to Main; the blocker also prevents ANY mlx-omarchy main push).
