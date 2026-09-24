@@ -1,0 +1,41 @@
+From 057a44209e0e99bba298ada532cdf092b91d7c81 Mon Sep 17 00:00:00 2001
+From: Joshua Warren <816217+joshuaswarren@users.noreply.github.com>
+Date: Thu, 24 Sep 2026 14:01:58 -0500
+Subject: [PATCH 3/6] omarchy: rename the prologue pack array off the GLSL
+ reserved word half
+
+---
+ overlay/mlx/backend/omarchy/shaders/qmm_vec.comp | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/overlay/mlx/backend/omarchy/shaders/qmm_vec.comp b/overlay/mlx/backend/omarchy/shaders/qmm_vec.comp
+index 9df19d36..a4aa5603 100644
+--- a/overlay/mlx/backend/omarchy/shaders/qmm_vec.comp
++++ b/overlay/mlx/backend/omarchy/shaders/qmm_vec.comp
+@@ -539,7 +539,7 @@ void main() {
+     float norm = inversesqrt(mean_square + params.alpha);
+     barrier();
+     for (uint slot = lane; slot < row_length / 8u; slot += 256u) {
+-      uint half[8];
++      uint hb[8];
+       for (uint e = 0u; e < 8u; ++e) {
+         uint index = slot * 8u + e;
+         uint word32 = input_x.values[params.lhs_offset / 8u + index / 8u]
+@@ -552,10 +552,10 @@ void main() {
+             LOAD_VALUE(norm_weight.values[params.rhs_offset + index])));
+       }
+       normed_row[slot] = uvec4(
+-          half[0] | (half[1] << 16u),
+-          half[2] | (half[3] << 16u),
+-          half[4] | (half[5] << 16u),
+-          half[6] | (half[7] << 16u));
++          hb[0] | (hb[1] << 16u),
++          hb[2] | (hb[3] << 16u),
++          hb[4] | (hb[5] << 16u),
++          hb[6] | (hb[7] << 16u));
+     }
+     barrier();
+   }
+-- 
+2.55.0
+

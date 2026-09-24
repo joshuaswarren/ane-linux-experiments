@@ -1,0 +1,26 @@
+{
+ "qmm[2048x2048]": 33.58,
+ "qmm[2048x6144]": 124.97,
+ "qmm[4096x2048]": 141.2,
+ "qmm[512x2048]": 77.71,
+ "qmm[6144x2048]": 136.34,
+ "rms_norm": 91.14,
+ "rope": 146.3,
+ "sdpa[k=512]": 504.11,
+ "sdpa[k=32]": 150.02,
+ "conv+silu[6144x4]": "error: [conv] Expect the input channels in the input and weight array to match but got shapes - input: (1,6144,4) and weight: (6144,4,1)",
+ "gated_delta_update": 297.59,
+ "lm_head_full": "no quantized embedding found",
+ "_meta": {
+  "model": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+  "trials": 30,
+  "warmup": 3,
+  "inner": 64,
+  "dtype": "bfloat16",
+  "decode_x": [
+   1,
+   1,
+   2048
+  ]
+ }
+}
