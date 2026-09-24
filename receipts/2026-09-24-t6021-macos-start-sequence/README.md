@@ -726,3 +726,58 @@ move is dynamic: the m1n1 hv trace on a macOS boot capturing iBoot's
 write to engine+0x1050000 (value + timing). If it carries 0x0081<<48,
 the fix is a pre-kernel (m1n1) RVBAR compose before the lock, not a
 driver change. Static lane closed on this question.
+
+## 25. DATA decode: the firmware is ALIVE in its service loop, waiting on the host (Main lane)
+
+Source: /tmp/m2kstart/data_before.bin vs data_venc.bin (4,390,912 B each,
+22,832 diff bytes), decoded against /tmp/anestatic/fw13-ane0.payload
+(TEXT vm 0..0xc4000, DATA vm 0xc4000.. file 0x3e8000 + 0x50000 zerofill).
+
+(a) SEG1+0x5d42 flags/counters: sparse single-byte/word sets over
+SEG1+0x5d42..0x5d94 (e.g. word0 0->2, words 0x40/0x100-class at +0x54..).
+These are the RTKit work-pending/flag words the service loop tests:
+payload 0x6bd0c disables IRQ (mrs daif), checks the flag word at
+[0xc9df8]+0x2a, and either yields (svc #0) or services. The TEXT xref
+cluster 0x6bd34-0x71fa4 all target 0xc9d50..0xc9df8. [STATIC-CONFIRMED
+code; LIVE values = pending work the host never collected]
+
+(b) SEG1+0x167d0 RTKit stack: the canary prefix (64 B) is overwritten
+with a live frame chain: saved x30/LR + frame pointers into the DATA
+zero-tail arena (vm 0x4fa000/0x4fae10 = stack), DATA-locals
+(0xda920/0xda960/0xda9a0/0xdaa00), and the reserved-phys IOVA bases
+0x100000c4000/0x100000e0000. The 0x1000000409-style values and
+AMCC2/IMCQ words M2 reported are live ring-channel words on this stack:
+ring init RAN. After +0x168e8..0x169af the canary resumes intact, so
+depth stopped ~0x120 B in — a normal service-loop stack, not an
+overflow. [STATIC layout + LIVE frames]
+
+(c) SEG1+0x1c000 slot table: 319 eight-byte pairs (0x008304XX,
+0x0001000Y), last nonzero at SEG1+0x1c9f6, file image all zeros. This is
+the firmware's dispatch/work table built at runtime (handler-id,
+generation/arg). ~500 "slots of 83 xx" is 319 pairs; the `60 00 03`
+tail is the table terminator/count. Nothing in TEXT references 0xe0000
+statically (indirect via heap pointer) — a live-built structure, hence
+invisible to static xref. [LIVE structure; role INFERENCE from shape]
+
+(d) SEG1+0x6850 nine dumps: NOT a panic dump. The payload file already
+contains this region as a STATIC IOP channel-descriptor table
+(reversed 4-char tags DILS/SLID, SSSC/CSSS, LRSD/DRSL, BPTP, TNGI/IGNT,
+BtpG/StpG, BPxG/SPxG, SZSD/LZSD, SNUT/ZNUT+params, OTTR/RTTO, ARcM/McRA,
+_COS/COS+0xffffffff, dApC/CpAd, dArW/WrAd, fVED/DEVf, ABOI/IOBA...).
+Live changed only the first 8 bytes (a cookie/nonce -> live value
+0x000345d23ac51636, likely mach-time/cycle). No ELR/ESR/PC triple, no
+fault frame: a crash dump would carry the ESR/FAR/ELR triple the VBAR
+handlers capture in x28/x29/x30, and none is present. [STATIC table +
+LIVE first-word]
+
+Verdict: the firmware stopped NOWHERE — it is parked in its main
+service loop (payload 0x6bdc4 loop: check [flag+0x2a], call 0x76160,
+dispatch [table+0xce0] function pointer, 0x75d08/0x7619c/0x65630 IRQ
+housekeeping, repeat), with a built dispatch table, live stack frames,
+and pending work flags. It waits on host input: the first mailbox/doorbell
+message (the HELLO side the kext only answers after READY, which the
+firmware posts only after the host starts the endpoint handshake). The
+missing input is the HOST side of the RTKit handshake — not AMCC config,
+not PWGATE, not a shmem pointer. SCRATCH7/READY never fired because the
+boot handshake never began, not because the firmware faulted.
+[STATIC-CONFIRMED code paths; LIVE state proves execution past fetch]
