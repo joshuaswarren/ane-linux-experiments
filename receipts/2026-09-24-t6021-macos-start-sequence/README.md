@@ -656,3 +656,25 @@ Parent chain: VENC_DMA(317) -> VENC_SYS(299, real ps, map 11/28 =
 0x2902803e0 <- 0xf, poll low byte 0xff; then 0x290288008/10/18 <- 0xf,
 poll each; THEN the PWGATE pair on provider index-2 (base bound from
 the provider's reg entry [2], not assumed 0x28e08c000).
+
+## 22. VENC parents-first grant confirmed live; full ps chain (Main lane)
+
+M2FwStart-2 live: writing 0xf to VENC_DMA 0x290288000 took it
+0x300 -> 0x3ff, and the three leaves (PIPE4 @+0x8008, PIPE5 @+0x8010,
+ME0 @+0x8018) flipped from 0x30f (TARGET f, ACTUAL 0) to 0x3ff with no
+further leaf write; VENC_SYS @0x3e0 = 0x0f0003ff. This is the
+parents-first grant §7.7 predicted. [MEASURED]
+
+Kext order vs. the walk: the index-7 branch writes the leaves
+EXPLICITLY (0xf + validatePSReg low byte 0xff each, kext
+0xfffffe00094de598-0x94de60c); the parent walk only grants ACTUAL.
+Re-issue the leaf writes after the parents are up (idempotent).
+
+ps parent chain (ADT devices table, §7.7 rule): 318 PIPE4 -> 317;
+319 PIPE5 -> 317; 320 ME0 -> pair (319,318) packed 0x013E013F -> 317;
+321 ME1 -> 320. 317 VENC_DMA (map 15/0 = 0x290288000) -> 299 VENC_SYS
+(flag 0x22 real ps, map 11/28 = 0x2902803e0) -> 519 AVEMSR-V (flag
+0x10 VIRTUAL, no ps word, top). Writable chain: 0x2902803e0 ->
+0x290288000 -> 0x290288008/10/18 (ME1 @+0x8020 is not on the index-7
+path). Then PWGATE index-2 +0x12cc <- 3 / +0x13cc <- 0 (base from the
+provider's reg entry [2]), then CPU_CONTROL. [STATIC-CONFIRMED order]
