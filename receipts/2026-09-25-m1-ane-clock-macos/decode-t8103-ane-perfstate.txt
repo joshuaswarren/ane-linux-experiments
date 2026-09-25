@@ -1,13 +1,21 @@
-=== perf-regs (16B: reg_index, offset, size, unk) ===
-  [0] reg[1]=0x23d280000 size 0x74000 off 0x34000 block 0x100 unk 0x3 PA 0x23d2b4000 inside=True
-  [1] reg[0]=0x23b700000 size 0x8c000 off 0x34000 block 0x100 unk 0x0 PA 0x23b734000 inside=True
-  [2] reg[0]=0x23b700000 size 0x8c000 off 0x7c000 block 0xa unk 0x0 PA 0x23b77c000 inside=True
-  [3] reg[0]=0x23b700000 size 0x8c000 off 0x78000 block 0xa unk 0x0 PA 0x23b778000 inside=True
-=== perf-domains (28B: idx, perf_block, b, volt_group, pad u32, y u32, name[16]) ===
-  [  0] idx=0   perf_block=4 b=0 volt_group=1 y=300  SOC
-  [ 28] idx=1   perf_block=1 b=1 volt_group=2 y=0    ECPU
-  [ 56] idx=2   perf_block=4 b=0 volt_group=3 y=300  DCS
-  [ 84] idx=5   perf_block=1 b=1 volt_group=5 y=0    PCPU
-  [112] idx=8   perf_block=0 b=0 volt_group=8 y=0    ANE
-  [140] idx=11  perf_block=4 b=0 volt_group=11 y=300  DISP
-ANE perf block: perf-regs[0] -> PA 0x23d2b4000 size 0x100, inside reg[1] 0x23d280000/0x74000
+Structs: m1n1 m1n1/adt.py PMGRPerfRegs (16 B), PMGRDevices (48 B), PMGRClocks (24 B), PMGRPSRegs (12 B).
+=== perf-regs (reg index, offset, size, unk) ===
+  [0] reg[1] 0x23d280000/0x74000 + 0x34000 -> PA 0x23d2b4000 size 0x100 unk 0x3
+  [1] reg[0] 0x23b700000/0x8c000 + 0x34000 -> PA 0x23b734000 size 0x100 unk 0x0
+  [2] reg[0] 0x23b700000/0x8c000 + 0x7c000 -> PA 0x23b77c000 size 0xa unk 0x0
+  [3] reg[0] 0x23b700000/0x8c000 + 0x78000 -> PA 0x23b778000 size 0xa unk 0x0
+=== ANE rows of devices (48 B records) ===
+  devices[99] @ byte 4752: ANE_SYS perf_block=1 perf_idx=0x31 psreg=12 psidx=14 -> PS word 0x23b700470
+  devices[109] @ byte 5232: ANE_SYS_CPU perf_block=0 perf_idx=0x0 psreg=9 psidx=0 -> PS word 0x23b70c000
+  devices[214] @ byte 10272: ANE-SYS-V perf_block=0 perf_idx=0x0 psreg=0 psidx=0 -> PS word 0x23d280058
+  devices[235] @ byte 11280: ANE-SYS-DART perf_block=0 perf_idx=0x0 psreg=0 psidx=0 -> PS word 0x23d280058
+=== ANE row of clocks (24 B records) ===
+  clocks @ byte 432: PLL_ANE perf_idx=0x48 perf_block=1 unk=3 id=0x13
+=== perf-domains (28 B), raw ===
+  @ byte 0: 00040001000000002c010000 SOC
+  @ byte 28: 010101020000000000000000 ECPU
+  @ byte 56: 02040003000000002c010000 DCS
+  @ byte 84: 050101050000000000000000 PCPU
+  @ byte 112: 080000080000000000000000 ANE
+  @ byte 140: 0b04000b000000002c010000 DISP
+Byte 1 of perf-domains takes values 4/1/4/1/0/4; perf-regs has 4 entries (0-3), so byte 1 is not a perf-regs index.

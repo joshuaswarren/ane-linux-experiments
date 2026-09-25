@@ -1,0 +1,59 @@
+# AppleT6020PMGR::setPerfState(PerfDomainID, PerfState, bool, UInt32)
+# kernelcache.release.mac14j (macOS 13.5 22G74, T6021) fileset Mach-O sha256 9615a486511c7a60b141d7f4291361c5212e908546d6568890029bb90b5431e7
+# __TEXT_EXEC vm 0xfffffe0008408000 fileoff 0x1404000
+# assert strings 0xfffffe0007507ebb / 0xfffffe0007507f28; xrefs 0x...837a8/7ec/830 are panic stubs
+# stubs 0x...83780, 0x...837c4, 0x...83808 are branched to only from 0x...7f664, 0x...7efac, 0x...7f66c
+# --- entry + domain dispatch: w20 = PerfDomainID; jump table on (w20 - 1) for 1..5 ---
+0xfffffe0009b7ef7c sub w16, w20, #1
+0xfffffe0009b7ef80 cmp w16, #4
+0xfffffe0009b7ef84 b.hi #0xfffffe0009b7efb0
+0xfffffe0009b7ef88 cmp x16, #4
+0xfffffe0009b7ef8c csel x16, x16, xzr, ls
+0xfffffe0009b7ef90 adrp x17, #0xfffffe0009b7f000
+0xfffffe0009b7ef94 add x17, x17, #0x670
+0xfffffe0009b7ef98 ldrsw x16, [x17, x16, lsl #2]
+0xfffffe0009b7ef9c adr x17, #0xfffffe0009b7ef9c
+0xfffffe0009b7efa0 add x16, x17, x16
+0xfffffe0009b7efa4 br x16
+0xfffffe0009b7efa8 bti j
+0xfffffe0009b7efac bl #0xfffffe0009b837c4
+0xfffffe0009b7efb0 cmp w20, #0xd
+0xfffffe0009b7efb4 b.ne #0xfffffe0009b7f660
+# --- jump table (offsets from 0x...7ef9c): d1 +0xc -> 0x...7efa8 panic; d2 +0x1c -> 0x...7efb8 write path;
+#     d3 +0x6cc -> 0x...7f668 panic; d4 +0x6c4 -> 0x...7f660 panic; d5 +0x1c -> 0x...7efb8 write path ---
+# --- d13 also reaches 0x...7efb8 (cmp w20,#0xd); every other ID -> 0x...7f660 panic ---
+# --- write path: block = vtable+0xd88(domain); CMD at +0xe20020, (old & ~0x1f) | BIT(25) | (state & 0x1f) ---
+0xfffffe0009b7f360 mov x1, x26
+0xfffffe0009b7f364 mov w2, #0x20
+0xfffffe0009b7f368 movk w2, #0xe2, lsl #16
+0xfffffe0009b7f36c mov x3, x19
+0xfffffe0009b7f370 mov x17, x9
+0xfffffe0009b7f374 movk x17, #0xdb6f, lsl #48
+0xfffffe0009b7f378 blraa x8, x17
+0xfffffe0009b7f37c and x8, x0, #0xffffffffffffffe0
+0xfffffe0009b7f380 mov w9, #0x2000000
+0xfffffe0009b7f384 bfxil w9, w25, #0, #5
+0xfffffe0009b7f388 orr x3, x8, x9
+0xfffffe0009b7f38c ldr x16, [x21]
+0xfffffe0009b7f390 mov x17, x21
+0xfffffe0009b7f394 movk x17, #0xcda1, lsl #48
+0xfffffe0009b7f398 autda x16, x17
+0xfffffe0009b7f39c mov x17, x16
+0xfffffe0009b7f3a0 xpacd x17
+0xfffffe0009b7f3a4 cmp x16, x17
+0xfffffe0009b7f3a8 b.eq #0xfffffe0009b7f3b0
+0xfffffe0009b7f3ac brk #0xc472
+0xfffffe0009b7f3b0 add x8, x16, #0xdb0
+0xfffffe0009b7f3b4 ldr x9, [x16, #0xdb0]
+0xfffffe0009b7f3b8 mov x0, x21
+0xfffffe0009b7f3bc mov x1, x26
+0xfffffe0009b7f3c0 mov w2, #0x20
+0xfffffe0009b7f660 bti j
+0xfffffe0009b7f664 bl #0xfffffe0009b83780
+0xfffffe0009b7f668 bti j
+0xfffffe0009b7f66c bl #0xfffffe0009b83808
+0xfffffe0009b7f670 udf #0xc
+0xfffffe0009b7f674 udf #0x1c
+0xfffffe0009b7f678 udf #0x6cc
+0xfffffe0009b7f67c udf #0x6c4
+0xfffffe0009b7f680 udf #0x1c

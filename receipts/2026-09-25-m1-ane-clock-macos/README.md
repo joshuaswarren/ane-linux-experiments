@@ -128,24 +128,51 @@ a chunk_00 lookup shim; 112040 died in pure_prefill with
 `KeyError: 'gated_deltanet'` (unpatched harness `m.prefill`); 114433-noprefill
 was stopped by Main's order to keep prefill.
 
+## 8. ANE perf-state register: decode and the macOS perf-state path
 
-`decode-t8103-ane-perfstate.txt`, from the same ioreg plist.
+Correction: the first version of this section (87f86ab) named PA 0x23d2b4140
+as the ANE perf word. That address was inferred, not decoded, and is wrong.
+The probe built on it (omarchy-ane 581561f) was removed in 38beae6 before
+any run.
 
-- `perf-regs` is 4 records of 16 bytes (`reg` index, offset, size, unk), the
-  same struct as m1n1 `PMGRPerfRegs` (`m1n1/adt.py`).
-- `perf-domains` record 8 (byte offset 112) is `ANE`: byte 1 = perf block 0,
-  byte 3 = voltage group 8. Block 0 is `perf-regs[0]`: pmgr `reg[1]`
-  (0x23d280000, size 0x74000) + 0x34000 = PA **0x23d2b4000**, size 0x100.
-  That span is inside the range the ADT lists for pmgr. It is not the
-  unmapped region that reset the M1 Max.
-- m1n1 `dump_pmgr.py` places a clock at `perf_regs[block].reg + 0x100 +
-  perf_idx * 0x10`. The ANE clock entry in the devices table is perf index 4
-  of block 0, so the word is PA **0x23d2b4140**.
-- Asahi `drivers/soc/apple/apple-pmgr-misc.c` drives the same register shape:
-  desired state in bits 3:0, granted state read back in bits 7:4. The ANE
-  ladder (`voltage-states8`) has 12 steps, so step 11 is 1464 MHz.
+`decode-t8103-ane-perfstate.txt` decodes the jwm1 macOS ioreg pmgr node with
+m1n1's structs (`m1n1/adt.py`: `PMGRPerfRegs`, `PMGRDevices`, `PMGRClocks`,
+`PMGRPSRegs`):
 
-Probe: omarchy-ane `agent/ane-clock-m1` `ane/h13/ane_perfstate_probe.c`.
-Default is one read. `request=11` writes the desired field once, waits for
-the granted field, and restores the saved word on unload. Not run yet:
-jwm1 is owned by Jwm1Parity5.
+- `perf-regs` has 4 entries. `perf-regs[1]` = pmgr `reg[0]` (0x23b700000) +
+  0x34000 = **0x23b734000**, size 0x100.
+- `devices[99]` (byte 4752) `ANE_SYS`: flags 0xa2 (perf bit set),
+  perf block 1, perf idx 0x31.
+- `clocks` (byte 432) `PLL_ANE`: perf block 1, perf idx 0x48.
+- `perf-domains` byte 1 is not a perf-regs index. It takes 4/1/4/1/0/4, and
+  perf-regs only has 0–3.
+
+So the ANE's perf entries point into `perf-regs[1]`. That block is the
+T8103 twin of T6001 `perf-regs[1]` (reg[0]+0x2d000 = 0x28e0ad000), which the
+2026-09-23 m1max-ane-clock receipt classed as the forbidden region next to
+the read that hard-reset the M1 Max. The T6001 reset address was also inside
+the ADT's pmgr range, so being inside that range does not make an address
+safe. m1n1 `m1n1/hw/pmgr.py` models no register at reg[0]+0x34000, and no
+Asahi driver touches it. The meaning of perf idx 0x31/0x48 inside that block
+has no public source.
+
+What macOS does (`t6020-setPerfState-dispatch.asm.txt`, full body in
+`t6020-setPerfState-full.asm.txt`): in the macOS 13.5 kernelcache
+(`kernelcache.release.mac14j`, T6021, sha256 9615a486…),
+`AppleT6020PMGR::setPerfState(PerfDomainID, PerfState, bool, UInt32)` is
+0xfffffe0009b7ef14–0xfffffe0009b7f684. It dispatches on the domain ID:
+
+- IDs 2, 5 and 13 reach the write path. It writes the cluster command word at
+  block + 0xe20020 as `(old & ~0x1f) | BIT(25) | (state & 0x1f)`. That is
+  Asahi's CPU-cluster DVFS command (`drivers/cpufreq/apple-soc-cpufreq.c:25-31`:
+  CMD 0x20, SET bit 25, PS1 bits 4:0).
+- IDs 1, 3 and 4, and every ID other than 2, 5 or 13, branch to assert panic
+  stubs (0x…83780, 0x…837c4, 0x…83808).
+
+The ANE's perf-domain index (8) is not accepted, and neither is 9. On M2 the
+host's only perf-state entry point therefore has no ANE path, and the host
+never sets the ANE clock through pmgr. That fits the ANE firmware setting
+its own operating point after `CH_PROPERTY_WRITE` "FW PERF MODE". The T8103
+equivalent (`AppleT8103PMGR`) is not checked yet. It needs the T8103
+kernelcache, which is on jwm1's ESP (`asahi/kernelcache.release.mac13g`), not
+on PVE.
