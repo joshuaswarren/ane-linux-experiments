@@ -1,0 +1,360 @@
+[rtmod] SUBMIT tid=44217 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=4 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=5 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=6 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=7 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=9 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=10 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=11 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=12 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=13 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=14 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=15 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=16 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=17 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=18 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=19 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=20 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=21 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=22 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=23 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=24 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=25 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=26 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=27 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=28 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=29 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=30 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=31 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=32 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=33 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=34 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=35 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=36 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=37 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=38 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=39 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=40 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=41 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=42 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=43 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=44 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=45 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=46 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=47 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=48 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=49 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=50 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=51 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=52 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=53 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=54 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=55 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=56 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=57 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=58 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=59 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=60 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=61 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=62 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=63 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=64 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=65 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=66 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=67 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=68 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=69 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=70 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=71 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=72 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=73 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=74 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=75 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=76 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=77 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=78 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=79 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=80 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=81 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=82 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=83 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=84 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=85 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=86 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=87 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=88 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=89 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=90 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=91 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=92 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=93 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=94 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=95 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=96 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=97 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=98 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=99 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=100 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=101 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=102 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=103 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=104 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=105 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=106 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=107 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=108 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=109 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=110 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=111 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=112 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=113 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=114 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=115 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=116 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=117 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=118 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=119 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=120 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44217 cv=121 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[doctest] doctest version is "2.4.12"
+[doctest] run with "--help" for options
+===============================================================================
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:399:
+TEST CASE:  fused bf16 decode is bit-identical to the f32 composition
+
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:410: MESSAGE: keys 1 dispatches 10
+  logged: keys := 1
+
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:410: MESSAGE: keys 5 dispatches 10
+  logged: keys := 5
+
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:410: MESSAGE: keys 16 dispatches 10
+  logged: keys := 16
+
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:410: MESSAGE: keys 17 dispatches 10
+  logged: keys := 17
+
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:410: MESSAGE: keys 64 dispatches 10
+  logged: keys := 64
+
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:410: MESSAGE: keys 263 dispatches 1
+  logged: keys := 263
+
+/var/tmp/levers/mlx/.work/mlx/tests/omarchy/test_sdpa_decode_fused.cpp:410: MESSAGE: keys 320 dispatches 1
+  logged: keys := 320
+
+===============================================================================
+[doctest] test cases:     3 |     3 passed | 0 failed | 0 skipped
+[doctest] assertions: 10774 | 10774 passed | 0 failed |
+[doctest] Status: SUCCESS!
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP

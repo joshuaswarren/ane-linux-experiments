@@ -1,0 +1,60 @@
+[2026-09-25T13:59:28-05:00] window1 begin stamp=20260925T185928Z icd={"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+[2026-09-25T13:59:47-05:00] flock held by 24235
+[2026-09-25T13:59:47-05:00] 8002 down, window open
+[2026-09-25T13:59:49-05:00] floor arm=sys leg=1 ok
+[2026-09-25T13:59:50-05:00] floor arm=sys leg=2 ok
+[2026-09-25T13:59:51-05:00] floor arm=wt leg=1 ok
+[2026-09-25T13:59:52-05:00] floor arm=wt leg=2 ok
+[2026-09-25T13:59:53-05:00] floor arm=nocdm leg=1 ok
+[2026-09-25T13:59:55-05:00] floor arm=nocdm leg=2 ok
+[2026-09-25T13:59:56-05:00] floor arm=usc leg=1 ok
+[2026-09-25T13:59:57-05:00] floor arm=usc leg=2 ok
+[2026-09-25T13:59:58-05:00] floor arm=dusc leg=1 ok
+[2026-09-25T13:59:59-05:00] floor arm=dusc leg=2 ok
+[2026-09-25T14:00:01-05:00] floor arm=nosplit leg=1 ok
+[2026-09-25T14:00:02-05:00] floor arm=nosplit leg=2 ok
+[2026-09-25T14:00:03-05:00] floor arm=nosplitnocdm leg=1 ok
+[2026-09-25T14:00:04-05:00] floor arm=mask0x178 leg=1 ok
+[2026-09-25T14:00:06-05:00] floor arm=mask0x170 leg=1 ok
+[2026-09-25T14:00:07-05:00] floor arm=mask0x008 leg=1 ok
+[2026-09-25T14:00:08-05:00] floor arm=mask0x010 leg=1 ok
+[2026-09-25T14:00:09-05:00] floor arm=mask0x020 leg=1 ok
+[2026-09-25T14:00:10-05:00] floor arm=mask0x040 leg=1 ok
+[2026-09-25T14:00:11-05:00] floor arm=mask0x100 leg=1 ok
+[2026-09-25T14:00:13-05:00] floor arm=mask0x108 leg=1 ok
+[2026-09-25T14:00:14-05:00] floor arm=mask0x118 leg=1 ok
+[2026-09-25T14:00:15-05:00] floor arm=mask0x128 leg=1 ok
+[2026-09-25T14:00:16-05:00] floor arm=mask0x148 leg=1 ok
+[2026-09-25T14:00:17-05:00] floor arm=mask0x078 leg=1 ok
+[2026-09-25T14:00:19-05:00] floor arm=mask0x168 leg=1 ok
+[2026-09-25T14:00:20-05:00] floor arm=mask0x030 leg=1 ok
+[2026-09-25T14:00:21-05:00] floor arm=mask0x050 leg=1 ok
+[2026-09-25T14:00:22-05:00] floor arm=mask0x060 leg=1 ok
+[2026-09-25T14:00:23-05:00] floor arm=mask0xfffff leg=1 ok
+[2026-09-25T14:00:25-05:00] floor arm=mask0x1ff leg=1 ok
+[2026-09-25T14:00:26-05:00] floor arm=mask0x000 leg=1 ok
+[2026-09-25T14:00:26-05:00] floor matrix done
+[2026-09-25T14:00:27-05:00] q4 iso-r1s8 ok: 7 eq rows, mismatches=0
+[2026-09-25T14:00:31-05:00] q4 gap-r1s8 ok: 0 eq rows, mismatches=
+[2026-09-25T14:00:32-05:00] q4 iso-r2s4 ok: 7 eq rows, mismatches=0
+[2026-09-25T14:00:36-05:00] q4 gap-r2s4 ok: 0 eq rows, mismatches=
+[2026-09-25T14:00:37-05:00] q4 iso-r2s8 ok: 7 eq rows, mismatches=0
+[2026-09-25T14:00:41-05:00] q4 gap-r2s8 ok: 0 eq rows, mismatches=
+[2026-09-25T14:00:42-05:00] q4 iso-r4s2 ok: 7 eq rows, mismatches=0
+[2026-09-25T14:00:46-05:00] q4 gap-r4s2 ok: 0 eq rows, mismatches=
+[2026-09-25T14:00:47-05:00] q4 iso-r4s4 ok: 7 eq rows, mismatches=0
+[2026-09-25T14:00:51-05:00] q4 gap-r4s4 ok: 0 eq rows, mismatches=
+[2026-09-25T14:00:52-05:00] q4 iso-r4s8 ok: 7 eq rows, mismatches=0
+[2026-09-25T14:00:56-05:00] q4 gap-r4s8 ok: 0 eq rows, mismatches=
+[2026-09-25T14:00:56-05:00] q4 screen done
+[2026-09-25T14:01:02-05:00] gapmask sys ok
+[2026-09-25T14:01:07-05:00] gapmask nosplit ok
+[2026-09-25T14:01:12-05:00] gapmask nocdm ok
+[2026-09-25T14:01:18-05:00] gapmask m170 ok
+[2026-09-25T14:01:23-05:00] gapmask m108 ok
+[2026-09-25T14:01:28-05:00] gapmask m008 ok
+[2026-09-25T14:01:28-05:00] WINDOW1_BODY_DONE
+[2026-09-25T14:01:28-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T14:01:38-05:00] poll #2: 8002 ok
+[2026-09-25T14:01:43-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790362903,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-pl6LsJjROXSk1H4
+[2026-09-25T14:01:43-05:00] service healthy=1

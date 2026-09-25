@@ -1,0 +1,3 @@
+unit: profile registry + apply() deltas OK
+usage: /var/tmp/levers/mlx/.work/build-tests/tests/omarchy/omarchy_capability_sim_tests <profile-name>
+profiles: m1-honeykrisp-fork m1-stock-no-coopmat subgroup-size-64 small-shared-memory no-cooperative-matrix

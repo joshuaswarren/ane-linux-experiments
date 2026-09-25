@@ -1,0 +1,33 @@
+[2026-09-25T14:08:17-05:00] window2 begin stamp=20260925T190817Z
+[2026-09-25T14:08:48-05:00] flock held by 26498
+[2026-09-25T14:08:48-05:00] 8002 down, window open
+[2026-09-25T14:08:49-05:00] q4 iso-u2r2s4 ok:  mismatches=0
+[2026-09-25T14:08:50-05:00] q4 iso-u2r2s8 ok:  mismatches=0
+[2026-09-25T14:08:51-05:00] q4 iso-r3s4 ok:  mismatches=0
+[2026-09-25T14:08:52-05:00] q4 iso-gsr2s8 ok:  mismatches=0
+[2026-09-25T14:08:56-05:00] q4 gap-r2s2 ok: 130151,130505 mismatches=
+[2026-09-25T14:09:00-05:00] q4 gap-r2s16 ok: 183114,184690 mismatches=
+[2026-09-25T14:09:04-05:00] q4 gap-r3s4 ok: 200701,200520 mismatches=
+[2026-09-25T14:09:08-05:00] q4 gap-r3s8 ok: 198717,198900 mismatches=
+[2026-09-25T14:09:12-05:00] q4 gap-u2r1s8 ok: 198343,198401 mismatches=
+[2026-09-25T14:09:16-05:00] q4 gap-u2r2s4 ok: 216398,216373 mismatches=
+[2026-09-25T14:09:20-05:00] q4 gap-u2r2s8 ok: 214014,213924 mismatches=
+[2026-09-25T14:09:25-05:00] q4 gap-u2r4s4 ok: 269352,269231 mismatches=
+[2026-09-25T14:09:29-05:00] q4 gap-gsr2s8-cap32 ok: 354627,354569 mismatches=
+[2026-09-25T14:09:33-05:00] q4 gap-gsr2s8-cap64 ok: 266230,266283 mismatches=
+[2026-09-25T14:09:37-05:00] q4 gap-gsr2s8-cap96 ok: 248794,248929 mismatches=
+[2026-09-25T14:09:41-05:00] q4 gap-gsr2s8-cap128 ok: 234090,234090 mismatches=
+[2026-09-25T14:09:45-05:00] q4 gap-gsr2s8-cap192 ok: 241821,241765 mismatches=
+[2026-09-25T14:09:49-05:00] q4 gap-gsr2s8-cap256 ok: 234456,234515 mismatches=
+[2026-09-25T14:09:54-05:00] q4 gap-gsr2s4-cap64 ok: 353955,354076 mismatches=
+[2026-09-25T14:09:58-05:00] q4 gap-gsr2s4-cap128 ok: 266598,266065 mismatches=
+[2026-09-25T14:10:02-05:00] q4 gap-gsr2s4-cap256 ok: 235579,235293 mismatches=
+[2026-09-25T14:10:05-05:00] nocdm r1s8: 158300,158291
+[2026-09-25T14:10:09-05:00] nocdm r2s4: 136354,136475
+[2026-09-25T14:10:12-05:00] nocdm r2s8: 135080,135349
+[2026-09-25T14:10:16-05:00] nocdm u2r2s8: 147551,147557
+[2026-09-25T14:10:16-05:00] WINDOW2_BODY_DONE
+[2026-09-25T14:10:16-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T14:10:26-05:00] poll #2: 8002 ok
+[2026-09-25T14:10:31-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790363431,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-jzV9ryE7qRaha0G
+[2026-09-25T14:10:31-05:00] service healthy=1

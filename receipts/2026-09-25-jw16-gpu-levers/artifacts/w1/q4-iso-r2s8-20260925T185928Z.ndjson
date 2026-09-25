@@ -1,0 +1,17 @@
+{"k":"dev","name":"Apple M1 Max (G13C C0)","subgroupSize":32,"arith":true,"ts_period_ns":1.000}
+{"k":"mode","variant":"subgroup","reps":7}
+{"k":"peak","tag":"copy","skipped":true}
+{"k":"peak","tag":"read","skipped":true}
+{"k":"eq","shape":"qkv","dim":0,"side":"cand","elements":2048,"bit_mismatches":0}
+{"k":"eq","shape":"qkv","dim":1,"side":"cand","elements":512,"bit_mismatches":0}
+{"k":"eq","shape":"qkv","dim":2,"side":"cand","elements":512,"bit_mismatches":0}
+{"k":"eq","shape":"gate_up","dim":0,"side":"cand","elements":6144,"bit_mismatches":0}
+{"k":"eq","shape":"gate_up","dim":1,"side":"cand","elements":6144,"bit_mismatches":0}
+{"k":"eq","shape":"down","dim":0,"side":"cand","elements":2048,"bit_mismatches":0}
+{"k":"eq","shape":"qkvz","dim":0,"side":"cand","elements":8192,"bit_mismatches":0}
+{"k":"dumped"}
+{"k":"shape","name":"qkv","bytes":3549184,"base":{"grid":384,"med_ns":12625,"min_ns":12250,"ratio_vs_base":1.0000,"wall_med_ns":224917,"wall_gb_s":15.78,"wall_ratio_vs_base":1.0000},"cand":{"grid":192,"med_ns":14000,"min_ns":12208,"ratio_vs_base":1.1089,"wall_med_ns":231376,"wall_gb_s":15.34,"wall_ratio_vs_base":1.0287}}
+{"k":"shape","name":"gate_up","bytes":14184448,"base":{"grid":1536,"med_ns":31875,"min_ns":30875,"ratio_vs_base":1.0000,"wall_med_ns":327669,"wall_gb_s":43.29,"wall_ratio_vs_base":1.0000},"cand":{"grid":768,"med_ns":31125,"min_ns":29750,"ratio_vs_base":0.9765,"wall_med_ns":319544,"wall_gb_s":44.39,"wall_ratio_vs_base":0.9752}}
+{"k":"shape","name":"down","bytes":7094272,"base":{"grid":256,"med_ns":16458,"min_ns":12542,"ratio_vs_base":1.0000,"wall_med_ns":247543,"wall_gb_s":28.66,"wall_ratio_vs_base":1.0000},"cand":{"grid":128,"med_ns":30583,"min_ns":13167,"ratio_vs_base":1.8582,"wall_med_ns":254293,"wall_gb_s":27.90,"wall_ratio_vs_base":1.0273}}
+{"k":"shape","name":"qkvz","bytes":9457664,"base":{"grid":1024,"med_ns":31625,"min_ns":27417,"ratio_vs_base":1.0000,"wall_med_ns":299584,"wall_gb_s":31.57,"wall_ratio_vs_base":1.0000},"cand":{"grid":512,"med_ns":31792,"min_ns":23958,"ratio_vs_base":1.0053,"wall_med_ns":292793,"wall_gb_s":32.30,"wall_ratio_vs_base":0.9773}}
+{"k":"done"}

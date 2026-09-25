@@ -1,0 +1,75 @@
+[rtmod] SUBMIT tid=44257 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=5 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=7 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=9 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=10 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=11 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=12 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=13 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=14 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=15 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=16 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=17 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=18 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=19 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=20 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=21 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=22 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=23 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=24 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=25 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=44257 cv=26 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[doctest] doctest version is "2.4.12"
+[doctest] run with "--help" for options
+===============================================================================
+[doctest] test cases:    8 |    8 passed | 0 failed | 0 skipped
+[doctest] assertions: 1109 | 1109 passed | 0 failed |
+[doctest] Status: SUCCESS!
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP

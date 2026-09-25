@@ -1,0 +1,67 @@
+[rtmod] SUBMIT tid=43625 cv=1 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=2 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=3 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=4 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=5 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=6 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=7 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=8 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=9 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=10 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=11 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=12 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=13 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43625 cv=14 waits=0 sigs=1 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[doctest] doctest version is "2.4.12"
+[doctest] run with "--help" for options
+===============================================================================
+[doctest] test cases:   9 |   9 passed | 0 failed | 0 skipped
+[doctest] assertions: 264 | 264 passed | 0 failed |
+[doctest] Status: SUCCESS!
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP

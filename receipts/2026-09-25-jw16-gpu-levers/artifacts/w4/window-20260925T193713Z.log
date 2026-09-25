@@ -1,0 +1,18 @@
+[2026-09-25T14:37:13-05:00] window4 begin stamp=20260925T193713Z
+[2026-09-25T14:37:16-05:00] flock held by 44388
+[2026-09-25T14:37:16-05:00] 8002 down, window open
+[2026-09-25T14:37:16-05:00] capsim m1-honeykrisp-fork: PASS [doctest] assertions: 2462 | 2462 passed | 0 failed |
+[2026-09-25T14:37:16-05:00] capsim m1-stock-no-coopmat: PASS [doctest] assertions: 2460 | 2460 passed | 0 failed |
+[2026-09-25T14:37:16-05:00] capsim subgroup-size-64: PASS [doctest] assertions: 2460 | 2460 passed | 0 failed |
+[2026-09-25T14:37:16-05:00] capsim small-shared-memory: PASS [doctest] assertions: 2460 | 2460 passed | 0 failed |
+[2026-09-25T14:37:16-05:00] capsim no-cooperative-matrix: PASS [doctest] assertions: 2462 | 2462 passed | 0 failed |
+[2026-09-25T14:37:16-05:00] icd now: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.41ccf96"},"file_format_version":"1.0.1"} sha=29a7addc28b40c8c
+[2026-09-25T14:37:17-05:00] serving venv: mlx-omarchy        None libmlx=59bb9ea203455eeb raw-refs=2
+[2026-09-25T14:37:39-05:00] installed-r1: 79.06 724.4 74.1 bc519c03
+[2026-09-25T14:38:01-05:00] installed-r2: 78.91 728.5 74.4 bc519c03
+[2026-09-25T14:38:23-05:00] installed-r3: 78.9 726.0 75.81 bc519c03
+[2026-09-25T14:38:23-05:00] WINDOW4_BODY_DONE
+[2026-09-25T14:38:23-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T14:38:33-05:00] poll #2: 8002 ok
+[2026-09-25T14:38:40-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790365120,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-wkiTZwYt6YmrmkD
+[2026-09-25T14:38:40-05:00] service healthy=1

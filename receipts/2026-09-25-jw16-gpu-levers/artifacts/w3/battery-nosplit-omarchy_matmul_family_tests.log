@@ -1,0 +1,2828 @@
+[rtmod] SUBMIT tid=43776 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=2 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=3 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=4 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=5 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=6 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=7 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=9 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=10 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=11 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=12 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=13 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=14 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=15 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=16 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=17 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=18 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=19 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=20 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=21 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=22 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=23 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=24 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=25 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=26 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=27 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=28 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=29 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=30 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=31 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=32 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=33 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=34 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=35 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=36 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=37 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=38 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=39 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=40 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=41 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=42 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=43 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=44 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=45 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=46 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=47 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=48 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=49 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=50 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=51 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=52 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=53 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=54 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=55 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=56 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=57 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=58 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=59 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=60 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=61 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=62 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=63 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=64 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=65 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=66 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=67 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=68 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=69 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=70 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=71 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=72 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=73 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=74 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=75 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=76 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=77 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=78 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=79 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=80 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=81 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=82 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[doctest] doctest version is "2.4.12"
+[doctest] run with "--help" for options
+[provenance] cooperative_matrix_f32_8=1 subgroup_size=32 -> gated shapes run MatmulF32Coopmat
+[matmul-f32] cube8 1x8x8x8 a b path=coopmat max_abs_err=0
+[matmul-f32] cube8 1x8x8x8 a bT path=coopmat max_abs_err=0
+[matmul-f32] cube8 1x8x8x8 aT b path=coopmat max_abs_err=0
+[matmul-f32] cube8 1x8x8x8 aT bT path=coopmat max_abs_err=0
+[matmul-f32] cube64 1x64x64x64 a b path=coopmat max_abs_err=0
+[matmul-f32] cube64 1x64x64x64 a bT path=coopmat max_abs_err=0
+[matmul-f32] cube64 1x64x64x64 aT b path=coopmat max_abs_err=0
+[matmul-f32] cube64 1x64x64x64 aT bT path=coopmat max_abs_err=0
+[matmul-f32] cube128 1x128x128x128 a b path=coopmat max_abs_err=0
+[matmul-f32] cube128 1x128x128x128 a bT path=coopmat max_abs_err=0
+[matmul-f32] cube128 1x128x128x128 aT b path=coopmat max_abs_err=0
+[matmul-f32] cube128 1x128x128x128 aT bT path=coopmat max_abs_err=0
+[matmul-f32] batched4x32 4x32x32x32 a b path=coopmat max_abs_err=0
+[matmul-f32] batched4x32 4x32x32x32 a bT path=coopmat max_abs_err=0
+[matmul-f32] batched4x32 4x32x32x32 aT b path=coopmat max_abs_err=0
+[matmul-f32] batched4x32 4x32x32x32 aT bT path=coopmat max_abs_err=0
+[matmul-f32] odd17x23x19 1x17x23x19 a b path=tiled max_abs_err=0
+[matmul-f32] odd17x23x19 1x17x23x19 a bT path=tiled max_abs_err=0
+[matmul-f32] odd17x23x19 1x17x23x19 aT b path=tiled max_abs_err=0
+[matmul-f32] odd17x23x19 1x17x23x19 aT bT path=tiled max_abs_err=0
+[matmul-f32] slice col4 32x40x24 path=coopmat max_abs_err=0
+[matmul-f32] slice col5 32x40x24 path=tiled max_abs_err=0
+[provenance] cooperative_matrix_f32_8=1 subgroup_size=32
+[matmul-bf16] tail-m8 1x8x8x8 a b max_abs_err=0
+[matmul-bf16] tail-m8 1x8x8x8 a bT max_abs_err=0
+[matmul-bf16] tail-m8 1x8x8x8 aT b max_abs_err=0
+[matmul-bf16] tail-m8 1x8x8x8 aT bT max_abs_err=0
+[matmul-bf16] tail-m9 1x9x8x8 a b max_abs_err=0
+[matmul-bf16] tail-m9 1x9x8x8 a bT max_abs_err=0
+[matmul-bf16] tail-m9 1x9x8x8 aT b max_abs_err=0
+[matmul-bf16] tail-m9 1x9x8x8 aT bT max_abs_err=0
+[matmul-bf16] tail-m33-n40 1x33x8x40 a b max_abs_err=0
+[matmul-bf16] tail-m33-n40 1x33x8x40 a bT max_abs_err=0
+[matmul-bf16] tail-m33-n40 1x33x8x40 aT b max_abs_err=0
+[matmul-bf16] tail-m33-n40 1x33x8x40 aT bT max_abs_err=0
+[matmul-bf16] tile32 1x32x32x32 a b max_abs_err=0
+[matmul-bf16] tile32 1x32x32x32 a bT max_abs_err=0
+[matmul-bf16] tile32 1x32x32x32 aT b max_abs_err=0
+[matmul-bf16] tile32 1x32x32x32 aT bT max_abs_err=0
+[matmul-bf16] tail-m17-k24-n34 1x17x24x34 a b max_abs_err=0
+[matmul-bf16] tail-m17-k24-n34 1x17x24x34 a bT max_abs_err=0
+[matmul-bf16] tail-m17-k24-n34 1x17x24x34 aT b max_abs_err=0
+[matmul-bf16] tail-m17-k24-n34 1x17x24x34 aT bT max_abs_err=0
+[matmul-bf16] batch2 2x40x8x40 a b max_abs_err=0
+[matmul-bf16] batch2 2x40x8x40 a bT max_abs_err=0
+[matmul-bf16] batch2 2x40x8x40 aT b max_abs_err=0
+[matmul-bf16] batch2 2x40x8x40 aT bT max_abs_err=0
+[matmul-bf16] tail-m32-k24-n34 1x32x24x34 a b max_abs_err=0
+[matmul-bf16] tail-m32-k24-n34 1x32x24x34 a bT max_abs_err=0
+[matmul-bf16] tail-m32-k24-n34 1x32x24x34 aT b max_abs_err=0
+[matmul-bf16] tail-m32-k24-n34 1x32x24x34 aT bT max_abs_err=0
+[matmul-bf16] tail-m33-k40-n18 1x33x40x18 a b max_abs_err=0
+[matmul-bf16] tail-m33-k40-n18 1x33x40x18 a bT max_abs_err=0
+[matmul-bf16] tail-m33-k40-n18 1x33x40x18 aT b max_abs_err=0
+[matmul-bf16] tail-m33-k40-n18 1x33x40x18 aT bT max_abs_err=0
+[matmul-bf16] tail-m48-k8-n16 1x48x8x16 a b max_abs_err=0
+[matmul-bf16] tail-m48-k8-n16 1x48x8x16 a bT max_abs_err=0
+[matmul-bf16] tail-m48-k8-n16 1x48x8x16 aT b max_abs_err=0
+[matmul-bf16] tail-m48-k8-n16 1x48x8x16 aT bT max_abs_err=0
+[matmul-bf16] single-row 1x1x8x8 a b max_abs_err=0
+[matmul-bf16] single-row 1x1x8x8 a bT max_abs_err=0
+[matmul-bf16] single-row 1x1x8x8 aT b max_abs_err=0
+[matmul-bf16] single-row 1x1x8x8 aT bT max_abs_err=0
+[matmul-bf16] k12 1x17x12x34 a b max_abs_err=0
+[matmul-bf16] k12 1x17x12x34 a bT max_abs_err=0
+[matmul-bf16] k12 1x17x12x34 aT b max_abs_err=0
+[matmul-bf16] k12 1x17x12x34 aT bT max_abs_err=0
+[matmul-bf16] odd-n 1x17x8x17 a b max_abs_err=0
+[matmul-bf16] odd-n 1[rtmod] SUBMIT tid=43776 cv=83 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=84 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=85 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=86 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=87 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=88 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=89 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=90 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=91 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=92 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=93 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=94 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=95 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=96 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=97 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=98 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=99 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=100 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=101 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=102 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=103 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=104 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=105 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=106 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=107 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=108 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=109 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=110 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=111 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=112 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=113 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=114 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=115 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=116 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=117 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=118 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=119 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=120 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=121 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=122 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=123 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=124 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=125 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=126 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=127 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=128 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=129 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=130 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=131 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=132 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=133 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=134 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=135 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=136 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=137 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=138 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=139 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=140 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=141 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=142 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=143 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=144 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=145 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=146 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=147 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=148 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=149 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=150 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=151 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=152 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=153 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=154 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=155 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=156 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=157 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=158 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=159 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=160 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=161 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=162 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=163 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=164 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=165 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=166 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=167 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=168 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=169 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=170 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=171 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=172 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=173 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=174 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=175 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=176 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=177 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=178 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=179 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=180 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=181 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=182 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=183 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=184 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=185 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=186 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=187 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=188 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=189 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=190 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=191 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=192 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=193 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=194 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=195 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=196 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=197 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=198 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=199 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=200 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=201 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=202 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=203 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=204 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=205 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=206 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=207 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=208 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=209 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=210 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=211 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=212 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=213 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=214 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=215 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=216 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=217 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=218 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=219 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=220 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=221 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=222 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=223 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=224 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=225 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=226 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=227 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=228 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=229 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=230 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=231 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=232 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=233 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=234 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=235 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=236 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=237 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=238 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=239 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=240 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=241 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=242 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=243 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=244 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=245 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=246 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=247 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=248 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=249 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=250 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=251 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=252 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=253 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=254 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=255 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=256 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=257 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=258 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=259 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=260 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=261 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=262 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=263 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=264 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=265 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=266 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=267 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=268 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=269 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=270 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=271 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=272 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=273 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=274 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=275 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=276 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=277 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=278 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=279 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=280 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=281 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=282 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=283 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=284 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=285 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=286 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=287 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=288 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=289 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=290 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=291 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=292 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=293 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=294 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=295 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=296 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=297 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=298 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=299 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=300 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=301 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=302 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=303 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=304 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=305 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=306 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=307 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=308 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=309 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=310 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=311 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=312 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=313 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=314 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=315 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=316 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=317 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=318 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=319 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=320 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=321 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=322 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=323 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=324 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=325 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=326 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=327 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=328 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=329 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=330 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=331 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=332 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=333 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=334 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=335 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=336 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=337 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=338 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=339 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=340 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=341 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=342 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=343 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=344 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=345 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=346 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=347 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=348 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=349 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=350 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=351 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=352 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=353 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=354 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=355 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=356 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=357 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=358 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=359 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=360 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=361 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=362 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=363 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=364 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=365 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=366 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=367 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=368 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=369 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=370 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=371 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=372 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=373 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=374 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=375 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=376 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=377 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=378 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=379 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=380 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=381 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=382 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=383 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=384 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=385 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=386 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=387 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=388 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=389 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=390 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=391 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=392 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=393 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=394 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=395 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=396 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=397 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=398 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=399 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=400 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=401 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=402 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=403 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=404 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=405 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=406 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=407 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=408 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=409 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=410 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=411 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=412 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=413 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=414 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=415 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=416 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=417 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=418 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=419 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=420 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=421 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=422 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=423 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=424 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=425 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=426 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=427 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=428 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=429 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=430 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=431 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=432 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=433 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=434 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=435 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=436 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=437 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=438 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=439 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=440 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=441 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=442 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=443 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=444 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=445 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=446 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=447 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=448 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=449 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=450 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=451 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=452 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=453 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=454 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=455 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=456 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=457 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=458 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=459 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=460 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=461 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=462 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=463 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=464 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=465 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=466 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=467 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=468 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=469 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=470 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=471 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=472 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=473 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=474 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=475 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=476 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=477 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=478 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=479 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=480 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=481 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=482 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=483 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=484 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=485 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=486 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=487 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=488 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=489 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=490 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=491 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=492 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=493 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=494 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=495 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=496 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=497 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=498 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=499 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=500 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=501 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=502 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=503 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=504 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=505 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=506 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=507 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=508 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=509 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=510 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=511 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=512 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=513 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=514 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=515 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=516 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=517 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=518 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=519 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=520 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=521 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=522 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=523 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=524 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=525 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=526 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=527 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=528 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=529 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=530 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=531 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=532 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=533 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=534 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=535 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=536 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=537 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=538 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=539 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=540 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=541 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=542 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=543 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=544 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=545 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=546 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=547 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=548 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=549 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=550 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=551 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=552 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=553 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=554 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=555 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=556 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=557 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=558 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=559 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=560 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=561 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=562 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=563 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=564 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=565 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=566 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=567 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=568 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=569 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=570 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=571 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=572 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=573 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=574 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=575 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=576 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=577 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=578 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=579 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=580 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=581 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=582 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=583 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=584 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=585 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=586 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=587 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=588 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=589 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=590 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=591 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=592 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=593 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=594 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=595 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=596 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=597 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=598 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=599 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=600 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=601 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=602 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=603 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=604 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=605 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=606 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=607 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=608 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=609 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=610 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=611 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=612 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=613 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=614 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=615 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=616 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=617 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=618 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=619 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=620 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=621 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=622 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=623 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=624 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=625 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=626 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=627 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=628 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=629 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=630 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=631 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=632 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=633 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=634 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=635 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=636 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=637 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=638 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=639 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=640 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=641 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=642 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=643 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=644 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=645 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=646 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=647 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=648 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=649 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=650 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=651 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=652 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=653 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=654 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=655 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=656 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=657 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=658 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=659 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=660 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=661 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=662 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=663 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=664 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=665 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=666 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=667 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=668 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=669 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=670 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=671 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=672 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=673 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=674 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=675 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=676 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=677 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=678 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=679 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=680 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=681 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=682 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=683 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=684 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=685 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=686 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=687 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=688 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=689 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=690 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=691 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=692 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=693 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=694 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=695 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=696 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=697 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=698 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=699 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=700 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=701 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=702 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=703 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=704 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=705 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=706 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=707 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=708 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=709 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=710 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=711 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=712 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=713 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=714 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=715 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=716 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=717 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=718 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=719 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=720 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=721 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=722 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=723 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=724 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=725 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=726 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=727 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=728 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=729 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=730 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=731 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=732 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=733 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=734 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=735 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=736 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=737 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=738 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=739 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=740 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=741 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=742 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=743 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=744 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=745 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=746 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=747 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=748 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=749 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=750 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=751 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=752 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=753 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=754 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=755 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=756 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=757 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=758 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=759 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=760 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=761 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=762 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=763 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=764 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=765 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=766 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=767 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=768 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=769 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=770 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=771 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=772 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=773 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=774 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=775 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=776 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=777 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=778 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=779 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=780 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=781 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=782 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=783 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=784 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=785 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=786 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=787 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=788 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=789 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=790 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=791 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=792 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=793 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=794 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=795 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=796 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=797 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=798 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=799 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=800 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=801 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=802 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=803 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=804 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=805 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+x17x8x17 a bT max_abs_err=0
+[matmul-bf16] odd-n 1x17x8x17 aT b max_abs_err=0
+[matmul-bf16] odd-n 1x17x8x17 aT bT max_abs_err=0
+[matmul-bf16] model 1x30x896x896 a b max_abs_err=0
+[matmul-bf16] model 1x30x896x896 a bT max_abs_err=0
+[matmul-bf16] model 1x30x896x896 aT b max_abs_err=0
+[matmul-bf16] model 1x30x896x896 aT bT max_abs_err=0
+[matmul-bf16] model 1x30x896x4864 a b max_abs_err=0
+[matmul-bf16] model 1x30x896x4864 a bT max_abs_err=0
+[matmul-bf16] model 1x30x896x4864 aT b max_abs_err=0
+[matmul-bf16] model 1x30x896x4864 aT bT max_abs_err=0
+[matmul-bf16] model 1x30x4864x896 a b max_abs_err=0
+[matmul-bf16] model 1x30x4864x896 a bT max_abs_err=0
+[matmul-bf16] model 1x30x4864x896 aT b max_abs_err=0
+[matmul-bf16] model 1x30x4864x896 aT bT max_abs_err=0
+[matmul-bf16] model 1x30x4864x4864 a b max_abs_err=0
+[matmul-bf16] model 1x30x4864x4864 a bT max_abs_err=0
+[matmul-bf16] model 1x30x4864x4864 aT b max_abs_err=0
+[matmul-bf16] model 1x30x4864x4864 aT bT max_abs_err=0
+[matmul-bf16] model 1x262x896x896 a b max_abs_err=0
+[matmul-bf16] model 1x262x896x896 a bT max_abs_err=0
+[matmul-bf16] model 1x262x896x896 aT b max_abs_err=0
+[matmul-bf16] model 1x262x896x896 aT bT max_abs_err=0
+[matmul-bf16] model 1x262x896x4864 a b max_abs_err=0
+[matmul-bf16] model 1x262x896x4864 a bT max_abs_err=0
+[matmul-bf16] model 1x262x896x4864 aT b max_abs_err=0
+[matmul-bf16] model 1x262x896x4864 aT bT max_abs_err=0
+[matmul-bf16] model 1x262x4864x896 a b max_abs_err=0
+[matmul-bf16] model 1x262x4864x896 a bT max_abs_err=0
+[matmul-bf16] model 1x262x4864x896 aT b max_abs_err=0
+[matmul-bf16] model 1x262x4864x896 aT bT max_abs_err=0
+[matmul-bf16] model 1x262x4864x4864 a b max_abs_err=0
+[matmul-bf16] model 1x262x4864x4864 a bT max_abs_err=0
+[matmul-bf16] model 1x262x4864x4864 aT b max_abs_err=0
+[matmul-bf16] model 1x262x4864x4864 aT bT max_abs_err=0
+[matmul-bf16] model 1x1053x896x896 a b max_abs_err=0
+[matmul-bf16] model 1x1053x896x896 a bT max_abs_err=0
+[matmul-bf16] model 1x1053x896x896 aT b max_abs_err=0
+[matmul-bf16] model 1x1053x896x896 aT bT max_abs_err=0
+[matmul-bf16] model 1x1053x896x4864 a b max_abs_err=0
+[matmul-bf16] model 1x1053x896x4864 a bT max_abs_err=0
+[matmul-bf16] model 1x1053x896x4864 aT b max_abs_err=0
+[matmul-bf16] model 1x1053x896x4864 aT bT max_abs_err=0
+[matmul-bf16] model 1x1053x4864x896 a b max_abs_err=0
+[matmul-bf16] model 1x1053x4864x896 a bT max_abs_err=0
+[matmul-bf16] model 1x1053x4864x896 aT b max_abs_err=0
+[matmul-bf16] model 1x1053x4864x896 aT bT max_abs_err=0
+[matmul-bf16] model 1x1053x4864x4864 a b max_abs_err=0
+[matmul-bf16] model 1x1053x4864x4864 a bT max_abs_err=0
+[matmul-bf16] model 1x1053x4864x4864 aT b max_abs_err=0
+[matmul-bf16] model 1x1053x4864x4864 aT bT max_abs_err=0
+[matmul-bf16] slice col4 32x40x24 max_abs_err=0
+[matmul-bf16] slice col5 32x40x24 max_abs_err=0
+[matmul-bf16] fractional 33x24x40 bound=0.186038 max_abs_err=0 partial_max=22.8082
+[provenance] subgroup_size=32 decode_gemv_path=subgroup-shuffle
+[matmul-bf16-decode] q_proj 1x896x896 bT bound=0.96725 max_abs_err_vs_f64=0.245659 partial_max=121.829
+[matmul-bf16-decode] k_proj 1x896x128 bT bound=0.868865 max_abs_err_vs_f64=0.23188 partial_max=109.336
+[matmul-bf16-decode] v_proj 1x896x128 bT bound=0.981082 max_abs_err_vs_f64=0.228569 partial_max=123.586
+[matmul-bf16-decode] o_proj 1x896x896 bT bound=1.1124 max_abs_err_vs_f64=0.259842 partial_max=140.26
+[matmul-bf16-decode] gate_proj 1x896x4864 bT bound=1.24652 max_abs_err_vs_f64=0.402222 partial_max=157.291
+[matmul-bf16-decode] down_proj 1x4864x896 bT bound=2.70929 max_abs_err_vs_f64=0.852173 partial_max=331.822
+[matmul-bf16-decode] lm_head 1x896x151936 bT bound=1.49138 max_abs_err_vs_f64=0.493546 partial_max=188.384
+[matmul-bf16-decode] cancel896x128 1x896x128 bT bound=0.0247205 max_abs_err_vs_f64=0.0063467 partial_max=2.14697
+[matmul-bf16-decode] fallback-k832 1x832x896 bT bound=0.935554 max_abs_err_vs_f64=0.239456 partial_max=117.869
+[matmul-bf16-decode] fallback-n897 1x896x897 bT bound=1.02737 max_abs_err_vs_f64=0.462921 partial_max=129.463
+[qmm-rb-word] m=2 n=7 k=64 candidate_vs_baseline_max=0 candidate_vs_[rtmod] SUBMIT tid=43776 cv=806 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=807 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=808 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=809 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=810 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=811 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=812 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=813 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=814 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=815 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=816 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=817 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=818 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=819 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=820 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=821 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=822 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=823 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=824 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=825 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=826 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=827 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=828 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=829 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=830 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=831 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=832 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=833 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=834 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=835 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=836 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=837 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=838 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=839 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=840 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=841 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=842 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=843 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=844 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=845 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=846 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=847 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=848 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=849 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=850 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=851 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=852 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=853 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=854 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=855 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=856 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=857 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=858 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=859 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=860 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=861 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=862 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=863 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=864 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=865 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=866 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=867 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=868 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=869 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=870 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=871 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=872 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=873 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=874 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=875 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=876 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=877 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=878 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=879 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=880 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=881 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=882 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=883 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=884 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=885 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=886 waits=1 sigs=2 cmds=0
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=887 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=888 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=889 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=890 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=891 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=43776 cv=892 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+host_max=0.00719643 baseline_vs_host_max=0.00719643 bound=0.025325
+[qmm-rb-word] m=15 n=17 k=192 candidate_vs_baseline_max=0 candidate_vs_host_max=0.0147629 baseline_vs_host_max=0.0147629 bound=0.0594667
+[qmm-rb-word] m=32 n=32 k=128 candidate_vs_baseline_max=0 candidate_vs_host_max=0.0153732 baseline_vs_host_max=0.0153732 bound=0.0515481
+[qmm-rb-word] m=33 n=17 k=64 candidate_vs_baseline_max=0 candidate_vs_host_max=0.0130997 baseline_vs_host_max=0.0130997 bound=0.0350047
+[provenance] cooperative_matrix_f32_8=1 subgroup_size=32 -> f16 q4/g64 prefill runs QmmPrefillCoopmatF16
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=8 n=896 k=896 max_abs_err=0.0602875 rel_err=0.000368129 bound=0.264921
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=32 n=896 k=896 max_abs_err=0.0607452 rel_err=0.000382647 bound=0.256805
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=262 n=896 k=896 max_abs_err=0.0624542 rel_err=0.000311881 bound=0.323938
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=1053 n=896 k=896 max_abs_err=0.0623932 rel_err=0.000318943 bound=0.316457
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=8 n=4864 k=896 max_abs_err=0.0622406 rel_err=0.000378296 bound=0.266153
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=32 n=4864 k=896 max_abs_err=0.0623932 rel_err=0.000331438 bound=0.304526
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=262 n=4864 k=896 max_abs_err=0.0623932 rel_err=0.000287526 bound=0.351034
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=1053 n=4864 k=896 max_abs_err=0.062561 rel_err=0.000315917 bound=0.320348
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=8 n=896 k=4864 max_abs_err=0.121582 rel_err=0.000334246 bound=1.6208
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=32 n=896 k=4864 max_abs_err=0.124359 rel_err=0.000322766 bound=1.71678
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=262 n=896 k=4864 max_abs_err=0.125031 rel_err=0.000303792 bound=1.83386
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=1053 n=896 k=4864 max_abs_err=0.125458 rel_err=0.000273925 bound=2.04076
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=8 n=128 k=896 max_abs_err=0.0312576 rel_err=0.000225845 bound=0.22389
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=32 n=128 k=896 max_abs_err=0.0474854 rel_err=0.00032322 bound=0.237658
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=262 n=128 k=896 max_abs_err=0.0619354 rel_err=0.000350882 bound=0.285541
+[qmm-coopmat] kernel=QmmPrefillCoopmatF16 m=1053 n=128 k=896 max_abs_err=0.0617523 rel_err=0.000331307 bound=0.301518
+[provenance] cooperative_matrix_f32_8=1 subgroup_size=32 -> offset-parity repro compares coopmat vs staged coopmat
+[qmm-offset-parity] coopmat_device=1 m=64 n=896 k=896 mismatches=0 aligned_diff=0.0606689 odd_diff=0.0606689 bound=0.272173
+===============================================================================
+[doctest] test cases:       22 |       22 passed | 0 failed | 0 skipped
+[doctest] assertions: 82940463 | 82940463 passed | 0 failed |
+[doctest] Status: SUCCESS!
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
