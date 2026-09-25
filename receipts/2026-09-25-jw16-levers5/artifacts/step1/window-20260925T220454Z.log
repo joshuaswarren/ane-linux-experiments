@@ -1,0 +1,185 @@
+[2026-09-25T17:04:54-05:00] window step1-battery begin stamp=20260925T220454Z body=/var/tmp/levers3/body-step1-battery.sh args=
+[2026-09-25T17:04:58-05:00] flock held by 2608
+[2026-09-25T17:04:58-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+== Part 1: Interleaved 10x10-pass battery (ctl vs flush17f+depskip), 10 pairs ==
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-1.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-1.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-2.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-2.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-3.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-3.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-4.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-4.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-5.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-5.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-6.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-6.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-7.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-7.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-8.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-8.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-9.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-9.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-10.json'
+Traceback (most recent call last):
+  File "/var/tmp/levers3/summ.py", line 5, in <module>
+    j = json.load(open(path))
+                  ~~~~^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-flush17f-p10-10.json'
+== Divergence analysis vs bat-ctl-p10-1 ==
+Traceback (most recent call last):
+  File "/var/tmp/levers3/flips.py", line 4, in <module>
+    ref = json.load(open(sys.argv[1]))
+                    ~~~~^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/var/tmp/levers3/step1-battery/contract-bat-ctl-p10-1.json'
+== Part 2: Standing omarchy battery on candidate ICD ==
+-- omarchy_ane_bundle_tests (2026-09-25 15:38:11)
+battery omarchy_ane_bundle_tests: PASS [doctest] test cases:   34 |   34 passed | 0 failed | 0 skipped [doctest] assertions: 5904 | 5904 passed | 0 failed | 
+-- omarchy_ane_tile_layout_tests (2026-09-25 15:59:27)
+battery omarchy_ane_tile_layout_tests: PASS [doctest] test cases:  3 |  3 passed | 0 failed | 0 skipped [doctest] assertions: 78 | 78 passed | 0 failed | 
+-- omarchy_ane_worker_tests (2026-09-25 15:59:30)
+battery omarchy_ane_worker_tests: PASS [doctest] test cases:  17 |  17 passed | 0 failed | 0 skipped [doctest] assertions: 219 | 219 passed | 0 failed | 
+-- omarchy_capability_sim_tests (2026-09-25 15:59:51)
+battery omarchy_capability_sim_tests: FAIL rc=2 
+-- omarchy_compiled_tape_tests (2026-09-25 15:59:36)
+battery omarchy_compiled_tape_tests: PASS [doctest] test cases:   12 |   12 passed | 0 failed | 0 skipped [doctest] assertions: 2096 | 2096 passed | 0 failed | 
+-- omarchy_complex_ops_tests (2026-09-25 15:59:46)
+battery omarchy_complex_ops_tests: PASS [doctest] test cases:   34 |   34 passed | 0 failed | 0 skipped [doctest] assertions: 1715 | 1715 passed | 0 failed | 
+-- omarchy_conv_tests (2026-09-25 15:59:39)
+battery omarchy_conv_tests: PASS [doctest] test cases:   13 |   13 passed | 0 failed | 0 skipped [doctest] assertions: 3450 | 3450 passed | 0 failed | 
+-- omarchy_copy_offset_tests (2026-09-25 15:38:02)
+battery omarchy_copy_offset_tests: PASS [doctest] test cases:  26 |  26 passed | 0 failed | 0 skipped [doctest] assertions: 629 | 629 passed | 0 failed | 
+-- omarchy_distributed_tests (2026-09-25 15:59:32)
+battery omarchy_distributed_tests: PASS [doctest] test cases:  9 |  9 passed | 0 failed | 0 skipped [doctest] assertions: 36 | 36 passed | 0 failed | 
+-- omarchy_eig_ops_tests (2026-09-25 15:59:38)
+battery omarchy_eig_ops_tests: PASS [doctest] test cases:   9 |   9 passed | 0 failed | 0 skipped [doctest] assertions: 264 | 264 passed | 0 failed | 
+-- omarchy_eq_math_tests (2026-09-25 15:59:45)
+battery omarchy_eq_math_tests: PASS [doctest] test cases:   7 |   7 passed | 0 failed | 0 skipped [doctest] assertions: 116 | 116 passed | 0 failed | 
+-- omarchy_error_contract_tests (2026-09-25 15:59:28)
+battery omarchy_error_contract_tests: PASS [doctest] test cases:  3 |  3 passed | 0 failed | 0 skipped [doctest] assertions: 14 | 14 passed | 0 failed | 
+-- omarchy_fast_ops_tests (2026-09-25 15:59:40)
+battery omarchy_fast_ops_tests: PASS [doctest] test cases:      35 |      35 passed | 0 failed | 0 skipped [doctest] assertions: 1104350 | 1104350 passed | 0 failed | 
+-- omarchy_fast_regression_tests (2026-09-25 15:59:43)
+battery omarchy_fast_regression_tests: PASS [doctest] test cases:  2 |  2 passed | 0 failed | 0 skipped [doctest] assertions: 16 | 16 passed | 0 failed | 
+-- omarchy_fft_general_tests (2026-09-25 15:59:44)
+battery omarchy_fft_general_tests: PASS [doctest] test cases:   14 |   14 passed | 0 failed | 0 skipped [doctest] assertions: 4245 | 4245 passed | 0 failed | 
+-- omarchy_fft_ops_tests (2026-09-25 15:59:36)
+battery omarchy_fft_ops_tests: PASS [doctest] test cases:   19 |   19 passed | 0 failed | 0 skipped [doctest] assertions: 1379 | 1379 passed | 0 failed | 
+-- omarchy_fused_chain_tests (2026-09-25 15:59:52)
+battery omarchy_fused_chain_tests: PASS [doctest] test cases:     36 |     36 passed | 0 failed | 0 skipped [doctest] assertions: 346272 | 346272 passed | 0 failed | 
+-- omarchy_indexing_ops_tests (2026-09-25 15:59:31)
+battery omarchy_indexing_ops_tests: PASS [doctest] test cases:   53 |   53 passed | 0 failed | 0 skipped [doctest] assertions: 4093 | 4093 passed | 0 failed | 
+-- omarchy_kv_ops_tests (2026-09-25 15:59:30)
+battery omarchy_kv_ops_tests: PASS [doctest] test cases:  16 |  16 passed | 0 failed | 0 skipped [doctest] assertions: 781 | 781 passed | 0 failed | 
+-- omarchy_linalg_ops_tests (2026-09-25 15:59:39)
+battery omarchy_linalg_ops_tests: PASS [doctest] test cases:     30 |     30 passed | 0 failed | 0 skipped [doctest] assertions: 181118 | 181118 passed | 0 failed | 
+-- omarchy_matmul_family_tests (2026-09-25 15:59:40)
+battery omarchy_matmul_family_tests: PASS [doctest] test cases:       22 |       22 passed | 0 failed | 0 skipped [doctest] assertions: 82940463 | 82940463 passed | 0 failed | 
+-- omarchy_primitive_tests (2026-09-25 15:38:18)
+battery omarchy_primitive_tests: PASS [doctest] test cases:     103 |     103 passed | 0 failed | 0 skipped [doctest] assertions: 2700952 | 2700952 passed | 0 failed | 
+-- omarchy_reduce_ops_tests (2026-09-25 15:59:33)
+battery omarchy_reduce_ops_tests: PASS [doctest] test cases:   34 |   34 passed | 0 failed | 0 skipped [doctest] assertions: 7152 | 7152 passed | 0 failed | 
+-- omarchy_runtime_tests (2026-09-25 15:38:00)
+battery omarchy_runtime_tests: PASS [doctest] test cases:    41 |    41 passed | 0 failed | 0 skipped [doctest] assertions: 22694 | 22694 passed | 0 failed | 
+-- omarchy_scatter_determinism_tests (2026-09-25 15:59:45)
+battery omarchy_scatter_determinism_tests: PASS [doctest] test cases:  21 |  21 passed | 0 failed | 0 skipped [doctest] assertions: 127 | 127 passed | 0 failed | 
+-- omarchy_sdpa_causal_ragged_tests (2026-09-25 15:59:44)
+battery omarchy_sdpa_causal_ragged_tests: PASS [doctest] test cases:  1 |  1 passed | 0 failed | 0 skipped [doctest] assertions: 20 | 20 passed | 0 failed | 
+-- omarchy_sdpa_decode_fused_tests (2026-09-25 15:59:48)
+battery omarchy_sdpa_decode_fused_tests: PASS [doctest] test cases:     3 |     3 passed | 0 failed | 0 skipped [doctest] assertions: 10774 | 10774 passed | 0 failed | 
+-- omarchy_select_layout_tests (2026-09-25 15:59:44)
+battery omarchy_select_layout_tests: PASS [doctest] test cases:   13 |   13 passed | 0 failed | 0 skipped [doctest] assertions: 4500 | 4500 passed | 0 failed | 
+-- omarchy_shape_ops_tests (2026-09-25 15:59:30)
+battery omarchy_shape_ops_tests: PASS [doctest] test cases:  25 |  25 passed | 0 failed | 0 skipped [doctest] assertions: 898 | 898 passed | 0 failed | 
+-- omarchy_take_fill_tests (2026-09-25 15:59:38)
+battery omarchy_take_fill_tests: PASS [doctest] test cases:    8 |    8 passed | 0 failed | 0 skipped [doctest] assertions: 1109 | 1109 passed | 0 failed | 
+-- omarchy_wrong_value_sweep_tests (2026-09-25 15:59:49)
+battery omarchy_wrong_value_sweep_tests: PASS [doctest] test cases:  2 |  2 passed | 0 failed | 0 skipped [doctest] assertions: 32 | 32 passed | 0 failed | 
+capsim m1-honeykrisp-fork: PASS [doctest] assertions: 2462 | 2462 passed | 0 failed |
+capsim m1-stock-no-coopmat: PASS [doctest] assertions: 2460 | 2460 passed | 0 failed |
+capsim subgroup-size-64: PASS [doctest] assertions: 2460 | 2460 passed | 0 failed |
+capsim small-shared-memory: PASS [doctest] assertions: 2460 | 2460 passed | 0 failed |
+capsim no-cooperative-matrix: PASS [doctest] assertions: 2462 | 2462 passed | 0 failed |
+battery summary: pass=35 fail=1
+STEP1_BATTERY_DONE
+[2026-09-25T17:06:49-05:00] WINDOW_BODY_DONE rc=0
+[2026-09-25T17:06:49-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T17:06:59-05:00] poll #2: 8002 ok
+[2026-09-25T17:07:04-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790374024,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-3Zi9KoJZrF4sYqKY16ruyenJJ4xVCY5b","timings":{"cache_n":0,"prompt_n":55,"prompt_ms":4053.485,"prompt_per_token_ms":73.69972727272727,"prompt_per_second":13.568571241783305,"predicted_n":8,"predicted_ms":937.119,"predicted_per_token_ms":133.87414285714286,"predicted_per_second":7.469702353703212}}
+[2026-09-25T17:07:04-05:00] service healthy=1
