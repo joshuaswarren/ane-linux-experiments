@@ -140,3 +140,17 @@ crashed (runner bug, below), `bench` ran. Diagnosis, all off-box:
   fedd4da decode rows are the 50 compile); the prefill leg's denominator (11.74
   tok/s) IS the same 513 regime, which is this kit's purpose. Decode continues on
   the max_len 50 kit.
+
+## 10. jwm1 run results (Jwm1Parity8 window)
+
+- **prefill-512: 14.36 tok/s vs macOS 11.74 tok/s = 1.223x Linux-faster.** Walls
+  35.6499 / 35.6478 / 35.6327 s (512 prompt ids + 1 generated token per wall,
+  runner 95fe3fe, boundary per section 5).
+- First-kit informational decode bench at 513 (no macOS-at-513 denominator):
+  n=100 decode 8.07 tok/s median (sd 0.105), ttft 1.0309 s, e2e 4.8449 s — same
+  order as the max_len 50 kit's 8.245 / 0.9494 / 4.7315; tokens_matching_reference
+  false is the section 9 numerics signature, not a defect.
+- window.sh fix from the first replay attempt: when a previously-patched $ANEC dir
+  exists, goldens.json is now installed into it if missing (sha256 of window.sh
+  4d687d4a600e5f5f...). Jwm1Parity8's manual workaround (copy with sha match) was
+  correct.

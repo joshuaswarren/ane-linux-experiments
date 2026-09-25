@@ -34,6 +34,7 @@ if [ ! -d "$ANEC" ]; then
   python3 "$KIT/tools/staged-qwen/io_layout.py" apply --plan "$KIT/io-layout-513.json" \
     --export "$ANEC" --anec "$ANEC/programs/prog_%03d.anec" | tail -3
 fi
+[ -f "$ANEC/goldens.json" ] || cp "$KIT/export/goldens.json" "$ANEC/"
 cd "$OUT"
 EXTRA=()
 [ "$MODE" = bench ] && EXTRA=(--warmups 3 --reps 10)
