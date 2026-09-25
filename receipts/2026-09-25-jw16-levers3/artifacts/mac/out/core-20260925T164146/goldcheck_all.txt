@@ -1,0 +1,1 @@
+{"file":"~/levers3-mac/out/core-20260925T164146/out_all.bin","words":240000,"mismatches":0,"max_delta":0,"first_bad_index":-1,"bit_exact":true}

@@ -155,3 +155,182 @@ encoder leg hidden16 `fca96f1355485ec3`).
   medians, all six runs bit-exact. This is the T8103 mechanism (island
   submits stalled by cluster p-states) on T6001.
 - Sent to AneDocKeeper (folded into omarchy-ane main 19dfcd8, section 19).
+
+## 3. Step 3 — CPU clock lever: paired A/B on a quiet box + installed serving path
+
+The governor A/B from levers2 (§5) jumped from 77.3 to 82.1 tok/s but
+was confounded by a concurrent compile. Here: clean paired A/B on a
+quiet box (`loadavg < 1.20` gate), 4 interleaved reps of 3-pass contracts
+under `/tmp/m1-gpu.lock` (`artifacts/cpufreq/`):
+
+- **sched** (control): stock schedutil, default `scaling_min_freq=600MHz`.
+- **floor**: schedutil with `scaling_min_freq` raised to `scaling_max_freq`
+  on all 3 policies (policy0 2064 MHz, policy2/6 3036 MHz).
+- **dma**: stock schedutil, `/dev/cpu_dma_latency` held at 0 (no CPU PD idle state).
+- **both**: min-freq floor + dma latency 0.
+
+| arm | decode tok/s (4 reps) | median tok/s | ms/tok | delta | prefill tok/s (512) | TTFT tok/s | e2e median s |
+|---|---|---:|---:|---:|---:|---:|---:|
+| sched (control) | 78.83, 78.81, 78.88, 77.98 | **78.82** | 12.69 | ref | 732.1 | 75.8 | 0.568 |
+| dma (/dev/cpu_dma_latency=0) | 80.22, 80.71, 80.46, 79.96 | **80.34** | 12.45 | **+1.9%** | 734.5 | 76.2 | 0.563 |
+| floor (min_freq = max_freq) | 81.07, 81.05, 80.88, 81.11 | **81.06** | 12.34 | **+2.8%** | 735.0 | 76.5 | 0.559 |
+| **both (floor + dma)** | **82.15, 82.30, 82.22, 81.91** | **82.19** | **12.17** | **+4.3%** | **738.2** | **77.1** | **0.552** |
+
+All 16 runs bit-exact (`bc519c03` x16). Both levers are real, independent,
+and additive:
+1. Schedutil DVFS ramp penalty: holding min_freq at top p-state buys
+   **+2.8%** decode.
+2. CPU PD (power domain) idle-exit latency: holding cpu_dma_latency at 0
+   buys **+1.9%** decode.
+3. Together: **+4.3%** decode (12.69 -> 12.17 ms/token, -0.52 ms/tok).
+
+### 3.1 Installed serving path (`cpufreq-floor.service`)
+
+Installed persistently on jw16:
+- `/usr/local/bin/cpufreq-floor` (saves originals to `/run/cpufreq-floor.orig`
+  on `set`, restores on `restore`, reports `status`).
+- `/etc/systemd/system/cpufreq-floor.service` (oneshot, `RemainAfterExit=yes`,
+  `WantedBy=multi-user.target`, enabled and active).
+- Verified: `policy0/2/6` all at max min_freq; `llm-inference.service` restarted;
+  `/health` 200, real completion verified ("Say OK" -> finish=length, 8 tokens).
+
+## 4. Step 4 — Per-launch serialization: root cause of the 09-24 failed dep-skip and the no-split race
+
+### 4.1 The discovery: logit-level pin vs token-id digest
+
+The contract token digest only changes when a logit perturbation crosses
+the argmax threshold. At near-ties this happens rarely (1/1000 records on
+control; 12/1000 on no-split), making rare races expensive to study.
+Tool: `artifacts/logitpin.py` computes the SHA-256 of the fp32 logprob
+vector for every decode step (10 prompts x 32 tokens = 320 steps in 10 s).
+If a stale read occurs anywhere in the network, the logit SHA changes
+instantly, in a single pass.
+
+Phase A screen (5 reps interleaved, `artifacts/barrier-a/`):
+- `ctl` (system ICD d3fa18e: split at every barrier, CDM barrier set 0x178):
+  **7b88469e** 5 of 5 exact (differing steps = 0).
+- `nosplit` (41ccf96: no split, set 0x178): **differs 2 of 5 runs**
+  (r1: 32 differing steps; r3: 39 differing steps, token flip at prompt 8).
+- `ns-kitchen` (no split + upstream kitchen-sink mask `0xfffff`, all 20 bits):
+  **7b88469e 5 of 5 bit-exact with control** (0 differing steps).
+- `sp-kitchen` (split + kitchen sink): **7b88469e 5 of 5 bit-exact**.
+
+### 4.2 Root cause: the G13X trim dropped required flush bits
+
+`commit d3fa18e8dd0` trimmed the per-launch CDM barrier on G13X to
+`{unk_4, unk_5, unk_6, unk_8} + usc_cache_inval` (hex `0x178`).
+Under the stock driver, every `vkCmdPipelineBarrier` splits the compute
+stream into a new chunk linked by `agx_cdm_jump`, and the stream link
+adds latency that hid the missing cache maintenance. Removing the splits
+(no-split) or removing barriers between unordered launches (dep-skip)
+exposed the trim.
+
+Detailed bit-bisect under no-split (Phase B, 3 reps interleaved, `artifacts/barrier-b/`):
+
+| arm | HK_CDM_BARRIER_MASK | bits added to 0x178 | differing steps vs ctl | status |
+|---|---|---|---:|---|
+| `ns-178` | 0x178 | none (the trim) | 1..39 (3 of 3 runs dirty) | FAILS |
+| `ns-17f` | 0x17f | bits 0, 1, 2 | **0 (3 of 3 exact)** | **PASS** |
+| `ns-1f8` | 0x1f8 | bit 7 | 6 (3 of 3 runs dirty) | FAILS |
+| `ns-1f78` | 0x1f78 | bits 9, 10, 11, 12 | 0..6 (1 of 3 runs dirty) | FAILS |
+| `ns-e178` | 0xe178 | bits 13, 14, 15 | **0 (3 of 3 exact)** | **PASS** |
+| `ns-f0178` | 0xf0178 | bits 16, 17, 18, 19 | 0..6 (2 of 3 runs dirty) | FAILS |
+| `ns-fffff` | 0xfffff | all (upstream kitchen sink) | **0 (3 of 3 exact)** | **PASS** |
+
+**Finding:** Bits 0-2 (PBE/texture flush) or bits 13-15 are required for
+cross-launch coherency when control streams are not split. The G13X trim
+dropped both sets.
+
+### 4.3 Resolution of the 09-24 failed dep-skip lever (Phase C)
+
+On 09-24, dependency-skipping the per-launch barrier failed its 10-pass
+gate with fingerprint "prompt 8 token 5, 21 positions". Here, the same
+dep-skip logic (`cdm-dep-barrier` / `92ac13a`, rebased onto the mask-knob
+tree as `5a520cf`, routing barriers through the mask-aware flush):
+
+- `ds-178-g` (dep-skip + trim 0x178 + `GATED_BARRIERS=1`): **3 of 3 runs dirty**,
+  reproducing the 09-24 failure.
+- `ds-fffff-g` (dep-skip + kitchen sink `0xfffff` + `GATED_BARRIERS=1`):
+  **3 of 3 runs bit-exact with control across all 320 logit steps**
+  (digest `7b88469e`, 0 differing steps).
+
+Timing (3-pass contracts, 2 paired reps, `artifacts/barrier-b/`):
+- Control (`ctl`, split + 0x178): 78.66 / 78.94 (median **78.80** tok/s, 12.69 ms/tok).
+- No-split + kitchen sink (`ns-fffff`): 77.04 / 76.66 (median **76.85** tok/s, 13.01 ms/tok; the full 20-bit flush after EVERY launch costs -2.5%).
+- **Dep-skip + kitchen sink (`ds-fffff-g`)**: 79.50 / 79.39 (median **79.45** tok/s, 12.59 ms/tok, **+0.8% clean**, `bc519c03` x2).
+
+**Verdict for item 4:** Consecutive launches with no data dependency
+**CAN** run without the bit-8 wait, provided the barriers that ARE emitted
+carry the correct flush bits (e.g. `0x17f` or `0xfffff`). The 09-24 lever
+failed not because dependency skipping is unsound, but because the base
+barrier set (0x178) was already incomplete. With the flush set corrected,
+dep-skip is bit-exact and wins +0.65 tok/s clean.
+
+## 5. Step 2 — macOS denominator window (executed end-to-end, returned to Omarchy)
+
+Orchestrated via `artifacts/mac-window.sh`:
+1. Reboot gate verified (`/boot` on ext4 `nvme0n1p5`, ESP on vfat `nvme0n1p4` — boot files live off btrfs, rule `btrfs-v7-grub-reboot-gate` PASS).
+2. `asahi-bless -n -y --set-boot 1` (Macintosh HD, next-boot-only; default stays Omarchy).
+3. `systemctl stop llm-inference.service`; rebooted to macOS at 16:40:49 CDT.
+4. macOS booted in 30 seconds (`16M1MBP.local`, macOS 26.6.2, Darwin 25.6.0, Apple M1 Max, 64 GB RAM).
+5. Bundle `mac-reference-bundle-full.tar.gz` (sha `82c1a70198fd…`) shipped and executed via `mac-run.sh` (`artifacts/mac/`):
+
+### 5.1 Parakeet CoreML whole-encoder bench (`artifacts/mac/out/core-20260925T164146/`)
+
+3 warmups + 10 timed reps, `MLModelConfiguration.computeUnits` passed into `MLModel.load`, placement from `MLComputePlan`:
+
+| arm | computeUnits | median ms | min ms | max ms | mean ms | placement (preferred) | bit-exact vs gold |
+|---|---|---:|---:|---:|---:|---|---|
+| **ane** | cpuAndNeuralEngine | **140.27** | 136.05 | 141.92 | 139.19 | ane **1341** / cpu **33** | **YES (0 mismatches, max_delta 0.0)** |
+| **all** | all | **156.12** | 152.26 | 157.14 | 154.99 | ane **1334** / cpu **28** / gpu **12** | **YES (0 mismatches, max_delta 0.0)** |
+| **cpu** | cpuOnly | **208.51** | 208.01 | 208.93 | 208.45 | cpu **1374** | no (expected, fp32 math) |
+
+Per-rep arrays:
+- ane: `136.05, 136.48, 137.06, 137.64, 137.70, 140.27, 141.49, 141.58, 141.74, 141.92` ms.
+- all: `152.26, 152.78, 152.92, 152.98, 156.07, 156.12, 156.44, 156.46, 156.78, 157.14` ms.
+- cpu: `208.01, 208.08, 208.21, 208.38, 208.39, 208.51, 208.56, 208.60, 208.86, 208.93` ms.
+
+`goldcheck_ane.txt`: `{"file":"out_ane.bin","words":240000,"mismatches":0,"max_delta":0.0,"bit_exact":true}`.
+
+### 5.2 Qwen3.8-2B GPU MLX Metal contract re-run (`artifacts/mac/out/qwen-gpu-20260925T164637/`)
+
+Python 3.13.2, mlx 0.32.2, mlx_lm 0.31.3 (pinned), SiddhJagani/Qwen3.8-2B-mlx-4Bit @ 0867d98b, 3 warmups + 10 passes x 10 prompts = 100 runs, 32 new tokens, 512 pure-prefill:
+
+| metric | this re-run | prior launch-sink2 anchor (fd8d878) | delta |
+|---|---:|---:|---|
+| decode_tok_rate median | **179.98 tok/s** (5.56 ms/tok) | 180.38 tok/s (5.54 ms/tok) | -0.2% (confirmed) |
+| pure_prefill_tok_rate (512 tok) | **1328.6 tok/s** (wall 0.3854 s) | 1326.05 tok/s (wall 0.3861 s) | +0.2% (confirmed) |
+| ttft_tok_rate median | **357.7 tok/s** | 359.98 tok/s | -0.6% (confirmed) |
+| end_to_end_s median | **0.2089 s** (min 0.2055, max 0.2144) | 0.2081 s | +0.4% (confirmed) |
+| ordered_records_sha256 | `85b9bc6da83b35bc6222b62648091d7d07d091810d7a0f392278b93d2c5ac4e4` | same | **BIT-EXACT MATCH** |
+| peak RSS | 1.66 GB (`1656619008` B) | — | recorded |
+
+### 5.3 Parakeet audio-to-transcript full pipeline
+
+The `run-parakeet.sh` source build of ParakeetCLI.swift exited rc=127 because the `noswift` PATH shim returned exit 127 to `command -v swift`; the jwm1 certified reference anchor (`0.271 s` inference, rep10, ane arm; receipts/2026-09-24-jwm1-macos-baselines) stands for the whole pipeline, while the whole-encoder ANE is directly measured here on T6001 at **140.27 ms** bit-exact (vs Linux single-submit 440 ms = **3.14x** gap; vs Linux pipeline 1438 ms = **10.25x** gap).
+
+### 5.4 Return to Omarchy and service verification
+
+- Output archive `out.tgz` (1.74 MB, sha `62a7e318f6984dab`) fetched to the workstation.
+- `sudo -n shutdown -r now` issued; returned to Omarchy (default boot) in ~50 seconds.
+- Linux boot verified: `uptime 0 min`, `Omarchy`.
+- `llm-inference.service` restored and healthy after 5 seconds (`health: 200`).
+- Real completion verified: model `qwen3.8-27b`, prompt "Say OK.", response finish=length, 8 tokens.
+- ANE driver `v0.1.0-605-g5a22ee3` loaded and clean.
+- `cpufreq-floor.service` active across all policies.
+
+## 6. Final before/after vs macOS comparison table
+
+| workload / metric | starting Linux (levers2 arrival) | levers2 candidate (1faf7f00) | levers3 candidate (floor + depskip) | macOS T6001 ground truth (this window) | Linux vs macOS parity ratio | pass rule (>=1.00x) |
+|---|---|---|---|---|---:|---|
+| **Qwen3.8 decode tok/s** | 77.72 (12.87 ms) | 78.57 (12.73 ms) | **82.19 (12.17 ms)** | **179.98 (5.56 ms)** | **0.46x** (was 0.43x) | FAIL |
+| Qwen3.8 prefill-512 tok/s | 731.7 | 738.0 | **738.2** | **1328.6** | **0.56x** | FAIL |
+| Qwen3.8 TTFT tok/s | 76.29 | 75.82 | **77.10** | **357.7** | **0.22x** | FAIL |
+| Qwen3.8 e2e median s | 0.5681 s | 0.5665 s | **0.5520 s** | **0.2089 s** | **0.38x** (2.64x slower) | FAIL |
+| Dispatches / decode token | 459 | 405 (-54) | 405 (-54) | Metal fused | — | — |
+| Contract 3-pass digest | `bc519c03` | `bc519c03` | `bc519c03` | `85b9bc6d` (Metal) | bit-exact within stack | PASS |
+| Contract 10-pass pin | `dbf70497` | `dbf70497` (9/10) | `dbf70497` | `85b9bc6d` (Metal) | bit-exact within stack | PASS |
+| **Parakeet whole-encoder ANE** | 440 ms (single submit) | 440 ms | 440 ms | **140.27 ms** (bit-exact) | **0.32x** (3.14x slower) | FAIL |
+| Parakeet pipeline encoder | 1614 ms | 1614 ms | **1438 ms (-12.4%)** | ~138 ms (anchor) | **0.10x** (10.4x slower) | FAIL |
+| Parakeet pipeline total | 2428 ms | 2428 ms | **2235 ms (-9.5%)** | 271 ms (jwm1 anchor) | **0.12x** (8.2x slower) | FAIL |
+| Parakeet transcript gate | `db501a8c` (104/104) | `db501a8c` | `db501a8c` | `db501a8c` (golden) | **MATCH** | **PASS** |

@@ -1,0 +1,14 @@
+[Unit]
+Description=Hold every CPU cluster at its top p-state for GPU/ANE inference (cpufreq-floor set)
+Documentation=file:///usr/local/bin/cpufreq-floor
+DefaultDependencies=no
+After=sysinit.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/cpufreq-floor set
+ExecStop=/usr/local/bin/cpufreq-floor restore
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,24 @@
+== corpus pin
+qwen38-2b-prompts.jsonl: OK
+python: python3.13 (Python 3.13.2)
+== fetching pinned model snapshot 0867d98bfb174b042d88461c0e7c97b86b34b381
+Ignoring corrupted tree cache file ~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/trees/0867d98bfb174b042d88461c0e7c97b86b34b381.json: [Errno 13] Permission denied: '~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/trees/0867d98bfb174b042d88461c0e7c97b86b34b381.json'
+Ignored error while writing tree cache file ~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/trees/0867d98bfb174b042d88461c0e7c97b86b34b381.json: [Errno 13] Permission denied: '~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/trees/tmpfi3m75p0.tmp'
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1081.35it/s]
+model dir: ~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/snapshots/0867d98bfb174b042d88461c0e7c97b86b34b381
+== bench (3 warmups x corpus, 10 passes x 10 prompts, 32 new tokens, 512 pure-prefill leg)
+pass 0 done
+pass 1 done
+pass 2 done
+pass 3 done
+pass 4 done
+pass 5 done
+pass 6 done
+pass 7 done
+pass 8 done
+pass 9 done
+peak:           1656619008  maximum resident set size
+pure_prefill: {'prompt_tokens': 512, 'wall_s': 0.3854, 'gpu_busy_percent_samples': [], 'pure_prefill_tok_rate': 1328.6}
+ordered_records_sha256: 85b9bc6da83b35bc6222b62648091d7d07d091810d7a0f392278b93d2c5ac4e4
+e2e_s: {'median': 0.2089, 'min': 0.2055, 'max': 0.2144, 'n': 100} peak_rss_bytes: None
+GPU-BUNDLE OK — ~/levers3-mac/out/qwen-gpu-20260925T164637

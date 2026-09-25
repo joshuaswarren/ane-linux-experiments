@@ -1,0 +1,8 @@
+t-ctl-r1                     decode=78.66 tok/s (12.71 ms/tok) prefill=731.14 ttft=75.48 e2e_med=0.5712s digest=a483d947 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-fffff-r1                decode=77.04 tok/s (12.98 ms/tok) prefill=722.38 ttft=74.40 e2e_med=0.5847s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ds-fffff-g-r1              decode=79.50 tok/s (12.58 ms/tok) prefill=726.47 ttft=75.53 e2e_med=0.5668s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-178-r1                  decode=81.34 tok/s (12.29 ms/tok) prefill=735.17 ttft=75.59 e2e_med=0.5597s digest=c47f0a5c n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ctl-r2                     decode=78.94 tok/s (12.67 ms/tok) prefill=731.96 ttft=73.62 e2e_med=0.5696s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-fffff-r2                decode=76.66 tok/s (13.04 ms/tok) prefill=718.82 ttft=74.81 e2e_med=0.5877s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ds-fffff-g-r2              decode=79.39 tok/s (12.60 ms/tok) prefill=746.02 ttft=74.71 e2e_med=0.5650s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-178-r2                  decode=81.45 tok/s (12.28 ms/tok) prefill=728.53 ttft=73.83 e2e_med=0.5628s digest=5745f32d n=30 wheel=0.32.3.dev202609252013+1faf7f00

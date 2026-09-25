@@ -1,0 +1,52 @@
+[2026-09-25T16:40:46-05:00] bundle sha: 82c1a70198fd5914
+[2026-09-25T16:40:46-05:00] == switch (Linux side) ==
+boot: /dev/nvme0n1p5 ext4 esp: /dev/nvme0n1p4 vfat root: /dev/nvme0n1p6[/@] btrfs
+GATE PASS: /boot ext4, ESP vfat
+ 1) Macintosh HD
+*2) Omarchy
+Will set volume Macintosh HD as the boot target for next boot only
+next boot: Macintosh HD default: Omarchy
+enabled
+rebooting to macOS (next boot only) at 2026-09-25T16:40:49-05:00
+[2026-09-25T16:40:49-05:00] == waiting for macOS ssh ==
+[2026-09-25T16:41:45-05:00] mac up via 16m1mbp-macos after ~30 s: 16M1MBP.local
+26.6.2
+16:41  up 39 secs, 0 users, load averages: 16.68 3.99 1.44
+[2026-09-25T16:41:45-05:00] == ship + run ==
+82c1a70198fd5914f7667ecdb8e2d003d960dbe200ebb6239f8dcf5cc42cb352  mac-reference-bundle-full.tar.gz
+[2026-09-25T16:46:46-05:00] still running (5 min): == qwen-gpu ==
+sha256: 82c1a70198fd5914f7667ecdb8e2d003d960dbe200ebb6239f8dcf5cc42cb352  mac-reference-bundle-full.tar.gz
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+Apple M1 Max
+68719476736
+arm64
+16:41  up 39 secs, 0 users, load averages: 15.43 3.94 1.44
+== core ==
+core rc=0 in 289s
+{"units":"cpu","compile_ms":283.7,"load_ms":2250.1,"placement":{"cpu":1374},"reps":10,"median_ms":208.51,"min_ms":208.01,"max_ms":208.93,"mean_ms":208.45,"hidden_stride_mean":-0.053544,"hidden_count":240000,"mask_sum":375}
+{"units":"ane","compile_ms":250.1,"load_ms":38628.0,"placement":{"ane":1341,"cpu":33},"reps":10,"median_ms":140.27,"min_ms":136.05,"max_ms":141.92,"mean_ms":139.19,"hidden_stride_mean":-0.053864,"hidden_count":240000,"mask_sum":375}
+{"units":"all","compile_ms":228.4,"load_ms":38458.2,"placement":{"ane":1334,"cpu":28,"gpu":12},"reps":10,"median_ms":156.12,"min_ms":152.26,"max_ms":157.14,"mean_ms":154.99,"hidden_stride_mean":-0.053864,"hidden_count":240000,"mask_sum":375}
+CORE-BUNDLE OK — ~/levers3-mac/out/core-20260925T164146
+== parakeet ==
+parakeet rc=127 in 2s
+== qwen-gpu ==
+qwen-gpu rc=0 in 43s
+python: python3.13 (Python 3.13.2)
+e2e_s: {'median': 0.2089, 'min': 0.2055, 'max': 0.2144, 'n': 100} peak_rss_bytes: None
+GPU-BUNDLE OK — ~/levers3-mac/out/qwen-gpu-20260925T164637
+qwen-gpu: decode=179.98 tok/s ttft=357.7 prefill=1328.6 e2e=0.2089 digest=85b9bc6d mlx=0.32.2 mlx_lm=0.31.3 py=3.13.2
+-rw-r--r--  1 joshuawarren  staff  1738956 Sep 25 16:47 out.tgz
+MAC_RUN_DONE
+[2026-09-25T16:47:47-05:00] fetched out.tgz 1738956 bytes sha 62a7e318f6984dab
+[2026-09-25T16:47:47-05:00] == reboot to Omarchy (default) ==
+[2026-09-25T16:48:51-05:00] linux back after ~50 s: jw16mbp1-linux
+ 16:48:51 up 0 min,  1 user,  load average: 0.41, 0.10, 0.03
+Omarchy
+health ok after 5 s
+active
+v0.1.0-605-g5a22ee3
+{"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+{"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790372941,"model":"qwen3.8-27b","system_fi
+[2026-09-25T16:49:01-05:00] MAC_WINDOW_DONE

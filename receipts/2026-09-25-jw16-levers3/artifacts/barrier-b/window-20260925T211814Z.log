@@ -1,0 +1,85 @@
+[2026-09-25T16:18:14-05:00] window barrier-b begin stamp=20260925T211814Z body=body-barrier-b.sh args=
+[2026-09-25T16:18:15-05:00] flock held by 84645
+[2026-09-25T16:18:15-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+icd={"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"} nosplit-knob=3d6b130db66b3480 depskip=cad6f2adb84d6c0b
+ctl-r0               logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.5s min_margin=0 at 4:19
+== rep 1 ==
+ns-178-r1            logit_digest=27dfcb18 ids_digest=e14fc75e steps=320 wall=10.2s min_margin=0 at 4:19
+ns-17f-r1            logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.5s min_margin=0 at 4:19
+ns-1f8-r1            logit_digest=899f3e54 ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ns-1f78-r1           logit_digest=f87b3f1c ids_digest=3596d265 steps=320 wall=10.5s min_margin=0 at 4:19
+ns-e178-r1           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ns-f0178-r1          logit_digest=9aff3b41 ids_digest=b748ba1f steps=320 wall=10.3s min_margin=0 at 4:19
+ns-fffff-r1          logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.8s min_margin=0 at 4:19
+ds-178-g-r1          logit_digest=612da6e4 ids_digest=e14fc75e steps=320 wall=9.9s min_margin=0 at 4:19
+ds-fffff-g-r1        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ds-fffff-r1          logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.8s min_margin=0 at 4:19
+== rep 2 ==
+ns-178-r2            logit_digest=82e07cd7 ids_digest=462b8e12 steps=320 wall=10.2s min_margin=0 at 4:19
+ns-17f-r2            logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.5s min_margin=0 at 4:19
+ns-1f8-r2            logit_digest=671d923b ids_digest=3596d265 steps=320 wall=10.2s min_margin=0 at 4:19
+ns-1f78-r2           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.6s min_margin=0 at 4:19
+ns-e178-r2           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.4s min_margin=0 at 4:19
+ns-f0178-r2          logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ns-fffff-r2          logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.8s min_margin=0 at 4:19
+ds-178-g-r2          logit_digest=84fd2eb6 ids_digest=4aaf41e4 steps=320 wall=10.0s min_margin=0 at 4:19
+ds-fffff-g-r2        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.4s min_margin=0 at 4:19
+ds-fffff-r2          logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.8s min_margin=0 at 4:19
+== rep 3 ==
+ns-178-r3            logit_digest=f5bfbcd8 ids_digest=e14fc75e steps=320 wall=10.2s min_margin=0 at 4:19
+ns-17f-r3            logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.5s min_margin=0 at 4:19
+ns-1f8-r3            logit_digest=8d565dcd ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ns-1f78-r3           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.6s min_margin=0 at 4:19
+ns-e178-r3           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.4s min_margin=0 at 4:19
+ns-f0178-r3          logit_digest=c1aa4756 ids_digest=275dd2d2 steps=320 wall=10.2s min_margin=0 at 4:19
+ns-fffff-r3          logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.8s min_margin=0 at 4:19
+ds-178-g-r3          logit_digest=ad40c2f6 ids_digest=9c5a9aaa steps=320 wall=10.1s min_margin=0 at 4:19
+ds-fffff-g-r3        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.5s min_margin=0 at 4:19
+ds-fffff-r3          logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.9s min_margin=0 at 4:19
+== compare vs ctl-r0 ==
+ctl-r0               logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ds-178-g-r1          logit=612da6e4 ids=e14fc75e differing_steps(pre-cascade)=64 prompts_touched=2 [pass 0 prompt 8: step 0 margin=3.25] [pass 0 prompt 9: step 0 margin=2.5]
+ds-178-g-r2          logit=84fd2eb6 ids=4aaf41e4 differing_steps(pre-cascade)=79 prompts_touched=3 [pass 0 prompt 7: step 0 margin=3.62] [pass 0 prompt 8: step 0 margin=3.25] [pass 0 prompt 9: step 0 margin=2.5]
+ds-178-g-r3          logit=ad40c2f6 ids=9c5a9aaa differing_steps(pre-cascade)=28 prompts_touched=1 [pass 0 prompt 9: step 0 margin=2.5]
+ds-fffff-g-r1        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ds-fffff-g-r2        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ds-fffff-g-r3        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ds-fffff-r1          logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ds-fffff-r2          logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ds-fffff-r3          logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-178-r1            logit=27dfcb18 ids=e14fc75e differing_steps(pre-cascade)=32 prompts_touched=1 [pass 0 prompt 7: step 0 margin=3.62]
+ns-178-r2            logit=82e07cd7 ids=462b8e12 differing_steps(pre-cascade)=1 prompts_touched=1 [pass 0 prompt 8: step 0 TOKEN-FLIP margin=3.25]
+ns-178-r3            logit=f5bfbcd8 ids=e14fc75e differing_steps(pre-cascade)=32 prompts_touched=1 [pass 0 prompt 7: step 0 margin=3.62]
+ns-17f-r1            logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-17f-r2            logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-17f-r3            logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-1f78-r1           logit=f87b3f1c ids=3596d265 differing_steps(pre-cascade)=6 prompts_touched=1 [pass 0 prompt 8: step 0 margin=3.25]
+ns-1f78-r2           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-1f78-r3           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-1f8-r1            logit=899f3e54 ids=e14fc75e differing_steps(pre-cascade)=32 prompts_touched=1 [pass 0 prompt 7: step 0 margin=3.62]
+ns-1f8-r2            logit=671d923b ids=3596d265 differing_steps(pre-cascade)=6 prompts_touched=1 [pass 0 prompt 8: step 0 margin=3.25]
+ns-1f8-r3            logit=8d565dcd ids=e14fc75e differing_steps(pre-cascade)=32 prompts_touched=1 [pass 0 prompt 7: step 0 margin=3.62]
+ns-e178-r1           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-e178-r2           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-e178-r3           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-f0178-r1          logit=9aff3b41 ids=b748ba1f differing_steps(pre-cascade)=15 prompts_touched=1 [pass 0 prompt 8: step 0 margin=3.25]
+ns-f0178-r2          logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-f0178-r3          logit=c1aa4756 ids=275dd2d2 differing_steps(pre-cascade)=47 prompts_touched=3 [pass 0 prompt 7: step 0 margin=3.62] [pass 0 prompt 8: step 0 TOKEN-FLIP margin=3.25] [pass 0 prompt 9: step 0 margin=2.5]
+ns-fffff-r1          logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-fffff-r2          logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-fffff-r3          logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+== timing: 3-pass contracts, 2 interleaved reps ==
+t-ctl-r1                     decode=78.66 tok/s (12.71 ms/tok) prefill=731.14 ttft=75.48 e2e_med=0.5712s digest=a483d947 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-fffff-r1                decode=77.04 tok/s (12.98 ms/tok) prefill=722.38 ttft=74.40 e2e_med=0.5847s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ds-fffff-g-r1              decode=79.50 tok/s (12.58 ms/tok) prefill=726.47 ttft=75.53 e2e_med=0.5668s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-178-r1                  decode=81.34 tok/s (12.29 ms/tok) prefill=735.17 ttft=75.59 e2e_med=0.5597s digest=c47f0a5c n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ctl-r2                     decode=78.94 tok/s (12.67 ms/tok) prefill=731.96 ttft=73.62 e2e_med=0.5696s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-fffff-r2                decode=76.66 tok/s (13.04 ms/tok) prefill=718.82 ttft=74.81 e2e_med=0.5877s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ds-fffff-g-r2              decode=79.39 tok/s (12.60 ms/tok) prefill=746.02 ttft=74.71 e2e_med=0.5650s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+t-ns-178-r2                  decode=81.45 tok/s (12.28 ms/tok) prefill=728.53 ttft=73.83 e2e_med=0.5628s digest=5745f32d n=30 wheel=0.32.3.dev202609252013+1faf7f00
+BARRIER_B_DONE
+[2026-09-25T16:27:57-05:00] WINDOW_BODY_DONE rc=0
+[2026-09-25T16:27:57-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T16:28:07-05:00] poll #2: 8002 ok
+[2026-09-25T16:28:12-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790371692,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-pvAMCj72UPN7Grxx8N3KXfKVZmGUKhZY","timings":{"cache_n":0,"prompt_n":55,"prompt_ms":4077.011,"prompt_per_token_ms":74.12747272727273,"prompt_per_second":13.490275105953847,"predicted_n":8,"predicted_ms":961.237,"predicted_per_token_ms":137.31957142857144,"predicted_per_second":7.282283141410495}}
+[2026-09-25T16:28:12-05:00] service healthy=1

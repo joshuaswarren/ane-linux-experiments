@@ -1,0 +1,61 @@
+[2026-09-25T16:28:26-05:00] window cpufreq begin stamp=20260925T212826Z body=body-cpufreq.sh args=
+[2026-09-25T16:28:26-05:00] flock held by 85226
+[2026-09-25T16:28:26-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+venv=/var/tmp/v072-venv-fused wheel=mlx-omarchy 0.32.3.dev202609252013+1faf7f00 icd={"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+start: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=none load=0.52 0.63 0.66
+== rep 1 ==
+arm sched: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=none
+sched-r1                     decode=78.83 tok/s (12.69 ms/tok) prefill=735.51 ttft=76.17 e2e_med=0.5686s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+arm floor: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=none
+floor-r1                     decode=81.07 tok/s (12.34 ms/tok) prefill=744.54 ttft=78.49 e2e_med=0.5530s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm dma: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=86222
+dma-r1                       decode=80.22 tok/s (12.47 ms/tok) prefill=726.01 ttft=77.58 e2e_med=0.5596s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm both: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=86314
+both-r1                      decode=82.15 tok/s (12.17 ms/tok) prefill=742.0 ttft=82.87 e2e_med=0.5384s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== rep 2 ==
+arm sched: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=none
+sched-r2                     decode=78.81 tok/s (12.69 ms/tok) prefill=738.5 ttft=76.54 e2e_med=0.5625s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+arm floor: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=none
+floor-r2                     decode=81.05 tok/s (12.34 ms/tok) prefill=748.13 ttft=83.75 e2e_med=0.5378s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm dma: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=86573
+dma-r2                       decode=80.71 tok/s (12.39 ms/tok) prefill=732.09 ttft=77.62 e2e_med=0.5582s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm both: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=86797
+both-r2                      decode=82.30 tok/s (12.15 ms/tok) prefill=745.22 ttft=81.77 e2e_med=0.5349s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== rep 3 ==
+arm sched: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=none
+sched-r3                     decode=78.88 tok/s (12.68 ms/tok) prefill=732.94 ttft=74.56 e2e_med=0.5678s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+arm floor: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=none
+floor-r3                     decode=80.88 tok/s (12.36 ms/tok) prefill=748.3 ttft=83.78 e2e_med=0.5435s digest=5745f32d n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm dma: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=87055
+dma-r3                       decode=80.46 tok/s (12.43 ms/tok) prefill=735.34 ttft=77.65 e2e_med=0.5554s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm both: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=87149
+both-r3                      decode=82.22 tok/s (12.16 ms/tok) prefill=744.45 ttft=77.52 e2e_med=0.5405s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== rep 4 ==
+arm sched: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=none
+sched-r4                     decode=77.98 tok/s (12.82 ms/tok) prefill=741.24 ttft=74.86 e2e_med=0.5721s digest=87764440 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+arm floor: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=none
+floor-r4                     decode=81.11 tok/s (12.33 ms/tok) prefill=754.31 ttft=80.41 e2e_med=0.5487s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm dma: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=87406
+dma-r4                       decode=79.96 tok/s (12.51 ms/tok) prefill=742.48 ttft=75.72 e2e_med=0.5599s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+held
+arm both: policy0:schedutil/min=2064000/max=2064000 policy2:schedutil/min=3036000/max=3036000 policy6:schedutil/min=3036000/max=3036000 dma_pid=87497
+both-r4                      decode=81.91 tok/s (12.21 ms/tok) prefill=735.07 ttft=82.16 e2e_med=0.5409s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== summary (decode tok/s per arm, sorted) ==
+sched  78.83 78.81 78.88 77.98 
+floor  81.07 81.05 80.88 81.11 
+dma    80.22 80.71 80.46 79.96 
+both   82.15 82.3 82.22 81.91 
+CPUFREQ_BODY_DONE
+restored: policy0:schedutil/min=600000/max=2064000 policy2:schedutil/min=600000/max=3036000 policy6:schedutil/min=600000/max=3036000 dma_pid=none
+[2026-09-25T16:34:21-05:00] WINDOW_BODY_DONE rc=0
+[2026-09-25T16:34:21-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T16:34:31-05:00] poll #2: 8002 ok
+[2026-09-25T16:34:54-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790372094,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-i5cX8VY7qa3VeRklbvdgT4FZxMJQCyfm","timings":{"cache_n":0,"prompt_n":55,"prompt_ms":4075.397,"prompt_per_token_ms":74.09812727272727,"prompt_per_second":13.495617727548998,"predicted_n":8,"predicted_ms":18816.044,"predicted_per_token_ms":2688.006285714286,"predicted_per_second":0.3720229395722076}}
+[2026-09-25T16:34:54-05:00] service healthy=1

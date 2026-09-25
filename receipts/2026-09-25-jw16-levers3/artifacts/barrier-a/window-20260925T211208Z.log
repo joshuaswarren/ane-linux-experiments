@@ -1,0 +1,70 @@
+[2026-09-25T16:12:08-05:00] window barrier-a begin stamp=20260925T211208Z body=body-barrier-a.sh args=
+[2026-09-25T16:12:09-05:00] flock held by 67690
+[2026-09-25T16:12:09-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+venv=/var/tmp/v072-venv-fused wheel=mlx-omarchy 0.32.3.dev202609252013+1faf7f00 icd={"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+libvulkan_asahi.so.41ccf96 sha=29a7addc28b40c8c mask_knob=0
+libvulkan_asahi.so.nosplit sha=3d6b130db66b3480 mask_knob=1
+libvulkan_asahi.so.mask sha=588ec9b8ca37e604 mask_knob=1
+libvulkan_asahi.so.d3fa18e sha=1e912d3e03d11e55 mask_knob=0
+== rep 1 ==
+ctl-r1               logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.7s min_margin=0 at 4:19
+nosplit-r1           logit_digest=b2483a25 ids_digest=e14fc75e steps=320 wall=10.2s min_margin=0 at 4:19
+ns-mask178-r1        logit_digest=c9f1725e ids_digest=3596d265 steps=320 wall=10.3s min_margin=0 at 4:19
+ns-kitchen-r1        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.8s min_margin=0 at 4:19
+sp-kitchen-r1        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.9s min_margin=0 at 4:19
+== rep 2 ==
+ctl-r2               logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.6s min_margin=0 at 4:19
+nosplit-r2           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ns-mask178-r2        logit_digest=9019994a ids_digest=3596d265 steps=320 wall=10.3s min_margin=0 at 4:19
+ns-kitchen-r2        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.7s min_margin=0 at 4:19
+sp-kitchen-r2        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.9s min_margin=0 at 4:19
+== rep 3 ==
+ctl-r3               logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.5s min_margin=0 at 4:19
+nosplit-r3           logit_digest=95c860a6 ids_digest=427e3b35 steps=320 wall=10.2s min_margin=0 at 4:19
+ns-mask178-r3        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=9.6s min_margin=0 at 4:19
+ns-kitchen-r3        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.9s min_margin=0 at 4:19
+sp-kitchen-r3        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.9s min_margin=0 at 4:19
+== rep 4 ==
+ctl-r4               logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.6s min_margin=0 at 4:19
+nosplit-r4           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=9.8s min_margin=0 at 4:19
+ns-mask178-r4        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.2s min_margin=0 at 4:19
+ns-kitchen-r4        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.9s min_margin=0 at 4:19
+sp-kitchen-r4        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=11.0s min_margin=0 at 4:19
+== rep 5 ==
+ctl-r5               logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.6s min_margin=0 at 4:19
+nosplit-r5           logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ns-mask178-r5        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.3s min_margin=0 at 4:19
+ns-kitchen-r5        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.8s min_margin=0 at 4:19
+sp-kitchen-r5        logit_digest=7b88469e ids_digest=e14fc75e steps=320 wall=10.9s min_margin=0 at 4:19
+== compare vs ctl-r1 ==
+ctl-r1               logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ctl-r2               logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ctl-r3               logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ctl-r4               logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ctl-r5               logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+nosplit-r1           logit=b2483a25 ids=e14fc75e differing_steps(pre-cascade)=32 prompts_touched=1 [pass 0 prompt 7: step 0 margin=3.62]
+nosplit-r2           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+nosplit-r3           logit=95c860a6 ids=427e3b35 differing_steps(pre-cascade)=39 prompts_touched=2 [pass 0 prompt 7: step 0 margin=3.62] [pass 0 prompt 8: step 0 margin=3.25]
+nosplit-r4           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+nosplit-r5           logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-kitchen-r1        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-kitchen-r2        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-kitchen-r3        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-kitchen-r4        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-kitchen-r5        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-mask178-r1        logit=c9f1725e ids=3596d265 differing_steps(pre-cascade)=6 prompts_touched=1 [pass 0 prompt 8: step 0 margin=3.25]
+ns-mask178-r2        logit=9019994a ids=3596d265 differing_steps(pre-cascade)=6 prompts_touched=1 [pass 0 prompt 8: step 0 margin=3.25]
+ns-mask178-r3        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-mask178-r4        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+ns-mask178-r5        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+sp-kitchen-r1        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+sp-kitchen-r2        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+sp-kitchen-r3        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+sp-kitchen-r4        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+sp-kitchen-r5        logit=7b88469e ids=e14fc75e differing_steps(pre-cascade)=0 prompts_touched=0 
+BARRIER_A_DONE
+[2026-09-25T16:17:39-05:00] WINDOW_BODY_DONE rc=0
+[2026-09-25T16:17:39-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T16:17:49-05:00] poll #2: 8002 ok
+[2026-09-25T16:17:54-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790371074,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-UWUcjd2dgVcisu0GW5goALV45iY7dOLj","timings":{"cache_n":0,"prompt_n":55,"prompt_ms":4072.951,"prompt_per_token_ms":74.05365454545455,"prompt_per_second":13.503722485244728,"predicted_n":8,"predicted_ms":966.746,"predicted_per_token_ms":138.1065714285714,"predicted_per_second":7.240785066604878}}
+[2026-09-25T16:17:54-05:00] service healthy=1

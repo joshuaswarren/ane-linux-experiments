@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# cpufreq-floor set|restore|status — hold every cpufreq policy's
+# scaling_min_freq at its scaling_max_freq (the CPU clock lever measured on
+# t6001-host, receipt 2026-09-25-jw16-levers3 §3: GPU decode +N% because
+# schedutil parks the clusters between GPU completions and every submission
+# pays the ramp). Originals are saved in /run/cpufreq-floor.orig so restore
+# puts back exactly what was there. Installed as cpufreq-floor.service,
+# pulled in by llm-inference.service.
+set -euo pipefail
+ORIG=/run/cpufreq-floor.orig
+case "${1:-status}" in
+  set)
+    if [ ! -e "$ORIG" ]; then
+      for p in /sys/devices/system/cpu/cpufreq/policy*; do echo "$p $(cat "$p/scaling_min_freq")"; done > "$ORIG"
+    fi
+    for p in /sys/devices/system/cpu/cpufreq/policy*; do cat "$p/scaling_max_freq" > "$p/scaling_min_freq"; done
+    ;;
+  restore)
+    if [ -e "$ORIG" ]; then
+      while read -r p f; do [ -d "$p" ] && echo "$f" > "$p/scaling_min_freq"; done < "$ORIG"
+      rm -f "$ORIG"
+    fi
+    ;;
+  status) ;;
+  *) echo "usage: cpufreq-floor set|restore|status" >&2; exit 2;;
+esac
+for p in /sys/devices/system/cpu/cpufreq/policy*; do
+  printf "%s gov=%s min=%s max=%s cur=%s\n" "$(basename "$p")" "$(cat "$p/scaling_governor")" "$(cat "$p/scaling_min_freq")" "$(cat "$p/scaling_max_freq")" "$(cat "$p/scaling_cur_freq")"
+done
