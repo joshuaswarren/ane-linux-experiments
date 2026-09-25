@@ -1,0 +1,141 @@
+    throw manifest_error(where + " must be an object");
+  }
+  reject_unknown_fields(value, {"role", "path", "sha256", "byte_size"});
+  AnePayload payload;
+  payload.role = require_non_empty_string(value, "role");
+  if (payload.role != "anec" && payload.role != "weights") {
+    throw manifest_error(where + " field 'role' must be 'anec' or 'weights'");
+  }
+  payload.path = require_non_empty_string(value, "path");
+  std::filesystem::path path(payload.path);
+  if (path.is_absolute() || path.has_parent_path() || path.filename() != path) {
+    throw manifest_error(where + " field 'path' must be a plain filename");
+  }
+  payload.sha256 = require_hex(value, "sha256", 64, "a SHA-256 digest");
+  payload.byte_size = require_positive(value, "byte_size");
+  return payload;
+}
+
+void parse_compiler(const nlohmann::json& value, AneManifest& manifest) {
+  if (!value.is_object()) {
+    throw manifest_error("field 'compiler' must be an object");
+  }
+  reject_unknown_fields(value, {"host_build", "toolchain", "target"});
+  manifest.compiler.host_build = require_non_empty_string(value, "host_build");
+  manifest.compiler.toolchain = require_non_empty_string(value, "toolchain");
+  manifest.compiler.target = require_non_empty_string(value, "target");
+  if (manifest.compiler.target != "h13") {
+    throw manifest_error("field 'compiler.target' must be exactly 'h13'");
+  }
+}
+
+void parse_provenance(const nlohmann::json& value, AneManifest& manifest) {
+  if (!value.is_object()) {
+    throw manifest_error("field 'provenance' must be an object");
+  }
+  reject_unknown_fields(value, {"source_repo", "source_commit", "exported_at"});
+  manifest.provenance.source_repo = require_non_empty_string(value, "source_repo");
+  manifest.provenance.source_commit =
+      require_hex(value, "source_commit", 40, "a source commit");
+  manifest.provenance.exported_at = require_non_empty_string(value, "exported_at");
+}
+
+void parse_release(const nlohmann::json& value, AneManifest& manifest) {
+  if (!value.is_object()) {
+    throw manifest_error("field 'release_asset' must be an object");
+  }
+  reject_unknown_fields(value, {"model", "model_sha256"});
+  manifest.release_asset.model = require_non_empty_string(value, "model");
+  manifest.release_asset.model_sha256 =
+      require_hex(value, "model_sha256", 64, "a compiled-payload collection SHA-256 digest");
+}
+
+void validate_bindings(AneManifest& manifest) {
+  struct TensorRecord {
+    const AneTensor* tensor;
+    std::string role;
+    bool read{false};
+    bool written{false};
+  };
+  std::map<std::string, TensorRecord> tensors;
+  auto add = [&](const std::vector<AneTensor>& list, const char* role) {
+    for (const auto& tensor : list) {
+      if (!tensors.emplace(tensor.name, TensorRecord{&tensor, role}).second) {
+        throw manifest_error("tensor name '" + tensor.name + "' appears in multiple roles");
+      }
+    }
+  };
+  add(manifest.inputs, "input");
+  add(manifest.outputs, "output");
+  add(manifest.state, "state");
+  add(manifest.intermediates, "intermediate");
+
+  auto validate = [&](const AneProgramBinding& binding, bool output, const std::string& where) {
+    auto found = tensors.find(binding.tensor);
+    if (found == tensors.end()) {
+      throw manifest_error(where + " references unknown tensor '" + binding.tensor + "'");
+    }
+    TensorRecord& record = found->second;
+    bool role_ok = output ? (record.role != "input") : (record.role != "output");
+    if (!role_ok) {
+      throw manifest_error(where + " uses tensor '" + binding.tensor + "' in the wrong direction");
+    }
+    if (binding.dtype != record.tensor->dtype) {
+      throw manifest_error(where + " dtype does not match tensor '" + binding.tensor + "'");
+    }
+    uint64_t total = element_count(record.tensor->shape, where);
+    uint64_t end = checked_add(binding.element_offset, binding.element_count, where);
+    if (end > total || binding.allocation_bytes > record.tensor->stride) {
+      throw manifest_error(where + " range or allocation exceeds tensor '" + binding.tensor + "'");
+    }
+    record.read = record.read || !output;
+    record.written = record.written || output;
+  };
+
+  uint64_t total_descriptors = 0;
+  std::set<std::string> program_payloads;
+  for (size_t p = 0; p < manifest.programs.size(); ++p) {
+    const AneProgram& program = manifest.programs[p];
+    total_descriptors = checked_add(total_descriptors, program.task_descriptors, "task_descriptors");
+    if (!program_payloads.insert(program.payload).second) {
+      throw manifest_error("program payload '" + program.payload + "' is referenced more than once");
+    }
+    for (size_t i = 0; i < program.inputs.size(); ++i) {
+      validate(program.inputs[i], false,
+               "programs[" + std::to_string(p) + "].inputs[" + std::to_string(i) + "]");
+    }
+    for (size_t i = 0; i < program.outputs.size(); ++i) {
+      validate(program.outputs[i], true,
+               "programs[" + std::to_string(p) + "].outputs[" + std::to_string(i) + "]");
+    }
+  }
+  if (total_descriptors != manifest.task_descriptors) {
+    throw manifest_error("field 'task_descriptors' does not equal the program total");
+  }
+
+  std::set<std::string> anec_payloads;
+  for (const auto& payload : manifest.payloads) {
+    if (payload.role == "anec") {
+      anec_payloads.insert(payload.path);
+    }
+  }
+  if (anec_payloads != program_payloads) {
+    throw manifest_error("program payload mapping does not bind every ANEC payload exactly once");
+  }
+
+  for (const auto& [name, record] : tensors) {
+    if ((record.role == "input" && !record.read) ||
+        (record.role == "output" && !record.written) ||
+        ((record.role == "state" || record.role == "intermediate") &&
+         (!record.read || !record.written))) {
+      throw manifest_error("tensor '" + name + "' is not fully bound for role '" + record.role + "'");
+    }
+  }
+
+  using Range = std::pair<uint64_t, uint64_t>;
+  std::map<std::string, std::vector<Range>> available;
+  auto add_range = [&](const std::string& name, uint64_t begin, uint64_t end) {
+    auto& ranges = available[name];
+    ranges.emplace_back(begin, end);
+    std::sort(ranges.begin(), ranges.end());
+    std::vector<Range> merged;

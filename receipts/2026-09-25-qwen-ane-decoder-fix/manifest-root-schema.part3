@@ -1,0 +1,83 @@
+      root,
+      {"manifest_version", "name", "graph_hash", "task_descriptors", "inputs",
+       "outputs", "logical_results", "state", "intermediates", "programs",
+       "dispatch_plan", "payloads", "compiler", "driver_abi_major",
+       "provenance", "release_asset"});
+
+  AneManifest manifest;
+  const auto& version = required_field(root, "manifest_version");
+  bool supported_version =
+      (version.is_number_unsigned() && version.get<uint64_t>() == kAneManifestVersion) ||
+      (version.is_number_integer() && !version.is_number_unsigned() &&
+       version.get<int64_t>() == kAneManifestVersion);
+  if (!supported_version) {
+    throw manifest_error(
+        "unsupported manifest_version (expected " +
+        std::to_string(kAneManifestVersion) + ")");
+  }
+  manifest.manifest_version = kAneManifestVersion;
+  manifest.name = require_non_empty_string(root, "name");
+  manifest.graph_hash = require_hex(root, "graph_hash", 64, "a graph SHA-256 digest");
+  manifest.task_descriptors = require_positive(root, "task_descriptors");
+  manifest.inputs = parse_tensor_list(root, "inputs", true);
+  manifest.outputs = parse_tensor_list(root, "outputs", true);
+  manifest.logical_results = parse_logical_results(root);
+  manifest.state = parse_tensor_list(root, "state", false);
+  manifest.intermediates = parse_tensor_list(root, "intermediates", false);
+
+  const auto& programs = required_field(root, "programs");
+  if (!programs.is_array() || programs.empty()) {
+    throw manifest_error("field 'programs' must be a non-empty array");
+  }
+  for (size_t i = 0; i < programs.size(); ++i) {
+    manifest.programs.push_back(parse_program(programs[i], i));
+  }
+
+  const auto& dispatch = required_field(root, "dispatch_plan");
+  if (!dispatch.is_array() || dispatch.size() != manifest.programs.size()) {
+    throw manifest_error("field 'dispatch_plan' must contain every program exactly once");
+  }
+  std::set<uint64_t> dispatched;
+  for (const auto& index : dispatch) {
+    if (!index.is_number_unsigned() || index.get<uint64_t>() >= manifest.programs.size() ||
+        !dispatched.insert(index.get<uint64_t>()).second) {
+      throw manifest_error("field 'dispatch_plan' must be a permutation of program indices");
+    }
+    manifest.dispatch_plan.push_back(index.get<uint64_t>());
+  }
+
+  const auto& payloads = required_field(root, "payloads");
+  if (!payloads.is_array() || payloads.empty()) {
+    throw manifest_error("field 'payloads' must be a non-empty array");
+  }
+  std::set<std::string> paths;
+  size_t anec_count = 0;
+  size_t weights_count = 0;
+  for (size_t i = 0; i < payloads.size(); ++i) {
+    AnePayload payload = parse_payload(payloads[i], i);
+    if (!paths.insert(payload.path).second) {
+      throw manifest_error("duplicate payload path '" + payload.path + "'");
+    }
+    anec_count += payload.role == "anec";
+    weights_count += payload.role == "weights";
+    manifest.payloads.push_back(std::move(payload));
+  }
+  if (anec_count == 0 || weights_count > 1) {
+    throw manifest_error("payloads require at least one ANEC and at most one weights file");
+  }
+
+  parse_compiler(required_field(root, "compiler"), manifest);
+  manifest.driver_abi_major = require_unsigned(root, "driver_abi_major");
+  if (manifest.driver_abi_major != kAneDriverAbiMajor) {
+    throw manifest_error(
+        "unsupported driver_abi_major " + std::to_string(manifest.driver_abi_major) +
+        " (expected " + std::to_string(kAneDriverAbiMajor) + ")");
+  }
+  parse_provenance(required_field(root, "provenance"), manifest);
+  parse_release(required_field(root, "release_asset"), manifest);
+  validate_logical_results(manifest);
+  validate_bindings(manifest);
+  return manifest;
+}
+
+} // namespace mlx::core::omarchy::ane
