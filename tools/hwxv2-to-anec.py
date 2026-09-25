@@ -500,6 +500,11 @@ def _build_header(
             f"vs {len(input_sections)} / {len(output_sections)} sections")
     input_shapes = [tuple(x) for x in in_shape_list]
     output_shapes = [tuple(x) for x in out_shape_list]
+    # per-surface plane/row in uint16 ELEMENTS for libane's ane_tile/untile:
+    # P = 2*H*W and R = 2*W make new_H == H and new_W == W, so tile/untile
+    # degrade to a dense memcpy of the caller's fp16 buffer.
+    in_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(input_shapes)}
+    out_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(output_shapes)}
     output_sizes = [size for _, size in output_sections]
     input_sizes = [size for _, size in input_sections]
     if len(output_sizes) == 1:
@@ -507,21 +512,23 @@ def _build_header(
     if len(input_sizes) == 1:
         input_sizes[0] = max(input_sizes[0], image.input_size)
     for index, size in enumerate(output_sizes):
+        plane, _ = out_plane_row[index]
         shape = output_shapes[index]
-        shape_bytes = shape[0] * shape[1] * out_plane
+        shape_bytes = shape[0] * shape[1] * plane
         required = max(size, shape_bytes)
         tiles[4 + index] = max(1, (required + tile_unit - 1) // tile_unit)
     for index, size in enumerate(input_sizes):
+        plane, _ = in_plane_row[index]
         shape = input_shapes[index]
-        shape_bytes = shape[0] * shape[1] * in_plane
+        shape_bytes = shape[0] * shape[1] * plane
         required = max(size, shape_bytes)
         tiles[4 + dst_count + index] = max(1, (required + tile_unit - 1) // tile_unit)
     nchw = [0] * (32 * 6)
     for index, shape in enumerate(output_shapes):
-        plane, row = (shape[2] * shape[3], shape[3]) if out_shape_list else (out_plane, out_row)
+        plane, row = out_plane_row[index] if out_shape_list else (out_plane, out_row)
         nchw[(4 + index) * 6:(4 + index) * 6 + 6] = [*shape, plane, row]
     for index, shape in enumerate(input_shapes):
-        plane, row = (shape[2] * shape[3], shape[3]) if in_shape_list else (in_plane, in_row)
+        plane, row = in_plane_row[index] if in_shape_list else (in_plane, in_row)
         nchw[(4 + dst_count + index) * 6:(4 + dst_count + index) * 6 + 6] = [*shape, plane, row]
     return struct.pack(
         "<QIIQQII32I192Q",
