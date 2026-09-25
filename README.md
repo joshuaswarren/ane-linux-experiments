@@ -84,7 +84,7 @@ receipt is marked `unreceipted` instead of dropped.
 | m1-host | ANE whole encoder | 141.5-141.9 ms | 113.12 ms | 0.79-0.80x | FAIL | `receipts/2026-09-24-m1-boundaries-encoder-anomaly` (cites `receipts/2026-09-22-encoder-whole-program/m1host`) |
 | m1-host | ANE gate battery | runtime+primitive+bundle PASS on kmod 9a0ec81 + wheel af737871e (bundle C++ 34/34, 5904/5904; h13 python 15/15 after ce91f5b8e) | n/a | n/a | PASS (correctness) | `receipts/2026-09-25-jwm1-parity3-main-battery` |
 | m1-host | Qwen ANE reference path | not run | n/a | n/a | NOT RUN | - |
-| m1-host | Parakeet warm pipeline | 935.8 ms median (matched in-process contract; fresh-process protocol 1572-1620) | 271 ms (rep10) | 0.29-0.35x | FAIL | `receipts/2026-09-25-jwm1-parity2-parakeet-lean` (protocol note; denominators `receipts/2026-09-24-jwm1-linux-denominators`) |
+| m1-host | Parakeet warm pipeline | 298.6 ms median (main tip chain + in-proc encoder; prior lane 935.8) | 271 ms (rep10) | 0.91x | FAIL (-28 ms to bar; buckets: TDT fusion -54 possible, mel DFT -6, ANE clock +6) | `receipts/2026-09-25-jwm1-parity3-parakeet-298` |
 | m1-host | Parakeet transcript | db501a8c, hidden 554a3d66 x3 on af737871e wheel + 9a0ec81 kmod | match | parity | PASS (correctness) | `receipts/2026-09-25-jwm1-parity3-main-battery` |
 | m1max-host | Qwen decode | 77.33-77.48 tok/s | 180.38 tok/s (earlier protocol: 179.47) | 0.43x | FAIL | `receipts/2026-09-24-launch-sink2/macos-t6001-denominators/qwen38-macos-metal.json` |
 | m1max-host | Qwen prefill-512 / TTFT / e2e | not run | 1326.05 tok/s / 359.98 tok/s / 0.2081 s | - | NOT RUN (Linux leg) | same |
