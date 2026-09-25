@@ -1,0 +1,25 @@
+{
+ "kind": "qwen-derived",
+ "decode_tok_rate_median": 78.59,
+ "decode_tok_rate_paired_bootstrap_ci95": [
+  78.56,
+  78.62
+ ],
+ "ttft_tok_rate_median": 82.64,
+ "pure_prefill": {
+  "prompt_tokens": 512,
+  "wall_s": 0.6939,
+  "gpu_busy_percent_samples": [],
+  "pure_prefill_tok_rate": 737.85
+ },
+ "e2e_s": {
+  "median": 0.5557,
+  "min": 0.5355,
+  "max": 0.634,
+  "n": 100,
+  "definition": "ttft_s + decode_s per record (n=100)"
+ },
+ "peak_rss_kb": null,
+ "records_digest": "dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596",
+ "digest_gate": "match"
+}
