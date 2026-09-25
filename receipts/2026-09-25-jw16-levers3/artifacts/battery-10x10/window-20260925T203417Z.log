@@ -1,0 +1,84 @@
+[2026-09-25T15:34:17-05:00] window install begin stamp=20260925T203417Z body=/var/tmp/levers2/body-install.sh args=
+[2026-09-25T15:34:18-05:00] flock held by 55848
+[2026-09-25T15:34:18-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+== pre-install state ==
+mlx-lm             0.31.3
+mlx-omarchy        0.32.3.dev202609251914+3232b1f
+/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_omarchy-0.32.3.dev202609251914+3232b1f.dist-info
+== snapshot serving venv mlx package + model files -> /var/tmp/levers2/venv-fused-pre-levers2 ==
+470M	/var/tmp/levers2/venv-fused-pre-levers2
+== install /var/tmp/levers/mlx/dist/mlx_omarchy-0.32.3.dev202609252013+1faf7f00-cp314-cp314-linux_aarch64.whl ==
+patched: /var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_lm/models/activations.py
+patched: /var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_lm/models/qwen3_next.py
+patched: /var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_lm/models/qwen3_5.py
+== post-install state ==
+mlx-lm             0.31.3
+mlx-omarchy        0.32.3.dev202609252013+1faf7f00
+/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_omarchy-0.32.3.dev202609252013+1faf7f00.dist-info
+swiglu-eager=1 qgate=4 raw-route=2 scaled=3 gated-norm=0
+9e7c03b2a6bf030a
+== installed census ==
+census dispatches/token: [405, 405, 405]
+== installed-default contract x3 (3-pass) ==
+installed-r1                 decode=77.34 tok/s (12.93 ms/tok) prefill=729.79 ttft=74.69 e2e_med=0.5721s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+installed-r2                 decode=78.53 tok/s (12.73 ms/tok) prefill=731.62 ttft=76.48 e2e_med=0.5693s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+installed-r3                 decode=78.19 tok/s (12.79 ms/tok) prefill=732.05 ttft=74.77 e2e_med=0.5778s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== cpufreq governor A/B (performance vs schedutil) ==
+performance performance performance 
+installed-perfgov-r1         decode=82.08 tok/s (12.18 ms/tok) prefill=737.47 ttft=83.67 e2e_med=0.5328s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+schedutil schedutil schedutil 
+installed-r4                 decode=82.37 tok/s (12.14 ms/tok) prefill=747.65 ttft=84.56 e2e_med=0.5303s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== probes + no-split battery on the installed stack ==
+venv=/var/tmp/v072-venv-fused wheel=mlx-omarchy        0.32.3.dev202609252013+1faf7f00 nosplit=29a7addc28b40c8c installed=1e912d3e03d11e55
+== determinism probes (3-pass) ==
+probe-fusedgemv0             decode=78.36 tok/s (12.76 ms/tok) prefill=744.18 ttft=83.72 e2e_med=0.5511s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+probe-fusedchain0            decode=72.22 tok/s (13.85 ms/tok) prefill=712.47 ttft=81.95 e2e_med=0.5877s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+probe-nocache                decode=81.58 tok/s (12.26 ms/tok) prefill=739.1 ttft=79.80 e2e_med=0.5489s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+probe-trio0                  decode=82.34 tok/s (12.14 ms/tok) prefill=749.29 ttft=84.83 e2e_med=0.5297s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== interleaved 10-pass battery: installed (ctl) vs no-split (cand), 10 pairs ==
+bat-ctl-p10-1                decode=82.33 tok/s (12.15 ms/tok) prefill=735.57 ttft=84.59 e2e_med=0.5302s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-1            decode=81.27 tok/s (12.30 ms/tok) prefill=727.94 ttft=76.09 e2e_med=0.5590s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-2                decode=78.72 tok/s (12.70 ms/tok) prefill=739.92 ttft=75.82 e2e_med=0.5665s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-2            decode=81.54 tok/s (12.26 ms/tok) prefill=734.3 ttft=77.14 e2e_med=0.5575s digest=454adf43 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-3                decode=78.42 tok/s (12.75 ms/tok) prefill=739.64 ttft=76.71 e2e_med=0.5688s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-3            decode=81.29 tok/s (12.30 ms/tok) prefill=736.03 ttft=76.16 e2e_med=0.5598s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-4                decode=78.69 tok/s (12.71 ms/tok) prefill=741.57 ttft=76.09 e2e_med=0.5659s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-4            decode=81.03 tok/s (12.34 ms/tok) prefill=735.48 ttft=75.64 e2e_med=0.5591s digest=d283c30f n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-5                decode=78.76 tok/s (12.70 ms/tok) prefill=728.06 ttft=76.69 e2e_med=0.5647s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-5            decode=81.12 tok/s (12.33 ms/tok) prefill=727.88 ttft=75.38 e2e_med=0.5582s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-6                decode=78.66 tok/s (12.71 ms/tok) prefill=738.62 ttft=76.22 e2e_med=0.5652s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-6            decode=80.47 tok/s (12.43 ms/tok) prefill=737.76 ttft=76.92 e2e_med=0.5586s digest=da67ca57 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-7                decode=78.56 tok/s (12.73 ms/tok) prefill=732.34 ttft=75.52 e2e_med=0.5704s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-7            decode=80.92 tok/s (12.36 ms/tok) prefill=721.46 ttft=75.31 e2e_med=0.5578s digest=3959e2ac n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-8                decode=78.54 tok/s (12.73 ms/tok) prefill=729.15 ttft=75.16 e2e_med=0.5659s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-8            decode=81.02 tok/s (12.34 ms/tok) prefill=738.86 ttft=75.88 e2e_med=0.5584s digest=15526a5d n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-9                decode=78.62 tok/s (12.72 ms/tok) prefill=740.01 ttft=74.53 e2e_med=0.5694s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-9            decode=81.24 tok/s (12.31 ms/tok) prefill=726.13 ttft=75.28 e2e_med=0.5614s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-10               decode=78.39 tok/s (12.76 ms/tok) prefill=733.23 ttft=75.36 e2e_med=0.5678s digest=f7de0094 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-nosplit-p10-10           decode=80.88 tok/s (12.36 ms/tok) prefill=732.21 ttft=76.54 e2e_med=0.5581s digest=6e0a42f4 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+== battery summary ==
+bat-ctl-p10-1                82.33 dbf70497
+bat-ctl-p10-10               78.39 f7de0094
+bat-ctl-p10-2                78.72 dbf70497
+bat-ctl-p10-3                78.42 dbf70497
+bat-ctl-p10-4                78.69 dbf70497
+bat-ctl-p10-5                78.76 dbf70497
+bat-ctl-p10-6                78.66 dbf70497
+bat-ctl-p10-7                78.56 dbf70497
+bat-ctl-p10-8                78.54 dbf70497
+bat-ctl-p10-9                78.62 dbf70497
+bat-nosplit-p10-1            81.27 dbf70497
+bat-nosplit-p10-10           80.88 6e0a42f4
+bat-nosplit-p10-2            81.54 454adf43
+bat-nosplit-p10-3            81.29 dbf70497
+bat-nosplit-p10-4            81.03 d283c30f
+bat-nosplit-p10-5            81.12 dbf70497
+bat-nosplit-p10-6            80.47 da67ca57
+bat-nosplit-p10-7            80.92 3959e2ac
+bat-nosplit-p10-8            81.02 15526a5d
+bat-nosplit-p10-9            81.24 dbf70497
+[2026-09-25T15:58:07-05:00] WINDOW_BODY_DONE rc=0
+[2026-09-25T15:58:07-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T15:58:17-05:00] poll #2: 8002 ok
+[2026-09-25T15:58:22-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790369902,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-qzrbOdwKyqZLge9mj3RBR2ejh9raj6Hz","timings":{"cache_n":0,"prompt_n":55,"prompt_ms":4064.721,"prompt_per_token_ms":73.90401818181819,"prompt_per_second":13.531064001686708,"predicted_n":8,"predicted_ms":942.37,"predicted_per_token_ms":134.62428571428572,"predicted_per_second":7.428080265713043}}
+[2026-09-25T15:58:22-05:00] service healthy=1

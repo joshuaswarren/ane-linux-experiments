@@ -1,0 +1,106 @@
+== battery-omarchy_ane_bundle_tests.log
+[doctest] test cases:   34 |   34 passed | 0 failed | 0 skipped
+[doctest] assertions: 5904 | 5904 passed | 0 failed |
+== battery-omarchy_ane_tile_layout_tests.log
+[doctest] test cases:  3 |  3 passed | 0 failed | 0 skipped
+[doctest] assertions: 78 | 78 passed | 0 failed |
+== battery-omarchy_ane_worker_tests.log
+[doctest] test cases:  17 |  17 passed | 0 failed | 0 skipped
+[doctest] assertions: 219 | 219 passed | 0 failed |
+== battery-omarchy_capability_sim_tests.log
+== battery-omarchy_compiled_tape_tests.log
+[doctest] test cases:   12 |   12 passed | 0 failed | 0 skipped
+[doctest] assertions: 2096 | 2096 passed | 0 failed |
+== battery-omarchy_complex_ops_tests.log
+[doctest] test cases:   34 |   34 passed | 0 failed | 0 skipped
+[doctest] assertions: 1715 | 1715 passed | 0 failed |
+== battery-omarchy_conv_tests.log
+[doctest] test cases:   13 |   13 passed | 0 failed | 0 skipped
+[doctest] assertions: 3450 | 3450 passed | 0 failed |
+== battery-omarchy_copy_offset_tests.log
+[doctest] test cases:  26 |  26 passed | 0 failed | 0 skipped
+[doctest] assertions: 629 | 629 passed | 0 failed |
+== battery-omarchy_distributed_tests.log
+[doctest] test cases:  9 |  9 passed | 0 failed | 0 skipped
+[doctest] assertions: 36 | 36 passed | 0 failed |
+== battery-omarchy_eig_ops_tests.log
+[doctest] test cases:   9 |   9 passed | 0 failed | 0 skipped
+[doctest] assertions: 264 | 264 passed | 0 failed |
+== battery-omarchy_eq_math_tests.log
+[doctest] test cases:   7 |   7 passed | 0 failed | 0 skipped
+[doctest] assertions: 116 | 116 passed | 0 failed |
+== battery-omarchy_error_contract_tests.log
+[doctest] test cases:  3 |  3 passed | 0 failed | 0 skipped
+[doctest] assertions: 14 | 14 passed | 0 failed |
+== battery-omarchy_fast_ops_tests.log
+[doctest] test cases:      35 |      35 passed | 0 failed | 0 skipped
+[doctest] assertions: 1104350 | 1104350 passed | 0 failed |
+== battery-omarchy_fast_regression_tests.log
+[doctest] test cases:  2 |  2 passed | 0 failed | 0 skipped
+[doctest] assertions: 16 | 16 passed | 0 failed |
+== battery-omarchy_fft_general_tests.log
+[doctest] test cases:   14 |   14 passed | 0 failed | 0 skipped
+[doctest] assertions: 4245 | 4245 passed | 0 failed |
+== battery-omarchy_fft_ops_tests.log
+[doctest] test cases:   19 |   19 passed | 0 failed | 0 skipped
+[doctest] assertions: 1379 | 1379 passed | 0 failed |
+== battery-omarchy_fused_chain_tests.log
+[doctest] test cases:     36 |     36 passed | 0 failed | 0 skipped
+[doctest] assertions: 346272 | 346272 passed | 0 failed |
+== battery-omarchy_indexing_ops_tests.log
+[doctest] test cases:   53 |   53 passed | 0 failed | 0 skipped
+[doctest] assertions: 4093 | 4093 passed | 0 failed |
+== battery-omarchy_kv_ops_tests.log
+[doctest] test cases:  16 |  16 passed | 0 failed | 0 skipped
+[doctest] assertions: 781 | 781 passed | 0 failed |
+== battery-omarchy_linalg_ops_tests.log
+[doctest] test cases:     30 |     30 passed | 0 failed | 0 skipped
+[doctest] assertions: 181118 | 181118 passed | 0 failed |
+== battery-omarchy_matmul_family_tests.log
+[doctest] test cases:       22 |       22 passed | 0 failed | 0 skipped
+[doctest] assertions: 82940463 | 82940463 passed | 0 failed |
+== battery-omarchy_primitive_tests.log
+[doctest] test cases:     103 |     103 passed | 0 failed | 0 skipped
+[doctest] assertions: 2700952 | 2700952 passed | 0 failed |
+== battery-omarchy_reduce_ops_tests.log
+[doctest] test cases:   34 |   34 passed | 0 failed | 0 skipped
+[doctest] assertions: 7152 | 7152 passed | 0 failed |
+== battery-omarchy_runtime_tests.log
+[doctest] test cases:    41 |    41 passed | 0 failed | 0 skipped
+[doctest] assertions: 22694 | 22694 passed | 0 failed |
+== battery-omarchy_scatter_determinism_tests.log
+[doctest] test cases:  21 |  21 passed | 0 failed | 0 skipped
+[doctest] assertions: 127 | 127 passed | 0 failed |
+== battery-omarchy_sdpa_causal_ragged_tests.log
+[doctest] test cases:  1 |  1 passed | 0 failed | 0 skipped
+[doctest] assertions: 20 | 20 passed | 0 failed |
+== battery-omarchy_sdpa_decode_fused_tests.log
+[doctest] test cases:     3 |     3 passed | 0 failed | 0 skipped
+[doctest] assertions: 10774 | 10774 passed | 0 failed |
+== battery-omarchy_select_layout_tests.log
+[doctest] test cases:   13 |   13 passed | 0 failed | 0 skipped
+[doctest] assertions: 4500 | 4500 passed | 0 failed |
+== battery-omarchy_shape_ops_tests.log
+[doctest] test cases:  25 |  25 passed | 0 failed | 0 skipped
+[doctest] assertions: 898 | 898 passed | 0 failed |
+== battery-omarchy_take_fill_tests.log
+[doctest] test cases:    8 |    8 passed | 0 failed | 0 skipped
+[doctest] assertions: 1109 | 1109 passed | 0 failed |
+== battery-omarchy_wrong_value_sweep_tests.log
+[doctest] test cases:  2 |  2 passed | 0 failed | 0 skipped
+[doctest] assertions: 32 | 32 passed | 0 failed |
+== capsim-m1-honeykrisp-fork.log
+[doctest] test cases:    6 |    6 passed | 0 failed | 0 skipped
+[doctest] assertions: 2462 | 2462 passed | 0 failed |
+== capsim-m1-stock-no-coopmat.log
+[doctest] test cases:    6 |    6 passed | 0 failed | 0 skipped
+[doctest] assertions: 2460 | 2460 passed | 0 failed |
+== capsim-no-cooperative-matrix.log
+[doctest] test cases:    6 |    6 passed | 0 failed | 0 skipped
+[doctest] assertions: 2462 | 2462 passed | 0 failed |
+== capsim-small-shared-memory.log
+[doctest] test cases:    6 |    6 passed | 0 failed | 0 skipped
+[doctest] assertions: 2460 | 2460 passed | 0 failed |
+== capsim-subgroup-size-64.log
+[doctest] test cases:    6 |    6 passed | 0 failed | 0 skipped
+[doctest] assertions: 2460 | 2460 passed | 0 failed |

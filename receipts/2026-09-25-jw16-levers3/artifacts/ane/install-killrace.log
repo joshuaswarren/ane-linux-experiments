@@ -1,0 +1,30 @@
+== before: v0.1.0-593-ga9a5f60 installed; loaded v0.1.0-593-ga9a5f60; users=
+installed: v0.1.0-605-g5a22ee3 sha=cf1d4bf135da7b03
+loaded: v0.1.0-605-g5a22ee3 boost_idle_ms=100 map_mode=3 dart_contain=Y
+crw-rw-rw- 1 root render 261, 0 Sep 25 16:00 /dev/accel/accel0
+[14832.659162] ane 285c04000.ane: ANEWR TM_IRQ_EN2 tm+0x70 wrote (ps act 0xffffff)
+[14832.659162] ane 285c04000.ane: ANE-resume: enable writes survived; TM_STATUS read next
+[14832.659167] ane 285c04000.ane: ANERD ps probe act=0xffffff
+[14832.660833] ane 285c04000.ane: DART containment armed: 0
+[14832.660912] [drm] Initialized ane 1.0.0 for 285c04000.ane on minor 0
+[14832.660916] ane 285c04000.ane: loaded ane
+== kill-race x10 ==
+iter 1: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 2: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 3: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 4: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 5: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 6: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 7: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 8: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 9: ok kill + reopen + bo_init (last range base 0x100000000)
+iter 10: ok kill + reopen + bo_init (last range base 0x100000000)
+KILL-RACE: PASS (10 iterations, no poisoned ranges)
+kill-race rc=0 in 84s
+dmesg wedge|error|fault lines: 5
+== guard check ==
+all power-guard checks passed
+FAIL: ane_submit missing a submit-path anchor (pre-submit power guard?)
+make: *** [Makefile:17: check] Error 1
+loaded after battery: v0.1.0-605-g5a22ee3 boost_idle_ms=100
+ANE_INSTALL_DONE

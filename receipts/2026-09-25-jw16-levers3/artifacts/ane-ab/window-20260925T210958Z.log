@@ -1,0 +1,92 @@
+[2026-09-25T16:09:58-05:00] window ane-ab begin stamp=20260925T210958Z body=body-ane-ab.sh args=
+[2026-09-25T16:09:59-05:00] flock held by 67806
+[2026-09-25T16:09:59-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+module=v0.1.0-605-g5a22ee3 boost_idle_ms=100 worker=84e8cc8f5f1048e1 libane=d06222a86f3bff26 shim=/var/tmp/parakeet-recover/libane_inproc.so
+== rep 1 arm boost_idle_ms=100 ==
+boost_idle_ms=100
+LEG enc-b100-r1-n1 rc=0 elapsed_ms=1096 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=24 p0:max=2064MHz@max=16% median=600 p1:max=3036MHz@max=25% median=1980 p2:max=3036MHz@max=50% median=3036
+1096
+LEG enc-b100-r1-n32 rc=0 elapsed_ms=14729 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=278 p0:max=2064MHz@max=24% median=972 p1:max=3036MHz@max=24% median=1980 p2:max=3036MHz@max=25% median=1980
+14729
+SLOPE b100-r1 ms/iter=439.8
+PK pk-b100-r1 rc=0 status=match gold=True p104=True total_ms=2249.876 mel_frontend=138.1 encoder_ane=1439.5 decoder_load=54.3 tdt_decode=565.0 detokenize=42.9
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+IndexError: list index out of range
+== rep 1 arm boost_idle_ms=0 ==
+boost_idle_ms=0
+LEG enc-b0-r1-n1 rc=0 elapsed_ms=1078 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=24 p0:max=2064MHz@max=8% median=600 p1:max=3036MHz@max=33% median=1980 p2:max=3036MHz@max=29% median=2208
+1078
+LEG enc-b0-r1-n32 rc=0 elapsed_ms=14749 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=271 p0:max=2064MHz@max=1% median=600 p1:max=3036MHz@max=1% median=1056 p2:max=3036MHz@max=4% median=1056
+14749
+SLOPE b0-r1 ms/iter=441.0
+PK pk-b0-r1 rc=0 status=match gold=True p104=True total_ms=2611.833 mel_frontend=141.4 encoder_ane=1768.0 decoder_load=76.7 tdt_decode=573.5 detokenize=44.4
+  cpufreq samples=55 p0:max=2064MHz@max=3% median=600 p1:max=3036MHz@max=16% median=1980 p2:max=3036MHz@max=9% median=1980
+== rep 2 arm boost_idle_ms=100 ==
+boost_idle_ms=100
+LEG enc-b100-r2-n1 rc=0 elapsed_ms=1083 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=24 p0:max=2064MHz@max=8% median=600 p1:max=3036MHz@max=37% median=2448 p2:max=3036MHz@max=33% median=2448
+1083
+LEG enc-b100-r2-n32 rc=0 elapsed_ms=14747 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=277 p0:max=2064MHz@max=22% median=972 p1:max=3036MHz@max=24% median=1980 p2:max=3036MHz@max=24% median=1980
+14747
+SLOPE b100-r2 ms/iter=440.8
+PK pk-b100-r2 rc=0 status=match gold=True p104=True total_ms=2226.702 mel_frontend=139.3 encoder_ane=1438.3 decoder_load=52.6 tdt_decode=549.2 detokenize=39.7
+  cpufreq samples=49 p0:max=2064MHz@max=42% median=1332 p1:max=3036MHz@max=55% median=3036 p2:max=3036MHz@max=57% median=3036
+== rep 2 arm boost_idle_ms=0 ==
+boost_idle_ms=0
+LEG enc-b0-r2-n1 rc=0 elapsed_ms=1087 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=24 p0:max=2064MHz@max=4% median=600 p1:max=3036MHz@max=33% median=2448 p2:max=3036MHz@max=37% median=2676
+1087
+LEG enc-b0-r2-n32 rc=0 elapsed_ms=14750 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=270 p0:max=2064MHz@max=0% median=600 p1:max=3036MHz@max=2% median=1296 p2:max=3036MHz@max=2% median=1056
+14750
+SLOPE b0-r2 ms/iter=440.7
+PK pk-b0-r2 rc=0 status=match gold=True p104=True total_ms=2465.942 mel_frontend=138.9 encoder_ane=1644.0 decoder_load=76.3 tdt_decode=549.9 detokenize=49.1
+  cpufreq samples=53 p0:max=2064MHz@max=3% median=972 p1:max=3036MHz@max=11% median=1980 p2:max=3036MHz@max=20% median=1980
+== rep 3 arm boost_idle_ms=100 ==
+boost_idle_ms=100
+LEG enc-b100-r3-n1 rc=0 elapsed_ms=1078 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=24 p0:max=2064MHz@max=8% median=600 p1:max=3036MHz@max=37% median=2676 p2:max=3036MHz@max=33% median=2208
+1078
+LEG enc-b100-r3-n32 rc=0 elapsed_ms=14760 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=277 p0:max=2064MHz@max=23% median=972 p1:max=3036MHz@max=24% median=1980 p2:max=3036MHz@max=26% median=1980
+14760
+SLOPE b100-r3 ms/iter=441.4
+PK pk-b100-r3 rc=0 status=match gold=True p104=True total_ms=2234.639 mel_frontend=138.4 encoder_ane=1437.5 decoder_load=53.1 tdt_decode=552.8 detokenize=45.1
+  cpufreq samples=49 p0:max=2064MHz@max=42% median=972 p1:max=3036MHz@max=55% median=3036 p2:max=3036MHz@max=55% median=3036
+== rep 3 arm boost_idle_ms=0 ==
+boost_idle_ms=0
+LEG enc-b0-r3-n1 rc=0 elapsed_ms=1067 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=24 p0:max=2064MHz@max=8% median=600 p1:max=3036MHz@max=41% median=2676 p2:max=3036MHz@max=16% median=1980
+1067
+LEG enc-b0-r3-n32 rc=0 elapsed_ms=14739 hidden16=fca96f1355485ec3 pin-ok
+  cpufreq samples=270 p0:max=2064MHz@max=0% median=600 p1:max=3036MHz@max=2% median=1980 p2:max=3036MHz@max=2% median=1056
+14739
+SLOPE b0-r3 ms/iter=441.0
+PK pk-b0-r3 rc=0 status=match gold=True p104=True total_ms=2475.002 mel_frontend=138.0 encoder_ane=1640.3 decoder_load=80.8 tdt_decode=564.7 detokenize=43.1
+  cpufreq samples=53 p0:max=1704MHz@max=3% median=600 p1:max=3036MHz@max=16% median=1980 p2:max=3036MHz@max=11% median=1056
+boost_idle_ms=100
+== summary ==
+SLOPE b0-r1 ms/iter=441.0
+SLOPE b0-r2 ms/iter=440.7
+SLOPE b0-r3 ms/iter=441.0
+SLOPE b100-r1 ms/iter=439.8
+SLOPE b100-r2 ms/iter=440.8
+SLOPE b100-r3 ms/iter=441.4
+PK pk-b0-r1 rc=0 status=match gold=True p104=True total_ms=2611.833 mel_frontend=141.4 encoder_ane=1768.0 decoder_load=76.7 tdt_decode=573.5 detokenize=44.4
+PK pk-b0-r2 rc=0 status=match gold=True p104=True total_ms=2465.942 mel_frontend=138.9 encoder_ane=1644.0 decoder_load=76.3 tdt_decode=549.9 detokenize=49.1
+PK pk-b0-r3 rc=0 status=match gold=True p104=True total_ms=2475.002 mel_frontend=138.0 encoder_ane=1640.3 decoder_load=80.8 tdt_decode=564.7 detokenize=43.1
+PK pk-b100-r1 rc=0 status=match gold=True p104=True total_ms=2249.876 mel_frontend=138.1 encoder_ane=1439.5 decoder_load=54.3 tdt_decode=565.0 detokenize=42.9
+PK pk-b100-r2 rc=0 status=match gold=True p104=True total_ms=2226.702 mel_frontend=139.3 encoder_ane=1438.3 decoder_load=52.6 tdt_decode=549.2 detokenize=39.7
+PK pk-b100-r3 rc=0 status=match gold=True p104=True total_ms=2234.639 mel_frontend=138.4 encoder_ane=1437.5 decoder_load=53.1 tdt_decode=552.8 detokenize=45.1
+ANE_AB_DONE
+[2026-09-25T16:11:53-05:00] WINDOW_BODY_DONE rc=0
+[2026-09-25T16:11:53-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T16:12:03-05:00] poll #2: 8002 ok
+[2026-09-25T16:12:08-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790370728,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-fPJYSiw0ngQumuxP8upLJRPge9PpXt0y","timings":{"cache_n":0,"prompt_n":55,"prompt_ms":4067.532,"prompt_per_token_ms":73.95512727272728,"prompt_per_second":13.521712920758828,"predicted_n":8,"predicted_ms":965.672,"predicted_per_token_ms":137.95314285714286,"predicted_per_second":7.248838114805027}}
+[2026-09-25T16:12:08-05:00] service healthy=1

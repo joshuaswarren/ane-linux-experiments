@@ -1,0 +1,82 @@
+{
+ "schema": "parakeet-decomp-ab/1",
+ "base": "/var/tmp/parakeet-recover/battery-20260925T160932",
+ "rows": [
+  {
+   "run": "meas-1",
+   "stages": {
+    "audio_load": 7.983,
+    "mel_frontend": 140.323,
+    "encoder_ane": 1436.385,
+    "decoder_load": 54.991,
+    "tdt_decode": 561.899,
+    "detokenize": 46.614
+   },
+   "decoder_total_ms": 344.767,
+   "joint_total_ms": 208.755,
+   "decoder_calls": null,
+   "joint_calls": null,
+   "total_ms": 2248.194,
+   "gold": true,
+   "status": "match",
+   "p104": true
+  },
+  {
+   "run": "meas-2",
+   "stages": {
+    "audio_load": 8.162,
+    "mel_frontend": 143.45,
+    "encoder_ane": 1440.436,
+    "decoder_load": 53.685,
+    "tdt_decode": 555.917,
+    "detokenize": 50.815
+   },
+   "decoder_total_ms": 345.351,
+   "joint_total_ms": 202.203,
+   "decoder_calls": null,
+   "joint_calls": null,
+   "total_ms": 2252.465,
+   "gold": true,
+   "status": "match",
+   "p104": true
+  },
+  {
+   "run": "meas-3",
+   "stages": {
+    "audio_load": 7.935,
+    "mel_frontend": 139.658,
+    "encoder_ane": 1446.634,
+    "decoder_load": 60.298,
+    "tdt_decode": 518.913,
+    "detokenize": 49.887
+   },
+   "decoder_total_ms": 320.807,
+   "joint_total_ms": 190.872,
+   "decoder_calls": null,
+   "joint_calls": null,
+   "total_ms": 2223.324,
+   "gold": true,
+   "status": "match",
+   "p104": true
+  },
+  {
+   "run": "smoke",
+   "stages": {
+    "audio_load": 9.701,
+    "mel_frontend": 142.027,
+    "encoder_ane": 1454.228,
+    "decoder_load": 60.554,
+    "tdt_decode": 535.038,
+    "detokenize": 56.222
+   },
+   "decoder_total_ms": 334.788,
+   "joint_total_ms": 192.813,
+   "decoder_calls": null,
+   "joint_calls": null,
+   "total_ms": 2257.769,
+   "gold": true,
+   "status": "match",
+   "p104": true
+  }
+ ]
+}

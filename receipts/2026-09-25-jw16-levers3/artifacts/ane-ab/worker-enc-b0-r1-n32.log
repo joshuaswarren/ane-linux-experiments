@@ -1,0 +1,5 @@
+bundle name=parakeet-encoder-whole programs=1 driver_abi=1 graph=020428fca545648f5991155e9790238a5a2043a5100e4086afde2f10f51a18ef
+worker status=0 iterations=32 released=1 elapsed_ms=14749
+worker detail=worker completed 32 iteration(s) and released its programs
+saved output encoder_hidden (480000 bytes)
+saved output output_mask (750 bytes)

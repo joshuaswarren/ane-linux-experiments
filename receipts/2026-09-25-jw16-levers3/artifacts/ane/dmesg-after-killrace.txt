@@ -1,0 +1,19 @@
+[14911.057361] ane 285c04000.ane: ANEWR TQ_PRTY[4] tq+0x530 <- 0x5 (ps act 0xffffff)
+[14911.057372] ane 285c04000.ane: ANEWR TQ_PRTY[4] tq+0x530 wrote (ps act 0xffffff)
+[14911.057382] ane 285c04000.ane: ANEWR TQ_PRTY[5] tq+0x678 <- 0x6 (ps act 0xffffff)
+[14911.057393] ane 285c04000.ane: ANEWR TQ_PRTY[5] tq+0x678 wrote (ps act 0xffffff)
+[14911.057403] ane 285c04000.ane: ANEWR TQ_PRTY[6] tq+0x7c0 <- 0x1e (ps act 0xffffff)
+[14911.057414] ane 285c04000.ane: ANEWR TQ_PRTY[6] tq+0x7c0 wrote (ps act 0xffffff)
+[14911.057424] ane 285c04000.ane: ANEWR TQ_PRTY[7] tq+0x908 <- 0x1f (ps act 0xffffff)
+[14911.057435] ane 285c04000.ane: ANEWR TQ_PRTY[7] tq+0x908 wrote (ps act 0xffffff)
+[14911.057445] ane 285c04000.ane: ANEWR TM_IRQ_EN1 tm+0x68 <- 0x4000000 (ps act 0xffffff)
+[14911.057456] ane 285c04000.ane: ANEWR TM_IRQ_EN1 tm+0x68 wrote (ps act 0xffffff)
+[14911.057465] ane 285c04000.ane: ANEWR TM_IRQ_EN2 tm+0x70 <- 0x6 (ps act 0xffffff)
+[14911.057476] ane 285c04000.ane: ANEWR TM_IRQ_EN2 tm+0x70 wrote (ps act 0xffffff)
+[14912.057522] ane 285c04000.ane: ANERD TM_STATUS tm+0x54 -> 0x0 (ps act 0xffffff)
+[14912.057551] ane 285c04000.ane: recovery: tm not idle after reset: 0x0
+[14912.057581] ane 285c04000.ane: recovery failed; preserving resources until module reload or reboot (tm/tq file retained through the cycle: the latched task error parks the TM in place; rmmod+insmod restores service)
+[14912.057893] ane 285c04000.ane: wedged: preserving bo mapping
+[14912.057910] ane 285c04000.ane: wedged: preserving bo mapping
+[14912.057918] ane 285c04000.ane: wedged: preserving bo mapping
+[14912.057930] ane 285c04000.ane: wedge pin released (engine state unknown)

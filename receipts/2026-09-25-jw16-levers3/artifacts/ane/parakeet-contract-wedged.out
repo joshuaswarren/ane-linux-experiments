@@ -1,0 +1,23 @@
+=== preflight ===
+SHIM=/var/tmp/parakeet-recover/libane_inproc.so
+mlx.ok 3.14.7
+soundfile 0.14.0
+=== stop llm-inference 2026-09-25T16:06:15-05:00 ===
+=== smoke ===
+RUN-FAILED smoke rc=1
+    ...<4 lines>...
+        },
+    )
+  File "/var/tmp/parakeet-recover/vulkan_encoder_inproc.py", line 1014, in submit
+    return self._submit_inprocess(bundle, tag, inputs, outputs)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/tmp/parakeet-recover/vulkan_encoder_inproc.py", line 1082, in _submit_inprocess
+    raise EncoderRunError(
+        f"ANE in-process submit {tag} ({bundle}) failed: {error}"
+    ) from error
+phase7_encoder.EncoderRunError: ANE in-process submit L00-A (island-attn-a-kt) failed: in-process ANE submit (island-attn-a-kt) failed: ane_exec failed for program 0
+[rtmod] COMMIT-NOOP
+SMOKE-FAILED
+=== restore llm-inference 2026-09-25T16:07:51-05:00 ===
+health: 200
+completion probe finish: length
