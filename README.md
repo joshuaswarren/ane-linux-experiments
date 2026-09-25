@@ -77,15 +77,15 @@ receipt is marked `unreceipted` instead of dropped.
 
 | Host | Cell | Linux | macOS | Ratio | Verdict | Receipt |
 |---|---|---|---|---|---|---|
-| m1-host | Qwen decode | 37.39 tok/s | 47.05 tok/s | 0.79x | FAIL | `receipts/2026-09-24-jwm1-gpu-parity` |
-| m1-host | Qwen prefill-512 | 232.04 tok/s | 343.73 tok/s | 0.68x | FAIL | same |
-| m1-host | Qwen TTFT | 50.11 tok/s | 99.12 tok/s | 0.51x | FAIL | same |
+| m1-host | Qwen decode | 37.52 tok/s (p10 37.41), pin dbf704971617fdfc identical on omarchy-ane 9a0ec81 + wheel af737871e | 47.05 tok/s | 0.79x | FAIL | `receipts/2026-09-25-jwm1-parity3-main-battery` |
+| m1-host | Qwen prefill-512 | 217.59 tok/s (1-pass digest 486872c4 identical) | 343.73 tok/s | 0.63x | FAIL | `receipts/2026-09-25-jwm1-parity3-main-battery` |
+| m1-host | Qwen TTFT | 50.88 / 49.67 tok/s (r1 / p10) | 99.12 tok/s | 0.51x | FAIL | same |
 | m1-host | Qwen e2e (32 new tokens) | 1.0883 s | 0.7898 s | 0.72x | FAIL | same |
 | m1-host | ANE whole encoder | 141.5-141.9 ms | 113.12 ms | 0.79-0.80x | FAIL | `receipts/2026-09-24-m1-boundaries-encoder-anomaly` (cites `receipts/2026-09-22-encoder-whole-program/m1host`) |
-| m1-host | ANE gate battery | 5904/5904 | n/a | n/a | PASS (correctness) | `receipts/2026-09-22-encoder-whole-program/m1host/gate-bundle.out` |
+| m1-host | ANE gate battery | runtime+primitive+bundle PASS on kmod 9a0ec81 + wheel af737871e (bundle C++ 34/34, 5904/5904; h13 python 15/15 after ce91f5b8e) | n/a | n/a | PASS (correctness) | `receipts/2026-09-25-jwm1-parity3-main-battery` |
 | m1-host | Qwen ANE reference path | not run | n/a | n/a | NOT RUN | - |
-| m1-host | Parakeet warm pipeline | 1588-1598 ms | 271 ms (rep10) | 0.17x | FAIL | `receipts/2026-09-24-jwm1-linux-denominators` |
-| m1-host | Parakeet transcript | db501a8c, 104/104 | match | parity | PASS (correctness) | same |
+| m1-host | Parakeet warm pipeline | 935.8 ms median (matched in-process contract; fresh-process protocol 1572-1620) | 271 ms (rep10) | 0.29-0.35x | FAIL | `receipts/2026-09-25-jwm1-parity2-parakeet-lean` (protocol note; denominators `receipts/2026-09-24-jwm1-linux-denominators`) |
+| m1-host | Parakeet transcript | db501a8c, hidden 554a3d66 x3 on af737871e wheel + 9a0ec81 kmod | match | parity | PASS (correctness) | `receipts/2026-09-25-jwm1-parity3-main-battery` |
 | m1max-host | Qwen decode | 77.33-77.48 tok/s | 180.38 tok/s (earlier protocol: 179.47) | 0.43x | FAIL | `receipts/2026-09-24-launch-sink2/macos-t6001-denominators/qwen38-macos-metal.json` |
 | m1max-host | Qwen prefill-512 / TTFT / e2e | not run | 1326.05 tok/s / 359.98 tok/s / 0.2081 s | - | NOT RUN (Linux leg) | same |
 | m1max-host | ANE whole encoder | 1631.7 ms (const-cache knob c59cc91, battery 20260925T030455; landed receipt re-run 1650.1 ms) | 141.18 ms (10 reps, 136.79-141.69; all-arm 146.7) | 0.09x | FAIL | Linux: `receipts/2026-09-24-launch-sink2/parakeet-constcache/summary-final.json` (+ commit c59cc91); macOS: `receipts/2026-09-24-launch-sink2/t6001-macos-denominators.tgz` member `core-20260924T191727/bench_ane.json` (tar sha256 968d5c5b…) |
