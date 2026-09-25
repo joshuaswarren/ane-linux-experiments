@@ -1,0 +1,8 @@
+{
+  "ICD": {
+    "api_version": "1.4.359",
+    "library_arch": "64",
+    "library_path": "/usr/local/lib/libvulkan_asahi.so.flush17f-2a9762e"
+  },
+  "file_format_version": "1.0.1"
+}
