@@ -1,0 +1,35 @@
+From e75498352e0bbd4b836af9a380d8c20e8b2f54f5 Mon Sep 17 00:00:00 2001
+From: Joshua Warren <816217+joshuaswarren@users.noreply.github.com>
+Date: Thu, 24 Sep 2026 14:07:04 -0500
+Subject: [PATCH 5/6] omarchy: qualify the prologue matcher RMSNorm typeid with
+ the fast namespace
+
+---
+ overlay/mlx/backend/omarchy/fused_chain.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/overlay/mlx/backend/omarchy/fused_chain.cpp b/overlay/mlx/backend/omarchy/fused_chain.cpp
+index b7a614a9..0025560f 100644
+--- a/overlay/mlx/backend/omarchy/fused_chain.cpp
++++ b/overlay/mlx/backend/omarchy/fused_chain.cpp
+@@ -1401,7 +1401,7 @@ EagerFusionScope::EagerFusionScope(const std::deque<array>& tape)
+         continue;
+       }
+       const array* norm = lookup(x);
+-      if (norm == nullptr || !is_op(norm, typeid(RMSNorm))) {
++      if (norm == nullptr || !is_op(norm, typeid(fast::RMSNorm))) {
+         continue;
+       }
+       const array& in = norm->inputs()[0];
+@@ -1417,7 +1417,7 @@ EagerFusionScope::EagerFusionScope(const std::deque<array>& tape)
+           in,
+           w,
+           std::get<1>(
+-              static_cast<const RMSNorm&>(norm->primitive()).state())};
++              static_cast<const fast::RMSNorm&>(norm->primitive()).state())};
+       state->gemv_roles.emplace(x.id(), gi);
+       claimed.insert(x.id());
+     }
+-- 
+2.55.0
+

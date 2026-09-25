@@ -1,0 +1,26 @@
+{
+ "qmm[2048x2048]": 28.98,
+ "qmm[2048x6144]": 37.14,
+ "qmm[4096x2048]": 28.56,
+ "qmm[512x2048]": 8.6,
+ "qmm[6144x2048]": 28.87,
+ "rms_norm": 4.21,
+ "rope": 7.8,
+ "sdpa[k=512]": 15.96,
+ "sdpa[k=32]": 6.55,
+ "conv+silu[6144x4]": "error: [conv] Expect the input channels in the input and weight array to match but got shapes - input: (1,6144,4) and weight: (6144,4,1)",
+ "gated_delta_update": "error: module 'mlx.core.fast' has no attribute 'gated_delta_update'",
+ "lm_head_full": "no quantized embedding found",
+ "_meta": {
+  "model": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+  "trials": 30,
+  "warmup": 3,
+  "inner": 64,
+  "dtype": "bfloat16",
+  "decode_x": [
+   1,
+   1,
+   2048
+  ]
+ }
+}

@@ -1,0 +1,805 @@
+Machine model: MacBookPro18,2
+OS version: 25G83
+Boot arguments: 
+Boot time: Thu Sep 24 20:51:54 2026
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:06 2026 -0500) (252.09ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:06 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:06 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:07 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:07 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:07 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:07 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:08 2026 -0500) (252.02ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:08 2026 -0500) (252.02ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:08 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:08 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:09 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:09 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:09 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:09 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:10 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:10 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:10 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:10 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:11 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:11 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:11 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:11 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:12 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:12 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:12 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:12 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:13 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:13 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:13 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:13 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:14 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:14 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:14 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:14 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:15 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:15 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:15 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:15 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:16 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:16 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:16 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:16 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:17 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:17 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:17 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:17 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:18 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:18 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:18 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:18 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:19 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:19 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:19 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:19 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:20 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:20 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:20 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:20 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:21 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:21 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:21 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:21 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:22 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:22 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:22 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:22 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:23 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:23 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:23 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:23 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:24 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:24 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:24 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:24 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:25 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:25 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:25 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:25 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:26 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:26 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:26 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:26 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:27 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:27 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:27 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:27 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:28 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:28 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:28 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:28 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:29 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:29 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:29 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:29 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:30 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:30 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:30 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:30 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:31 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:31 2026 -0500) (252.08ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:31 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:31 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:32 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:32 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:32 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:32 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:33 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:33 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:33 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:33 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:34 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:34 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:34 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:34 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:35 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:35 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:35 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:35 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:36 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:36 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:36 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:37 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:37 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:37 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:37 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:38 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:38 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:38 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:38 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:39 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:39 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:39 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:39 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:40 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:40 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:40 2026 -0500) (252.08ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:40 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:41 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:41 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:41 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:41 2026 -0500) (252.08ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:42 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:42 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:42 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:42 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:43 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:43 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:43 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:43 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:44 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:44 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:44 2026 -0500) (252.10ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:44 2026 -0500) (252.08ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:45 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:45 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:45 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:45 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:46 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:46 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:46 2026 -0500) (252.02ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:46 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:47 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:47 2026 -0500) (252.02ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:47 2026 -0500) (252.02ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:47 2026 -0500) (252.02ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:48 2026 -0500) (252.02ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:48 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:48 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:48 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:49 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:49 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:49 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:49 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:50 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:50 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:50 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:50 2026 -0500) (252.03ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:51 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:51 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:51 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:51 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:52 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:52 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:52 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:52 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:53 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:53 2026 -0500) (252.04ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:53 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:53 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:54 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:54 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:54 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:54 2026 -0500) (252.07ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:55 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:55 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:55 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:55 2026 -0500) (252.06ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:56 2026 -0500) (252.05ms elapsed) ***
+
+
+
+*** Sampled system activity (Thu Sep 24 21:01:56 2026 -0500) (252.06ms elapsed) ***
+
