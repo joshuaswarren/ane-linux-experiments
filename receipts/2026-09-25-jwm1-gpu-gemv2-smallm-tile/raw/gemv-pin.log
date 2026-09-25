@@ -1,0 +1,19 @@
+[rtmod] SUBMIT tid=26088 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+venv-cand ok True True
+[rtmod] COMMIT-NOOP
+Version: 0.32.3.dev202609252032+3232b1f
+lock held 2026-09-25T15:38:35-05:00
+pass 0 done
+pass 1 done
+pass 2 done
+pass 3 done
+pass 4 done
+pass 5 done
+pass 6 done
+pass 7 done
+pass 8 done
+pass 9 done
+gemv-cand-p10 rc=0 decode 39.1 ttft 50.75 e2e 1.0448 prefill512 237.79 digest dbf704971617fdfc
+p10 digest dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596
+lock released 2026-09-25T15:40:28-05:00
