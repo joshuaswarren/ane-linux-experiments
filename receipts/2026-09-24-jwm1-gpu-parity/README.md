@@ -330,26 +330,3 @@ Corrected budget (real ms/tok): q4-GEMV ~11.8 (roofline floor,
 therein), named swarm ~8 (RMSNorm 8.3%, GatedDeltaUpdate 5.9%,
 Multiply 3.5%, AsType 2.7%). Redirect: the barrier-sink stale-pair
 instrumentation is the next bit-exact lever.
-
-## CELL 2 — combined-parakeet on the main wheel (integration verified)
-
-agent/combined-parakeet 8bba36b21 is already an ancestor of mlx-omarchy
-main (came in with the fleet-lineage merge 9fb8b675) — the code was in
-main; what was unproven was the installed main wheel (f252747) running
-the certified combined pipeline. Runner: /var/tmp/combined-parakeet.sh
-t8103-host with COMBINED_WHEEL_ALLOW=1 (lineage proven by git ancestry:
-8bba36b21 in origin/main; wheel built from main at f252747) and
-COMBINED_SRC=/var/tmp/IslandsExecJwm1/encoder-source. combined-venv
-upgraded to f252747.
-
-3 reps, all gates pass: status match 3/3, transcript db501a8c
-(transcript_match true), encoder_hidden 554a3d66 == certified pin,
-submissions 1, cpu_tensor_events 0.
-
-Stage split (warm, rep2/rep3): encoder stage ~700 ms (ANE exec
-141.9/143.6 ms inside it) = BIGGEST STAGE, tdt 576/588 ms, mel
-189/192 ms, decoder_load 63/66 ms, detok 37/49 ms, audio_load ~9 ms;
-pipeline 1572/1620 ms (rep1 11979 ms = documented 9.7 s SPIR-V
-compile). Matches the certified combined-parakeet numbers (boundaries
-receipt: 713/580/188 ms, pipeline 1588-1598 ms) — the main wheel is
-performance-identical on Parakeet.
