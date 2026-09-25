@@ -1,48 +1,94 @@
-#!/bin/sh
-# dtrace/fbt capture for the macOS ANE perf-state write path (jwm1 macOS window).
-# Logs: _handlePerfStateRequest(domain, state) entries for domain 8 (ANE),
-# and the apply routine's byte write. Run during an encoder run.
-# Requires SIP with dtrace allowed (csrutil status check first).
-# Usage: sudo dtrace -s ane-perfstate.d -o /tmp/ane-perfstate.out &
-#        <run encoder bench>; sudo pkill -INT dtrace
+#!/usr/sbin/dtrace -s
+/*
+ * ANE perf-state write capture for a macOS window (T6001 jw16 or T8103 jwm1).
+ * Logs what macOS itself writes for the ANE perf domain during an encoder run.
+ * No MMIO from this script: it only observes.
+ *
+ * Prerequisites (read-only checks first):
+ *   csrutil status            # fbt needs the dtrace restriction off
+ *   sw_vers
+ *   sudo dtrace -l -n 'fbt:com.apple.driver.ApplePMGR:*PerfState*:entry' | head -40
+ * If the listing is empty, STOP: probe names differ on that build.
+ *
+ * Usage:
+ *   sudo dtrace -s ane-perfstate.d -o /tmp/ane-perfstate.out &
+ *   <run encoder_bench ane-arm during the capture>
+ *   sudo pkill -INT dtrace
+ * Post-hoc filter: domain == 8 (ANE) lines.
+ *
+ * Provenance (mac13g kernelcache, T8103, sha256 861adca1...):
+ * - ApplePMGR::_handlePerfStateRequest(obj, x1, domain=x2, state=x3)
+ *   accepts domains 8 (ANE) and 14 only; its prologue copies
+ *   x3->x21, x2->x22, x1->x20, so fbt arg2=domain, arg3=state.
+ * - ApplePMGR::_setPerfState applies the request; the ANE write is an
+ *   8-bit state composed as (old & ~0xf) | (new & 0xf), pushed through the
+ *   device register accessor: ApplePMGR::readReg32(map, reg) for the old
+ *   byte and AppleT810xPMGR::writeReg32(map, reg, value, die) for the new
+ *   one. Probing the accessor entry logs the resolved (map, reg, value).
+ * Symbol names are stable across the 13.x/25.x kext builds; the T6001
+ * kernelcache check (25G83) confirms them via the dtrace -l listing above.
+ */
 #pragma D option quiet
 #pragma D option bufsize=64m
+#pragma D option switchrate=10hz
 
-/* ApplePMGR::_handlePerfStateRequest(uint client?, uchar domain, uint state)
- * Entry prologue: x21=x3, x22=x2, x20=x1 at +0x44..0x4c.
- * Signature from call sites: handle(obj, x1?, domain=x2, state=x3).
- * fbt arg0..arg3 map to x0..x3 at function entry.
- */
-fbt::0xfffffe000986fb08:entry
+dtrace:::BEGIN
 {
+    printf("ane-perfstate trace start. Filter: domain == 8 (ANE).\n");
+}
+
+/* Gate: 1 while inside a domain-8 _handlePerfStateRequest, else 0.
+ * Narrows the accessor probes to the ANE request only.
+ */
+ApplePMGR::_handlePerfStateRequest:entry
+/arg2 == 8/
+{
+    self->ane = 1;
     printf("HANDLE entry t=%d domain=%d state=%d x1=%d\n",
         timestamp / 1000, arg2, arg3, arg1);
 }
 
-/* apply routine 0x...86e7bc: same arg shape (x1, domain=x2, state=x3).
- * Log the composed byte inputs before the accessor write.
- */
-fbt::0xfffffe000986e7bc:entry
-{
-    printf("APPLY entry t=%d domain=%d state=%d x1=%d\n",
-        timestamp / 1000, arg2, arg3, arg1);
-}
-
-/* Return values: did the request stick? */
-fbt::0xfffffe000986fb08:return
+ApplePMGR::_handlePerfStateRequest:return
+/self->ane/
 {
     printf("HANDLE return t=%d\n", timestamp / 1000);
+    self->ane = 0;
 }
 
-fbt::0xfffffe000986e7bc:return
-{
-    printf("APPLY return t=%d\n", timestamp / 1000);
-}
-
-/* Guard: only trace while an encoder run is live is manual (start/stop dtrace
- * around the bench). Post-hoc filter: domain == 8 lines.
+/* The composed byte write. writeReg32(map=arg1, reg=arg2, value=arg3, die=arg4)
+ * on the T810x subclass; the base-class name also matches via the module
+ * wildcard below if the build inlines the subclass override.
  */
-dtrace:::BEGIN
+ApplePMGR::writeReg32:entry
+/self->ane/
 {
-    printf("ane-perfstate trace start. Filter: domain == 8 (ANE).\n");
+    printf("WRITE t=%d map=%d reg=%d value=0x%x die=%d\n",
+        timestamp / 1000, arg1, arg2, arg3, arg4);
+}
+
+/* The readback of the old byte (same arg shape minus value). */
+ApplePMGR::readReg32:entry
+/self->ane/
+{
+    printf("READ t=%d map=%d reg=%d\n",
+        timestamp / 1000, arg1, arg2);
+}
+
+ApplePMGR::readReg32:return
+/self->ane/
+{
+    printf("READ return t=%d value=0x%x\n", timestamp / 1000, arg0);
+}
+
+/* The top-level nub entry: which enum the caller used (2 -> domain 8). */
+ApplePMGRNub::requestPerfState:entry
+{
+    printf("NUB t=%d enum=%d\n", timestamp / 1000, arg1);
+}
+
+/* CLPC computes the ANE state from submitted work; log its begin/submit. */
+clpc::aneWorkBegin:entry,
+clpc::aneWorkSubmit:entry
+{
+    printf("CLPC %s t=%d\n", probefunc, timestamp / 1000);
 }
