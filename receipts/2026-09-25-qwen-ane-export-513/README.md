@@ -154,3 +154,6 @@ crashed (runner bug, below), `bench` ran. Diagnosis, all off-box:
   exists, goldens.json is now installed into it if missing (sha256 of window.sh
   4d687d4a600e5f5f...). Jwm1Parity8's manual workaround (copy with sha match) was
   correct.
+- **replay PASS on jwm1**: 368 surfaces byte-identical to the macOS e5rt-at-513
+  goldens (programs open 2.4 s, cold first prompt identical). With prefill-512 at
+  1.223x macOS, the 513 export kit is fully verified and proven. Ticket closed.
