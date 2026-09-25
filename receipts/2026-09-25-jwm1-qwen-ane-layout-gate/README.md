@@ -66,3 +66,10 @@ the first token costs ~345 ms more than macOS. That gap is the named
 live lever for the jwm1 Qwen ANE lane (TTFT-path profile on the installed
 stack: 38-program cold path, weight staging, and first-step submission
 shape are the candidate costs).
+
+UPDATE (same day, Jwm1Parity6): the TTFT lever is closed — root cause
+was scheduler wakeup stalls in the ANE completion poll, fixed by
+SCHED_FIFO during the contract. Full n=100 re-run: TTFT 0.9677 s =
+0.8354x [0.7623, 0.9210] PASS; decode 1.4926x PASS; e2e 0.6905x PASS;
+100/100 tokens exact. The cell sweeps 3/3. See
+`receipts/2026-09-25-jwm1-qwen-ane-ttft-rt`.
