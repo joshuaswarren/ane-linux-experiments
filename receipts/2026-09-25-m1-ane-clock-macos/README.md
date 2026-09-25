@@ -176,17 +176,29 @@ its own operating point after `CH_PROPERTY_WRITE` "FW PERF MODE". The T8103
 kernelcache, which is on jwm1's ESP (`asahi/kernelcache.release.mac13g`), not
 on PVE.
 
-## 9. ANE perf group PA resolved from the ADT (no device access)
+## 9. ANE clock row: perf block, and the macOS write path
 
-The `PLL_ANE` clocks row is bytes `48 01 03 13`: slot 0x48, block byte 0x03,
-id 0x13. Block 0x03 is `perf-regs[3]`: pmgr `reg[0]` + 0x78000, size 0xa.
-The pmgr node's own `IODeviceMemory[0]` is PA 0x23b700000 (length 0x8c000),
-so the ANE perf group is PA **0x23b778000**, 10 bytes
-(0x23b778000–0x23b778009), inside a range the ADT lists for pmgr.
+Correction: the first version of this section (a90b9a9) named PA
+0x23b778000 (`perf-regs[3]`) as the ANE perf group. It read byte 2 of the
+`PLL_ANE` clocks row as the perf block. That is wrong. m1n1's
+`PMGRClocks` struct is `perf_idx, perf_block, type, id`, and the T6001 row
+proves it: `PLL_ANE0` is `13 08 03 15`, so perf_block 8 = `perf-regs[8]`
+(0x28e070000, size 0x64). That matches the PLL_ANE0 block the 2026-09-22 and
+2026-09-23 receipts recorded. Byte 2 is a type field: 3 on every PLL row
+and 1 on every mux row, on both chips.
 
-This is a third object, distinct from the retracted 0x23d2b4140 (inference,
-removed in 38beae6 before any run) and from the ANE_SYS device row's
-perf block 1 (0x23b734000, unsourced layout, no probe).
+Correct decode:
+
+| chip | row | perf_idx | perf_block | block PA, size |
+|---|---|---:|---:|---|
+| T8103 | `PLL_ANE` `48 01 03 13` | 0x48 | 1 | 0x23b734000, 0x100 |
+| T8103 | `ANE_SYS` (devices[99]) | 0x31 | 1 | 0x23b734000, 0x100 |
+| T6001 | `PLL_ANE0` `13 08 03 15` | 0x13 | 8 | 0x28e070000, 0x64 |
+
+Both blocks are forbidden-class regions (the T6001 one is the PLL block
+the 09-23 receipt ruled out beside the read that reset the M1 Max). No source
+gives the perf_idx-to-offset layout inside a block. So there is no candidate
+PA on either chip, and no host read or write is proposed.
 
 Kernelcache side (mac13g, sha256 861adca1…): `ApplePMGRNub::requestPerfState`
 (0xfffffe000987b38c) maps enum 2 to internal domain 8 (ANE) and tail-calls
@@ -199,14 +211,13 @@ perf control through its token path (`notifyPerfController`
 `IOPerfControlClient` workBegin/workSubmit), and AppleT8103CLPCv3 owns the
 PMGR perf imports (`aneWorkBegin` 0xfffffe0009af2af0, `aneWorkSubmit`
 0xfffffe0009af2138 compute the state from submitted work). The accessor
-base is built at ApplePMGR start from `perf-regs`, so the static PA is not
-independently confirmed.
+base is built at ApplePMGR start from `perf-regs`, so the register macOS
+writes is not known statically.
 
-Next, Main's order: (b) dtrace/fbt first. `ane-perfstate.d` probes
-`_handlePerfStateRequest` and the apply routine entry/return, logging
-domain, state and x1 during an encoder run. It runs in the next jwm1 macOS
-window (after the M2 is up in Linux and the catcher stands down;
-coordinate with Jwm1Parity6 and M2FwStart-2). If dtrace shows macOS writing
-0x23b778000, (a) follows as a read-then-write probe with that exact value.
-No Linux read of pmgr reg[0] until then: jwm1 hosts the armed M2 catcher,
-and a hang would cost the M2 recovery.
+Next, Main's order: dtrace/fbt on macOS first, with no host MMIO. The capture
+moved to jw16 (T6001; Jw16Levers4's macOS window) because jwm1 keeps the
+armed M2 catcher. `ane-perfstate.d` probes `_handlePerfStateRequest`, the
+apply routine and the write accessor by function name, logging domain,
+requested state and the written address and value during an encoder run.
+A host-side probe is staged only after the capture names the exact address
+and value macOS writes.
