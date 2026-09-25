@@ -948,3 +948,37 @@ zero = builder never fires (blocker = its trigger); fills then stalls
 = blocker moves downstream. M2's vehicle questions answered: (1) pure
 timed, no poll loop; (2) ane_obs + hand release, vehicle constant.
 Reboot go is Main's.
+
+## 30. Negative control: hand-release-without-map proves the SID-0 map is required (Main lane)
+
+Two timed series, same vehicle (ane_obs + hand CPU_CONTROL release,
+VENC up, TCR15 set, scratch cleared, zero MMIO between snaps):
+
+- Series 1 (VOID, setup fault): scratch clear skipped (no module by
+  design); release with SCRATCH7 still preloaded; all four snaps
+  identical; T0 == stale data_before. Lesson recorded: the kext's
+  scratch clear is part of the release sequence, not optional.
+  [M2FwStart-2 self-reported]
+- Series 2 (VOID with complete setup = the finding): fresh boot,
+  VENC_SYS/VENC_DMA/leaves 0x3ff, TCR15=0x2 x3, scratch cleared
+  (0x6c was 0x4 pre-clear), T0 then release 0->0x10 then
+  T+200ms/T+1s/T+5s. All four full identical (sha e98935da), all four
+  BSS identical, dispatch head +0x436a20 zero, cluster +0x436e10 zero,
+  STATUS 0x28. Zero stores in 5 s. Files: /tmp/m2kstart/series2/.
+  [MEASURED]
+
+A/B against the VENC-up boot that DID run (dispatch table + canaries +
+flags + 7-word cluster, §25): the deliberate difference is the SID-0
+TEXT map — present there (rtclient fw_cache_test=1: cached map + I2A
+bit0 + release in one init), absent here (module unloaded by series
+design). Verdict: 0x28 without the map is a status bit without
+execution; the core never fetched. The RVBAR latch 0x10000000001 points
+fetch at IOVA 0x10000000000, which with no SID-0 translation has no
+physical backing — no DART fault latches because the fetch never
+issues. The map is REQUIRED for first fetch, not merely sufficient.
+[INFERENCE, HIGH — controlled A/B]
+
+Next (directed): a map-only vehicle — cached SID-0 TEXT map installed
+WITHOUT release, then hand release + the same timed series. If it runs,
+the driver question reduces to map-then-release ordering. Do not rerun
+hand-release-without-map; series2 stands as the negative control.
