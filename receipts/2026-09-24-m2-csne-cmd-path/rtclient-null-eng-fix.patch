@@ -1,0 +1,16 @@
+--- /tmp/m2kstart/rtclient_main_m2.c	2026-09-24 21:55:16.759856662 -0500
++++ /tmp/m2kstart/ane_t6021_rtclient_main.c	2026-09-24 21:54:38.975212620 -0500
+@@ -1011,6 +1011,13 @@
+ 			 readl(pmgr + ANE_SET_PWGATE_A),
+ 			 readl(pmgr + ANE_SET_PWGATE_B));
+ 	}
++	eng = ioremap_np(0x284000000ull, 0x2000000);
++	if (!eng) {
++		pr_err("cache-test: engine ioremap failed\n");
++		iounmap(dart);
++		ret = -ENOMEM;
++		goto out_dev;
++	}
+ 	d1 = ioremap_np(0x285810000ull, 0x1000);
+ 	d2 = ioremap_np(0x285820000ull, 0x1000);
+ 	i2a = readl(eng + ANE_ASC_MBOX_I2A_CTRL);
