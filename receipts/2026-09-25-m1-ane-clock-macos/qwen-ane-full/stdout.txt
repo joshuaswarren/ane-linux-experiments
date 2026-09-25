@@ -1,0 +1,14 @@
+loading GGUF (models/Qwen3.8-2B-Q4_K_M.gguf) ...
+model load: 9.9s
+cold decode wall 47.69s ttft 43.09s
+3 warmup corpus passes done
+rep 0 done
+rep 1 done
+rep 2 done
+rep 3 done
+rep 4 done
+rep 5 done
+rep 6 done
+rep 7 done
+rep 8 done
+rep 9 done

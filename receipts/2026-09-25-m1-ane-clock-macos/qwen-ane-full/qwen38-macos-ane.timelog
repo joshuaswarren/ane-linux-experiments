@@ -1,0 +1,20 @@
+ordered_records_sha256: 89f3fd9d3b3f94901538488853caa90b45f3546373498c158036b4a56a5ce2ba
+peak_rss_bytes: 7935852544
+     1162.62 real       455.44 user        31.42 sys
+          7935852544  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             3080663  page reclaims
+              314603  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+               13543  voluntary context switches
+              499258  involuntary context switches
+       1733687793803  instructions retired
+       1271881108788  cycles elapsed
+         12500167912  peak memory footprint

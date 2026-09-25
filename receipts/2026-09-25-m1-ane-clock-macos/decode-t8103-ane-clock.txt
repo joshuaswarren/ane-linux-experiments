@@ -1,0 +1,25 @@
+compatible pmgr1,t8103
+ane-acg-hack 1
+ane-dpe 1
+=== perf-domains (28B: idx a b c u32 x u32 y name)
+  idx=0   a=0x04 b=0x00 c=0x01 x=0 y=300 SOC
+  idx=1   a=0x01 b=0x01 c=0x02 x=0 y=0 ECPU
+  idx=2   a=0x04 b=0x00 c=0x03 x=0 y=300 DCS
+  idx=5   a=0x01 b=0x01 c=0x05 x=0 y=0 PCPU
+  idx=8   a=0x00 b=0x00 c=0x08 x=0 y=0 ANE
+  idx=11  a=0x04 b=0x00 c=0x0b x=0 y=300 DISP
+=== clocks (24B records, ANE rows)
+  pre=4801031300000000 PLL_ANE
+=== voltage-states8 (u32 Hz, u32 field)
+  432 MHz field=0xffffffff
+  492 MHz field=0xffffffff
+  552 MHz field=0xffffffff
+  684 MHz field=0xffffffff
+  804 MHz field=0xffffffff
+  888 MHz field=0xffffffff
+  996 MHz field=0xffffffff
+  1164 MHz field=0xffffffff
+  1236 MHz field=0xffffffff
+  1320 MHz field=0xffffffff
+  1380 MHz field=0xffffffff
+  1464 MHz field=0xffffffff

@@ -1,0 +1,4 @@
+chunk_00 sha256 8269c36b...; records 100
+compared 100 exact 32-token match 100 input_ids not in reference 0
+mismatched (pass, prompt_idx) []
+cold_start == reference prompt0: True

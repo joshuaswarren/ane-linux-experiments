@@ -1,0 +1,14 @@
+meta {"os": "macOS-27.0-arm64-arm-64bit", "machine": "arm64", "python": "3.12.14", "runtime": "ANEForge qwen35.load_gguf", "aneforge_version": "0+unknown", "compute": "ANE", "resid_scale": 1.0, "lm_head": "host fp32", "ane_lm_head": false, "gguf_path": "Qwen3.8-2B-Q4_K_M.gguf", "gguf_sha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff", "prompts_corpus_sha256": "9299a3b2fc136a4c0c355f9ad3e211be81823a5fb9eeadbc2e6608fb3e5718a0", "label": "macos-ane-reference"}
+protocol {"new_tokens": 32, "temperature": 0.0, "greedy": true, "prompts_per_pass": 10, "warmup": 3, "passes": 10, "model_load_s": 9.94}
+records 100 ordered_records_sha256 89f3fd9d3b3f94901538488853caa90b45f3546373498c158036b4a56a5ce2ba
+cold_start decode_wall_s 47.6923 ttft_s 43.0888
+pure_prefill {"prompt_tokens": 512, "median_tok_rate": 11.74, "walls_s": [39.4136, 43.6174, 44.881]}
+peak_rss_bytes 7935852544
+decode_tok_rate: median 5.6250 mean 5.6089 stdev 0.4229 min 4.3700 max 6.8400 n 100 median95ci_bootstrap [5.5050, 5.7200]
+ttft_tok_rate: median 12.4800 mean 11.7218 stdev 2.4377 min 3.8900 max 15.2800 n 100 median95ci_bootstrap [10.4100, 13.3000]
+ttft_s: median 1.1891 mean 1.2213 stdev 0.3664 min 0.7420 max 2.8299 n 100 median95ci_bootstrap [1.0416, 1.2899]
+decode_s: median 5.5123 mean 5.5588 stdev 0.4301 min 4.5297 max 7.0898 n 100 median95ci_bootstrap [5.4126, 5.6261]
+e2e_s: median 6.7178 mean 6.7801 stdev 0.5612 min 5.7362 max 8.4277 n 100 median95ci_bootstrap [6.6512, 6.8702]
+pure_prefill tok/s per wall [12.99, 11.74, 11.41] n 3 min 11.41 max 12.99
+per-pass median decode_tok_rate [5.83, 5.88, 5.82, 5.77, 5.71, 5.42, 5.38, 5.58, 5.25, 5.41]
+generated_tokens set [32]
