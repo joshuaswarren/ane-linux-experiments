@@ -1,0 +1,194 @@
+[
+  {
+    "label": "linux-denom-b4757ac",
+    "run": 1,
+    "rc": 0,
+    "wall_ms": 2464.1,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 1706.188,
+    "stages_ms": {
+      "audio_load": 7.514,
+      "mel_frontend": 192.495,
+      "encoder_ane": 933.089,
+      "decoder_load": 50.432,
+      "tdt_decode": 468.818,
+      "detokenize": 53.839
+    },
+    "ane": {
+      "exec_ms": 141.32,
+      "worker_starts": 1,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 790.518,
+        "close_ms": 0.034,
+        "open_ms": 790.518,
+        "reused": false,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  },
+  {
+    "label": "linux-denom-b4757ac",
+    "run": 2,
+    "rc": 0,
+    "wall_ms": 1535.3,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 944.465,
+    "stages_ms": {
+      "audio_load": 3.161,
+      "mel_frontend": 62.043,
+      "encoder_ane": 261.248,
+      "decoder_load": 58.888,
+      "tdt_decode": 504.566,
+      "detokenize": 54.559
+    },
+    "ane": {
+      "exec_ms": 260.348,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.183,
+        "close_ms": 0.063,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  },
+  {
+    "label": "linux-denom-b4757ac",
+    "run": 3,
+    "rc": 0,
+    "wall_ms": 1549.6,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 961.95,
+    "stages_ms": {
+      "audio_load": 3.163,
+      "mel_frontend": 60.629,
+      "encoder_ane": 268.898,
+      "decoder_load": 69.028,
+      "tdt_decode": 508.406,
+      "detokenize": 51.827
+    },
+    "ane": {
+      "exec_ms": 267.907,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.181,
+        "close_ms": 0.08,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  },
+  {
+    "label": "linux-denom-b4757ac",
+    "run": 4,
+    "rc": 0,
+    "wall_ms": 1503.1,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 915.405,
+    "stages_ms": {
+      "audio_load": 3.149,
+      "mel_frontend": 61.094,
+      "encoder_ane": 265.828,
+      "decoder_load": 57.861,
+      "tdt_decode": 475.196,
+      "detokenize": 52.278
+    },
+    "ane": {
+      "exec_ms": 264.421,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.166,
+        "close_ms": 0.096,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  },
+  {
+    "label": "linux-denom-b4757ac",
+    "run": 5,
+    "rc": 0,
+    "wall_ms": 1517.6,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 928.893,
+    "stages_ms": {
+      "audio_load": 3.147,
+      "mel_frontend": 62.638,
+      "encoder_ane": 260.093,
+      "decoder_load": 57.865,
+      "tdt_decode": 493.156,
+      "detokenize": 51.994
+    },
+    "ane": {
+      "exec_ms": 259.142,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.18,
+        "close_ms": 0.077,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  },
+  {
+    "label": "linux-denom-b4757ac",
+    "run": 6,
+    "rc": 0,
+    "wall_ms": 1497.9,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 909.488,
+    "stages_ms": {
+      "audio_load": 3.17,
+      "mel_frontend": 62.993,
+      "encoder_ane": 278.633,
+      "decoder_load": 48.73,
+      "tdt_decode": 465.378,
+      "detokenize": 50.583
+    },
+    "ane": {
+      "exec_ms": 277.776,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.151,
+        "close_ms": 0.077,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  }
+]

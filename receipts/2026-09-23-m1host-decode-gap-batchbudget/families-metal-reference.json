@@ -1,0 +1,15 @@
+{
+ "linear qmm[16x2048]": 12.82,
+ "linear qmm[2048x2048]": 10.14,
+ "linear qmm[2048x6144]": 20.68,
+ "linear qmm[4096x2048]": 14.88,
+ "linear qmm[512x2048]": 12.49,
+ "linear qmm[6144x2048]": 21.57,
+ "rms_norm rms_norm": 11.96,
+ "conv+silu[6144x4]": 12.94,
+ "lm_head full composed": 878.38,
+ "rope": 10.83,
+ "sdpa": 14.93,
+ "_mlx_version": "unknown",
+ "_device_info": "Device(gpu, 0)"
+}

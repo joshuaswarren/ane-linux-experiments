@@ -1,0 +1,80 @@
+== date
+2026-09-23T19:52:05Z
+Wed Sep 23 14:52:05 CDT 2026
+14:52  up 2 mins, 0 users, load averages: 11.07 4.93 2.03
+== os
+ProductName:		macOS
+ProductVersion:		27.0
+BuildVersion:		26A428
+== hardware
+Mac14,5
+Apple M2 Max
+mem_bytes: 103079215104
+Hardware:
+
+    Hardware Overview:
+
+      Model Name: MacBook Pro
+      Model Identifier: Mac14,5
+      Model Number: Z17J00166LL/A
+      Chip: Apple M2 Max
+      Total Number of Cores: 12 (8 Performance and 4 Efficiency)
+      Memory: 96 GB
+      System Firmware Version: 20457.1.29
+      OS Loader Version: 20457.1.29
+      Activation Lock Status: Enabled
+
+== power
+System-wide power settings:
+Currently in use:
+ standby              0
+ Sleep On Power Button 1
+ SleepServices        0
+ hibernatefile        /var/vm/sleepimage
+ powernap             0
+ networkoversleep     0
+ disksleep            0
+ sleep                0 (sleep prevented by caffeinate, caffeinate, powerd, mds, mds_stores)
+ hibernatemode        3
+ ttyskeepawake        1
+ displaysleep         10 (display sleep prevented by caffeinate)
+ tcpkeepalive         1
+ lowpowermode         0
+ womp                 1
+-- thermals
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+== coreml
+CFBundleVersion: 3600.25.2
+CFBundleShortVersionString: 1.0
+== toolchain
+/Applications/Xcode.app/Contents/Developer
+Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+Target: arm64-apple-macosx27.0.0
+Python 3.9.6
+== ane framework
+AppleNeuralEngine: 1
+== load
+{ 12.42 5.32 2.18 }
+== disk
+/dev/disk4s1s1   3.4Ti    13Gi   687Gi     2%    484k  4.3G    0%   /
+== model shas (/Users/<user>/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018)
+11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361  ./.gitattributes
+876c1caed1c5349063bab90c98c559a2ed3f5ce592bc1a2eeac043fe5533e4dc  ./.manifest-stamp
+dccc34b59f24dad7bace51a6ad9a5ba052f1ef509e6c948b32e368aa06c82796  ./.sha256sums
+cb129db9521e751e1925569b5b9f6fd59f038f15721d23dab2c84970db77420e  ./README.md
+8d068618a9fd3a981d6cbc09ae9643a25b2e382f2c3e05d3b9412b9c25a4372e  ./decoder.mlpackage/Data/com.apple.CoreML/model.mlmodel
+36cd656ebf1105ee5aa85d1e55c00f25669327aef8b39346333a19260ca78018  ./decoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin
+ef610fe0ccaff752f58f086772207ffb08970e67bf41fd07c923f9e006f8e4ec  ./decoder.mlpackage/Manifest.json
+2e4e6b54f32029d7b2a69549c2cedf5cd9c6daa8e5274a2b357fc7911747204b  ./encoder.mlpackage/Data/com.apple.CoreML/model.mlmodel
+23867a834223ee6484d0b7b9b703530e8606546efa8e710535163d51ed9aac04  ./encoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin
+9fd1153994eb4bdae923626ffc4684c6e0ce547ab393f0d15010c0c3ed14ece7  ./encoder.mlpackage/Manifest.json
+cde4d7c509e8053ec7c90d04368f2d4bb5ad8db87a28b550de80541193100a39  ./joint.mlpackage/Data/com.apple.CoreML/model.mlmodel
+d83381f8a19ac296033554a7cfec355063b8f3225129cb8bed013c92f6ab141f  ./joint.mlpackage/Data/com.apple.CoreML/weights/weight.bin
+977190c2261e2040f081fd0669fa3da7c4089c7d3f04c04a3c2b25e63f77f45c  ./joint.mlpackage/Manifest.json
+bd321b096832a3f270bd3b2a88823957920f1a5c5ada71114a26ea729d0cbe91  ./tokenizer.json
+== input shas
+feat_f32.bin: OK
+mask_i32.bin: OK
+gold_f16.bin: OK

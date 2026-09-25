@@ -1,0 +1,10 @@
+digest: dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596
+decode median: 72.58 ci: None
+ttft median: 85.59
+pure_prefill: 906.84 wall_s: 0.5646
+e2e median: 0.5793
+peak_rss_kb: 553488
+thermal_end_c: [27.6]
+pure_prefill: {'prompt_tokens': 512, 'wall_s': 0.5646, 'gpu_busy_percent_samples': [], 'pure_prefill_tok_rate': 906.84}
+ordered_records_sha256: dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596
+ordered_records_sha256: dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596

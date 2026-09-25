@@ -1,0 +1,13 @@
+Loading models from /tmp/m2ref/mac-reference-bundle/models (compute: gpu)...
+Models ready in 1.60 s
+Transcribing 10.44 s of audio...
+
+----- timing -----
+audio:       10.435 s
+inference:    0.634 s
+  mel:        0.013 s
+  encoder:    0.569 s
+  decode:     0.051 s   (decoder + joint loop)
+  detok:      0.000 s
+RTFx:         16.46x
+tokens:     107

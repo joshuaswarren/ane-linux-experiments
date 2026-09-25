@@ -1,0 +1,14 @@
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 2349.977,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}

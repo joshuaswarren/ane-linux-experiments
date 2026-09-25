@@ -1,0 +1,16 @@
+SUDO_OK
+total 36
+drwx------ 7 root root 4096 1969-12-31 18:00:00.000000000 -0600 .
+drwxr-xr-x 5 root root 4096 2026-09-19 10:47:33.916546352 -0500 ..
+-rwx------ 1 root root    0 2026-09-23 03:18:46.000000000 -0500 .metadata_never_index
+drwx------ 3 root root 4096 2026-09-18 06:50:42.000000000 -0500 EFI
+drwx------ 2 root root 4096 2026-09-18 06:50:42.000000000 -0500 asahi
+drwx------ 2 root root 4096 2026-09-22 22:14:32.000000000 -0500 m1n1
+drwx------ 2 root root 4096 2026-09-22 11:32:48.000000000 -0500 rtkit-port
+-rwx------ 1 root root  728 1999-12-31 18:00:00.000000000 -0600 ubootefi.var
+-rwx------ 1 root root  728 1999-12-31 18:00:00.000000000 -0600 ubootefi.var.bad-20260923
+drwx------ 3 root root 4096 2026-09-18 06:50:40.000000000 -0500 vendorfw
+a3f533b9879cd0129d78d3d73715b3c9214e297459c7661c4195a9c2bc2683b2  /boot/efi/m1n1/boot.bin
+8028d3b82f1797cdddfcaaa0ceb12b9ce5a251514266c7532f3715f69401e5a0  /boot/efi/EFI/BOOT/BOOTAA64.EFI
+a6e5ec853a23e132d00ff9776dd4fa3919c36529fb301ae6eca731f521ddf0db  /boot/efi/ubootefi.var
+a6e5ec853a23e132d00ff9776dd4fa3919c36529fb301ae6eca731f521ddf0db  /boot/efi/ubootefi.var.bad-20260923

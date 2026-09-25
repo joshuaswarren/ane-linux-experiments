@@ -1,0 +1,8 @@
+total 0
+drwxr-xr-x   3 root  wheel   96 Sep  3 05:34 .
+drwxr-xr-x  13 root  wheel  416 Sep  3 05:34 ..
+drwxr-xr-x   3 root  wheel   96 Sep  3 05:34 USBCAccessoryFirmwareUpdater
+total 0
+drwxr-xr-x   3 root  wheel   96 Sep  3 05:34 .
+drwxr-xr-x  13 root  wheel  416 Sep  3 05:34 ..
+drwxr-xr-x   3 root  wheel   96 Sep  3 05:34 USBCAccessoryFirmwareUpdater

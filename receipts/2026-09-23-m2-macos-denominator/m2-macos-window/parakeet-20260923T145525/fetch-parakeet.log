@@ -1,0 +1,11 @@
+cache hit: /Users/<user>/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/encoder.mlpackage
+cache hit: /Users/<user>/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/decoder.mlpackage
+cache hit: /Users/<user>/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/joint.mlpackage
+cache hit: /Users/<user>/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/tokenizer.json
+encoder.mlpackage/Data/com.apple.CoreML/model.mlmodel: OK
+encoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin: OK
+decoder.mlpackage/Data/com.apple.CoreML/model.mlmodel: OK
+decoder.mlpackage/Data/com.apple.CoreML/weights/weight.bin: OK
+joint.mlpackage/Data/com.apple.CoreML/model.mlmodel: OK
+joint.mlpackage/Data/com.apple.CoreML/weights/weight.bin: OK
+tokenizer.json: OK

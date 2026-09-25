@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "/tmp/m2ref/mac-reference-bundle/run_qwen_ane_ref.py", line 64, in <module>
+    m = load_gguf(a.gguf, resid_scale=1.0)     # contract macos_ane: resid_scale 1.0
+  File "/Users/<user>/src/ANEForge/aneforge/qwen35.py", line 139, in load_gguf
+    v = GGUFView(path); sc, get, tn = v.sc, v.get, v.tn
+  File "/Users/<user>/src/ANEForge/aneforge/_gguf.py", line 13, in __init__
+    import gguf
+ModuleNotFoundError: No module named 'gguf'
+        0.66 real         0.55 user         0.09 sys
+            47071232  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                4391  page reclaims
+                  43  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                  42  voluntary context switches
+                  18  involuntary context switches
+          3504503495  instructions retired
+          2287526703  cycles elapsed
+            33538576  peak memory footprint

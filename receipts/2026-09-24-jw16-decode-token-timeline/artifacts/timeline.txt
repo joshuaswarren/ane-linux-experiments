@@ -1,0 +1,40 @@
+== stream ==
+dispatches=187004 submissions=1077 joins=2 barriers=374008 skipped=0
+with GPU timestamps: 187004
+cycle: start=56150 period=513 dispatches/tok; analyzing 153 mid tokens
+
+== decode window (GPU clock) ==
+wall/token ms: median 34.805  mean 37.122  p10 34.053  p90 36.011
+busy/token ms: median 23.003  mean 25.276
+GPU-idle fraction: 0.319  (profiled host side is inflated; busy fraction is a LOWER bound)
+
+== idle structure (GPU clock) ==
+total idle: 0.109 ms/tok (token boundary) + 1.581 ms/tok (between submissions) + 10.265 ms/tok (within submission)
+worst gaps ms @ (cycle-position, between-subs?): [(21.378, 387, True), (20.067, 325, True), (19.13, 263, True), (18.867, 201, True), (6.062, 387, True), (2.212, 187, False), (1.554, 167, False), (1.411, 312, True)]
+
+== host side (profiled; inflated by instrument) ==
+record cost (sum of d.h): 0.905 ms/tok
+submit cost (sum of s.dur for subs carrying these dispatches): 15.823 ms/tok over 2.97 subs/tok
+
+== submission geometry ==
+subs/token: 2.97; dispatches/sub: 173
+
+== top kernels by GPU time (decode window) ==
+kernel                          n/tok   us/tok  share   GB/s   MB/tok
+QmmVecQ4MultiSubgroupBF16        90.7   5964.3  23.6%      0    419.0
+QmmVecQ4WordSubgroupBF16         17.9   2276.1   9.0%      0    392.2
+FastRmsNormBF16                  76.6   2185.7   8.6%      0      1.4
+GatedDeltaDecodeBF16             17.0   1971.4   7.8%      0      0.5
+CastBF16F32                      58.0   1402.6   5.5%      0      3.5
+GatedDeltaPrefillBF16             0.9   1199.3   4.7%      0      0.2
+FusedChainF32                    35.9   1148.3   4.5%      0      1.7
+FastNormGatedBF16                34.9   1136.9   4.5%      0      1.0
+CopyGeneralBF16                  38.5   1091.5   4.3%      0     14.9
+QmmPrefillCoopmatM16BF16X32       3.1    991.0   3.9%      0      8.2
+CastF32BF16                      23.3    695.0   2.7%      0      0.6
+LogSumExpBF16                     0.9    634.5   2.5%      0      1.0
+MatmulF32                        11.3    608.7   2.4%      0      0.9
+FusedChainBF16                   17.9    526.6   2.1%      0      1.2
+
+bytes/tok(total bindings)=1146 MB; avg GB/s over busy=45; over wall=33
+rooflines: measured read roof 241 GB/s; theoretical 400 GB/s; macOS effective 191.6 GB/s

@@ -1,0 +1,21 @@
++-o H11ANE  <class H11ANEIn, id 0x100000518, registered, matched, active, busy 0 (0 ms), retain 14>
+    {
+      "IOClass" = "H11ANEIn"
+      "CFBundleIdentifier" = "com.apple.driver.AppleH11ANEInterface"
+      "IOProviderClass" = "AppleARMIODevice"
+      "IOPowerManagement" = {"DevicePowerState"=0,"CurrentPowerState"=0,"CapabilityFlags"=0,"MaxPowerState"=1}
+      "SurfaceSharedEventAgentMask" = 128
+      "IOProbeScore" = 0
+      "IONameMatch" = "ane,t8020"
+      "IOMatchedAtBoot" = Yes
+      "IOMatchCategory" = "IODefaultMatchCategory"
+      "IOFunctionParent00000169" = <>
+      "IONameMatched" = "ane,t8020"
+      "IOPersonalityPublisher" = "com.apple.driver.AppleH11ANEInterface"
+      "DeviceProperties" = {"ANEDevicePropertyANECPUSubType"=5,"ANEDevicePropertyIsInternalBuild"=No,"ANEDevicePropertyANEVersion"=128,"ANEDevicePropertyANEMinorVersion"=17,"ANEDevicePropertyANEHWBoardType"=160,"ANEDevicePropertyANEHWBoardSubType"=0,"ANEDevicePropertyNumANECores"=16,"ANEDevicePropertyTypeANEArchitectureTypeStr"="h14g","ANEDevicePropertyBondedModeSupported"=0}
+      "CFBundleIdentifierKernel" = "com.apple.driver.AppleH11ANEInterface"
+      "SharedEventAgentSignalEnabled" = No
+      "FirmwareLoaded" = Yes
+    }
+    
+

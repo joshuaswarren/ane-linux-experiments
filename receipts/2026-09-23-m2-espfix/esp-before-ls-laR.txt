@@ -1,0 +1,443 @@
+Wed Sep 23 13:18:32 UTC 2026
+/dev/disk0s4 on /Volumes/EFI - OMARC (msdos, local, nodev, nosuid, read-only, noowners, noatime, fskit)
+total 112
+drwx------@ 1 _unknown  _unknown     0 Sep 23 07:18 .
+drwxr-xr-x@ 7 root      wheel      224 Sep 23 08:18 ..
+drwx------  1 _unknown  _unknown  4096 Sep 18 11:50 .Spotlight-V100
+drwx------  1 _unknown  _unknown  4096 Sep 18 11:50 .Trashes
+-rwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ._EFI
+-rwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ._asahi
+-rwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ._m1n1
+-rwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ._vendorfw
+drwx------  1 _unknown  _unknown  4096 Sep 23 07:18 .fseventsd
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 EFI
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:51 asahi
+drwx------@ 1 _unknown  _unknown  4096 Sep 22 19:19 m1n1
+drwx------  1 _unknown  _unknown  4096 Sep 22 16:32 rtkit-port
+-rwx------  1 _unknown  _unknown   728 Dec 31  1999 ubootefi.var
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 vendorfw
+
+./.Spotlight-V100:
+total 40
+drwx------  1 _unknown  _unknown  4096 Sep 18 11:50 .
+drwx------@ 1 _unknown  _unknown     0 Sep 23 07:18 ..
+drwx------  1 _unknown  _unknown  4096 Sep 18 11:50 Store-V2
+-rwx------  1 _unknown  _unknown  4559 Sep 22 08:53 VolumeConfiguration.plist
+
+./.Spotlight-V100/Store-V2:
+total 56
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 ..
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B:
+total 4400
+drwx------  1 _unknown  _unknown   20480 Sep 23 07:18 .
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 ..
+-rwx------  1 _unknown  _unknown   36864 Sep 22 19:19 .store.db
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 0.directoryStoreFile
+-rwx------  1 _unknown  _unknown    1728 Sep 18 11:51 0.directoryStoreFile.shadow
+-rwx------  1 _unknown  _unknown   52800 Sep 18 11:51 0.indexArrays
+-rwx------  1 _unknown  _unknown      60 Sep 23 07:18 0.indexBigDates
+-rwx------  1 _unknown  _unknown       8 Sep 18 11:51 0.indexCompactDirectory
+-rwx------  1 _unknown  _unknown    2056 Sep 18 11:51 0.indexDirectory
+-rwx------  1 _unknown  _unknown      12 Sep 22 16:32 0.indexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 0.indexHead
+-rwx------  1 _unknown  _unknown       1 Sep 18 11:50 0.indexId
+-rwx------  1 _unknown  _unknown     120 Sep 18 11:51 0.indexIds
+-rwx------  1 _unknown  _unknown   17248 Sep 18 11:51 0.indexPositionTable
+-rwx------  1 _unknown  _unknown   16384 Sep 18 11:51 0.indexPositions
+-rwx------  1 _unknown  _unknown   16384 Sep 18 11:51 0.indexPostings
+-rwx------  1 _unknown  _unknown   17248 Sep 18 11:51 0.indexTermIds
+-rwx------  1 _unknown  _unknown      14 Sep 18 11:51 0.indexUpdates
+-rwx------  1 _unknown  _unknown      16 Sep 18 11:51 0.ivf-vector-indexes
+-rwx------  1 _unknown  _unknown      12 Sep 22 14:21 0.shadowIndexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 22 14:21 0.shadowIndexHead
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 Cab.created
+-rwx------  1 _unknown  _unknown       0 Sep 22 08:53 Cab.modified
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 Glow.created
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 Lion.created
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:31 dbStr-1.map.buckets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 14:21 dbStr-1.map.data
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:31 dbStr-1.map.header
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:31 dbStr-1.map.header.shadow
+-rwx------  1 _unknown  _unknown   16384 Sep 22 14:21 dbStr-1.map.offsets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:34 dbStr-2.map.buckets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:33 dbStr-2.map.data
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:34 dbStr-2.map.header
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:34 dbStr-2.map.header.shadow
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:33 dbStr-2.map.offsets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:31 dbStr-3.map.buckets
+-rwx------  1 _unknown  _unknown   16384 Sep 18 11:50 dbStr-3.map.data
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:31 dbStr-3.map.header
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:31 dbStr-3.map.header.shadow
+-rwx------  1 _unknown  _unknown   16384 Sep 18 11:50 dbStr-3.map.offsets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:31 dbStr-4.map.buckets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 14:21 dbStr-4.map.data
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:31 dbStr-4.map.header
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:31 dbStr-4.map.header.shadow
+-rwx------  1 _unknown  _unknown   16384 Sep 22 14:21 dbStr-4.map.offsets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:32 dbStr-5.map.buckets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 14:21 dbStr-5.map.data
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:32 dbStr-5.map.header
+-rwx------  1 _unknown  _unknown      56 Sep 22 16:32 dbStr-5.map.header.shadow
+-rwx------  1 _unknown  _unknown   16384 Sep 22 14:21 dbStr-5.map.offsets
+-rwx------  1 _unknown  _unknown   16384 Sep 22 16:32 dbStr-6.map.buckets
+-rwx------  1 _unknown  _unknown      84 Sep 22 16:32 dbStr-6.map.header
+-rwx------  1 _unknown  _unknown      84 Sep 22 16:32 dbStr-6.map.header.shadow
+-rwx------  1 _unknown  _unknown   16368 Sep 18 11:50 dbStr-6.map.offsets
+-rwx------  1 _unknown  _unknown      28 Sep 22 18:30 indexState
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 journalExclusion
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.assisted_import_post
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.assisted_import_pre
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.corespotlight
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.health_check
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.live
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.live_priority
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.live_system
+drwx------  1 _unknown  _unknown    4096 Sep 22 16:34 journals.live_user
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.migration
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.migration_secondchance
+drwx------  1 _unknown  _unknown    4096 Sep 18 11:50 journals.repair
+drwx------  1 _unknown  _unknown    4096 Sep 23 07:18 journals.scan
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.0.directoryStoreFile
+-rwx------  1 _unknown  _unknown    1664 Sep 22 14:21 live.0.directoryStoreFile.shadow
+-rwx------  1 _unknown  _unknown   84160 Sep 22 14:21 live.0.indexArrays
+-rwx------  1 _unknown  _unknown      72 Sep 22 14:21 live.0.indexBigDates
+-rwx------  1 _unknown  _unknown       8 Sep 22 14:21 live.0.indexCompactDirectory
+-rwx------  1 _unknown  _unknown    2056 Sep 22 14:21 live.0.indexDirectory
+-rwx------  1 _unknown  _unknown      15 Sep 22 16:32 live.0.indexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.0.indexHead
+-rwx------  1 _unknown  _unknown       1 Sep 18 11:50 live.0.indexId
+-rwx------  1 _unknown  _unknown     144 Sep 22 14:21 live.0.indexIds
+-rwx------  1 _unknown  _unknown   39752 Sep 22 14:21 live.0.indexPositionTable
+-rwx------  1 _unknown  _unknown  131072 Sep 22 14:21 live.0.indexPositions
+-rwx------  1 _unknown  _unknown   32768 Sep 22 14:21 live.0.indexPostings
+-rwx------  1 _unknown  _unknown   39752 Sep 22 14:21 live.0.indexTermIds
+-rwx------  1 _unknown  _unknown      12 Sep 22 14:21 live.0.indexUpdates
+-rwx------  1 _unknown  _unknown      16 Sep 22 14:21 live.0.ivf-vector-indexes
+-rwx------  1 _unknown  _unknown      15 Sep 22 15:42 live.0.shadowIndexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 22 15:42 live.0.shadowIndexHead
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.1.directoryStoreFile
+-rwx------  1 _unknown  _unknown    1152 Sep 22 15:42 live.1.directoryStoreFile.shadow
+-rwx------  1 _unknown  _unknown    5696 Sep 22 15:42 live.1.indexArrays
+-rwx------  1 _unknown  _unknown      20 Sep 22 15:42 live.1.indexBigDates
+-rwx------  1 _unknown  _unknown       8 Sep 22 15:42 live.1.indexCompactDirectory
+-rwx------  1 _unknown  _unknown    2056 Sep 22 15:42 live.1.indexDirectory
+-rwx------  1 _unknown  _unknown       4 Sep 22 16:32 live.1.indexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.1.indexHead
+-rwx------  1 _unknown  _unknown       1 Sep 22 09:42 live.1.indexId
+-rwx------  1 _unknown  _unknown      40 Sep 22 15:42 live.1.indexIds
+-rwx------  1 _unknown  _unknown    3008 Sep 22 15:42 live.1.indexPositionTable
+-rwx------  1 _unknown  _unknown    4096 Sep 22 15:42 live.1.indexPositions
+-rwx------  1 _unknown  _unknown    4096 Sep 22 15:42 live.1.indexPostings
+-rwx------  1 _unknown  _unknown    3008 Sep 22 15:42 live.1.indexTermIds
+-rwx------  1 _unknown  _unknown      12 Sep 22 15:42 live.1.indexUpdates
+-rwx------  1 _unknown  _unknown      16 Sep 22 15:42 live.1.ivf-vector-indexes
+-rwx------  1 _unknown  _unknown       4 Sep 22 16:32 live.1.shadowIndexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 22 16:32 live.1.shadowIndexHead
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.2.directoryStoreFile
+-rwx------  1 _unknown  _unknown    1088 Sep 22 15:42 live.2.directoryStoreFile.shadow
+-rwx------  1 _unknown  _unknown      64 Sep 22 15:42 live.2.indexArrays
+-rwx------  1 _unknown  _unknown       4 Sep 22 15:42 live.2.indexBigDates
+-rwx------  1 _unknown  _unknown       8 Sep 22 15:42 live.2.indexCompactDirectory
+-rwx------  1 _unknown  _unknown    2056 Sep 22 15:42 live.2.indexDirectory
+-rwx------  1 _unknown  _unknown       1 Sep 22 16:32 live.2.indexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.2.indexHead
+-rwx------  1 _unknown  _unknown       1 Sep 22 15:42 live.2.indexId
+-rwx------  1 _unknown  _unknown       8 Sep 22 15:42 live.2.indexIds
+-rwx------  1 _unknown  _unknown       8 Sep 22 15:42 live.2.indexPositionTable
+-rwx------  1 _unknown  _unknown    4096 Sep 22 15:42 live.2.indexPositions
+-rwx------  1 _unknown  _unknown    4096 Sep 22 15:42 live.2.indexPostings
+-rwx------  1 _unknown  _unknown       8 Sep 22 15:42 live.2.indexTermIds
+-rwx------  1 _unknown  _unknown       0 Sep 22 15:42 live.2.indexUpdates
+-rwx------  1 _unknown  _unknown      16 Sep 22 15:42 live.2.ivf-vector-indexes
+-rwx------  1 _unknown  _unknown       1 Sep 22 15:42 live.2.shadowIndexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 22 15:42 live.2.shadowIndexHead
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.3.directoryStoreFile
+-rwx------  1 _unknown  _unknown    1280 Sep 22 16:34 live.3.directoryStoreFile.shadow
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.3.indexArrays
+-rwx------  1 _unknown  _unknown   16384 Sep 23 07:18 live.3.indexBigDates
+-rwx------  1 _unknown  _unknown    1024 Sep 23 07:18 live.3.indexCompactDirectory
+-rwx------  1 _unknown  _unknown    8224 Sep 23 07:18 live.3.indexDirectory
+-rwx------  1 _unknown  _unknown    3277 Sep 23 07:18 live.3.indexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.3.indexHead
+-rwx------  1 _unknown  _unknown       1 Sep 22 15:42 live.3.indexId
+-rwx------  1 _unknown  _unknown   32768 Sep 23 07:18 live.3.indexIds
+-rwx------  1 _unknown  _unknown   16384 Sep 23 07:18 live.3.indexPositionTable
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.3.indexPositions
+-rwx------  1 _unknown  _unknown    8192 Sep 23 07:18 live.3.indexPostings
+-rwx------  1 _unknown  _unknown   16384 Sep 23 07:18 live.3.indexTermIds
+-rwx------  1 _unknown  _unknown       0 Sep 22 16:34 live.3.indexUpdates
+-rwx------  1 _unknown  _unknown       8 Sep 22 15:42 live.3.ivf-vector-indexes
+-rwx------  1 _unknown  _unknown   65536 Sep 22 16:34 live.3.shadowIndexArrays
+-rwx------  1 _unknown  _unknown       8 Sep 22 16:34 live.3.shadowIndexCompactDirectory
+-rwx------  1 _unknown  _unknown    2056 Sep 22 16:34 live.3.shadowIndexDirectory
+-rwx------  1 _unknown  _unknown       4 Sep 22 16:34 live.3.shadowIndexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 22 16:34 live.3.shadowIndexHead
+-rwx------  1 _unknown  _unknown    9760 Sep 22 16:34 live.3.shadowIndexPositionTable
+-rwx------  1 _unknown  _unknown    9760 Sep 22 16:34 live.3.shadowIndexTermIds
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.4.directoryStoreFile
+-rwx------  1 _unknown  _unknown    1088 Sep 23 07:18 live.4.directoryStoreFile.shadow
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.4.indexArrays
+-rwx------  1 _unknown  _unknown   16384 Sep 23 07:18 live.4.indexBigDates
+-rwx------  1 _unknown  _unknown    1024 Sep 23 07:18 live.4.indexCompactDirectory
+-rwx------  1 _unknown  _unknown    8224 Sep 23 07:18 live.4.indexDirectory
+-rwx------  1 _unknown  _unknown    3277 Sep 23 07:18 live.4.indexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.4.indexHead
+-rwx------  1 _unknown  _unknown       1 Sep 23 07:18 live.4.indexId
+-rwx------  1 _unknown  _unknown   32768 Sep 23 07:18 live.4.indexIds
+-rwx------  1 _unknown  _unknown    8192 Sep 23 07:18 live.4.indexPositionTable
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.4.indexPositions
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.4.indexPostings
+-rwx------  1 _unknown  _unknown    8192 Sep 23 07:18 live.4.indexTermIds
+-rwx------  1 _unknown  _unknown       0 Sep 23 07:18 live.4.indexUpdates
+-rwx------  1 _unknown  _unknown       8 Sep 23 07:18 live.4.ivf-vector-indexes
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 live.4.shadowIndexArrays
+-rwx------  1 _unknown  _unknown       8 Sep 23 07:18 live.4.shadowIndexCompactDirectory
+-rwx------  1 _unknown  _unknown    2056 Sep 23 07:18 live.4.shadowIndexDirectory
+-rwx------  1 _unknown  _unknown       1 Sep 23 07:18 live.4.shadowIndexGroups
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 live.4.shadowIndexHead
+-rwx------  1 _unknown  _unknown       8 Sep 23 07:18 live.4.shadowIndexPositionTable
+-rwx------  1 _unknown  _unknown       8 Sep 23 07:18 live.4.shadowIndexTermIds
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 macOS16.created
+-rwx------  1 _unknown  _unknown     553 Sep 23 07:18 permStore
+-rwx------  1 _unknown  _unknown    8192 Sep 22 19:19 psid.db
+-rwx------  1 _unknown  _unknown   65536 Sep 23 07:18 reverseDirectoryStore
+-rwx------  1 _unknown  _unknown    3648 Sep 22 16:34 reverseDirectoryStore.shadow
+-rwx------  1 _unknown  _unknown       1 Sep 22 18:30 reverseDirectoryStore.updates
+-rwx------  1 _unknown  _unknown       4 Sep 22 19:19 shutdown_time
+-rwx------  1 _unknown  _unknown   36864 Sep 22 16:34 store.db
+-rwx------  1 _unknown  _unknown       8 Sep 22 18:30 store.updates
+-rwx------  1 _unknown  _unknown       4 Sep 18 11:50 store_generation
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 tmp.Cab
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 tmp.Glow
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 tmp.Lion
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 tmp.SequoiaPhotosFixed
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 tmp.Star
+-rwx------  1 _unknown  _unknown      28 Sep 23 07:18 tmp.indexState
+-rwx------  1 _unknown  _unknown       0 Sep 18 11:50 tmp.macOS16
+-rwx------  1 _unknown  _unknown    7051 Sep 22 14:21 tmp.spotlight.loc
+-rwx------  1 _unknown  _unknown    4096 Sep 23 07:18 tmp.spotlight.state
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.assisted_import_post:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.assisted_import_pre:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.corespotlight:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.health_check:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.live:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.live_priority:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.live_system:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.live_user:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 22 16:34 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.migration:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.migration_secondchance:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.repair:
+total 48
+drwx------  1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+
+./.Spotlight-V100/Store-V2/48D9E7D1-F1CB-4883-B75E-B17CFEC38F6B/journals.scan:
+total 56
+drwx------  1 _unknown  _unknown   4096 Sep 23 07:18 .
+drwx------  1 _unknown  _unknown  20480 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown     53 Sep 23 07:18 journal.1
+
+./.Trashes:
+total 32
+drwx------  1 _unknown  _unknown  4096 Sep 18 11:50 .
+drwx------@ 1 _unknown  _unknown     0 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ._501
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 501
+
+./.Trashes/501:
+total 16
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 .
+drwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ..
+
+./.fseventsd:
+total 24
+drwx------  1 _unknown  _unknown  4096 Sep 23 07:18 .
+drwx------@ 1 _unknown  _unknown     0 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown    36 Sep 23 07:18 fseventsd-uuid
+
+./EFI:
+total 32
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 .
+drwx------@ 1 _unknown  _unknown     0 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ._BOOT
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 BOOT
+
+./EFI/BOOT:
+total 448
+drwx------@ 1 _unknown  _unknown    4096 Sep 18 11:50 .
+drwx------@ 1 _unknown  _unknown    4096 Sep 18 11:50 ..
+-rwx------  1 _unknown  _unknown    4096 Sep 18 11:50 ._BOOTAA64.EFI
+-rwx------@ 1 _unknown  _unknown  217088 Sep 18 11:50 BOOTAA64.EFI
+
+./asahi:
+total 109848
+drwx------@ 1 _unknown  _unknown      4096 Sep 18 11:51 .
+drwx------@ 1 _unknown  _unknown         0 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._AdminUserRecoveryInfo.plist
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._BuildManifest.plist
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._RestoreVersion.plist
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._SystemVersion.plist
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._all_firmware.tar.gz
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._installer.log
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._kernelcache.release.mac14j
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:51 ._stub_info.json
+-rwx------@ 1 _unknown  _unknown       709 Sep 18 11:51 AdminUserRecoveryInfo.plist
+-rwx------@ 1 _unknown  _unknown     75931 Sep 18 11:51 BuildManifest.plist
+-rwx------@ 1 _unknown  _unknown       358 Sep 18 11:51 RestoreVersion.plist
+-rwx------@ 1 _unknown  _unknown       606 Sep 18 11:51 SystemVersion.plist
+-rwx------@ 1 _unknown  _unknown  29787827 Sep 18 11:51 all_firmware.tar.gz
+-rwx------@ 1 _unknown  _unknown    427103 Sep 18 11:51 installer.log
+-rwx------@ 1 _unknown  _unknown  25883676 Sep 18 11:51 kernelcache.release.mac14j
+-rwx------@ 1 _unknown  _unknown       571 Sep 18 11:51 stub_info.json
+
+./m1n1:
+total 96312
+drwx------@ 1 _unknown  _unknown     4096 Sep 22 19:19 .
+drwx------@ 1 _unknown  _unknown        0 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown     4096 Sep 18 11:50 ._boot.bin.old
+-rwx------  1 _unknown  _unknown     4096 Sep 22 14:22 ._boot.bin.park-9ad08653.bak
+-rwx------  1 _unknown  _unknown     4096 Sep 22 08:53 ._boot.bin.proxy-only.bak
+-rwx------  1 _unknown  _unknown  6214228 Sep 23 07:18 boot.bin
+-rwx------  1 _unknown  _unknown  6231126 Sep 22 12:12 boot.bin.dead-hook-65d1e8ae.bak
+-rwx------@ 1 _unknown  _unknown  6214216 Sep 23 01:21 boot.bin.old
+-rwx------@ 1 _unknown  _unknown  1114112 Sep 22 14:22 boot.bin.park-9ad08653.bak
+-rwx------  1 _unknown  _unknown  6213907 Sep 22 14:53 boot.bin.pre-proxy.on-esp
+-rwx------@ 1 _unknown  _unknown  1114112 Sep 22 08:53 boot.bin.proxy-only.bak
+-rwx------  1 _unknown  _unknown   884736 Sep 22 08:53 boot.bin.proxy-swuf
+-rwx------  1 _unknown  _unknown   884736 Sep 22 09:42 boot.bin.proxy-swuf.installed
+-rwx------  1 _unknown  _unknown  6214228 Sep 23 03:14 boot.bin.stock-a3f533b9.bak
+-rwx------  1 _unknown  _unknown  6231126 Sep 22 15:02 boot.bin.v4dry-b0feef2f.bak
+-rwx------  1 _unknown  _unknown  7951446 Sep 22 19:19 boot.bin.v6-fd30afea.bak
+
+./rtkit-port:
+total 408
+drwx------  1 _unknown  _unknown    4096 Sep 22 16:32 .
+drwx------@ 1 _unknown  _unknown       0 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown  118239 Sep 22 16:32 ane-t6021-786c716.tgz
+-rwx------  1 _unknown  _unknown   79440 Sep 22 16:32 ane_t6021_rtclient.ko
+
+./vendorfw:
+total 127504
+drwx------@ 1 _unknown  _unknown      4096 Sep 18 11:50 .
+drwx------@ 1 _unknown  _unknown         0 Sep 23 07:18 ..
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:50 ._firmware.cpio
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:50 ._firmware.tar
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:50 ._manifest.txt
+-rwx------  1 _unknown  _unknown      4096 Sep 18 11:50 ._u-boot
+-rwx------@ 1 _unknown  _unknown  32530656 Sep 18 11:50 firmware.cpio
+-rwx------@ 1 _unknown  _unknown  32675840 Sep 18 11:50 firmware.tar
+-rwx------@ 1 _unknown  _unknown     38552 Sep 18 11:50 manifest.txt
+drwx------@ 1 _unknown  _unknown      4096 Sep 18 11:50 u-boot
+
+./vendorfw/u-boot:
+total 32
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 .
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 ..
+-rwx------  1 _unknown  _unknown  4096 Sep 18 11:50 ._asmedia
+drwx------@ 1 _unknown  _unknown  4096 Sep 18 11:50 asmedia
+
+./vendorfw/u-boot/asmedia:
+total 216
+drwx------@ 1 _unknown  _unknown   4096 Sep 18 11:50 .
+drwx------@ 1 _unknown  _unknown   4096 Sep 18 11:50 ..
+-rwx------  1 _unknown  _unknown   4096 Sep 18 11:50 ._asm2214a-apple.bin
+-rwx------@ 1 _unknown  _unknown  98304 Sep 18 11:50 asm2214a-apple.bin
+---SHA
+a3f533b9879cd0129d78d3d73715b3c9214e297459c7661c4195a9c2bc2683b2  m1n1/boot.bin
+a6e5ec853a23e132d00ff9776dd4fa3919c36529fb301ae6eca731f521ddf0db  ubootefi.var
+8028d3b82f1797cdddfcaaa0ceb12b9ce5a251514266c7532f3715f69401e5a0  EFI/BOOT/BOOTAA64.EFI
+---XXD ubootefi.var
+00000000: 0000 0000 0000 0000 5562 4566 6956 6101  ........UbEfiVa.
+00000010: d802 0000 d63e 80f0 8c00 0000 0700 0000  .....>..........
+00000020: 0000 0000 0000 0000 61df e48b ca93 d211  ........a.......
+00000030: aa0d 00e0 9803 2b8c 4200 6f00 6f00 7400  ......+.B.o.o.t.
+00000040: 3000 3000 3000 3000 0000 0100 0000 6800  0.0.0.0.......h.
+00000050: 6e00 7600 6d00 6500 2000 3000 0000 0104  n.v.m.e. .0.....
+00000060: 1c00 b973 1de6 84a3 cc4a aeab 82e8 28f3  ...s.....J....(.
+00000070: 628b 0000 0000 0000 0000 0104 1c00 b973  b..............s
+00000080: 1de6 84a3 cc4a aeab 82e8 28f3 628b 7200  .....J....(.b.r.
+00000090: 0000 0000 0000 0104 1c00 b973 1de6 84a3  ...........s....
+000000a0: cc4a aeab 82e8 28f3 628b 5300 0000 0000  .J....(.b.S.....
+000000b0: 0000 0317 1000 0100 0000 0000 0000 0000  ................
+000000c0: 0000 7fff 0400 4eac 0881 119f 594d 850e  ......N.....YM..
+000000d0: e21a 522c 59b2 0000 8c00 0000 0700 0000  ..R,Y...........
+000000e0: 0000 0000 0000 0000 61df e48b ca93 d211  ........a.......
+000000f0: aa0d 00e0 9803 2b8c 4200 6f00 6f00 7400  ......+.B.o.o.t.
+00000100: 3000 3000 3000 3100 0000 0100 0000 6800  0.0.0.1.......h.
+00000110: 6e00 7600 6d00 6500 2000 3100 0000 0104  n.v.m.e. .1.....
+00000120: 1c00 b973 1de6 84a3 cc4a aeab 82e8 28f3  ...s.....J....(.
+00000130: 628b 0000 0000 0000 0000 0104 1c00 b973  b..............s
+00000140: 1de6 84a3 cc4a aeab 82e8 28f3 628b 7200  .....J....(.b.r.
+00000150: 0000 0000 0000 0104 1c00 b973 1de6 84a3  ...........s....
+00000160: cc4a aeab 82e8 28f3 628b 5300 0000 0000  .J....(.b.S.....
+00000170: 0000 0317 1000 0200 0000 0000 0000 0000  ................
+00000180: 0000 7fff 0400 4eac 0881 119f 594d 850e  ......N.....YM..
+00000190: e21a 522c 59b2 0000 8c00 0000 0700 0000  ..R,Y...........
+000001a0: 0000 0000 0000 0000 61df e48b ca93 d211  ........a.......
+000001b0: aa0d 00e0 9803 2b8c 4200 6f00 6f00 7400  ......+.B.o.o.t.
+000001c0: 3000 3000 3000 3200 0000 0100 0000 6800  0.0.0.2.......h.
+000001d0: 6e00 7600 6d00 6500 2000 3200 0000 0104  n.v.m.e. .2.....
+000001e0: 1c00 b973 1de6 84a3 cc4a aeab 82e8 28f3  ...s.....J....(.
+000001f0: 628b 0000 0000 0000 0000 0104 1c00 b973  b..............s
+00000200: 1de6 84a3 cc4a aeab 82e8 28f3 628b 7200  .....J....(.b.r.
+00000210: 0000 0000 0000 0104 1c00 b973 1de6 84a3  ...........s....
+00000220: cc4a aeab 82e8 28f3 628b 5300 0000 0000  .J....(.b.S.....
+00000230: 0000 0317 1000 0300 0000 0000 0000 0000  ................
+00000240: 0000 7fff 0400 4eac 0881 119f 594d 850e  ......N.....YM..
+00000250: e21a 522c 59b2 0000 0600 0000 0700 0000  ..R,Y...........
+00000260: 0000 0000 0000 0000 61df e48b ca93 d211  ........a.......
+00000270: aa0d 00e0 9803 2b8c 4200 6f00 6f00 7400  ......+.B.o.o.t.
+00000280: 4f00 7200 6400 6500 7200 0000 0000 0100  O.r.d.e.r.......
+00000290: 0200 0000 0000 0000 0600 0000 0700 0000  ................
+000002a0: 0000 0000 0000 0000 61df e48b ca93 d211  ........a.......
+000002b0: aa0d 00e0 9803 2b8c 5000 6c00 6100 7400  ......+.P.l.a.t.
+000002c0: 6600 6f00 7200 6d00 4c00 6100 6e00 6700  f.o.r.m.L.a.n.g.
+000002d0: 0000 656e 2d55 5300                      ..en-US.
+---EFI
+8028d3b82f1797cdddfcaaa0ceb12b9ce5a251514266c7532f3715f69401e5a0  EFI/BOOT/BOOTAA64.EFI
+d5a573f6677de616a5e8979e8e52b68aed6b2949a7c2f66d6af6e5a7aec20434  EFI/BOOT/._BOOTAA64.EFI
+d5a573f6677de616a5e8979e8e52b68aed6b2949a7c2f66d6af6e5a7aec20434  EFI/._BOOT

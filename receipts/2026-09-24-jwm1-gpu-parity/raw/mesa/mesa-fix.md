@@ -3,7 +3,7 @@
 **Branch**: `agent/jwm1-vkcreate-buildid-override`
 **Repo**: `joshuaswarren/mesa-1` (per the mesa-repo-migration rule, this lands on
 mesa-1, not joshuaswarren/mesa).
-**Worktree**: `/var/tmp/jwm1-vkcreate-wt` on jw16mbp1-linux (cdm-dep-barrier base).
+**Worktree**: `/var/tmp/jwm1-vkcreate-wt` on m1max-host (cdm-dep-barrier base).
 **Commits**: b775a92 (initial), 6ab89f8 (meson one-liner style match nvk).
 **Patch sha256**: 861a35131e9bb8f71c5379108afac316613b36e925f9780859377875853dbd9e
 (`/tmp/0001-asahi-hk-build-id-meson-override-for-the-vkCreateIns.patch`).

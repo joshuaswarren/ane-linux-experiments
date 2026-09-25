@@ -1,0 +1,4 @@
+glslc: error: cannot open input file: 'tools/q4-bw-bench/shaders/q4_splitk_reduce.comp': No such file or directory
+glslangValidator: Error: unable to open input file (use -h for usage)
+{"k":"dev","name":"Apple M1 Max (G13C C0)","subgroupSize":32,"arith":true,"ts_period_ns":1.000}
+{"k":"mode","variant":"subgroup","reps":21}

@@ -1,0 +1,646 @@
+# T6021 ANE start — apple-isp comparison, wedge attribution, RTKit/CSNE protocol (2026-09-22)
+
+Lane: M2Research. Source-and-binary analysis only; no hardware touched.
+Consumers: T6021FwStart (M2FwStart), the rtclient driver lane. All three
+findings were delivered to M2FwStart over hub and acked in-session (§5).
+
+Sources read in full this lane:
+- **[ISP]** AsahiLinux/linux branch `isp/t602x-v2` (tree dd1bbfed), `drivers/media/platform/apple/isp/{isp-drv,isp-fw,isp-iommu,isp-ipc,isp-regs}.c/h` + `arch/arm64/boot/dts/apple/{t8112,t600x-die0,t600x-common}.dtsi` — fetched via gh api, read line-by-line.
+- **[KEXT]** `receipts/2026-09-18-t6021-engine-layout-mined/kext-h14j/AppleH11ANEInterface-10.19.2-mac14j-26A428` — full llvm-objdump-19 disassembly cached this lane; every claim below cites a disassembly address.
+- **[FW]** `fw-h14j-selene/t602x_ane0_fw_selene_rc4x.macho` — Mach-O segments re-parsed; channel names NOT present fw-side (kext-side only).
+- **[RTKIT]** `drivers/soc/apple/{rtkit.c,mailbox.c,rtkit-internal.h,tunable.c}` + `include/linux/soc/apple/rtkit.h` + `lib/devres.c` + `arch/arm64/include/asm/{io.h,pgtable-prot.h}` in the local omarchy-linux tree (078f865d1 family).
+- **[M1N1]** `.work/m1n1/proxyclient/m1n1/hw/asc.py` (ASC register map).
+- Repo receipts: t6021-fw-start, t6021-power-dart-fwload, t6021-rtkit-port, h14-rpc-protocol (+notes), h14-w7-write-grant, h14-boot-prereqs, arm-A*/arm-b (t6021-host-tm), m2-ane-hook-run, m2-m1n1-hook.
+- **[ADT]** live ADT capture `dtree-j414c.txt` (raw ane0 + dart-ane0 nodes re-read this lane) and the IORegistry export `tools/ane-hunter/fixtures/ane0-dt.txt`.
+
+Confidence labels: [FACT] = read directly from the cited source this lane;
+[MEASURED] = prior live receipt cited; [INFERRED] = stated inference.
+
+---
+
+## 1. Why a kernel-context CPU_CONTROL RUN wedges the fabric on T6021
+
+### 1.1 Candidate disposition
+
+| Candidate | Verdict | Evidence |
+|---|---|---|
+| DART not configured / bypass vs translate | NOT the wedge — produces logged faults + poll-A timeout, not a hard wedge | [MEASURED] s18: all three dart-ane0 instances TCR=0x9 (TRANSLATE\|FOUR_LEVEL), TTBR valid, ENABLE 0xffff; [MEASURED] 2026-09-20 netconsole dart fault (no PGD for IOVA 0x100000dca10) — box survived. Mainline `apple-dart.c` has no `apple,t6020-dart` entry and binds via t8110 fallback; per-stream bypass (t8110 TCR BYPASS_DART bit1 / BYPASS_DAPF bit2) is only set by the driver for ADT "bypass-N" — dart-ane0 ADT carries `bypass-15` only, and the enabled translate range 0xffff covers the device streams. |
+| Firmware region not mapped at the RVBAR IOVA | Same as above — fault-class, not wedge-class; entry-alias already implements the mapping | [FACT] fwload `ane_t6021_fw_alias_map` maps staged pages at the latched entry; alias round-trip verified AP-side. |
+| SART not programmed | N/A — there is no SART in the ANE path on T6021 | [FACT] only SART node in the DTB is ANS2/NVMe (sart@34bc50000). |
+| DAPF not programmed | Excluded | [MEASURED] s20/s21: DAPF programmed 5/5 + publish + wake — silent. m1n1 `dapf_init_all` never programs dart-ane0 either. |
+| Power-domain order | Not the differentiator (genpd parents-first, all 8 ACTUAL=0xf verified in both fatal runs); kernel-context ps@2e0 writes remain forbidden | [MEASURED] arm-A §4 readbacks, s24 freeze. |
+| Posted writes | PROVEN wedge class on this fabric — but eliminated in the rtclient path (ioremap_np) and present in the legacy driver | [MEASURED] arm-A vs arm-A4/A5 + userspace diff, see §1.2. |
+| **Cold-boot aperture/clock state (tunables + clock gates)** | **THE LIKELY REASON** — see §1.3 | §1.3. |
+
+### 1.2 Posted vs non-posted (the proven mechanism, keep forever)
+
+Attribute mapping on arm64 in this tree [FACT]:
+- `ioremap` → `PROT_DEVICE_nGnRE` (posted) — `arch/arm64/include/asm/io.h:283`.
+- `ioremap_np` → `PROT_DEVICE_nGnRnE` (non-posted) — same file, line 288.
+- `devm_ioremap_resource` auto-upgrades to NP when the resource carries
+  `IORESOURCE_MEM_NONPOSTED` — `lib/devres.c:139`; of_platform sets that flag
+  under a `nonposted-mmio` parent — `drivers/of/address.c:1031-1069`.
+- userspace `/dev/mem` of MMIO → `pgprot_noncached` = nGnRnE (non-posted).
+
+Consequence [MEASURED]: the SAME word+value `eng+0x0 ← 0x10` (phys
+0x284000000) freezes the box from a kernel `devm_ioremap` writel (arm-A) and
+passes from `/dev/mem` O_SYNC userspace (W8, 12/12 tunables + SCRATCH) and
+from the np-mapped driver (arm-A5, all 12 readbacks with values). The legacy
+`ane_t6021.ko` maps with `devm_ioremap` — it must never touch the engine
+window. The rtclient maps `ioremap_np` — correct.
+
+### 1.3 The cold-stock-boot delta (likely cause of the fwstart#2 hard crash)
+
+The ISP comparison isolates what "cold" means. On the ISP, Linux RUNs the ASC
+CPU from scratch on every boot, and before `COPROC_CONTROL 0→0x10` it ALWAYS:
+
+1. raises every power domain (probe-attached; `apple_isp_power_up_domains`,
+   isp-fw.c:70), and
+2. enables the block's clock gate: `isp_gpio_write32(isp, ISP_GPIO_CLOCK_EN,
+   0x1)` (isp-fw.c:278, ISP_GPIO_CLOCK_EN = gpio+0x20, isp-regs.h:55), and
+3. (only after a driver shutdown, marker 0xfeedbabe) performs a full coproc
+   reset: `EDPRCR ← 2`, FABRIC_0..3 (0x738/0x798/0x7f8/0x858) `← 0xff00ff`,
+   IRQ_MASK_0..5 `← 0xffffffff`, drain 0x818/0x81c, wait `STATUS & IN_WFI(0x3)`
+   (isp-fw.c:225-258, isp-regs.h:11-25).
+
+ANE T6021 equivalents and their Linux status:
+
+- **Pre-CPU engine table**: the T6021 kext path applies
+  `eng+0xB38/0xB98/0xBF8 ← 0x01FF01FF` (3 records) on EVERY
+  EnableANEClocksAndPower, unconditionally (dev+0x784 gate has no writer) —
+  pass4/pass5-closed, [FACT] boot.c comment + arm-b §2. **fwstart#2 ran mode 2
+  = table SKIPPED**, while instead writing the t8103-derived m1n1 13-write set
+  whose fabric words sit at **0x738/0x798/0x7f8** — the T8103 offsets, NOT the
+  T6021 pre-CPU offsets. The ISP cold-boot path proves these FABRIC registers
+  are the generic ASC coproc block brought up before RUN; writing the wrong
+  generation's offsets and skipping the real table is exactly a
+  "cold/wrongly-configured fabric face at CPU release" state.
+- **Provider clock-gate group**: ADT ane0 `clock-ids [318 319 320 321]` +
+  `clock-gates/power-gates [473]` (ANE-SYS-V) are enabled by the kext via the
+  clock provider (enableDeviceClock/enableDevicePower at 0x95d1d48/0x95d1d90,
+  arm-b §1) and by m1n1 via the `pmgr_adt_power_enable("/arm-io/ane")` gate
+  walk. Linux has NO equivalent (overlay carries no clocks property; no pmgr
+  domain for gate 473; `devm_apple_tunable_parse` in this tree is consumed
+  only by the ATC PHY). The ISP analog is exactly GPIO_CLOCK_EN ← 1 before
+  RUN. [FACT, ADT raw node; W7 G1]
+- **Warm vs cold**: W8's 12/12 success ran on a box that had been through
+  macOS earlier that boot; fwstart#2 ran on a stock boot where nothing had
+  warmed the aperture. This is the W8-passed / fwstart#2-wedged delta without
+  inventing a new latch. [INFERRED, but each half is receipt-sourced]
+
+**Verdict** [INFERRED → testable]: kernel-context RUN wedges on T6021 because
+the CPU is released against a fabric face that iBoot/macOS would have
+configured and Linux does not: the T6021 pre-CPU table (skipped in mode 2) and
+the ANE-SYS-V/clock-id gate group (unavailable), with the posted-write class
+explaining why legacy-driver kernel attempts were disproportionately fatal
+versus the userspace np path. Discriminating rerun (bounded): same fwstart
+core on a warm boot (post-macOS) vs stock boot, table mode 1 (the 3 sourced
+T6021 records), with the seam logs — if warm passes and stock wedges, the
+clock-gate group is the missing piece; if table-mode-1 passes on stock, the
+pre-CPU table is the missing piece.
+
+### 1.4 What the ISP comparison also settles
+
+- **RUN is the whole start**: m1n1 `hw/asc.py` CPU_CONTROL RUN=bit4, and the
+  ISP writes CONTROL 0→0x10 and polls — no RVBAR write exists in the ISP
+  driver (RVBAR 0x1050000 is defined in isp-regs.h:14 and never stored; every
+  .c grepped). iBoot/bootloader latches it; mainline rtkit.c never starts
+  CPUs (fw-start receipt §1 stands).
+- **The ANE boot contract is the Apple-generic one**: ISP first-magic
+  `0x08042006` = ANE SCRATCH7 READY; ISP wake `0xf7fbdff9` = ANE wake; ISP
+  CONTROL/STATUS offsets = ANE CPU_CONTROL/CPU_STATUS. The H14 P0..P7
+  contract's shape is confirmed against a shipped Linux driver.
+
+---
+
+## 2. Ordered Linux-context start sequence (mirrors apple-isp, T6021 addresses)
+
+ISP step (file:line) → T6021 ANE adaptation. Every ANE address engine-relative
+to the 0x284000000 aperture; power values per the pinned receipts.
+
+| # | apple-isp (branch isp/t602x-v2) | T6021 ANE adaptation | ANE cite |
+|---|---|---|---|
+| 1 | genpd attach all domains, primary via device_link RPM_ACTIVE, secondaries `pm_runtime_get_sync` ascending (isp-drv.c:44-77; isp-fw.c:70) | genpd raise all 8 islands (ane_cpu, ane_sys, ane_sys_mpm, ane_td, ane_base, ane_set1..4); gate: every ps ACTUAL=0xf BEFORE any MMIO | power-dart-fwload §1.3/§1.4 |
+| 2 | 4 windows via `devm_platform_ioremap_resource_byname` → non-posted (lib/devres.c:139 + of/address nonposted-mmio) | `ioremap_np` the 32 MiB engine window (mailbox child region inside — no exclusive request) | rtkit-port §2.2 |
+| 3 | iommu domain over 3 ISP DARTs, stream 0 (t8112.dtsi:606); static heap carveout + drm_mm iovad from heap_top (isp-drv.c:80-131); surfaces `iommu_map_sgtable` (isp-iommu.c:120) | attach dart-ane0 inst0/1/2 stream 0; stage selene via dma_alloc_coherent + iommu_map; entry-alias at the latched RVBAR entry (0x10000000000), page-by-page via iommu_iova_to_phys | fwload; power-dart-fwload §2.3/§3.3 |
+| 4 | bootloader staged the fw image; `isp_heap` "Filled in by bootloader" (t600x-common.dtsi), iommu-addresses static IOVA | iBoot/m1n1 stages selene (`pre-loaded=<1>`) — on a Linux-staged boot the fwload staging+alias REPLACES this step | ADT ane0 `pre-loaded`; fwload |
+| 5 | `pm_runtime_resume_and_get` — "Needs to be power cycled for IOMMU to behave correctly" (isp-fw.c:744) | genpd resume_get before the sequence; never ps@2e0 from kernel (s24) | boot.c gates |
+| 6 | `ISP_GPIO_CLOCK_EN ← 1` (isp-fw.c:278) | **GAP — no Linux provider**: ADT clock-ids 318-321 + gate 473 (ANE-SYS-V). Only m1n1 `pmgr_adt_power_enable("/arm-io/ane")` covers it today. | arm-b §1; W7 G1 |
+| 7 | if shutdown marker: `EDPRCR←2; FABRIC 0x738/0x798/0x7f8/0x858 ← 0xff00ff; IRQ_MASK_0..5←0xffffffff; drain 0x818/0x81c; wait STATUS IN_WFI` (isp-fw.c:225-258) | T6021 pre-CPU table: `eng+0xB38 ← 0x01FF01FF`, `eng+0xB98 ← 0x01FF01FF`, `eng+0xBF8 ← 0x01FF01FF` (3 records, always-run, kext-sourced) — NOT the t8103 offsets | boot.c pass4/5; arm-b §2 |
+| 8 | `GPIO_0..7 ← 0` (isp-fw.c:285-293) | `InitANEScratchRegisters`: SCRATCH0..7 (eng+0x1840048..0x1840064) ← 0, then SCRATCH7 pulse 1→0 | K14 0x960f2a8; boot-prereqs §1.5 |
+| 9 | `mbox IRQ_ENABLE ← 0` until boot complete (isp-fw.c:295) | leave ASC mailbox quiescent until RTKit phase; IRQ 884 armed after handshake | rtkit-port §2.6 |
+| 10 | `COPROC_CONTROL ← 0` then `← 0x10` (isp-fw.c:296-297) | `CPU_CONTROL (eng+0x1400044) write32 0`, then `0x10` (RUN) | rvbar-width local order; kext 0x95e954c boot |
+| 11 | poll `GPIO_7 == 0x08042006`, ≤1000 × 1 ms (isp-fw.c:299-318) | poll `SCRATCH7 (eng+0x1840064) == 0x08042006`, ≤1000 × 1 ms; timeout ⇒ STOP, no retry | K14 poll; s22 |
+| 12 | read fw requests (GPIO_0/1/3); write bootargs into IPC surface; publish args_iova GPIO_0/1; `dma_wmb()`; `GPIO_7 ← 0xf7fbdff9`; poll `0x08042006` (isp-fw.c:355-425) | publish SCRATCH0/1 = u64 pool/IPC DVA (dsb st before); wake `SCRATCH7 ← 0xF7FBDFF9`; poll B DONE (same magic); RTKit HELLO rides after the wake | NS §3; boot.c ack model |
+| 13 | read fw-published channel table from the IPC surface (isp-fw.c:455-520) | RTKit: HELLO/EPRollCall/EPMAP on MGMT EP0 via the ASC mailbox (eng+0x1408000: A2I send0/1 = +0x1408800/+0x1408808, I2A recv0/1 = +0x1408830/+0x1408838, ctrl +0x1408110/114); endpoint bitmap capture names the CSNE channels | [M1N1] asc.py; [RTKIT] mailbox.c:38-48 |
+| 14 | enable mbox IRQ (0xf) then IPC command processor start cmds (print/pmu/dsid/pmp/start) (isp-fw.c:630-730) | `apple_rtkit_start_ep` per announced EP; SetupEndpoints ring announces; CSNE_CMD PING 0x11 / BUILDINFO 0x06 on INIT; then REG_FILE_LOAD 0x05 ships the 1456 B `_rtk_tunables` (fw-side; per-chip T6021 selector content — macOS builds it at runtime, H14TunableManager) | rtkit-port §3/§6; arm-b §1.5 |
+
+ISP evidence lines are [FACT] against the fetched branch; ANE adaptation lines
+carry their own citations. Steps 6-7 are the two the fwstart#2 core did not
+do — see §1.3.
+
+---
+
+## 3. RTKit endpoints and CSNE command framing (kext disassembly)
+
+### 3.1 Transport (mailboxes)
+
+- ASC block = engine+0x1400000. `ASCRegs` [M1N1 asc.py:34-43]:
+  CPU_CONTROL +0x44, CPU_STATUS +0x48, INBOX_CTRL/OUTBOX_CTRL +0x110/0x114,
+  INBOX0/1 +0x800/0x808, OUTBOX0/1 +0x830/0x838. So on T6021: A2I send
+  words at eng+0x1408800 (payload u64) / +0x1408808 (endpoint u64 — the
+  doorbell write), I2A recv at eng+0x1408830/+0x1408838, controls
+  eng+0x1408110/0x1408114. Matches [RTKIT] mailbox.c APPLE_ASC_MBOX_* and the
+  live W10 reads of 0x285408110/114.
+- RTKit message = (endpoint, u64 msg); system endpoints MGMT=0, CRASHLOG=1,
+  SYSLOG=2, DEBUG=3, IOREPORT=4, OSLOG=8; app endpoints ≥ 0x20
+  (`APPLE_RTKIT_APP_ENDPOINT_START` = 0x20, rtkit-internal.h:22).
+- `apple_rtkit_send_message` does `dma_wmb()` then mailbox send (rtkit.c:604-
+  634) — buffer visibility before doorbell is upstream-mandated.
+
+### 3.2 Endpoint numbers — what is pinned and how to get the rest
+
+- Kext channel slots are **0..6** (`SetupEndpoints` bounds `cmp w1, #0x7` at
+  0xfffffe00095fe690); descriptors at `dev+0x5c0`, stride 0x40
+  (`ubfiz x9, x19, #6, #32` at 0xfffffe00095fe6d0); `HandleRTBuddyMessage`
+  accepts indexes 1..6 (`cmp x19,#7 b.ge` reject at 0xfffffe00095ff038).
+- Per-channel cfg table `__DATA_CONST.__const+0x814e520`, 40 B/entry; ring
+  sizes 64K/256K/256K/64K/128K/64K for INIT/T2F_CMD/T2F_HIPRI/T2HS/T2HC/T2HT
+  stand from the rtkit-port receipt.
+- Channel NAMES (`FW_INIT T2F_CMD T2F_HIPRI T2H_SHMEM T2H_CMD T2H_TERM`,
+  cstring 0xfffffe00074c5170) are kext-side only — selene contains no channel
+  strings (grepped this lane; only `rtbuddy` at fw 0xa08b4) and selene.syms
+  is empty. The concrete rtkit EP ids are owned by RTBuddyService and are
+  announced by the firmware's EPMAP at handshake — capture them there (the
+  rtclient's endpoint-bitmap log is the right mechanism). Convention check:
+  app EPs start at 0x20, and m1n1's RTBuddy-v2-style SIO service uses
+  `epmap[0x20]` — expect the six channels mapped at/above 0x20, small ids,
+  announced order stable. [FACT for the mechanisms; EP ids = runtime datum]
+
+### 3.3 Ring word framing — conflict RESOLVED (two different words)
+
+Direct disassembly, both sides of the same kext build:
+
+**(a) Ring ANNOUNCE / drain word** — `SetupEndpoints`
+0xfffffe00095fe8b0-0x95fe8e8 [FACT]:
+
+```
+mov  w9, #0x14 ; mov w10, #0xc
+cmp  x23, #0x100, lsl #12          ; ring size vs 1 MiB
+csel x9, x10, x9, lo               ; shift = size<1MiB ? 12 : 20
+mov  x10, #0x20000000000000        ; class 2<<52
+mov  x11, #0x10000000000000        ; class 1<<52
+csel x10, x11, x10, lo             ; class = size<1MiB ? 1 : 2
+lsl  w11, w11, w9 ; mvn            ; granule mask
+lsr  x9, x23, x9 ; tst; cinc       ; code = ceil(size >> shift)
+bfi  x10, x9, #44, #8              ; word[51:44] = size_code
+bfxil x10, x8, #0, #44             ; word[43:0]  = ring DVA low 44 bits
+```
+
+So the announce word = `{ring_dva[43:0] | size_code[51:44] | size_class[53:52]}`
+with size = code << shift. The fw→host drain decode in
+`HandleRTBuddyMessage` 0xfffffe00095ff0d4-0x95ff100 uses the SAME fields:
+`sbfx x10, x9, #0, #44` (offset44), `ubfx x11, x9, #44, #8` (code),
+`ubfx x12, x9, #52, #2` (class), size = class==0 ? 0 : class==1 ? code<<12 :
+class==2 ? code<<20 : code<<21 (csel chain at 0x95ff0e0-0x95ff100); "queue
+drained" when `offset44 == [ringobj+0x18]` (the ring's own base DVA) AND
+`size == [desc+0x8]` (ring size) — compare/`ccmp` at 0x95ff10c-0x95ff114,
+branch to the drain path at 0x95ff218.
+
+Class table (definitive): **0 ⇒ 0 (doorbell-only), 1 ⇒ code<<12 (4 KiB
+granule), 2 ⇒ code<<20 (1 MiB), 3 ⇒ code<<21 (2 MiB)**. W2's old
+"class 1 ⇒ code<<13" was a misread (the <<21 line belongs to class 3).
+
+**(b) Ring DATA word — both directions**: `{offset[23:0] | length[47:24]}`, len ≤ 0xFFFFFF.
+- Send: `rtbuddyEndpointSendMessage` 0xfffffe00095f3bf4-8:
+  `and w8, w25, #0xffffff` ; `bfi x8, x21, #24, #24`.
+- Receive: 0xfffffe00095ff118-11c: `and x26, x9, #0xffffff` ;
+  `ubfx x27, x9, #24, #24` → `processCommandResponse(dev, ring_base+offset,
+  len, 0)` at 0xfffffe00095ff160. Bounds check offset+len ≤ ring size at
+  0x95ff120-130 rejects malformed/drain words on the data path.
+
+**Resolution**: the two prior receipts each decoded a different word of the
+SAME protocol and were compared against each other. H14RpcProtocol's
+{offset[0:28)|sizeCode[28:36)|class[36:38)} matches nothing in the binary.
+The rtclient's `csne_ping` data-word packing (cursor[23:0]|len[47:24]) is
+correct as implemented. For a 64 KiB INIT ring the announce word is:
+`class=1, code=0x10 (64Ki>>12), dva=ring IOVA` →
+`w = (iova & 0xFFFFFFFFFFF) | (0x10 << 44) | (1 << 52)`.
+
+### 3.4 Command header and opcodes (stand, with one upgrade)
+
+- Header `sCSneControllerCmdHdr` per h14-rpc-protocol notes §2 stands: cmd id
+  u16 @+0x04, flags u8 @+0x06 (bits[0:5] preserved, [5:7]=1), +0x07=0,
+  param0 u32 @+0x1c, param1 u32 @+0x20; message sizes 0x20/0x24; commands
+  carved from ring memory (`ANEFirmwareCommandBuffer` alloc 0x95e45d4 → ring
+  take 0x95e1918).
+- EndpointSendMessage plumbing re-verified this lane: send method =
+  queue vtable +0x1e8 via `blraa` at 0xfffffe00095f3c30; send retry/logging
+  wrappers at 0x95f3990 family; `rtbuddyEndpointSendInPlace(u8 ep, u64, u64,
+  u64, bool)` mangled name confirms ep travels as a u8 slot.
+- Opcodes: 0x400-0x404 + 0xff00 HIGH (kext immediates), remainder MEDIUM per
+  the h14-rpc-protocol receipt — unchanged. PING 0x11 / BUILDINFO 0x06 remain
+  the first-boot control probes.
+
+---
+
+## 4. DART / SART requirements (assignment item, consolidated)
+
+1. Three dart-ane0 instances (0x285800000 LLT / 0x285810000 BRD / 0x285820000
+   BWR), all stream 0, t8110 fallback binding; TCR must read
+   TRANSLATE_ENABLE|FOUR_LEVEL with a valid TTBR and ENABLE covering the
+   device stream at RUN time — s18-measured state is the requirement.
+   DAPF window 0x285804000 is NOT a gate (s20/s21).
+2. No SART anywhere in the ANE path — requirement is DART-only.
+3. The entry region: whatever IOVA the RVBAR latch encodes
+   (0x10000000000 = dart-ane0 vm-base on this box) MUST be mapped before
+   RUN — the entry-alias does this; a missing mapping yields a logged dart
+   fault, never silence.
+4. The DART windows reg 0x308/0x310 (vm-base/window end) must be programmed
+   on all three instances (s17); the ADT `dart-tunables-instance-0/1/2`
+   values were verified 18/18 to match what Linux programs (IORegistry
+   capture re-read this lane; the ane0 node itself carries NO
+   tunables/reg-tunables property — the tunables story is DART-side and
+   fw-side `_rtk_tunables` only).
+5. Non-posted mapping is a DART-adjacent survival requirement: every ANE
+   window touched from Linux must be nGnRnE (§1.2).
+
+## 5. What M2FwStart did with each finding
+
+| Finding | Delivered (hub) | Ack | Outcome |
+|---|---|---|---|
+| Ring word framing + doorbell resolution (§3.3) | yes | yes | Adopted for the handshake phase: announce {dva[43:0]\|code[51:44]\|class[53:52]}, class-1 shift 12; matches their encoder |
+| Wedge attribution + ISP comparison (§1) | yes | yes | Adopted, PLUS live addendum from the box (see below): the dangling-phandle dtb defect is a second, same-class mechanism |
+| Start sequence + DART/SART consolidated (§2, §4) | yes | yes | Adopting table mode 1 (T6021 pre-CPU table) + the warm-vs-stock discriminator; their next runs are state-report / tunables / scratch / RVBAR bisect on the repaired dtb BEFORE any RUN write |
+
+M2FwStart live addenda acked back into this receipt (2026-09-22):
+1. The composed overlay dtb carries DANGLING phandles: 0x1f5 (ane_sys_mpm),
+   0x1f1, 0x1f0 (ane_cpu) are referenced by ane0 and dart1/2 but defined
+   nowhere in the live tree (OF errors at 0.012 s, phandle-walk verified).
+   ane0 attaches only 5/6 domains; ane_cpu + ane_sys_mpm are never
+   genpd-raised on a stock boot. This folds into §1.3: a released CPU whose
+   island was never raised is the unpowered-window wedge class — the cold
+   boot had TWO gaps (clock-gate group + unraised islands), not one.
+   dtb repair (re-resolve the overlay phandles against the base) is the
+   first fix ahead of any start attempt.
+2. apple-mailbox fails probe every boot (-ENXIO, missing send-empty IRQ), so
+   fw_devlink defers ane0 indefinitely — insmod cannot probe at all on the
+   current tree; same dtb repair covers it (supplies the mailbox child/IRQ).
+
+## 6. Method notes / provenance
+
+- ISP sources fetched from AsahiLinux/linux branch `isp/t602x-v2` via gh api
+  (tree dd1bbfed) to a scratch dir; nothing in-repo modified except this
+  receipt. Kext + selene disassemblies cached (llvm-objdump-19, --macho);
+  all cited kext addresses are symbol-anchored (syms file shipped with the
+  fixture).
+- ADT facts re-verified against BOTH the raw dtree dump (ane0/dart-ane0
+  nodes) and the IORegistry export; where they differ (runtime-added
+  `dart-tunables-instance-*` appear only in the IORegistry — XNU
+  driver-supplied), the raw ADT is authoritative for what iBoot passes.
+- selene channel-name absence + empty selene.syms recorded so nobody retries
+  that route for EP ids; EPMAP capture at handshake is the path.
+- No device contact, no ssh to any host; all evidence on-disk binaries,
+  fetched upstream sources, and prior live receipts.
+
+---
+
+## 7. Addendum — B4 result and the B5 clock-gate decode (same day, later)
+
+M2FwStart live result B4 (repaired dtb): pre-CPU table 0xB38/0xB98/0xBF8 ←
+0x01FF01FF fired clean from kernel context; CPU_CONTROL RUN clean
+(CPU_STATUS 0x2a → 0x28, STOPPED cleared); poll A timed out with zero
+SCRATCH7 activity and zero dart faults; box alive. Table eliminated as the
+wedge; RUN itself is no longer the wedge either. The remaining suspect is
+§2 step #6 — the clock-gate group.
+
+### 7.1 The pmgr id → register decode rule (this lane)
+
+Device records in the ADT pmgr `devices` table decode as:
+`ps_addr = ps-regs[map].window + ps-regs[map].off + index*8`
+(dumper fields: map = ps-regs index, index = addr_offset×8).
+
+Validated on seven known anchors:
+| device | map/index | ps-regs entry | computed | authority |
+|---|---|---|---|---|
+| ANE_SYS | 6/12 | [6]=reg0+0x200 | 0x28e080260 | overlay ane_sys@260 |
+| ANE_CPU | 6/28 | [6] | 0x28e0802e0 | overlay ane_cpu@2e0 |
+| ANE_SYS_MPM | 8/0 | [8]=reg0+0x4000 | 0x28e084000 | overlay @4000 |
+| ANE_TD | 8/1 | [8] | 0x28e084008 | overlay @4008 |
+| ANE_BASE | 8/2 | [8] | 0x28e084010 | overlay @4010 |
+| ANE_SET1 | 8/3 | [8] | 0x28e084018 | overlay @4018 |
+| ANE_SET4 | 8/6 | [8] | 0x28e084030 | overlay @4030 |
+
+pmgr reg windows (dump order): [0]=0x28e080000, [1]=0x29e280000,
+[2]=0x290280000, [3]=0x28e680000, [4]=0x28e000000 …
+
+### 7.2 The kext clock/power path is provider calls, not MMIO
+
+`0xfffffe00095d1d20-0x95d1d90`: `ldr w2,[x20,#0x8f0]` (id from ADT
+clock-ids) → vtable +0x8a8 (enableDeviceClock) → provider object dev+0x810,
+vtable +0x8b0 (enableDevicePower), same id. No kext-side MMIO; the write is
+the standard pmgr ps op (TARGET[3:0]=0xf | AUTO_ENABLE bit28, poll
+ACTUAL[7:4]==0xf) — same shape as pmgr-pwrstate.c.
+
+### 7.3 The ane0 clock-ids are VENC gates — the B5 addresses
+
+ADT devices table decode of ane0 `clock-ids [318 319 320 321]`:
+**318=VENC_PIPE4, 319=VENC_PIPE5, 320=VENC_ME0, 321=VENC_ME1** — all map 15
+(ps-regs[15] = window2 + 0x8000 = 0x290288000), index 1..4. Apple wires
+ane0's clock-ids to the VENC power gates on T6021 (ANE in the VENC complex
+on this die). Kernel-writable B5 addresses (ps TARGET RMW 0xf|AUTO_ENABLE,
+poll ACTUAL, 100 µs, never TARGET=0):
+
+| id | device | ps addr |
+|---|---|---|
+| 318 | VENC_PIPE4 | 0x290288008 |
+| 319 | VENC_PIPE5 | 0x290288010 |
+| 320 | VENC_ME0 | 0x290288018 |
+| 321 | VENC_ME1 | 0x290288020 |
+
+Plain pmgr ps words (kernel-genpd op class), not the ane_cpu island —
+outside the s24 fatal class.
+
+### 7.4 Gate 473 (ANE-SYS-V) — CLOSED as "no register exists"
+
+flag 0x10 = VIRTUAL → no ps word anywhere; enable = parent-walk only
+(m1n1 pmgr.c PMGR_FLAG_VIRTUAL skip; XNU same). Parents already raised by
+genpd. [FACT for the no-write semantics; parent-chain decode MEDIUM]
+
+### 7.5 B5 discriminator and fallback
+
+Enable 318-321 BEFORE CPU_CONTROL 0→0x10, rerun the identical contract core.
+If poll A stays silent: the next item is not a register — it is G6/Item3
+(FW_INIT boot-args surface identity; SetupFWInitBootArgs template dev+0x998,
+0x100 bytes, surface+0x84=0x40) and the P5 pool word. Note: a working alias
+predicts NO dart fault, so B4's clean fault log is consistent with "fetch
+succeeded, firmware stuck early" — the shape a missing rail produces.
+
+### 7.6 B5 decode acked and adopted (final update)
+
+M2FwStart acked §7 in writing: "Ack + adopted." Coded as omarchy-ane 8a36246
+(`fw_start_venc_gates`): raises 318-321 at 0x290288008/10/18/20 with
+read-logged before/after, TARGET RMW (never 0), poll ACTUAL 100 µs/10 ms,
+abort before any engine write on failure. B5 run design: fresh boot +
+stop_after=4 + venc_gates=1, table_mode default 2 (single variable vs B3);
+on READY: full run on the restored stock dtb with ane_mailbox_poll.ko bound
+first, then rtkit + endpoint bitmap. Their B5 ps-word before/after values
+will be appended here when reported.
+
+### 7.7 B5/B5b live values + the B6 parent-rail decode (final row)
+
+M2FwStart B5/B5b (fresh boot, refusals clean, box healthy, stock vehicle
+restored; full trace: receipts/2026-09-22-t6021-fw-start-debug/captures/
+fwdebug-b5 b5b/ on lane/t6021-fw-debug):
+- ps-regs[15] scan 0x290288000+000/008/010/018/020 = 0x00000300 each (idle ps
+  signature — decode confirmed live); +028..+038 = 0 (not ps words).
+- Raise: every word incl. +000 latches TARGET (0x300 -> 0x30f) but
+  ACTUAL[7:4] stays 0 through 10 ms polls — power-up not granted for the
+  entire block including the leaves.
+
+Parent-chain decode (this lane, ADT devices table, same validated rule):
+| id | device | flag | parent | map/index | ps addr |
+|---|---|---|---|---|---|
+| 317 | VENC_DMA | 0x0 | 299 | 15/0 | 0x290288000 |
+| 299 | VENC_SYS | 0x22 (REAL) | 519 | 11/28 | **0x2902803e0** |
+| 519 | AVEMSR-V | 0x10 VIRTUAL | none (alias 0) | 0/0 | — no write |
+
+**B6 = raise VENC_SYS 0x2902803e0 BEFORE the leaf gates** — ps power-up
+grants parents-first (genpd / m1n1 pmgr_set_mode_recursive semantics; the
+macOS provider call walks parents inside enableDeviceClock(318), which is
+why one kext call sufficed there and leaf-only writes latch TARGET without
+ACTUAL). AVEMSR-V is virtual with no parents: 0x2902803e0 is the top of the
+writable chain. Context, DO NOT TOUCH (ISP cluster, same window2, map14 =
+0x290284000+idx*8): ISP_VIS 313 @+0x18, ISP_BE 314 @+0x20, ISP_RAW 315
+@+0x28, ISP_CLR 316 @+0x30.
+
+Chain completeness note (Main task row): the alias field across these
+records is a u16 parent PAIR — VENC_ME0 (320) carries parents (319, 318)
+packed as 0x013E013F, so every leaf funnels through VENC_DMA (317) /
+VENC_SYS (299). VENC_SYS flag 0x22 = the same real-ps class as ANE_SYS
+(id 60), which Linux genpd raises successfully today — therefore the chain
+ends in a ps word Linux can raise: **0x2902803e0**. Raise order: 0x2902803e0
+first, poll ACTUAL, then the four leaves. Decoded per Main task; register
+list + raise order delivered to M2FwStart (canonical message) and to Main.
+
+### 7.8 Pre-READY firmware flow + the load-base stamp (M2FwStart's discriminator 3)
+
+Flow from CPU release to the selene READY write (selene rc4x VM addresses,
+direct disasm of the shipped image):
+1. Reset 0x0 -> 0x204: memset _rtk_boot, page tables, TTBR0/1 (0x4ac/0x4b4),
+   MMU on @0x590 (reset-vector receipt + this disasm).
+2. ASM tail 0x744: SP per-core, `br 0x891c4` with ROM/asm handoff x0-x5.
+3. C main 0x891c4: PAC keys, init calls 0x880fc x2, then the boot main.
+4. Boot main **fn 0x71a4** (owns the READY site 0x7360): bl 0x28ec0 registers
+   7 callbacks into global 0x1efe80 and returns immediately (non-blocking);
+   bl 0x5328 returns constant 0xc440; scratch-object writes (global
+   0x1ec4f8; write vtable+0x30 salt 0x5bdd, read vtable+0x28 salt 0x78f7):
+   **slot1 <- 0xc440 (constant), slot2 <- 0x100 (constant)**, slot3 <- arg,
+   slot4 <- arg byte, then slot7 <- 0x08042006 READY; poll for 0xf7fbdff9.
+
+Nothing inside fn 0x71a4 blocks before READY. B4/B5b read SCRATCH all-zero
+=> the park is BEFORE fn 0x71a4 (between MMU-enable, ASM tail, or early C
+main init).
+
+### 7.9 THE LOAD-BASE STAMP — root-cause candidate for the park
+
+- Reset @0x298-0x2b4 reads a 64-bit stamp from the image: `adr x0,#16292`
+  targets **vm 0x423C**; `ldp w0,w1,[x0]` -> x22 = w0 + (w1<<32); pair==0
+  defaults x22 = **0xe8000** (link base — identity VM==PA assumption).
+- @0x2b8-0x2c4: x25 = x22 - 0xe8000 (PA of VM 0). @0x450-0x474: the fw's L1
+  table PHYS pointer x20 = (0x104000 - 0xe8000) + x22 — ALL fw MMU tables
+  map VM 0..0x36c000 -> PA x22...
+- **VERIFIED: the shipped file's pair at vm 0x423C is 0000000000000000**
+  (bytes read directly). Every exact-image staged copy ships x22=0 -> the fw
+  believes it is at PHYS 0xe8000. macOS's iBoot must either load at PA
+  0xe8000 or patch this pair in its staged copy (the shipped file is a
+  template).
+- WHY B4/B5b PARK: staged copy keeps pair=0 -> fw tables map VM->PA
+  0xe8000.. while the CPU runs at PC 0x1000005xx (the alias region). The
+  first instruction fetch after `msr SCTLR_EL1` (MMU on @0x590) goes through
+  the fw's OWN tables — 0x10000000000 is unmapped there -> instruction abort
+  -> VBAR (VM 0) also unreachable at the running PC -> spin. Matches the
+  full B4/B5b signature: STOPPED clears, zero SCRATCH, zero dart faults
+  (DART served the pre-MMU fetch; the abort is internal to the ASC MMU).
+
+B7 RECIPE:
+1. Patch the staged copy's 8 bytes at FILE offset 0x823C (= __TEXT fileoff
+   0x4000 + vm 0x423C) to x22 = 0x0000010000000000: w0@0x823C = 0x00000000,
+   w1@0x8240 = 0x00000100. The fw then maps VM i -> PA 0x10000000000+i and
+   the DART alias composes into identity-through-alias.
+2. Patch AFTER the sha-pinned validate; re-hash the patched image.
+3. Stage physically CONTIGUOUS (the table builder's 16 KiB granule math may
+   emit block mappings; scatter is a secondary fault source).
+4. Observability: fw writes SCRATCH1=0xc440 / SCRATCH2=0x100 BEFORE READY —
+   after the patch any progress is host-visible via SCRATCH1/2; log all
+   eight scratch words after every B7 attempt.
+
+### 7.10 Post-B7: x22 stamp eliminated as sole cause; next host-side discriminator
+
+M2FwStart B7 (x22 patched to 0x10000000000, patched-buffer sha 00220713...)
+STILL parked before fn 0x71a4 — stamp alone is not the cause. Eliminated
+list now receipt-anchored on their side: DART config/stream, aperture lock,
+eight-island power, RVBAR latch shape, pre-CPU table, VENC rail chain
+(VENC_SYS 0x1f0003ff + leaves 0x3ff raisable from Linux), fw-MMU stamp.
+
+ROM-side note (their discriminator 2): the ASC boot ROM is chip ROM — NOT
+present in any captured binary (kext, selene, styx all checked); static
+decode of ROM-internal expectations is impossible from our sources. What
+static analysis CAN add: selene's early path (0x204-0x590) reads only
+image-local data through PC-relative addressing (stamp pair, config words
+at [0xedf90]/[0xedf98] via the 0x808/0x818 helpers) — all served by the
+alias — and builds page tables into VM 0x104000-0x110000 (48 KiB, 16 KiB
+granule math, bfc #0,#14). The shipped file has those regions ALL ZERO.
+
+**HOST-SIDE SPLIT DISCRIMINATOR (no hardware risk, no reboot):** after the
+next attempt, BEFORE rmmod, read the staging buffer at VM-layout offset
+0x104000..0x110000 (the fw page-table region):
+- all zero  -> fw never reached the table builder (~0x4e4): park is at the
+  ROM jump / entry fetch / first instructions — the fetch path itself.
+- nonzero descriptors -> fw built tables (park is post-MMU-on: fault-spin
+  via VBAR 0x0, whose handlers re-enter the reset strap at 0x204 -> quiet
+  infinite loop).
+Also verify the B7 patcher placement: read back the staged copy at alias
+offset 0x423C-0x4244 and confirm it reads 00 00 00 00 00 01 00 00 (w1=0x100
+at +4). A file-layout vs VM-layout offset mixup (0x823C vs 0x423C) is a
+cheap silent patcher bug worth ruling out — the stamp must live at alias
+offset 0x423C because the pre-MMU read is PC-relative.
+
+### 7.11 VBAR decode (pre-committed for B8's split outcome)
+
+Exception handlers at VBAR=0 (VBAR_EL1 <- 0x0 @0x28c-0x290, i.e. VM 0):
+- slot 0x000 (sync SP0): `b 0x204` — re-enters the reset strap (quiet re-init
+  loop; any fault re-runs the boot until it faults again).
+- slot 0x080 (IRQ SP0) and 0x100 (FIQ SP0): `mrs x28,ESR_EL1; mrs x29,
+  FAR_EL1; mrs x30,ELR_EL1; b self` — **capture the fault triple into
+  x28/x29/x30 and spin forever**. The remaining slots are `udf` traps
+  (defined recursion into the same spin family).
+Consequences:
+1. Any post-MMU abort is a QUIET park (no output, no host-visible write) —
+   consistent with every observed signature.
+2. On any later vehicle that can read core registers (m1n1 debug, JTAG),
+   x28/x29/x30 after a park = ESR/FAR/ELR at the first fault — the single
+   most valuable recovery target; no reboot or re-run needed to read it.
+3. Post-MMU path 0x590-0x744 has no memory hazards beyond the alias-served
+   table region: non-core0 cores take the per-core-SP tail (MPIDR aff0);
+   core0 checks x15==0x24 (chip-revision selector) before TCR math and the
+   tail. So IF B8's split reads nonzero (tables built), the park is the
+   0x590-onward fetch/abort loop and x28/x29/x30 on a debug vehicle name it
+   in one read.
+
+### 7.12 M1 comparison (Main gate): no Linux driver starts ANE firmware on ANY SoC — and the m1n1 write-arm register set
+
+Premise correction (Main's question "what does T8103/T6001 get that T6021
+lacks"): **no Linux driver starts the ANE CPU on any SoC.**
+- The t8103 oracle (`m1n1 fw/ane.py`, W7's source, re-verified this lane):
+  `power_up()` writes ONLY the island ps SET words 0xf (line 66-71); grep
+  finds NO CPU_CONTROL (engine+0x1400044) and NO RVBAR (0x1050000) write in
+  the file. The H13 flow is host-task-manager: the fw is not on the
+  inference path at all.
+- The Asahi ane-accel driver (t8103/t6000) has no rtkit, no fw load, no CPU
+  start (fw-start receipt §1).
+- arm-b §1.4: with iBoot-released selene (bit0=1) the kext NEVER touches the
+  boot path — iBoot both stages and releases selene on macOS boots
+  ("pre-loaded"=<1>).
+So T8103/T6001 Linux "works" because the H13 host-TM model needs no firmware
+RPC; T6021 has a firmware-owned TM and selene is REQUIRED — and the Asahi
+boot chain never stages/releases it (iBoot-main is the replaced stage).
+T6021 does not lack a driver feature; it lacks iBoot-main's ANE init.
+
+### 7.13 ROM-handoff register set for the m1n1 write-arm (and the mode-bits park theory)
+
+Good news first: **selene consumes NO physical-base register from the ROM.**
+The load base is the in-image stamp at vm 0x423C (§7.9); every other entry
+value (x9/x13/x14/x15/x17/x20/x21, TCR/MAIR/TTBR/SP) is computed in-image
+from the stamp, image config words ([0xedf90]/[0xedf98], [0xb4150] per-core
+SP table), MPIDR, and ID_AA64MMFR0. x0 (the one ROM register) is only saved
+and forwarded (x7->x11->C-main x5) — its semantics are downstream and macOS
+tolerates whatever iBoot leaves, so the write-arm needs no secret register
+values.
+
+The write-arm obligation list (B9), in order:
+1. Quiesce-context power-cycle of ane_cpu (ps@2e0 TARGET 0 -> poll -> 0xf):
+   the ONLY lawful latch clear (bit0 must read 0 before RVBAR is writable —
+   s23 write-ignored-while-set; s24 forbids the ps cycle from kernel).
+2. Stage selene at a CONTIGUOUS carveout, VM-layout; patch vm 0x423C pair to
+   the carveout's dart-ane0 IOVA base (0x10000000000) — §7.9 recipe.
+3. dart-ane0: stream-0 mapping carveout IOVA -> carveout PA; TTBR shared to
+   inst1/2; TCR translate + ENABLE (v6 arm already does this).
+4. **RVBAR (engine+0x1050000) writeq WITH THE KEXT MODE BITS**:
+   0x0081000000000001 | (entry & 0xFF7EFFFFFFFFF800), entry = 0x10000000000.
+   The kext compose formula (rvbar-width receipt) already encodes this; our
+   live latch 0x10000000001 lacks bits 55/48 exactly.
+5. CPU_CONTROL 0 -> 0x10; poll SCRATCH7 == 0x08042006; B8 split readback.
+
+**Mode-bits park theory (now the prime suspect for the ROM-entry park):**
+the live latch 0x10000000001 lacks bits 55/48; a plausible ROM semantic is
+that the mode bits route the ROM's entry FETCH through the DART (or select
+translate-vs-bypass). Without them the ROM fetches the entry physical /
+unrouted -> nothing at 0x10000000000 -> pre-selene park with zero SCRATCH,
+zero dart faults (bypass = no DART involvement), STOPPED cleared — exactly
+B8's verdict "park in the ROM entry path", and exactly why B7's in-image
+patch changed nothing (selene never ran to read it).
+Cheaper-fix check: no ADT flag or boot policy can substitute — `pre-loaded`
+is an iBoot OUTPUT, not a policy input; the latch reset requires the
+quiesce power-cycle. The macOS-side provenance read (their discriminator 1)
+cannot observe the macOS-state latch (warm reboots re-run iBoot1 which
+re-stamps it), so B9 above is itself the decisive experiment: if mode bits
++ lawful latch clear moves the park, root cause lands; if not, the fault
+triple (x28/x29/x30, §7.11) on a debug vehicle is next.
+
+### 7.14 Correction to §7.13 obligation 2 — staged footprint is the full VM span (M2Boot9)
+
+§7.13's "contiguous VM-layout staging" underspecified the SIZE. The staged
+carveout must be the FULL VM footprint **0x500000**, not the 0x1a0000 flat
+blob: __TEXT vm 0 vmsize 0xe8000, __DATA vm 0xe8000 vmsize 0x284000 (file
+only 0xb8000), __DATA_CONST vm 0x36c000 vmsize 0 — image vmsize ends
+0x36c000, and the FWIM surface semantic carries the tail to 0x500000
+(ANE_FW_BUF_SIZE, ane_fw_validate.h:23-26 + config+0x138; segment pins at
+:52-53). Zero-fill BSS/tail; blob copied to segment offsets; stamp at vm
+0x423C = FW_DVA. Staging the flat blob only would fault-park selene on its
+first BSS/surface access post-MMU — silent, indistinguishable from the ROM
+park. M2Boot9's B9 arm already stages 0x500000 zero-filled.
+Latent same-class bug flagged: scripts/m2-proxyclient/ane_bringup.py
+step_c_map_selene maps len(fw_blob) flat (0x1a0000, no VM segmentation, no
+zero-fill) — fix before that route is ever used. Note also the two
+validator trees disagree on the constant (omarchy-ane 0x500000 = pinned
+authority per boot.c cfg_size; tools/ 0x400000 legacy).
+
+### 7.15 H13 architecture correction (AnePerfRoute, primary evidence) — refines §7.12's framing
+
+AnePerfRoute (lane/ane-perf-route) corrected the "H13 host-TM model"
+framing with primary evidence, and this lane accepts it: the H13
+architecture is the SAME iBoot-preload + kext-RPC family as H14 —
+BuildManifest enumerates ANE firmware per family (h13_ane_fw_styx_j5x.im4p,
+t600x_ane0/1/2/3_fw_eos_jc3x.im4p per-engine, selene/t602x, erebus/t603x);
+the H13 kext (9.512.0 fixture) carries full RTBuddy client infra + Chinook
+ASC registers, and its init fn @0xfffffe000931ffc4 does RVBAR write
+(engine+0x1050000, same offset) unless dev+0xdb bit0 is latched,
+CPU_CONTROL 0->0x10 via helper 0x9353050, polls SCRATCH7==0x08042006, then
+CSNE_CMD_CH_PROPERTY_WRITE (0x001f) incl. FW perf mode. Zero TM/TQ sites in
+the H13 kext (their kext_scan; matches our K14 finding). The "host-TM"
+description was specific to Eileen's m1n1 experiment flow (fw-less direct
+TM MMIO), NOT the macOS architecture.
+UNCHANGED conclusions that gate on this: no Linux driver starts the ANE CPU
+on any SoC (verified independently); T6021 lacks iBoot-main ANE init in the
+Asahi chain, not a driver feature; the write-arm B9 recipe stands. New
+cross-SoC datum: SCRATCH7 poll constant 0x08042006 on H13 = H14 — the Apple
+boot-contract constants are family-stable.
+Fixture provenance (their question a): selene rc4x = extracted from the
+macOS 26A428 build on the j414c target as an unwrapped Mach-O
+(sha 9f7915c4...), not from the kext and not a BuildManifest im4p; styx
+(w2/) = same macOS-extraction family, prior lane. BuildManifest im4p hashes
+are the bit-exact boot authority — compare before trusting a fixture for
+boot-chain work.
+
+### 7.16 Cross-SoC mode-bit confirmation (AnePerfRoute)
+
+The H13 kext's RVBAR compose site ORs the same mode-bit constant:
+0x8100000000000001 (movk #0x81 lsl #48 @0x93203bc in the H13 fixture) —
+identical 0x0081<<48 family value as the T6021 kext target (§7.13 step 4).
+Two consequences: (1) the mode-bit constant is family-stable H13/H14, so
+the m1n1 write-arm's B9 RVBAR value (0x0081<<48 | entry-fold) carries
+cross-SoC corroboration; (2) the live T6021 latch 0x10000000001 (no
+0x0081<<48) deviates from what ANY Apple kext generation expects at handoff
+— strengthens §7.13's mode-bits park theory (ROM entry fetch unrouted
+without them).

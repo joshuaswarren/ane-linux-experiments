@@ -1,0 +1,194 @@
+[rtmod] SUBMIT tid=84490 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "in_proj_a", "n": 16, "k": 2048, "batched_us": 29.63787496810255, "batched_gbs": 0.7611881764222287}
+[rtmod] SUBMIT tid=84490 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=5 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=7 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "out_proj", "n": 2048, "k": 2048, "batched_us": 26.238643749820767, "batched_gbs": 90.2290538555817, "chained_us": 35.298968782626616, "chained_gbs": 67.06960802677119}
+[rtmod] SUBMIT tid=84490 cv=9 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=10 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=11 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=12 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=13 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "in_proj_z", "n": 2048, "k": 2048, "batched_us": 24.39253748889314, "batched_gbs": 97.05788096371721, "chained_us": 34.07956251066935, "chained_gbs": 69.46943638900312}
+[rtmod] SUBMIT tid=84490 cv=14 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=15 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=16 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "down", "n": 2048, "k": 6144, "batched_us": 62.54581876419252, "batched_gbs": 113.42519996015258}
+[rtmod] SUBMIT tid=84490 cv=17 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=18 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=19 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=20 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=21 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "in_proj_qkv", "n": 6144, "k": 2048, "batched_us": 112.10199377273966, "batched_gbs": 63.28408408490898, "chained_us": 87.43914065689751, "chained_gbs": 81.13382572956908}
+[rtmod] SUBMIT tid=84490 cv=22 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=23 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=24 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=25 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=26 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "gate_up", "n": 6144, "k": 2048, "batched_us": 74.04898751701694, "batched_gbs": 95.80511817760764, "chained_us": 66.09529691559146, "chained_gbs": 107.33399093523863}
+[rtmod] SUBMIT tid=84490 cv=27 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=28 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=29 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=30 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=31 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "gate_up_fused", "n": 12288, "k": 2048, "batched_us": 152.4149125089025, "batched_gbs": 93.06469929031053, "chained_us": 132.0897031291679, "chained_gbs": 107.384963884197}
+[rtmod] SUBMIT tid=84490 cv=32 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=33 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=34 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=35 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=36 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "qkvz", "n": 8192, "k": 2048, "batched_us": 132.4661375292635, "batched_gbs": 71.3968428188727, "chained_us": 111.89495307917241, "chained_gbs": 84.5227040160438}
+[rtmod] SUBMIT tid=84490 cv=37 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=38 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=39 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"name": "lm_head", "n": 248320, "k": 2048, "batched_us": 1460.578625483322, "batched_gbs": 196.1998970820022}
+nwalk
+[rtmod] SUBMIT tid=84490 cv=40 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=41 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=42 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 1024, "k": 2048, "batched_us": 22.899828081790474, "batched_gbs": 51.78169878676601}
+[rtmod] SUBMIT tid=84490 cv=43 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=44 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=45 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=46 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=47 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 2048, "k": 2048, "batched_us": 26.544375032244716, "batched_gbs": 89.18981882693036, "chained_us": 40.74039054557943, "chained_gbs": 58.11156860048525}
+[rtmod] SUBMIT tid=84490 cv=48 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=49 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=50 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=51 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=52 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 4096, "k": 2048, "batched_us": 44.97804684433504, "batched_gbs": 105.18197947485689, "chained_us": 70.32839062048879, "chained_gbs": 67.26842400715695}
+[rtmod] SUBMIT tid=84490 cv=53 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=54 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=55 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=56 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=57 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 8192, "k": 2048, "batched_us": 111.44443749344646, "batched_gbs": 84.86438814459594, "chained_us": 114.38064052526897, "chained_gbs": 82.68588072743492}
+[rtmod] SUBMIT tid=84490 cv=58 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=59 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=60 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=61 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=62 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 16384, "k": 2048, "batched_us": 161.49281236721436, "batched_gbs": 117.10262347155263, "chained_us": 153.20893726311624, "chained_gbs": 123.43426132851795}
+[rtmod] SUBMIT tid=84490 cv=63 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=64 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=65 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=66 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=67 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 32768, "k": 2048, "batched_us": 296.81100022571627, "batched_gbs": 127.4156549832729, "chained_us": 216.93568714908906, "chained_gbs": 174.329860139652}
+[rtmod] SUBMIT tid=84490 cv=68 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=69 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=70 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=71 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=72 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 65536, "k": 2048, "batched_us": 481.99150023719994, "batched_gbs": 156.91695800191354, "chained_us": 434.26212505437434, "chained_gbs": 174.1635653593552}
+[rtmod] SUBMIT tid=84490 cv=73 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=74 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=75 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=76 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=77 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 131072, "k": 2048, "batched_us": 819.0917496904149, "batched_gbs": 184.66940249022275, "chained_us": 811.4407492030296, "chained_gbs": 186.41063336856544}
+[rtmod] SUBMIT tid=84490 cv=78 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=79 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=80 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=81 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=84490 cv=82 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{"n": 248320, "k": 2048, "batched_us": 1414.6408748274553, "batched_gbs": 202.57111264012684, "chained_us": 1553.51125067682, "chained_gbs": 184.4630194182062}
+read-roofline
+[rtmod] SUBMIT tid=84490 cv=83 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+Traceback (most recent call last):
+  File "/tmp/gemv-sk16/inmodel_probe.py", line 89, in <module>
+    s_ = mx.sum(a, dtype=mx.uint32)
+TypeError: sum(): incompatible function arguments. The following argument types are supported:
+    1. sum(a: array, /, axis: None | int | Sequence[int] = None, keepdims: bool = False, *, stream: StreamOrDevice = None) -> array
+
+Invoked with types: mlx.core.array, kwargs = { dtype: mlx.core.Dtype }
+[rtmod] COMMIT-NOOP

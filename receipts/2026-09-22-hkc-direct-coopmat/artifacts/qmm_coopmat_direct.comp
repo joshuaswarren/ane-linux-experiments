@@ -1,0 +1,217 @@
+#version 460
+#extension GL_KHR_cooperative_matrix : require
+#extension GL_KHR_memory_scope_semantics : require
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_EXT_shader_16bit_storage : require
+#extension GL_EXT_shader_explicit_arithmetic_types_float16 : require
+
+// Direct-global-load variant of qmm_coopmat.comp: the A (x) tiles are
+// coopMatLoad'ed straight from the f16 x buffer, staged as f16 (the HW
+// fmadd32 form with fp16 A/B and fp32 C — f16*f16 products are exact in
+// f32, and the staged path only ever fed exactly-widened f16 values, so
+// the per-output accumulation chain is unchanged). This deletes the
+// x_s shared tile, its per-lane staging stores/unpack and address
+// arithmetic. The B (weight) side keeps its shared staging: the data
+// is packed 4-bit nibbles and cannot feed coopMatLoad, so w_s, the
+// dequant stores and the two per-step barriers remain. The output
+// drain reuses w_s as scratch (it is idle past the k loop and large
+// enough for the four 8x8 blocks).
+
+#ifndef TILE_ROWS
+#define TILE_ROWS 32
+#endif
+
+#if TILE_ROWS == 32
+#define SUBGROUP_ROW_BLOCKS 2u
+#elif TILE_ROWS == 16
+#define SUBGROUP_ROW_BLOCKS 1u
+#else
+#error "TILE_ROWS must be 32 or 16"
+#endif
+
+#define ROW_BLOCKS (TILE_ROWS / 8u)
+
+const uint TILE_M = TILE_ROWS;
+const uint TILE_N = 32u;
+const uint CHUNK_K = 64u;
+const uint STEP_K = 16u;
+const uint MAT = 8u;
+
+layout(local_size_x = 64) in;
+
+layout(set = 0, binding = 0, std430) readonly buffer InputX {
+  float16_t values[];
+} input_x;
+layout(set = 0, binding = 1, std430) readonly buffer InputW {
+  uint values[];
+} input_w;
+layout(set = 0, binding = 2, std430) readonly buffer Scales {
+  float16_t values[];
+} scales;
+layout(set = 0, binding = 3, std430) readonly buffer Biases {
+  float16_t values[];
+} biases;
+layout(set = 0, binding = 4, std430) writeonly buffer Output {
+  float16_t values[];
+} output_data;
+
+layout(push_constant) uniform Params {
+  uint count;
+  uint operation;
+  uint lhs_size;
+  uint rhs_size;
+  uint reduce_size;
+  uint output_size;
+  uint lhs_offset;
+  uint rhs_offset;
+  uint output_offset;
+  uint aux_size;
+  uint aux_offset;
+  uint matrix_m;
+  uint matrix_n;
+  uint matrix_k;
+  uint flags;
+  float alpha;
+  float beta;
+  uint dims;
+  uint shape[4];
+  uint in_strides[4];
+  uint out_strides[4];
+} params;
+
+// One 16x32 f32 weight tile. The output drain uses it as scratch.
+shared float w_s[STEP_K * TILE_N];
+
+void main() {
+  uint lid = gl_LocalInvocationID.x;
+  uint sub = gl_SubgroupID;
+  uint sub_rb = SUBGROUP_ROW_BLOCKS * sub;
+  uint batch = params.shape[0];
+  uint w_batch_words = params.shape[1];
+  uint param_batch = params.shape[2];
+  uint x_batch_rows = params.matrix_m * params.matrix_k;
+  uint m_tiles = (params.matrix_m + TILE_M - 1u) / TILE_M;
+  uint n_tiles = (params.matrix_n + TILE_N - 1u) / TILE_N;
+  uint k_chunks = params.matrix_k / CHUNK_K;
+  uint words_per_row = params.matrix_k / 8u;
+  uint groups_per_row = params.matrix_k / 64u;
+  uint w_column_local = lid % 32u;
+  uint w_part = lid / 32u;
+
+  for (uint b = 0u; b < batch; ++b) {
+  uint w_slice = params.rhs_offset + b * w_batch_words;
+  uint scale_slice = params.aux_offset + b * param_batch;
+  uint bias_slice = params.aux_size + b * param_batch;
+  // x elements are f16 here, so the slice/row strides are in elements.
+  uint x_slice = params.lhs_offset + b * x_batch_rows;
+  uint out_slice = params.output_offset +
+      b * params.matrix_m * params.matrix_n;
+  for (uint tile_row = gl_WorkGroupID.y; tile_row < m_tiles;
+       tile_row += gl_NumWorkGroups.y) {
+    uint row_base = tile_row * TILE_M;
+    for (uint tile_col = gl_WorkGroupID.x; tile_col < n_tiles;
+         tile_col += gl_NumWorkGroups.x) {
+      uint column = tile_col * TILE_N + w_column_local;
+      bool column_ok = column < params.matrix_n;
+      uint w_row = w_slice + column * words_per_row;
+      uint scale_row = scale_slice + column * groups_per_row;
+      uint bias_row = bias_slice + column * groups_per_row;
+
+      coopmat<float, gl_ScopeSubgroup, MAT, MAT, gl_MatrixUseAccumulator>
+          acc[SUBGROUP_ROW_BLOCKS][4];
+      for (uint rb = 0u; rb < SUBGROUP_ROW_BLOCKS; ++rb) {
+        for (uint cb = 0u; cb < 4u; ++cb) {
+          acc[rb][cb] = coopmat<float, gl_ScopeSubgroup, MAT, MAT,
+              gl_MatrixUseAccumulator>(0.0);
+        }
+      }
+
+      for (uint chunk = 0u; chunk < k_chunks; ++chunk) {
+        float scale = 0.0;
+        float bias = 0.0;
+        if (column_ok) {
+          scale = float(scales.values[scale_row + chunk]);
+          bias = float(biases.values[bias_row + chunk]);
+        }
+        for (uint step = 0u; step < CHUNK_K / STEP_K; ++step) {
+          uint k_base = chunk * CHUNK_K + step * STEP_K;
+          // One packed word per lane covers the 16x32 weight tile.
+          uint packed = column_ok
+              ? input_w.values[w_row + k_base / 8u + w_part] : 0u;
+          uint w_base = 8u * w_part * TILE_N + w_column_local;
+          w_s[w_base + 0u * TILE_N] = scale * float(packed & 0xFu) + bias;
+          w_s[w_base + 1u * TILE_N] =
+              scale * float((packed >> 4u) & 0xFu) + bias;
+          w_s[w_base + 2u * TILE_N] =
+              scale * float((packed >> 8u) & 0xFu) + bias;
+          w_s[w_base + 3u * TILE_N] =
+              scale * float((packed >> 12u) & 0xFu) + bias;
+          w_s[w_base + 4u * TILE_N] =
+              scale * float((packed >> 16u) & 0xFu) + bias;
+          w_s[w_base + 5u * TILE_N] =
+              scale * float((packed >> 20u) & 0xFu) + bias;
+          w_s[w_base + 6u * TILE_N] =
+              scale * float((packed >> 24u) & 0xFu) + bias;
+          w_s[w_base + 7u * TILE_N] = scale * float(packed >> 28u) + bias;
+          barrier();
+
+          for (uint ks = 0u; ks < STEP_K / MAT; ++ks) {
+            coopmat<float16_t, gl_ScopeSubgroup, MAT, MAT, gl_MatrixUseA>
+                mat_a[SUBGROUP_ROW_BLOCKS];
+            coopmat<float, gl_ScopeSubgroup, MAT, MAT, gl_MatrixUseB> mat_b[4];
+            for (uint rb = 0u; rb < SUBGROUP_ROW_BLOCKS; ++rb) {
+              // Rows past matrix_m are never stored, but the load must
+              // stay in bounds: clamp to the last real row.
+              uint row = row_base + (sub_rb + rb) * MAT;
+              row = min(row, params.matrix_m - 1u);
+              coopMatLoad(
+                  mat_a[rb], input_x.values,
+                  x_slice + row * params.matrix_k + k_base + ks * MAT,
+                  params.matrix_k,
+                  gl_CooperativeMatrixLayoutRowMajor);
+            }
+            for (uint cb = 0u; cb < 4u; ++cb) {
+              coopMatLoad(
+                  mat_b[cb], w_s, ks * MAT * TILE_N + cb * MAT, TILE_N,
+                  gl_CooperativeMatrixLayoutRowMajor);
+            }
+            for (uint rb = 0u; rb < SUBGROUP_ROW_BLOCKS; ++rb) {
+              for (uint cb = 0u; cb < 4u; ++cb) {
+                acc[rb][cb] =
+                    coopMatMulAdd(mat_a[rb], mat_b[cb], acc[rb][cb]);
+              }
+            }
+          }
+          barrier();
+        }
+      }
+
+      // One subgroup stores each 8-row block it owns; duplicated column
+      // lanes each drain their four distinct rows of that block.
+      for (uint rb = 0u; rb < ROW_BLOCKS; ++rb) {
+        if (sub_rb == (rb & ~(SUBGROUP_ROW_BLOCKS - 1u))) {
+          for (uint cb = 0u; cb < 4u; ++cb) {
+            coopMatStore(
+                acc[rb & (SUBGROUP_ROW_BLOCKS - 1u)][cb], w_s,
+                cb * MAT * MAT, MAT,
+                gl_CooperativeMatrixLayoutRowMajor);
+          }
+        }
+        barrier();
+        if (column_ok) {
+          for (uint pass = 0u; pass < 4u; ++pass) {
+            uint r = 4u * w_part + pass;
+            uint row = row_base + rb * MAT + r;
+            if (row < params.matrix_m) {
+              output_data.values[out_slice + row * params.matrix_n + column] =
+                  float16_t(w_s[(w_column_local / 8u) * MAT * MAT +
+                                r * MAT + (w_column_local % 8u)]);
+            }
+          }
+        }
+        barrier();
+      }
+    }
+  }
+  }
+}

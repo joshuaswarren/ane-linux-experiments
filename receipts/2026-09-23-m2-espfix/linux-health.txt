@@ -1,0 +1,51 @@
+Wed Sep 23 13:20:26 UTC 2026
+Linux m2-host 7.1.13-3-1-ARCH #1 SMP PREEMPT_DYNAMIC Sun, 13 Sep 2026 17:52:27 +0000 aarch64 GNU/Linux
+BOOT_IMAGE=/vmlinuz-linux-asahi root=UUID=4f4d5801-524f-4f54-8000-000000000001 rw rootflags=subvol=@ zswap.enabled=0 rootfstype=btrfs quiet loglevel=3 splash
+---state
+running
+---failed
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.
+---err
+Sep 23 08:20:08 archlinux kernel: apple-mailbox 285408000.mailbox: error -ENXIO: IRQ send-empty not found
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-phy: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:08 archlinux kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:10 m2-host systemd[1]: bpf-restrict-fs: Failed to link 'restrict_filesystems' LSM BPF program: Operation not supported
+Sep 23 08:20:10 m2-host kernel: apple-dcp 289c00000.dcp: Failed to get dp-xbar: -517
+Sep 23 08:20:10 m2-host kernel: avd 287080000.avd: failed to load firmware: -2
+Sep 23 08:20:10 m2-host kernel: avd 287080000.avd: probe with driver avd failed with error -2
+Sep 23 08:20:11 m2-host kernel: ieee80211 phy0: brcmf_c_set_joinpref_default: Set join_pref error (-52)
+Sep 23 08:20:12 m2-host kernel: ieee80211 phy0: brcmf_c_set_joinpref_default: Set join_pref error (-52)
+Sep 23 08:20:12 m2-host kernel: ieee80211 phy0: brcmf_dongle_roam: WLC_SET_ROAM_DELTA error (-52)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:12 m2-host kernel: Bluetooth: hci0: Failed to read codec capabilities (-22)
+Sep 23 08:20:13 m2-host kernel: ieee80211 phy0: brcmf_c_set_joinpref_default: Set join_pref error (-52)
+---esp
+NAME        FSTYPE LABEL        MOUNTPOINTS
+nvme0n1                         
+|-nvme0n1p1 apfs                
+|-nvme0n1p2 apfs                
+|-nvme0n1p3 apfs                
+|-nvme0n1p4 vfat   EFI - OMARC  /boot/efi
+|-nvme0n1p5 ext4   OMARCHY_BOOT /boot
+|-nvme0n1p6 btrfs  OMARCHY_ROOT /var/log
+|                               /var/cache/pacman/pkg
+|                               /home
+|                               /
+`-nvme0n1p7 apfs                

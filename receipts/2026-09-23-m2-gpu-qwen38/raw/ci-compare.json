@@ -1,0 +1,50 @@
+{
+ "digest_m2": "dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596",
+ "digest_t6001_ref": "dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596",
+ "digest_match": true,
+ "n_records": 100,
+ "m2_decode_tok_s": {
+  "median": 72.58,
+  "ci95": [
+   72.55,
+   72.62
+  ]
+ },
+ "m2_ttft_tok_rate": {
+  "median": 85.59,
+  "ci95": [
+   81.99,
+   87.58
+  ]
+ },
+ "m2_e2e_tok_s": {
+  "median": 75.98,
+  "ci95": [
+   75.2,
+   76.38
+  ]
+ },
+ "ratio_m2_over_t6001_decode": {
+  "median": 1.141,
+  "ci95": [
+   1.139,
+   1.143
+  ]
+ },
+ "ratio_m2_over_t6001_e2e": {
+  "median": 1.153,
+  "ci95": [
+   1.143,
+   1.159
+  ]
+ },
+ "m2_prefill512": {
+  "tok_s": 906.84,
+  "wall_s": 0.5646
+ },
+ "t6001_prefill512": {
+  "tok_s": 843.83,
+  "wall_s": 0.6068
+ },
+ "ratio_m2_over_t6001_prefill": 1.075
+}

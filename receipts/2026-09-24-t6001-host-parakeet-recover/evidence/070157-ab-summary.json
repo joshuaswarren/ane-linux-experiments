@@ -1,0 +1,156 @@
+{
+ "schema": "parakeet-decomp-ab/1",
+ "base": "/var/tmp/encwall-decomp/decomp-t6001-20260922T070157",
+ "arms": {
+  "A": {
+   "rows": [
+    {
+     "run": "A-meas-1",
+     "stages": {
+      "audio_load": 9.815,
+      "mel_frontend": 142.315,
+      "encoder_ane": 1205.357,
+      "decoder_load": 55.679,
+      "tdt_decode": 970.014,
+      "detokenize": 54.205
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 2437.385,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    },
+    {
+     "run": "A-meas-2",
+     "stages": {
+      "audio_load": 7.63,
+      "mel_frontend": 141.394,
+      "encoder_ane": 1249.34,
+      "decoder_load": 55.401,
+      "tdt_decode": 971.416,
+      "detokenize": 55.001
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 2480.182,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    },
+    {
+     "run": "A-meas-3",
+     "stages": {
+      "audio_load": 7.719,
+      "mel_frontend": 139.637,
+      "encoder_ane": 1216.265,
+      "decoder_load": 54.497,
+      "tdt_decode": 983.351,
+      "detokenize": 57.692
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 2459.161,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    },
+    {
+     "run": "A-smoke",
+     "stages": {
+      "audio_load": 8.649,
+      "mel_frontend": 151.549,
+      "encoder_ane": 1216.209,
+      "decoder_load": 53.895,
+      "tdt_decode": 982.83,
+      "detokenize": 53.71
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 2466.842,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    }
+   ],
+   "all_green": true
+  },
+  "B": {
+   "rows": [
+    {
+     "run": "B-meas-1",
+     "stages": {
+      "audio_load": 9.701,
+      "mel_frontend": 139.698,
+      "encoder_ane": 1205.549,
+      "decoder_load": 54.245,
+      "tdt_decode": 962.517,
+      "detokenize": 55.379
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 2427.09,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    },
+    {
+     "run": "B-meas-2",
+     "stages": {
+      "audio_load": 7.78,
+      "mel_frontend": 187.953,
+      "encoder_ane": 1231.729,
+      "decoder_load": 53.781,
+      "tdt_decode": 992.168,
+      "detokenize": 55.128
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 2528.538,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    },
+    {
+     "run": "B-meas-3",
+     "stages": {
+      "audio_load": 7.691,
+      "mel_frontend": 142.129,
+      "encoder_ane": 1210.125,
+      "decoder_load": 56.415,
+      "tdt_decode": 974.706,
+      "detokenize": 57.502
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 2448.569,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    }
+   ],
+   "all_green": true
+  }
+ }
+}

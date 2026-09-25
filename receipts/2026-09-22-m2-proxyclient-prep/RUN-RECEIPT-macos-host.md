@@ -5,7 +5,7 @@ Topology per plan: m2-host (M2, t6021) parked at the m1n1 proxy (boot.bin.proxy-
 6dc0ec5d on its ESP disk0s4; backup boot.bin.proxy-only.bak 9ad08653; original
 boot.bin.pre-proxy 153170e0 on m2-host Linux root at /var/tmp/m2proxy-staging/).
 Host leg: m1-host (M1 Max, macOS 27.0) at login window, pre-login SSH
-`jw-m1-lan`, booted one-shot by FleetMacOSUnattendedAccess on
+`m1-host-macos`, booted one-shot by FleetMacOSUnattendedAccess on
 Main GO (ReleaseV072Finish window confirmed closed; EncoderFeederFork
 checkpointed and holding; DecodeDispatchCut2/PrefillCoopmatTile/M2SwufInstallRun/
 M2ProxyRun confirmed nothing of theirs on m1-host).
@@ -20,7 +20,7 @@ The bring-up sequence (RVBAR mode-bit write etc.) was never reached.
 1. `system_profiler SPUSBDataType` — EMPTY, exit code 0:
 
 ```
-% ssh jw-m1-lan 'system_profiler SPUSBDataType 2>&1; echo RC=$?'
+% ssh m1-host-macos 'system_profiler SPUSBDataType 2>&1; echo RC=$?'
 RC=0
 ```
 

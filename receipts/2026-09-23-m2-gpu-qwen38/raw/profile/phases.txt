@@ -1,0 +1,47 @@
+n_tok markers: 90
+decode-window: total kernel 672.5 ms over 90 tok windows -> 7.47 ms/tok (profiled)
+kernel                              n/tok    ms/tok   us/mean   share
+QmmVecQ4MultiSubgroupBF16            32.0     1.777      55.5   23.8%
+FastRmsNormBF16                      38.3     0.971      25.3   13.0%
+QmmVecQ4WordSubgroupBF16              6.3     0.638     100.7    8.5%
+GatedDeltaDecodeBF16                  6.0     0.577      96.1    7.7%
+ElementwiseBF16                      14.3     0.521      36.3    7.0%
+CopyGeneralBF16                      24.0     0.510      21.3    6.8%
+CastBF16F32                          18.0     0.348      19.3    4.7%
+FusedChainF32                        12.0     0.314      26.1    4.2%
+ConvBF16                              6.0     0.227      37.8    3.0%
+MatmulF32                             4.0     0.193      48.2    2.6%
+LogSumExpBF16                         0.3     0.181     542.3    2.4%
+CastF32BF16                           8.0     0.174      21.7    2.3%
+SwigluBF16                            8.0     0.153      19.1    2.0%
+FusedChainBF16                        6.0     0.148      24.6    2.0%
+ArgReduceBF16                         0.3     0.138     414.0    1.8%
+FastRopeBF16                          4.0     0.134      33.6    1.8%
+ElementwiseF32                        2.0     0.082      41.0    1.1%
+QmmVecQ4MultiSubgroupBF16             1.1     0.060      56.2    0.8%
+SoftmaxF32                            2.0     0.055      27.6    0.7%
+BinaryVecBF16                         2.0     0.041      20.7    0.6%
+FastRmsNormBF16                       1.3     0.033      25.9    0.4%
+TakeBF16                              0.7     0.024      35.7    0.3%
+QmmVecQ4WordSubgroupBF16              0.2     0.021      99.9    0.3%
+ElementwiseBF16                       0.5     0.020      41.2    0.3%
+
+top primitives in decode window (total 7.47 ms/tok):
+                                     32.0     1.777      55.5
+RMSNorm                              40.3     1.010      25.0
+CompiledAsTypeSigmoidBroadcastBroadcastMultiply     30.0     0.660      22.0
+QuantizedMatmul                       6.3     0.638     100.7
+ScaledDotProductAttention            20.0     0.600      30.0
+GatedDeltaUpdate                      6.0     0.577      96.1
+Multiply                             14.0     0.456      32.6
+Concatenate                          12.0     0.242      20.1
+Convolution                           6.0     0.227      37.8
+LogSumExp                             0.3     0.181     542.3
+CompiledSigmoidBroadcastBroadcastMultiplyBroadc      8.0     0.153      19.1
+CompiledSigmoidBroadcastBroadcastMultiply      6.0     0.148      24.6
+ArgReduce                             0.3     0.138     414.0
+RoPE                                  4.0     0.134      33.6
+SliceUpdate                           4.0     0.083      20.7
+Sigmoid                               2.0     0.080      39.8
+                                      1.1     0.060      56.2
+Reshape                               2.0     0.051      25.5

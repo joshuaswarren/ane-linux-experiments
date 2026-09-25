@@ -1,0 +1,194 @@
+[
+  {
+    "label": "linux-denom-umalimit1",
+    "run": 1,
+    "rc": 0,
+    "wall_ms": 2253.2,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 1354.984,
+    "stages_ms": {
+      "audio_load": 343.56,
+      "mel_frontend": 178.548,
+      "encoder_ane": 537.701,
+      "decoder_load": 83.712,
+      "tdt_decode": 201.603,
+      "detokenize": 9.86
+    },
+    "ane": {
+      "exec_ms": 142.477,
+      "worker_starts": 1,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 392.875,
+        "close_ms": 0.087,
+        "open_ms": 392.875,
+        "reused": false,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "linux-denom-umalimit1",
+    "run": 2,
+    "rc": 0,
+    "wall_ms": 1323.1,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 739.692,
+    "stages_ms": {
+      "audio_load": 176.773,
+      "mel_frontend": 29.959,
+      "encoder_ane": 296.517,
+      "decoder_load": 84.232,
+      "tdt_decode": 137.477,
+      "detokenize": 14.734
+    },
+    "ane": {
+      "exec_ms": 294.203,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.352,
+        "close_ms": 0.07,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "linux-denom-umalimit1",
+    "run": 3,
+    "rc": 0,
+    "wall_ms": 1324.9,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 749.796,
+    "stages_ms": {
+      "audio_load": 180.67,
+      "mel_frontend": 30.309,
+      "encoder_ane": 297.363,
+      "decoder_load": 96.824,
+      "tdt_decode": 132.813,
+      "detokenize": 11.817
+    },
+    "ane": {
+      "exec_ms": 294.933,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.332,
+        "close_ms": 0.067,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "linux-denom-umalimit1",
+    "run": 4,
+    "rc": 0,
+    "wall_ms": 1310.6,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 736.336,
+    "stages_ms": {
+      "audio_load": 163.745,
+      "mel_frontend": 31.891,
+      "encoder_ane": 297.269,
+      "decoder_load": 96.47,
+      "tdt_decode": 135.125,
+      "detokenize": 11.836
+    },
+    "ane": {
+      "exec_ms": 294.657,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.37,
+        "close_ms": 0.069,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "linux-denom-umalimit1",
+    "run": 5,
+    "rc": 0,
+    "wall_ms": 1320.4,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 745.207,
+    "stages_ms": {
+      "audio_load": 161.258,
+      "mel_frontend": 29.581,
+      "encoder_ane": 298.135,
+      "decoder_load": 109.885,
+      "tdt_decode": 134.406,
+      "detokenize": 11.943
+    },
+    "ane": {
+      "exec_ms": 295.19,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.41,
+        "close_ms": 0.111,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "linux-denom-umalimit1",
+    "run": 6,
+    "rc": 0,
+    "wall_ms": 1287.9,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 713.466,
+    "stages_ms": {
+      "audio_load": 168.193,
+      "mel_frontend": 29.307,
+      "encoder_ane": 257.356,
+      "decoder_load": 112.217,
+      "tdt_decode": 134.534,
+      "detokenize": 11.859
+    },
+    "ane": {
+      "exec_ms": 254.356,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.426,
+        "close_ms": 0.138,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  }
+]

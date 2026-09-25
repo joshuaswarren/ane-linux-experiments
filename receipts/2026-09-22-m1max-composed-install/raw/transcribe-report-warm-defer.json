@@ -1,0 +1,261 @@
+{
+  "ane": {
+    "bundles": [
+      "parakeet-encoder-whole"
+    ],
+    "exec_ms": 440.431,
+    "exec_ns": 440431186,
+    "input_bytes": 774000,
+    "libane": "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/share/mlx-omarchy/parakeet-1/libane/libane-strict.so",
+    "libane_sha256": "d06222a86f3bff26aaf1cec1223ade32f27cad84b994dccb1af9cca965a7da8c",
+    "log": [
+      {
+        "back_ns": 196584,
+        "bundle": "parakeet-encoder-whole",
+        "elapsed_ms": "439",
+        "elapsed_ns": 440431186,
+        "input_bytes": 774000,
+        "marshal_ns": 142000,
+        "output_bytes": 480750,
+        "read_ns": 440069310,
+        "round": true,
+        "save_ms": "0",
+        "stage_ms": "0",
+        "tag": "whole-encoder",
+        "write_ns": 272834
+      }
+    ],
+    "output_bytes": 480750,
+    "submissions": 1,
+    "timeouts": 0,
+    "worker": "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/bin/mlx-omarchy-ane-worker",
+    "worker_sha256": "577a5e7f47c2c456eb3b22d9d57802171ddfad59ae8424e4142abcc3c9b6175b",
+    "worker_starts": 1
+  },
+  "execution": {
+    "ane_mode": true,
+    "control": "gpu-loop",
+    "cpu_tensor_events": 0,
+    "decoder_calls": 0,
+    "encoder_ane_ops": 13701,
+    "encoder_gpu_ops": 0,
+    "encoder_layers": 0,
+    "encoder_ops_executed": 1,
+    "joint_calls": 0,
+    "tdt_fallback_reason": null,
+    "valid_encoder_frames": 375
+  },
+  "host": {
+    "hostname": "m1max-host",
+    "kernel": "7.1.6-1-1-ARCH",
+    "machine": "aarch64",
+    "python": "3.14.7"
+  },
+  "inputs": {
+    "audio": {
+      "decoder": "soundfile 0.14.0",
+      "path": "~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/audio/fixture.flac",
+      "sample_rate": 16000,
+      "samples": 166960,
+      "sha256": "30885601173f96b0d8ddd020dc959b055c6c1582b85a33e3fcab8c4b08ed94c2"
+    },
+    "encoder_source": {
+      "mil_sha256": "ac8e9526154ac8b8d4c08b83e44dbc1a2208d7ec33e42a7838d57b698b14f133",
+      "root": "~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/encoder-source/b650695c2322ee5281dff48d7345b2f3a58ff018"
+    },
+    "model": {
+      "repo": "mweinbach1/parakeet-tdt-0.6b-v3-coreml",
+      "revision": "b650695c2322ee5281dff48d7345b2f3a58ff018",
+      "tokenizer_sha256": "bd321b096832a3f270bd3b2a88823957920f1a5c5ada71114a26ea729d0cbe91",
+      "tokenizer_vocab_size": 8193
+    }
+  },
+  "mlx": {
+    "core_path": "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/core.cpython-314-aarch64-linux-gnu.so",
+    "core_sha256": "b56f64fb75ee8a88fe3b83044504fa4f180364d896ad204bcf5b3b3e632dec77",
+    "device": "Apple M1 Max (G13C C0)",
+    "libmlx_path": "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/lib/libmlx.so",
+    "libmlx_sha256": "33de1ff0103890a1b61952ad050400b986d4ba9c705a3f75de8e43000d8acc1b",
+    "version": "0.32.3.dev202609230056+e273c66c"
+  },
+  "schema": "mlx-omarchy.parakeet-transcribe.v1",
+  "stages": [
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 1,
+        "gpu_primitive_dispatches": 4,
+        "omarchy_finalize_calls": 1,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 2,
+        "vk_submissions": 1
+      },
+      "stage": "audio_load",
+      "wall_ms": 6.698,
+      "wall_ns": 6698385
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 1,
+        "gpu_primitive_dispatches": 14,
+        "omarchy_finalize_calls": 1,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 8,
+        "vk_submissions": 1
+      },
+      "stage": "mel_frontend",
+      "wall_ms": 136.75,
+      "wall_ns": 136749713
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 0,
+        "gpu_primitive_dispatches": 4,
+        "omarchy_finalize_calls": 2,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 0,
+        "vk_submissions": 0
+      },
+      "stage": "encoder_ane",
+      "wall_ms": 1268.123,
+      "wall_ns": 1268123475
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 0,
+        "gpu_primitive_dispatches": 0,
+        "omarchy_finalize_calls": 0,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 0,
+        "vk_submissions": 0
+      },
+      "stage": "decoder_load",
+      "wall_ms": 61.141,
+      "wall_ns": 61140638
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 2,
+        "gpu_primitive_dispatches": 8,
+        "omarchy_finalize_calls": 2,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 2,
+        "vk_compute_dispatches": 1,
+        "vk_submissions": 2
+      },
+      "stage": "tdt_decode",
+      "wall_ms": 853.843,
+      "wall_ns": 853842625
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 0,
+        "gpu_primitive_dispatches": 0,
+        "omarchy_finalize_calls": 0,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 0,
+        "vk_submissions": 0
+      },
+      "stage": "detokenize",
+      "wall_ms": 56.435,
+      "wall_ns": 56435088
+    }
+  ],
+  "status": "match",
+  "timing": {
+    "decoder_total_ms": 0.0,
+    "joint_total_ms": 0.0,
+    "total_pipeline_ms": 2382.99
+  },
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... \u042e\u043d \u042e",
+  "verification": {
+    "checks": [
+      {
+        "check": "mel_sha256",
+        "detail": {
+          "actual": "bcbaa3ca159cd3ddf8463b83cb832d4badd369caf93a76464b31c9cf4ac34041",
+          "expected": "bcbaa3ca159cd3ddf8463b83cb832d4badd369caf93a76464b31c9cf4ac34041"
+        },
+        "pass": true
+      },
+      {
+        "check": "encoder_hidden_sha256",
+        "detail": {
+          "actual": "51830b6ffe992568c9fd19a3636373fd36939e14ff998c558fb85038acbd13b8",
+          "encoder_path": "whole-encoder",
+          "expected": "51830b6ffe992568c9fd19a3636373fd36939e14ff998c558fb85038acbd13b8"
+        },
+        "pass": true
+      },
+      {
+        "check": "emissions",
+        "detail": {
+          "actual": 104,
+          "expected": 104
+        },
+        "pass": true
+      },
+      {
+        "check": "token_ids",
+        "detail": {
+          "matching_prefix_length": 104
+        },
+        "pass": true
+      },
+      {
+        "check": "frame_indices",
+        "detail": {},
+        "pass": true
+      },
+      {
+        "check": "durations",
+        "detail": {},
+        "pass": true
+      },
+      {
+        "check": "transcript",
+        "detail": {
+          "actual_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+          "expected_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790"
+        },
+        "pass": true
+      },
+      {
+        "check": "cpu_tensor_events",
+        "detail": {
+          "actual": 0,
+          "expected": 0
+        },
+        "pass": true
+      },
+      {
+        "check": "decode_control",
+        "detail": {
+          "actual": "gpu-loop",
+          "expected": "gpu-loop",
+          "fallback_reason": null
+        },
+        "pass": true
+      },
+      {
+        "check": "finite_hidden",
+        "detail": {
+          "inf": 0,
+          "nan": 0
+        },
+        "pass": true
+      }
+    ],
+    "pin_schema": "mlx-omarchy.parakeet-runtime-pin.v1"
+  }
+}

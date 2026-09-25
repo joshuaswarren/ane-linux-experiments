@@ -1,0 +1,32 @@
+FS shader: 0 instrs, 0 alu, 0 fscib, 0 ic, 0 code size, 0 gprs, 16 uniforms, 0 scratch, 1024 threads, 0 loops, 0:0 spills:fills, 0 preamble inst
+[rtmod] COMMIT-NOOP
+CS shader: 222 instrs, 157 alu, 157 fscib, 124 ic, 1674 code size, 23 gprs, 98 uniforms, 0 scratch, 1024 threads, 3 loops, 0:0 spills:fills, 79 preamble inst
+CS shader: 214 instrs, 149 alu, 149 fscib, 120 ic, 1618 code size, 23 gprs, 96 uniforms, 0 scratch, 1024 threads, 3 loops, 0:0 spills:fills, 79 preamble inst
+CS shader: 421 instrs, 330 alu, 330 fscib, 172 ic, 3048 code size, 27 gprs, 94 uniforms, 0 scratch, 1024 threads, 2 loops, 0:0 spills:fills, 147 preamble inst
+CS shader: 131 instrs, 57 alu, 57 fscib, 24 ic, 978 code size, 21 gprs, 70 uniforms, 0 scratch, 1024 threads, 3 loops, 0:0 spills:fills, 55 preamble inst
+CS shader: 17 instrs, 9 alu, 9 fscib, 4 ic, 118 code size, 7 gprs, 28 uniforms, 0 scratch, 1024 threads, 1 loops, 0:0 spills:fills, 24 preamble inst
+CS shader: 1041 instrs, 615 alu, 615 fscib, 440 ic, 7582 code size, 143 gprs, 192 uniforms, 0 scratch, 704 threads, 4 loops, 0:0 spills:fills, 75 preamble inst
+CS shader: 110 instrs, 66 alu, 66 fscib, 56 ic, 868 code size, 23 gprs, 56 uniforms, 0 scratch, 1024 threads, 2 loops, 0:0 spills:fills, 41 preamble inst
+CS shader: 314 instrs, 270 alu, 270 fscib, 204 ic, 2614 code size, 43 gprs, 258 uniforms, 0 scratch, 1024 threads, 4 loops, 0:0 spills:fills, 712 preamble inst
+CS shader: 327 instrs, 257 alu, 257 fscib, 102 ic, 2444 code size, 37 gprs, 102 uniforms, 0 scratch, 1024 threads, 2 loops, 0:0 spills:fills, 84 preamble inst
+CS shader: 103 instrs, 59 alu, 59 fscib, 52 ic, 818 code size, 23 gprs, 54 uniforms, 0 scratch, 1024 threads, 2 loops, 0:0 spills:fills, 41 preamble inst
+CS shader: 1977 instrs, 1832 alu, 1832 fscib, 794 ic, 14896 code size, 67 gprs, 420 uniforms, 0 scratch, 1024 threads, 3 loops, 0:0 spills:fills, 256 preamble inst
+CS shader: 296 instrs, 226 alu, 226 fscib, 90 ic, 2228 code size, 37 gprs, 100 uniforms, 0 scratch, 1024 threads, 2 loops, 0:0 spills:fills, 84 preamble inst
+CS shader: 531 instrs, 177 alu, 177 fscib, 108 ic, 3728 code size, 255 gprs, 148 uniforms, 1096 scratch, 384 threads, 7 loops, 95:106 spills:fills, 117 preamble inst
+CS shader: 23 instrs, 15 alu, 15 fscib, 0 ic, 286 code size, 11 gprs, 30 uniforms, 0 scratch, 1024 threads, 1 loops, 0:0 spills:fills, 24 preamble inst
+CS shader: 152 instrs, 142 alu, 142 fscib, 72 ic, 1214 code size, 35 gprs, 58 uniforms, 0 scratch, 1024 threads, 1 loops, 0:0 spills:fills, 85 preamble inst
+CS shader: 250 instrs, 232 alu, 232 fscib, 120 ic, 1836 code size, 39 gprs, 48 uniforms, 0 scratch, 1024 threads, 1 loops, 0:0 spills:fills, 36 preamble inst
+CS shader: 2566 instrs, 2400 alu, 2400 fscib, 1680 ic, 19002 code size, 51 gprs, 258 uniforms, 0 scratch, 1024 threads, 1 loops, 0:0 spills:fills, 244 preamble inst
+CS shader: 1968 instrs, 1823 alu, 1823 fscib, 786 ic, 14832 code size, 67 gprs, 418 uniforms, 0 scratch, 1024 threads, 3 loops, 0:0 spills:fills, 256 preamble inst
+CS shader: 1068 instrs, 650 alu, 626 fscib, 650 ic, 7548 code size, 147 gprs, 476 uniforms, 0 scratch, 640 threads, 4 loops, 0:0 spills:fills, 151 preamble inst
+CS shader: 254 instrs, 118 alu, 118 fscib, 46 ic, 1808 code size, 23 gprs, 88 uniforms, 0 scratch, 1024 threads, 4 loops, 0:0 spills:fills, 109 preamble inst
+[rtmod] SUBMIT tid=1590 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CS shader: 234 instrs, 189 alu, 189 fscib, 184 ic, 1700 code size, 41 gprs, 84 uniforms, 0 scratch, 1024 threads, 3 loops, 0:0 spills:fills, 52 preamble inst
+CS shader: 1216 instrs, 930 alu, 930 fscib, 890 ic, 8264 code size, 39 gprs, 306 uniforms, 0 scratch, 1024 threads, 10 loops, 0:0 spills:fills, 207 preamble inst
+CS shader: 255 instrs, 202 alu, 202 fscib, 106 ic, 1856 code size, 31 gprs, 160 uniforms, 0 scratch, 1024 threads, 3 loops, 0:0 spills:fills, 73 preamble inst
+CS shader: 214 instrs, 142 alu, 142 fscib, 70 ic, 1692 code size, 35 gprs, 130 uniforms, 0 scratch, 1024 threads, 4 loops, 0:0 spills:fills, 105 preamble inst
+[rtmod] SUBMIT tid=1590 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+done
+[rtmod] COMMIT-NOOP

@@ -1,0 +1,4148 @@
+{
+  "ane": {
+    "bundles": [
+      "island-attn-a-kt",
+      "island-pv"
+    ],
+    "exec_ms": 247.831,
+    "exec_ns": 247831102,
+    "input_bytes": 164542848,
+    "libane": "/var/tmp/encoder-whole/libane-strict.so",
+    "libane_sha256": "d06222a86f3bff26aaf1cec1223ade32f27cad84b994dccb1af9cca965a7da8c",
+    "log": [
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1823234,
+        "dev_read_ns": 1357405,
+        "dev_send_ns": 581703,
+        "elapsed_ns": 3949798,
+        "feeder_issue_ns": 406046358,
+        "feeder_ops": {
+          "add": [
+            18,
+            8735795
+          ],
+          "cast": [
+            7,
+            1113657
+          ],
+          "const": [
+            168,
+            251899158
+          ],
+          "conv": [
+            5,
+            41985500
+          ],
+          "expand_dims": [
+            13,
+            277581
+          ],
+          "floor": [
+            3,
+            606620
+          ],
+          "floor_div": [
+            3,
+            40542720
+          ],
+          "layer_norm": [
+            2,
+            2187647
+          ],
+          "less": [
+            4,
+            474870
+          ],
+          "linear": [
+            6,
+            42803991
+          ],
+          "logical_and": [
+            1,
+            185207
+          ],
+          "mul": [
+            10,
+            6613982
+          ],
+          "reduce_sum": [
+            1,
+            165332
+          ],
+          "relu": [
+            3,
+            4985747
+          ],
+          "reshape": [
+            4,
+            63374
+          ],
+          "silu": [
+            1,
+            2541
+          ],
+          "sub": [
+            3,
+            2712435
+          ],
+          "tile": [
+            1,
+            26583
+          ],
+          "transpose": [
+            4,
+            663618
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 7167,
+          "pos_kT": 309705,
+          "q_scaled": 1458,
+          "q_v": 809868
+        },
+        "marshal_ns": 1719193,
+        "output_bytes": 6744000,
+        "tag": "L00-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 608494,
+        "dev_read_ns": 72249,
+        "dev_send_ns": 425704,
+        "elapsed_ns": 1241322,
+        "feeder_issue_ns": 33054288,
+        "feeder_ops": {
+          "add": [
+            1,
+            891200
+          ],
+          "const": [
+            16,
+            145750
+          ],
+          "logical_not": [
+            1,
+            35417
+          ],
+          "matmul": [
+            1,
+            28559160
+          ],
+          "mul": [
+            1,
+            949575
+          ],
+          "pad": [
+            1,
+            186332
+          ],
+          "reshape": [
+            2,
+            41958
+          ],
+          "select": [
+            1,
+            831951
+          ],
+          "slice_by_index": [
+            2,
+            53833
+          ],
+          "softmax": [
+            1,
+            1294196
+          ],
+          "transpose": [
+            1,
+            64916
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 779993,
+          "v_heads": 114499
+        },
+        "marshal_ns": 1107865,
+        "output_bytes": 768000,
+        "tag": "L00-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1823442,
+        "dev_read_ns": 1493363,
+        "dev_send_ns": 379329,
+        "elapsed_ns": 3902840,
+        "feeder_issue_ns": 42992237,
+        "feeder_ops": {
+          "add": [
+            6,
+            5573158
+          ],
+          "cast": [
+            2,
+            5044288
+          ],
+          "const": [
+            68,
+            508452
+          ],
+          "conv": [
+            3,
+            2798058
+          ],
+          "layer_norm": [
+            5,
+            13811625
+          ],
+          "linear": [
+            8,
+            7405351
+          ],
+          "matmul": [
+            1,
+            2471311
+          ],
+          "mul": [
+            4,
+            2833475
+          ],
+          "reduce_min": [
+            1,
+            226790
+          ],
+          "reshape": [
+            4,
+            87040
+          ],
+          "select": [
+            1,
+            258415
+          ],
+          "sigmoid": [
+            1,
+            1542
+          ],
+          "silu": [
+            3,
+            635910
+          ],
+          "split": [
+            1,
+            26333
+          ],
+          "transpose": [
+            5,
+            1310489
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 9625,
+          "pos_kT": 323747,
+          "q_scaled": 1917,
+          "q_v": 676994
+        },
+        "marshal_ns": 1616277,
+        "output_bytes": 6744000,
+        "tag": "L01-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 616452,
+        "dev_read_ns": 93457,
+        "dev_send_ns": 596370,
+        "elapsed_ns": 1432153,
+        "feeder_issue_ns": 9093085,
+        "feeder_ops": {
+          "add": [
+            1,
+            60291
+          ],
+          "const": [
+            15,
+            149374
+          ],
+          "matmul": [
+            1,
+            7558432
+          ],
+          "mul": [
+            1,
+            95749
+          ],
+          "pad": [
+            1,
+            184623
+          ],
+          "reshape": [
+            2,
+            53833
+          ],
+          "select": [
+            1,
+            117582
+          ],
+          "slice_by_index": [
+            2,
+            83124
+          ],
+          "softmax": [
+            1,
+            702536
+          ],
+          "transpose": [
+            1,
+            87541
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 853742,
+          "v_heads": 2458
+        },
+        "marshal_ns": 1157573,
+        "output_bytes": 768000,
+        "tag": "L01-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1854191,
+        "dev_read_ns": 1808066,
+        "dev_send_ns": 594161,
+        "elapsed_ns": 4691874,
+        "feeder_issue_ns": 31566714,
+        "feeder_ops": {
+          "add": [
+            6,
+            4263001
+          ],
+          "const": [
+            63,
+            975322
+          ],
+          "conv": [
+            3,
+            1349613
+          ],
+          "layer_norm": [
+            5,
+            10158909
+          ],
+          "linear": [
+            8,
+            6122780
+          ],
+          "matmul": [
+            1,
+            2712892
+          ],
+          "mul": [
+            4,
+            1722068
+          ],
+          "reshape": [
+            4,
+            175873
+          ],
+          "select": [
+            1,
+            903784
+          ],
+          "sigmoid": [
+            1,
+            1959
+          ],
+          "silu": [
+            3,
+            2293729
+          ],
+          "split": [
+            1,
+            48875
+          ],
+          "transpose": [
+            5,
+            837909
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 62333,
+          "pos_kT": 219665,
+          "q_scaled": 15916,
+          "q_v": 563453
+        },
+        "marshal_ns": 2142897,
+        "output_bytes": 6744000,
+        "tag": "L02-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 619953,
+        "dev_read_ns": 111457,
+        "dev_send_ns": 495121,
+        "elapsed_ns": 1539153,
+        "feeder_issue_ns": 11513729,
+        "feeder_ops": {
+          "add": [
+            1,
+            130791
+          ],
+          "const": [
+            15,
+            403871
+          ],
+          "matmul": [
+            1,
+            9469915
+          ],
+          "mul": [
+            1,
+            204831
+          ],
+          "pad": [
+            1,
+            500204
+          ],
+          "reshape": [
+            2,
+            105290
+          ],
+          "select": [
+            1,
+            236623
+          ],
+          "slice_by_index": [
+            2,
+            146873
+          ],
+          "softmax": [
+            1,
+            202790
+          ],
+          "transpose": [
+            1,
+            112541
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 563245,
+          "v_heads": 17125
+        },
+        "marshal_ns": 987533,
+        "output_bytes": 768000,
+        "tag": "L02-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1844650,
+        "dev_read_ns": 2146982,
+        "dev_send_ns": 728784,
+        "elapsed_ns": 5166704,
+        "feeder_issue_ns": 31184971,
+        "feeder_ops": {
+          "add": [
+            6,
+            3971173
+          ],
+          "const": [
+            63,
+            1552236
+          ],
+          "conv": [
+            3,
+            911993
+          ],
+          "layer_norm": [
+            5,
+            10417113
+          ],
+          "linear": [
+            8,
+            6374277
+          ],
+          "matmul": [
+            1,
+            2783892
+          ],
+          "mul": [
+            4,
+            1285905
+          ],
+          "reshape": [
+            4,
+            257124
+          ],
+          "select": [
+            1,
+            625119
+          ],
+          "sigmoid": [
+            1,
+            2083
+          ],
+          "silu": [
+            3,
+            2167230
+          ],
+          "split": [
+            1,
+            66875
+          ],
+          "transpose": [
+            5,
+            769951
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 67000,
+          "pos_kT": 187498,
+          "q_scaled": 11791,
+          "q_v": 562370
+        },
+        "marshal_ns": 2389478,
+        "output_bytes": 6744000,
+        "tag": "L03-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 620619,
+        "dev_read_ns": 157166,
+        "dev_send_ns": 699576,
+        "elapsed_ns": 1803150,
+        "feeder_issue_ns": 12799880,
+        "feeder_ops": {
+          "add": [
+            1,
+            141207
+          ],
+          "const": [
+            15,
+            529034
+          ],
+          "matmul": [
+            1,
+            10476864
+          ],
+          "mul": [
+            1,
+            223415
+          ],
+          "pad": [
+            1,
+            463579
+          ],
+          "reshape": [
+            2,
+            131498
+          ],
+          "select": [
+            1,
+            239831
+          ],
+          "slice_by_index": [
+            2,
+            171456
+          ],
+          "softmax": [
+            1,
+            270872
+          ],
+          "transpose": [
+            1,
+            152124
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 450912,
+          "v_heads": 21125
+        },
+        "marshal_ns": 956116,
+        "output_bytes": 768000,
+        "tag": "L03-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1852275,
+        "dev_read_ns": 2969849,
+        "dev_send_ns": 1003283,
+        "elapsed_ns": 6331235,
+        "feeder_issue_ns": 31602633,
+        "feeder_ops": {
+          "add": [
+            6,
+            3443636
+          ],
+          "const": [
+            63,
+            1909150
+          ],
+          "conv": [
+            3,
+            974075
+          ],
+          "layer_norm": [
+            5,
+            10587696
+          ],
+          "linear": [
+            8,
+            6406525
+          ],
+          "matmul": [
+            1,
+            3033556
+          ],
+          "mul": [
+            4,
+            1326864
+          ],
+          "reshape": [
+            4,
+            333122
+          ],
+          "select": [
+            1,
+            517454
+          ],
+          "sigmoid": [
+            1,
+            2584
+          ],
+          "silu": [
+            3,
+            2116271
+          ],
+          "split": [
+            1,
+            79916
+          ],
+          "transpose": [
+            5,
+            871784
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 82000,
+          "pos_kT": 247623,
+          "q_scaled": 11875,
+          "q_v": 553828
+        },
+        "marshal_ns": 3024431,
+        "output_bytes": 6744000,
+        "tag": "L04-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 624578,
+        "dev_read_ns": 189832,
+        "dev_send_ns": 810326,
+        "elapsed_ns": 3528343,
+        "feeder_issue_ns": 15742607,
+        "feeder_ops": {
+          "add": [
+            1,
+            204374
+          ],
+          "const": [
+            15,
+            573244
+          ],
+          "matmul": [
+            1,
+            12871301
+          ],
+          "mul": [
+            1,
+            263622
+          ],
+          "pad": [
+            1,
+            581703
+          ],
+          "reshape": [
+            2,
+            171581
+          ],
+          "select": [
+            1,
+            315914
+          ],
+          "slice_by_index": [
+            2,
+            236498
+          ],
+          "softmax": [
+            1,
+            322497
+          ],
+          "transpose": [
+            1,
+            201873
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 283039,
+          "v_heads": 22041
+        },
+        "marshal_ns": 934950,
+        "output_bytes": 768000,
+        "tag": "L04-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1855441,
+        "dev_read_ns": 2887057,
+        "dev_send_ns": 1006407,
+        "elapsed_ns": 6450109,
+        "feeder_issue_ns": 33522954,
+        "feeder_ops": {
+          "add": [
+            6,
+            2911141
+          ],
+          "const": [
+            63,
+            2305857
+          ],
+          "conv": [
+            3,
+            1288113
+          ],
+          "layer_norm": [
+            5,
+            10667030
+          ],
+          "linear": [
+            8,
+            6812065
+          ],
+          "matmul": [
+            1,
+            4793665
+          ],
+          "mul": [
+            4,
+            1292029
+          ],
+          "reshape": [
+            4,
+            346123
+          ],
+          "select": [
+            1,
+            226914
+          ],
+          "sigmoid": [
+            1,
+            3834
+          ],
+          "silu": [
+            3,
+            1713943
+          ],
+          "split": [
+            1,
+            118249
+          ],
+          "transpose": [
+            5,
+            1043991
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 78707,
+          "pos_kT": 245582,
+          "q_scaled": 12833,
+          "q_v": 546578
+        },
+        "marshal_ns": 2979599,
+        "output_bytes": 6744000,
+        "tag": "L05-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 649452,
+        "dev_read_ns": 189707,
+        "dev_send_ns": 790868,
+        "elapsed_ns": 2036190,
+        "feeder_issue_ns": 15753233,
+        "feeder_ops": {
+          "add": [
+            1,
+            199957
+          ],
+          "const": [
+            15,
+            623075
+          ],
+          "matmul": [
+            1,
+            12864135
+          ],
+          "mul": [
+            1,
+            265081
+          ],
+          "pad": [
+            1,
+            537954
+          ],
+          "reshape": [
+            2,
+            175998
+          ],
+          "select": [
+            1,
+            303622
+          ],
+          "slice_by_index": [
+            2,
+            253791
+          ],
+          "softmax": [
+            1,
+            334330
+          ],
+          "transpose": [
+            1,
+            195290
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 270873,
+          "v_heads": 19666
+        },
+        "marshal_ns": 900908,
+        "output_bytes": 768000,
+        "tag": "L05-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1882149,
+        "dev_read_ns": 3504802,
+        "dev_send_ns": 992866,
+        "elapsed_ns": 6832272,
+        "feeder_issue_ns": 32287914,
+        "feeder_ops": {
+          "add": [
+            6,
+            3102471
+          ],
+          "const": [
+            63,
+            2349018
+          ],
+          "conv": [
+            3,
+            1286613
+          ],
+          "layer_norm": [
+            5,
+            10662198
+          ],
+          "linear": [
+            8,
+            6879147
+          ],
+          "matmul": [
+            1,
+            3286553
+          ],
+          "mul": [
+            4,
+            1219364
+          ],
+          "reshape": [
+            4,
+            342705
+          ],
+          "select": [
+            1,
+            263706
+          ],
+          "sigmoid": [
+            1,
+            3667
+          ],
+          "silu": [
+            3,
+            1775816
+          ],
+          "split": [
+            1,
+            108499
+          ],
+          "transpose": [
+            5,
+            1008157
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 79375,
+          "pos_kT": 177873,
+          "q_scaled": 15792,
+          "q_v": 512745
+        },
+        "marshal_ns": 2930473,
+        "output_bytes": 6744000,
+        "tag": "L06-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 624703,
+        "dev_read_ns": 202832,
+        "dev_send_ns": 802368,
+        "elapsed_ns": 1996565,
+        "feeder_issue_ns": 15855859,
+        "feeder_ops": {
+          "add": [
+            1,
+            193332
+          ],
+          "const": [
+            15,
+            564121
+          ],
+          "matmul": [
+            1,
+            13025716
+          ],
+          "mul": [
+            1,
+            260372
+          ],
+          "pad": [
+            1,
+            533995
+          ],
+          "reshape": [
+            2,
+            184207
+          ],
+          "select": [
+            1,
+            322331
+          ],
+          "slice_by_index": [
+            2,
+            238623
+          ],
+          "softmax": [
+            1,
+            332664
+          ],
+          "transpose": [
+            1,
+            200498
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 270831,
+          "v_heads": 23625
+        },
+        "marshal_ns": 947450,
+        "output_bytes": 768000,
+        "tag": "L06-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1879066,
+        "dev_read_ns": 4772332,
+        "dev_send_ns": 1615028,
+        "elapsed_ns": 8731838,
+        "feeder_issue_ns": 32337582,
+        "feeder_ops": {
+          "add": [
+            6,
+            3135640
+          ],
+          "const": [
+            63,
+            2345144
+          ],
+          "conv": [
+            3,
+            1332238
+          ],
+          "layer_norm": [
+            5,
+            10646530
+          ],
+          "linear": [
+            8,
+            6992228
+          ],
+          "matmul": [
+            1,
+            3270262
+          ],
+          "mul": [
+            4,
+            1099781
+          ],
+          "reshape": [
+            4,
+            345288
+          ],
+          "select": [
+            1,
+            248498
+          ],
+          "sigmoid": [
+            1,
+            5917
+          ],
+          "silu": [
+            3,
+            1839608
+          ],
+          "split": [
+            1,
+            105124
+          ],
+          "transpose": [
+            5,
+            971324
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 75791,
+          "pos_kT": 251206,
+          "q_scaled": 12542,
+          "q_v": 583953
+        },
+        "marshal_ns": 3021390,
+        "output_bytes": 6744000,
+        "tag": "L07-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 637078,
+        "dev_read_ns": 331080,
+        "dev_send_ns": 1304071,
+        "elapsed_ns": 2657518,
+        "feeder_issue_ns": 17985965,
+        "feeder_ops": {
+          "add": [
+            1,
+            210832
+          ],
+          "const": [
+            15,
+            566704
+          ],
+          "matmul": [
+            1,
+            15127323
+          ],
+          "mul": [
+            1,
+            263456
+          ],
+          "pad": [
+            1,
+            575786
+          ],
+          "reshape": [
+            2,
+            172791
+          ],
+          "select": [
+            1,
+            309872
+          ],
+          "slice_by_index": [
+            2,
+            262081
+          ],
+          "softmax": [
+            1,
+            311913
+          ],
+          "transpose": [
+            1,
+            185207
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 306663,
+          "v_heads": 19583
+        },
+        "marshal_ns": 936366,
+        "output_bytes": 768000,
+        "tag": "L07-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1873691,
+        "dev_read_ns": 4675416,
+        "dev_send_ns": 1675403,
+        "elapsed_ns": 8854629,
+        "feeder_issue_ns": 33223538,
+        "feeder_ops": {
+          "add": [
+            6,
+            3053389
+          ],
+          "const": [
+            63,
+            2409477
+          ],
+          "conv": [
+            3,
+            1280281
+          ],
+          "layer_norm": [
+            5,
+            10742487
+          ],
+          "linear": [
+            8,
+            6976019
+          ],
+          "matmul": [
+            1,
+            3919548
+          ],
+          "mul": [
+            4,
+            1297365
+          ],
+          "reshape": [
+            4,
+            344956
+          ],
+          "select": [
+            1,
+            272706
+          ],
+          "sigmoid": [
+            1,
+            3417
+          ],
+          "silu": [
+            3,
+            1696902
+          ],
+          "split": [
+            1,
+            107041
+          ],
+          "transpose": [
+            5,
+            1119950
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 89749,
+          "pos_kT": 251206,
+          "q_scaled": 15125,
+          "q_v": 407913
+        },
+        "marshal_ns": 4065046,
+        "output_bytes": 6744000,
+        "tag": "L08-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 646786,
+        "dev_read_ns": 306539,
+        "dev_send_ns": 1294739,
+        "elapsed_ns": 2775933,
+        "feeder_issue_ns": 21689384,
+        "feeder_ops": {
+          "add": [
+            1,
+            307788
+          ],
+          "const": [
+            15,
+            854032
+          ],
+          "matmul": [
+            1,
+            17470468
+          ],
+          "mul": [
+            1,
+            390413
+          ],
+          "pad": [
+            1,
+            731910
+          ],
+          "reshape": [
+            2,
+            290539
+          ],
+          "select": [
+            1,
+            476829
+          ],
+          "slice_by_index": [
+            2,
+            364538
+          ],
+          "softmax": [
+            1,
+            505287
+          ],
+          "transpose": [
+            1,
+            297580
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13334,
+          "v_heads": 21291
+        },
+        "marshal_ns": 996241,
+        "output_bytes": 768000,
+        "tag": "L08-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1858316,
+        "dev_read_ns": 4686999,
+        "dev_send_ns": 1713193,
+        "elapsed_ns": 8870295,
+        "feeder_issue_ns": 34859019,
+        "feeder_ops": {
+          "add": [
+            6,
+            1980940
+          ],
+          "const": [
+            63,
+            3540344
+          ],
+          "conv": [
+            3,
+            2768765
+          ],
+          "layer_norm": [
+            5,
+            9541539
+          ],
+          "linear": [
+            8,
+            7927595
+          ],
+          "matmul": [
+            1,
+            4282795
+          ],
+          "mul": [
+            4,
+            1536778
+          ],
+          "reshape": [
+            4,
+            586870
+          ],
+          "select": [
+            1,
+            372330
+          ],
+          "sigmoid": [
+            1,
+            7708
+          ],
+          "silu": [
+            3,
+            597827
+          ],
+          "split": [
+            1,
+            164499
+          ],
+          "transpose": [
+            5,
+            1551029
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 87708,
+          "pos_kT": 233456,
+          "q_scaled": 15667,
+          "q_v": 401371
+        },
+        "marshal_ns": 4006506,
+        "output_bytes": 6744000,
+        "tag": "L09-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 643786,
+        "dev_read_ns": 308580,
+        "dev_send_ns": 1346197,
+        "elapsed_ns": 2802058,
+        "feeder_issue_ns": 21493640,
+        "feeder_ops": {
+          "add": [
+            1,
+            296498
+          ],
+          "const": [
+            15,
+            844991
+          ],
+          "matmul": [
+            1,
+            17373094
+          ],
+          "mul": [
+            1,
+            388539
+          ],
+          "pad": [
+            1,
+            687035
+          ],
+          "reshape": [
+            2,
+            288039
+          ],
+          "select": [
+            1,
+            432205
+          ],
+          "slice_by_index": [
+            2,
+            362788
+          ],
+          "softmax": [
+            1,
+            526287
+          ],
+          "transpose": [
+            1,
+            294164
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 12999,
+          "v_heads": 22541
+        },
+        "marshal_ns": 1146615,
+        "output_bytes": 768000,
+        "tag": "L09-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1886359,
+        "dev_read_ns": 4644792,
+        "dev_send_ns": 1632278,
+        "elapsed_ns": 8789046,
+        "feeder_issue_ns": 35085399,
+        "feeder_ops": {
+          "add": [
+            6,
+            1924234
+          ],
+          "const": [
+            63,
+            3543512
+          ],
+          "conv": [
+            3,
+            2861433
+          ],
+          "layer_norm": [
+            5,
+            9906911
+          ],
+          "linear": [
+            8,
+            7899889
+          ],
+          "matmul": [
+            1,
+            4486668
+          ],
+          "mul": [
+            4,
+            1388445
+          ],
+          "reshape": [
+            4,
+            556662
+          ],
+          "select": [
+            1,
+            371705
+          ],
+          "sigmoid": [
+            1,
+            5625
+          ],
+          "silu": [
+            3,
+            359331
+          ],
+          "split": [
+            1,
+            165582
+          ],
+          "transpose": [
+            5,
+            1615402
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 189581,
+          "pos_kT": 117583,
+          "q_scaled": 15583,
+          "q_v": 402455
+        },
+        "marshal_ns": 4121255,
+        "output_bytes": 6744000,
+        "tag": "L10-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 635911,
+        "dev_read_ns": 306997,
+        "dev_send_ns": 1289947,
+        "elapsed_ns": 2694351,
+        "feeder_issue_ns": 21358474,
+        "feeder_ops": {
+          "add": [
+            1,
+            354372
+          ],
+          "const": [
+            15,
+            832075
+          ],
+          "matmul": [
+            1,
+            17164262
+          ],
+          "mul": [
+            1,
+            368788
+          ],
+          "pad": [
+            1,
+            684118
+          ],
+          "reshape": [
+            2,
+            293664
+          ],
+          "select": [
+            1,
+            497871
+          ],
+          "slice_by_index": [
+            2,
+            358580
+          ],
+          "softmax": [
+            1,
+            503121
+          ],
+          "transpose": [
+            1,
+            301623
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13458,
+          "v_heads": 24458
+        },
+        "marshal_ns": 1184906,
+        "output_bytes": 768000,
+        "tag": "L10-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1853483,
+        "dev_read_ns": 4538668,
+        "dev_send_ns": 1658860,
+        "elapsed_ns": 8621839,
+        "feeder_issue_ns": 34900104,
+        "feeder_ops": {
+          "add": [
+            6,
+            1914941
+          ],
+          "const": [
+            63,
+            3561594
+          ],
+          "conv": [
+            3,
+            2113481
+          ],
+          "layer_norm": [
+            5,
+            9728662
+          ],
+          "linear": [
+            8,
+            8043679
+          ],
+          "matmul": [
+            1,
+            4391585
+          ],
+          "mul": [
+            4,
+            1439112
+          ],
+          "reshape": [
+            4,
+            585870
+          ],
+          "select": [
+            1,
+            365038
+          ],
+          "sigmoid": [
+            1,
+            8000
+          ],
+          "silu": [
+            3,
+            979241
+          ],
+          "split": [
+            1,
+            167748
+          ],
+          "transpose": [
+            5,
+            1601153
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 196290,
+          "pos_kT": 117624,
+          "q_scaled": 14625,
+          "q_v": 374747
+        },
+        "marshal_ns": 4150588,
+        "output_bytes": 6744000,
+        "tag": "L11-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 646703,
+        "dev_read_ns": 307497,
+        "dev_send_ns": 1300738,
+        "elapsed_ns": 2758142,
+        "feeder_issue_ns": 21231846,
+        "feeder_ops": {
+          "add": [
+            1,
+            334747
+          ],
+          "const": [
+            15,
+            852324
+          ],
+          "matmul": [
+            1,
+            17044804
+          ],
+          "mul": [
+            1,
+            358288
+          ],
+          "pad": [
+            1,
+            691952
+          ],
+          "reshape": [
+            2,
+            275289
+          ],
+          "select": [
+            1,
+            498829
+          ],
+          "slice_by_index": [
+            2,
+            369746
+          ],
+          "softmax": [
+            1,
+            508495
+          ],
+          "transpose": [
+            1,
+            297372
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13874,
+          "v_heads": 23042
+        },
+        "marshal_ns": 1113115,
+        "output_bytes": 768000,
+        "tag": "L11-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1871150,
+        "dev_read_ns": 4567499,
+        "dev_send_ns": 1648070,
+        "elapsed_ns": 8661088,
+        "feeder_issue_ns": 34649231,
+        "feeder_ops": {
+          "add": [
+            6,
+            1887566
+          ],
+          "const": [
+            63,
+            3592257
+          ],
+          "conv": [
+            3,
+            2159106
+          ],
+          "layer_norm": [
+            5,
+            9911953
+          ],
+          "linear": [
+            8,
+            7909763
+          ],
+          "matmul": [
+            1,
+            4379044
+          ],
+          "mul": [
+            4,
+            1492569
+          ],
+          "reshape": [
+            4,
+            582246
+          ],
+          "select": [
+            1,
+            365205
+          ],
+          "sigmoid": [
+            1,
+            5250
+          ],
+          "silu": [
+            3,
+            759535
+          ],
+          "split": [
+            1,
+            162790
+          ],
+          "transpose": [
+            5,
+            1441947
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 190831,
+          "pos_kT": 181290,
+          "q_scaled": 12542,
+          "q_v": 404997
+        },
+        "marshal_ns": 4299045,
+        "output_bytes": 6744000,
+        "tag": "L12-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 651410,
+        "dev_read_ns": 307831,
+        "dev_send_ns": 1307197,
+        "elapsed_ns": 2770309,
+        "feeder_issue_ns": 21587931,
+        "feeder_ops": {
+          "add": [
+            1,
+            379830
+          ],
+          "const": [
+            15,
+            851741
+          ],
+          "matmul": [
+            1,
+            17281553
+          ],
+          "mul": [
+            1,
+            414579
+          ],
+          "pad": [
+            1,
+            686827
+          ],
+          "reshape": [
+            2,
+            281248
+          ],
+          "select": [
+            1,
+            492954
+          ],
+          "slice_by_index": [
+            2,
+            388372
+          ],
+          "softmax": [
+            1,
+            507121
+          ],
+          "transpose": [
+            1,
+            303706
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13333,
+          "v_heads": 22291
+        },
+        "marshal_ns": 1117948,
+        "output_bytes": 768000,
+        "tag": "L12-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1875858,
+        "dev_read_ns": 4639876,
+        "dev_send_ns": 1669859,
+        "elapsed_ns": 8859879,
+        "feeder_issue_ns": 35282475,
+        "feeder_ops": {
+          "add": [
+            6,
+            1981065
+          ],
+          "const": [
+            63,
+            3502971
+          ],
+          "conv": [
+            3,
+            2603351
+          ],
+          "layer_norm": [
+            5,
+            10280574
+          ],
+          "linear": [
+            8,
+            7887138
+          ],
+          "matmul": [
+            1,
+            4399086
+          ],
+          "mul": [
+            4,
+            1530528
+          ],
+          "reshape": [
+            4,
+            584953
+          ],
+          "select": [
+            1,
+            388663
+          ],
+          "sigmoid": [
+            1,
+            5500
+          ],
+          "silu": [
+            3,
+            304456
+          ],
+          "split": [
+            1,
+            166706
+          ],
+          "transpose": [
+            5,
+            1647484
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 140207,
+          "pos_kT": 614078,
+          "q_scaled": 14583,
+          "q_v": 270290
+        },
+        "marshal_ns": 4403669,
+        "output_bytes": 6744000,
+        "tag": "L13-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 646786,
+        "dev_read_ns": 318955,
+        "dev_send_ns": 1321405,
+        "elapsed_ns": 2767850,
+        "feeder_issue_ns": 22157428,
+        "feeder_ops": {
+          "add": [
+            1,
+            295289
+          ],
+          "const": [
+            15,
+            866535
+          ],
+          "matmul": [
+            1,
+            17858422
+          ],
+          "mul": [
+            1,
+            366289
+          ],
+          "pad": [
+            1,
+            668244
+          ],
+          "reshape": [
+            2,
+            289872
+          ],
+          "select": [
+            1,
+            521496
+          ],
+          "slice_by_index": [
+            2,
+            376830
+          ],
+          "softmax": [
+            1,
+            614453
+          ],
+          "transpose": [
+            1,
+            299998
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 8916,
+          "v_heads": 22375
+        },
+        "marshal_ns": 939075,
+        "output_bytes": 768000,
+        "tag": "L13-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1946024,
+        "dev_read_ns": 4714581,
+        "dev_send_ns": 1600527,
+        "elapsed_ns": 8839421,
+        "feeder_issue_ns": 35444269,
+        "feeder_ops": {
+          "add": [
+            6,
+            1848900
+          ],
+          "const": [
+            63,
+            3567555
+          ],
+          "conv": [
+            3,
+            2244312
+          ],
+          "layer_norm": [
+            5,
+            10771028
+          ],
+          "linear": [
+            8,
+            7943805
+          ],
+          "matmul": [
+            1,
+            4252295
+          ],
+          "mul": [
+            4,
+            1430612
+          ],
+          "reshape": [
+            4,
+            566287
+          ],
+          "select": [
+            1,
+            401330
+          ],
+          "sigmoid": [
+            1,
+            5084
+          ],
+          "silu": [
+            3,
+            583286
+          ],
+          "split": [
+            1,
+            162498
+          ],
+          "transpose": [
+            5,
+            1667277
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 216999,
+          "pos_kT": 119833,
+          "q_scaled": 12708,
+          "q_v": 429704
+        },
+        "marshal_ns": 4176921,
+        "output_bytes": 6744000,
+        "tag": "L14-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 644119,
+        "dev_read_ns": 316205,
+        "dev_send_ns": 1312363,
+        "elapsed_ns": 2744892,
+        "feeder_issue_ns": 21541805,
+        "feeder_ops": {
+          "add": [
+            1,
+            389246
+          ],
+          "const": [
+            15,
+            854783
+          ],
+          "matmul": [
+            1,
+            17308011
+          ],
+          "mul": [
+            1,
+            395454
+          ],
+          "pad": [
+            1,
+            685036
+          ],
+          "reshape": [
+            2,
+            276539
+          ],
+          "select": [
+            1,
+            477620
+          ],
+          "slice_by_index": [
+            2,
+            359498
+          ],
+          "softmax": [
+            1,
+            475329
+          ],
+          "transpose": [
+            1,
+            320289
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13791,
+          "v_heads": 23334
+        },
+        "marshal_ns": 1132073,
+        "output_bytes": 768000,
+        "tag": "L14-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1891233,
+        "dev_read_ns": 4707082,
+        "dev_send_ns": 1614486,
+        "elapsed_ns": 8829004,
+        "feeder_issue_ns": 39535768,
+        "feeder_ops": {
+          "add": [
+            6,
+            2156023
+          ],
+          "const": [
+            63,
+            3819295
+          ],
+          "conv": [
+            3,
+            2239688
+          ],
+          "layer_norm": [
+            5,
+            11077984
+          ],
+          "linear": [
+            8,
+            7397892
+          ],
+          "matmul": [
+            1,
+            4357545
+          ],
+          "mul": [
+            4,
+            1330948
+          ],
+          "reshape": [
+            4,
+            557661
+          ],
+          "select": [
+            1,
+            364247
+          ],
+          "sigmoid": [
+            1,
+            8208
+          ],
+          "silu": [
+            3,
+            4340669
+          ],
+          "split": [
+            1,
+            163291
+          ],
+          "transpose": [
+            5,
+            1722317
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 194206,
+          "pos_kT": 141791,
+          "q_scaled": 14124,
+          "q_v": 415788
+        },
+        "marshal_ns": 4180046,
+        "output_bytes": 6744000,
+        "tag": "L15-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 642328,
+        "dev_read_ns": 316997,
+        "dev_send_ns": 1317362,
+        "elapsed_ns": 2743559,
+        "feeder_issue_ns": 21683304,
+        "feeder_ops": {
+          "add": [
+            1,
+            397247
+          ],
+          "const": [
+            15,
+            851617
+          ],
+          "matmul": [
+            1,
+            17316636
+          ],
+          "mul": [
+            1,
+            381580
+          ],
+          "pad": [
+            1,
+            710452
+          ],
+          "reshape": [
+            2,
+            303997
+          ],
+          "select": [
+            1,
+            519412
+          ],
+          "slice_by_index": [
+            2,
+            409871
+          ],
+          "softmax": [
+            1,
+            464162
+          ],
+          "transpose": [
+            1,
+            328330
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 12791,
+          "v_heads": 22541
+        },
+        "marshal_ns": 1140281,
+        "output_bytes": 768000,
+        "tag": "L15-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1882316,
+        "dev_read_ns": 4746165,
+        "dev_send_ns": 1679111,
+        "elapsed_ns": 8909462,
+        "feeder_issue_ns": 35153981,
+        "feeder_ops": {
+          "add": [
+            6,
+            1807733
+          ],
+          "const": [
+            63,
+            3365267
+          ],
+          "conv": [
+            3,
+            2747725
+          ],
+          "layer_norm": [
+            5,
+            10515655
+          ],
+          "linear": [
+            8,
+            8089760
+          ],
+          "matmul": [
+            1,
+            4362002
+          ],
+          "mul": [
+            4,
+            1316113
+          ],
+          "reshape": [
+            4,
+            569122
+          ],
+          "select": [
+            1,
+            364497
+          ],
+          "sigmoid": [
+            1,
+            5375
+          ],
+          "silu": [
+            3,
+            267539
+          ],
+          "split": [
+            1,
+            187248
+          ],
+          "transpose": [
+            5,
+            1555945
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 192873,
+          "pos_kT": 128582,
+          "q_scaled": 13125,
+          "q_v": 440871
+        },
+        "marshal_ns": 4171338,
+        "output_bytes": 6744000,
+        "tag": "L16-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 640578,
+        "dev_read_ns": 307581,
+        "dev_send_ns": 1287655,
+        "elapsed_ns": 2711476,
+        "feeder_issue_ns": 21745638,
+        "feeder_ops": {
+          "add": [
+            1,
+            386622
+          ],
+          "const": [
+            15,
+            853952
+          ],
+          "matmul": [
+            1,
+            17436343
+          ],
+          "mul": [
+            1,
+            369121
+          ],
+          "pad": [
+            1,
+            706286
+          ],
+          "reshape": [
+            2,
+            273705
+          ],
+          "select": [
+            1,
+            547578
+          ],
+          "slice_by_index": [
+            2,
+            362163
+          ],
+          "softmax": [
+            1,
+            491871
+          ],
+          "transpose": [
+            1,
+            317997
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13125,
+          "v_heads": 22916
+        },
+        "marshal_ns": 1270488,
+        "output_bytes": 768000,
+        "tag": "L16-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1855984,
+        "dev_read_ns": 4779789,
+        "dev_send_ns": 1657818,
+        "elapsed_ns": 8865045,
+        "feeder_issue_ns": 36619000,
+        "feeder_ops": {
+          "add": [
+            6,
+            2005440
+          ],
+          "const": [
+            63,
+            3725924
+          ],
+          "conv": [
+            3,
+            2081606
+          ],
+          "layer_norm": [
+            5,
+            11086441
+          ],
+          "linear": [
+            8,
+            8372632
+          ],
+          "matmul": [
+            1,
+            4501417
+          ],
+          "mul": [
+            4,
+            1597527
+          ],
+          "reshape": [
+            4,
+            611037
+          ],
+          "select": [
+            1,
+            375539
+          ],
+          "sigmoid": [
+            1,
+            7874
+          ],
+          "silu": [
+            3,
+            576537
+          ],
+          "split": [
+            1,
+            164790
+          ],
+          "transpose": [
+            5,
+            1512236
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 192040,
+          "pos_kT": 120040,
+          "q_scaled": 13583,
+          "q_v": 468579
+        },
+        "marshal_ns": 4253128,
+        "output_bytes": 6744000,
+        "tag": "L17-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 647661,
+        "dev_read_ns": 306831,
+        "dev_send_ns": 1298321,
+        "elapsed_ns": 2748475,
+        "feeder_issue_ns": 21832803,
+        "feeder_ops": {
+          "add": [
+            1,
+            330497
+          ],
+          "const": [
+            15,
+            836160
+          ],
+          "matmul": [
+            1,
+            17603633
+          ],
+          "mul": [
+            1,
+            368455
+          ],
+          "pad": [
+            1,
+            702244
+          ],
+          "reshape": [
+            2,
+            292706
+          ],
+          "select": [
+            1,
+            521495
+          ],
+          "slice_by_index": [
+            2,
+            358079
+          ],
+          "softmax": [
+            1,
+            506412
+          ],
+          "transpose": [
+            1,
+            313122
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13875,
+          "v_heads": 22583
+        },
+        "marshal_ns": 1188239,
+        "output_bytes": 768000,
+        "tag": "L17-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1865233,
+        "dev_read_ns": 4810082,
+        "dev_send_ns": 1620027,
+        "elapsed_ns": 8896087,
+        "feeder_issue_ns": 36817203,
+        "feeder_ops": {
+          "add": [
+            6,
+            1911524
+          ],
+          "const": [
+            63,
+            3543382
+          ],
+          "conv": [
+            3,
+            2792183
+          ],
+          "layer_norm": [
+            5,
+            11181524
+          ],
+          "linear": [
+            8,
+            7963718
+          ],
+          "matmul": [
+            1,
+            4497834
+          ],
+          "mul": [
+            4,
+            1512569
+          ],
+          "reshape": [
+            4,
+            596954
+          ],
+          "select": [
+            1,
+            351538
+          ],
+          "sigmoid": [
+            1,
+            5250
+          ],
+          "silu": [
+            3,
+            762952
+          ],
+          "split": [
+            1,
+            179124
+          ],
+          "transpose": [
+            5,
+            1518651
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 198957,
+          "pos_kT": 122415,
+          "q_scaled": 17667,
+          "q_v": 371122
+        },
+        "marshal_ns": 4120421,
+        "output_bytes": 6744000,
+        "tag": "L18-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 638827,
+        "dev_read_ns": 307414,
+        "dev_send_ns": 1287697,
+        "elapsed_ns": 2703809,
+        "feeder_issue_ns": 22007842,
+        "feeder_ops": {
+          "add": [
+            1,
+            357955
+          ],
+          "const": [
+            15,
+            864742
+          ],
+          "matmul": [
+            1,
+            17729048
+          ],
+          "mul": [
+            1,
+            374288
+          ],
+          "pad": [
+            1,
+            676285
+          ],
+          "reshape": [
+            2,
+            308581
+          ],
+          "select": [
+            1,
+            538912
+          ],
+          "slice_by_index": [
+            2,
+            363580
+          ],
+          "softmax": [
+            1,
+            497703
+          ],
+          "transpose": [
+            1,
+            296748
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13500,
+          "v_heads": 23500
+        },
+        "marshal_ns": 1271030,
+        "output_bytes": 768000,
+        "tag": "L18-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1867775,
+        "dev_read_ns": 4791707,
+        "dev_send_ns": 1666986,
+        "elapsed_ns": 8953086,
+        "feeder_issue_ns": 35994507,
+        "feeder_ops": {
+          "add": [
+            6,
+            1961149
+          ],
+          "const": [
+            63,
+            3637550
+          ],
+          "conv": [
+            3,
+            3323470
+          ],
+          "layer_norm": [
+            5,
+            9871995
+          ],
+          "linear": [
+            8,
+            8214425
+          ],
+          "matmul": [
+            1,
+            4488084
+          ],
+          "mul": [
+            4,
+            1307489
+          ],
+          "reshape": [
+            4,
+            656869
+          ],
+          "select": [
+            1,
+            363746
+          ],
+          "sigmoid": [
+            1,
+            5333
+          ],
+          "silu": [
+            3,
+            329206
+          ],
+          "split": [
+            1,
+            167415
+          ],
+          "transpose": [
+            5,
+            1667776
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 275123,
+          "pos_kT": 152207,
+          "q_scaled": 12750,
+          "q_v": 13625
+        },
+        "marshal_ns": 3757966,
+        "output_bytes": 6744000,
+        "tag": "L19-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 637411,
+        "dev_read_ns": 324997,
+        "dev_send_ns": 1300322,
+        "elapsed_ns": 2732017,
+        "feeder_issue_ns": 22019304,
+        "feeder_ops": {
+          "add": [
+            1,
+            431246
+          ],
+          "const": [
+            15,
+            868245
+          ],
+          "matmul": [
+            1,
+            17052763
+          ],
+          "mul": [
+            1,
+            528579
+          ],
+          "pad": [
+            1,
+            808451
+          ],
+          "reshape": [
+            2,
+            376746
+          ],
+          "select": [
+            1,
+            552995
+          ],
+          "slice_by_index": [
+            2,
+            442705
+          ],
+          "softmax": [
+            1,
+            556578
+          ],
+          "transpose": [
+            1,
+            400996
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13042,
+          "v_heads": 25000
+        },
+        "marshal_ns": 1155573,
+        "output_bytes": 768000,
+        "tag": "L19-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1874899,
+        "dev_read_ns": 4742249,
+        "dev_send_ns": 1617235,
+        "elapsed_ns": 8826212,
+        "feeder_issue_ns": 36953125,
+        "feeder_ops": {
+          "add": [
+            6,
+            2352895
+          ],
+          "const": [
+            63,
+            3575346
+          ],
+          "conv": [
+            3,
+            2316188
+          ],
+          "layer_norm": [
+            5,
+            10114117
+          ],
+          "linear": [
+            8,
+            8551754
+          ],
+          "matmul": [
+            1,
+            4385627
+          ],
+          "mul": [
+            4,
+            1569694
+          ],
+          "reshape": [
+            4,
+            687828
+          ],
+          "select": [
+            1,
+            432079
+          ],
+          "sigmoid": [
+            1,
+            5333
+          ],
+          "silu": [
+            3,
+            735201
+          ],
+          "split": [
+            1,
+            199873
+          ],
+          "transpose": [
+            5,
+            2027190
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 241122,
+          "pos_kT": 143415,
+          "q_scaled": 14041,
+          "q_v": 13083
+        },
+        "marshal_ns": 3678175,
+        "output_bytes": 6744000,
+        "tag": "L20-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 636995,
+        "dev_read_ns": 307122,
+        "dev_send_ns": 1334779,
+        "elapsed_ns": 2783350,
+        "feeder_issue_ns": 21082226,
+        "feeder_ops": {
+          "add": [
+            1,
+            344039
+          ],
+          "const": [
+            15,
+            1029032
+          ],
+          "matmul": [
+            1,
+            16769848
+          ],
+          "mul": [
+            1,
+            454163
+          ],
+          "pad": [
+            1,
+            719868
+          ],
+          "reshape": [
+            2,
+            219290
+          ],
+          "select": [
+            1,
+            462495
+          ],
+          "slice_by_index": [
+            2,
+            300373
+          ],
+          "softmax": [
+            1,
+            463663
+          ],
+          "transpose": [
+            1,
+            319455
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 487662,
+          "v_heads": 24667
+        },
+        "marshal_ns": 1615819,
+        "output_bytes": 768000,
+        "tag": "L20-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1908149,
+        "dev_read_ns": 4698166,
+        "dev_send_ns": 1644610,
+        "elapsed_ns": 8839253,
+        "feeder_issue_ns": 35996917,
+        "feeder_ops": {
+          "add": [
+            6,
+            1966065
+          ],
+          "const": [
+            63,
+            3753420
+          ],
+          "conv": [
+            3,
+            2260229
+          ],
+          "layer_norm": [
+            5,
+            10540780
+          ],
+          "linear": [
+            8,
+            7890802
+          ],
+          "matmul": [
+            1,
+            4904997
+          ],
+          "mul": [
+            4,
+            1428112
+          ],
+          "reshape": [
+            4,
+            594327
+          ],
+          "select": [
+            1,
+            439080
+          ],
+          "sigmoid": [
+            1,
+            5791
+          ],
+          "silu": [
+            3,
+            421622
+          ],
+          "split": [
+            1,
+            202207
+          ],
+          "transpose": [
+            5,
+            1589485
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 194123,
+          "pos_kT": 108416,
+          "q_scaled": 12542,
+          "q_v": 356247
+        },
+        "marshal_ns": 4167712,
+        "output_bytes": 6744000,
+        "tag": "L21-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 642744,
+        "dev_read_ns": 324622,
+        "dev_send_ns": 1303529,
+        "elapsed_ns": 2735809,
+        "feeder_issue_ns": 21488593,
+        "feeder_ops": {
+          "add": [
+            1,
+            365372
+          ],
+          "const": [
+            15,
+            847782
+          ],
+          "matmul": [
+            1,
+            17207219
+          ],
+          "mul": [
+            1,
+            408246
+          ],
+          "pad": [
+            1,
+            700327
+          ],
+          "reshape": [
+            2,
+            274997
+          ],
+          "select": [
+            1,
+            456787
+          ],
+          "slice_by_index": [
+            2,
+            392746
+          ],
+          "softmax": [
+            1,
+            492203
+          ],
+          "transpose": [
+            1,
+            342914
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13084,
+          "v_heads": 22208
+        },
+        "marshal_ns": 1139156,
+        "output_bytes": 768000,
+        "tag": "L21-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1856858,
+        "dev_read_ns": 4645042,
+        "dev_send_ns": 1655360,
+        "elapsed_ns": 8737421,
+        "feeder_issue_ns": 35953796,
+        "feeder_ops": {
+          "add": [
+            6,
+            1909650
+          ],
+          "const": [
+            63,
+            3605134
+          ],
+          "conv": [
+            3,
+            2038357
+          ],
+          "layer_norm": [
+            5,
+            10895526
+          ],
+          "linear": [
+            8,
+            7933968
+          ],
+          "matmul": [
+            1,
+            4353211
+          ],
+          "mul": [
+            4,
+            1527443
+          ],
+          "reshape": [
+            4,
+            609453
+          ],
+          "select": [
+            1,
+            388955
+          ],
+          "sigmoid": [
+            1,
+            5500
+          ],
+          "silu": [
+            3,
+            931657
+          ],
+          "split": [
+            1,
+            169248
+          ],
+          "transpose": [
+            5,
+            1585694
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 188707,
+          "pos_kT": 117874,
+          "q_scaled": 12958,
+          "q_v": 492537
+        },
+        "marshal_ns": 4293877,
+        "output_bytes": 6744000,
+        "tag": "L22-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 647286,
+        "dev_read_ns": 307205,
+        "dev_send_ns": 1292821,
+        "elapsed_ns": 2736975,
+        "feeder_issue_ns": 21888844,
+        "feeder_ops": {
+          "add": [
+            1,
+            312331
+          ],
+          "const": [
+            15,
+            856243
+          ],
+          "matmul": [
+            1,
+            17684423
+          ],
+          "mul": [
+            1,
+            361038
+          ],
+          "pad": [
+            1,
+            693202
+          ],
+          "reshape": [
+            2,
+            290039
+          ],
+          "select": [
+            1,
+            491121
+          ],
+          "slice_by_index": [
+            2,
+            368539
+          ],
+          "softmax": [
+            1,
+            522453
+          ],
+          "transpose": [
+            1,
+            309455
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 13500,
+          "v_heads": 23250
+        },
+        "marshal_ns": 1114949,
+        "output_bytes": 768000,
+        "tag": "L22-C"
+      },
+      {
+        "bundle": "island-attn-a-kt",
+        "dev_exec_ns": 1876109,
+        "dev_read_ns": 4724999,
+        "dev_send_ns": 1658776,
+        "elapsed_ns": 8842753,
+        "feeder_issue_ns": 35584174,
+        "feeder_ops": {
+          "add": [
+            6,
+            1927689
+          ],
+          "const": [
+            63,
+            3626758
+          ],
+          "conv": [
+            3,
+            2089523
+          ],
+          "layer_norm": [
+            5,
+            10619946
+          ],
+          "linear": [
+            8,
+            8127927
+          ],
+          "matmul": [
+            1,
+            4367002
+          ],
+          "mul": [
+            4,
+            1600401
+          ],
+          "reshape": [
+            4,
+            590495
+          ],
+          "select": [
+            1,
+            351788
+          ],
+          "sigmoid": [
+            1,
+            5625
+          ],
+          "silu": [
+            3,
+            639785
+          ],
+          "split": [
+            1,
+            168040
+          ],
+          "transpose": [
+            5,
+            1469195
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3837952,
+        "marshal_drains_ns": {
+          "k_headsT": 191040,
+          "pos_kT": 118832,
+          "q_scaled": 12625,
+          "q_v": 427787
+        },
+        "marshal_ns": 4140796,
+        "output_bytes": 6744000,
+        "tag": "L23-A"
+      },
+      {
+        "bundle": "island-pv",
+        "dev_exec_ns": 636370,
+        "dev_read_ns": 308581,
+        "dev_send_ns": 1664360,
+        "elapsed_ns": 3136513,
+        "feeder_issue_ns": 21600181,
+        "feeder_ops": {
+          "add": [
+            1,
+            365413
+          ],
+          "const": [
+            15,
+            876785
+          ],
+          "matmul": [
+            1,
+            17305552
+          ],
+          "mul": [
+            1,
+            401663
+          ],
+          "pad": [
+            1,
+            658703
+          ],
+          "reshape": [
+            2,
+            298289
+          ],
+          "select": [
+            1,
+            510828
+          ],
+          "slice_by_index": [
+            2,
+            385747
+          ],
+          "softmax": [
+            1,
+            496162
+          ],
+          "transpose": [
+            1,
+            301039
+          ]
+        },
+        "inprocess": true,
+        "input_bytes": 3018000,
+        "marshal_drains_ns": {
+          "probs": 12958,
+          "v_heads": 20500
+        },
+        "marshal_ns": 1109156,
+        "output_bytes": 768000,
+        "tag": "L23-C"
+      }
+    ],
+    "output_bytes": 180288000,
+    "submissions": 1,
+    "timeouts": 0,
+    "worker": "/var/tmp/encoder-whole/build/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker",
+    "worker_sha256": "84e8cc8f5f1048e168732f7d2afecd8b40dd9fd80c31c2a62f3e054446fe3e0c",
+    "worker_starts": 1
+  },
+  "execution": {
+    "ane_mode": true,
+    "control": "host",
+    "cpu_tensor_events": 0,
+    "decoder_calls": 145,
+    "encoder_ane_ops": 72,
+    "encoder_gpu_ops": 1230,
+    "encoder_layers": 24,
+    "encoder_ops_executed": 3399,
+    "host_non_tensor_work": [
+      "FLAC codec: soundfile 0.14.0, 166960 int16 samples; the fp32 scaling and every later tensor op run on the GPU",
+      "ANE island transport: input and output tensors cross to the bounded worker as files; process I/O, not arithmetic",
+      "TDT control: scalar token, duration and frame decisions only",
+      "detokenization: string concatenation over emitted ids",
+      "comparison and reporting after the pipeline, in numpy"
+    ],
+    "inference_server": false,
+    "joint_calls": 146,
+    "recorded_decisions_injected": false,
+    "tdt_fallback_reason": "--tdt-host",
+    "valid_encoder_frames": 375
+  },
+  "host": {
+    "hostname": "m1max-host",
+    "kernel": "7.1.6-1-1-ARCH",
+    "machine": "aarch64",
+    "python": "3.14.7"
+  },
+  "inputs": {
+    "audio": {
+      "decoder": "soundfile 0.14.0",
+      "matches_lock": true,
+      "path": "/var/tmp/parakeet-recover/audio/fixture.flac",
+      "sample_rate": 16000,
+      "samples": 166960,
+      "sha256": "30885601173f96b0d8ddd020dc959b055c6c1582b85a33e3fcab8c4b08ed94c2",
+      "url": "https://huggingface.co/datasets/Narsil/asr_dummy/resolve/8d141c84e3f84c54cd7bbaa851d24edd0f559734/1.flac"
+    },
+    "encoder_source": {
+      "mil_sha256": "ac8e9526154ac8b8d4c08b83e44dbc1a2208d7ec33e42a7838d57b698b14f133",
+      "root": "/var/tmp/parakeet-recover/encoder-source"
+    },
+    "golden_capture": {
+      "authenticated_files": 11,
+      "encoder_hidden_sha256": "7e442034cb42521f7b76ec9645e8d0082899a5f551ea8d046c62a9283cc6e4e5",
+      "manifest_sha256": "cc99bb7dc848b72fb6648140ee6e895a43dfeea234ce308d0981ec3e2c18cf50",
+      "path": "/var/tmp/parakeet-recover/capture",
+      "token_ids_sha256": "a175a5f9ce8c1e91fc28f6e1fce9deee29c24c3ef49e62ce4b144cc44f8401c8",
+      "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790"
+    },
+    "model": {
+      "decoder_mlpackage_sha256": "8d068618a9fd3a981d6cbc09ae9643a25b2e382f2c3e05d3b9412b9c25a4372e",
+      "joint_mlpackage_sha256": "cde4d7c509e8053ec7c90d04368f2d4bb5ad8db87a28b550de80541193100a39",
+      "quantization": "fp16 compute precision; encoder 4-bit palettized (kmeans, per-grouped-channel, conv excluded); decoder/joint fp16",
+      "repo": "mweinbach1/parakeet-tdt-0.6b-v3-coreml",
+      "revision": "b650695c2322ee5281dff48d7345b2f3a58ff018",
+      "tokenizer_sha256": "bd321b096832a3f270bd3b2a88823957920f1a5c5ada71114a26ea729d0cbe91",
+      "tokenizer_vocab_size": 8193
+    }
+  },
+  "layers": {
+    "layer_2_preprocessing": {
+      "encoder_input_features": {
+        "bit_exact": true,
+        "inf": 0,
+        "max_abs_err": 0.0,
+        "mean_abs_err": 0.0,
+        "nan": 0,
+        "rel_l2_err": 0.0,
+        "shape": [
+          1,
+          3000,
+          128
+        ]
+      },
+      "encoder_input_mask_exact": true,
+      "mel": {
+        "bit_exact": true,
+        "inf": 0,
+        "max_abs_err": 0.0,
+        "mean_abs_err": 0.0,
+        "nan": 0,
+        "rel_l2_err": 0.0,
+        "shape": [
+          3001,
+          128
+        ]
+      },
+      "mel_mask_exact": true
+    },
+    "layer_5_encoder": {
+      "all_bounds_pass": true,
+      "encoder_mask_exact": true,
+      "encoder_mask_sum": 375,
+      "measured": {
+        "bit_exact": false,
+        "inf": 0,
+        "max_abs_err": 0.17535400390625,
+        "mean_abs_err": 0.0037550379056483507,
+        "nan": 0,
+        "rel_l2_err": 0.023043520748615265,
+        "shape": [
+          1,
+          375,
+          640
+        ]
+      },
+      "per_bound": {
+        "encoder_max_abs_err": {
+          "bound": 0.3,
+          "measured": 0.17535400390625,
+          "pass": true
+        },
+        "encoder_mean_abs_err": {
+          "bound": 0.02,
+          "measured": 0.0037550379056483507,
+          "pass": true
+        },
+        "encoder_rel_l2_err": {
+          "bound": 0.1,
+          "measured": 0.023043520748615265,
+          "pass": true
+        },
+        "inf_count": {
+          "bound": 0,
+          "measured": 0,
+          "pass": true
+        },
+        "nan_count": {
+          "bound": 0,
+          "measured": 0,
+          "pass": true
+        }
+      },
+      "vs_prior_ane_encoder_run": {
+        "bit_exact": false,
+        "inf": 0,
+        "max_abs_err": 0.06976318359375,
+        "mean_abs_err": 0.0017572783399373293,
+        "nan": 0,
+        "path": "/var/tmp/parakeet-recover/ane-reference/encoder_hidden.npy",
+        "rel_l2_err": 0.011026594787836075,
+        "sha256": "b3d60c81bcd9c63fcdcb5c5578d765cc221b0126af3482fb165d769a65c23e6e",
+        "shape": [
+          1,
+          375,
+          640
+        ]
+      }
+    },
+    "layer_6_decoder_sequence": {
+      "actual": {
+        "durations": [
+          3,
+          2,
+          2,
+          2,
+          2,
+          3,
+          2,
+          2,
+          3,
+          1,
+          2,
+          2,
+          2,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          2,
+          3,
+          2,
+          1,
+          3,
+          4,
+          2,
+          2,
+          2,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          2,
+          2,
+          2,
+          1,
+          2,
+          2,
+          2,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          3,
+          2,
+          1,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          1,
+          1,
+          4,
+          1,
+          4,
+          0,
+          4,
+          0,
+          4,
+          0,
+          4,
+          0,
+          1,
+          1,
+          1,
+          1,
+          4,
+          1,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frame_indices": [
+          3,
+          6,
+          8,
+          10,
+          12,
+          14,
+          17,
+          19,
+          21,
+          24,
+          25,
+          27,
+          29,
+          31,
+          34,
+          37,
+          39,
+          41,
+          43,
+          45,
+          47,
+          50,
+          53,
+          56,
+          59,
+          61,
+          63,
+          66,
+          70,
+          72,
+          74,
+          76,
+          79,
+          81,
+          83,
+          85,
+          90,
+          92,
+          95,
+          97,
+          99,
+          101,
+          102,
+          104,
+          106,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          118,
+          120,
+          123,
+          127,
+          130,
+          138,
+          202,
+          226,
+          234,
+          242,
+          250,
+          258,
+          266,
+          274,
+          279,
+          280,
+          284,
+          285,
+          289,
+          289,
+          293,
+          293,
+          297,
+          297,
+          301,
+          305,
+          310,
+          315,
+          320,
+          321,
+          325,
+          326,
+          330,
+          334,
+          338,
+          342,
+          346,
+          350,
+          354,
+          362,
+          370,
+          372,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373
+        ],
+        "token_ids": [
+          1876,
+          303,
+          669,
+          326,
+          3357,
+          4223,
+          555,
+          1269,
+          7898,
+          509,
+          1150,
+          1742,
+          7877,
+          1503,
+          479,
+          1447,
+          575,
+          1743,
+          320,
+          769,
+          575,
+          3550,
+          5231,
+          939,
+          773,
+          283,
+          575,
+          3415,
+          282,
+          351,
+          2414,
+          1765,
+          1083,
+          366,
+          555,
+          7410,
+          1160,
+          2009,
+          334,
+          552,
+          1413,
+          7877,
+          699,
+          5477,
+          326,
+          7877,
+          309,
+          630,
+          344,
+          7918,
+          7894,
+          296,
+          571,
+          326,
+          2628,
+          463,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7863,
+          8135,
+          7892,
+          7863,
+          8135
+        ]
+      },
+      "actual_emissions": 104,
+      "durations_match": true,
+      "first_divergence": null,
+      "frame_indices_match": true,
+      "matching_prefix_length": 104,
+      "native": {
+        "durations": [
+          3,
+          2,
+          2,
+          2,
+          2,
+          3,
+          2,
+          2,
+          3,
+          1,
+          2,
+          2,
+          2,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          2,
+          3,
+          2,
+          1,
+          3,
+          4,
+          2,
+          2,
+          2,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          2,
+          2,
+          2,
+          1,
+          2,
+          2,
+          2,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          3,
+          2,
+          1,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          1,
+          1,
+          4,
+          1,
+          4,
+          0,
+          4,
+          0,
+          4,
+          0,
+          4,
+          0,
+          1,
+          1,
+          1,
+          1,
+          4,
+          1,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frame_indices": [
+          3,
+          6,
+          8,
+          10,
+          12,
+          14,
+          17,
+          19,
+          21,
+          24,
+          25,
+          27,
+          29,
+          31,
+          34,
+          37,
+          39,
+          41,
+          43,
+          45,
+          47,
+          50,
+          53,
+          56,
+          59,
+          61,
+          63,
+          66,
+          70,
+          72,
+          74,
+          76,
+          79,
+          81,
+          83,
+          85,
+          90,
+          92,
+          95,
+          97,
+          99,
+          101,
+          102,
+          104,
+          106,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          118,
+          120,
+          123,
+          127,
+          130,
+          138,
+          202,
+          226,
+          234,
+          242,
+          250,
+          258,
+          266,
+          274,
+          279,
+          280,
+          284,
+          285,
+          289,
+          289,
+          293,
+          293,
+          297,
+          297,
+          301,
+          305,
+          310,
+          315,
+          320,
+          321,
+          325,
+          326,
+          330,
+          334,
+          338,
+          342,
+          346,
+          350,
+          354,
+          362,
+          370,
+          372,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373,
+          373
+        ],
+        "token_ids": [
+          1876,
+          303,
+          669,
+          326,
+          3357,
+          4223,
+          555,
+          1269,
+          7898,
+          509,
+          1150,
+          1742,
+          7877,
+          1503,
+          479,
+          1447,
+          575,
+          1743,
+          320,
+          769,
+          575,
+          3550,
+          5231,
+          939,
+          773,
+          283,
+          575,
+          3415,
+          282,
+          351,
+          2414,
+          1765,
+          1083,
+          366,
+          555,
+          7410,
+          1160,
+          2009,
+          334,
+          552,
+          1413,
+          7877,
+          699,
+          5477,
+          326,
+          7877,
+          309,
+          630,
+          344,
+          7918,
+          7894,
+          296,
+          571,
+          326,
+          2628,
+          463,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7883,
+          7863,
+          8135,
+          7892,
+          7863,
+          8135
+        ]
+      },
+      "native_emissions": 104,
+      "required": true,
+      "requirement": "token_ids_must_match_exactly",
+      "tokens_match": true
+    },
+    "layer_7_end_to_end_text": {
+      "actual_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+      "native_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+      "native_transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... \u042e\u043d \u042e",
+      "required": true,
+      "requirement": "transcript_must_match_exactly",
+      "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... \u042e\u043d \u042e",
+      "transcript_match": true
+    }
+  },
+  "mlx": {
+    "architecture": "honeykrisp",
+    "core_path": "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/core.cpython-314-aarch64-linux-gnu.so",
+    "core_sha256": "ed7c532aad42988f4cfca869e30e943f6bf3e942805455dc3894e19c15f223db",
+    "default_device": "Device(gpu, 0)",
+    "device": "Apple M1 Max (G13C C0)",
+    "libmlx_path": "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/lib/libmlx.so",
+    "libmlx_sha256": "955ae2a532e15850e527b4d06eef30bc31d6645189bef2df4c04b7a30156d2f6",
+    "version": "0.32.3.dev202609241305+06add05a"
+  },
+  "phase": "7",
+  "schema": "mlx-omarchy.parakeet-e2e/1",
+  "stages": [
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 1,
+        "gpu_primitive_dispatches": 4,
+        "omarchy_finalize_calls": 1,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 2,
+        "vk_submissions": 1
+      },
+      "stage": "audio_load",
+      "wall_ms": 7.894,
+      "wall_ns": 7894304
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 1,
+        "gpu_primitive_dispatches": 14,
+        "omarchy_finalize_calls": 1,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 8,
+        "vk_submissions": 1
+      },
+      "stage": "mel_frontend",
+      "wall_ms": 142.248,
+      "wall_ns": 142247518
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 1265,
+        "gpu_primitive_dispatches": 7590,
+        "omarchy_finalize_calls": 1278,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 101,
+        "vk_compute_dispatches": 3723,
+        "vk_submissions": 1265
+      },
+      "stage": "encoder_ane",
+      "wall_ms": 1758.931,
+      "wall_ns": 1758930657
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 0,
+        "gpu_primitive_dispatches": 0,
+        "omarchy_finalize_calls": 0,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 0,
+        "vk_submissions": 0
+      },
+      "stage": "decoder_load",
+      "wall_ms": 81.195,
+      "wall_ns": 81194723
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 278,
+        "gpu_primitive_dispatches": 3227,
+        "omarchy_finalize_calls": 278,
+        "vk_buffer_copies": 725,
+        "vk_buffer_fills": 3,
+        "vk_compute_dispatches": 1996,
+        "vk_submissions": 278
+      },
+      "stage": "tdt_decode",
+      "wall_ms": 476.438,
+      "wall_ns": 476437935
+    },
+    {
+      "gpu_counter_delta": {
+        "commit_calls_noop": 0,
+        "commit_calls_with_work": 0,
+        "gpu_primitive_dispatches": 0,
+        "omarchy_finalize_calls": 0,
+        "vk_buffer_copies": 0,
+        "vk_buffer_fills": 0,
+        "vk_compute_dispatches": 0,
+        "vk_submissions": 0
+      },
+      "stage": "detokenize",
+      "wall_ms": 49.041,
+      "wall_ns": 49040887
+    }
+  ],
+  "status": "match",
+  "timing": {
+    "decoder_mean_ms": 2.05,
+    "decoder_total_ms": 297.211,
+    "joint_mean_ms": 1.178,
+    "joint_total_ms": 171.951,
+    "total_pipeline_ms": 2515.746
+  }
+}

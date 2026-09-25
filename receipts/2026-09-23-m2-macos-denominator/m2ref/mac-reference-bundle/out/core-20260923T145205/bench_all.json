@@ -1,0 +1,2 @@
+{"units":"all","compile_ms":202.4,"load_ms":13764.2,"placement":{"ane":1306,"cpu":23,"gpu":45},"reps":10,"median_ms":92.15,"min_ms":91.66,"max_ms":92.83,"mean_ms":92.19,"hidden_stride_mean":-0.053865,"hidden_count":240000,"mask_sum":375}
+times_ms [91.66, 91.68, 91.68, 91.76, 91.80, 92.15, 92.79, 92.79, 92.80, 92.83]

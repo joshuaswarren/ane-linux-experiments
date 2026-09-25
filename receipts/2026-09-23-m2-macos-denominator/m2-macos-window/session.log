@@ -1,0 +1,50 @@
+=== window start Wed Sep 23 14:52:05 CDT 2026 ===
+QWEN_GPU_PY=python3.13
+Python 3.13.15
+== leg a-e: run-core.sh ==
+times_ms [90.65, 90.68, 90.70, 90.70, 90.71, 90.71, 90.73, 90.74, 90.77, 90.77]
+{"file":"/private/tmp/m2ref/mac-reference-bundle/out/core-20260923T145205/out_ane.bin","words":240000,"mismatches":0,"max_delta":0,"first_bad_index":-1,"bit_exact":true}
+== arm all
+{"units":"all","compile_ms":202.4,"load_ms":13764.2,"placement":{"ane":1306,"cpu":23,"gpu":45},"reps":10,"median_ms":92.15,"min_ms":91.66,"max_ms":92.83,"mean_ms":92.19,"hidden_stride_mean":-0.053865,"hidden_count":240000,"mask_sum":375}
+times_ms [91.66, 91.68, 91.68, 91.76, 91.80, 92.15, 92.79, 92.79, 92.80, 92.83]
+{"file":"/private/tmp/m2ref/mac-reference-bundle/out/core-20260923T145205/out_all.bin","words":240000,"mismatches":221455,"max_delta":0.0371094,"first_bad_index":0,"bit_exact":false}
+ane power sample: ANE power: none-recorded (check ane_power_*.txt/.err)
+CORE-BUNDLE OK — /private/tmp/m2ref/mac-reference-bundle/out/core-20260923T145205
+== leg d1: run-qwen-gpu.sh ==
+pass 7 done
+pass 8 done
+pass 9 done
+peak:           1668186112  maximum resident set size
+pure_prefill: {'prompt_tokens': 512, 'wall_s': 0.4613, 'gpu_busy_percent_samples': [], 'pure_prefill_tok_rate': 1109.82}
+ordered_records_sha256: 85b9bc6da83b35bc6222b62648091d7d07d091810d7a0f392278b93d2c5ac4e4
+e2e_s: {'median': 0.2129, 'min': 0.1687, 'max': 0.2272, 'n': 100} peak_rss_bytes: None
+GPU-BUNDLE OK — /tmp/m2-macos-window/qwen-gpu-20260923T145443
+== leg c: run-parakeet.sh ==
+  got:      He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce.......................................
+  expected: He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce.......................................
+cpu: transcript DIFFERS from golden (expected for cpu per the pinned reference contract)
+  got:  He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce.......................................
+all: transcript DIFFERS from golden — GATE FAIL
+  got:      He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce.......................................
+  expected: He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce.......................................
+PARAKEET-BUNDLE GATE FAILED — /tmp/m2-macos-window/parakeet-20260923T145525 (ship the out dir anyway)
+== leg d2: run-qwen-ane.sh (attempt) ==
+qwen38-2b-prompts.jsonl: OK
+== downloading Qwen3.8-2B-Q4_K_M.gguf from HF (1.3 GB)
+/tmp/m2ref/mac-reference-bundle/models/Qwen3.8-2B-Q4_K_M.gguf: OK
+== ANE reference (cold, 3 warmup corpus passes, 10 reps x 10 prompts, 32 new tokens)
+loading GGUF (/tmp/m2ref/mac-reference-bundle/models/Qwen3.8-2B-Q4_K_M.gguf) ...
+qwen-ane rc=0 (recorded honestly)
+== ANE evidence captures ==
+    1997 /tmp/m2-macos-window/ane-evidence/ane0-devicetree.txt
+    3325 /tmp/m2-macos-window/ane-evidence/ane0-full.txt
+    3325 /tmp/m2-macos-window/ane-evidence/ane0.txt
+      10 /tmp/m2-macos-window/ane-evidence/dart-ane-names.txt
+    7121 /tmp/m2-macos-window/ane-evidence/dart-ane-nodes.txt
+    7106 /tmp/m2-macos-window/ane-evidence/dart-ane0.txt
+   93656 /tmp/m2-macos-window/ane-evidence/dart-t8110-all.txt
+       0 /tmp/m2-macos-window/ane-evidence/fud-ane-paths.txt
+     177 /tmp/m2-macos-window/ane-evidence/fud-ls.txt
+    1904 /tmp/m2-macos-window/ane-evidence/iscpreboot-ls.txt
+  118621 total
+=== window end Wed Sep 23 14:58:38 CDT 2026 ===

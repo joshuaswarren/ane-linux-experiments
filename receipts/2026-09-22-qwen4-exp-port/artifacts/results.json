@@ -1,0 +1,57 @@
+[
+  {
+    "name": "weight-coverage",
+    "ok": true,
+    "detail": "missing=[] extra=[]"
+  },
+  {
+    "name": "mrope",
+    "ok": true,
+    "detail": "max|dcos|=2.93e-08"
+  },
+  {
+    "name": "gdn-chunk",
+    "ok": true,
+    "detail": "max|dout|=9.51e-08"
+  },
+  {
+    "name": "gdn-state",
+    "ok": true,
+    "detail": "max|dstate|=1.52e-07 (layout-transposed)"
+  },
+  {
+    "name": "gdn-recurrent-decode",
+    "ok": true,
+    "detail": "max|dout|=7.64e-08"
+  },
+  {
+    "name": "ngram-multipliers",
+    "ok": true,
+    "detail": "mults=[40323955908725927, 35454616657218691]..."
+  },
+  {
+    "name": "forward-prefill-f64",
+    "ok": true,
+    "detail": "stages L0:5.9e-07/9.4e-09 L1:1.5e-06/2.6e-08 L2:2.1e-06/2.6e-08 L3:2.3e-06/3.0e-08 flips=0 max|d|=1.014e-06 logit-mag=0.70"
+  },
+  {
+    "name": "top8-prefill-f64",
+    "ok": true,
+    "detail": "top8 agrees; logit-mag=0.70"
+  },
+  {
+    "name": "decode-4-steps-f64",
+    "ok": false,
+    "detail": "s0:|d|=6.37e-01,flips=1 s1:|d|=4.19e-01,flips=1 s2:|d|=7.49e-01,flips=1 s3:|d|=5.96e-01,flips=1"
+  },
+  {
+    "name": "weight-coverage",
+    "ok": true,
+    "detail": "missing=[] extra=[]"
+  },
+  {
+    "name": "forward-prefill-f32",
+    "ok": false,
+    "detail": "f32-vs-f64 max|d|=8.479e-01 flips=16 top2-gap=0.003 (bf16 quantum=0.25)"
+  }
+]

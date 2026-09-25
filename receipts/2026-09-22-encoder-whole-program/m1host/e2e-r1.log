@@ -1,0 +1,25 @@
+[rtmod] SUBMIT tid=3273 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=3273 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=3273 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=3273 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "tokens_match": true,
+  "transcript_match": true,
+  "matching_prefix_length": 104,
+  "actual_emissions": 104,
+  "native_emissions": 104,
+  "encoder_bounds_pass": true,
+  "mel_bit_exact": true,
+  "ane_submissions": 1,
+  "cpu_tensor_events": 0,
+  "total_pipeline_ms": 13994.91,
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP

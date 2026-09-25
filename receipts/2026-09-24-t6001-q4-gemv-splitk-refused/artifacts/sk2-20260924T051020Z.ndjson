@@ -1,0 +1,16 @@
+{"k":"dev","name":"Apple M1 Max (G13C C0)","subgroupSize":32,"arith":true,"ts_period_ns":1.000}
+{"k":"mode","variant":"subgroup","reps":21}
+{"k":"sk_cfg","rounds":5,"tokens":8,"passes":2}
+{"k":"sk","arm":"base","S":1,"tokens":8,"rounds":5,"token_ns_med":293772,"token_ns_min":218365,"weight_bytes":21286912,"weight_gb_s":72.46,"total_gb_s":72.46,"pass":1}
+{"k":"sk","arm":"sk2","S":2,"tokens":8,"rounds":5,"token_ns_med":226782,"token_ns_min":215287,"weight_bytes":21286912,"weight_gb_s":93.87,"total_gb_s":94.88,"pass":1}
+{"k":"sk","arm":"sk4","S":4,"tokens":8,"rounds":5,"token_ns_med":248621,"token_ns_min":215516,"weight_bytes":21286912,"weight_gb_s":85.62,"total_gb_s":87.47,"pass":1}
+{"k":"sk","arm":"sk8","S":8,"tokens":8,"rounds":5,"token_ns_med":309569,"token_ns_min":308616,"weight_bytes":21286912,"weight_gb_s":68.76,"total_gb_s":71.73,"pass":1}
+{"k":"sk","arm":"sk16","S":16,"tokens":8,"rounds":5,"token_ns_med":533148,"token_ns_min":532835,"weight_bytes":21286912,"weight_gb_s":39.93,"total_gb_s":43.37,"pass":1}
+{"k":"sk","arm":"sk32","S":32,"tokens":8,"rounds":5,"token_ns_med":1006983,"token_ns_min":1005582,"weight_bytes":21286912,"weight_gb_s":21.14,"total_gb_s":24.78,"pass":1}
+{"k":"sk","arm":"base","S":1,"tokens":8,"rounds":5,"token_ns_med":151854,"token_ns_min":149344,"weight_bytes":21286912,"weight_gb_s":140.18,"total_gb_s":140.18,"pass":2}
+{"k":"sk","arm":"sk2","S":2,"tokens":8,"rounds":5,"token_ns_med":170985,"token_ns_min":170016,"weight_bytes":21286912,"weight_gb_s":124.50,"total_gb_s":125.84,"pass":2}
+{"k":"sk","arm":"sk4","S":4,"tokens":8,"rounds":5,"token_ns_med":197110,"token_ns_min":194448,"weight_bytes":21286912,"weight_gb_s":108.00,"total_gb_s":110.32,"pass":2}
+{"k":"sk","arm":"sk8","S":8,"tokens":8,"rounds":5,"token_ns_med":308808,"token_ns_min":307798,"weight_bytes":21286912,"weight_gb_s":68.93,"total_gb_s":71.90,"pass":2}
+{"k":"sk","arm":"sk16","S":16,"tokens":8,"rounds":5,"token_ns_med":533033,"token_ns_min":531403,"weight_bytes":21286912,"weight_gb_s":39.94,"total_gb_s":43.38,"pass":2}
+{"k":"sk","arm":"sk32","S":32,"tokens":8,"rounds":5,"token_ns_med":1006702,"token_ns_min":1003770,"weight_bytes":21286912,"weight_gb_s":21.15,"total_gb_s":24.79,"pass":2}
+{"k":"done"}

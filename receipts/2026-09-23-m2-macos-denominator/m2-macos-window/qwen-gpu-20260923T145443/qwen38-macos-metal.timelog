@@ -1,0 +1,20 @@
+pure_prefill: {'prompt_tokens': 512, 'wall_s': 0.4613, 'gpu_busy_percent_samples': [], 'pure_prefill_tok_rate': 1109.82}
+ordered_records_sha256: 85b9bc6da83b35bc6222b62648091d7d07d091810d7a0f392278b93d2c5ac4e4
+       24.25 real        13.26 user         4.85 sys
+          1668186112  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              138227  page reclaims
+                 407  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                 101  voluntary context switches
+              185941  involuntary context switches
+        148243276264  instructions retired
+         42459487578  cycles elapsed
+          2534573856  peak memory footprint

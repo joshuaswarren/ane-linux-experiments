@@ -1,0 +1,1 @@
+{"file":"/private/tmp/m2ref/mac-reference-bundle/out/core-20260923T145205/out_cpu.bin","words":240000,"mismatches":237818,"max_delta":0.206299,"first_bad_index":1,"bit_exact":false}

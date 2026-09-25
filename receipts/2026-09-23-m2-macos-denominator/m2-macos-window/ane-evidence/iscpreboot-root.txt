@@ -1,0 +1,10 @@
+total 0
+drwxr-xr-x@  9 root  wheel  288 Sep 23 09:48 .
+drwxr-xr-x  14 root  wheel  448 Sep  3 05:34 ..
+d-wx--x--t   3 root  wheel   96 Sep  6  2024 .TemporaryItems
+drwxrwxrwx   3 root  wheel   96 Mar 24  2023 2A5A7F8E-8B1D-4134-9509-C8D1D3BFF65E
+drwxrwxrwx   3 root  wheel   96 Mar 24  2023 3D3287DE-280D-4619-AAAB-D97469CA9C71
+drwxr-xr-x   3 root  wheel   96 Sep 18 11:51 5AE8D78F-0C9F-403F-9353-9C21472160E9
+drwxr-xr-x   3 root  wheel   96 Sep 18 08:19 SFR
+drwxr-xr-x   6 root  wheel  192 Sep 18 08:02 SystemRecovery
+drwxr-xr-x   2 root  wheel   64 Mar 19  2026 WiFi

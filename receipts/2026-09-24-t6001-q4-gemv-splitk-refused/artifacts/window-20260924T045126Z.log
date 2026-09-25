@@ -1,0 +1,7 @@
+[2026-09-23T23:51:26-05:00] window begin 20260924T045126Z
+[2026-09-23T23:51:29-05:00] 8002 down, window open
+[2026-09-23T23:51:29-05:00] == in-model probe ==
+[2026-09-23T23:51:30-05:00] inmodel rc=1 [rtmod] COMMIT-NOOP
+[2026-09-23T23:51:30-05:00] window done
+[2026-09-23T23:51:30-05:00] cleanup rc=0 -- restore service
+[2026-09-23T23:52:30-05:00] service restored

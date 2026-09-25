@@ -1,0 +1,2280 @@
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000003b6, registered, matched, active, busy 0 (37 ms), retain 14>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent00000035" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <35000000>
+  | }
+  | 
+  +-o mapper-mtp@1  <class IODARTMapperNub, id 0x1000003b7, registered, matched, active, busy 0 (13 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <01000000>
+    |   "name" = <"mapper-mtp">
+    |   "AAPL,phandle" = <36000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000003bf, registered, matched, active, busy 0 (1 ms), retain 22>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <36000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x10000031f, registered, matched, active, busy 0 (114 ms), retain 15>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "IOFunctionParent0000005E" = <>
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <5e000000>
+  | }
+  | 
+  +-o mapper-isp0@0  <class IODARTMapperNub, id 0x100000458, registered, matched, active, busy 0 (26 ms), retain 8>
+    | {
+    |   "name" = <"mapper-isp0">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <80010000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <00000000>
+    |   "AAPL,phandle" = <5f000000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000049b, registered, matched, active, busy 0 (4 ms), retain 166>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <5f000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000322, registered, matched, active, busy 0 (164 ms), retain 139>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <6b000000>
+  |   "IOFunctionParent0000006B" = <>
+  | }
+  | 
+  +-o mapper-apcie0-wlan  <class IODARTMapperNub, id 0x1000003a7, registered, matched, active, busy 0 (47 ms), retain 8>
+  | | {
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <01000000>
+  | |   "name" = <"mapper-apcie0-wlan">
+  | |   "AAPL,phandle" = <6c000000>
+  | |   "compatible" = <"iommu-mapper">
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x1000003c3, registered, matched, active, busy 0 (20 ms), retain 398>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <6c000000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-apcie0-bt  <class IODARTMapperNub, id 0x1000003a8, registered, matched, active, busy 0 (27 ms), retain 8>
+  | | {
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <02000000>
+  | |   "name" = <"mapper-apcie0-bt">
+  | |   "AAPL,phandle" = <6d000000>
+  | |   "compatible" = <"iommu-mapper">
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x1000003c2, registered, matched, active, busy 0 (0 ms), retain 89>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <6d000000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-apcie0-piodma@F  <class IODARTMapperNub, id 0x1000003a9, registered, matched, active, busy 0 (129 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <0f000000>
+    |   "name" = <"mapper-apcie0-piodma">
+    |   "AAPL,phandle" = <6e000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000003b4, registered, matched, active, busy 0 (118 ms), retain 73>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <6e000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x10000038a, registered, matched, active, busy 0 (162 ms), retain 79>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <70000000>
+  |   "IOFunctionParent00000070" = <>
+  | }
+  | 
+  +-o mapper-apcie1  <class IODARTMapperNub, id 0x1000003a1, registered, matched, active, busy 0 (0 ms), retain 8>
+  | | {
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <01000000>
+  | |   "name" = <"mapper-apcie1">
+  | |   "AAPL,phandle" = <71000000>
+  | |   "compatible" = <"iommu-mapper">
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x1000003a3, registered, matched, active, busy 0 (0 ms), retain 201>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <71000000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-apcie1-piodma@F  <class IODARTMapperNub, id 0x1000003a2, registered, matched, active, busy 0 (147 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <0f000000>
+    |   "name" = <"mapper-apcie1-piodma">
+    |   "AAPL,phandle" = <72000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000003a4, registered, matched, active, busy 0 (146 ms), retain 73>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <72000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000326, registered, matched, active, busy 0 (218 ms), retain 12>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent00000076" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = Yes
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <76000000>
+  | }
+  | 
+  +-o mapper-apciec0-piodma@F  <class IODARTMapperNub, id 0x1000003c4, registered, matched, active, busy 0 (156 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <0f000000>
+    |   "name" = <"mapper-apciec0-piodma">
+    |   "AAPL,phandle" = <77000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000571, registered, matched, active, busy 0 (4 ms), retain 73>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <77000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000329, registered, matched, active, busy 0 (170 ms), retain 38>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent0000007A" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <7a000000>
+  | }
+  | 
+  +-o mapper-acio0@1  <class IODARTMapperNub, id 0x10000045e, registered, matched, active, busy 0 (30 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <01000000>
+    |   "name" = <"mapper-acio0">
+    |   "AAPL,phandle" = <7b000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004a6, registered, matched, active, busy 0 (7 ms), retain 128>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <7b000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000384, registered, matched, active, busy 0 (164 ms), retain 12>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = Yes
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "IOFunctionParent00000080" = <>
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <80000000>
+  | }
+  | 
+  +-o mapper-apciec1-piodma@F  <class IODARTMapperNub, id 0x100000460, registered, matched, active, busy 0 (23 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <0f000000>
+    |   "name" = <"mapper-apciec1-piodma">
+    |   "AAPL,phandle" = <81000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004a1, registered, matched, active, busy 0 (1 ms), retain 73>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <81000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x10000032e, registered, matched, active, busy 0 (65 ms), retain 8>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent00000084" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <84000000>
+  | }
+  | 
+  +-o mapper-acio1@1  <class IODARTMapperNub, id 0x1000003fb, registered, matched, active, busy 0 (40 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <01000000>
+    |   "name" = <"mapper-acio1">
+    |   "AAPL,phandle" = <85000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000402, registered, matched, active, busy 0 (0 ms), retain 30>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <85000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000003f8, registered, matched, active, busy 0 (50 ms), retain 12>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = Yes
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent0000008A" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <8a000000>
+  | }
+  | 
+  +-o mapper-apciec2-piodma@F  <class IODARTMapperNub, id 0x1000003f9, registered, matched, active, busy 0 (21 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <0f000000>
+    |   "name" = <"mapper-apciec2-piodma">
+    |   "AAPL,phandle" = <8b000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000003ff, registered, matched, active, busy 0 (0 ms), retain 73>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <8b000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000003f2, registered, matched, active, busy 0 (113 ms), retain 8>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent0000008E" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <8e000000>
+  | }
+  | 
+  +-o mapper-acio2@1  <class IODARTMapperNub, id 0x1000003f3, registered, matched, active, busy 0 (67 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <01000000>
+    |   "name" = <"mapper-acio2">
+    |   "AAPL,phandle" = <8f000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000045a, registered, matched, active, busy 0 (0 ms), retain 30>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <8f000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000361, registered, matched, active, busy 0 (37 ms), retain 27>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent000000B8" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <b8000000>
+  | }
+  | 
+  +-o mapper-aop@0  <class IODARTMapperNub, id 0x100000386, registered, matched, active, busy 0 (174 ms), retain 8>
+  | | {
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "name" = <"mapper-aop">
+  | |   "AAPL,phandle" = <b9000000>
+  | |   "compatible" = <"iommu-mapper">
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x100000466, registered, matched, active, busy 0 (30 ms), retain 55>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <b9000000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-aop-admac@A  <class IODARTMapperNub, id 0x10000045c, registered, matched, active, busy 0 (34 ms), retain 8>
+    | {
+    |   "compatible" = <"iommu-mapper">
+    |   "reg" = <0a000000>
+    |   "allow-subpage-mapping" = <>
+    |   "name" = <"mapper-aop-admac">
+    |   "AAPL,phandle" = <ba000000>
+    |   "device_type" = <"dart-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000461, registered, matched, active, busy 0 (32 ms), retain 7>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <ba000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000378, registered, matched, active, busy 0 (176 ms), retain 28>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent000000C4" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <c4000000>
+  | }
+  | 
+  +-o mapper-sio@0  <class IODARTMapperNub, id 0x100000379, registered, matched, active, busy 0 (7 ms), retain 8>
+  | | {
+  | |   "compatible" = <"iommu-mapper">
+  | |   "reg" = <00000000>
+  | |   "allow-subpage-mapping" = <>
+  | |   "name" = <"mapper-sio">
+  | |   "AAPL,phandle" = <c5000000>
+  | |   "device_type" = <"dart-mapper">
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x10000037c, registered, matched, active, busy 0 (0 ms), retain 39>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <c5000000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-aes@1  <class IODARTMapperNub, id 0x10000037a, registered, matched, active, busy 0 (9 ms), retain 8>
+  | | {
+  | |   "compatible" = <"iommu-mapper">
+  | |   "reg" = <01000000>
+  | |   "allow-subpage-mapping" = <>
+  | |   "name" = <"mapper-aes">
+  | |   "AAPL,phandle" = <c6000000>
+  | |   "device_type" = <"dart-mapper">
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x10000037d, registered, matched, active, busy 0 (2 ms), retain 74>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <c6000000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-admac@2  <class IODARTMapperNub, id 0x10000037b, registered, matched, active, busy 0 (176 ms), retain 8>
+    | {
+    |   "compatible" = <"iommu-mapper">
+    |   "reg" = <02000000>
+    |   "allow-subpage-mapping" = <>
+    |   "name" = <"mapper-admac">
+    |   "AAPL,phandle" = <c7000000>
+    |   "device_type" = <"dart-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000387, registered, matched, active, busy 0 (167 ms), retain 7>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <c7000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x10000037f, registered, matched, active, busy 0 (13 ms), retain 15>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <ca000000>
+  |   "IOFunctionParent000000CA" = <>
+  | }
+  | 
+  +-o mapper-pmp@0  <class IODARTMapperNub, id 0x100000380, registered, matched, active, busy 0 (13 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <00000000>
+    |   "name" = <"mapper-pmp">
+    |   "AAPL,phandle" = <cb000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000038f, registered, matched, active, busy 0 (9 ms), retain 23>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <cb000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000382, registered, matched, active, busy 0 (41 ms), retain 29>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent000000D1" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <d1000000>
+  | }
+  | 
+  +-o mapper-sep@0  <class IODARTMapperNub, id 0x100000394, registered, matched, active, busy 0 (5 ms), retain 8>
+    | {
+    |   "vm-force" = <0000000000010000>
+    |   "reg" = <00000000>
+    |   "device_type" = <"dart-mapper">
+    |   "name" = <"mapper-sep">
+    |   "AAPL,phandle" = <d2000000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000396, registered, matched, active, busy 0 (4 ms), retain 51>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <d2000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000591, registered, matched, active, busy 0 (6 ms), retain 21>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = Yes
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <e9000000>
+  |   "IOFunctionParent000000E9" = <>
+  | }
+  | 
+  +-o mapper-usb0@1  <class IODARTMapperNub, id 0x100000593, registered, matched, active, busy 0 (6 ms), retain 8>
+    | {
+    |   "AAPL,phandle" = <ea000000>
+    |   "compatible" = <"iommu-mapper">
+    |   "allow-subpage-mapping" = <>
+    |   "dead-mappings" = <00000000000000000040000000000000>
+    |   "device_type" = <"dart-mapper">
+    |   "name" = <"mapper-usb0">
+    |   "reg" = <01000000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000059f, registered, matched, active, busy 0 (2 ms), retain 175>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <ea000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000004b5, registered, matched, active, busy 0 (4 ms), retain 21>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = Yes
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <ef000000>
+  |   "IOFunctionParent000000EF" = <>
+  | }
+  | 
+  +-o mapper-usb1@1  <class IODARTMapperNub, id 0x1000004b9, registered, matched, active, busy 0 (3 ms), retain 8>
+    | {
+    |   "AAPL,phandle" = <f0000000>
+    |   "compatible" = <"iommu-mapper">
+    |   "allow-subpage-mapping" = <>
+    |   "dead-mappings" = <00000000000000000040000000000000>
+    |   "device_type" = <"dart-mapper">
+    |   "name" = <"mapper-usb1">
+    |   "reg" = <01000000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004c9, registered, matched, active, busy 0 (0 ms), retain 175>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <f0000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000004cd, registered, matched, active, busy 0 (25 ms), retain 21>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = Yes
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <f5000000>
+  |   "IOFunctionParent000000F5" = <>
+  | }
+  | 
+  +-o mapper-usb2@1  <class IODARTMapperNub, id 0x1000004ce, registered, matched, active, busy 0 (25 ms), retain 8>
+    | {
+    |   "AAPL,phandle" = <f6000000>
+    |   "compatible" = <"iommu-mapper">
+    |   "allow-subpage-mapping" = <>
+    |   "dead-mappings" = <00000000000000000040000000000000>
+    |   "device_type" = <"dart-mapper">
+    |   "name" = <"mapper-usb2">
+    |   "reg" = <01000000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004fc, registered, matched, active, busy 0 (15 ms), retain 175>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <f6000000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000004bb, registered, matched, active, busy 0 (44 ms), retain 124>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "IOFunctionParent00000113" = <>
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <13010000>
+  | }
+  | 
+  +-o mapper-disp0@0  <class IODARTMapperNub, id 0x1000004c0, registered, matched, active, busy 0 (44 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-disp0">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <14010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x1000004e9, registered, matched, active, busy 0 (35 ms), retain 47>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <14010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |       "iommu-initial-translations" = <00c09a010001000000c0d0010001000000c0dc010001000000c0570700010000>
+  |     }
+  |     
+  +-o mapper-disp0-piodma@4  <class IODARTMapperNub, id 0x1000004d3, registered, matched, active, busy 0 (14 ms), retain 8>
+    | {
+    |   "name" = <"mapper-disp0-piodma">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <04000000>
+    |   "AAPL,phandle" = <15010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004f1, registered, matched, active, busy 0 (1 ms), retain 215>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <15010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+          "iommu-initial-translations" = <00c0d0010001000000c0dc0100010000>
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000598, registered, matched, active, busy 0 (50 ms), retain 136>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent00000119" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <19010000>
+  | }
+  | 
+  +-o mapper-dcp0@5  <class IODARTMapperNub, id 0x1000005a8, registered, matched, active, busy 0 (46 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dcp0">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <05000000>
+    |   "AAPL,phandle" = <1a010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000660, registered, matched, active, busy 0 (0 ms), retain 264>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <1a010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+          "iommu-initial-translations" = <0080970000010000008097010001000000c09a01000100000040ef0700010000>
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000560, registered, matched, active, busy 0 (23 ms), retain 9>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "IOFunctionParent0000011E" = <>
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <1e010000>
+  | }
+  | 
+  +-o mapper-dispext0@0  <class IODARTMapperNub, id 0x100000561, registered, matched, active, busy 0 (7 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-dispext0">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <1f010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x100000584, registered, matched, active, busy 0 (0 ms), retain 37>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <1f010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-dispext0-piodma@4  <class IODARTMapperNub, id 0x100000562, registered, matched, active, busy 0 (23 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dispext0-piodma">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <04000000>
+    |   "AAPL,phandle" = <20010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000058b, registered, matched, active, busy 0 (9 ms), retain 15>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <20010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000578, registered, matched, active, busy 0 (65 ms), retain 28>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <24010000>
+  |   "IOFunctionParent00000124" = <>
+  | }
+  | 
+  +-o mapper-dcpext0@5  <class IODARTMapperNub, id 0x10000057a, registered, matched, active, busy 0 (65 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dcpext0">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <05000000>
+    |   "AAPL,phandle" = <25010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000069c, registered, matched, active, busy 0 (0 ms), retain 49>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <25010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+          "iommu-initial-translations" = <00c05707000100000040ef0800010000>
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000554, registered, matched, active, busy 0 (70 ms), retain 9>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "IOFunctionParent00000128" = <>
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <28010000>
+  | }
+  | 
+  +-o mapper-dispext1@0  <class IODARTMapperNub, id 0x100000555, registered, matched, active, busy 0 (69 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-dispext1">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <29010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x1000005e1, registered, matched, active, busy 0 (33 ms), retain 37>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <29010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-dispext1-piodma@4  <class IODARTMapperNub, id 0x100000556, registered, matched, active, busy 0 (69 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dispext1-piodma">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <04000000>
+    |   "AAPL,phandle" = <2a010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000650, registered, matched, active, busy 0 (8 ms), retain 15>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <2a010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000589, registered, matched, active, busy 0 (10 ms), retain 28>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent0000012E" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <2e010000>
+  | }
+  | 
+  +-o mapper-dcpext1@5  <class IODARTMapperNub, id 0x10000058a, registered, matched, active, busy 0 (25 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dcpext1">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <05000000>
+    |   "AAPL,phandle" = <2f010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000005d0, registered, matched, active, busy 0 (8 ms), retain 49>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <2f010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+          "iommu-initial-translations" = <00c05707000100000040ef0800010000>
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000557, registered, matched, active, busy 0 (72 ms), retain 9>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent00000132" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <32010000>
+  | }
+  | 
+  +-o mapper-dispext2@0  <class IODARTMapperNub, id 0x10000055b, registered, matched, active, busy 0 (38 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-dispext2">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <33010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x1000005de, registered, matched, active, busy 0 (3 ms), retain 37>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <33010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-dispext2-piodma@4  <class IODARTMapperNub, id 0x10000055d, registered, matched, active, busy 0 (72 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dispext2-piodma">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <04000000>
+    |   "AAPL,phandle" = <34010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000005ed, registered, matched, active, busy 0 (33 ms), retain 15>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <34010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x10000056b, registered, matched, active, busy 0 (15 ms), retain 28>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent00000138" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <38010000>
+  | }
+  | 
+  +-o mapper-dcpext2@5  <class IODARTMapperNub, id 0x10000056c, registered, matched, active, busy 0 (8 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dcpext2">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <05000000>
+    |   "AAPL,phandle" = <39010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000058f, registered, matched, active, busy 0 (0 ms), retain 49>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <39010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+          "iommu-initial-translations" = <00c05707000100000040ef0800010000>
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000567, registered, matched, active, busy 0 (66 ms), retain 9>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <3c010000>
+  |   "IOFunctionParent0000013C" = <>
+  | }
+  | 
+  +-o mapper-dispext3@0  <class IODARTMapperNub, id 0x100000568, registered, matched, active, busy 0 (59 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-dispext3">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <3d010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x100000570, registered, matched, active, busy 0 (58 ms), retain 37>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <3d010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-dispext3-piodma@4  <class IODARTMapperNub, id 0x100000569, registered, matched, active, busy 0 (66 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dispext3-piodma">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <04000000>
+    |   "AAPL,phandle" = <3e010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000005cf, registered, matched, active, busy 0 (42 ms), retain 15>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <3e010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x10000054b, registered, matched, active, busy 0 (116 ms), retain 28>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent00000142" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <42010000>
+  | }
+  | 
+  +-o mapper-dcpext3@5  <class IODARTMapperNub, id 0x100000558, registered, matched, active, busy 0 (111 ms), retain 8>
+    | {
+    |   "name" = <"mapper-dcpext3">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <05000000>
+    |   "AAPL,phandle" = <43010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000005e6, registered, matched, active, busy 0 (54 ms), retain 49>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <43010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+          "iommu-initial-translations" = <00c05707000100000040ef0800010000>
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000575, registered, matched, active, busy 0 (93 ms), retain 9>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent00000146" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <46010000>
+  | }
+  | 
+  +-o mapper-scaler0@0  <class IODARTMapperNub, id 0x100000605, registered, matched, active, busy 0 (32 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-scaler0">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <47010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x10000069d, registered, matched, active, busy 0 (0 ms), retain 38>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <47010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-scaler-piodma0@1  <class IODARTMapperNub, id 0x100000608, registered, matched, active, busy 0 (34 ms), retain 8>
+    | {
+    |   "name" = <"mapper-scaler-piodma0">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <01000000>
+    |   "AAPL,phandle" = <48010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000064b, registered, matched, active, busy 0 (5 ms), retain 38>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <48010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000566, registered, matched, active, busy 0 (89 ms), retain 9>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent0000014A" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <4a010000>
+  | }
+  | 
+  +-o mapper-scaler1@0  <class IODARTMapperNub, id 0x10000058c, registered, matched, active, busy 0 (81 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-scaler1">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <4b010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x100000652, registered, matched, active, busy 0 (31 ms), retain 38>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <4b010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-scaler-piodma1@1  <class IODARTMapperNub, id 0x10000058d, registered, matched, active, busy 0 (58 ms), retain 8>
+    | {
+    |   "name" = <"mapper-scaler-piodma1">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <01000000>
+    |   "AAPL,phandle" = <4c010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000651, registered, matched, active, busy 0 (8 ms), retain 38>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <4c010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x10000049a, registered, matched, active, busy 0 (12 ms), retain 9>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent0000014E" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <4e010000>
+  | }
+  | 
+  +-o mapper-apr0-scdc@0  <class IODARTMapperNub, id 0x10000049d, registered, matched, active, busy 0 (4 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-apr0-scdc">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <00020000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <4f010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x1000004a5, registered, matched, active, busy 0 (3 ms), retain 6>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <4f010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-apr0-ve@1  <class IODARTMapperNub, id 0x10000049e, registered, matched, active, busy 0 (12 ms), retain 8>
+    | {
+    |   "name" = <"mapper-apr0-ve">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <00020000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <01000000>
+    |   "AAPL,phandle" = <50010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004a7, registered, matched, active, busy 0 (7 ms), retain 7>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <50010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000582, registered, matched, active, busy 0 (2 ms), retain 7>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent00000152" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <52010000>
+  | }
+  | 
+  +-o mapper-apr1@0  <class IODARTMapperNub, id 0x100000583, registered, matched, active, busy 0 (1 ms), retain 8>
+    | {
+    |   "name" = <"mapper-apr1">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <00020000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <00000000>
+    |   "AAPL,phandle" = <53010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000588, registered, matched, active, busy 0 (0 ms), retain 7>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <53010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000563, registered, matched, active, busy 0 (35 ms), retain 7>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <56010000>
+  |   "IOFunctionParent00000156" = <>
+  | }
+  | 
+  +-o mapper-scdc0@0  <class IODARTMapperNub, id 0x100000564, registered, matched, active, busy 0 (0 ms), retain 8>
+    | {
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <00000000>
+    |   "name" = <"mapper-scdc0">
+    |   "AAPL,phandle" = <57010000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000565, registered, matched, active, busy 0 (0 ms), retain 6>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <57010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000452, registered, matched, active, busy 0 (81 ms), retain 7>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent00000159" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <59010000>
+  | }
+  | 
+  +-o mapper-jpeg0@0  <class IODARTMapperNub, id 0x100000453, registered, matched, active, busy 0 (80 ms), retain 8>
+    | {
+    |   "dead-mappings" = <00c0ff7f000100000040000000000000>
+    |   "reg" = <00000000>
+    |   "device_type" = <"dart-mapper">
+    |   "name" = <"mapper-jpeg0">
+    |   "AAPL,phandle" = <5a010000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000594, registered, matched, active, busy 0 (6 ms), retain 8>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <5a010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000595, registered, matched, active, busy 0 (28 ms), retain 7>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "IOFunctionParent0000015C" = <>
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <5c010000>
+  | }
+  | 
+  +-o mapper-jpeg1@0  <class IODARTMapperNub, id 0x1000005a4, registered, matched, active, busy 0 (23 ms), retain 8>
+    | {
+    |   "dead-mappings" = <00c0ff7f000100000040000000000000>
+    |   "reg" = <00000000>
+    |   "device_type" = <"dart-mapper">
+    |   "name" = <"mapper-jpeg1">
+    |   "AAPL,phandle" = <5d010000>
+    |   "compatible" = <"iommu-mapper">
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000005a6, registered, matched, active, busy 0 (1 ms), retain 8>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <5d010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000004be, registered, matched, active, busy 0 (37 ms), retain 11>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent0000015F" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <5f010000>
+  | }
+  | 
+  +-o mapper-ave0@0  <class IODARTMapperNub, id 0x1000004c1, registered, matched, active, busy 0 (37 ms), retain 8>
+    | {
+    |   "name" = <"mapper-ave0">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <00020000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <00000000>
+    |   "AAPL,phandle" = <60010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x10000058e, registered, matched, active, busy 0 (0 ms), retain 14>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <60010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000498, registered, matched, active, busy 0 (4 ms), retain 11>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <62010000>
+  |   "IOFunctionParent00000162" = <>
+  | }
+  | 
+  +-o mapper-ave1@0  <class IODARTMapperNub, id 0x10000049c, registered, matched, active, busy 0 (4 ms), retain 8>
+    | {
+    |   "name" = <"mapper-ave1">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <00020000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <00000000>
+    |   "AAPL,phandle" = <63010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004a4, registered, matched, active, busy 0 (2 ms), retain 14>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <63010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x100000501, registered, matched, active, busy 0 (61 ms), retain 28>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IOFunctionParent00000165" = <>
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <65010000>
+  | }
+  | 
+  +-o mapper-avd0@0  <class IODARTMapperNub, id 0x100000502, registered, matched, active, busy 0 (9 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-avd0">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <00000000>
+  | |   "AAPL,phandle" = <66010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x10000054e, registered, matched, active, busy 0 (0 ms), retain 8>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <66010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-avd0-piodma@1  <class IODARTMapperNub, id 0x100000503, registered, matched, active, busy 0 (18 ms), retain 8>
+  | | {
+  | |   "name" = <"mapper-avd0-piodma">
+  | |   "compatible" = <"iommu-mapper">
+  | |   "iomd-cache-ttl" = <d0070000>
+  | |   "iomd-cache-size" = <40000000>
+  | |   "device_type" = <"dart-mapper">
+  | |   "reg" = <01000000>
+  | |   "AAPL,phandle" = <67010000>
+  | | }
+  | | 
+  | +-o IODARTMapper  <class IODARTMapper, id 0x10000053e, registered, matched, active, busy 0 (13 ms), retain 40>
+  |     {
+  |       "IOClass" = "IODARTMapper"
+  |       "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+  |       "IOProviderClass" = "IODARTMapperNub"
+  |       "iommu-dart-translation" = Yes
+  |       "IOUserClientClass" = "IODARTMapperClient"
+  |       "IOProbeScore" = 0
+  |       "IONameMatch" = "iommu-mapper"
+  |       "IOMatchedAtBoot" = Yes
+  |       "IOMatchCategory" = "IODefaultMatchCategory"
+  |       "IONameMatched" = "iommu-mapper"
+  |       "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+  |       "IOMapperID" = <67010000>
+  |       "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+  |     }
+  |     
+  +-o mapper-avd0-adsbuf@2  <class IODARTMapperNub, id 0x100000504, registered, matched, active, busy 0 (6 ms), retain 8>
+    | {
+    |   "name" = <"mapper-avd0-adsbuf">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <40000000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <02000000>
+    |   "AAPL,phandle" = <68010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x100000505, registered, matched, active, busy 0 (5 ms), retain 7>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <68010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+
++-o AppleT8110DART  <class AppleT8110DART, id 0x1000004ca, registered, matched, active, busy 0 (61 ms), retain 14>
+  | {
+  |   "IOClass" = "AppleT8110DART"
+  |   "CFBundleIdentifier" = "com.apple.driver.AppleT8110DART"
+  |   "IOProviderClass" = "AppleARMIODevice"
+  |   "IOFunctionParent0000016A" = <>
+  |   "IOPlatformActiveAction" = 80000
+  |   "noncompliant-dead-mappings" = No
+  |   "IOPlatformSleepAction" = 80000
+  |   "IOProbeScore" = 0
+  |   "IONameMatch" = "dart,t8110"
+  |   "IOMatchedAtBoot" = Yes
+  |   "IOMatchCategory" = "IODefaultMatchCategory"
+  |   "IOUserClientClass" = "IODARTClient"
+  |   "IONameMatched" = "dart,t8110"
+  |   "IOPersonalityPublisher" = "com.apple.driver.AppleT8110DART"
+  |   "CFBundleIdentifierKernel" = "com.apple.driver.AppleT8110DART"
+  |   "iommu-dart-identity" = <6a010000>
+  | }
+  | 
+  +-o mapper-ane0@0  <class IODARTMapperNub, id 0x1000004cf, registered, matched, active, busy 0 (28 ms), retain 8>
+    | {
+    |   "name" = <"mapper-ane0">
+    |   "compatible" = <"iommu-mapper">
+    |   "iomd-cache-ttl" = <d0070000>
+    |   "iomd-cache-size" = <00020000>
+    |   "device_type" = <"dart-mapper">
+    |   "reg" = <00000000>
+    |   "AAPL,phandle" = <6b010000>
+    | }
+    | 
+    +-o IODARTMapper  <class IODARTMapper, id 0x1000004fa, registered, matched, active, busy 0 (13 ms), retain 1039>
+        {
+          "IOClass" = "IODARTMapper"
+          "CFBundleIdentifier" = "com.apple.driver.IODARTFamily"
+          "IOProviderClass" = "IODARTMapperNub"
+          "iommu-dart-translation" = Yes
+          "IOUserClientClass" = "IODARTMapperClient"
+          "IOProbeScore" = 0
+          "IONameMatch" = "iommu-mapper"
+          "IOMatchedAtBoot" = Yes
+          "IOMatchCategory" = "IODefaultMatchCategory"
+          "IONameMatched" = "iommu-mapper"
+          "IOPersonalityPublisher" = "com.apple.driver.IODARTFamily"
+          "IOMapperID" = <6b010000>
+          "CFBundleIdentifierKernel" = "com.apple.driver.IODARTFamily"
+        }
+        
+

@@ -68,7 +68,7 @@ shorter than 20 bytes).
 
 Branch `agent/jwm1-vkcreate-buildid-override` @ `6ab89f8871a` on
 `joshuaswarren/mesa-1` (`honeykrisp-omarchy` base, worktree
-`/var/tmp/jwm1-vkcreate-wt` on jw16mbp1-linux). Patch + writeup:
+`/var/tmp/jwm1-vkcreate-wt` on m1max-host). Patch + writeup:
 - `raw/mesa/0001-hk-build-id-override.patch` (sha256
   `861a35131e9bb8f71c5379108afac316613b36e925f9780859377875853dbd9e`,
   175 lines, 3 files modified, +76/-1).

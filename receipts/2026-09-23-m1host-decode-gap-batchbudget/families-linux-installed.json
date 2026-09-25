@@ -1,0 +1,21 @@
+{
+ "linear qmm[16x2048]": 6.07,
+ "linear qmm[2048x2048]": 62.99,
+ "linear qmm[2048x6144]": 138.82,
+ "linear qmm[4096x2048]": 111.76,
+ "linear qmm[512x2048]": 17.37,
+ "linear qmm[6144x2048]": 152.01,
+ "rms_norm rms_norm": 19.14,
+ "conv+silu[6144x4]": 37.65,
+ "lm_head full composed": 5399.36,
+ "gated_delta_update_raw": 187.52,
+ "rope": 22.15,
+ "sdpa": 230.06,
+ "_decode_tok_s_3trials": [
+  36.7,
+  36.76,
+  36.77
+ ],
+ "_mlx_version": "unknown",
+ "_device_info": "Device(gpu, 0)"
+}

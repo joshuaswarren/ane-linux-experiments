@@ -1,0 +1,86 @@
+=== voltage-states tables (freq_Hz, volt_mV) ===
+  voltage-states0: 0MHz@0mV | 0MHz@0mV | 0MHz@0mV
+  voltage-states1: 0MHz@550mV | 0MHz@609mV | 0MHz@665mV | 0MHz@759mV | 0MHz@843mV
+  voltage-states1-sram: 600MHz@565mV | 972MHz@565mV | 1332MHz@596mV | 1704MHz@643mV | 2064MHz@718mV
+  voltage-states11: 0MHz@625mV
+  voltage-states12: 0MHz@0mV
+  voltage-states13: 0MHz@600mV | 0MHz@628mV | 0MHz@653mV | 0MHz@684mV | 0MHz@706mV | 0MHz@734mV | 0MHz@765mV | 0MHz@803mV | 0MHz@828mV | 0MHz@862mV | 0MHz@962mV | 0MHz@962mV | 0MHz@962mV | 0MHz@962mV | 0MHz@962mV
+  voltage-states13-sram: 600MHz@768mV | 828MHz@768mV | 1056MHz@784mV | 1296MHz@812mV | 1524MHz@818mV | 1752MHz@843mV | 1980MHz@868mV | 2208MHz@912mV | 2448MHz@965mV | 2676MHz@1025mV | 2904MHz@1068mV | 3036MHz@1068mV | 3132MHz@1068mV | 3168MHz@1068mV | 3228MHz@1068mV
+  voltage-states14: 0MHz@400mV | 389MHz@615mV | 486MHz@637mV | 648MHz@665mV | 778MHz@709mV | 972MHz@765mV | 1296MHz@881mV
+  voltage-states14-sram: 0MHz@790mV | 389MHz@790mV | 486MHz@790mV | 648MHz@790mV | 778MHz@790mV | 972MHz@790mV | 1296MHz@881mV
+  voltage-states15: 0MHz@400mV | 389MHz@631mV | 486MHz@646mV | 648MHz@665mV | 778MHz@709mV | 972MHz@771mV | 1296MHz@896mV
+  voltage-states15-sram: 0MHz@790mV | 389MHz@790mV | 486MHz@790mV | 648MHz@790mV | 778MHz@790mV | 972MHz@790mV | 1296MHz@896mV
+  voltage-states16: 0MHz@400mV | 389MHz@631mV | 486MHz@646mV | 648MHz@665mV | 778MHz@709mV | 972MHz@771mV | 1296MHz@896mV
+  voltage-states16-sram: 0MHz@790mV | 389MHz@790mV | 486MHz@790mV | 648MHz@790mV | 778MHz@790mV | 972MHz@790mV | 1296MHz@896mV
+  voltage-states2: 0MHz@0mV | 0MHz@0mV | 0MHz@0mV | 0MHz@0mV
+  voltage-states30: 0MHz@603mV
+  voltage-states31: 400MHz@618mV | 720MHz@700mV | 900MHz@759mV
+  voltage-states5: 0MHz@600mV | 0MHz@621mV | 0MHz@640mV | 0MHz@671mV | 0MHz@696mV | 0MHz@721mV | 0MHz@753mV | 0MHz@790mV | 0MHz@815mV | 0MHz@862mV | 0MHz@950mV | 0MHz@950mV | 0MHz@950mV | 0MHz@950mV | 0MHz@950mV
+  voltage-states5-sram: 600MHz@768mV | 828MHz@768mV | 1056MHz@784mV | 1296MHz@812mV | 1524MHz@818mV | 1752MHz@843mV | 1980MHz@868mV | 2208MHz@912mV | 2448MHz@965mV | 2676MHz@1025mV | 2904MHz@1068mV | 3036MHz@1068mV | 3132MHz@1068mV | 3168MHz@1068mV | 3228MHz@1068mV
+  voltage-states8: 300MHz@550mV | 540MHz@615mV | 780MHz@650mV | 1020MHz@734mV | 1260MHz@800mV | 1500MHz@909mV
+  voltage-states9: 0MHz@400mV | 389MHz@618mV | 486MHz@640mV | 648MHz@665mV | 778MHz@709mV | 972MHz@771mV | 1296MHz@893mV
+  voltage-states9-sram: 0MHz@790mV | 389MHz@790mV | 486MHz@790mV | 648MHz@790mV | 778MHz@790mV | 972MHz@790mV | 1296MHz@893mV
+=== perf-domains (28B: idx, a, b, x, y, name) ===
+  idx=0   a=0x04 b=0x00 x=0      y=300     SOC
+  idx=1   a=0x01 b=0x01 x=0      y=0       ECPU
+  idx=2   a=0x04 b=0x00 x=0      y=300     DCS
+  idx=5   a=0x01 b=0x01 x=0      y=0       PCPU
+  idx=8   a=0x10 b=0x00 x=0      y=0       ANE
+  idx=11  a=0x04 b=0x00 x=0      y=300     DISP
+  idx=12  a=0x04 b=0x00 x=0      y=300     AVEMSR
+  idx=13  a=0x01 b=0x01 x=0      y=0       PCPU1
+  idx=0   a=0x00 b=0x00 x=0      y=0       PMP-SOC
+  idx=0   a=0x00 b=0x00 x=0      y=0       PMP-FAB0
+  idx=0   a=0x00 b=0x00 x=0      y=0       PMP-FAB1
+  idx=0   a=0x00 b=0x00 x=0      y=0       PMP-FAB2
+  idx=0   a=0x00 b=0x00 x=0      y=0       PMP-FAB3
+  idx=0   a=0x00 b=0x00 x=0      y=0       PMP-DCS
+=== dpe-ane-data ===
+  raw: a8240000950200002b050000510a00005b090000094a0100e57f020023c9000044b9020023c90000
+   +0x00: 0x000024a8
+   +0x04: 0x00000295
+   +0x08: 0x0000052b
+   +0x0c: 0x00000a51
+   +0x10: 0x0000095b
+   +0x14: 0x00014a09
+   +0x18: 0x00027fe5
+   +0x1c: 0x0000c923
+   +0x20: 0x0002b944
+   +0x24: 0x0000c923
+=== ifane-max ===
+   +0x00: 0x000001f8
+   +0x04: 0x00018000
+   +0x08: 0x00017333
+   +0x0c: 0x00017333
+   +0x10: 0x000002e8
+   +0x14: 0x0001fd70
+   +0x18: 0x0001fd70
+   +0x1c: 0x0001fd70
+   +0x20: 0x00000498
+   +0x24: 0x0002deb8
+   +0x28: 0x0002deb8
+   +0x2c: 0x0002deb8
+   +0x30: 0x000006a8
+   +0x34: 0x000428f5
+   +0x38: 0x000428f5
+   +0x3c: 0x000428f5
+   +0x40: 0x00000858
+   +0x44: 0x0006c51e
+   +0x48: 0x00056666
+   +0x4c: 0x00056666
+   +0x50: 0x00000948
+   +0x54: 0x0007d70a
+   +0x58: 0x0007d70a
+   +0x5c: 0x0005c28f
+   +0x60: 0x00000984
+   +0x64: 0x0007d70a
+   +0x68: 0x0007d70a
+   +0x6c: 0x00000000
+   +0x70: 0x00000990
+   +0x74: 0x00000000
+   +0x78: 0x00000000
+   +0x7c: 0x00000000
+   +0x80: 0x000009c0
+   +0x84: 0x00000000
+   +0x88: 0x00000000
+   +0x8c: 0x00000000

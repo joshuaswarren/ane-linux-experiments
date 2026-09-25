@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "~/bench-scripts/qwen38-mlx-bench.py", line 35, in <module>
+    from mlx_lm import load, generate
+  File "/var/tmp/denom-b4757ac-venv/lib/python3.14/site-packages/mlx_lm/__init__.py", line 10, in <module>
+    from .generate import batch_generate, generate, stream_generate
+  File "/var/tmp/denom-b4757ac-venv/lib/python3.14/site-packages/mlx_lm/generate.py", line 41, in <module>
+    from .sample_utils import make_sampler
+  File "/var/tmp/denom-b4757ac-venv/lib/python3.14/site-packages/mlx_lm/sample_utils.py", line 129, in <module>
+    @partial(mx.compile, inputs=mx.random.state, outputs=mx.random.state)
+                                ^^^^^^^^^^^^^^^
+RuntimeError: [omarchy] it.CreateInstance(&ici, nullptr, &instance) failed with VK_ERROR_UNKNOWN

@@ -1,0 +1,69 @@
+/System/Volumes/iSCPreboot/2A5A7F8E-8B1D-4134-9509-C8D1D3BFF65E/:
+total 0
+drwxrwxrwx  3 root  wheel   96 Mar 24  2023 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxrwxrwx  4 root  wheel  128 Sep 18 11:59 LocalPolicy
+
+/System/Volumes/iSCPreboot/3D3287DE-280D-4619-AAAB-D97469CA9C71/:
+total 0
+drwxrwxrwx  3 root  wheel   96 Mar 24  2023 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxrwxrwx  3 root  wheel   96 Sep 18 08:21 LocalPolicy
+
+/System/Volumes/iSCPreboot/5AE8D78F-0C9F-403F-9353-9C21472160E9/:
+total 0
+drwxr-xr-x  3 root  wheel   96 Sep 18 11:51 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxr-xr-x  5 root  wheel  160 Sep 18 11:59 LocalPolicy
+
+/System/Volumes/iSCPreboot/SFR/:
+total 0
+drwxr-xr-x  3 root  wheel   96 Sep 18 08:19 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxr-xr-x  7 root  wheel  224 Sep 18 08:17 current
+
+/System/Volumes/iSCPreboot/SystemRecovery/:
+total 0
+drwxr-xr-x  6 root  wheel  192 Sep 18 08:02 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+lrwxr-xr-x  1 root  wheel   96 Apr 17 14:44 8E2C707B8F07FC3918AAC5EE0AED927042B301961E58A73915FFFE1EC231FEF633DE04972DF3DA403471CB8393347602 -> B765E9C30FCC5D00D821CD0ADA54CFE9F367CCCF9FC960D5775EC4D7A871C509F7B50DDED8C5B388300CD14638E6CF91
+drwxr-xr-x  5 root  wheel  160 Apr 17 14:44 B765E9C30FCC5D00D821CD0ADA54CFE9F367CCCF9FC960D5775EC4D7A871C509F7B50DDED8C5B388300CD14638E6CF91
+lrwxr-xr-x  1 root  wheel   96 Sep 18 08:02 D28EDE63B221A02CF3C1C70C3320537CC595EBD3F500D9D3E5E430947CEC9E05EA6E7313A1E22242708ADCFC501D04A8 -> DBE15DEF1469B2914BBDD446F41C97019D4D4F0F77F6260D75CB74167B27362645B120EF5B2CEFC7CF3A281711C72327
+drwxr-xr-x  5 root  wheel  160 Sep 18 08:02 DBE15DEF1469B2914BBDD446F41C97019D4D4F0F77F6260D75CB74167B27362645B120EF5B2CEFC7CF3A281711C72327
+
+/System/Volumes/iSCPreboot/WiFi/:
+total 0
+drwxr-xr-x  2 root  wheel   64 Mar 19  2026 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+total 0
+drwxrwxrwx  3 root  wheel   96 Mar 24  2023 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxrwxrwx  4 root  wheel  128 Sep 18 11:59 LocalPolicy
+--- /System/Volumes/iSCPreboot/2A5A7F8E-8B1D-4134-9509-C8D1D3BFF65E/
+total 0
+drwxrwxrwx  3 root  wheel   96 Mar 24  2023 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxrwxrwx  3 root  wheel   96 Sep 18 08:21 LocalPolicy
+--- /System/Volumes/iSCPreboot/3D3287DE-280D-4619-AAAB-D97469CA9C71/
+total 0
+drwxr-xr-x  3 root  wheel   96 Sep 18 11:51 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxr-xr-x  5 root  wheel  160 Sep 18 11:59 LocalPolicy
+--- /System/Volumes/iSCPreboot/5AE8D78F-0C9F-403F-9353-9C21472160E9/
+total 0
+drwxr-xr-x  3 root  wheel   96 Sep 18 08:19 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+drwxr-xr-x  7 root  wheel  224 Sep 18 08:17 current
+--- /System/Volumes/iSCPreboot/SFR/
+total 0
+drwxr-xr-x  6 root  wheel  192 Sep 18 08:02 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+lrwxr-xr-x  1 root  wheel   96 Apr 17 14:44 8E2C707B8F07FC3918AAC5EE0AED927042B301961E58A73915FFFE1EC231FEF633DE04972DF3DA403471CB8393347602 -> B765E9C30FCC5D00D821CD0ADA54CFE9F367CCCF9FC960D5775EC4D7A871C509F7B50DDED8C5B388300CD14638E6CF91
+drwxr-xr-x  5 root  wheel  160 Apr 17 14:44 B765E9C30FCC5D00D821CD0ADA54CFE9F367CCCF9FC960D5775EC4D7A871C509F7B50DDED8C5B388300CD14638E6CF91
+lrwxr-xr-x  1 root  wheel   96 Sep 18 08:02 D28EDE63B221A02CF3C1C70C3320537CC595EBD3F500D9D3E5E430947CEC9E05EA6E7313A1E22242708ADCFC501D04A8 -> DBE15DEF1469B2914BBDD446F41C97019D4D4F0F77F6260D75CB74167B27362645B120EF5B2CEFC7CF3A281711C72327
+drwxr-xr-x  5 root  wheel  160 Sep 18 08:02 DBE15DEF1469B2914BBDD446F41C97019D4D4F0F77F6260D75CB74167B27362645B120EF5B2CEFC7CF3A281711C72327
+--- /System/Volumes/iSCPreboot/SystemRecovery/
+total 0
+drwxr-xr-x  2 root  wheel   64 Mar 19  2026 .
+drwxr-xr-x@ 9 root  wheel  288 Sep 23 09:48 ..
+--- /System/Volumes/iSCPreboot/WiFi/

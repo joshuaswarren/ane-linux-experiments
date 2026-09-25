@@ -1,0 +1,358 @@
+[rtmod] SUBMIT tid=1276 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=5 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=7 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=9 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=10 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=11 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=12 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=13 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=14 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=15 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=16 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=17 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=18 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=19 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=20 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=21 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=22 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=23 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=24 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=25 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=26 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=27 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=28 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=29 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=30 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=31 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=32 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=33 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=34 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=35 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=36 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=37 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=38 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=39 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=40 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1276 cv=41 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+abs   512MiB bf16 (r+w 1.0GiB):    4.0 GB/s  median 268.51 ms
+sum   512MiB bf16 (read only):    2.7 GB/s  median 200.81 ms
+abs   1GiB f32   (r+w 2.0GiB):    8.0 GB/s  median 266.91 ms
+[rtmod] COMMIT-NOOP
+---
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=5 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=7 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=9 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=10 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=11 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=12 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=13 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=14 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=15 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=16 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=17 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=18 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=19 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=20 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=21 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=22 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=23 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=24 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=25 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=26 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=27 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=28 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=29 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=30 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=31 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=32 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=33 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=34 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=35 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=36 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=37 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=38 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=39 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=40 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=41 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=42 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=43 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=44 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=45 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=46 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=47 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=48 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=49 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=50 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=51 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=52 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=53 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=54 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=55 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=56 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=57 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=58 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=59 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=60 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=61 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=62 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=63 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=64 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=65 waits=0 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=66 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=67 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=68 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=69 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=70 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=71 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=72 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=73 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=74 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=75 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=76 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=77 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=78 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=79 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=80 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=81 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=82 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=83 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=84 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=85 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=86 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=87 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=88 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=89 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=90 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=91 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=92 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=93 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=94 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=95 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=96 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=97 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=98 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=99 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=100 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=101 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=102 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=103 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=104 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=105 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=106 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=107 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=108 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=109 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=110 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=111 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=112 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=113 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=114 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=115 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=116 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=117 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=118 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=119 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=120 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=121 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=122 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=123 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=124 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=125 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=126 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=127 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=128 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=129 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=130 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=131 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=132 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=133 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=134 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=135 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=136 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=137 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=138 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=139 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=140 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=141 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=142 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=143 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=144 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=145 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=146 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=147 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=148 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=149 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=150 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=151 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=152 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=153 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=154 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=155 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=156 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=157 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=158 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=159 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=160 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=161 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=162 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=163 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=164 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=165 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=1286 cv=166 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=167 waits=1 sigs=1 cmds=1
+[rtmod] SUBMIT tid=1286 cv=168 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[prof_decode] prompt_tokens=12 tokens=32 decode_ms=1518.19 decode_tok_s=20.42
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+---

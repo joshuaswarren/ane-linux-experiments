@@ -1,7 +1,7 @@
 # Mesa per-launch CDM barrier dep-tracked SKIP — failure analysis + instrumentation prerequisite
 
 **Branch**: `cdm-dep-barrier` (the failed-gate SKIP, sitting uncommitted in
-jw16mbp1-linux's `~/src/mesa-1` as a +55-line local diff on top of
+m1max-host's `~/src/mesa-1` as a +55-line local diff on top of
 `f2cc0d3a` AGX_SUBMIT_TRACE).
 **Receipt cited**: `receipts/2026-09-24-t6001-launch-sink/receipt.md` —
 "+4.83% bit-clean on short gates but diverged the 10-pass dbf70497 pin
@@ -115,7 +115,7 @@ the cases above.
 
 ## Files / pointers for whoever picks this up
 
-- Source: `cdm-dep-barrier` branch in `~/src/mesa-1` on jw16mbp1-linux;
+- Source: `cdm-dep-barrier` branch in `~/src/mesa-1` on m1max-host;
   5 files local diff (`hk_cmd_buffer.{c,h}`, `hk_cmd_dispatch.c`,
   `hk_device.{c,h}`); the commit message and base are
   `f2cc0d3a` (AGX_SUBMIT_TRACE).

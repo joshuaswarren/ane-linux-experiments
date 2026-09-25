@@ -25,7 +25,7 @@
   --mock --fw selene/...macho` → SCRATCH7-READY 0x8042006 MATCH, MOCK DONE.
 - udev `/etc/udev/rules.d/99-m1n1-proxy.rules` (tty 1209:316d MODE 0666).
 - systemd `m1n1-proxy-watcher` enabled+active; permission fix: chown -R
-  joshuawarren /var/tmp/m2proxy (sudo copies had made it root-owned, unit
+  owner /var/tmp/m2proxy (sudo copies had made it root-owned, unit
   could not mkdir receipts/state).
 - Post-run hook per Main's override: live watch.sh line
   `"$M2ROOT/omarchy-now.sh" --chainload --image /boot/efi/m1n1/boot.bin`

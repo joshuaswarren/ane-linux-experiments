@@ -1,0 +1,1 @@
+{"file":"/var/tmp/dvfs-capture-20260922T234123/out_ane_long.bin","words":240000,"mismatches":0,"max_delta":0,"first_bad_index":-1,"bit_exact":true}

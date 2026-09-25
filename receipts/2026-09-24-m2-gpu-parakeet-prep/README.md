@@ -167,4 +167,4 @@ Evidence:
 - Wheel identity: see `tools/m2-window/stage/SHA256SUMS` (built from
   mlx-omarchy `origin/main` @ `5a7b371`, ALARM chroot `dg-alarm-py314:sep23`
   on macstudio, bundle pin-verified).
-- No jw14m2/jwm1 access used; no hardware touched. Neutral labels only.
+- No m2-host/jwm1 access used; no hardware touched. Neutral labels only.

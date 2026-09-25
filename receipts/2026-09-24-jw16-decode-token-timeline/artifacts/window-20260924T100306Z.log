@@ -1,0 +1,13 @@
+[2026-09-24T05:03:06-05:00] window begin stamp=20260924T100306Z
+[2026-09-24T05:03:06-05:00] holder is llm-inference unit; stopping it
+[2026-09-24T05:03:11-05:00] 8002 down, lock held
+[2026-09-24T05:03:11-05:00] == leg 1: ctl (installed) anchor, 3 passes ==
+[2026-09-24T05:03:34-05:00] ctl-anchor: 73.8 bc519c03
+[2026-09-24T05:03:34-05:00] == leg 2: prof venv parity (profiler compiled in, env UNSET), 3 passes ==
+[2026-09-24T05:03:56-05:00] prof-parity: 73.93 bc519c03
+[2026-09-24T05:03:56-05:00] == leg 3: prof venv PROFILED run (1 pass, env SET) ==
+[2026-09-24T05:04:14-05:00] prof-profiled: 28.98 486872c4  ndjson_bytes=50592179
+[2026-09-24T05:04:14-05:00] window done
+[2026-09-24T05:04:14-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-24T05:04:24-05:00] poll #2: 8002 ok
+[2026-09-24T05:04:24-05:00] service restored
