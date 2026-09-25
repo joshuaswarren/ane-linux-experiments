@@ -1,0 +1,18 @@
+== /var/tmp/jwm1-parity3-venv
+Version: 0.32.3.dev202609251248+af73787
+Version: 0.32.3.dev202609252032+3232b1f
+[rtmod] SUBMIT tid=26894 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+import ok True True
+[rtmod] COMMIT-NOOP
+== ~/.local/share/mlx-omarchy/venv
+Version: 0.32.3.dev202609232341+5738e29
+Version: 0.32.3.dev202609252032+3232b1f
+[rtmod] SUBMIT tid=26934 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+import ok True True
+[rtmod] COMMIT-NOOP
+usage: mlx-omarchy-serve [-h]
+                         {recommend,plan,serve,catalog,reserve,unreserve} ...
+
+63567e4d3b0b4b3538d568101deaf62266e54506f885fc58ae343aea44c30e80  /var/tmp/jwm1-parity5/cand-clone/dist/mlx_omarchy-0.32.3.dev202609252032+3232b1f-cp314-cp314-linux_aarch64.whl

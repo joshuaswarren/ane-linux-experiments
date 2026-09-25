@@ -1,0 +1,26 @@
+patching file mlx_lm/models/gated_delta.py
+applied: mlx-lm-gated-delta-fast-route.patch
+patching file mlx_lm/models/gated_delta.py
+applied: mlx-lm-gated-delta-raw.patch
+patching file mlx_lm/generate.py
+applied: mlx-lm-greedy-prune.patch
+conv-ring: OFF (set MLX_OMARCHY_CONV_RING=1 to enable)
+[rtmod] SUBMIT tid=25559 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+venv-cand ok True True
+[rtmod] COMMIT-NOOP
+Version: 0.32.3.dev202609252032+3232b1f
+lock held 2026-09-25T15:36:36-05:00
+pass 0 done
+gemv-ctl-r1 rc=0 decode 37.41 ttft 50.37 e2e 1.0876 prefill512 236.89 digest 486872c410629f1d
+pass 0 done
+gemv-cand-r1 rc=0 decode 39.14 ttft 50.85 e2e 1.0451 prefill512 238.18 digest 486872c410629f1d
+pass 0 done
+gemv-ctl-r2 rc=0 decode 37.64 ttft 49.89 e2e 1.0915 prefill512 236.34 digest 486872c410629f1d
+pass 0 done
+gemv-cand-r2 rc=0 decode 39.03 ttft 50.65 e2e 1.0481 prefill512 238.07 digest 486872c410629f1d
+pass 0 done
+gemv-ctl-r3 rc=0 decode 37.47 ttft 50.69 e2e 1.0782 prefill512 236.31 digest 486872c410629f1d
+pass 0 done
+gemv-cand-r3 rc=0 decode 39.13 ttft 52.39 e2e 1.0432 prefill512 236.91 digest 486872c410629f1d
+lock released 2026-09-25T15:38:30-05:00

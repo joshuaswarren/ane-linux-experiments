@@ -1,0 +1,10 @@
+Version: 0.31.3
+applied: mlx-lm-gated-delta-fast-route.patch
+applied: mlx-lm-gated-delta-raw.patch
+applied: mlx-lm-greedy-prune.patch
+conv-ring: OFF (set MLX_OMARCHY_CONV_RING=1 to enable)
+raw refs: 2  greedy refs: 3
+mlx-lm-convring.patch
+mlx-lm-gated-delta-fast-route.patch
+mlx-lm-gated-delta-raw.patch
+mlx-lm-greedy-prune.patch

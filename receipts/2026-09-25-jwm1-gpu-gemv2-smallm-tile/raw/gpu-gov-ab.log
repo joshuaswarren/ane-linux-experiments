@@ -1,0 +1,30 @@
+pass 0 done
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+    print('decode', d['decode_tok_rate']['median'], 'ttft', d['ttft_tok_rate']['median'], 'e2e', d['e2e_s']['median'], 'prefill512', d.get('pure_prefill',{}).get('median_tok_rate'), 'digest', d.get('ordered_records_sha256','')[:16])
+                                                                                                 ~^^^^^^^^^
+KeyError: 'e2e_s'
+ctl-schedutil-r1 rc=0 
+pass 0 done
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+    print('decode', d['decode_tok_rate']['median'], 'ttft', d['ttft_tok_rate']['median'], 'e2e', d['e2e_s']['median'], 'prefill512', d.get('pure_prefill',{}).get('median_tok_rate'), 'digest', d.get('ordered_records_sha256','')[:16])
+                                                                                                 ~^^^^^^^^^
+KeyError: 'e2e_s'
+ctl-performance-r1 rc=0 
+pass 0 done
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+    print('decode', d['decode_tok_rate']['median'], 'ttft', d['ttft_tok_rate']['median'], 'e2e', d['e2e_s']['median'], 'prefill512', d.get('pure_prefill',{}).get('median_tok_rate'), 'digest', d.get('ordered_records_sha256','')[:16])
+                                                                                                 ~^^^^^^^^^
+KeyError: 'e2e_s'
+ctl-schedutil-r2 rc=0 
+pass 0 done
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+    print('decode', d['decode_tok_rate']['median'], 'ttft', d['ttft_tok_rate']['median'], 'e2e', d['e2e_s']['median'], 'prefill512', d.get('pure_prefill',{}).get('median_tok_rate'), 'digest', d.get('ordered_records_sha256','')[:16])
+                                                                                                 ~^^^^^^^^^
+KeyError: 'e2e_s'
+ctl-performance-r2 rc=0 
+/sys/devices/system/cpu/cpufreq/policy0/scaling_governor:schedutil
+/sys/devices/system/cpu/cpufreq/policy4/scaling_governor:schedutil
