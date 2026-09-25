@@ -77,3 +77,30 @@ and it is a separate effort from this lane's Linux-side work.
 - Linux up on 43ec6090, ESP unchanged, stock fallback verified.
 - No firmware READY, no HELLO, no EPMAP, no CSNE. The handshake has not
   begun, because the firmware never announces itself.
+
+## IRQ mask, wrapper diff, and the wake source (Main, 2026-09-25)
+
+RVBAR mode bits withdrawn as the cause: macOS runs on the same locked
+word, so they cannot be the difference.
+
+- IRQ unmask, null. Fresh boot, DARTs equalized (TTBR 0x1000e055 on all
+  three), 0x1400a00..0x1400a14 written 0xffffffff and read back
+  0xffffffff, GPIO clock-enable not touched. After release: CPU_STATUS
+  0x2a to 0x28, READY poll timed out at 0 after 8 s, recv0 0.
+- Wrapper page 0x1400000..0x1401000, three words changed across the
+  release: 0x1400044 went 0 to 0x10 (our CPU_CONTROL write), 0x1400048
+  went 0x2a to 0x28, and 0x1400818 went 0x00040001 to 0x00040003. The
+  rest of the page was identical. 0x1400818 is the coprocessor status
+  word the ISP driver polls for zero before it will release; ours never
+  reads zero.
+- Wake source, from the payload. The park wfi at vm 0x71bc branches to
+  itself: it is the idle loop, not a halt. Before it the firmware arms
+  software event 6, a bit in a BSS bitmap, not an IRQ number. The
+  interrupt it sleeps on is its own physical timer: it writes
+  CNTP_TVAL_EL0 and sets CNTP_CTL_EL0 = 1 at vm 0x654cc, and writes
+  CNTFRQ_EL0 at vm 0x66010 when the value is nonzero. That is ARM PPI 30,
+  raised by the core's own timer, and it fires only if the generic timer
+  counter is clocked. A mailbox doorbell does not wake the core either,
+  so interrupt delivery to the core is dead broadly, not just the timer.
+  The timer clock is enabled on macOS by the ANE init that the Asahi boot
+  skips, and it is not a register in the set matched so far.
