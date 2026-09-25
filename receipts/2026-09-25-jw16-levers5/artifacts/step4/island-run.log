@@ -1,0 +1,22 @@
+=== preflight ===
+SHIM=/var/tmp/parakeet-recover/libane_inproc.so
+mlx.ok 3.14.7
+soundfile 0.14.0
+=== stop llm-inference 2026-09-25T18:23:01-05:00 ===
+=== smoke ===
+smoke done 2026-09-25T18:23:06-05:00
+meas-1 done 2026-09-25T18:23:08-05:00
+meas-2 done 2026-09-25T18:23:11-05:00
+meas-3 done 2026-09-25T18:23:13-05:00
+all_green: True
+  audio_load: median 7.8 ms  runs [7.8, 7.8, 7.8]
+  mel_frontend: median 140.8 ms  runs [137.4, 140.8, 142.7]
+  encoder_ane: median 1451.6 ms  runs [1433.6, 1461.4, 1451.6]
+  decoder_load: median 54.9 ms  runs [54.9, 60.3, 53.8]
+  tdt_decode: median 361.7 ms  runs [341.4, 361.7, 370.1]
+  detokenize: median 19.7 ms  runs [19.7, 19.7, 21.6]
+  total: median 2047.6 ms
+=== CONTRACT DONE /var/tmp/parakeet-recover/battery-20260925T182301 ===
+=== restore llm-inference 2026-09-25T18:23:13-05:00 ===
+health: 200
+completion probe finish: length
