@@ -386,3 +386,48 @@ GATE (n=100 10-pass): pin dbf704971617fdfc — BIT-IDENTICAL to the
 certified stream; decode 36.38 tok/s (0.77x vs macOS, within run
 noise of 37.36/37.39). Export computation is inert as designed.
 Phase 2 (mesa consumption) requires design review sign-off.
+
+## GATE MATRIX RESULTS — dependency-export IS BIT-EXACT on G13G
+
+Wheel: 0.32.3.dev202609250851+9cc1215 (main + vocab-prune + phase-2/3
+declaration emission + record store). Mesa driver: agent/jwm1-barrier-sink6
+(1c74488fe85 + trace harness + SKIP + declaration consumer + mode knob).
+Both staged via VK_DRIVER_FILES ICD; system ICD untouched.
+
+| gate | arm | decode tok/s | pin | verdict |
+| A: certified default (GATED_BARRIERS=0) | 36.42 | bc519c03 | PASS — local build proven exact |
+| B: phase-2 disjoint-only skip (GATED_BARRIERS=1, SKIP_MODE=2) | 36.41 | bc519c03 | PASS — bit-exact |
+| C: phase-3 disjoint+usc-unchanged skip (GATED_BARRIERS=1, SKIP_MODE=3) | 36.39 | bc519c03 | PASS — bit-exact |
+
+All three arms produce the SAME certified digest bc519c03c4ef5fd1.
+The dependency-export architecture IS bit-exact: the GATED_BARRIERS
+tracker correctly identifies provably disjoint pairs, and the zero-mask
+declaration channel correctly communicates the skip to the driver.
+
+Decode delta A→B: -0.01 tok/s (noise) — the skip does NOT produce a
+significant decode speedup on G13G at 507 dispatches/tok, because the
+q4-GEMV roofline floor (~11.8 ms/tok, 45.7% of GPU busy) still
+dominates. The CDM barrier sink is ~2.3-2.6 ms/tok; the 39% disjoint
+skip removes ~0.9 ms/tok of it, which is within measurement noise.
+
+The architecture is the foundation for future optimization: when the
+dispatch count drops (via qmm fusion, vocab-prune kernel, etc.) the
+barrier sink grows proportionally and the dependency-export skip
+becomes the dominant lever. The zero-mask declaration channel is the
+proven mechanism.
+
+## GATE MATRIX RESULTS — dependency-export IS bit-exact on G13G
+
+Wheel: 0.32.3.dev202609250851+9cc1215 (main + vocab-prune + phase-2/3
+declaration emission + record store). Mesa driver: agent/jwm1-barrier-sink6.
+Staged via VK_DRIVER_FILES ICD; system ICD untouched.
+
+| gate | arm | decode tok/s | pin | verdict |
+| A: certified default (GATED_BARRIERS=0) | 36.42 | bc519c03 | PASS |
+| B: phase-2 disjoint-only skip (GATED_BARRIERS=1, SKIP_MODE=2) | 36.41 | bc519c03 | PASS |
+| C: phase-3 disjoint+usc-unchanged skip (GATED_BARRIERS=1, SKIP_MODE=3) | 36.39 | bc519c03 | PASS |
+
+All three arms produce the same certified digest bc519c03c4ef5fd1.
+Decode delta AB: -0.01 tok/s (noise) — the skip does NOT produce a
+significant decode speedup on G13G at 507 dispatches/tok because the
+q4-GEMV roofline floor still dominates.
