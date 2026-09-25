@@ -101,8 +101,25 @@ before. Gates below verify 0 flips + pin identity.
 
 ### Results
 
-PENDING (window interrupted by the Main-ordered grouped macOS reboot;
-gates run on return).
+Gates ran 2026-09-25 on the m64 wheel (`dev202609251754+4c09f1f`,
+sha256 `a4602e87...`), 10x interleaved r1 contracts then the 10-pass pin
+contract (raw: `/var/tmp/jwm1-parity5/gate/contract-ctl.json`,
+`contract-cand-m64-r1..10.json`, `contract-cand-p10.json`):
+
+- Bit-exactness: all interleaved contracts PASS and the 10-pass digest
+  pin **`dbf704971617fdfc` HOLDS** on the m64 stack (0 flips, pin
+  identity as argued).
+- Paired decode A/B: delta **-0.031 +/- 0.042 tok/s** (ratio 0.9992, CI
+  not positive) — no decode gain.
+- Pure prefill-512 A/B: cand 221.81 vs ctl 235.34 tok/s on the contract
+  stack; clean re-pair cand 225.7 vs ctl 240.6 — no prefill gain.
+
+Verdict: **FALSIFIED for perf, exactness PROVEN**. The weight-restage
+hypothesis of section 4 is falsified on G13G: the TILE_ROWS=64 tile's
+register/occupancy cost offsets the staging saving. NOT LANDED; branch
+`agent/jwm1-parity5-coopmat-m64` @ `4c09f1f` stays pushed and unmerged as
+the falsification record (see mlx-omarchy
+`receipts/2026-09-25-qmm-coopmat-m64.md`).
 
 ## 6. Window log (jwm1 ownership)
 
@@ -112,7 +129,29 @@ gates run on return).
   PASS, batteries green, **engine exec 141.5 ms restored** by module
   686ccd6), AneClockM1 read-only PMU probes (genpd state, 0x23b110000
   reads) 10:1x-10:4x, Main-ordered grouped macOS window from ~10:4x.
+- Jwm1Parity6 continuation 13:34-13:37: Parakeet golden re-run under the
+  armed 600 s-per-rep watchdog — 3/3 reps PASS bit-exact on installed
+  a9a5f60; hang did not reproduce
+  (`receipts/2026-09-25-jwm1-parakeet-golden-rerun`).
 
 ## 7. Final verdict table
 
-PENDING
+| cell | linux | macOS | ratio | pass bar | verdict |
+| --- | ---: | ---: | ---: | --- | --- |
+| GPU decode tok/s (median) | 37.47 | 47.05 | 0.796x | >= 1.00x | FAIL |
+| GPU ttft tok/s (median) | 50.26 | 99.12 | 0.507x | >= 1.00x | FAIL |
+| GPU pure prefill-512 tok/s | 235.34 | 343.73 | 0.685x | >= 1.00x | FAIL |
+| GPU e2e s (median, 32 tok) | 1.0842 | 0.7898 | 1.373x latency | <= 1.00x | FAIL |
+| digest pin `dbf704971617fdfc` | — | — | — | holds on every candidate | PASS |
+
+Correctness closes green: bundle battery 34/34 cases (5904/5904
+assertions) on ane `a9a5f60`, Parakeet golden bit-exact on the installed
+module, Qwen ANE layout gate verify 10/10 with the guard refusing
+unguarded loads.
+
+Levers closed this lane: q4 reduction flavor WASH (section 2); coopmat
+m64 FALSIFIED for perf, bit-exact proven, not landed (section 5). Live
+levers named for the next owner: the ~196 ms fixed per-prompt TTFT cost
+(section 3), the 3.10 us/dispatch barrier-edge floor at 507
+dispatches/tok (section 1), and the Qwen ANE TTFT gap 1.347x macOS
+(`receipts/2026-09-25-jwm1-qwen-ane-layout-gate`).
