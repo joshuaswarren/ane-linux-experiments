@@ -121,11 +121,16 @@ if a.prefill_tokens:
     while len(ids) < a.prefill_tokens:
         ids = ids + encode(" " + text)
     ids = ids[: a.prefill_tokens]
-    m.prefill(ids)  # compile for this length (untimed)
+    # the GDN hybrid has no batched-prefill mixer (recurrence/scan wall): the prefill
+    # leg runs the SAME staged decode path token-by-token, 512 forwards per wall
+    Mpre = len(ids) + 1
+    m.generate(ids, max_new_tokens=1, max_len=Mpre, temperature=0.0, top_p=1.0,
+               top_k=0, batched_prefill=False)  # compile this length (untimed)
     times = []
     for _ in range(3):
         t0 = time.perf_counter()
-        m.prefill(ids)
+        m.generate(ids, max_new_tokens=1, max_len=Mpre, temperature=0.0, top_p=1.0,
+                   top_k=0, batched_prefill=False)
         times.append(time.perf_counter() - t0)
     pure_prefill = {"prompt_tokens": len(ids),
                     "median_tok_rate": round(len(ids) / statistics.median(times), 2),
