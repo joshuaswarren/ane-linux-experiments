@@ -916,3 +916,35 @@ still zeros = endpoint bringup never completed (blocker = whatever
 Boot-args surface (G6/Item3) stays behind the BSS read: the kext
 publishes the table only after phase-1 READY, so it cannot be OUR
 blocker either — but its contents may be what init 0..4 validates.
+
+## 29. BSS verdict: dispatch head empty, series designed (Main lane)
+
+M2FwStart-2's 8 KB BSS read (SEG1+0x436000..0x438000, vm 0x4fa000..
+0x4fc000, phys-mapped, read-only): 7 nonzero of 2048 words, clustered
+PA 0x10001836e10..0x36e8c (SEG1+0x436e10 = vm 0x4fae10):
+0xe8000, 0xf0, 0xe1fc3f80, 0xf, 0x24, 0x4000000, 0x100. Stack-sample
+window holds 5 self-pointer constants (0x004f3fd8-class = initialized
+structs, not live frames). Everything else zero: no endpoint objects,
+no subscriber arrays — and critically the dispatch-list head at
+[DATA vm 0x4faa20] (SEG1+0x436a20, inside the read window) is ZERO, so
+the 0x6e3dc list-builder never ran or produced nothing. The parked
+function (0x6e054-body) only READS the 0x4fae10 cluster (0x6e0d0-site);
+its writes, if any, are elsewhere. [MEASURED + STATIC-CONFIRMED sites]
+
+Correction to §28's framing: the "7-word cluster" is past file EOF
+(fo 0x4fee10 > len 0x4c5b28; vm 0x4fae10 > file end 0x4ac000): NOT
+file-static, written live by iBoot-reserve or early firmware — but with
+[0x4faa20] empty, endpoint bringup still never completed. Verdict on
+sight stands: blocker is the list-builder's trigger ([0xc98e8]-counted
+entries / [x19,#0x98]'s creator), not HELLO-send. [INFERENCE]
+
+Timed series (Main-ordered, M2FwStart-2 briefed): fresh boot, VENC
+prep, ane_obs vehicle only (rtclient UNLOADED — its probe writes state
+even on read paths), hand release via ascdbg CPU_CONTROL, then pure
+timed snapshots with zero MMIO between: T0 pre-release, T+200ms, T+1s,
+T+5s, same windows (SEG1 full + BSS 8 KB + stack to 0x17000). Watch
++0x436a20 (head) and the endpoint region across the four: head stays
+zero = builder never fires (blocker = its trigger); fills then stalls
+= blocker moves downstream. M2's vehicle questions answered: (1) pure
+timed, no poll loop; (2) ane_obs + hand release, vehicle constant.
+Reboot go is Main's.
