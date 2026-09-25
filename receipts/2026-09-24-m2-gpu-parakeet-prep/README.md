@@ -32,7 +32,7 @@ M2 Linux (m2-host, Omarchy/Asahi, python 3.14.7):
   warning. Serve catalog `ARCHES` includes `t6021`.
 - **Wheel**: release wheel is cp314 `linux_aarch64` — matches the M2 host
   python 3.14.7. Built off-box per §3; no on-box compile needed.
-- **FINDING — main tip `5a7b371e3` (vocab-prune squash) does not build a
+- **FINDING — main tip `5a7b371e3` (vocab-prune squash) did not build a
   wheel.** `prepare-mlx.sh` applies `patches/mlx-fast-greedy-argmax.patch`
   onto the pinned upstream mlx archive with context drift ("Hunk #1
   succeeded at 435 with fuzz 3") and the result is broken C++:
@@ -40,13 +40,11 @@ M2 Linux (m2-host, Omarchy/Asahi, python 3.14.7):
   `:472 'override' does not name a type`, then `fast.cpp:1517+
   'GreedyQuantizedArgmax' has not been declared` → `make: *** [all] Error 2`
   (cmake exit 2 under pip's captured subprocess, full cmake log preserved in
-  `stage/build-5a7b371-cmake.log`). The vocab-prune lineage therefore never
-  passed a wheel-build gate on this path. Until the mlx-omarchy lane rebases
-  that patch, the last wheel-build-verified main lineage is `9fb8b675c`
-  (SDPA hd256 decode arm + GDN raw route default-on + installer fixes —
-  jwm1-built and jwm1-measured 2026-09-24: decode 17.46 → 36.37 tok/s,
-  pin `dbf70497`). The staged M2 window wheel is built from `9fb8b675c`;
-  re-stage from `origin/main` once vocab-prune builds.
+  `stage/build-5a7b371-cmake.log`). **RESOLVED same day**: mlx-omarchy
+  `024d4fe60` regenerates the patch against the current tree and the main-tip
+  wheel build is clean again (see below). Until that landed, the last
+  build-verified lineage was `9fb8b675c` (jwm1-measured decode 17.46 →
+  36.37 tok/s, pin `dbf70497`).
 - **Main-tip wheels require the pinned `parakeet-encoder-whole` bundle**
   (`build-wheel.sh` refuses to build a wheel that could silently fall back to
   the split-island path). The durable bundle copy lives at
@@ -100,15 +98,15 @@ GEMV/occupancy blocked on driver surface), `2026-09-23-maxdispatch-cdm-barrier`
   kernel), `SHA256SUMS` + the built wheel (kept out of git; identity by
   SHA256SUMS, durable copy at `macstudio:~/m2-wheel-stage/<commit>/`).
   **Staged wheel for this window:
-  `mlx_omarchy-0.32.3.dev202609250003+9fb8b67-cp314-cp314-linux_aarch64.whl`,
-  sha256 `ddd79397850abbb05603656409e9714a2d5195aea903f9545af12fcd87dfd94f`
-  (8,534,507 bytes; 448 entries; aarch64 cp314 `mlx/core…so` + `libmlx.so`
-  + `libane-strict.so` + the 4 split-island `.anec` programs).** Full C++
-  build from the macstudio ALARM chroot, bundle pin-verified pre-build. The
-  wheel is the compact variant (split-island parakeet share embedded; the
-  whole-encoder bundle is not in this lineage's wheel) — irrelevant for the
-  GPU cell, and the parakeet leg stages its share on-box when the ANE lane
-  lands.
+  `mlx_omarchy-0.32.3.dev202609250018+024d4fe-cp314-cp314-linux_aarch64.whl`,
+  sha256 `90154f0db8313baf59d00d1d45affe480133bc9cb2bd1b8467b6f1710d054af7`
+  (416,009,341 bytes; 451 entries; aarch64 cp314 `mlx/core…so` + `libmlx.so`
+  + `libane-strict.so` + 5 `.anec` programs including the pinned
+  `parakeet-encoder-whole` — the full bundle-bearing main-tip variant;
+  re-staged per Main after `024d4fe60` regenerated the greedy patch).**
+  Full C++ build from the macstudio ALARM chroot, bundle pin-verified
+  pre-build and staged by `build-wheel.sh` in-chroot. Superseded interim
+  build: `9fb8b67` compact wheel, sha256 `ddd79397…` (log kept).
 
 **Expected window runtime**: ≈ 8–12 min, under the 20-min budget — venv +
 install + patches ≈ 1–2 min (jwm1 lane measured its venv phase ≈ 1 min,

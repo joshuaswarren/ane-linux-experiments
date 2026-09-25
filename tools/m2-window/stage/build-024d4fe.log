@@ -1,0 +1,75 @@
+== prepare upstream tree ==
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0100  4.24M   0  4.24M   0      0  4.41M      0                              0100  4.24M   0  4.24M   0      0  4.41M      0                              0100  4.24M   0  4.24M   0      0  4.41M      0                              0
+patching file CMakeLists.txt
+Hunk #2 succeeded at 167 (offset 1 line).
+Hunk #3 succeeded at 430 (offset 1 line).
+patching file mlx/CMakeLists.txt
+Hunk #1 succeeded at 109 (offset 6 lines).
+patching file tests/CMakeLists.txt
+Hunk #1 succeeded at 51 (offset 5 lines).
+patching file mlx/transforms.cpp
+patching file mlx/transforms.cpp
+patching file mlx/transforms.h
+patching file setup.py
+patching file mlx/io/safetensors.cpp
+patching file mlx/io/load.cpp
+Hunk #1 succeeded at 12 (offset 1 line).
+Hunk #2 succeeded at 240 (offset 5 lines).
+patching file mlx/export.cpp
+Hunk #2 succeeded at 900 (offset 1 line).
+patching file mlx/linalg.cpp
+patching file python/src/buffer.h
+patching file mlx/fast.cpp
+patching file mlx/ops.cpp
+Hunk #2 succeeded at 5020 (offset -30 lines).
+Hunk #3 succeeded at 5278 (offset -31 lines).
+patching file mlx/backend/cpu/distributed.cpp
+patching file mlx/fast.cpp
+patching file mlx/backend/common/metal_kernel.cpp
+patching file mlx/fast.cpp
+patching file mlx/fast.h
+patching file mlx/fast_primitives.h
+patching file python/src/fast.cpp
+patching file setup.py
+patching file mlx/fast.cpp
+patching file mlx/fast.h
+patching file mlx/fast_primitives.h
+patching file python/src/fast.cpp
+patching file mlx/fast.h
+patching file mlx/fast.cpp
+patching file mlx/fast_primitives.h
+patching file python/src/fast.cpp
+patching file mlx/fast.h
+patching file mlx/fast.cpp
+patching file mlx/fast_primitives.h
+patching file mlx/backend/no_gpu/primitives.cpp
+patching file python/src/fast.cpp
+/work/dg-repo/.work/mlx
+== stage whole-encoder bundle ==
+[bundle] staged /work/dg-repo/.work/mlx/tools/mlx-omarchy-parakeet/share/mlx-omarchy/parakeet-1/bundles/parakeet-encoder-whole (manifest 08769793f8ee3299381f499bf90537d620e23635000a6dbc54b9b5c6a55a54ab, program 13c744231524d440b0a774155343df9ade0bbcbc37edc4b1ccf9698e580d5453)
+== build venv (/work/dg-repo/.work/venv-build) ==
+== wheel build ==
+Processing ./.work/mlx
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: mlx-omarchy
+  Building wheel for mlx-omarchy (pyproject.toml): started
+  Building wheel for mlx-omarchy (pyproject.toml): still running...
+  Building wheel for mlx-omarchy (pyproject.toml): finished with status 'done'
+  Created wheel for mlx-omarchy: filename=mlx_omarchy-0.32.3.dev202609250018+024d4fe-cp314-cp314-linux_aarch64.whl size=416009341 sha256=90154f0db8313baf59d00d1d45affe480133bc9cb2bd1b8467b6f1710d054af7
+  Stored in directory: /tmp/pip-ephem-wheel-cache-4b3zfvx6/wheels/c0/c4/4f/39780ba78a3a6e6b91213e18d779acaef400ad09377f1dc1fb
+Successfully built mlx-omarchy
+== receipt ==
+[receipt] wheel: /work/dg-repo/dist/mlx_omarchy-0.32.3.dev202609250018+024d4fe-cp314-cp314-linux_aarch64.whl
+[receipt] size: 416009341 bytes
+[receipt] sha256: 90154f0db8313baf59d00d1d45affe480133bc9cb2bd1b8467b6f1710d054af7
+[receipt] source commit: unknown
+[receipt] NEXT STEP - do not skip: after you upload this wheel to a
+[receipt] release, verify the UPLOADED asset with
+[receipt]   python3 scripts/verify-release-assets.py <tag>
+[receipt] It must print VERIFIED before the release is announced as
+[receipt] usable. See docs/release.md. A local build check does not
+[receipt] verify what users download.
