@@ -22,8 +22,26 @@
  * Emits out dir: regs.bin (raw words) + regs.json (decoded + SHAs).
  */
 #include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include <IOKit/IOKitLib.h>
+
+/* Pinned from the Linux lane (receipts 2026-09-25): engine base
+ * 0x284000000, mailbox 0x285408000 (DT reg), pmgr 0x28e080000,
+ * dart x3 0x285800000/10/20, patchbay PA 0x10001406870. Offsets below
+ * are engine/window-relative; the tool requests them through the user
+ * client so no /dev/mem is needed. */
+static const uint32_t kWrapperSkip[] = { 0x818, 0x81c, 0x820 };
+static const uint32_t kPsWords[] = { 0x2e0, 0x4000, 0x4008, 0x4010,
+    0x4018, 0x4020, 0x4028, 0x4030 };
+static const uint64_t kDartBases[] = { 0x285800000ull, 0x285810000ull,
+    0x285820000ull };
+
 int main(int argc, char **argv) {
-    (void)argc; (void)argv;
-    fprintf(stderr, "ane_regdump: stub - wire IOServiceOpen(H11ANE) + reads next\n");
+    const char *out = (argc > 2 && !strcmp(argv[1], "-o")) ? argv[2] : NULL;
+    if (!out) { fprintf(stderr, "usage: ane_regdump -o outprefix\n"); return 2; }
+    /* TODO: IOServiceOpen(AppleH11ANEInterface) -> externalMethod reads.
+     * Wiring lands before the window; the address table above is final. */
+    fprintf(stderr, "ane_regdump: address table staged, user-client wiring next (out=%s)\n", out);
     return 2;
 }
