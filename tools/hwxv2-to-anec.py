@@ -462,6 +462,8 @@ def _build_header(
     image: HWXImage,
     in_shape: tuple[int, int, int, int],
     out_shape: tuple[int, int, int, int],
+    in_shape_list=None,
+    out_shape_list=None,
 ) -> bytes:
     """Build the Linux anec header for one converted HWX.
 
@@ -486,8 +488,15 @@ def _build_header(
     tiles[0] = (image.content_size + TILE_UNIT - 1) // TILE_UNIT
     tiles[3] = (image.workspace_size + TILE_UNIT - 1) // TILE_UNIT
     dst_count = len(output_sections)
-    input_shapes = [(in_n, in_ch, in_h, in_w)] * len(input_sections)
-    output_shapes = [(out_n, out_ch, out_h, out_w)] * len(output_sections)
+    # per-surface shapes: broadcast the CLI geometry unless explicit lists are given
+    in_shape_list = in_shape_list or ([(in_n, in_ch, in_h, in_w)] * len(input_sections))
+    out_shape_list = out_shape_list or ([(out_n, out_ch, out_h, out_w)] * len(output_sections))
+    if len(in_shape_list) != len(input_sections) or len(out_shape_list) != len(output_sections):
+        raise ValueError(
+            f"surface shape count mismatch: {len(in_shape_list)} in / {len(out_shape_list)} out "
+            f"vs {len(input_sections)} / {len(output_sections)} sections")
+    input_shapes = [tuple(x) for x in in_shape_list]
+    output_shapes = [tuple(x) for x in out_shape_list]
     output_sizes = [size for _, size in output_sections]
     input_sizes = [size for _, size in input_sections]
     if len(output_sizes) == 1:
@@ -506,9 +515,11 @@ def _build_header(
         tiles[4 + dst_count + index] = max(1, (required + TILE_UNIT - 1) // TILE_UNIT)
     nchw = [0] * (32 * 6)
     for index, shape in enumerate(output_shapes):
-        nchw[(4 + index) * 6:(4 + index) * 6 + 6] = [*shape, out_plane, out_row]
+        plane, row = (shape[2] * shape[3], shape[3]) if out_shape_list else (out_plane, out_row)
+        nchw[(4 + index) * 6:(4 + index) * 6 + 6] = [*shape, plane, row]
     for index, shape in enumerate(input_shapes):
-        nchw[(4 + dst_count + index) * 6:(4 + dst_count + index) * 6 + 6] = [*shape, in_plane, in_row]
+        plane, row = (shape[2] * shape[3], shape[3]) if in_shape_list else (in_plane, in_row)
+        nchw[(4 + dst_count + index) * 6:(4 + dst_count + index) * 6 + 6] = [*shape, plane, row]
     return struct.pack(
         "<QIIQQII32I192Q",
         image.content_size,
@@ -683,10 +694,27 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--output-height", type=int, default=1)
     parser.add_argument("--output-width", type=int, default=1)
     parser.add_argument(
+        "--in-shapes", default=None,
+        help="per-input-surface NCHW list, comma separated (e.g. 1x2048,6144x3); "
+             "3 dims are padded with N=1; order = ANEC input-section order")
+    parser.add_argument(
+        "--out-shapes", default=None,
+        help="per-output-surface NCHW list, comma separated; order = ANEC output-section order")
+    parser.add_argument(
         "--weights",
         help="the bundle's weight blob file, required for a BLOBFILE constant",
     )
     args = parser.parse_args(argv[1:])
+    def _shapes(spec):
+        if not spec:
+            return None
+        out = []
+        for part in spec.split(","):
+            dims = part.replace("x", " ").split()
+            while len(dims) < 4:
+                dims.insert(0, "1")
+            out.append(tuple(int(x) for x in dims))
+        return out
     image = convert_hwx_file(
         args.src_path,
         args.dst_path,
