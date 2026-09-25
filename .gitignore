@@ -8,3 +8,6 @@ receipts/**/*.dump
 
 .omp/
 .private-patterns
+
+# M2 window kit: the wheel is a 400+ MB re-derivable artifact; SHA256SUMS carries its identity
+tools/m2-window/stage/*.whl

@@ -1,0 +1,60 @@
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/core.py", line 184, in run_commands
+          dist.run_commands()
+          ~~~~~~~~~~~~~~~~~^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/dist.py", line 1028, in run_commands
+          self.run_command(cmd)
+          ~~~~~~~~~~~~~~~~^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+          ~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+          ~~~~~~~~~~~^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/command/bdist_wheel.py", line 385, in run
+          self.run_command("build")
+          ~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+          ~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+          ~~~~~~~~~~~^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/command/build.py", line 137, in run
+          self.run_command(cmd_name)
+          ~~~~~~~~~~~~~~~~^^^^^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/cmd.py", line 342, in run_command
+          self.distribution.run_command(command)
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/dist.py", line 1106, in run_command
+          super().run_command(command)
+          ~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/dist.py", line 1047, in run_command
+          cmd_obj.run()
+          ~~~~~~~~~~~^^
+        File "<string>", line 181, in run
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/command/build_ext.py", line 95, in run
+          _build_ext.run(self)
+          ~~~~~~~~~~~~~~^^^^^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/command/build_ext.py", line 382, in run
+          self.build_extensions()
+          ~~~~~~~~~~~~~~~~~~~~~^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/command/build_ext.py", line 498, in build_extensions
+          self._build_extensions_serial()
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+        File "/opt/py314/lib/python3.14/site-packages/setuptools/_distutils/command/build_ext.py", line 524, in _build_extensions_serial
+          self.build_extension(ext)
+          ~~~~~~~~~~~~~~~~~~~~^^^^^
+        File "<string>", line 173, in build_extension
+        File "/opt/py314/lib/python3.14/subprocess.py", line 578, in run
+          raise CalledProcessError(retcode, process.args,
+                                   output=stdout, stderr=stderr)
+      subprocess.CalledProcessError: Command '['cmake', '--build', '.', '--target', 'install', '--config', 'Release']' returned non-zero exit status 2.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for mlx-omarchy
+Failed to build mlx-omarchy
+ERROR: Failed to build one or more wheels

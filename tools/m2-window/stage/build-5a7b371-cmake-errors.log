@@ -1,0 +1,20 @@
+# build-5a7b371: cmake failure evidence (vocab-prune wheel-build breakage)
+
+Verbatim compiler-error excerpt from the diagnostic chroot build of
+mlx-omarchy `5a7b371e3` (macstudio, dg-alarm-py314:sep23, 2026-09-24;
+prepare-mlx applies patches/mlx-fast-greedy-argmax.patch with
+"Hunk #1 succeeded at 435 with fuzz 3" onto the pinned upstream archive):
+
+    /work/dg-repo/.work/mlx/mlx/fast_primitives.h:437:78: error: expected ';' at end of member declaration
+    /work/dg-repo/.work/mlx/mlx/fast_primitives.h:472:7: error: 'override' does not name a type
+    /work/dg-repo/.work/mlx/mlx/fast.cpp:1517:8: error: 'GreedyQuantizedArgmax' has not been declared
+    /work/dg-repo/.work/mlx/mlx/fast.cpp:1526:24: error: 'GreedyQuantizedArgmax' was not declared in this scope; did you mean 'greedy_quantized_argmax'?
+    /work/dg-repo/.work/mlx/mlx/fast.cpp:1530:6: error: 'GreedyQuantizedArgmax' has not been declared
+    /work/dg-repo/.work/mlx/mlx/fast.cpp:1532:27: error: 'group_size_' was not declared in this scope
+    make[2]: *** [CMakeFiles/mlx.dir/build.make:177: CMakeFiles/mlx.dir/mlx/fast.cpp.o] Error 1
+    make[1]: *** [CMakeFiles/Makefile2:464: CMakeFiles/mlx.dir/all] Error 2
+    make: *** [Makefile:146: all] Error 2
+
+cfg_rc=0, build_rc=2. The same chroot builds `9fb8b675c` cleanly (see
+build-9fb8b67.log). The pip traceback above these lines is in
+build-5a7b371.log.
