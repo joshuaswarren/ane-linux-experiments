@@ -361,3 +361,10 @@ Probe artifacts: raw/mesa-gate/contract-bisect-*.json + .summary
 (5 probes, ~47-50 s each). Knob build: driver default restored to
 certified semantics (no-env digest bc519c03 verified on the knob
 build, decode 37.42).
+
+## RE-MEASUREMENT on the landed main tip (tree 024d4fe60, wheel f252747 content)
+
+n=100 10-pass: decode 37.39 tok/s, ttft 50.11, prefill-512 232.04,
+e2e 1.0883 s, pin dbf704971617fdfc — bit-identical to the prior
+10-pass (certified stream re-verified on the landed state). vs macOS
+47.05/99.12/343.73/0.7898 = 0.79x/0.51x/0.68x/0.72x — all FAIL.
