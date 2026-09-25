@@ -61,9 +61,68 @@ Notes and honesty rules for this table:
   ratio is claimed as parity: with verified identical inputs, 8 of 10
   prompts matched byte-exactly and 2 diverged at token 19 or later.
 - macOS cells are pending an owner-approved operating system window; they
-  will be added with the same protocol when measured.
+  will be added with the same protocol when measured. (Superseded 2026-09-24:
+  the macOS denominators were measured — see the parity matrix below.)
 - Raw per-run receipts stay outside the repository.
 
+
+## Three-laptop parity matrix (2026-09-25)
+
+Measured parity state for the three surfaces (GPU Qwen3.8-2B, ANE whole
+encoder, Parakeet) on m1-host (T8103), m1max-host (T6001), and m2-host
+(T6021), against same-SoC macOS denominators. The bar is >=1.00x macOS
+throughput and <=1.00x latency. No performance cell meets the bar today.
+Every value is quoted from a committed receipt; a value that exists in no
+receipt is marked `unreceipted` instead of dropped.
+
+| Host | Cell | Linux | macOS | Ratio | Verdict | Receipt |
+|---|---|---|---|---|---|---|
+| m1-host | Qwen decode | 37.39 tok/s | 47.05 tok/s | 0.79x | FAIL | `receipts/2026-09-24-jwm1-gpu-parity` |
+| m1-host | Qwen prefill-512 | 232.04 tok/s | 343.73 tok/s | 0.68x | FAIL | same |
+| m1-host | Qwen TTFT | 50.11 tok/s | 99.12 tok/s | 0.51x | FAIL | same |
+| m1-host | Qwen e2e (32 new tokens) | 1.0883 s | 0.7898 s | 0.72x | FAIL | same |
+| m1-host | ANE whole encoder | 141.5-141.9 ms | 113.12 ms | 0.79-0.80x | FAIL | `receipts/2026-09-24-m1-boundaries-encoder-anomaly` (cites `receipts/2026-09-22-encoder-whole-program/m1host`) |
+| m1-host | ANE gate battery | 5904/5904 | n/a | n/a | PASS (correctness) | `receipts/2026-09-22-encoder-whole-program/m1host/gate-bundle.out` |
+| m1-host | Qwen ANE reference path | not run | n/a | n/a | NOT RUN | - |
+| m1-host | Parakeet warm pipeline | 1588-1598 ms | 271 ms (rep10) | 0.17x | FAIL | `receipts/2026-09-24-jwm1-linux-denominators` (branch `agent/jwm1-macos-baselines`) |
+| m1-host | Parakeet transcript | db501a8c, 104/104 | match | parity | PASS (correctness) | same |
+| m1max-host | Qwen decode | 77.33-77.48 tok/s | 179.47 tok/s (the 180.38 figure is unreceipted) | 0.43x | FAIL | `receipts/2026-09-24-jw16-launch-sink/artifacts` (branch `agent/jw16-launch-sink`); denominator cited in `receipts/2026-09-23-m2-macos-denominator` |
+| m1max-host | Qwen prefill-512 / TTFT / e2e | not run | 1326.05 / 359.98 / 0.2081 s — unreceipted | - | NOT RUN (Linux leg) | - |
+| m1max-host | ANE whole encoder | 1631.7 ms — unreceipted (const-cache knob c59cc91) | 141.18 ms — unreceipted | unreceipted | FAIL (figures unreceipted) | - |
+| m1max-host | ANE firmware | release sequence runs, stalls before HELLO | n/a | n/a | NOT RUN (no inference path) | `docs/t6021-ane-bringup-findings.md` in omarchy-ane, sections 4-5 |
+| m1max-host | Parakeet total | 2463 ms — unreceipted (older receipted battery: 4694.5 ms total, 3329.5 ms encoder) | no receipted denominator | unreceipted | FAIL (figure unreceipted) | `receipts/2026-09-21-encoder-wall-decomposition` |
+| m1max-host | Parakeet transcript | 104/104 match, db501a8c pins | match | parity | PASS (correctness) | same |
+| m2-host | Qwen GPU | not run on the main-tip battery; Sep-23 qualified stack measured decode 72.58 / prefill-512 906.84, stale vs mlx-omarchy main | 179.0 / 1109.82 tok/s | 0.40x / 0.82x (stale stack) | FAIL (stale stack); NOT RUN (current) | `receipts/2026-09-24-m2-gpu-parakeet-prep`; `receipts/2026-09-23-m2-gpu-qwen38` and `receipts/2026-09-23-m2-macos-denominator` (branches) |
+| m2-host | ANE encoder | no inference path; firmware reaches its service loop, mailbox FIFO never drains, no HELLO | 90.71 ms, bit-exact vs Linux gold | n/a | NOT RUN | omarchy-ane `docs/t6021-ane-bringup-findings.md` sections 12-13; `receipts/2026-09-23-m2-macos-denominator` (branch) |
+| m2-host | Parakeet | never run (structurally blocked: T6021 ANE unavailable) | rep10 0.167 s, 107 tokens — MISMATCH vs golden 104 | n/a | NOT RUN (Linux); denominator flawed (macOS) | `receipts/2026-09-24-m2-gpu-parakeet-prep`; `receipts/2026-09-23-m2-macos-denominator/m2-macos-window/parakeet-20260923T145525` (branch) |
+
+Notes:
+
+- Ratios are fraction-of-macOS: Linux/macOS for rates, macOS/Linux for
+  latencies. A FAIL is recorded as measured; no acceptance criterion was
+  lowered.
+- Receipts dated 2026-09-23/24 other than the five already on main live on
+  agent branches (`agent/jwm1-macos-baselines`, `agent/jw16-launch-sink`,
+  `lane/jw16-parakeet-recover` and their remotes); paths are cited so they
+  can be read on those branches until they merge.
+- m1-host GPU values are the n=100 re-measurement on the landed main tip
+  (mlx-omarchy tree `024d4fe60`; records pin `dbf704971617fdfc`,
+  bit-identical to the T6001 pin). The earlier same-day leg measured
+  decode 36.37 / prefill 219.2 / e2e 1.1145 — run noise, same FAIL.
+- Value corrections against the earlier ticket wording: the m2-host macOS
+  encoder median is 90.71 ms (90.73 is rep 7), the m2-host macOS Parakeet
+  rep10 inference is 0.167 s, and the receipted m1max-host macOS decode
+  denominator is 179.47 tok/s.
+- The m1-host Parakeet row is the combined-parakeet lane (warm reps
+  1588.2/1597.8 ms after a cold rep). The same receipt also holds a faster
+  current-stack whole-pipeline warm median of 739.7 ms with the TDT host
+  loop moved to GPU — still 0.37x, still FAIL. Neither meets the bar.
+- The m2-host GPU/Parakeet cells are staged behind `tools/m2-window`
+  (kit re-measures mlx-omarchy main on the next window). The `90154f0d`
+  wheel id quoted for that kit appears in no receipt.
+
+Nothing in this table is done until every performance cell reads
+>=1.00x macOS throughput and <=1.00x latency.
 
 ## Qwen reference workflow
 
