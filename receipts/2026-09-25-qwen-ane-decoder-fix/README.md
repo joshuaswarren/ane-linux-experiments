@@ -165,3 +165,35 @@ performed this session).
   `/tmp/qwen-err11-repro.log` (A/B), export stdout in session transcript.
 - Scripts: `verify-qwen-staged-reference.py`, `export-qwen-staged-hwx.sh` (this dir).
 - Contract/corpus/thresholds: untouched (chunk_00 reference reused as-is).
+
+## 8. Route A continuation (2026-09-25 later — Main-assigned)
+
+The jwm1 Linux gate moved to the runtime whole-bundle path (Route A, Main-assigned):
+
+- Tile-unit ABI root cause CONFIRMED on device: omarchy-ane main libane sizes
+  channel BOs `tiles[i] << 14` (0x4000 units); the converter emitted 512-B units,
+  oversizing every content BO 32x (118 MB program -> 3.77 GB BO = 0xe1200000 ->
+  "out of ANE space: -28"). Fixed in tools/hwxv2-to-anec.py (native 0x4000 units,
+  --tile-unit 512 for the old ABI) and shipped (7e55943); all 38 programs reconverted
+  and verified loading on jwm1 (prog_000-001 real opens; per-surface nchw with
+  element-unit plane/row fbc752e).
+- Remaining gap on the conversion route: hwxv2-to-anec assumes dense surfaces, but
+  the device's per-surface tile layout is defined by each bundle's task stream —
+  the wrong-layout run gave wrong outputs + heap corruption (free(): invalid size)
+  after exact-token parity was already proven for the runner logic over e5rt.
+  Per Main, the converter path is superseded for staged-Qwen: the loader-schema
+  manifest route replaces it (converter extension kept only as the ABI fix).
+- Loader schema located for Route A: overlay manifest.cpp
+  (jwm1:/var/tmp/jwm1-ane-step2/ane-v064-wt/overlay/mlx/backend/omarchy/ane/manifest.cpp,
+  712 lines; tensors {name,index,dtype,shape,byte_size,stride}, stride 0x4000-aligned,
+  declared==derived channel contract) + working package example
+  (jwm1:/var/tmp/jwm1-ane-smoke/pkg/pkg/manifest.json, schema
+  mil-hwxc.h13-anec-package.v1, dispatchPlan/programs/tensors).
+- IOVA 0x4000 WARN (Main's question): EXPLAINED, no driver fix needed. Driver error
+  paths audited correct (map-failure unwinds partial maps + drm_mm node; gem free
+  unmaps; remove unmaps all; wedge preserve is deliberate fail-closed). The WARNs
+  came from my SIGKILLed mid-submit runner process + the 32x-oversized BO requests;
+  ane.ko reloaded (Jwm1Parity3's 9a0ec81 build kept) which clears the ANE drm_mm
+  state; no new WARNs since the tile-unit fix.
+- jwm1 staging: /var/tmp/qwen38-staged-jwm1 (e5rt bundles), /var/tmp/qwen38-staged-anec
+  (38 h13 ANECs, correct tile units), /var/tmp/qwen38-staged-runner (runner + scripts).
