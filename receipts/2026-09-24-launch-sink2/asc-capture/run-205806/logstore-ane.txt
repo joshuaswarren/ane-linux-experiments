@@ -1,0 +1,1388 @@
+Timestamp               Ty Process[PID:TID]
+2026-09-24 20:51:59.396 Df kernel[0:80] (AppleH11ANEInterface) : start: ANEDriver is enabled by default!
+2026-09-24 20:51:59.396 Df kernel[0:80] (AppleH11ANEInterface) : start: Done with ANEDriver start routine
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: Starting ANE Init
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: InitializeProvider: providerNameStr: ane0 fUseRTBuddy: 0 fANERTBuddyModeIndexOffset 0 IntrOffset 0 ClockGateOffset 0
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: initializeANESoCConfig: aneHWBoardType: 0x60
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: initializeANESoCConfig: fANEMinorVersion: 0x11
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: initializeANESoCConfig: ANE subtype updated to from 0 -> 0
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: fANEPowerManagementEnabled =0x3
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: fANEPrepowerUpEnabled = 1
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: fANEDynSysPowerGatingTimerPeriodMs = 1 mS
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: fIsANEDynPowerGateHysteresisSupported = 1
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: fANEDynPowerGateHysteresisEnabled = 1
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: fANEDynPowerGateHysteresisTimerPeriodMs = 1 ms
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: ANE-ISP EP enable status: 1, APFF enable status: 1
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: usb get preloads the fw is true, fEnableFwCTRR = true
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: Device ctrr-unlocked is not set, fEnableFwReload = false
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: fEnableFwCTRR: 1, fEnableFwReload: 0
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: checkExclaveEnablementStatus: Exclave not supported
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: ANEExclaveProxy service not available. Exclave disabled
+2026-09-24 20:51:59.646 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: LPW support: 0
+2026-09-24 20:51:59.648 Df kernel[0:897] (AppleH11ANEInterface) : ANERegisterControl: ANE registers: <private>, length: 0x2000000, phys: 0x284000000
+2026-09-24 20:51:59.648 Df kernel[0:897] (AppleH11ANEInterface) : ANERegisterControl: PS registers: <private>, length: 0xc02c, phys: 0x28e080000
+2026-09-24 20:52:00.358 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: start: ANE_SYS wasDisabled=0
+2026-09-24 20:52:00.358 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: start: Done with initial call to PMGR
+2026-09-24 20:52:00.358 Df kernel[0:7f] (AppleH11ANEInterface) ANEThread: ANEUnwireThread +
+2026-09-24 20:52:00.358 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: start: Creating Memory Unwire timer
+2026-09-24 20:52:00.358 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: start: Enabling Memory Unwire timer
+2026-09-24 20:52:00.358 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: EnableMemoryUnwireTimer: ERROR: Cannot enable Memory Unwire Timer
+2026-09-24 20:52:00.358 Df kernel[0:7f] (AppleH11ANEInterface) ANE0: start: ANE Mapper: <private>
+2026-09-24 20:52:00.358 Df kernel[0:7f] (AppleH11ANEInterface) ANE0: start: fANEMaxDartMemSize: 0xdfffc000 fANEMaxSystemMemSize: 0x1000000000 fANEMaxMachoSize: 0x80000000
+2026-09-24 20:52:00.359 Df kernel[0:3ae] (AppleH11ANEInterface) ANE0: mapFwCTRRRegion: FW __TEXT segment phy: 0x10000a5c000, virt: 0x0, remap: 0x10000a5c000, size: 0xf4000
+2026-09-24 20:52:00.359 Df kernel[0:3ae] (AppleH11ANEInterface) ANE0: mapFwCTRRRegion: FW __DATA segment phy: 0x10001684000, virt: 0xf4000, remap: 0x1f0000f4000, size: 0x5f8000
+2026-09-24 20:52:00.360 Df kernel[0:3ae] (AppleH11ANEInterface) ANE0: mapFwCTRRRegion: AllocateHeapMemorySurface: physical start: 0x6ec000, heap size: 0x14000
+2026-09-24 20:52:00.360 Df kernel[0:3ae] (AppleH11ANEInterface) ANE0: mapFwCTRRRegion: fDartSharedMallocRegionSize: 524288000
+2026-09-24 20:52:00.360 Df kernel[0:3ae] (AppleH11ANEInterface) ANE0: mapFwCTRRRegion: fDartSharedMallocBaseAddress: 0x704000, fDartSharedMallocRegionSize: 524288000
+2026-09-24 20:52:00.360 Df kernel[0:3ae] (AppleH11ANEInterface) ANE0: start: CTRR firmware is loaded, size: 0x700000
+2026-09-24 20:52:00.361 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: start: Got fMcacheHandle
+2026-09-24 20:52:00.361 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: start: Shared event table mapped - 0x1fb4c000, size: 0x00004000
+2026-09-24 20:52:00.361 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: start: call DisableANEClocksAndPower
+2026-09-24 20:52:00.361 Df kernel[0:b1e] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 20:52:00.361 Df kernel[0:b5a] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 20:52:00.361 Df kernel[0:b5a] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 0
+2026-09-24 20:52:00.862 Df kernel[0:a85] (AppleH11ANEInterface) H11ANEIn::Peer matching failed, retrying with default AppleH10CamIn driver
+2026-09-24 20:52:01.172 Df kernel[0:b97] (AppleH13CameraInterface) AppleH13CamIn::ISP_Init - fCamEarlyFW boot. Skipping ANE IPC setup.
+2026-09-24 20:52:01.215 Df kernel[0:897] (AppleH13CameraInterface) AppleH13CamIn::start - Enable ANE IPC service endpoint on platform: 3
+2026-09-24 20:52:01.215 Df kernel[0:897] (AppleH13CameraInterface) AppleH13CamIn::start - ANE-ISP end point communication enable flag is set: 1, APFF enable: 1
+2026-09-24 20:52:01.216 Df kernel[0:897] (AppleH13CameraInterface) AppleH13CamIn::start - ISP-ANE health check timer is 2 secs
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) H11ANEIn(self)::Peer(AppleH13CamIn) matching failed
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: ISP, client: <private> pid: 0
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: Created ANE<->ISP endpoint service between H11ANEIn and AppleH13CamIn
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: About to register service
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) ANE0: start: Registered service
+2026-09-24 20:52:01.363 Df kernel[0:a85] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) ANE0: static IOReturn ANEHWDevice::ANEPowerChangeHandler(void *, void *, UInt32, IOService *, void *, vm_size_t) messageType=0xe0000340 changeFlags=0x0 capabilities=(0x0 -> 0xf)
+2026-09-24 20:52:01.363 Df kernel[0:897] (AppleH11ANEInterface) ANE0: static IOReturn ANEHWDevice::ANEPowerChangeHandler(void *, void *, UInt32, IOService *, void *, vm_size_t) Ignoring unsuppported notification
+2026-09-24 20:52:05.362 Df kernel[0:22a] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut: AppleANEDrv::DriverInitiatedSleepTimerTimeOut
+2026-09-24 20:52:11.915 Df kernel[0:8e9] (AppleH13CameraInterface) AppleH13CamIn::power_on_hardware - ISP-ANE networks, no DART remapping for ISP side during poweron
+2026-09-24 20:52:11.927 Df kernel[0:8e9] (AppleH11ANEInterface) H11ANEIn::Found peer service(<private>), register self for peer power state change
+2026-09-24 20:52:11.927 Df kernel[0:8e9] (AppleH11ANEInterface) H11ANEIn::Peer current power state: 0
+2026-09-24 20:52:11.927 Df kernel[0:8e9] (AppleH13CameraInterface) AppleH13CamIn::ISP_StartFirmware - IPC PowerOn ANE
+2026-09-24 20:52:11.927 Df kernel[0:8e9] (AppleH11ANEInterface) : processIPCServiceMsg_gated: ANE_PowerOnByKernelClient_gated is called by ISP
+2026-09-24 20:52:11.927 Df kernel[0:fb1] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:52:11.928 Df kernel[0:fb1] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: ISP
+2026-09-24 20:52:11.928 Df kernel[0:fb1] (AppleH11ANEInterface) ANE0: setClientContextPowerState: clientContext->isPowered: SEP(0) ISP(1) PersistentClient(0)
+2026-09-24 20:52:11.928 Df kernel[0:fb1] (AppleH11ANEInterface) ANE0: setClientContextPowerState: Realtime client ISP taking power assertion on ANE, Disabling sleep timers fDriverInitiatedSleepAssertions=1
+2026-09-24 20:52:11.928 Df kernel[0:fb1] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powering on ANE. blocking: 0
+2026-09-24 20:52:11.930 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 20:52:11.930 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 1
+2026-09-24 20:52:11.931 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: StartPerformanceCounters: Perf Counters turned on: time:591462009 DPE Counter Value:0
+2026-09-24 20:52:11.931 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: power_on_hardware: EnableANEClocksAndPower result = 0x0
+2026-09-24 20:52:11.931 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: :
+2026-09-24 20:52:11.931 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_CleanupAllocationsPendingRelease_gated: Skip cleanup - nothing in the pending queue
+2026-09-24 20:52:11.940 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: FW App image...
+2026-09-24 20:52:11.941 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: cmd_buffer_base: 0x1fb08000, size: 262144
+2026-09-24 20:52:11.955 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: CSNE_CMD_SET_SNE_PMU_BASE2 command to firmware, res=0x00000000
+2026-09-24 20:52:11.956 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fNumANEs: 1 fANEMaxCacheRequestSharedEvents: 0
+2026-09-24 20:52:11.956 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxCacheRequests: 16, fANEMaxCacheRequestsLowerLimit: 12
+2026-09-24 20:52:11.956 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxGlobalWaitEvent: 32
+2026-09-24 20:52:11.956 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fFWSupportsRTGraph: 0
+2026-09-24 20:52:11.956 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fProcedureCallFWOptimization 0x3
+2026-09-24 20:52:11.956 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: Registering with PerfControl with 0 tokens
+2026-09-24 20:52:11.957 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: Statistics: ColdStarts: 1, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 0 ANEInitFailures: 0
+2026-09-24 20:52:11.957 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: Work Stats:  WorkSubmit: 0 WorkSubmitFailed: 0 WorkBegin: 0 WorkEnd: 0 PendingRequests: 0
+2026-09-24 20:52:11.957 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: EnableMemoryUnwireTimer: ERROR: Cannot enable Memory Unwire Timer
+2026-09-24 20:52:12.931 Df kernel[0:8e9] (AppleH13CameraInterface) AppleH13CamIn::ISP_Init - ANE powered up successfully - waited = 0 mS retries=0
+2026-09-24 20:52:12.931 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_SetPeerData_gated: tx buf = 0x10153da8000, tx size = 0x00004000, tx reg = 0x38545c000, tx value = 0x00000040, rx buf = 0x10153dac000, rx size = 0x00004000
+2026-09-24 20:52:12.931 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_GetPeerData_gated: Send interrupt info to peer. End point:0, Reg: 0x285460000, Mask: 0x1
+2026-09-24 20:52:12.931 Df kernel[0:8e9] (AppleH13CameraInterface) IOReturn IspAneIPCEndPoints::peerEPCtrlMsg(IPC_EP_CMD_TYPE) - sending ISP-ANE networks surfaceID: 0x4 and update flag: 1
+2026-09-24 20:52:12.931 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 1 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:52:12.931 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: ISP
+2026-09-24 20:52:12.931 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 0
+2026-09-24 20:52:12.957 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: powerStateDidChangeTo_gated: ISP will power up, self state: 4
+2026-09-24 20:52:13.333 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: powerStateWillChangeTo_gated: IPC peer ISP will power down
+2026-09-24 20:52:13.380 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: powerStateDidChangeTo_gated: Peer down, disable IPC EP
+2026-09-24 20:52:13.381 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 1
+2026-09-24 20:52:13.381 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: ISP
+2026-09-24 20:52:13.381 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: setClientContextPowerState: clientContext->isPowered: SEP(0) ISP(0) PersistentClient(0)
+2026-09-24 20:52:13.381 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: setClientContextPowerState: Realtime client ISP releasing power assertion on ANE, Restarting sleep timers fDriverInitiatedSleepAssertions = 1
+2026-09-24 20:52:13.381 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Send changePowerStateToPriv -> 0
+2026-09-24 20:52:13.382 Df kernel[0:ccb] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 20:52:13.382 Df kernel[0:ccb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 0
+2026-09-24 20:52:13.382 Df kernel[0:ccb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: No other ANE clients present, continue powering off
+2026-09-24 20:52:13.382 Df kernel[0:ccb] (AppleH11ANEInterface) ANE0: ANE_deInit: Starting deinit
+2026-09-24 20:52:13.382 Df kernel[0:ccb] (AppleH11ANEInterface) ANE0: operator(): Work around for PushTelemetry
+2026-09-24 20:52:13.382 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 20:52:13.383 Df kernel[0:beb] (AppleH11ANEInterface) ANE0: ANE_deInit: CSNE_CMD_POWER_DOWN command completed: res=0x00000000
+2026-09-24 20:52:13.601 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: ANECPU not in WFI after CSNE_CMD_SUSPEND/CISP_CMD_POWER_DOWN. retries=20. ASCWRAP_IDLE_STATUS = 0x28
+2026-09-24 20:52:13.601 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup started
+2026-09-24 20:52:13.601 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup finished
+2026-09-24 20:52:13.601 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Statistics: ColdStarts: 1, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 1 ANEInitFailures: 0 PartialShutdownsCompleted: 0
+2026-09-24 20:52:13.601 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Work Stats:  WorkSubmitted: 0 WorkSubmitFailed 0 WorkBegin: 0 WorkEnded: 0 PendingRequests: 0
+2026-09-24 20:52:13.601 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: StopPerformanceCounters: Perf Counters turned off: time:631552004 DPE Counter Value:0
+2026-09-24 20:52:13.602 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 20:52:13.602 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_off_hardware: Powering off... done
+2026-09-24 20:52:18.603 Df kernel[0:823] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut: AppleANEDrv::DriverInitiatedSleepTimerTimeOut
+2026-09-24 20:52:21.857 Df kernel[0:8e9] (AppleH13CameraInterface) AppleH13CamIn::power_on_hardware - ISP-ANE networks, no DART remapping for ISP side during poweron
+2026-09-24 20:52:21.868 Df kernel[0:8e9] (AppleH13CameraInterface) AppleH13CamIn::ISP_StartFirmware - IPC PowerOn ANE
+2026-09-24 20:52:21.868 Df kernel[0:8e9] (AppleH11ANEInterface) : processIPCServiceMsg_gated: ANE_PowerOnByKernelClient_gated is called by ISP
+2026-09-24 20:52:21.868 Df kernel[0:13ca] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:52:21.868 Df kernel[0:13ca] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: ISP
+2026-09-24 20:52:21.868 Df kernel[0:13ca] (AppleH11ANEInterface) ANE0: setClientContextPowerState: clientContext->isPowered: SEP(0) ISP(1) PersistentClient(0)
+2026-09-24 20:52:21.868 Df kernel[0:13ca] (AppleH11ANEInterface) ANE0: setClientContextPowerState: Realtime client ISP taking power assertion on ANE, Disabling sleep timers fDriverInitiatedSleepAssertions=1
+2026-09-24 20:52:21.868 Df kernel[0:13ca] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powering on ANE. blocking: 0
+2026-09-24 20:52:21.871 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 20:52:21.871 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 1
+2026-09-24 20:52:21.871 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: StartPerformanceCounters: Perf Counters turned on: time:831607764 DPE Counter Value:5667500200
+2026-09-24 20:52:21.871 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: power_on_hardware: EnableANEClocksAndPower result = 0x0
+2026-09-24 20:52:21.871 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: :
+2026-09-24 20:52:21.871 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_CleanupAllocationsPendingRelease_gated: Skip cleanup - nothing in the pending queue
+2026-09-24 20:52:21.880 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: FW App image...
+2026-09-24 20:52:21.881 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: cmd_buffer_base: 0x1fb08000, size: 262144
+2026-09-24 20:52:21.895 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: CSNE_CMD_SET_SNE_PMU_BASE2 command to firmware, res=0x00000000
+2026-09-24 20:52:21.895 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fNumANEs: 1 fANEMaxCacheRequestSharedEvents: 2
+2026-09-24 20:52:21.895 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxCacheRequests: 16, fANEMaxCacheRequestsLowerLimit: 12
+2026-09-24 20:52:21.895 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxGlobalWaitEvent: 32
+2026-09-24 20:52:21.895 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fFWSupportsRTGraph: 0
+2026-09-24 20:52:21.895 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fProcedureCallFWOptimization 0x3
+2026-09-24 20:52:21.896 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: Statistics: ColdStarts: 2, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 1 ANEInitFailures: 0
+2026-09-24 20:52:21.896 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: Work Stats:  WorkSubmit: 0 WorkSubmitFailed: 0 WorkBegin: 0 WorkEnd: 0 PendingRequests: 0
+2026-09-24 20:52:21.896 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: EnableMemoryUnwireTimer: ERROR: Cannot enable Memory Unwire Timer
+2026-09-24 20:52:22.865 Df kernel[0:8e9] (AppleH13CameraInterface) AppleH13CamIn::ISP_Init - ANE powered up successfully - waited = 0 mS retries=0
+2026-09-24 20:52:22.865 Df kernel[0:8e9] (AppleH13CameraInterface) IOReturn IspAneIPCEndPoints::peerEPCtrlMsg(IPC_EP_CMD_TYPE) - sending ISP-ANE networks surfaceID: 0x4 and update flag: 0
+2026-09-24 20:52:22.865 E  kernel[0:8e9] (AppleH11ANEInterface) [ERROR] ANE0: ANE_processIspAneNetworkSurfaceRemap: No bForceUpdate update for FD Networks
+2026-09-24 20:52:22.865 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 1 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:52:22.865 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: ISP
+2026-09-24 20:52:22.865 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 0
+2026-09-24 20:52:22.892 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: powerStateDidChangeTo_gated: ISP will power up, self state: 4
+2026-09-24 20:52:26.900 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: powerStateWillChangeTo_gated: IPC peer ISP will power down
+2026-09-24 20:52:26.949 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: powerStateDidChangeTo_gated: Peer down, disable IPC EP
+2026-09-24 20:52:26.951 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 1
+2026-09-24 20:52:26.951 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: ISP
+2026-09-24 20:52:26.951 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setClientContextPowerState: clientContext->isPowered: SEP(0) ISP(0) PersistentClient(0)
+2026-09-24 20:52:26.951 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setClientContextPowerState: Realtime client ISP releasing power assertion on ANE, Restarting sleep timers fDriverInitiatedSleepAssertions = 1
+2026-09-24 20:52:26.951 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Send changePowerStateToPriv -> 0
+2026-09-24 20:52:26.951 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 20:52:26.951 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 0
+2026-09-24 20:52:26.951 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: No other ANE clients present, continue powering off
+2026-09-24 20:52:26.951 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: Starting deinit
+2026-09-24 20:52:26.951 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: operator(): Work around for PushTelemetry
+2026-09-24 20:52:26.951 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 20:52:26.953 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: CSNE_CMD_POWER_DOWN command completed: res=0x00000000
+2026-09-24 20:52:27.172 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: ANECPU not in WFI after CSNE_CMD_SUSPEND/CISP_CMD_POWER_DOWN. retries=20. ASCWRAP_IDLE_STATUS = 0x28
+2026-09-24 20:52:27.172 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup started
+2026-09-24 20:52:27.173 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup finished
+2026-09-24 20:52:27.173 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: Statistics: ColdStarts: 2, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 2 ANEInitFailures: 0 PartialShutdownsCompleted: 0
+2026-09-24 20:52:27.173 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: Work Stats:  WorkSubmitted: 0 WorkSubmitFailed 0 WorkBegin: 0 WorkEnded: 0 PendingRequests: 0
+2026-09-24 20:52:27.173 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: StopPerformanceCounters: Perf Counters turned off: time:958857788 DPE Counter Value:5667500200
+2026-09-24 20:52:27.174 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 20:52:27.174 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: power_off_hardware: Powering off... done
+2026-09-24 20:52:32.175 Df kernel[0:823] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut: AppleANEDrv::DriverInitiatedSleepTimerTimeOut
+2026-09-24 20:59:12.060 I  aned[639:1b9d] (libsandbox.1.dylib) sandbox compile: using compatibility definitions for version 1 (latest version is 3)
+2026-09-24 20:59:12.073 Df aned[639:1b9d] (libMobileGestalt.dylib) No persisted cache on this platform.
+2026-09-24 20:59:12.076 A  aned[639:1b9d] (libsystem_info.dylib) Retrieve User by ID
+2026-09-24 20:59:12.077 Df aned[639:1b9d] [com.apple.xpc:connection] [0x1034e40a0] activating connection: mach=true listener=false peer=false name=com.apple.cfprefsd.daemon
+2026-09-24 20:59:12.079 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0x1034e36f0> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: Yes): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.079 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.079 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0xafcc64000> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesAnyUser, ByHost: Yes, Container: (null), Contents Need Refresh: No): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.079 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.079 A  aned[639:1b9d] (CoreFoundation) Loading Preferences From System CFPrefsD
+2026-09-24 20:59:12.079 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0x1034e36f0> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: Yes): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.079 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.081 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0x1034e36f0> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: Yes): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.081 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.081 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0x1034e36f0> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: Yes): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.081 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.081 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0x1034e36f0> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: Yes): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.081 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.081 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0x1034e36f0> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: Yes): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.081 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.081 F  aned[639:1b9d] [com.apple.defaults:User Defaults] Couldn't read values in CFPrefsPlistSource<0x1034e36f0> (Domain: kCFPreferencesAnyApplication, User: kCFPreferencesCurrentUser, ByHost: No, Container: (null), Contents Need Refresh: Yes): accessing these preferences requires user-preference-read or file-read-data sandbox access
+2026-09-24 20:59:12.081 A  aned[639:1b9d] (libsystem_trace.dylib) Activity for state dumps
+2026-09-24 20:59:12.081 I  aned[639:1b9d] [com.apple.ane:aned] -[_ANEServer initWithDataVaultDirectory:dataVaultStorageClass:buildVersion:tempDirectory:cloneDirectory:]: dataVaultDirectory=/Library/Caches/com.apple.aned
+2026-09-24 20:59:12.082 I  aned[639:1b9d] [com.apple.ane:aned] -[_ANEServer initWithDataVaultDirectory:dataVaultStorageClass:buildVersion:tempDirectory:cloneDirectory:]: buildSpecificModelStorageDirectory=<private>
+2026-09-24 20:59:12.082 I  aned[639:1b9d] [com.apple.ane:aned] -[_ANEServer initWithDataVaultDirectory:dataVaultStorageClass:buildVersion:tempDirectory:cloneDirectory:]: modelAssetsCacheDirectory=<private>
+2026-09-24 20:59:12.082 I  aned[639:1b9d] [com.apple.ane:aned] -[_ANEServer initWithDataVaultDirectory:dataVaultStorageClass:buildVersion:tempDirectory:cloneDirectory:]: inMemoryModelCacheDirectory=<private>
+2026-09-24 20:59:12.082 I  aned[639:1b9d] [com.apple.ane:aned] -[_ANEServer initWithDataVaultDirectory:dataVaultStorageClass:buildVersion:tempDirectory:cloneDirectory:]: tempDirectory=<private>
+2026-09-24 20:59:12.082 I  aned[639:1b9d] [com.apple.ane:aned] -[_ANEServer initWithDataVaultDirectory:dataVaultStorageClass:buildVersion:tempDirectory:cloneDirectory:]: cloneDirectory=<private>
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc:connection] [0x1034e4ca0] activating connection: mach=true listener=true peer=false name=com.apple.distnoted.matching
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc:connection] [0x1034e4de0] activating connection: mach=true listener=true peer=false name=com.apple.iokit.matching
+2026-09-24 20:59:12.083 I  aned[639:1b9d] [com.apple.ane:aned] Registered CTS task <private>
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc.activity:Client] xpc_activity_register: com.apple.aned.temporaryFilesMaintenance, criteria: check-in
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc:connection] [0x1034e4f20] activating connection: mach=true listener=true peer=false name=com.apple.xpc.activity
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc.activity:Client] _xpc_activity_register: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 0
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), check-in
+2026-09-24 20:59:12.083 I  aned[639:1b9d] [com.apple.ane:aned] Registered CTS task <private>
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc.activity:Client] xpc_activity_register: com.apple.aned.modelCacheGC, criteria: check-in
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc.activity:Client] _xpc_activity_register: com.apple.aned.modelCacheGC (0xafcc60320), 0
+2026-09-24 20:59:12.083 Df aned[639:1b9d] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.modelCacheGC (0xafcc60320), check-in
+2026-09-24 20:59:12.083 I  aned[639:1b9d] [com.apple.ane:aned] Registered CTS task <private>
+2026-09-24 20:59:12.084 Df aned[639:1b9d] [com.apple.xpc.activity:Client] xpc_activity_register: com.apple.aned.danglingModelsGC, criteria: check-in
+2026-09-24 20:59:12.084 Df aned[639:1b9d] [com.apple.xpc.activity:Client] _xpc_activity_register: com.apple.aned.danglingModelsGC (0xafcc603c0), 0
+2026-09-24 20:59:12.084 Df aned[639:1b9d] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.danglingModelsGC (0xafcc603c0), check-in
+2026-09-24 20:59:12.084 Df aned[639:1b9d] [com.apple.xpc:connection] [0xafd098000] activating connection: mach=true listener=true peer=false name=com.apple.appleneuralengine
+2026-09-24 20:59:12.084 Df aned[639:1b9d] [com.apple.xpc:connection] [0xafd098140] activating connection: mach=true listener=true peer=false name=com.apple.appleneuralengine.private
+2026-09-24 20:59:12.084 Df aned[639:1b9f] [com.apple.xpc:connection] [0x1034e53a0] activating connection: mach=false listener=false peer=true name=com.apple.appleneuralengine.peer[638].0x1034e53a0
+2026-09-24 20:59:12.085 I  aned[639:1b9f] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 20:59:12.085 I  aned[639:1b9f] [com.apple.ane:aned] START: <private>: <private> : <private>
+2026-09-24 20:59:12.085 I  aned[639:1b9f] [com.apple.ane:aned] Using primary (regular) ANECompilerService
+2026-09-24 20:59:12.085 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafd098280] activating connection: mach=false listener=false peer=false name=com.apple.ANECompilerService
+2026-09-24 20:59:12.086 Df aned[639:1ba1] (ANEServices) Found matching service: ANEDriver
+2026-09-24 20:59:12.086 Df aned[639:1ba1] (ANEServices) Found matching service: H11ANEIn
+2026-09-24 20:59:12.086 Df aned[639:1b9d] (ANEServices) Total num of devices 2
+2026-09-24 20:59:12.086 Df aned[639:1b9d] (ANEServices) (Single-ANE System with ANEDriver) Selected ANEDriver device
+2026-09-24 20:59:12.086 Df aned[639:1b9d] (ANEServices) ANEServicesDevice::ANEServicesDeviceOpen, usage type: 2
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) : newUserClient: ANEDriver::newUserClient type=2
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) static ANEDriverMessageQueue *ANEDriverMessageQueue::withANEDriverInterface(ANEDriver *)
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) static ANEDriverMessageQueue *ANEDriverMessageQueue::withANEDriverInterface(ANEDriver *) line 37
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) IOReturn ANEDriverMessageQueue::startMsgQ(ANEDriver *)
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) static ANEDriverMessageQueue *ANEDriverMessageQueue::withANEDriverInterface(ANEDriver *) Done
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) : operator(): found ANE nub 0
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: aned, client: <private> pid: 639
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: ANE_UserClientOpen_gated res: 0x0
+2026-09-24 20:59:12.086 Df aned[639:1b9d] (ANEServices) ANEDriver Device Open succeeded with usage type: 2
+2026-09-24 20:59:12.086 Df aned[639:1b9d] (ANEServices) Selected ANEDriver device
+2026-09-24 20:59:12.086 I  aned[639:1b9d] [com.apple.ane:aned] Maximum model memory size: 2147483648
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 0
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname aned isPowered 0
+2026-09-24 20:59:12.086 E  kernel[0:1b9d] (AppleH11ANEInterface) [ERROR] ANE0: ANE_PowerOff_gated: Invalid client requesting power off
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated: :
+2026-09-24 20:59:12.086 Df kernel[0:1b9d] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated_block_invoke: Removing client: <private>, clientName: aned
+2026-09-24 20:59:12.087 I  aned[639:1b9d] [com.apple.ane:aned] Ready to accept restricted and unrestricted XPC connections
+2026-09-24 20:59:12.087 I  aned[639:1b9f] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 20:59:12.087 I  aned[639:1b9f] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 20:59:12.087 I  aned[639:1b9f] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 20:59:12.087 I  aned[639:1b9f] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 20:59:12.087 I  aned[639:1b9f] [com.apple.ane:aned] cacheURLIdentifier:<private>
+2026-09-24 20:59:12.088 I  aned[639:1b9f] [com.apple.ane:aned] Calling ANECompilerService: modelURL=<private> : sourceURL=<private> : csIdentity=<private> : key=<private> : outputURL=<private> : options=<private>
+2026-09-24 20:59:12.091 Df aned[639:1ba0] [com.apple.xpc.activity:Client] xpc_activity_set_criteria, lower half: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), check-in
+2026-09-24 20:59:12.093 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), check-in
+2026-09-24 20:59:12.093 Df aned[639:1ba3] [com.apple.xpc.activity:Client] xpc_activity_set_criteria, lower half: com.apple.aned.danglingModelsGC (0xafcc603c0), check-in
+2026-09-24 20:59:12.093 Df aned[639:1ba0] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), setting state now to 0
+2026-09-24 20:59:12.093 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 0
+2026-09-24 20:59:12.094 Df aned[639:1ba0] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), current state 0, pending state 0
+2026-09-24 20:59:12.094 I  aned[639:1ba0] [com.apple.ane:aned] Checking-in activity com.apple.aned.temporaryFilesMaintenance
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: com.apple.aned.danglingModelsGC (0xafcc603c0), check-in
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.danglingModelsGC (0xafcc603c0), setting state now to 0
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.danglingModelsGC (0xafcc603c0), 0
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__: com.apple.aned.danglingModelsGC (0xafcc603c0), current state 0, pending state 0
+2026-09-24 20:59:12.094 I  aned[639:1ba3] [com.apple.ane:aned] Checking-in activity com.apple.aned.danglingModelsGC
+2026-09-24 20:59:12.094 Df aned[639:1ba0] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), dict
+2026-09-24 20:59:12.094 Df aned[639:1ba0] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__ returned from handler: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), current state 0, pending state 0
+2026-09-24 20:59:12.094 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 1
+2026-09-24 20:59:12.094 Df aned[639:1ba0] [com.apple.xpc.activity:Client] xpc_activity_set_criteria, lower half: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), dict
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.danglingModelsGC (0xafcc603c0), dict
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__ returned from handler: com.apple.aned.danglingModelsGC (0xafcc603c0), current state 0, pending state 0
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.danglingModelsGC (0xafcc603c0), 1
+2026-09-24 20:59:12.094 Df aned[639:1ba3] [com.apple.xpc.activity:Client] xpc_activity_set_criteria, lower half: com.apple.aned.danglingModelsGC (0xafcc603c0), dict
+2026-09-24 20:59:12.094 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), dict
+2026-09-24 20:59:12.094 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: xpc_set_event com.apple.aned.temporaryFilesMaintenance, 2
+2026-09-24 20:59:12.098 Df aned[639:1ba2] [com.apple.xpc.activity:Client] xpc_activity_set_criteria, lower half: com.apple.aned.modelCacheGC (0xafcc60320), check-in
+2026-09-24 20:59:12.098 I  aned[639:1ba0] (libxpc.dylib) Subscribed to event com.apple.aned.temporaryFilesMaintenance using token 811
+2026-09-24 20:59:12.098 Df aned[639:1ba0] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), setting state now to 1
+2026-09-24 20:59:12.098 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 1
+2026-09-24 20:59:12.099 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: com.apple.aned.danglingModelsGC (0xafcc603c0), dict
+2026-09-24 20:59:12.099 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: xpc_set_event com.apple.aned.danglingModelsGC, 2
+2026-09-24 20:59:12.103 I  aned[639:1ba3] (libxpc.dylib) Subscribed to event com.apple.aned.danglingModelsGC using token 812
+2026-09-24 20:59:12.103 Df aned[639:1ba3] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.danglingModelsGC (0xafcc603c0), setting state now to 1
+2026-09-24 20:59:12.104 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.danglingModelsGC (0xafcc603c0), 1
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: com.apple.aned.modelCacheGC (0xafcc60320), check-in
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.modelCacheGC (0xafcc60320), setting state now to 0
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.modelCacheGC (0xafcc60320), 0
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__: com.apple.aned.modelCacheGC (0xafcc60320), current state 0, pending state 0
+2026-09-24 20:59:12.104 I  aned[639:1ba2] [com.apple.ane:aned] Checking-in activity com.apple.aned.modelCacheGC
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.modelCacheGC (0xafcc60320), dict
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__ returned from handler: com.apple.aned.modelCacheGC (0xafcc60320), current state 0, pending state 0
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.modelCacheGC (0xafcc60320), 1
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] xpc_activity_set_criteria, lower half: com.apple.aned.modelCacheGC (0xafcc60320), dict
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: com.apple.aned.modelCacheGC (0xafcc60320), dict
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_set_criteria: xpc_set_event com.apple.aned.modelCacheGC, 2
+2026-09-24 20:59:12.104 I  aned[639:1ba2] (libxpc.dylib) Subscribed to event com.apple.aned.modelCacheGC using token 813
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] xpc_activity_set_criteria: com.apple.aned.modelCacheGC (0xafcc60320), setting state now to 1
+2026-09-24 20:59:12.104 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.modelCacheGC (0xafcc60320), 1
+2026-09-24 20:59:12.128 Db kernel[0:1ba7] (Sandbox) Sandbox apply: ANECompilerService[640] <bytes>
+2026-09-24 20:59:12.208 Df aned[639:1ba2] [com.apple.xpc:connection] [0x1034ebd90] activating connection: mach=false listener=false peer=true name=com.apple.xpc.activity.peer[122].0x1034ebd90
+2026-09-24 20:59:12.208 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_dispatch: beginning dispatch, activity name com.apple.aned.temporaryFilesMaintenance, seqno 2
+2026-09-24 20:59:12.208 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_dispatch: com.apple.aned.temporaryFilesMaintenance (0xafcc60280): found an activity with matching seqno 2
+2026-09-24 20:59:12.209 Df aned[639:1ba2] [com.apple.xpc:connection] [0xafd0983c0] activating connection: mach=true listener=false peer=false name=com.apple.distributed_notifications@1v3
+2026-09-24 20:59:12.214 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_begin_running: com.apple.aned.temporaryFilesMaintenance (0xafcc60280) seqno: 2.
+2026-09-24 20:59:12.214 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_dispatch: lower half, activity name com.apple.aned.temporaryFilesMaintenance (0xafcc60280), seqno from top half was 2
+2026-09-24 20:59:12.215 Df aned[639:1ba0] [com.apple.xpc:connection] [0xafd098500] activating connection: mach=false listener=false peer=false name=(anonymous)
+2026-09-24 20:59:12.215 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_dispatch: created connection 0xafd098500 for activity name com.apple.aned.temporaryFilesMaintenance (0xafcc60280), seqno 2
+2026-09-24 20:59:12.215 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 2
+2026-09-24 20:59:12.215 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_state: send new state to CTS: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 2
+2026-09-24 20:59:12.219 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_state_from_cts: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), set activity state to 2
+2026-09-24 20:59:12.219 Df aned[639:1ba3] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), current state 2, pending state 0
+2026-09-24 20:59:12.219 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 4
+2026-09-24 20:59:12.219 I  aned[639:1ba3] [com.apple.ane:aned] Running activity com.apple.aned.temporaryFilesMaintenance, extended=1
+2026-09-24 20:59:12.220 Df aned[639:1ba3] [com.apple.xpc.activity:Client] __XPC_ACTIVITY_CALLING_HANDLER__ returned from handler: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), current state 2, pending state 4
+2026-09-24 20:59:12.220 Df aned[639:1ba3] [com.apple.xpc.activity:Client] _xpc_activity_set_state: send new state to CTS: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 4
+2026-09-24 20:59:12.223 I  aned[639:1ba0] [com.apple.CarbonCore:coreservicesdaemon] SCSession():SCSession( id=100, this=0x0x1034eea50 option=65538) created, forUID=0 mach_port_t=0x4403.
+2026-09-24 20:59:12.223 I  aned[639:1ba0] [com.apple.CarbonCore:coreservicesdaemon] SCSession():SCSession( id=101, this=0x0x1034eeb90 option=65538) created, forUID=0 mach_port_t=0x4323.
+2026-09-24 20:59:12.224 I  aned[639:1ba0] [com.apple.CarbonCore:coreservicesdaemon] connectToCoreServicesD():Instantiating server (coreservicesd based) SCSession, port=0x4403 serverOptions=0x10002.
+2026-09-24 20:59:12.236 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_state: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 5
+2026-09-24 20:59:12.237 Df aned[639:1ba2] [com.apple.xpc.activity:Client] _xpc_activity_set_state: send new state to CTS: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), 5
+2026-09-24 20:59:12.239 I  aned[639:1ba0] [com.apple.ane:aned] Done running activity com.apple.aned.temporaryFilesMaintenance, extended=1
+2026-09-24 20:59:12.241 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_set_state_from_cts: com.apple.aned.temporaryFilesMaintenance (0xafcc60280), set activity state to 1
+2026-09-24 20:59:12.241 Df aned[639:1ba0] [com.apple.xpc.activity:Client] _xpc_activity_end_running: com.apple.aned.temporaryFilesMaintenance (0xafcc60280) seqno: 2.
+2026-09-24 20:59:17.087 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut: AppleANEDrv::DriverInitiatedSleepTimerTimeOut
+2026-09-24 20:59:17.605 Df kernel[0:1bab] process ANECompilerServi [640] crossed memory high watermark (120 MB); EXC_RESOURCE
+2026-09-24 20:59:17.605 Df kernel[0:1bab] ANECompilerService[640] Corpse allowed 1 of 5
+2026-09-24 20:59:17.619 Df kernel[0:1bab] Full corpse enqueued for ANECompilerService
+2026-09-24 20:59:17.619 Df kernel[0:1bab] [com.apple.xnu:memorystatus] memorystatus: ANECompilerService [640] exceeded mem limit: ActiveSoft 120 MB (non-fatal)
+2026-09-24 20:59:47.928 I  kernel[0:1bab] (Sandbox) sandboxd rejected approval request from ANECompilerService for kTCCServiceSystemPolicyAllFiles (/private/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/com.apple.aned/TemporaryItems): denied
+2026-09-24 20:59:47.928 E  kernel[0:1bab] [com.apple.sandbox.reporting:violation] System Policy: ANECompilerService(640) deny(1) file-read-data /private/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/com.apple.aned/TemporaryItems
+2026-09-24 20:59:47.939 I  aned[639:1b9f] [com.apple.ane:aned] Compilation success: attr=<private>
+2026-09-24 20:59:47.939 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafd098280] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:47.939 I  aned[639:1b9f] [com.apple.ane:aned] END: <private>: <private> : <private> : <private>
+2026-09-24 20:59:47.939 I  aned[639:1b9f] [com.apple.ane:aned] END: <private>: <private>
+2026-09-24 20:59:47.998 I  aned[639:1b9f] [com.apple.ane:aned] No model pathName? <private>
+2026-09-24 20:59:47.998 I  aned[639:1b9f] [com.apple.ane:aned] <private>: SecTaskCopyTeamIdentifier() returned teamIdentity=""
+2026-09-24 20:59:47.998 I  aned[639:1b9f] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 20:59:47.998 I  aned[639:1b9f] [com.apple.ane:aned] START: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : existsInCache=0 : coreAnalyticsClientType=ThirdPartyAppUsingANE StatsMask=0
+2026-09-24 20:59:48.000 I  aned[639:1b9f] [com.apple.ane:aned] <private>: ANEF Perf Stats mask: (null)
+2026-09-24 20:59:48.001 Df aned[639:1c32] (ANEServices) Found matching service: ANEDriver
+2026-09-24 20:59:48.001 Df aned[639:1c32] (ANEServices) Found matching service: H11ANEIn
+2026-09-24 20:59:48.001 Df aned[639:1b9f] (ANEServices) Total num of devices 2
+2026-09-24 20:59:48.001 Df aned[639:1b9f] (ANEServices) (Single-ANE System with ANEDriver) Selected ANEDriver device
+2026-09-24 20:59:48.001 Df aned[639:1b9f] (ANEServices) ANEServicesDevice::ANEServicesDeviceOpen, usage type: 2
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) : newUserClient: ANEDriver::newUserClient type=2
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: aned, client: <private> pid: 639
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: ANE_UserClientOpen_gated res: 0x0
+2026-09-24 20:59:48.001 Df aned[639:1b9f] (ANEServices) ANEDriver Device Open succeeded with usage type: 2
+2026-09-24 20:59:48.001 Df aned[639:1b9f] (ANEServices) Selected ANEDriver device
+2026-09-24 20:59:48.001 I  aned[639:1b9f] [com.apple.ane:aned] <private>: START : cachedModel.bytes=0x119800000 : cachedModel.length=460537856 : qos=21 : isPreCompiled=0 : enablePowerSaving=1 : controller.device=0xafd003ba0 : programInstance=0x0 : refcount=0 : intermediateBufferHandle=0 : statsMask=0 : memoryPoolId=0 : enableLateLatch=0 : modelIdentityStr=<private> : cacheUrlIdentifier=<private> : aotCacheUrlIdentifier=(null) optOutOfModelMemoryUnwiring=0
+2026-09-24 20:59:48.001 I  aned[639:1b9f] [com.apple.ane:aned] <private> 280 Stats mask value: 0
+2026-09-24 20:59:48.001 I  kernel[0:1b9f] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x2afc30e01 not found in existing mapping
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneVnodeTrustVerification: on-device compiled model DataVault verification succeeded
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneMachoReadHeaderLoadCommands: macho headerAndLoadCommand: 0x<private>, size: 67416
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __TEXT __text filesize: 10221940 fileoffset: 2473984
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __TEXT __const filesize: 38343872 fileoffset: 12695936
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_0 __kern_0 filesize: 134172480 fileoffset: 51052544
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_1 __kern_1 filesize: 134213632 fileoffset: 185237504
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_2 __kern_2 filesize: 134151168 fileoffset: 319455232
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_3 __kern_3 filesize: 6922240 fileoffset: 453607424
+2026-09-24 20:59:48.001 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: AllocateMemoryForDirectIO: INFO: transfer ownership of buffer to process (name:encoder_bench pid:638) res=0x0
+2026-09-24 20:59:48.002 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramInitialSetup: Model verification passed - isPrecompiledModel: 0 isModelVerifiedBySignatureCheck: 0
+2026-09-24 20:59:48.003 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 20:59:48.004 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: isANEActive: fInitInProgress: 0, fIsPowered: 0, fDeInitInProgress: 0, fSleepInProgress: 0, fFirmwareTimeout: 0, fClientPowerDownInProgress: 0
+2026-09-24 20:59:48.004 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_HandlePowerStateChecksForClient: ANE power status: isPowered: 0, fDeInitInProgress: 0, fFirmwareTimeout: 0
+2026-09-24 20:59:48.004 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:59:48.004 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:59:48.004 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 20:59:48.004 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powering on ANE. blocking: 1
+2026-09-24 20:59:48.004 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Wait until ANE gets powered up for client <private> retries=1
+2026-09-24 20:59:48.004 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 20:59:48.004 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 1
+2026-09-24 20:59:48.004 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: StartPerformanceCounters: Perf Counters turned on: time:11538803269 DPE Counter Value:11345282900
+2026-09-24 20:59:48.004 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: power_on_hardware: EnableANEClocksAndPower result = 0x0
+2026-09-24 20:59:48.004 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: :
+2026-09-24 20:59:48.004 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_CleanupAllocationsPendingRelease_gated: Skip cleanup - nothing in the pending queue
+2026-09-24 20:59:48.013 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: FW App image...
+2026-09-24 20:59:48.015 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: cmd_buffer_base: 0x1fb08000, size: 262144
+2026-09-24 20:59:48.029 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: CSNE_CMD_SET_SNE_PMU_BASE2 command to firmware, res=0x00000000
+2026-09-24 20:59:48.029 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fNumANEs: 1 fANEMaxCacheRequestSharedEvents: 2
+2026-09-24 20:59:48.029 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxCacheRequests: 16, fANEMaxCacheRequestsLowerLimit: 12
+2026-09-24 20:59:48.029 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxGlobalWaitEvent: 32
+2026-09-24 20:59:48.029 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fFWSupportsRTGraph: 0
+2026-09-24 20:59:48.029 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: fProcedureCallFWOptimization 0x3
+2026-09-24 20:59:48.030 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: Statistics: ColdStarts: 3, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 2 ANEInitFailures: 0
+2026-09-24 20:59:48.030 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_Init: Work Stats:  WorkSubmit: 0 WorkSubmitFailed: 0 WorkBegin: 0 WorkEnd: 0 PendingRequests: 0
+2026-09-24 20:59:48.030 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: EnableMemoryUnwireTimer: ERROR: Cannot enable Memory Unwire Timer
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :line: 78
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) : Program with qoSConstraint kANEQoSConstraintPowerSensitiveLatencyInsensitive set
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEHWDevice: preProcess:,Program Identifier: ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+	--fno-fold-scale=true
+	--fdram-allocator=ffreuse
+	--fdram-tensor-priority=sizebyliverange
+	--fl2-allocator=ffreuse
+	--fl3-allocator=ffreuse
+	--fl2-cache-mode=resident
+	--fsignature=ident
+	--fdisable-bonded-networks=true
+	--enable-param-and-map-rtgraph-refactor=false
+	--memcache-size=4194304
+	--fspatial-split=disabled
+	--fenable-circular-buffer-in-spatial-split=-1
+	--fkernel-rewind=enabled
+	--max-td-latency=10000.000000
+	--ne-frequency=-1.000000
+	--pstate-dcs=-1
+	--pstate-soc=-1
+	--bss-limit=3221225472
+	--foptimize-ne-utilization=true
+	--disable-cache-prefetch-mask=1
+	--optimize-mutable-kernel-section=true
+	--enable-summary-performance-stats=false
+	--split-kernel-section=true
+	--max-kernel-section-size=134217728
+	--enable-context-switch-events=false
+	--fdisable-<…>
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEHWDevice: preProcess:316, programHandle: 0x2afc30e01, Model Identifier: length: 59, string:
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :ANEHWDevice::kernel is non-mutable kernel section
+2026-09-24 20:59:48.030 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEHWDevice: preProcess: , Neither AOT not JIT tag found in ZinComputeProgramGetMachoCompilationMode!
+2026-09-24 20:59:48.033 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 20:59:48.036 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProcessCreate_gated: createProcessStatus: 0, programHandle: 0x2afc30e01 programId: 0 processId: 0 isProcessRecreate: 0
+2026-09-24 20:59:48.037 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: DEBUG: ANEHWDevice: Program added to client (<private>) programs for ANED programId: 0 programHandle: 0x2afc30e01
+2026-09-24 20:59:48.037 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: releasing dartMapLock
+2026-09-24 20:59:48.037 I  kernel[0:1b9f] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x2afc30e01 not found in existing mapping
+2026-09-24 20:59:48.037 Df kernel[0:1b9f] (AppleH11ANEInterface) : addProgramToANEMapping_gated: add bitmaskMapping 0x1 for programHandle: 0x2afc30e01
+2026-09-24 20:59:48.037 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: Adding <private> to the programList for client, count: 0
+2026-09-24 20:59:48.037 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: ANE_ProgramCreate on ANEs, bitMask: 0x1, programHandle: 0x2afc30e01 client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 20:59:48.037 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneAllocateIntermediateBuffer: programHandle: 0x2afc30e01 sharedUnionHandle: 0x2afd011db intermediateUnionHandle: 0x8 intermediateResourceId: 0x9 bufferSize: 0x1c14000
+2026-09-24 20:59:48.037 Df kernel[0:1b9f] (AppleH11ANEInterface) : wire: ANEUnionResource: wire memory descriptor: <private> size: 0x1c14000
+2026-09-24 20:59:48.038 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramPrepare_gated: releasing dartMapLock
+2026-09-24 20:59:48.038 Df kernel[0:1b9f] (AppleH11ANEInterface) : operator(): ProgramPrepare to ANE0 result=0x0
+2026-09-24 20:59:48.038 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 20:59:48.038 I  aned[639:1b9f] [com.apple.ane:aned] <private>: programHandle=11538730497 : queueDepth=32 : numInputs=9 : numOutputs=6 : adjustedQueueDepth=127 : wiredMemory=489965952
+2026-09-24 20:59:48.038 I  aned[639:1b9f] [com.apple.ane:aned] <private>: END : ok=1 : controller.device=0xafd003ba0 : programHandle=11538730497 : intermediateBufferHandle=8 : queueDepth=127 : numInputs=9 : numOutputs=6 : refcount=1 : wiredMemory=489965952
+2026-09-24 20:59:48.038 I  aned[639:1b9f] [com.apple.ane:aned] [ANE Model Stats] : modelSize=460537856 : wiredMemory=489965952 : csIdentity=<private> : model=(null) : symbolMappings=<private>
+2026-09-24 20:59:48.038 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafd098280] activating connection: mach=true listener=false peer=false name=com.apple.analyticsd
+2026-09-24 20:59:48.038 I  aned[639:1b9f] [com.apple.CoreAnalytics:client] Daemon status changed from 0 to 1
+2026-09-24 20:59:48.038 I  aned[639:1b9f] [com.apple.ane:aned] END: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : programHandle=11538730497 : intermediateBufferHandle=8 :wiredMemory=489965952 : queueDepth=127
+2026-09-24 20:59:48.039 Df aned[639:1b9f] [com.apple.xpc:connection] [0x1034dc770] activating connection: mach=false listener=false peer=false name=com.apple.PerfPowerTelemetryClientRegistrationService
+2026-09-24 20:59:48.039 I  aned[639:1b9f] [com.apple.PerfPowerServices:ClientRegistration] Spinning up XPC service
+2026-09-24 20:59:48.039 Df aned[639:1b9f] [com.apple.xpc:connection] [0x1034dc770] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) : newUserClient: ANEDriver::newUserClient type=1
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: encoder_bench, client: <private> pid: 638
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: ANE_UserClientOpen_gated res: 0x0
+2026-09-24 20:59:48.039 Df aned[639:1b9f] [com.apple.xpc:connection] [0x1034dc8f0] activating connection: mach=false listener=false peer=false name=com.apple.PerfPowerTelemetryClientRegistrationService
+2026-09-24 20:59:48.039 I  aned[639:1ba0] [com.apple.PerfPowerServices:ClientRegistration] Client Permission check completed. Invalidating XPC Connection.
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: ANE_AddClientForProgram for ANE0 programHandle: 0x2afc30e01 client <private>, client name encoder_bench clientContext: <private> fProgramList: <private>
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:1 Wired-Memory : 487573888 B
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: encoder_bench
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_AddClientForProgram_gated: Adding client <private>:  encoder_bench to programHandle: 0x2afc30e01, Num clients for program: 1, programResource: <private>, referenceCount: 1
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) : operator(): ANE_AddClientForProgram : on sne:0 ret = 0x0
+2026-09-24 20:59:48.039 Df kernel[0:1b90] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: Retaining program for client <private>
+2026-09-24 20:59:48.039 I  aned[639:1b9f] [com.apple.PerfPowerServices:ClientRegistration] Spinning up XPC service
+2026-09-24 20:59:48.039 Df aned[639:1b9f] [com.apple.xpc:connection] [0x1034dc8f0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:48.039 I  aned[639:1c33] [com.apple.PerfPowerServices:ClientRegistration] Client Permission check completed. Invalidating XPC Connection.
+2026-09-24 20:59:48.039 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14180] activating connection: mach=false listener=false peer=false name=com.apple.PerfPowerTelemetryClientRegistrationService
+2026-09-24 20:59:48.039 I  aned[639:1b9f] [com.apple.PerfPowerServices:ClientRegistration] Spinning up XPC service
+2026-09-24 20:59:48.039 Df aned[639:1c33] [com.apple.CoreAnalytics:client] Received configuration update from daemon (initial)
+2026-09-24 20:59:48.039 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14180] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:48.039 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14000] activating connection: mach=false listener=false peer=false name=com.apple.PerfPowerTelemetryClientRegistrationService
+2026-09-24 20:59:48.039 I  aned[639:1c33] [com.apple.PerfPowerServices:ClientRegistration] Client Permission check completed. Invalidating XPC Connection.
+2026-09-24 20:59:48.039 I  aned[639:1b9f] [com.apple.PerfPowerServices:ClientRegistration] Spinning up XPC service
+2026-09-24 20:59:48.040 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14000] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:48.040 I  aned[639:1c33] [com.apple.PerfPowerServices:ClientRegistration] Client Permission check completed. Invalidating XPC Connection.
+2026-09-24 20:59:48.040 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14180] activating connection: mach=false listener=false peer=false name=com.apple.PerfPowerTelemetryClientRegistrationService
+2026-09-24 20:59:48.040 I  aned[639:1b9f] [com.apple.PerfPowerServices:ClientRegistration] Spinning up XPC service
+2026-09-24 20:59:48.040 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14180] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:48.040 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14000] activating connection: mach=false listener=false peer=false name=com.apple.PerfPowerTelemetryClientRegistrationService
+2026-09-24 20:59:48.040 I  aned[639:1c33] [com.apple.PerfPowerServices:ClientRegistration] Client Permission check completed. Invalidating XPC Connection.
+2026-09-24 20:59:48.040 I  aned[639:1b9f] [com.apple.PerfPowerServices:ClientRegistration] Spinning up XPC service
+2026-09-24 20:59:48.040 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14000] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:48.040 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14180] activating connection: mach=false listener=false peer=false name=com.apple.PerfPowerTelemetryClientRegistrationService
+2026-09-24 20:59:48.040 I  aned[639:1c33] [com.apple.PerfPowerServices:ClientRegistration] Client Permission check completed. Invalidating XPC Connection.
+2026-09-24 20:59:48.041 I  aned[639:1b9f] [com.apple.PerfPowerServices:ClientRegistration] Spinning up XPC service
+2026-09-24 20:59:48.041 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafcd14180] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 20:59:48.041 I  aned[639:1c33] [com.apple.PerfPowerServices:ClientRegistration] Client Permission check completed. Invalidating XPC Connection.
+2026-09-24 20:59:48.041 I  aned[639:1b9f] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 20:59:52.703 I  aned[639:1b9f] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 20:59:52.703 I  aned[639:1b9f] [com.apple.ane:aned] START: <private>: <private> : <private>
+2026-09-24 20:59:52.703 I  aned[639:1b9f] [com.apple.ane:aned] Using primary (regular) ANECompilerService
+2026-09-24 20:59:52.703 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafd098640] activating connection: mach=false listener=false peer=false name=com.apple.ANECompilerService
+2026-09-24 20:59:52.703 I  aned[639:1b9f] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 20:59:52.703 I  aned[639:1b9f] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 20:59:52.704 I  aned[639:1b9f] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 20:59:52.704 I  aned[639:1b9f] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 20:59:52.704 I  aned[639:1b9f] [com.apple.ane:aned] cacheURLIdentifier:<private>
+2026-09-24 20:59:52.704 I  aned[639:1b9f] [com.apple.ane:aned] Calling ANECompilerService: modelURL=<private> : sourceURL=<private> : csIdentity=<private> : key=<private> : outputURL=<private> : options=<private>
+2026-09-24 20:59:53.374 Df aned[639:1c33] [com.apple.xpc:connection] [0xafd098780] activating connection: mach=true listener=false peer=false name=com.apple.powerlog.plxpclogger.xpc
+2026-09-24 20:59:53.534 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut: AppleANEDrv::DriverInitiatedSleepTimerTimeOut
+2026-09-24 20:59:53.534 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut_gated: Powering off ANE
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 0
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: ANE sleep initiated
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: waitForFirmwareToQuiesce: Waiting for firmware to quiesce. Timeout: 10000 ms.
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: All pending requests completed. Proceeding with regular sleep
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_SaveState_block_invoke: WARN:: clientname:encoder_bench is keeping programs loaded and not freeing - isPowered: 1 Programs Open:1 Wired-memory: 487573888 B
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_SaveState: INFO: Saving state for programResource->programId: 0
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_SaveState: INFO: Saving state for programResource->programId: -1 process->processId: 0
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Finished saving ANE state
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Finished saving ANE Exclave state
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: Starting deinit
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: operator(): Work around for PushTelemetry
+2026-09-24 20:59:53.535 Df kernel[0:829] (AppleH11ANEInterface) ANEHWDevice::ANECPU ANE0: WRN: [13:486313934]./sne/controller/target/CANEController.cpp, 1315: 1 programs are NOT unloaded!
+2026-09-24 20:59:53.535 Df kernel[0:829] (AppleH11ANEInterface) ANEHWDevice::ANECPU ANE0: WRN: [13:486313959]./sne/controller/target/CANEController.cpp, 1319: 1 processes are NOT terminated!
+2026-09-24 20:59:53.535 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 20:59:53.536 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: CSNE_CMD_POWER_DOWN command completed: res=0x00000000
+2026-09-24 20:59:53.762 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: ANECPU not in WFI after CSNE_CMD_SUSPEND/CISP_CMD_POWER_DOWN. retries=20. ASCWRAP_IDLE_STATUS = 0x28
+2026-09-24 20:59:53.762 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup started
+2026-09-24 20:59:53.763 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup finished
+2026-09-24 20:59:53.763 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: Statistics: ColdStarts: 3, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 3 ANEInitFailures: 0 PartialShutdownsCompleted: 0
+2026-09-24 20:59:53.763 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: ANE_deInit: Work Stats:  WorkSubmitted: 0 WorkSubmitFailed 0 WorkBegin: 0 WorkEnded: 0 PendingRequests: 0
+2026-09-24 20:59:53.763 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: StopPerformanceCounters: Perf Counters turned off: time:11677002115 DPE Counter Value:11345282900
+2026-09-24 20:59:53.763 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 20:59:53.763 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: power_off_hardware: Powering off... done
+2026-09-24 20:59:53.763 Df kernel[0:7eb] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: ANE driverInitiatedSleep completed
+2026-09-24 20:59:58.278 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: MemoryUnwireTimerTimeOut_gated_block_invoke: Times up. Unwiring Loaded Process programHandle=0x2afc30e01
+2026-09-24 20:59:58.278 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: MemoryUnwireTimerTimeOut_gated_block_invoke: Times up. Unwiring Loaded Program programHandle=0x2afc30e01
+2026-09-24 20:59:58.278 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: ProgramUnload: Unloading program for programHandle: 0x2afc30e01, programId: 4294967295, pendingRequestsCount: 0, pendingRequestsWithFirmware: 0
+2026-09-24 20:59:58.278 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: ProgramUnload: program was already terminated programHandle: 0x2afc30e01
+2026-09-24 20:59:58.280 I  kernel[0:8a2] (AppleH11ANEInterface) [INFO] ANE0: aneFreeIntermediateBuffer: intermediateResource was already freed programHandle: 0x2afc30e01 intermediateUnionHandle: 0x8
+2026-09-24 20:59:58.280 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 21:00:47.447 Df kernel[0:1bab] process ANECompilerServi[640] thread 7083 caught burning CPU! It used more than 50% CPU over 180 seconds
+2026-09-24 21:01:03.838 I  aned[639:1b9f] [com.apple.ane:aned] Compilation success: attr=<private>
+2026-09-24 21:01:03.841 Df aned[639:1b9f] [com.apple.xpc:connection] [0xafd098640] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 21:01:03.841 I  aned[639:1b9f] [com.apple.ane:aned] END: <private>: <private> : <private> : <private>
+2026-09-24 21:01:03.841 I  aned[639:1b9f] [com.apple.ane:aned] END: <private>: <private>
+2026-09-24 21:01:03.900 I  aned[639:1b9f] [com.apple.ane:aned] No model pathName? <private>
+2026-09-24 21:01:03.901 I  aned[639:1b9f] [com.apple.ane:aned] <private>: SecTaskCopyTeamIdentifier() returned teamIdentity=""
+2026-09-24 21:01:03.901 I  aned[639:1b9f] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 21:01:03.901 I  aned[639:1b9f] [com.apple.ane:aned] START: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : existsInCache=0 : coreAnalyticsClientType=ThirdPartyAppUsingANE StatsMask=0
+2026-09-24 21:01:03.906 I  aned[639:1b9f] [com.apple.ane:aned] <private>: ANEF Perf Stats mask: (null)
+2026-09-24 21:01:03.906 I  aned[639:1b9f] [com.apple.ane:aned] <private>: START : cachedModel.bytes=0x139800000 : cachedModel.length=480296960 : qos=21 : isPreCompiled=0 : enablePowerSaving=1 : controller.device=0xafd003ba0 : programInstance=0x0 : refcount=0 : intermediateBufferHandle=0 : statsMask=0 : memoryPoolId=0 : enableLateLatch=0 : modelIdentityStr=<private> : cacheUrlIdentifier=<private> : aotCacheUrlIdentifier=(null) optOutOfModelMemoryUnwiring=0
+2026-09-24 21:01:03.906 I  aned[639:1b9f] [com.apple.ane:aned] <private> 280 Stats mask value: 0
+2026-09-24 21:01:03.907 I  kernel[0:1b9f] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x31c58590e not found in existing mapping
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneVnodeTrustVerification: on-device compiled model DataVault verification succeeded
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneMachoReadHeaderLoadCommands: macho headerAndLoadCommand: 0x<private>, size: 67672
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __DEBUG __debug_info filesize: 1942424 fileoffset: 20283392
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __TEXT __text filesize: 10221940 fileoffset: 22233088
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __TEXT __const filesize: 38343872 fileoffset: 32455040
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_0 __kern_0 filesize: 134172480 fileoffset: 70811648
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_1 __kern_1 filesize: 134213632 fileoffset: 204996608
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_2 __kern_2 filesize: 134151168 fileoffset: 339214336
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE: __KERN_3 __kern_3 filesize: 6922240 fileoffset: 473366528
+2026-09-24 21:01:03.907 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: AllocateMemoryForDirectIO: INFO: transfer ownership of buffer to process (name:encoder_bench pid:638) res=0x0
+2026-09-24 21:01:03.909 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramInitialSetup: Model verification passed - isPrecompiledModel: 0 isModelVerifiedBySignatureCheck: 0
+2026-09-24 21:01:03.909 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramInitialSetup: WARN: unidentified segment (__DEBUG) or section (__debug_info) offset: 0x1358000 size: 0x1da398
+2026-09-24 21:01:03.909 E  kernel[0:1b9f] (AppleH11ANEInterface) [ERROR] ANE0: enqueueActionBlock: Skip enqueueActionBlock fSleepInProgress: 1 fDriverInitiatedSleep: 1 fSystemInitiatedSleep: 0
+2026-09-24 21:01:03.909 E  kernel[0:1b9f] (AppleH11ANEInterface) [ERROR] ANE0: enqueueActionBlock: Skip enqueueActionBlock fSleepInProgress: 1 fDriverInitiatedSleep: 1 fSystemInitiatedSleep: 0
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: isANEActive: fInitInProgress: 0, fIsPowered: 0, fDeInitInProgress: 0, fSleepInProgress: 1, fFirmwareTimeout: 0, fClientPowerDownInProgress: 0
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_HandlePowerStateChecksForClient: ANE power status: isPowered: 0, fDeInitInProgress: 0, fFirmwareTimeout: 0
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powering on ANE. blocking: 1
+2026-09-24 21:01:03.912 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Wait until ANE gets powered up for client <private> retries=1
+2026-09-24 21:01:03.912 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 21:01:03.912 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 1
+2026-09-24 21:01:03.912 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_on_hardware: ANE wakeup from driver initiatd sleep initiated
+2026-09-24 21:01:03.913 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: StartPerformanceCounters: Perf Counters turned on: time:13360600056 DPE Counter Value:17002800893
+2026-09-24 21:01:03.913 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_on_hardware: EnableANEClocksAndPower result = 0x0
+2026-09-24 21:01:03.913 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: :
+2026-09-24 21:01:03.913 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupAllocationsPendingRelease_gated: Skip cleanup - nothing in the pending queue
+2026-09-24 21:01:03.922 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: FW App image...
+2026-09-24 21:01:03.923 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: cmd_buffer_base: 0x1fb08000, size: 262144
+2026-09-24 21:01:03.937 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: CSNE_CMD_SET_SNE_PMU_BASE2 command to firmware, res=0x00000000
+2026-09-24 21:01:03.938 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fNumANEs: 1 fANEMaxCacheRequestSharedEvents: 2
+2026-09-24 21:01:03.938 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxCacheRequests: 16, fANEMaxCacheRequestsLowerLimit: 12
+2026-09-24 21:01:03.938 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxGlobalWaitEvent: 32
+2026-09-24 21:01:03.938 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fFWSupportsRTGraph: 0
+2026-09-24 21:01:03.938 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fProcedureCallFWOptimization 0x3
+2026-09-24 21:01:03.939 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: ANE wakeup from sleep completed in 26449 uS, res=0x0
+2026-09-24 21:01:03.939 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: Statistics: ColdStarts: 4, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 3 ANEInitFailures: 0
+2026-09-24 21:01:03.939 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: Work Stats:  WorkSubmit: 0 WorkSubmitFailed: 0 WorkBegin: 0 WorkEnd: 0 PendingRequests: 0
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :line: 78
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) : Program with qoSConstraint kANEQoSConstraintPowerSensitiveLatencyInsensitive set
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEHWDevice: preProcess:,Program Identifier: ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+	--fno-fold-scale=true
+	--fdram-allocator=ffreuse
+	--fdram-tensor-priority=sizebyliverange
+	--fl2-allocator=ffreuse
+	--fl3-allocator=ffreuse
+	--fl2-cache-mode=resident
+	-g 
+	--fsignature=ident
+	--fdisable-bonded-networks=true
+	--enable-param-and-map-rtgraph-refactor=false
+	--memcache-size=4194304
+	--fspatial-split=disabled
+	--fenable-circular-buffer-in-spatial-split=-1
+	--fkernel-rewind=enabled
+	--fdump-status-dictionary-to-file
+	--max-td-latency=10000.000000
+	--generate-static-perf-analytics
+	--generate-analytics-buffer
+	--ne-frequency=-1.000000
+	--pstate-dcs=-1
+	--pstate-soc=-1
+	--bss-limit=3221225472
+	--foptimize-ne-utilization=true
+	--disable-cache-prefetch-mask=1
+	--optimize-mutable-kernel-section=true
+	--enable-summary-performance-stats=false
+	--split-kern<…>
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEHWDevice: preProcess:316, programHandle: 0x31c58590e, Model Identifier: length: 59, string:
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :ANEHWDevice::kernel is non-mutable kernel section
+2026-09-24 21:01:03.939 Df kernel[0:1b9f] (AppleH11ANEInterface) ANEHWDevice: preProcess: , Neither AOT not JIT tag found in ZinComputeProgramGetMachoCompilationMode!
+2026-09-24 21:01:03.942 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:03.945 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProcessCreate_gated: createProcessStatus: 0, programHandle: 0x31c58590e programId: 0 processId: 0 isProcessRecreate: 0
+2026-09-24 21:01:03.946 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: DEBUG: ANEHWDevice: Program added to client (<private>) programs for ANED programId: 0 programHandle: 0x31c58590e
+2026-09-24 21:01:03.946 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: releasing dartMapLock
+2026-09-24 21:01:03.946 I  kernel[0:1b9f] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x31c58590e not found in existing mapping
+2026-09-24 21:01:03.946 Df kernel[0:1b9f] (AppleH11ANEInterface) : addProgramToANEMapping_gated: add bitmaskMapping 0x1 for programHandle: 0x31c58590e
+2026-09-24 21:01:03.946 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: Adding <private> to the programList for client, count: 1
+2026-09-24 21:01:03.946 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: ANE_ProgramCreate on ANEs, bitMask: 0x1, programHandle: 0x31c58590e client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 21:01:03.946 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: aneAllocateIntermediateBuffer: programHandle: 0x31c58590e sharedUnionHandle: 0x31c66cb01 intermediateUnionHandle: 0x11 intermediateResourceId: 0x12 bufferSize: 0x1c14000
+2026-09-24 21:01:03.946 Df kernel[0:1b9f] (AppleH11ANEInterface) : wire: ANEUnionResource: wire memory descriptor: <private> size: 0x1c14000
+2026-09-24 21:01:03.947 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramPrepare_gated: releasing dartMapLock
+2026-09-24 21:01:03.947 Df kernel[0:1b9f] (AppleH11ANEInterface) : operator(): ProgramPrepare to ANE0 result=0x0
+2026-09-24 21:01:03.947 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:03.947 I  aned[639:1b9f] [com.apple.ane:aned] <private>: programHandle=13360453902 : queueDepth=32 : numInputs=9 : numOutputs=6 : adjustedQueueDepth=127 : wiredMemory=509725056
+2026-09-24 21:01:03.947 I  aned[639:1b9f] [com.apple.ane:aned] <private>: END : ok=1 : controller.device=0xafd003ba0 : programHandle=13360453902 : intermediateBufferHandle=17 : queueDepth=127 : numInputs=9 : numOutputs=6 : refcount=1 : wiredMemory=509725056
+2026-09-24 21:01:03.948 I  aned[639:1b9f] [com.apple.ane:aned] [ANE Model Stats] : modelSize=480296960 : wiredMemory=509725056 : csIdentity=<private> : model=(null) : symbolMappings=<private>
+2026-09-24 21:01:03.948 I  aned[639:1b9f] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:01:03.948 I  aned[639:1b9f] [com.apple.ane:aned] END: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : programHandle=13360453902 : intermediateBufferHandle=17 :wiredMemory=509725056 : queueDepth=127
+2026-09-24 21:01:03.948 I  aned[639:1b9f] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) : newUserClient: ANEDriver::newUserClient type=1
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: encoder_bench, client: <private> pid: 638
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: ANE_UserClientOpen_gated res: 0x0
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: ANE_AddClientForProgram for ANE0 programHandle: 0x31c58590e client <private>, client name encoder_bench clientContext: <private> fProgramList: <private>
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:2 Wired-Memory : 517067520 B
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: encoder_bench
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) ANE0: ANE_AddClientForProgram_gated: Adding client <private>:  encoder_bench to programHandle: 0x31c58590e, Num clients for program: 1, programResource: <private>, referenceCount: 1
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) : operator(): ANE_AddClientForProgram : on sne:0 ret = 0x0
+2026-09-24 21:01:03.949 Df kernel[0:1d42] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: Retaining program for client <private>
+2026-09-24 21:01:04.019 I  aned[639:1b9f] [com.apple.ane:aned] START: <private>: <private>
+2026-09-24 21:01:04.019 I  aned[639:1b9f] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 21:01:04.019 I  aned[639:1b9f] [com.apple.ane:aned] <private>:  removeProgramForConnection: <private>, Model cacheURLIdentifier:<private>
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramUnprepare_gated: programHandle: 0x31c58590e, client: 0x<private>
+2026-09-24 21:01:04.020 I  kernel[0:1b9f] (AppleH11ANEInterface) [INFO] ANE0: aneFreeIntermediateBuffer: Free intermediateUnion id: 0x11 resourceCount: 0 useCount: 0
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) : operator(): ANE_ProgramUnprepare to ANE0  result=0x0
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramDestroy_gated: Removing client (<private>) from program handle 0x31c58590e
+2026-09-24 21:01:04.020 Db kernel[0:1b9f] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 2
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: Still have 1 clients using programHandle=0x31c58590e. NOT freeing.
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: programHandle: 0x31c58590e, client: 0x<private>
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProcessDestroy_gated: 1 clients still using programHandle: 0x31c58590e, not destroying it
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x31c58590e programResourceIndex = 1 referenceCount = 2 releasePendingList=0
+2026-09-24 21:01:04.020 Df kernel[0:1b9f] (AppleH11ANEInterface) : operator(): ANE_ProgramDestroy to ANE0  fANEIn=<private> result=0x0
+2026-09-24 21:01:04.020 I  aned[639:1b9f] [com.apple.ane:aned] END: <private>: <private> : <private> : 0
+2026-09-24 21:01:04.020 I  aned[639:1b9f] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:01:04.020 Df kernel[0:1c30] (AppleH11ANEInterface) : ANE_UserClientCleanup_gated: Cleanup program for client <private> clientContext: <private> fProgramList: <private> programHandle=0x31c58590e
+2026-09-24 21:01:04.020 Db kernel[0:1c30] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 1
+2026-09-24 21:01:04.020 Df kernel[0:1c30] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: No more clients are using programHandle=0x31c58590e. Freeing now
+2026-09-24 21:01:04.020 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: programHandle: 0x31c58590e, client: 0x<private>
+2026-09-24 21:01:04.020 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: pProgramResource->programId: 0 destroyArgs->programHandle: 0x31c58590e
+2026-09-24 21:01:04.020 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_ProcessDestroy_gated: Destroying programHandle: 0x31c58590e
+2026-09-24 21:01:04.020 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.021 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_ReleasePatchedMutableMemoryBuffer: Patched Mutable buffer is NULL for program handle: 0x31c58590e
+2026-09-24 21:01:04.021 Df kernel[0:1c30] (AppleH11ANEInterface) : ~ANEBufferCache: numCachedResources: 0 cachedWiredMemorySize: 0x0
+2026-09-24 21:01:04.021 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x31c58590e programResourceIndex = 1 referenceCount = 1 releasePendingList=0
+2026-09-24 21:01:04.021 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Freeing Program buffer -
+2026-09-24 21:01:04.021 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Model Identifier:
+2026-09-24 21:01:04.021 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: force deiniting program process and program. programHandle: 0x31c58590e programId: 0 refCount: 1
+2026-09-24 21:01:04.021 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 0
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname aned isPowered 1
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname encoder_bench isPowered 1
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname encoder_bench isPowered 1
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: encoder_bench
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname:aned isPowered:1 Programs Open:1 Wired-Memory:29493632 B
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname:encoder_bench isPowered:1 Programs Open:1 Wired-Memory:29493632 B
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated: :
+2026-09-24 21:01:04.022 Df kernel[0:1c30] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated_block_invoke: Removing client: <private>, clientName: encoder_bench
+2026-09-24 21:01:04.036 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_ProgramSendRequestInitialChecksAndLookups_gated: Program not mapped in DART, remapping. programHandle: 0x2afc30e01
+2026-09-24 21:01:04.036 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:04.036 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:04.036 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:04.037 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:04.039 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:04.040 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:04.040 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:04.043 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ProgramLoad: Creating program for programHandle: 0x2afc30e01
+2026-09-24 21:01:04.047 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_ProcessCreate_gated: createProcessStatus: 0, programHandle: 0x2afc30e01 programId: 1 processId: 1 isProcessRecreate: 1
+2026-09-24 21:01:04.047 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ProcessReMap: programHandle=0x2afc30e01
+2026-09-24 21:01:04.047 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneAllocateIntermediateBuffer: programHandle: 0x2afc30e01 sharedUnionHandle: 0x8 intermediateUnionHandle: 0x8 intermediateResourceId: 0x13 bufferSize: 0x1c14000
+2026-09-24 21:01:04.047 Df kernel[0:1b90] (AppleH11ANEInterface) : wire: ANEUnionResource: wire memory descriptor: <private> size: 0x1c14000
+2026-09-24 21:01:04.047 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.049 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.051 Df kernel[0:829] (AppleH11ANEInterface) ANE0: processTargetToHostIOCommand: CPULOAD_NOTIFICATION: fANEFirmwareCpuLoadScore: 0 numPendingRequests: 1 pendingRequestsWithFirmware: 1 fwCpuThrottled: 0
+2026-09-24 21:01:04.054 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.069 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.082 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.205 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.210 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.221 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.237 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.358 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.362 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.371 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.380 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.498 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.501 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.509 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.522 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.641 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.644 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.651 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.661 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.776 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.780 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.787 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.797 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.916 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.920 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.928 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:04.941 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.060 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.064 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.071 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.081 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.200 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.204 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.211 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.220 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.339 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.343 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.349 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.359 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.474 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.479 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.486 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.495 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.611 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.614 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.621 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.631 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.747 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.750 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.758 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.771 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) : ANE_UserClientCleanup_gated: Cleanup program for client <private> clientContext: <private> fProgramList: <private> programHandle=0x2afc30e01
+2026-09-24 21:01:05.889 Db kernel[0:1b90] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 2
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: Still have 1 clients using programHandle=0x2afc30e01. NOT freeing.
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_UserClientCleanup_gated: Releasing program buffer: <private> programHandle: 0x2afc30e01 programId: 1 for client encoder_bench
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x2afc30e01 programResourceIndex = 0 referenceCount = 2 releasePendingList=0
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_UserClientCleanup_gated: Releasing program buffer: <private> programHandle: 0x2afc30e01 programId: 1 for client encoder_bench
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x2afc30e01 programResourceIndex = 0 referenceCount = 1 releasePendingList=0
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Freeing Program buffer -
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Model Identifier:
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: force deiniting program process and program. programHandle: 0x2afc30e01 programId: 1 refCount: 1
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_ProcessDestroy_gated: Destroying programHandle: 0x2afc30e01
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ProcessAbort: Client not found but proceeding with process abort
+2026-09-24 21:01:05.889 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.889 I  kernel[0:1b90] (AppleH11ANEInterface) [INFO] ANE0: aneFreeIntermediateBuffer: Free intermediateUnion id: 0x8 resourceCount: 0 useCount: 0
+2026-09-24 21:01:05.890 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_ReleasePatchedMutableMemoryBuffer: Patched Mutable buffer is NULL for program handle: 0x2afc30e01
+2026-09-24 21:01:05.890 Df kernel[0:1b90] (AppleH11ANEInterface) : ~ANEBufferCache: numCachedResources: 0 cachedWiredMemorySize: 0x0
+2026-09-24 21:01:05.890 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.890 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.891 Df aned[639:1b9f] [com.apple.xpc:connection] [0x1034e53a0] invalidated because the client process (pid 638) either cancelled the connection or exited
+2026-09-24 21:01:05.892 Df kernel[0:1b9f] (AppleH11ANEInterface) : ANE_ProgramDestroy_gated: Removing client (<private>) from program handle 0x2afc30e01
+2026-09-24 21:01:05.892 Db kernel[0:1b9f] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 1
+2026-09-24 21:01:05.892 Df kernel[0:1b9f] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: No more clients are using programHandle=0x2afc30e01. Freeing now
+2026-09-24 21:01:05.893 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 0
+2026-09-24 21:01:05.893 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname aned isPowered 1
+2026-09-24 21:01:05.893 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname encoder_bench isPowered 1
+2026-09-24 21:01:05.893 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: encoder_bench
+2026-09-24 21:01:05.893 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname:aned isPowered:1 Programs Open:0 Wired-Memory:0 B
+2026-09-24 21:01:05.893 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated: :
+2026-09-24 21:01:05.893 Df kernel[0:1b90] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated_block_invoke: Removing client: <private>, clientName: encoder_bench
+2026-09-24 21:01:05.893 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: programHandle: 0x2afc30e01, client: 0x<private>
+2026-09-24 21:01:05.893 E  kernel[0:1b9f] (AppleH11ANEInterface) [ERROR] ANE0: ANE_ProgramDestroy_gated: ERROR: Program NOT Found programHandle: 0x2afc30e01
+2026-09-24 21:01:05.893 Df kernel[0:1b9f] (AppleH11ANEInterface) : operator(): ANE_ProgramDestroy to ANE0  fANEIn=<private> result=0x0
+2026-09-24 21:01:05.894 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 0
+2026-09-24 21:01:05.894 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname aned isPowered 1
+2026-09-24 21:01:05.894 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: aned
+2026-09-24 21:01:05.894 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Send changePowerStateToPriv -> 0
+2026-09-24 21:01:05.894 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated: :
+2026-09-24 21:01:05.894 Df kernel[0:1b9f] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated_block_invoke: Removing client: <private>, clientName: aned
+2026-09-24 21:01:05.894 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 21:01:05.894 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 0
+2026-09-24 21:01:05.894 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: No other ANE clients present, continue powering off
+2026-09-24 21:01:05.894 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Starting deinit
+2026-09-24 21:01:05.894 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: operator(): Work around for PushTelemetry
+2026-09-24 21:01:05.895 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:05.896 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: CSNE_CMD_POWER_DOWN command completed: res=0x00000000
+2026-09-24 21:01:06.124 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: ANECPU not in WFI after CSNE_CMD_SUSPEND/CISP_CMD_POWER_DOWN. retries=20. ASCWRAP_IDLE_STATUS = 0x28
+2026-09-24 21:01:06.124 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup started
+2026-09-24 21:01:06.125 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup finished
+2026-09-24 21:01:06.125 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Statistics: ColdStarts: 4, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 4 ANEInitFailures: 0 PartialShutdownsCompleted: 0
+2026-09-24 21:01:06.125 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Work Stats:  WorkSubmitted: 52 WorkSubmitFailed 0 WorkBegin: 52 WorkEnded: 52 PendingRequests: 0
+2026-09-24 21:01:06.125 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: StopPerformanceCounters: Perf Counters turned off: time:13413693048 DPE Counter Value:17002800893
+2026-09-24 21:01:06.125 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 21:01:06.125 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_off_hardware: Powering off... done
+2026-09-24 21:01:09.672 Df aned[639:1c33] [com.apple.xpc:connection] [0xafcd14180] activating connection: mach=false listener=false peer=true name=com.apple.appleneuralengine.peer[665].0xafcd14180
+2026-09-24 21:01:09.672 I  aned[639:1c33] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 21:01:09.672 I  aned[639:1c33] [com.apple.ane:aned] START: <private>: <private> : <private>
+2026-09-24 21:01:09.672 I  aned[639:1c33] [com.apple.ane:aned] Using primary (regular) ANECompilerService
+2026-09-24 21:01:09.672 Df aned[639:1c33] [com.apple.xpc:connection] [0xafd098640] activating connection: mach=false listener=false peer=false name=com.apple.ANECompilerService
+2026-09-24 21:01:09.672 I  aned[639:1c33] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 21:01:09.673 I  aned[639:1c33] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 21:01:09.673 I  aned[639:1c33] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 21:01:09.673 I  aned[639:1c33] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 21:01:09.673 I  aned[639:1c33] [com.apple.ane:aned] cacheURLIdentifier:<private>
+2026-09-24 21:01:09.674 I  aned[639:1c33] [com.apple.ane:aned] Calling ANECompilerService: modelURL=<private> : sourceURL=<private> : csIdentity=<private> : key=<private> : outputURL=<private> : options=<private>
+2026-09-24 21:01:11.392 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut: AppleANEDrv::DriverInitiatedSleepTimerTimeOut
+2026-09-24 21:01:45.146 I  aned[639:1c33] [com.apple.ane:aned] Compilation success: attr=<private>
+2026-09-24 21:01:45.147 Df aned[639:1c33] [com.apple.xpc:connection] [0xafd098640] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 21:01:45.147 I  aned[639:1c33] [com.apple.ane:aned] END: <private>: <private> : <private> : <private>
+2026-09-24 21:01:45.147 I  aned[639:1c33] [com.apple.ane:aned] END: <private>: <private>
+2026-09-24 21:01:45.238 I  aned[639:1c33] [com.apple.ane:aned] No model pathName? <private>
+2026-09-24 21:01:45.238 I  aned[639:1c33] [com.apple.ane:aned] <private>: SecTaskCopyTeamIdentifier() returned teamIdentity=""
+2026-09-24 21:01:45.238 I  aned[639:1c33] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 21:01:45.238 I  aned[639:1c33] [com.apple.ane:aned] START: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : existsInCache=0 : coreAnalyticsClientType=ThirdPartyAppUsingANE StatsMask=0
+2026-09-24 21:01:45.239 I  aned[639:1c33] [com.apple.ane:aned] <private>: ANEF Perf Stats mask: (null)
+2026-09-24 21:01:45.239 Df aned[639:1dc4] (ANEServices) Found matching service: ANEDriver
+2026-09-24 21:01:45.239 Df aned[639:1dc4] (ANEServices) Found matching service: H11ANEIn
+2026-09-24 21:01:45.240 Df aned[639:1c33] (ANEServices) Total num of devices 2
+2026-09-24 21:01:45.240 Df aned[639:1c33] (ANEServices) (Single-ANE System with ANEDriver) Selected ANEDriver device
+2026-09-24 21:01:45.240 Df aned[639:1c33] (ANEServices) ANEServicesDevice::ANEServicesDeviceOpen, usage type: 2
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) : newUserClient: ANEDriver::newUserClient type=2
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: aned, client: <private> pid: 639
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: ANE_UserClientOpen_gated res: 0x0
+2026-09-24 21:01:45.240 Df aned[639:1c33] (ANEServices) ANEDriver Device Open succeeded with usage type: 2
+2026-09-24 21:01:45.240 Df aned[639:1c33] (ANEServices) Selected ANEDriver device
+2026-09-24 21:01:45.240 I  aned[639:1c33] [com.apple.ane:aned] <private>: START : cachedModel.bytes=0x119800000 : cachedModel.length=460537856 : qos=21 : isPreCompiled=0 : enablePowerSaving=1 : controller.device=0xafd003ba0 : programInstance=0x0 : refcount=0 : intermediateBufferHandle=0 : statsMask=0 : memoryPoolId=0 : enableLateLatch=0 : modelIdentityStr=<private> : cacheUrlIdentifier=<private> : aotCacheUrlIdentifier=(null) optOutOfModelMemoryUnwiring=0
+2026-09-24 21:01:45.240 I  aned[639:1c33] [com.apple.ane:aned] <private> 280 Stats mask value: 0
+2026-09-24 21:01:45.240 I  kernel[0:1c33] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x357793144 not found in existing mapping
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneVnodeTrustVerification: on-device compiled model DataVault verification succeeded
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneMachoReadHeaderLoadCommands: macho headerAndLoadCommand: 0x<private>, size: 67440
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __TEXT __text filesize: 10221940 fileoffset: 2473984
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __TEXT __const filesize: 38340864 fileoffset: 12695936
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_0 __kern_0 filesize: 134172480 fileoffset: 51052544
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_1 __kern_1 filesize: 134213632 fileoffset: 185237504
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_2 __kern_2 filesize: 134151168 fileoffset: 319455232
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_3 __kern_3 filesize: 6922240 fileoffset: 453607424
+2026-09-24 21:01:45.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: AllocateMemoryForDirectIO: INFO: transfer ownership of buffer to process (name:encoder_bench pid:665) res=0x0
+2026-09-24 21:01:45.241 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramInitialSetup: Model verification passed - isPrecompiledModel: 0 isModelVerifiedBySignatureCheck: 0
+2026-09-24 21:01:45.241 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:45.242 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: isANEActive: fInitInProgress: 0, fIsPowered: 0, fDeInitInProgress: 0, fSleepInProgress: 0, fFirmwareTimeout: 0, fClientPowerDownInProgress: 0
+2026-09-24 21:01:45.242 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_HandlePowerStateChecksForClient: ANE power status: isPowered: 0, fDeInitInProgress: 0, fFirmwareTimeout: 0
+2026-09-24 21:01:45.242 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:45.242 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:45.242 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 21:01:45.242 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powering on ANE. blocking: 1
+2026-09-24 21:01:45.242 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Wait until ANE gets powered up for client <private> retries=1
+2026-09-24 21:01:45.243 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 21:01:45.243 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 1
+2026-09-24 21:01:45.243 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: StartPerformanceCounters: Perf Counters turned on: time:14352536420 DPE Counter Value:92075815770818
+2026-09-24 21:01:45.243 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_on_hardware: EnableANEClocksAndPower result = 0x0
+2026-09-24 21:01:45.243 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: :
+2026-09-24 21:01:45.243 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupAllocationsPendingRelease_gated: Skip cleanup - nothing in the pending queue
+2026-09-24 21:01:45.252 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: FW App image...
+2026-09-24 21:01:45.254 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: cmd_buffer_base: 0x1fb08000, size: 262144
+2026-09-24 21:01:45.268 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: CSNE_CMD_SET_SNE_PMU_BASE2 command to firmware, res=0x00000000
+2026-09-24 21:01:45.268 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fNumANEs: 1 fANEMaxCacheRequestSharedEvents: 2
+2026-09-24 21:01:45.268 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxCacheRequests: 16, fANEMaxCacheRequestsLowerLimit: 12
+2026-09-24 21:01:45.268 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxGlobalWaitEvent: 32
+2026-09-24 21:01:45.268 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fFWSupportsRTGraph: 0
+2026-09-24 21:01:45.268 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fProcedureCallFWOptimization 0x3
+2026-09-24 21:01:45.269 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: Statistics: ColdStarts: 5, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 4 ANEInitFailures: 0
+2026-09-24 21:01:45.269 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: Work Stats:  WorkSubmit: 52 WorkSubmitFailed: 0 WorkBegin: 52 WorkEnd: 52 PendingRequests: 0
+2026-09-24 21:01:45.269 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: EnableMemoryUnwireTimer: ERROR: Cannot enable Memory Unwire Timer
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :line: 78
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) : Program with qoSConstraint kANEQoSConstraintPowerSensitiveLatencyInsensitive set
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANEHWDevice: preProcess:,Program Identifier: ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+	--fno-fold-scale=true
+	--fdram-allocator=ffreuse
+	--fdram-tensor-priority=sizebyliverange
+	--fl2-allocator=ffreuse
+	--fl3-allocator=ffreuse
+	--fl2-cache-mode=resident
+	--fsignature=ident
+	--fdisable-bonded-networks=true
+	--enable-param-and-map-rtgraph-refactor=false
+	--memcache-size=4194304
+	--fspatial-split=disabled
+	--fenable-circular-buffer-in-spatial-split=-1
+	--fkernel-rewind=enabled
+	--max-td-latency=10000.000000
+	--ne-frequency=-1.000000
+	--pstate-dcs=-1
+	--pstate-soc=-1
+	--bss-limit=3221225472
+	--foptimize-ne-utilization=true
+	--disable-cache-prefetch-mask=1
+	--optimize-mutable-kernel-section=true
+	--enable-summary-performance-stats=false
+	--split-kernel-section=true
+	--max-kernel-section-size=134217728
+	--enable-context-switch-events=false
+	--fdisable-<…>
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANEHWDevice: preProcess:316, programHandle: 0x357793144, Model Identifier: length: 59, string:
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :ANEHWDevice::kernel is non-mutable kernel section
+2026-09-24 21:01:45.269 Df kernel[0:1c33] (AppleH11ANEInterface) ANEHWDevice: preProcess: , Neither AOT not JIT tag found in ZinComputeProgramGetMachoCompilationMode!
+2026-09-24 21:01:45.272 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:45.276 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProcessCreate_gated: createProcessStatus: 0, programHandle: 0x357793144 programId: 0 processId: 0 isProcessRecreate: 0
+2026-09-24 21:01:45.276 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: DEBUG: ANEHWDevice: Program added to client (<private>) programs for ANED programId: 0 programHandle: 0x357793144
+2026-09-24 21:01:45.276 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: releasing dartMapLock
+2026-09-24 21:01:45.276 I  kernel[0:1c33] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x357793144 not found in existing mapping
+2026-09-24 21:01:45.276 Df kernel[0:1c33] (AppleH11ANEInterface) : addProgramToANEMapping_gated: add bitmaskMapping 0x1 for programHandle: 0x357793144
+2026-09-24 21:01:45.276 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: Adding <private> to the programList for client, count: 0
+2026-09-24 21:01:45.276 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: ANE_ProgramCreate on ANEs, bitMask: 0x1, programHandle: 0x357793144 client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 21:01:45.276 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneAllocateIntermediateBuffer: programHandle: 0x357793144 sharedUnionHandle: 0x357865e06 intermediateUnionHandle: 0x1a1 intermediateResourceId: 0x1a2 bufferSize: 0x1c14000
+2026-09-24 21:01:45.277 Df kernel[0:1c33] (AppleH11ANEInterface) : wire: ANEUnionResource: wire memory descriptor: <private> size: 0x1c14000
+2026-09-24 21:01:45.277 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramPrepare_gated: releasing dartMapLock
+2026-09-24 21:01:45.277 Df kernel[0:1c33] (AppleH11ANEInterface) : operator(): ProgramPrepare to ANE0 result=0x0
+2026-09-24 21:01:45.277 I  aned[639:1c33] [com.apple.ane:aned] <private>: programHandle=14352462148 : queueDepth=32 : numInputs=9 : numOutputs=6 : adjustedQueueDepth=127 : wiredMemory=489965952
+2026-09-24 21:01:45.277 I  aned[639:1c33] [com.apple.ane:aned] <private>: END : ok=1 : controller.device=0xafd003ba0 : programHandle=14352462148 : intermediateBufferHandle=417 : queueDepth=127 : numInputs=9 : numOutputs=6 : refcount=1 : wiredMemory=489965952
+2026-09-24 21:01:45.277 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:01:45.277 I  aned[639:1c33] [com.apple.ane:aned] [ANE Model Stats] : modelSize=460537856 : wiredMemory=489965952 : csIdentity=<private> : model=(null) : symbolMappings=<private>
+2026-09-24 21:01:45.277 I  aned[639:1c33] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:01:45.278 I  aned[639:1c33] [com.apple.ane:aned] END: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : programHandle=14352462148 : intermediateBufferHandle=417 :wiredMemory=489965952 : queueDepth=127
+2026-09-24 21:01:45.278 I  aned[639:1c33] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) : newUserClient: ANEDriver::newUserClient type=1
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: encoder_bench, client: <private> pid: 665
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: ANE_UserClientOpen_gated res: 0x0
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: ANE_AddClientForProgram for ANE0 programHandle: 0x357793144 client <private>, client name encoder_bench clientContext: <private> fProgramList: <private>
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:1 Wired-Memory : 487573888 B
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: encoder_bench
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) ANE0: ANE_AddClientForProgram_gated: Adding client <private>:  encoder_bench to programHandle: 0x357793144, Num clients for program: 1, programResource: <private>, referenceCount: 1
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) : operator(): ANE_AddClientForProgram : on sne:0 ret = 0x0
+2026-09-24 21:01:45.278 Df kernel[0:1dbc] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: Retaining program for client <private>
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] START: <private>: <private> : <private>
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] Using primary (regular) ANECompilerService
+2026-09-24 21:01:50.262 Df aned[639:1c33] [com.apple.xpc:connection] [0xafd098640] activating connection: mach=false listener=false peer=false name=com.apple.ANECompilerService
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] <private>: modelPathStr:<private> model.identifierSource:1
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] <private>: useSourceURL:1 hexStr:<private> keyHexStr:<private>
+2026-09-24 21:01:50.262 I  aned[639:1c33] [com.apple.ane:aned] cacheURLIdentifier:<private>
+2026-09-24 21:01:50.263 I  aned[639:1c33] [com.apple.ane:aned] Calling ANECompilerService: modelURL=<private> : sourceURL=<private> : csIdentity=<private> : key=<private> : outputURL=<private> : options=<private>
+2026-09-24 21:01:50.776 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut: AppleANEDrv::DriverInitiatedSleepTimerTimeOut
+2026-09-24 21:01:50.776 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DriverInitiatedSleepTimerTimeOut_gated: Powering off ANE
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 0
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: ANE sleep initiated
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: waitForFirmwareToQuiesce: Waiting for firmware to quiesce. Timeout: 10000 ms.
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: All pending requests completed. Proceeding with regular sleep
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_SaveState_block_invoke: WARN:: clientname:encoder_bench is keeping programs loaded and not freeing - isPowered: 1 Programs Open:1 Wired-memory: 487573888 B
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_SaveState: INFO: Saving state for programResource->programId: 0
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_SaveState: INFO: Saving state for programResource->programId: -1 process->processId: 0
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Finished saving ANE state
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Finished saving ANE Exclave state
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Starting deinit
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: operator(): Work around for PushTelemetry
+2026-09-24 21:01:50.776 Df kernel[0:829] (AppleH11ANEInterface) ANEHWDevice::ANECPU ANE0: WRN: [13:603555353]./sne/controller/target/CANEController.cpp, 1315: 1 programs are NOT unloaded!
+2026-09-24 21:01:50.776 Df kernel[0:829] (AppleH11ANEInterface) ANEHWDevice::ANECPU ANE0: WRN: [13:603555387]./sne/controller/target/CANEController.cpp, 1319: 1 processes are NOT terminated!
+2026-09-24 21:01:50.776 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:01:50.778 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: CSNE_CMD_POWER_DOWN command completed: res=0x00000000
+2026-09-24 21:01:51.009 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: ANECPU not in WFI after CSNE_CMD_SUSPEND/CISP_CMD_POWER_DOWN. retries=20. ASCWRAP_IDLE_STATUS = 0x28
+2026-09-24 21:01:51.009 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup started
+2026-09-24 21:01:51.010 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup finished
+2026-09-24 21:01:51.010 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Statistics: ColdStarts: 5, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 5 ANEInitFailures: 0 PartialShutdownsCompleted: 0
+2026-09-24 21:01:51.010 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Work Stats:  WorkSubmitted: 52 WorkSubmitFailed 0 WorkBegin: 52 WorkEnded: 52 PendingRequests: 0
+2026-09-24 21:01:51.010 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: StopPerformanceCounters: Perf Counters turned off: time:14490948717 DPE Counter Value:92075815770818
+2026-09-24 21:01:51.011 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 21:01:51.011 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_off_hardware: Powering off... done
+2026-09-24 21:01:51.011 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: ANE driverInitiatedSleep completed
+2026-09-24 21:01:55.520 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: MemoryUnwireTimerTimeOut_gated_block_invoke: Times up. Unwiring Loaded Process programHandle=0x357793144
+2026-09-24 21:01:55.521 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: MemoryUnwireTimerTimeOut_gated_block_invoke: Times up. Unwiring Loaded Program programHandle=0x357793144
+2026-09-24 21:01:55.521 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: ProgramUnload: Unloading program for programHandle: 0x357793144, programId: 4294967295, pendingRequestsCount: 0, pendingRequestsWithFirmware: 0
+2026-09-24 21:01:55.521 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: ProgramUnload: program was already terminated programHandle: 0x357793144
+2026-09-24 21:01:55.522 I  kernel[0:8a2] (AppleH11ANEInterface) [INFO] ANE0: aneFreeIntermediateBuffer: intermediateResource was already freed programHandle: 0x357793144 intermediateUnionHandle: 0x1a1
+2026-09-24 21:01:55.522 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 21:03:01.986 I  aned[639:1c33] [com.apple.ane:aned] Compilation success: attr=<private>
+2026-09-24 21:03:01.988 Df aned[639:1c33] [com.apple.xpc:connection] [0xafd098640] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-24 21:03:01.988 I  aned[639:1c33] [com.apple.ane:aned] END: <private>: <private> : <private> : <private>
+2026-09-24 21:03:01.989 I  aned[639:1c33] [com.apple.ane:aned] END: <private>: <private>
+2026-09-24 21:03:02.050 I  aned[639:1c33] [com.apple.ane:aned] No model pathName? <private>
+2026-09-24 21:03:02.050 I  aned[639:1c33] [com.apple.ane:aned] <private>: SecTaskCopyTeamIdentifier() returned teamIdentity=""
+2026-09-24 21:03:02.050 I  aned[639:1c33] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 21:03:02.050 I  aned[639:1c33] [com.apple.ane:aned] START: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : existsInCache=0 : coreAnalyticsClientType=ThirdPartyAppUsingANE StatsMask=0
+2026-09-24 21:03:02.055 I  aned[639:1c33] [com.apple.ane:aned] <private>: ANEF Perf Stats mask: (null)
+2026-09-24 21:03:02.055 I  aned[639:1c33] [com.apple.ane:aned] <private>: START : cachedModel.bytes=0x139800000 : cachedModel.length=480296960 : qos=21 : isPreCompiled=0 : enablePowerSaving=1 : controller.device=0xafd003ba0 : programInstance=0x0 : refcount=0 : intermediateBufferHandle=0 : statsMask=0 : memoryPoolId=0 : enableLateLatch=0 : modelIdentityStr=<private> : cacheUrlIdentifier=<private> : aotCacheUrlIdentifier=(null) optOutOfModelMemoryUnwiring=0
+2026-09-24 21:03:02.056 I  aned[639:1c33] [com.apple.ane:aned] <private> 280 Stats mask value: 0
+2026-09-24 21:03:02.056 I  kernel[0:1c33] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x3c55be657 not found in existing mapping
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneVnodeTrustVerification: on-device compiled model DataVault verification succeeded
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneMachoReadHeaderLoadCommands: macho headerAndLoadCommand: 0x<private>, size: 67696
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __DEBUG __debug_info filesize: 1941528 fileoffset: 20283392
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __TEXT __text filesize: 10221940 fileoffset: 22233088
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __TEXT __const filesize: 38340864 fileoffset: 32455040
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_0 __kern_0 filesize: 134172480 fileoffset: 70811648
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_1 __kern_1 filesize: 134213632 fileoffset: 204996608
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_2 __kern_2 filesize: 134151168 fileoffset: 339214336
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE: __KERN_3 __kern_3 filesize: 6922240 fileoffset: 473366528
+2026-09-24 21:03:02.056 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: AllocateMemoryForDirectIO: INFO: transfer ownership of buffer to process (name:encoder_bench pid:665) res=0x0
+2026-09-24 21:03:02.058 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramInitialSetup: Model verification passed - isPrecompiledModel: 0 isModelVerifiedBySignatureCheck: 0
+2026-09-24 21:03:02.058 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramInitialSetup: WARN: unidentified segment (__DEBUG) or section (__debug_info) offset: 0x1358000 size: 0x1da018
+2026-09-24 21:03:02.058 E  kernel[0:1c33] (AppleH11ANEInterface) [ERROR] ANE0: enqueueActionBlock: Skip enqueueActionBlock fSleepInProgress: 1 fDriverInitiatedSleep: 1 fSystemInitiatedSleep: 0
+2026-09-24 21:03:02.058 E  kernel[0:1c33] (AppleH11ANEInterface) [ERROR] ANE0: enqueueActionBlock: Skip enqueueActionBlock fSleepInProgress: 1 fDriverInitiatedSleep: 1 fSystemInitiatedSleep: 0
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: isANEActive: fInitInProgress: 0, fIsPowered: 0, fDeInitInProgress: 0, fSleepInProgress: 1, fFirmwareTimeout: 0, fClientPowerDownInProgress: 0
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_HandlePowerStateChecksForClient: ANE power status: isPowered: 0, fDeInitInProgress: 0, fFirmwareTimeout: 0
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powering on ANE. blocking: 1
+2026-09-24 21:03:02.061 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Wait until ANE gets powered up for client <private> retries=1
+2026-09-24 21:03:02.061 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 21:03:02.061 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 1
+2026-09-24 21:03:02.061 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_on_hardware: ANE wakeup from driver initiatd sleep initiated
+2026-09-24 21:03:02.062 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: StartPerformanceCounters: Perf Counters turned on: time:16196195446 DPE Counter Value:92081503680662
+2026-09-24 21:03:02.062 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_on_hardware: EnableANEClocksAndPower result = 0x0
+2026-09-24 21:03:02.062 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: :
+2026-09-24 21:03:02.062 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupAllocationsPendingRelease_gated: Skip cleanup - nothing in the pending queue
+2026-09-24 21:03:02.071 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: FW App image...
+2026-09-24 21:03:02.073 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: cmd_buffer_base: 0x1fb08000, size: 262144
+2026-09-24 21:03:02.087 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: CSNE_CMD_SET_SNE_PMU_BASE2 command to firmware, res=0x00000000
+2026-09-24 21:03:02.087 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fNumANEs: 1 fANEMaxCacheRequestSharedEvents: 2
+2026-09-24 21:03:02.087 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxCacheRequests: 16, fANEMaxCacheRequestsLowerLimit: 12
+2026-09-24 21:03:02.087 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fANEMaxGlobalWaitEvent: 32
+2026-09-24 21:03:02.087 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fFWSupportsRTGraph: 0
+2026-09-24 21:03:02.087 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: fProcedureCallFWOptimization 0x3
+2026-09-24 21:03:02.088 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: ANE wakeup from sleep completed in 26726 uS, res=0x0
+2026-09-24 21:03:02.088 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: Statistics: ColdStarts: 6, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 5 ANEInitFailures: 0
+2026-09-24 21:03:02.088 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_Init: Work Stats:  WorkSubmit: 52 WorkSubmitFailed: 0 WorkBegin: 52 WorkEnd: 52 PendingRequests: 0
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: aned
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :line: 78
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) : Program with qoSConstraint kANEQoSConstraintPowerSensitiveLatencyInsensitive set
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANEHWDevice: preProcess:,Program Identifier: ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+	--fno-fold-scale=true
+	--fdram-allocator=ffreuse
+	--fdram-tensor-priority=sizebyliverange
+	--fl2-allocator=ffreuse
+	--fl3-allocator=ffreuse
+	--fl2-cache-mode=resident
+	-g 
+	--fsignature=ident
+	--fdisable-bonded-networks=true
+	--enable-param-and-map-rtgraph-refactor=false
+	--memcache-size=4194304
+	--fspatial-split=disabled
+	--fenable-circular-buffer-in-spatial-split=-1
+	--fkernel-rewind=enabled
+	--fdump-status-dictionary-to-file
+	--max-td-latency=10000.000000
+	--generate-static-perf-analytics
+	--generate-analytics-buffer
+	--ne-frequency=-1.000000
+	--pstate-dcs=-1
+	--pstate-soc=-1
+	--bss-limit=3221225472
+	--foptimize-ne-utilization=true
+	--disable-cache-prefetch-mask=1
+	--optimize-mutable-kernel-section=true
+	--enable-summary-performance-stats=false
+	--split-kern<…>
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANEC v1
+zin_ane_compiler v9.509.0
+
+coremlc-component-MIL: 3520.4.1
+coremlc-version: 3520.5.1
+
+ Module ANEC: 
+	 ModuleBundleName: com.apple.ANECompilerFramework
+	 ModuleVersion: 9.509.0
+	 ModuleCompilationFlags: 
+	-t h13g
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANEHWDevice: preProcess:316, programHandle: 0x3c55be657, Model Identifier: length: 59, string:
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANE-1: IOReturn ANEProgramLegacyResource::preProcess(ANEProgramCreateArgs *, ANEProgramCreateAdditionalParams *, ANEProgramCreateArgsOutput *) :ANEHWDevice::kernel is non-mutable kernel section
+2026-09-24 21:03:02.088 Df kernel[0:1c33] (AppleH11ANEInterface) ANEHWDevice: preProcess: , Neither AOT not JIT tag found in ZinComputeProgramGetMachoCompilationMode!
+2026-09-24 21:03:02.091 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.095 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProcessCreate_gated: createProcessStatus: 0, programHandle: 0x3c55be657 programId: 0 processId: 0 isProcessRecreate: 0
+2026-09-24 21:03:02.095 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: DEBUG: ANEHWDevice: Program added to client (<private>) programs for ANED programId: 0 programHandle: 0x3c55be657
+2026-09-24 21:03:02.095 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramCreate_gated: releasing dartMapLock
+2026-09-24 21:03:02.095 I  kernel[0:1c33] (AppleH11ANEInterface) [INFO] : findProgramANEMapping_gated: programHandle 0x3c55be657 not found in existing mapping
+2026-09-24 21:03:02.095 Df kernel[0:1c33] (AppleH11ANEInterface) : addProgramToANEMapping_gated: add bitmaskMapping 0x1 for programHandle: 0x3c55be657
+2026-09-24 21:03:02.095 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: Adding <private> to the programList for client, count: 1
+2026-09-24 21:03:02.095 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramCreate_gated: ANE_ProgramCreate on ANEs, bitMask: 0x1, programHandle: 0x3c55be657 client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 21:03:02.095 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.095 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: aneAllocateIntermediateBuffer: programHandle: 0x3c55be657 sharedUnionHandle: 0x3c56a6c42 intermediateUnionHandle: 0x1aa intermediateResourceId: 0x1ab bufferSize: 0x1c14000
+2026-09-24 21:03:02.096 Df kernel[0:1c33] (AppleH11ANEInterface) : wire: ANEUnionResource: wire memory descriptor: <private> size: 0x1c14000
+2026-09-24 21:03:02.096 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramPrepare_gated: releasing dartMapLock
+2026-09-24 21:03:02.096 Df kernel[0:1c33] (AppleH11ANEInterface) : operator(): ProgramPrepare to ANE0 result=0x0
+2026-09-24 21:03:02.096 I  aned[639:1c33] [com.apple.ane:aned] <private>: programHandle=16196036183 : queueDepth=32 : numInputs=9 : numOutputs=6 : adjustedQueueDepth=127 : wiredMemory=509725056
+2026-09-24 21:03:02.096 I  aned[639:1c33] [com.apple.ane:aned] <private>: END : ok=1 : controller.device=0xafd003ba0 : programHandle=16196036183 : intermediateBufferHandle=426 : queueDepth=127 : numInputs=9 : numOutputs=6 : refcount=1 : wiredMemory=509725056
+2026-09-24 21:03:02.096 I  aned[639:1c33] [com.apple.ane:aned] [ANE Model Stats] : modelSize=480296960 : wiredMemory=509725056 : csIdentity=<private> : model=(null) : symbolMappings=<private>
+2026-09-24 21:03:02.096 I  aned[639:1c33] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:03:02.097 I  aned[639:1c33] [com.apple.ane:aned] END: <private>: csIdentity=<private> : model=<private> : isPreCompiledModel=0 : programHandle=16196036183 : intermediateBufferHandle=426 :wiredMemory=509725056 : queueDepth=127
+2026-09-24 21:03:02.097 I  aned[639:1c33] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) : newUserClient: ANEDriver::newUserClient type=1
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: client: <private> clientContext: <private> fProgramList: <private>
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated:
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_UserClientOpen_gated: Adding client name: encoder_bench, client: <private> pid: 665
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) : ANE_UserClientOpen_gated: ANE_UserClientOpen_gated res: 0x0
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: ANE_AddClientForProgram for ANE0 programHandle: 0x3c55be657 client <private>, client name encoder_bench clientContext: <private> fProgramList: <private>
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:ISP isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:aned isPowered: 1 Programs Open:2 Wired-Memory : 517067520 B
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 1 Programs Open:1 Wired-Memory : 29493632 B
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated_block_invoke: clientname:encoder_bench isPowered: 0 Programs Open:0 Wired-Memory : 0 B
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Client requesting power on: encoder_bench
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_PowerOn_gated: Powered up already, blocking: 1
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) ANE0: ANE_AddClientForProgram_gated: Adding client <private>:  encoder_bench to programHandle: 0x3c55be657, Num clients for program: 1, programResource: <private>, referenceCount: 1
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) : operator(): ANE_AddClientForProgram : on sne:0 ret = 0x0
+2026-09-24 21:03:02.097 Df kernel[0:1ec9] (AppleH11ANEInterface) : ANE_AddClientForProgram_gated: Retaining program for client <private>
+2026-09-24 21:03:02.170 I  aned[639:1c33] [com.apple.ane:aned] START: <private>: <private>
+2026-09-24 21:03:02.170 I  aned[639:1c33] [com.apple.ane:aned] <private>: SecTaskCopySigningIdentifier() returned csIdentity="<private>"
+2026-09-24 21:03:02.170 I  aned[639:1c33] [com.apple.ane:aned] <private>:  removeProgramForConnection: <private>, Model cacheURLIdentifier:<private>
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramUnprepare_gated: programHandle: 0x3c55be657, client: 0x<private>
+2026-09-24 21:03:02.171 I  kernel[0:1c33] (AppleH11ANEInterface) [INFO] ANE0: aneFreeIntermediateBuffer: Free intermediateUnion id: 0x1aa resourceCount: 0 useCount: 0
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) : operator(): ANE_ProgramUnprepare to ANE0  result=0x0
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramDestroy_gated: Removing client (<private>) from program handle 0x3c55be657
+2026-09-24 21:03:02.171 Db kernel[0:1c33] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 2
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: Still have 1 clients using programHandle=0x3c55be657. NOT freeing.
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: programHandle: 0x3c55be657, client: 0x<private>
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProcessDestroy_gated: 1 clients still using programHandle: 0x3c55be657, not destroying it
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x3c55be657 programResourceIndex = 1 referenceCount = 2 releasePendingList=0
+2026-09-24 21:03:02.171 Df kernel[0:1c33] (AppleH11ANEInterface) : operator(): ANE_ProgramDestroy to ANE0  fANEIn=<private> result=0x0
+2026-09-24 21:03:02.171 I  aned[639:1c33] [com.apple.ane:aned] END: <private>: <private> : <private> : 0
+2026-09-24 21:03:02.171 I  aned[639:1c33] [com.apple.CoreAnalytics:client] Dropping "com.apple.ANEUsage" as it isn't used in any transform (not in the config or budgeted?)
+2026-09-24 21:03:02.171 Df kernel[0:1dbd] (AppleH11ANEInterface) : ANE_UserClientCleanup_gated: Cleanup program for client <private> clientContext: <private> fProgramList: <private> programHandle=0x3c55be657
+2026-09-24 21:03:02.171 Db kernel[0:1dbd] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 1
+2026-09-24 21:03:02.171 Df kernel[0:1dbd] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: No more clients are using programHandle=0x3c55be657. Freeing now
+2026-09-24 21:03:02.171 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: programHandle: 0x3c55be657, client: 0x<private>
+2026-09-24 21:03:02.171 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: pProgramResource->programId: 0 destroyArgs->programHandle: 0x3c55be657
+2026-09-24 21:03:02.171 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_ProcessDestroy_gated: Destroying programHandle: 0x3c55be657
+2026-09-24 21:03:02.171 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.172 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_ReleasePatchedMutableMemoryBuffer: Patched Mutable buffer is NULL for program handle: 0x3c55be657
+2026-09-24 21:03:02.172 Df kernel[0:1dbd] (AppleH11ANEInterface) : ~ANEBufferCache: numCachedResources: 0 cachedWiredMemorySize: 0x0
+2026-09-24 21:03:02.172 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x3c55be657 programResourceIndex = 1 referenceCount = 1 releasePendingList=0
+2026-09-24 21:03:02.172 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Freeing Program buffer -
+2026-09-24 21:03:02.172 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Model Identifier:
+2026-09-24 21:03:02.172 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: force deiniting program process and program. programHandle: 0x3c55be657 programId: 0 refCount: 1
+2026-09-24 21:03:02.172 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 0
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname aned isPowered 1
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname encoder_bench isPowered 1
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname encoder_bench isPowered 1
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: encoder_bench
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname:aned isPowered:1 Programs Open:1 Wired-Memory:29493632 B
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname:encoder_bench isPowered:1 Programs Open:1 Wired-Memory:29493632 B
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated: :
+2026-09-24 21:03:02.173 Df kernel[0:1dbd] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated_block_invoke: Removing client: <private>, clientName: encoder_bench
+2026-09-24 21:03:02.196 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_ProgramSendRequestInitialChecksAndLookups_gated: Program not mapped in DART, remapping. programHandle: 0x357793144
+2026-09-24 21:03:02.196 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.196 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.196 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.197 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.198 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.200 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.200 Df kernel[0:92a] (AppleH11ANEInterface) ANEHWDevice: Signaling wiring queue is empty
+2026-09-24 21:03:02.203 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ProgramLoad: Creating program for programHandle: 0x357793144
+2026-09-24 21:03:02.206 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_ProcessCreate_gated: createProcessStatus: 0, programHandle: 0x357793144 programId: 1 processId: 1 isProcessRecreate: 1
+2026-09-24 21:03:02.206 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ProcessReMap: programHandle=0x357793144
+2026-09-24 21:03:02.206 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneAllocateIntermediateBuffer: programHandle: 0x357793144 sharedUnionHandle: 0x1a1 intermediateUnionHandle: 0x1a1 intermediateResourceId: 0x1ac bufferSize: 0x1c14000
+2026-09-24 21:03:02.207 Df kernel[0:1d6c] (AppleH11ANEInterface) : wire: ANEUnionResource: wire memory descriptor: <private> size: 0x1c14000
+2026-09-24 21:03:02.207 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.210 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.210 Df kernel[0:829] (AppleH11ANEInterface) ANE0: processTargetToHostIOCommand: CPULOAD_NOTIFICATION: fANEFirmwareCpuLoadScore: 0 numPendingRequests: 1 pendingRequestsWithFirmware: 1 fwCpuThrottled: 0
+2026-09-24 21:03:02.216 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.236 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.238 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.247 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.259 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.377 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.382 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.384 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.386 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.396 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.407 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.528 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.534 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.536 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.538 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.549 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.560 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.677 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.683 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.685 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.687 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.698 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.709 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.826 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.831 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.833 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.836 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.847 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.858 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.978 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.984 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.986 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.988 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:02.999 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.011 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.130 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.136 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.137 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.139 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.148 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.162 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.285 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.289 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.291 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.294 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.307 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.321 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.443 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.449 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.451 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.453 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.466 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.479 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.601 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.606 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.608 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.610 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.623 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.636 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.758 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.762 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.764 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.766 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.776 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.789 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.912 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.918 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.920 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.922 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.934 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:03.949 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.070 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.077 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.078 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.081 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.092 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.110 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.228 Df kernel[0:1d6c] (AppleH11ANEInterface) : ANE_UserClientCleanup_gated: Cleanup program for client <private> clientContext: <private> fProgramList: <private> programHandle=0x357793144
+2026-09-24 21:03:04.228 Db kernel[0:1d6c] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 2
+2026-09-24 21:03:04.228 Df kernel[0:1d6c] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: Still have 1 clients using programHandle=0x357793144. NOT freeing.
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_UserClientCleanup_gated: Releasing program buffer: <private> programHandle: 0x357793144 programId: 1 for client encoder_bench
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x357793144 programResourceIndex = 0 referenceCount = 2 releasePendingList=0
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_UserClientCleanup_gated: Releasing program buffer: <private> programHandle: 0x357793144 programId: 1 for client encoder_bench
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: programHandle: 0x357793144 programResourceIndex = 0 referenceCount = 1 releasePendingList=0
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Freeing Program buffer -
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: Model Identifier:
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ReleaseProgramResource: force deiniting program process and program. programHandle: 0x357793144 programId: 1 refCount: 1
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_ProcessDestroy_gated: Destroying programHandle: 0x357793144
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ProcessAbort: Client not found but proceeding with process abort
+2026-09-24 21:03:04.230 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.230 I  kernel[0:1d6c] (AppleH11ANEInterface) [INFO] ANE0: aneFreeIntermediateBuffer: Free intermediateUnion id: 0x1a1 resourceCount: 0 useCount: 0
+2026-09-24 21:03:04.231 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_ReleasePatchedMutableMemoryBuffer: Patched Mutable buffer is NULL for program handle: 0x357793144
+2026-09-24 21:03:04.231 Df kernel[0:1d6c] (AppleH11ANEInterface) : ~ANEBufferCache: numCachedResources: 0 cachedWiredMemorySize: 0x0
+2026-09-24 21:03:04.231 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.231 Df kernel[0:8a2] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.234 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 0
+2026-09-24 21:03:04.234 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname aned isPowered 1
+2026-09-24 21:03:04.234 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname encoder_bench isPowered 1
+2026-09-24 21:03:04.234 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: encoder_bench
+2026-09-24 21:03:04.234 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname:aned isPowered:1 Programs Open:0 Wired-Memory:0 B
+2026-09-24 21:03:04.234 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated: :
+2026-09-24 21:03:04.234 Df kernel[0:1d6c] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated_block_invoke: Removing client: <private>, clientName: encoder_bench
+2026-09-24 21:03:04.238 Df aned[639:1c33] [com.apple.xpc:connection] [0xafcd14180] invalidated because the client process (pid 665) either cancelled the connection or exited
+2026-09-24 21:03:04.239 Df kernel[0:1c33] (AppleH11ANEInterface) : ANE_ProgramDestroy_gated: Removing client (<private>) from program handle 0x357793144
+2026-09-24 21:03:04.239 Db kernel[0:1c33] (AppleH11ANEInterface) [DEBUG] : removeProgramToANEMapping_gated: pMapping->clients->getCount() = 1
+2026-09-24 21:03:04.239 Df kernel[0:1c33] (AppleH11ANEInterface) : removeProgramToANEMapping_gated: No more clients are using programHandle=0x357793144. Freeing now
+2026-09-24 21:03:04.239 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_ProgramDestroy_gated: programHandle: 0x357793144, client: 0x<private>
+2026-09-24 21:03:04.239 E  kernel[0:1c33] (AppleH11ANEInterface) [ERROR] ANE0: ANE_ProgramDestroy_gated: ERROR: Program NOT Found programHandle: 0x357793144
+2026-09-24 21:03:04.239 Df kernel[0:1c33] (AppleH11ANEInterface) : operator(): ANE_ProgramDestroy to ANE0  fANEIn=<private> result=0x0
+2026-09-24 21:03:04.239 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname ISP isPowered 0
+2026-09-24 21:03:04.239 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated_block_invoke: clientname aned isPowered 1
+2026-09-24 21:03:04.239 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Client requesting power off: aned
+2026-09-24 21:03:04.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_PowerOff_gated: Send changePowerStateToPriv -> 0
+2026-09-24 21:03:04.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated: :
+2026-09-24 21:03:04.240 Df kernel[0:1c33] (AppleH11ANEInterface) ANE0: ANE_UserClientClose_gated_block_invoke: Removing client: <private>, clientName: aned
+2026-09-24 21:03:04.240 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerState:
+2026-09-24 21:03:04.240 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: Requested power state: 0
+2026-09-24 21:03:04.240 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: setPowerStateGatedPriv: No other ANE clients present, continue powering off
+2026-09-24 21:03:04.240 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Starting deinit
+2026-09-24 21:03:04.240 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: operator(): Work around for PushTelemetry
+2026-09-24 21:03:04.240 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: aneFirmwareCommandSend: Skip waiting for response
+2026-09-24 21:03:04.241 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: CSNE_CMD_POWER_DOWN command completed: res=0x00000000
+2026-09-24 21:03:04.477 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: ANECPU not in WFI after CSNE_CMD_SUSPEND/CISP_CMD_POWER_DOWN. retries=20. ASCWRAP_IDLE_STATUS = 0x28
+2026-09-24 21:03:04.477 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup started
+2026-09-24 21:03:04.477 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_CleanupForColdReboot_gated: Cleanup finished
+2026-09-24 21:03:04.477 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Statistics: ColdStarts: 6, JetsamTriggeredColdStarts: 0, Resumes: 0, ResumesFailed: 0, SuspendsSuccessful: 0, SuspendsFailed: 0 FirmwareTimeouts: 0 ANEDeInits: 6 ANEInitFailures: 0 PartialShutdownsCompleted: 0
+2026-09-24 21:03:04.477 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: ANE_deInit: Work Stats:  WorkSubmitted: 104 WorkSubmitFailed 0 WorkBegin: 104 WorkEnded: 104 PendingRequests: 0
+2026-09-24 21:03:04.477 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: StopPerformanceCounters: Perf Counters turned off: time:16254156972 DPE Counter Value:92081503680662
+2026-09-24 21:03:04.478 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: DisableANEClocksAndPower: ANE_SYS wasDisabled=0
+2026-09-24 21:03:04.478 Df kernel[0:8e9] (AppleH11ANEInterface) ANE0: power_off_hardware: Powering off... done
