@@ -1,0 +1,43 @@
+13:02:28.032 start load={ 32.24 51.08 29.79 } boottime=Fri Sep 25 12:55:14 2026
+932d3b9b70671a7eb35d6a3c0c3ebc991dac1024d71118efe5749f5ddbefdf2a  /Library/Extensions/ANERegDump.kext/Contents/MacOS/ANERegDump
+13:02:28.863 idle ANE Power: 0 mW
+islands_up=0 poll_iters=200001 poll_us=2000000 ranges=23 bytes=737776
+ps_first 0xf000300(act=0) 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+ps 0xf000300(act=0) 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+13:02:31.574 idle rc=3
+13:02:31.578 encoder pid 3342
+13:02:34.360 wait t=2s ANE Power: 0 mW
+13:02:37.149 wait t=4s ANE Power: 0 mW
+13:02:39.931 wait t=6s ANE Power: 0 mW
+13:02:42.717 wait t=8s ANE Power: 0 mW
+13:02:45.506 wait t=10s ANE Power: 2 mW
+13:02:46.307 load1 ANE Power: 0 mW
+islands_up=0 poll_iters=200001 poll_us=2000000 ranges=23 bytes=737776
+ps_first 0x1f0003ff(act=15) 0x1000030f(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+ps 0x1f0003ff(act=15) 0x1f0003ff(act=15) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+13:02:48.996 load1 rc=3
+13:02:50.798 load2 ANE Power: 0 mW
+islands_up=0 poll_iters=200001 poll_us=2000000 ranges=23 bytes=737776
+ps_first 0xf000300(act=0) 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+ps 0xf000300(act=0) 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+13:02:53.473 load2 rc=3
+13:02:55.276 load3 ANE Power: 0 mW
+islands_up=1 poll_iters=19533 poll_us=195320 ranges=23 bytes=848416
+ps_first 0xf000300(act=0) 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+ps 0x1f0003ff(act=15) 0x1f0003ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+13:02:55.560 load3 rc=0
+13:02:57.364 load4 ANE Power: 0 mW
+islands_up=1 poll_iters=133815 poll_us=1338140 ranges=23 bytes=848416
+ps_first 0xf000300(act=0) 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+ps 0x1f0003ff(act=15) 0x1f0003ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+13:02:59.163 load4 rc=0
+13:02:59.166 gated attempts done, passes=2
+13:02:59.168 encoder still running
+13:04:26.871 encoder rc=0
+"placement":{"ane":1346,"cpu":28}
+13:04:30.734 after ANE Power: 87 mW
+islands_up=1 poll_iters=91 poll_us=900 ranges=23 bytes=737776
+ps_first 0x1f0003ff(act=15) 0x1f0003ff(act=15) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+ps 0x1f0003ff(act=15) 0x1f0003ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+13:04:30.784 after rc=0
+13:04:30.805 done

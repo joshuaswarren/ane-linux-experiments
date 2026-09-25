@@ -1,0 +1,30 @@
+# Runtime request for ANERegDump. Edit this file. Do not rebuild the kext.
+# The kernel still refuses a gate the idle word 0x300 would pass, still
+# skips the pop-on-read words, and still gates every engine-window range.
+# Every number is hexadecimal, with or without 0x. poll_us 0x1e8480 is 2 s.
+poll_us 0x1e8480
+pmgr 0x28e080000 0x10000
+gate 0xf0 0xf0
+# Gate: macOS never raises ane_sys_mpm@4000 (0x300 at 4.8 W ANE load,
+# receipt 2026-09-25-macos-ane-pstable), so it is not a gate word.
+island 0x260
+island 0x2e0
+island 0x4008
+island 0x4010
+island 0x4018
+island 0x4020
+island 0x4028
+island 0x4030
+range pmgr-ps 0x28e080000 0x4040
+range venc-sys-ps 0x2902803c0 0x40
+range venc-dma-ps 0x290288000 0x28
+range wrapper 0x285400000 0x14000 gated
+range mailbox 0x285408000 0x1000 gated
+range rvbar 0x285050000 0x8 gated
+range scratch 0x285840048 0x28 gated
+range dart0 0x285800000 0x2000 gated
+range dart1 0x285810000 0x2000 gated
+range dart2 0x285820000 0x2000 gated
+range patchbay 0x10001406870 0x40
+handoff 1
+adt 1
