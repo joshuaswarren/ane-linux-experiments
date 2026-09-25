@@ -229,3 +229,16 @@ jwm1; core dumps preserved in /var/lib/systemd/coredump/ (59396 SIGSEGV,
 49109 SIGABRT); OOM note: the runner peaked ~9 GB RSS on the 16 GB box
 (GGUF mmap + fp32 lmT + all 38 programs' channel BOs) — drop_host_content_pages
 in the backend releases the per-program content-channel host copies after open.
+
+## 10. Task-stream decode (2026-09-25, Route A continuation)
+
+The converted prog_001.anec task stream is decoded to the selector level
+(tool: ane_channels.py bind_walk port, off-box): 55 TDs, per-position
+unrolled delta-rule (banks 4-11; reads of 4,5,7,9,10,11; writes of 6,8;
+16 identical chan6->chan8 tasks = the per-head recurrence). The stream is
+self-describing to the selector level; the remaining layer for the loader
+manifest is each surface's packed geometry inside its bank (plane/row
+strides per the compiler's TD DMA fields) — the same fields the runtime's
+tile_shift support parses. Gate status stands: 0/10 with garbage from the
+first generated token under the positional bank guess; runner logic
+proven 10/10 exact over e5rt on the oracle.
