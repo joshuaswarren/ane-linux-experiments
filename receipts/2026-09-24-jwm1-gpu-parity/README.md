@@ -368,3 +368,21 @@ n=100 10-pass: decode 37.39 tok/s, ttft 50.11, prefill-512 232.04,
 e2e 1.0883 s, pin dbf704971617fdfc — bit-identical to the prior
 10-pass (certified stream re-verified on the landed state). vs macOS
 47.05/99.12/343.73/0.7898 = 0.79x/0.51x/0.68x/0.72x — all FAIL.
+
+## PHASE 1 (design 22b395d) — export-inert path PASSED
+
+Branch agent/dep-export-phase1 @ 7f552ac (on 024d4fe60), wheel
+0.32.3.dev202609250801+7f552ac (sha256 eee6c3c2ea5f...), venv
+/var/tmp/m1-p1-venv (+ GDN fast/raw routes + greedy-prune mlx-lm
+wiring; greedy kernel op absent in this build's registration — head
+runs full path, self-guarded, digest-neutral).
+
+Encoder now computes per-dispatch DepRecords (disjoint from the
+GATED_BARRIERS tracker proof + usc-signature change) and stores them
+host-side (dep_records_ vector); no consumer. MLX_OMARCHY_NO_EXPORT_
+DEP_MASKS=1 kill switch; MLX_OMARCHY_DEP_DUMP=N observability.
+
+GATE (n=100 10-pass): pin dbf704971617fdfc — BIT-IDENTICAL to the
+certified stream; decode 36.38 tok/s (0.77x vs macOS, within run
+noise of 37.36/37.39). Export computation is inert as designed.
+Phase 2 (mesa consumption) requires design review sign-off.
