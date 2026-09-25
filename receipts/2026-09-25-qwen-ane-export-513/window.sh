@@ -2,14 +2,20 @@
 # QwenAneExport512 jwm1 window: max_len 513 staged Qwen ANE export, io_layout-patched.
 # Builds libane + bindings from the staged kit, patches a COPY of the pristine staged
 # ANECs with the io_layout plan (sha-guarded), runs the staged runner.
-# usage: window.sh verify|bench|prefill
-#   verify   10 prompts x 32 greedy tokens vs chunk_00 (expect STAGED-QWEN-LINUX PASS)
+# usage: window.sh verify|bench|prefill|replay
+#   verify   10 prompts x 32 greedy tokens vs chunk_00. NOTE at max_len 513 the
+#            expected score is 2/10 (p005, p009): the 513 compile is numerically
+#            different from the 50 compile (macOS e5rt-at-513 also scores 2/10 with
+#            per-prompt tokens identical to Linux; see receipt d55e65b addendum).
+#            The correctness gate at 513 is replay, not verify.
+#   replay   byte-compares step 0 of p001 across all 38 programs against the macOS
+#            e5rt-at-513 goldens shipped in export/goldens.json (the 513 gate)
 #   bench    contract decode timing: 3 warmups, 10 reps (compare_denominator.py vs fedd4da)
 #   prefill  pure 512-token prefill leg, same timing boundary as the macOS 11.74 tok/s
 #            denominator (fedd4da section 7): 3 timed walls of the whole staged-decode
 #            generate (512 prompt ids + 1 generated token), rate = 512/median(wall)
 set -euo pipefail
-MODE=${1:?verify|bench|prefill}
+MODE=${1:?verify|bench|prefill|replay}
 KIT=/var/tmp/qwen38-513-kit
 ANEC=/var/tmp/qwen38-513-anec
 OUT=/var/tmp/qwen38-513-out

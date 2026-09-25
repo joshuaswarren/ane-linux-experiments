@@ -111,3 +111,32 @@ window.
 - omarchy-ane origin/main 62ce3d1 (prefill mode; fast-forward of 74e22d3).
 - Tools: staged_qwen_manifest.py + io_layout.py = canonical omarchy-ane copies
   (pushed over the stale /tmp first-fix versions before the run).
+
+## 9. Addendum (first jwm1 run + the 513-numerics finding)
+
+Jwm1Parity8's first window (kit shas verified on-box): `verify` 2/10, `prefill`
+crashed (runner bug, below), `bench` ran. Diagnosis, all off-box:
+
+- **The 513 compile is numerically different from the 50 compile.** macstudio
+  ANEForge e5rt at max_len 513 vs the frozen max_len 50 reference (chunk_00):
+  **2/10 exact** (p005, p009), per-prompt first_diff = 12/30/22/31/-/16/6/30/-/25 —
+  **identical to jwm1's Linux verify on the same day** (raw-xcheck-513.json). The
+  Linux 513 kit reproduces macOS-at-513 token-for-token on all 10 prompts x 32
+  greedy tokens, including the drift the retiled M-dependent kernels introduce
+  versus the 50 compile. The kit is correct; chunk_00 is the wrong gate at 513.
+- **Correctness gate at 513 = replay vs macOS e5rt-at-513 goldens.** Generated on
+  macstudio (staged_qwen_manifest.py --max-len 513 --goldens, first-step sha256 for
+  38 programs) and shipped in the kit at export/goldens.json;
+  `window.sh replay` byte-compares step 0 of p001 across all 38 programs.
+- **Runner fix:** the prefill branch referenced `ch` before construction
+  (NameError on jwm1). Fixed on omarchy-ane 95fe3fe (merged to main 19dfcd8);
+  /var/tmp/qwen38-513-kit.tgz rebuilt at 95fe3fe, sha256
+  338772b779569d2e7056a7172b0306282236768b8dabec90f3f04831720cf30c (replaces
+  7ef6ea6e...; re-extract before rerunning).
+- window.sh updated: modes verify|replay|bench|prefill, with the 2/10-at-513
+  expectation documented (sha256 57baedae06ddec18...); SHA256SUMS.anec now 42
+  lines (goldens.json added).
+- Bench note: the decode bench at 513 has no macOS-at-513 decode denominator (the
+  fedd4da decode rows are the 50 compile); the prefill leg's denominator (11.74
+  tok/s) IS the same 513 regime, which is this kit's purpose. Decode continues on
+  the max_len 50 kit.
