@@ -1,0 +1,29 @@
+{
+ "decode_tok_rate": {
+  "linux_median": 8.245,
+  "macos_median": 5.625,
+  "ratio_linux_over_macos": 1.4718,
+  "ratio_ci95": [
+   1.437,
+   1.5087
+  ]
+ },
+ "ttft_s": {
+  "linux_median": 0.9494,
+  "macos_median": 1.1891,
+  "ratio_linux_over_macos": 0.8449,
+  "ratio_ci95": [
+   0.775,
+   0.9283
+  ]
+ },
+ "e2e_s": {
+  "linux_median": 4.7315,
+  "macos_median": 6.7178,
+  "ratio_linux_over_macos": 0.6993,
+  "ratio_ci95": [
+   0.6828,
+   0.7156
+  ]
+ }
+}

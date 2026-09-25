@@ -1,0 +1,28 @@
+=== preflight 2026-09-25T15:26:29-05:00 ===
+2026-09-25T15:26:29,084866777-05:00
+jwm1-linux
+13c744231524d440b0a774155343df9ade0bbcbc37edc4b1ccf9698e580d5453  /var/tmp/encoder-whole-jwm1/bundle/program-0.anec
+d06222a86f3bff26aaf1cec1223ade32f27cad84b994dccb1af9cca965a7da8c  /var/tmp/encoder-whole-jwm1/libane-strict.so
+84e8cc8f5f1048e168732f7d2afecd8b40dd9fd80c31c2a62f3e054446fe3e0c  /var/tmp/encoder-whole-jwm1/build/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
+aaacba7af6dbbc3eb2ab4807c664f6a15fbac1060a29ee1ccc0753d49ac98c87  /var/tmp/jwm1-ane-step2/fused-e2e/fused_e2e.py
+2dbaace1b1f1c695d6cd3ae4d51d57032bb924800a306c7a7167f303678d84d4  /var/tmp/encoder-whole-jwm1/mlx/tools/coreml/vulkan_encoder.py
+WARNING: wheel '0.32.3.dev202609242216+f252747' not recognized as defer-commit lineage (allowed by COMBINED_WHEEL_ALLOW)
+=== combined E2E x3 2026-09-25T15:26:29-05:00 ===
+--- rep 1 2026-09-25T15:26:29-05:00 ---
+/var/tmp/combined-parakeet.sh: line 102: bc: command not found
+rep1 rc=0 wall_ms=
+--- rep 2 2026-09-25T15:26:41-05:00 ---
+/var/tmp/combined-parakeet.sh: line 102: bc: command not found
+rep2 rc=0 wall_ms=
+--- rep 3 2026-09-25T15:26:43-05:00 ---
+/var/tmp/combined-parakeet.sh: line 102: bc: command not found
+rep3 rc=0 wall_ms=
+=== identity 2026-09-25T15:26:45-05:00 ===
+554a3d66f6885a3552d531d509bbd30d632d5bd424296028e8c1523f9f6f4ec4  /var/tmp/encoder-whole-jwm1/combined-20260925T152629/out-1/encoder_hidden.npy
+554a3d66f6885a3552d531d509bbd30d632d5bd424296028e8c1523f9f6f4ec4  /var/tmp/encoder-whole-jwm1/combined-20260925T152629/out-2/encoder_hidden.npy
+554a3d66f6885a3552d531d509bbd30d632d5bd424296028e8c1523f9f6f4ec4  /var/tmp/encoder-whole-jwm1/combined-20260925T152629/out-3/encoder_hidden.npy
+db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790  /var/tmp/encoder-whole-jwm1/combined-20260925T152629/out-1/transcript.txt
+{"ane_exec_ms": 140.696, "control": "host", "cpu_tensor_events": 0, "emissions": null, "prefix": null, "rep": "1", "stages_ms": {"audio_load": 24.627, "decoder_load": 157.136, "detokenize": 52.119, "encoder_ane": 739.232, "mel_frontend": 9732.784, "tdt_decode": 1032.17}, "status": "match", "submissions": 1, "total_pipeline_ms": 11738.068, "transcript_match": true, "transcript_sha_ok": true}
+{"ane_exec_ms": 140.259, "control": "host", "cpu_tensor_events": 0, "emissions": null, "prefix": null, "rep": "2", "stages_ms": {"audio_load": 8.24, "decoder_load": 52.18, "detokenize": 51.145, "encoder_ane": 722.975, "mel_frontend": 183.395, "tdt_decode": 590.645}, "status": "match", "submissions": 1, "total_pipeline_ms": 1608.58, "transcript_match": true, "transcript_sha_ok": true}
+{"ane_exec_ms": 140.127, "control": "host", "cpu_tensor_events": 0, "emissions": null, "prefix": null, "rep": "3", "stages_ms": {"audio_load": 8.716, "decoder_load": 44.51, "detokenize": 36.691, "encoder_ane": 727.611, "mel_frontend": 183.383, "tdt_decode": 570.348}, "status": "match", "submissions": 1, "total_pipeline_ms": 1571.259, "transcript_match": true, "transcript_sha_ok": true}
+FAIL=0 exit_marker 2026-09-25T15:26:45-05:00 out=/var/tmp/encoder-whole-jwm1/combined-20260925T152629

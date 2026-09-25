@@ -1,0 +1,46 @@
+loading GGUF (/var/tmp/Qwen3.8-2B-Q4_K_M.gguf) ...
+host weights: 12.5s (embed (248320, 2048), lmT (2048, 248320))
+opening 38 programs ...
+programs open: 1.9s
+cold first prompt: 4.7s (steps 43, first rounds [0.07, 0.069, 0.069] med 0.077s)
+bench: 0 warmup corpus passes ...
+rep 1/1 done
+{
+ "ane_programs_per_step": 38,
+ "ane_submissions_per_token": 38,
+ "tokens_matching_reference": true,
+ "decode_tok_rate": {
+  "median": 8.12,
+  "mean": 8.183,
+  "stdev": 0.1854,
+  "min": 7.99,
+  "max": 8.55,
+  "n": 10
+ },
+ "ttft_s": {
+  "median": 1.0639,
+  "mean": 1.0508,
+  "stdev": 0.1623,
+  "min": 0.8123,
+  "max": 1.3201,
+  "n": 10
+ },
+ "ttft_tok_rate": {
+  "median": 13.29,
+  "mean": 12.941,
+  "stdev": 0.9197,
+  "min": 11.18,
+  "max": 13.64,
+  "n": 10
+ },
+ "e2e_s": {
+  "median": 4.8651,
+  "mean": 4.8408,
+  "stdev": 0.1579,
+  "min": 4.6207,
+  "max": 5.1691,
+  "n": 10
+ },
+ "peak_rss_bytes": 9205186560
+}
+PROF dumped 18582 predicts over 489 steps -> /var/tmp/parity7/prof-predicts-Eperf.json
