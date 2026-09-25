@@ -1,0 +1,11 @@
+tree: 1faf7f00 omarchy: four weights per Q4 GEMV group dispatch; eager mlx-lm swiglu so the store epilogue folds branch=agent/jw16-levers2
+log: /var/tmp/levers2/wheel-build-20260925T201326Z.log
+build rc=0 in 144s
+total 406228
+drwxr-xr-x 1 joshuawarren joshuawarren       146 Sep 25 15:15 .
+drwxr-xr-x 1 joshuawarren joshuawarren       484 Sep 25 15:13 ..
+-rw-r--r-- 1 joshuawarren joshuawarren 415973787 Sep 25 15:15 mlx_omarchy-0.32.3.dev202609252013+1faf7f00-cp314-cp314-linux_aarch64.whl
+[receipt] It must print VERIFIED before the release is announced as
+[receipt] usable. See docs/release.md. A local build check does not
+[receipt] verify what users download.
+BUILD_DONE

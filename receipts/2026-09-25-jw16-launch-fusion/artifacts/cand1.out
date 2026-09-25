@@ -1,0 +1,30 @@
+[2026-09-25T15:18:10-05:00] window cand1 begin stamp=20260925T201810Z body=/var/tmp/levers2/body-cand1.sh args=
+[2026-09-25T15:18:11-05:00] flock held by 53943
+[2026-09-25T15:18:11-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+wheel=/var/tmp/levers/mlx/dist/mlx_omarchy-0.32.3.dev202609252013+1faf7f00-cp314-cp314-linux_aarch64.whl sha=b48f2f2828f9b5a1
+== creating candidate venv (copy of serving venv) ==
+== install candidate wheel into venv-cand ==
+mlx-lm             0.31.3
+mlx-omarchy        0.32.3.dev202609252013+1faf7f00
+mlx-omarchy        0.32.3.dev202609251914+3232b1f
+== ctl anchor ==
+ctl-r1                       decode=77.66 tok/s (12.88 ms/tok) prefill=735.17 ttft=76.69 e2e_med=0.5664s digest=bc519c03 n=30 wheel=0.32.3.dev202609251914+3232b1f
+== cand A: 4-weight group only (swiglu still compiled) ==
+candA-r1                     decode=76.65 tok/s (13.05 ms/tok) prefill=719.99 ttft=76.70 e2e_med=0.5756s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== apply swiglu-eager patch to venv-cand ==
+patched: /var/tmp/levers2/venv-cand/lib/python3.14/site-packages/mlx_lm/models/activations.py
+== cand B: 4-weight group + swiglu fold ==
+candB-r1                     decode=75.81 tok/s (13.19 ms/tok) prefill=718.99 ttft=77.47 e2e_med=0.5766s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== census cand B ==
+census dispatches/token: [465, 465, 465]
+census kernels: [('414', 96), ('223', 79), ('403', 42), ('441', 36), ('9', 36), ('312', 36), ('405', 30), ('58', 24), ('442', 18), ('438', 18), ('10', 18), ('247', 12), ('2', 7), ('443', 6), ('192', 2), ('193', 1), ('418', 1), ('399', 1), ('38', 1), ('66', 1)]
+== ctl with MLX_OMARCHY_POISON_FREED=1 (stale-read probe) ==
+ctl-poison-r1                decode=77.88 tok/s (12.84 ms/tok) prefill=733.25 ttft=76.41 e2e_med=0.5703s digest=bc519c03 n=30 wheel=0.32.3.dev202609251914+3232b1f
+== second reps ==
+ctl-r2                       decode=78.06 tok/s (12.81 ms/tok) prefill=733.15 ttft=77.37 e2e_med=0.5661s digest=bc519c03 n=30 wheel=0.32.3.dev202609251914+3232b1f
+candB-r2                     decode=74.26 tok/s (13.47 ms/tok) prefill=709.99 ttft=75.93 e2e_med=0.5904s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+[2026-09-25T15:20:33-05:00] WINDOW_BODY_DONE rc=0
+[2026-09-25T15:20:33-05:00] cleanup rc=0 -- release flock + restart service
+[2026-09-25T15:20:43-05:00] poll #2: 8002 ok
+[2026-09-25T15:20:48-05:00] completion probe: {"choices":[{"finish_reason":"length","index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need to respond to user: \""}}],"created":1790367648,"model":"qwen3.8-27b","system_fingerprint":"b10621-c1d0e7a00","object":"chat.completion","usage":{"completion_tokens":8,"prompt_tokens":55,"total_tokens":63,"prompt_tokens_details":{"cached_tokens":0}},"id":"chatcmpl-PrX1OXGgEBBKCeRtjjzg32fSXTpTpMm0","timings":{"cache_n":0,"prompt_n":55,"prompt_ms":4073.833,"prompt_per_token_ms":74.06969090909091,"prompt_per_second":13.500798879090036,"predicted_n":8,"predicted_ms":975.715,"predicted_per_token_ms":139.38785714285714,"predicted_per_second":7.1742260803615805}}
+[2026-09-25T15:20:48-05:00] service healthy=1

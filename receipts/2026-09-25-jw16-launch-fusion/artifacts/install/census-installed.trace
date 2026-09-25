@@ -1,0 +1,2093 @@
+[rtmod] SUBMIT tid=55905 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+MODEL_TREE_BEGIN
+MOD  Model {}
+MOD language_model TextModel {}
+MOD language_model.model Qwen3_5TextModel {}
+MOD language_model.model.norm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23 DecoderLayer {}
+MOD language_model.model.layers.23.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.23.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.self_attn Qwen3NextAttention {}
+MOD language_model.model.layers.23.self_attn.rope RoPE {}
+MOD language_model.model.layers.23.self_attn.k_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.self_attn.q_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.self_attn.o_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.self_attn.v_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.self_attn.k_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.self_attn.q_gate_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.23.self_attn.q_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22 DecoderLayer {}
+MOD language_model.model.layers.22.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.22.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.22.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21 DecoderLayer {}
+MOD language_model.model.layers.21.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.21.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.21.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20 DecoderLayer {}
+MOD language_model.model.layers.20.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.20.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.20.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19 DecoderLayer {}
+MOD language_model.model.layers.19.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.19.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.self_attn Qwen3NextAttention {}
+MOD language_model.model.layers.19.self_attn.rope RoPE {}
+MOD language_model.model.layers.19.self_attn.k_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.self_attn.q_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.self_attn.o_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.self_attn.v_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.self_attn.k_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.self_attn.q_gate_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.19.self_attn.q_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18 DecoderLayer {}
+MOD language_model.model.layers.18.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.18.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.18.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17 DecoderLayer {}
+MOD language_model.model.layers.17.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.17.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.17.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16 DecoderLayer {}
+MOD language_model.model.layers.16.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.16.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.16.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15 DecoderLayer {}
+MOD language_model.model.layers.15.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.15.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.self_attn Qwen3NextAttention {}
+MOD language_model.model.layers.15.self_attn.rope RoPE {}
+MOD language_model.model.layers.15.self_attn.k_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.self_attn.q_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.self_attn.o_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.self_attn.v_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.self_attn.k_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.self_attn.q_gate_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.15.self_attn.q_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14 DecoderLayer {}
+MOD language_model.model.layers.14.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.14.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.14.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13 DecoderLayer {}
+MOD language_model.model.layers.13.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.13.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.13.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12 DecoderLayer {}
+MOD language_model.model.layers.12.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.12.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.12.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11 DecoderLayer {}
+MOD language_model.model.layers.11.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.11.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.self_attn Qwen3NextAttention {}
+MOD language_model.model.layers.11.self_attn.rope RoPE {}
+MOD language_model.model.layers.11.self_attn.k_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.self_attn.q_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.self_attn.o_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.self_attn.v_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.self_attn.k_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.self_attn.q_gate_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.11.self_attn.q_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10 DecoderLayer {}
+MOD language_model.model.layers.10.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.10.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.10.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9 DecoderLayer {}
+MOD language_model.model.layers.9.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.9.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.9.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8 DecoderLayer {}
+MOD language_model.model.layers.8.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.8.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.8.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7 DecoderLayer {}
+MOD language_model.model.layers.7.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.7.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.self_attn Qwen3NextAttention {}
+MOD language_model.model.layers.7.self_attn.rope RoPE {}
+MOD language_model.model.layers.7.self_attn.k_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.self_attn.q_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.self_attn.o_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.self_attn.v_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.self_attn.k_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.self_attn.q_gate_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.7.self_attn.q_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6 DecoderLayer {}
+MOD language_model.model.layers.6.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.6.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.6.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5 DecoderLayer {}
+MOD language_model.model.layers.5.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.5.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.5.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4 DecoderLayer {}
+MOD language_model.model.layers.4.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.4.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.4.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3 DecoderLayer {}
+MOD language_model.model.layers.3.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.3.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.self_attn Qwen3NextAttention {}
+MOD language_model.model.layers.3.self_attn.rope RoPE {}
+MOD language_model.model.layers.3.self_attn.k_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.self_attn.q_norm RMSNorm {"weight": [[256], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.self_attn.o_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.self_attn.v_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.self_attn.k_proj QuantizedLinear {"weight": [[512, 256], "mlx.core.uint32"], "scales": [[512, 32], "mlx.core.bfloat16"], "biases": [[512, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.self_attn.q_gate_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.3.self_attn.q_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2 DecoderLayer {}
+MOD language_model.model.layers.2.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.2.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.2.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1 DecoderLayer {}
+MOD language_model.model.layers.1.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.1.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.1.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0 DecoderLayer {}
+MOD language_model.model.layers.0.mlp Qwen3NextMLP {}
+MOD language_model.model.layers.0.mlp.up_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.mlp.down_proj QuantizedLinear {"weight": [[2048, 768], "mlx.core.uint32"], "scales": [[2048, 96], "mlx.core.bfloat16"], "biases": [[2048, 96], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.mlp.gate_proj QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.post_attention_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.input_layernorm RMSNorm {"weight": [[2048], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn GatedDeltaNet {"dt_bias": [[16], "mlx.core.bfloat16"], "A_log": [[16], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn.out_proj QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn.norm Qwen3NextRMSNormGated {"weight": [[128], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn.in_proj_a QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn.in_proj_b QuantizedLinear {"weight": [[16, 256], "mlx.core.uint32"], "scales": [[16, 32], "mlx.core.bfloat16"], "biases": [[16, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn.in_proj_z QuantizedLinear {"weight": [[2048, 256], "mlx.core.uint32"], "scales": [[2048, 32], "mlx.core.bfloat16"], "biases": [[2048, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn.in_proj_qkv QuantizedLinear {"weight": [[6144, 256], "mlx.core.uint32"], "scales": [[6144, 32], "mlx.core.bfloat16"], "biases": [[6144, 32], "mlx.core.bfloat16"]}
+MOD language_model.model.layers.0.linear_attn.conv1d Conv1d {"weight": [[6144, 4, 1], "mlx.core.bfloat16"]}
+MOD language_model.model.embed_tokens QuantizedEmbedding {"weight": [[248320, 256], "mlx.core.uint32"], "scales": [[248320, 32], "mlx.core.bfloat16"], "biases": [[248320, 32], "mlx.core.bfloat16"]}
+MODEL_TREE_END
+[rtmod] SUBMIT tid=55905 cv=2 waits=0 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=5 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=7 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=8 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=9 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=10 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=11 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=55905 cv=12 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=13 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=14 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=15 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=16 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=17 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+TOKEN_BEGIN 2
+TOKEN_END 2
+[rtmod] DISPATCH kernel=192 count=32 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=192 count=32 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=193 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=418 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=399 count=248320 gx=31040 gy=1 gz=1
+[rtmod] DISPATCH kernel=38 count=1 gx=1 gy=1 gz=1
+[rtmod] FEW name=Subtract count=248320
+[rtmod] DISPATCH kernel=2 count=248320 gx=970 gy=1 gz=1
+[rtmod] DISPATCH kernel=66 count=1 gx=1 gy=1 gz=1
+[rtmod] EV-SIGNAL tid=55905 ev=0xaaab996c2450 val=1 st=1 host=0
+[rtmod] SUBMIT-ENTER tid=55905
+[rtmod] SUBMIT tid=55905 cv=18 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] EV-WAIT tid=55905 ev=0xaaab941df730 val=1 cnt=0 resv=18
+TOKEN_BEGIN 3
+TOKEN_END 3
+[rtmod] DISPATCH kernel=192 count=32 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=192 count=32 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=193 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=418 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=399 count=248320 gx=31040 gy=1 gz=1
+[rtmod] DISPATCH kernel=38 count=1 gx=1 gy=1 gz=1
+[rtmod] FEW name=Subtract count=248320
+[rtmod] DISPATCH kernel=2 count=248320 gx=970 gy=1 gz=1
+[rtmod] DISPATCH kernel=66 count=1 gx=1 gy=1 gz=1
+[rtmod] EV-SIGNAL tid=55905 ev=0xaaab9971e1b0 val=1 st=1 host=0
+[rtmod] SUBMIT-ENTER tid=55905
+[rtmod] SUBMIT tid=55905 cv=19 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] EV-WAIT tid=55905 ev=0xaaab996c2450 val=1 cnt=0 resv=19
+TOKEN_BEGIN 4
+TOKEN_END 4
+[rtmod] DISPATCH kernel=192 count=32 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=192 count=32 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=193 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=418 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=1028 gx=1028 gy=1 gz=1
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] DISPATCH kernel=442 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=403 count=6144 gx=24 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=441 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=438 count=128 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=16 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=9 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=312 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=10 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=640 gx=640 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=256 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=8 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=58 count=512 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=247 count=1024 gx=4 gy=1 gz=1
+[rtmod] DISPATCH kernel=443 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Sigmoid count=2048
+[rtmod] DISPATCH kernel=2 count=2048 gx=8 gy=1 gz=1
+[rtmod] FEW name=Multiply count=2048
+[rtmod] DISPATCH kernel=405 count=2048 gx=2 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=768 gx=768 gy=1 gz=1
+[rtmod] DISPATCH kernel=414 count=256 gx=256 gy=1 gz=1
+[rtmod] DISPATCH kernel=223 count=2048 gx=1 gy=1 gz=1
+[rtmod] DISPATCH kernel=399 count=248320 gx=31040 gy=1 gz=1
+[rtmod] DISPATCH kernel=38 count=1 gx=1 gy=1 gz=1
+[rtmod] FEW name=Subtract count=248320
+[rtmod] DISPATCH kernel=2 count=248320 gx=970 gy=1 gz=1
+[rtmod] DISPATCH kernel=66 count=1 gx=1 gy=1 gz=1
+[rtmod] EV-SIGNAL tid=55905 ev=0xaaab941417a0 val=1 st=1 host=0
+[rtmod] SUBMIT-ENTER tid=55905
+[rtmod] SUBMIT tid=55905 cv=20 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+[rtmod] EV-WAIT tid=55905 ev=0xaaab9971e1b0 val=1 cnt=0 resv=20
+TOKEN_BEGIN 5
+TOKEN_END 5
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=21 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=22 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=23 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=24 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+CCTRACE backend: eval_gpu entryCCTRACE backend: fused dispatch state_off=0 x_off=0
+[rtmod] SUBMIT tid=55905 cv=25 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+OUT [271, 248068, 271, 248069, 271, 33704, 82, 2222, 383, 8964, 1521, 279]
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP

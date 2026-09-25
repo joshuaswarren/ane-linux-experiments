@@ -1,0 +1,38 @@
+[2026-09-25T15:34:17-05:00] window install begin stamp=20260925T203417Z body=/var/tmp/levers2/body-install.sh args=
+[2026-09-25T15:34:18-05:00] flock held by 55848
+[2026-09-25T15:34:18-05:00] icd: {"ICD":{"api_version":"1.4.359","library_arch":"64","library_path":"/usr/local/lib/libvulkan_asahi.so.d3fa18e"},"file_format_version":"1.0.1"}
+== pre-install state ==
+mlx-lm             0.31.3
+mlx-omarchy        0.32.3.dev202609251914+3232b1f
+/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_omarchy-0.32.3.dev202609251914+3232b1f.dist-info
+== snapshot serving venv mlx package + model files -> /var/tmp/levers2/venv-fused-pre-levers2 ==
+470M	/var/tmp/levers2/venv-fused-pre-levers2
+== install /var/tmp/levers/mlx/dist/mlx_omarchy-0.32.3.dev202609252013+1faf7f00-cp314-cp314-linux_aarch64.whl ==
+patched: /var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_lm/models/activations.py
+patched: /var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_lm/models/qwen3_next.py
+patched: /var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_lm/models/qwen3_5.py
+== post-install state ==
+mlx-lm             0.31.3
+mlx-omarchy        0.32.3.dev202609252013+1faf7f00
+/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx_omarchy-0.32.3.dev202609252013+1faf7f00.dist-info
+swiglu-eager=1 qgate=4 raw-route=2 scaled=3 gated-norm=0
+9e7c03b2a6bf030a
+== installed census ==
+census dispatches/token: [405, 405, 405]
+== installed-default contract x3 (3-pass) ==
+installed-r1                 decode=77.34 tok/s (12.93 ms/tok) prefill=729.79 ttft=74.69 e2e_med=0.5721s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+installed-r2                 decode=78.53 tok/s (12.73 ms/tok) prefill=731.62 ttft=76.48 e2e_med=0.5693s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+installed-r3                 decode=78.19 tok/s (12.79 ms/tok) prefill=732.05 ttft=74.77 e2e_med=0.5778s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== cpufreq governor A/B (performance vs schedutil) ==
+performance performance performance 
+installed-perfgov-r1         decode=82.08 tok/s (12.18 ms/tok) prefill=737.47 ttft=83.67 e2e_med=0.5328s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+schedutil schedutil schedutil 
+installed-r4                 decode=82.37 tok/s (12.14 ms/tok) prefill=747.65 ttft=84.56 e2e_med=0.5303s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== probes + no-split battery on the installed stack ==
+venv=/var/tmp/v072-venv-fused wheel=mlx-omarchy        0.32.3.dev202609252013+1faf7f00 nosplit=29a7addc28b40c8c installed=1e912d3e03d11e55
+== determinism probes (3-pass) ==
+probe-fusedgemv0             decode=78.36 tok/s (12.76 ms/tok) prefill=744.18 ttft=83.72 e2e_med=0.5511s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+probe-fusedchain0            decode=72.22 tok/s (13.85 ms/tok) prefill=712.47 ttft=81.95 e2e_med=0.5877s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+probe-nocache                decode=81.58 tok/s (12.26 ms/tok) prefill=739.1 ttft=79.80 e2e_med=0.5489s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+probe-trio0                  decode=82.34 tok/s (12.14 ms/tok) prefill=749.29 ttft=84.83 e2e_med=0.5297s digest=bc519c03 n=30 wheel=0.32.3.dev202609252013+1faf7f00
+== interleaved 10-pass battery: installed (ctl) vs no-split (cand), 10 pairs ==
