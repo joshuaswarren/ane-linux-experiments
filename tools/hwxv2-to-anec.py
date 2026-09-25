@@ -6,9 +6,11 @@ import struct
 import sys
 from dataclasses import dataclass
 
-# Apple v10 containers are consumed with libane's tile_shift at 9, so the
+# Tile units: libane main (fresh dialect) sizes channel BOs as tiles[i] << 14
+# (0x4000 = the macOS 0x4000-unit container counts, consumed verbatim). The old
+# tile_shift-9 libane wanted 512-B units; pass --tile-unit 512 for that ABI.
 # header's tile counts are 512-B units.
-TILE_UNIT = 0x200
+TILE_UNIT = 0x4000
 TILE_SIZE = 0x4000
 # The first record header of a task is a register write to 0x01f800. Its top
 # byte carries the record's word count, which differs between macOS build
@@ -464,6 +466,7 @@ def _build_header(
     out_shape: tuple[int, int, int, int],
     in_shape_list=None,
     out_shape_list=None,
+    tile_unit: int = TILE_UNIT,
 ) -> bytes:
     """Build the Linux anec header for one converted HWX.
 
@@ -485,8 +488,8 @@ def _build_header(
     if len(input_sections) + len(output_sections) > 28:
         raise ValueError("ANEC supports at most 28 input and output ports")
     tiles = [0] * 32
-    tiles[0] = (image.content_size + TILE_UNIT - 1) // TILE_UNIT
-    tiles[3] = (image.workspace_size + TILE_UNIT - 1) // TILE_UNIT
+    tiles[0] = (image.content_size + tile_unit - 1) // tile_unit
+    tiles[3] = (image.workspace_size + tile_unit - 1) // tile_unit
     dst_count = len(output_sections)
     # per-surface shapes: broadcast the CLI geometry unless explicit lists are given
     in_shape_list = in_shape_list or ([(in_n, in_ch, in_h, in_w)] * len(input_sections))
@@ -507,12 +510,12 @@ def _build_header(
         shape = output_shapes[index]
         shape_bytes = shape[0] * shape[1] * out_plane
         required = max(size, shape_bytes)
-        tiles[4 + index] = max(1, (required + TILE_UNIT - 1) // TILE_UNIT)
+        tiles[4 + index] = max(1, (required + tile_unit - 1) // tile_unit)
     for index, size in enumerate(input_sizes):
         shape = input_shapes[index]
         shape_bytes = shape[0] * shape[1] * in_plane
         required = max(size, shape_bytes)
-        tiles[4 + dst_count + index] = max(1, (required + TILE_UNIT - 1) // TILE_UNIT)
+        tiles[4 + dst_count + index] = max(1, (required + tile_unit - 1) // tile_unit)
     nchw = [0] * (32 * 6)
     for index, shape in enumerate(output_shapes):
         plane, row = (shape[2] * shape[3], shape[3]) if out_shape_list else (out_plane, out_row)
@@ -642,7 +645,8 @@ def convert_hwx(
     image = parse_hwx(data)
     in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
     out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
-    header = _build_header(image, in_shape, out_shape)
+    header = _build_header(image, in_shape, out_shape, in_shape_list,
+                           out_shape_list, tile_unit)
     content = bytearray(
         data[image.content_offset:image.content_offset + image.content_size]
     )
@@ -663,6 +667,9 @@ def convert_hwx_file(
     in_shape: tuple[int, int, int, int] | None = None,
     out_shape: tuple[int, int, int, int] | None = None,
     blob_path: str | None = None,
+    in_shape_list=None,
+    out_shape_list=None,
+    tile_unit: int = TILE_UNIT,
 ) -> HWXImage:
     blob = None
     if blob_path is not None:
@@ -674,7 +681,8 @@ def convert_hwx_file(
         image = parse_hwx(data)
         in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
         out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
-        header = _build_header(image, in_shape, out_shape)
+        header = _build_header(image, in_shape, out_shape, in_shape_list,
+                           out_shape_list, tile_unit)
         payload = kernel_payload(image, blob)
         with open(dst_path, "wb") as output:
             output.write(header)
@@ -693,6 +701,10 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--input-width", type=int, default=1)
     parser.add_argument("--output-height", type=int, default=1)
     parser.add_argument("--output-width", type=int, default=1)
+    parser.add_argument(
+        "--tile-unit", type=lambda x: int(x, 0), default=0x4000,
+        help="tile count byte-unit for the ANEC header (0x4000 = current omarchy-ane "
+             "main libane TILE_SHIFT 14; 0x200 = old tile_shift-9 libane)")
     parser.add_argument(
         "--in-shapes", default=None,
         help="per-input-surface NCHW list, comma separated (e.g. 1x2048,6144x3); "
@@ -723,6 +735,9 @@ def main(argv: list[str]) -> int:
         (1, args.input_channels, args.input_height, args.input_width),
         (1, args.output_channels, args.output_height, args.output_width),
         args.weights,
+        in_shape_list=_shapes(args.in_shapes),
+        out_shape_list=_shapes(args.out_shapes),
+        tile_unit=args.tile_unit,
     )
     in_strides = derive_strides(
         (1, args.input_channels, args.input_height, args.input_width),
