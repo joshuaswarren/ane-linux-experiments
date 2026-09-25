@@ -125,3 +125,15 @@ unmask changes nothing, and the doorbell never drains.
   identical, 0 changed words in both. New stores: none. The 0x28 -> 0x08
   transition fits a vector-capture spin consuming the interrupt without
   running the scheduler.
+
+## Full stack-BSS diff across doorbell, clean fresh boot (2026-09-25)
+- Zero 0x1400818/0x1400820 reads anywhere in the window. Release identical
+  (timer write verified, HELD, park 0x28).
+- Pre-doorbell: full RTKSTACK canary block (vm 0xcb000, PA
+  0x10001407000, 480 words worth captured in 136-word memremap chunks)
+  plus full BSS arena (vm 0x4fa000..0x4fc000, PA 0x100017e4000, 2040
+  words), saved; 544 stack words and 2040 BSS words on disk.
+- Doorbell, full 60 s poll, message never drained. Post-poll: stack 544
+  words changed 0, BSS 2040 words changed 0, status 0x08. No handler
+  frame, no scheduler stores. Wake without interrupt delivery, third
+  confirmation.
