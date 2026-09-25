@@ -1,0 +1,38 @@
+sha256: 82c1a70198fd5914f7667ecdb8e2d003d960dbe200ebb6239f8dcf5cc42cb352  mac-reference-bundle-full.tar.gz
+== identity ==
+16M1MBP.local
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+Apple M1 Max
+68719476736
+arm64
+17:59  up 28 secs, 0 users, load averages: 12.72 2.86 1.02
+System Integrity Protection status: enabled.
+== dtrace start (spans legs A+B) ==
+probe listing lines:        3
+dtrace: system integrity protection is on, some features will not be available
+dtrace: failed to match fbt:com.apple.driver.ApplePMGR:*PerfState*:entry: System Integrity Protection is on
+   ID   PROVIDER            MODULE                          FUNCTION NAME
+dtrace pid 510
+== parakeet (leg A) ==
+parakeet rc=0 in 118s
+ane-cold:   encoder:    0.160 s RTFx:         34.94x tokens:     104 ane-warm1:   encoder:    0.156 s RTFx:         38.15x tokens:     104 ane-warm2:   encoder:    0.145 s RTFx:         39.75x tokens:     104 ane-warm3:   encoder:    0.147 s RTFx:         39.49x tokens:     104 ane-rep1:   encoder:    0.141 s RTFx:         40.49x tokens:     104 ane-rep2:   encoder:    0.149 s RTFx:         39.22x tokens:     104 ane-rep3:   encoder:    0.149 s RTFx:         39.70x tokens:     104 ane-rep4:   encoder:    0.146 s RTFx:         39.49x tokens:     104 ane-rep5:   encoder:    0.146 s RTFx:         39.74x tokens:     104 ane-rep6:   encoder:    0.144 s RTFx:         39.89x tokens:     104 ane-rep7:   encoder:    0.148 s RTFx:         39.23x tokens:     104 ane-rep8:   encoder:    0.146 s RTFx:         39.51x tokens:     104 ane-rep9:   encoder:    0.147 s RTFx:         39.47x tokens:     104 ane-rep10:   encoder:    0.147 s RTFx:         39.58x tokens:     104 gpu-cold:   encoder:    0.339 s RTFx:         22.81x tokens:     104 gpu-warm1:   encoder:    0.291 s RTFx:         25.50x tokens:     104 gpu-warm2:   encoder:    0.287 s RTFx:         25.80x tokens:     104 gpu-warm3:   encoder:    0.290 s RTFx:         25.59x tokens:     104 gpu-rep1:   encoder:    0.305 s RTFx:         24.62x tokens:     104 gpu-rep2:   encoder:    0.304 s RTFx:         24.65x tokens:     104 gpu-rep3:   encoder:    0.305 s RTFx:         24.69x tokens:     104 gpu-rep4:   encoder:    0.293 s RTFx:         25.46x tokens:     104 gpu-rep5:   encoder:    0.304 s RTFx:         24.71x tokens:     104 gpu-rep6:   encoder:    0.292 s RTFx:         25.45x tokens:     104 gpu-rep7:   encoder:    0.291 s RTFx:         25.49x tokens:     104 gpu-rep8:   encoder:    0.298 s RTFx:         25.10x tokens:     104 gpu-rep9:   encoder:    0.292 s RTFx:         25.60x tokens:     104 gpu-rep10:   encoder:    0.299 s RTFx:         25.01x tokens:     104 cpu-cold:   encoder:    0.326 s RTFx:         23.91x tokens:     100 cpu-warm1:   encoder:    0.324 s RTFx:         24.05x tokens:     100 cpu-warm2:   encoder:    0.327 s RTFx:         23.61x tokens:     100 cpu-warm3:   encoder:    0.324 s RTFx:         23.70x tokens:     100 cpu-rep1:   encoder:    0.326 s RTFx:         24.03x tokens:     100 cpu-rep2:   encoder:    0.323 s RTFx:         24.16x tokens:     100 cpu-rep3:   encoder:    0.327 s RTFx:         24.03x tokens:     100 cpu-rep4:   encoder:    0.326 s RTFx:         23.60x tokens:     100 cpu-rep5:   encoder:    0.326 s RTFx:         23.93x tokens:     100 cpu-rep6:   encoder:    0.324 s RTFx:         24.12x tokens:     100 cpu-rep7:   encoder:    0.324 s RTFx:         23.78x tokens:     100 cpu-rep8:   encoder:    0.323 s RTFx:         24.11x tokens:     100 cpu-rep9:   encoder:    0.325 s RTFx:         24.04x tokens:     100 cpu-rep10:   encoder:    0.329 s RTFx:         23.56x tokens:     100 all-cold:   encoder:    0.182 s RTFx:         34.97x tokens:     104 all-warm1:   encoder:    0.176 s RTFx:         35.75x tokens:     104 all-warm2:   encoder:    0.174 s RTFx:         35.86x tokens:     104 all-warm3:   encoder:    0.174 s RTFx:         36.01x tokens:     104 all-rep1:   encoder:    0.173 s RTFx:         36.15x tokens:     104 all-rep2:   encoder:    0.176 s RTFx:         35.67x tokens:     104 all-rep3:   encoder:    0.175 s RTFx:         35.74x tokens:     104 all-rep4:   encoder:    0.176 s RTFx:         35.39x tokens:     104 all-rep5:   encoder:    0.174 s RTFx:         35.93x tokens:     104 all-rep6:   encoder:    0.171 s RTFx:         36.14x tokens:     104 all-rep7:   encoder:    0.175 s RTFx:         35.73x tokens:     104 all-rep8:   encoder:    0.174 s RTFx:         35.75x tokens:     104 all-rep9:   encoder:    0.174 s RTFx:         35.84x tokens:     104 all-rep10:   encoder:    0.175 s RTFx:         35.62x tokens:     104 == transcript gate (stdout vs pinned golden, whitespace-normalized)
+ane: transcript MATCHES golden
+gpu: transcript MATCHES golden
+cpu: transcript DIFFERS from golden (expected for cpu per the pinned reference contract)
+all: transcript MATCHES golden
+PARAKEET-BUNDLE OK — ~/levers3-mac/out/parakeet-20260925T175905
+== encoder under dtrace (leg B bench) ==
+cache hit: ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+model dir: ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+bench rc=0
+{"units":"ane","compile_ms":256.6,"load_ms":38129.9,"placement":{"ane":1341,"cpu":33},"reps":10,"median_ms":140.86,"min_ms":137.02,"max_ms":142.46,"mean_ms":140.06,"hidden_stride_mean":-0.053864,"hidden_count":240000,"mask_sum":375}
+times_ms [137.02, 137.08, 137.84, 140.60, 140.74, 140.86, 141.05, 141.47, 141.47, 142.46]
+{"file":"~/levers3-mac/out/out_ane_dt.bin","words":240000,"mismatches":0,"max_delta":0,"first_bad_index":-1,"bit_exact":true}
+/tmp/run-levers5.sh: line 66: ~/levers3-mac/out/perfstate.out: No such file or directory
+dtrace stopped; lines: 
+== live kernelcache (leg C) ==
+-rwxr-xr-x  1 joshuawarren  staff  16728472 Sep 25 18:02 ~/levers3-mac/out/kernel-live.release.bin
+df5ee19fa7eb6713593549f61b337ab0852b5b9c3c224f63c95feaec11b9f301  ~/levers3-mac/out/kernel-live.release.bin
+Darwin Kernel Version 25.6.0: Fri Jul 31 19:18:49 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T6000

@@ -1,0 +1,13 @@
+Loading models from ~/levers3-mac/mac-reference-bundle/models (compute: ane)...
+Models ready in 0.31 s
+Transcribing 10.44 s of audio...
+
+----- timing -----
+audio:       10.435 s
+inference:    0.264 s
+  mel:        0.014 s
+  encoder:    0.147 s
+  decode:     0.103 s   (decoder + joint loop)
+  detok:      0.000 s
+RTFx:         39.49x
+tokens:     104
