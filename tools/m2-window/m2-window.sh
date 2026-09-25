@@ -237,7 +237,7 @@ PY
 # ------------------------------------------------------- fresh venv + stack
 echo "== venv =="
 VENV="/var/tmp/m2-window-venv-$TS"
-"$PY314" -m venv "$VENV"
+"$PY314" -m venv --copies "$VENV"
 note_mutation "{\"action\": \"created\", \"path\": \"$VENV\"}"
 PIP="$VENV/bin/pip"
 "$PIP" install --no-cache-dir "$WHEEL" mlx-lm==0.31.3 --no-deps 2>&1 | tail -2
