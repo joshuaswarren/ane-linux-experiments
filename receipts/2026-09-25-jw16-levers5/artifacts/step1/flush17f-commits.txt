@@ -1,0 +1,6 @@
+2a9762ef6ec3990c2e31f6d97382823056c1878c asahi: restore bits 0-2 (0x17f) in per-launch CDM barrier for G13X
+5a520cf3d35f2ffad364b00561edcee48b4aab9e asahi: dependency-track the per-launch CDM barrier on the Vulkan path
+2aefdd576f0a0d6091dddc61c14c9d5003ebb330 asahi/hk: keep the compute batch open across vkCmdPipelineBarrier2 when no graphics batch is open - compute->compute dependencies are already ordered by the per-launch CDM barrier; the split only added a stream link and a fresh 64 KiB chunk per barrier
+49de6c28c4f74cfc5a2f7588e105cc6e94f9d96e asahi/hk: HK_CDM_BARRIER_MASK perftest knob - exact per-launch CDM_BARRIER flag word from the environment (bit-cost bisect instrument; zero cost unset)
+bcbf6cbb2809fa7af8cb39edd2cddf142a99b44b53efcf93a3c0dd3f168e5ab0  /usr/local/lib/libvulkan_asahi.so.flush17f-2a9762e
+1e912d3e03d11e559189cbe2aa5551aa0aebd51ba6064d8a1d2c4feed98f0784  /usr/local/lib/libvulkan_asahi.so.d3fa18e

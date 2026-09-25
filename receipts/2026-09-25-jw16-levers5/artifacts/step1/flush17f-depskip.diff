@@ -1,0 +1,206 @@
+diff --git a/src/asahi/libagx/libagx_dgc.h b/src/asahi/libagx/libagx_dgc.h
+index c5b7fdd465f..6b5bba235b4 100644
+--- a/src/asahi/libagx/libagx_dgc.h
++++ b/src/asahi/libagx/libagx_dgc.h
+@@ -379,15 +379,14 @@ agx_cdm_barrier(GLOBAL uint32_t *out, enum agx_chip chip)
+       // cfg.unk_20 = true;
+       // cfg.unk_24 = true; if clustered?
+       if (chip == AGX_CHIP_G13X) {
+-         /* G13X (t600x, M1 Pro/Max, G13C cores; agx_device.c maps
+-          * generation 13 + multi-cluster here): the bare designed set
+-          * {4,5,6,8} regressed the ctx1053 KV-stream leg -3.17% (short
+-          * +13.0%). The designedusc quadrant {4,5,6,8}+usc_cache_inval
+-          * (identical to HK_PERFTEST=designedusccdmbarrier, ccad76a6160)
+-          * adds the USC invalidate that covers uniform/texture-state
+-          * change between launches - MaxDispatch lane measured it under
+-          * the standing protocol (Qwen3.8 digest dbf70497 identical,
+-          * logits 0 flips, paired A/B CIs, both legs). */
++         /* G13X (t600x, M1 Pro/Max, G13C cores): restore bits 0-2
++          * (PBE/texture flush) alongside unk_4 + usc_cache_inval.
++          * Bits 0-2 are required for cross-launch coherency when
++          * control streams are not split and across dependency-skipped
++          * launches ({0,1,2,4,5,6,8}+usc_cache_inval = 0x17f). */
++         cfg.unk_0 = true;
++         cfg.unk_1 = true;
++         cfg.unk_2 = true;
+          cfg.unk_4 = true;
+          cfg.usc_cache_inval = true;
+          // cfg.unk_26 = true;
+@@ -468,6 +467,9 @@ static inline GLOBAL uint32_t *
+ agx_cdm_barrier_designed_usc(GLOBAL uint32_t *out)
+ {
+    agx_push(out, CDM_BARRIER, cfg) {
++      cfg.unk_0 = true;
++      cfg.unk_1 = true;
++      cfg.unk_2 = true;
+       cfg.unk_4 = true;
+       cfg.unk_5 = true;
+       cfg.unk_6 = true;
+diff --git a/src/asahi/vulkan/hk_cmd_buffer.c b/src/asahi/vulkan/hk_cmd_buffer.c
+index b527e97a886..cb3c8b73182 100644
+--- a/src/asahi/vulkan/hk_cmd_buffer.c
++++ b/src/asahi/vulkan/hk_cmd_buffer.c
+@@ -303,6 +303,19 @@ hk_EndCommandBuffer(VkCommandBuffer commandBuffer)
+           "must end rendering before ending the command buffer");
+ 
+    perf_debug(cmd, "End command buffer");
++
++   /* A barrier declared with no following launch in this command buffer still
++    * orders this buffer's writes against whatever runs next (the queue's next
++    * submission). Land it on the trailing edge of the open compute stream;
++    * with no trailing edge there is no local work to order.
++    */
++   if (cmd->state.cs.cdm_barrier_pending) {
++      cmd->state.cs.cdm_barrier_pending = false;
++      if (cmd->current_cs.cs) {
++         hk_cdm_cache_flush(hk_cmd_buffer_device(cmd), cmd->current_cs.cs);
++      }
++   }
++
+    hk_cmd_buffer_end_compute(cmd);
+    hk_cmd_buffer_end_compute_internal(cmd, &cmd->current_cs.post_gfx);
+ 
+@@ -336,10 +349,23 @@ hk_CmdPipelineBarrier2(VkCommandBuffer commandBuffer,
+ 
+    perf_debug(cmd, "Pipeline barrier");
+ 
+-   /* The big hammer. We end both compute and graphics batches. Ending compute
+-    * here is necessary to properly handle graphics->compute dependencies.
+-    *
+-    * XXX: perf. */
++   /* The app declared a memory dependency: the next CDM launch carries the
++    * full barrier set (hk_cmd_dispatch.c). Compute launches before the
++    * barrier were already flushed by the previous launch's gating.
++    */
++   cmd->state.cs.cdm_barrier_pending = true;
++
++   /* Outside a render pass only a CDM control stream can be open; the
++    * pending flag above orders it against the next launch. Ending the
++    * compute batch here would only produce the stream merge_control_streams
++    * stitches back together at hk_EndCommandBuffer, plus a stream link and
++    * a fresh chunk per barrier; keep it open. The batches must end when a
++    * graphics batch is open: the dependency then spans batch types and the
++    * kernel orders the resulting commands (agx_cmd_header barriers). */
++   if (!cmd->current_cs.gfx && !cmd->current_cs.pre_gfx &&
++       !cmd->current_cs.post_gfx)
++      return;
++
+    hk_cmd_buffer_end_compute(cmd);
+    hk_cmd_buffer_end_graphics(cmd);
+ }
+diff --git a/src/asahi/vulkan/hk_cmd_buffer.h b/src/asahi/vulkan/hk_cmd_buffer.h
+index b8f16d3f3ac..7ade2e7595e 100644
+--- a/src/asahi/vulkan/hk_cmd_buffer.h
++++ b/src/asahi/vulkan/hk_cmd_buffer.h
+@@ -295,6 +295,13 @@ struct hk_graphics_state {
+ struct hk_compute_state {
+    struct hk_descriptor_state descriptors;
+    struct hk_api_shader *shader;
++
++   /* Set by hk_CmdPipelineBarrier2, consumed by the next CDM launch, which
++    * then carries the full designed barrier set (dependency-tracked
++    * per-launch barrier). Lives on the command buffer, not the hk_cs, so it
++    * survives CS splits and merge_control_streams.
++    */
++   bool cdm_barrier_pending;
+ };
+ 
+ struct hk_cmd_push {
+diff --git a/src/asahi/vulkan/hk_cmd_dispatch.c b/src/asahi/vulkan/hk_cmd_dispatch.c
+index ca28a3f1115..e3f61cc716a 100644
+--- a/src/asahi/vulkan/hk_cmd_dispatch.c
++++ b/src/asahi/vulkan/hk_cmd_dispatch.c
+@@ -48,7 +48,12 @@ hk_cdm_cache_flush(struct hk_device *dev, struct hk_cs *cs)
+    assert(cs->current + AGX_CDM_BARRIER_LENGTH < cs->end &&
+           "caller must ensure space");
+ 
+-   if (HK_PERF(dev, NOCDMBARRIER)) {
++   if (unlikely(dev->cdm_barrier_mask)) {
++      /* Perftest only: exact CDM_BARRIER flag word from the environment. */
++      uint32_t *word = cs->current;
++      *word = dev->cdm_barrier_mask | (AGX_CDM_BLOCK_TYPE_BARRIER << 29);
++      cs->current = word + 1;
++   } else if (HK_PERF(dev, NOCDMBARRIER)) {
+       /* Perftest only: launch with no cache maintenance at all. */
+    } else if (HK_PERF(dev, DESIGNEDUSCCDMBARRIER)) {
+       /* Perftest only: designed set {4,5,6,8} + USC cache invalidate. */
+@@ -74,10 +79,30 @@ hk_dispatch_with_usc_launch(struct hk_device *dev, struct hk_cs *cs,
+    hk_ensure_cs_has_space(cs->cmd, cs, 0x2000 /* TODO */);
+    cs->stats.cmds++;
+ 
++   if (HK_PERF(dev, ALWAYSCDMBARRIER)) {
++      cs->current =
++         agx_cdm_launch(cs->current, dev->dev.chip, grid, wg, launch, usc);
++      hk_cdm_cache_flush(dev, cs);
++      cs->cmd->state.cs.cdm_barrier_pending = false;
++      return;
++   }
++
++   /* Dependency-tracked per-launch CDM barrier. A vkCmdPipelineBarrier
++    * recorded since the previous launch declares a memory dependency, so the
++    * next launch carries the full designed barrier set. Between launches the
++    * app left unordered, Vulkan defines no ordering, so the barrier enforces
++    * nothing and the drain it costs is skipped. Driver-internal ordering that
++    * does not ride on vkCmdPipelineBarrier (query availability writes) calls
++    * hk_cdm_cache_flush explicitly and is unaffected.
++    */
++   if (cs->cmd->state.cs.cdm_barrier_pending) {
++      assert(cs->type == HK_CS_CDM);
++      hk_cdm_cache_flush(dev, cs);
++      cs->cmd->state.cs.cdm_barrier_pending = false;
++   }
++
+    cs->current =
+       agx_cdm_launch(cs->current, dev->dev.chip, grid, wg, launch, usc);
+-
+-   hk_cdm_cache_flush(dev, cs);
+ }
+ 
+ void
+diff --git a/src/asahi/vulkan/hk_device.c b/src/asahi/vulkan/hk_device.c
+index 2b23305f9fd..ea6fe0b6a04 100644
+--- a/src/asahi/vulkan/hk_device.c
++++ b/src/asahi/vulkan/hk_device.c
+@@ -48,7 +48,8 @@ static const struct debug_named_value hk_perf_options[] = {
+    {"usccdmbarrier", HK_PERF_USCCDMBARRIER,
+     "Reduce the per-launch CDM barrier to a USC cache invalidate"},
+    {"designedusccdmbarrier", HK_PERF_DESIGNEDUSCCDMBARRIER,
+-    "G13X designed set {4,5,6,8} plus USC cache invalidate"},
++    "G13X designed set {0,1,2,4,5,6,8} plus USC cache invalidate (0x17f)"},
++   {"alwayscdmbarrier", HK_PERF_ALWAYSCDMBARRIER, "Unconditional per-launch CDM barrier (disable dependency tracking)"},
+    DEBUG_NAMED_VALUE_END
+ };
+ /* clang-format on */
+@@ -330,6 +331,8 @@ hk_CreateDevice(VkPhysicalDevice physicalDevice,
+    }
+ 
+    dev->perftest = debug_get_flags_option("HK_PERFTEST", hk_perf_options, 0);
++   dev->cdm_barrier_mask =
++      debug_get_num_option("HK_CDM_BARRIER_MASK", 0) & 0x07ffffff;
+ 
+    if (instance->drirc.misc.disable_border_emulation) {
+       dev->perftest |= HK_PERF_NOBORDER;
+diff --git a/src/asahi/vulkan/hk_device.h b/src/asahi/vulkan/hk_device.h
+index d4ba42f24fb..4238cc1e941 100644
+--- a/src/asahi/vulkan/hk_device.h
++++ b/src/asahi/vulkan/hk_device.h
+@@ -98,6 +98,9 @@ struct hk_device {
+    } scratch;
+ 
+    uint32_t perftest;
++   /* HK_CDM_BARRIER_MASK=<hex>: perftest-only override of the per-launch
++    * CDM_BARRIER flag word (bits 0..26). 0 = unset. */
++   uint32_t cdm_barrier_mask;
+ 
+    struct {
+       struct u_rwlock lock;
+@@ -117,6 +120,9 @@ enum hk_perftest {
+    HK_PERF_NOCDMBARRIER = BITFIELD_BIT(5),
+    HK_PERF_USCCDMBARRIER = BITFIELD_BIT(6),
+    HK_PERF_DESIGNEDUSCCDMBARRIER = BITFIELD_BIT(7),
++   /* Restore the unconditional per-launch CDM barrier (the default is the
++    * dependency-tracked barrier keyed on vkCmdPipelineBarrier2). */
++   HK_PERF_ALWAYSCDMBARRIER = BITFIELD_BIT(8),
+ };
+ 
+ #define HK_PERF(dev, flag) unlikely((dev)->perftest &HK_PERF_##flag)

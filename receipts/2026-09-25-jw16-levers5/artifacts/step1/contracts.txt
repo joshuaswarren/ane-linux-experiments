@@ -1,0 +1,22 @@
+battery summary: pass=35 fail=1
+bat-ctl-p10-1                decode=80.99 tok/s (12.35 ms/tok) prefill=745.43 ttft=79.89 e2e_med=0.5431s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-1           decode=83.69 tok/s (11.95 ms/tok) prefill=740.92 ttft=78.19 e2e_med=0.5371s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-2                decode=80.88 tok/s (12.36 ms/tok) prefill=752.08 ttft=80.78 e2e_med=0.5442s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-2           decode=83.63 tok/s (11.96 ms/tok) prefill=745.92 ttft=81.06 e2e_med=0.5346s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-3                decode=81.00 tok/s (12.35 ms/tok) prefill=750.01 ttft=79.69 e2e_med=0.5462s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-3           decode=83.69 tok/s (11.95 ms/tok) prefill=759.18 ttft=78.81 e2e_med=0.5389s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-4                decode=80.97 tok/s (12.35 ms/tok) prefill=747.03 ttft=79.18 e2e_med=0.5448s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-4           decode=83.55 tok/s (11.97 ms/tok) prefill=739.29 ttft=79.59 e2e_med=0.5389s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-5                decode=80.91 tok/s (12.36 ms/tok) prefill=751.52 ttft=81.44 e2e_med=0.5444s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-5           decode=83.57 tok/s (11.97 ms/tok) prefill=739.26 ttft=81.19 e2e_med=0.5350s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-6                decode=81.18 tok/s (12.32 ms/tok) prefill=748.24 ttft=81.55 e2e_med=0.5425s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-6           decode=83.65 tok/s (11.95 ms/tok) prefill=759.09 ttft=78.79 e2e_med=0.5361s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-7                decode=81.00 tok/s (12.35 ms/tok) prefill=744.34 ttft=80.44 e2e_med=0.5418s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-7           decode=83.70 tok/s (11.95 ms/tok) prefill=740.93 ttft=77.69 e2e_med=0.5412s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-8                decode=80.99 tok/s (12.35 ms/tok) prefill=733.15 ttft=79.39 e2e_med=0.5460s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-8           decode=83.77 tok/s (11.94 ms/tok) prefill=756.53 ttft=82.11 e2e_med=0.5343s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-9                decode=81.06 tok/s (12.34 ms/tok) prefill=747.07 ttft=81.80 e2e_med=0.5427s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-9           decode=83.58 tok/s (11.96 ms/tok) prefill=753.28 ttft=80.64 e2e_med=0.5353s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-ctl-p10-10               decode=81.11 tok/s (12.33 ms/tok) prefill=751.09 ttft=79.21 e2e_med=0.5448s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+bat-flush17f-p10-10          decode=83.73 tok/s (11.94 ms/tok) prefill=740.73 ttft=80.67 e2e_med=0.5326s digest=dbf70497 n=100 wheel=0.32.3.dev202609252013+1faf7f00
+battery summary: pass=35 fail=1
