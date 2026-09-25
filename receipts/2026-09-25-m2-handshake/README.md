@@ -104,3 +104,12 @@ word, so they cannot be the difference.
   so interrupt delivery to the core is dead broadly, not just the timer.
   The timer clock is enabled on macOS by the ANE init that the Asahi boot
   skips, and it is not a register in the set matched so far.
+
+## Rank 2, same boot
+Pre-write masks all 0. Wrote 0xffffffff to 0x1400a00..0x1400a14; all six
+read back 0xffffffff and still read 0xffffffff 60 s later, so nothing is
+actively clearing them. READY 0x1840064 stayed 0 through a 30 s poll,
+status 0x28, recv0 0. A doorbell then sat queued 60 s (A2I_CTRL
+0x00020001, I2A 0x00020001, recv 0, scratch7 0); after the full 60 s the
+module reports status=0x08 with the masks still 0xffffffff. Post-park
+unmask changes nothing, and the doorbell never drains.
