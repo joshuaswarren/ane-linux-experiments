@@ -113,3 +113,15 @@ status 0x28, recv0 0. A doorbell then sat queued 60 s (A2I_CTRL
 0x00020001, I2A 0x00020001, recv 0, scratch7 0); after the full 60 s the
 module reports status=0x08 with the masks still 0xffffffff. Post-park
 unmask changes nothing, and the doorbell never drains.
+
+## Doorbell-without-masks plus SEG/BSS diff, same fresh boot (2026-09-25)
+- Release identical to rank 1 (timer write verified, VENC gates, HELD, no
+  READY). Pre-doorbell: status 0x28, gpio7 0, recv0 0, all six masks 0.
+- Doorbell sent with the masks untouched, full 60 s poll: A2I_CTRL
+  0x00020001, I2A 0x00020001, recv 0, scratch7 0, never drained. After the
+  window the core reads status 0x08.
+- SEG1 +0x3b2000 (64 words) and the BSS dispatch window +0x3b6000
+  (64 words) snapshotted before the send and after the poll: byte
+  identical, 0 changed words in both. New stores: none. The 0x28 -> 0x08
+  transition fits a vector-capture spin consuming the interrupt without
+  running the scheduler.
