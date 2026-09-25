@@ -1,0 +1,1 @@
+{"units":"ane","compile_ms":209.4,"load_ms":13813.8,"placement":{"ane":1346,"cpu":28},"reps":900,"median_ms":90.67,"min_ms":90.37,"max_ms":92.57,"mean_ms":90.70,"hidden_stride_mean":-0.053864,"hidden_count":240000,"mask_sum":375}

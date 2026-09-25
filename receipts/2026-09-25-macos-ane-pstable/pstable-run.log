@@ -1,0 +1,38 @@
+12:16:47.374 start load={ 34.06 30.01 36.70 }
+12:16:48.215 idle1 ANE Power: 0 mW
+ps 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+12:16:53.811 idle2 ANE Power: 0 mW
+ps 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+12:16:59.409 idle3 ANE Power: 0 mW
+ps 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+12:17:04.153 encoder pid 28442
+12:17:06.968 wait t=2s ANE Power: 0 mW
+12:17:09.775 wait t=4s ANE Power: 0 mW
+12:17:12.584 wait t=6s ANE Power: 0 mW
+12:17:15.389 wait t=8s ANE Power: 0 mW
+12:17:18.197 wait t=10s ANE Power: 2 mW
+12:17:19.004 load1 ANE Power: 0 mW
+ps 0x1f0003ff(act=15) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+12:17:23.525 load2 ANE Power: 0 mW
+ps 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+12:17:28.039 load3 ANE Power: 0 mW
+ps 0x1000030f(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+12:17:32.562 load4 ANE Power: 0 mW
+ps 0x1000030f(act=0) 0x300(act=0) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+12:17:37.091 load5 ANE Power: 4817 mW
+ps 0x1f0003ff(act=15) 0x300(act=0) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+12:17:41.620 load6 ANE Power: 4822 mW
+ps 0x1f0003ff(act=15) 0x300(act=0) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+12:17:46.139 load7 ANE Power: 4821 mW
+ps 0x1f0003ff(act=15) 0x300(act=0) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+12:17:50.666 load8 ANE Power: 4806 mW
+ps 0x1f0003ff(act=15) 0x300(act=0) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+12:17:55.188 load9 ANE Power: 4809 mW
+ps 0x1f0003ff(act=15) 0x300(act=0) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+12:17:59.699 load10 ANE Power: 4806 mW
+ps 0x1000030f(act=0) 0x300(act=0) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15) 0x3ff(act=15)
+12:18:03.408 encoder still running after load set
+12:18:54.844 encoder rc=0
+12:18:58.727 after1 ANE Power: 0 mW
+ps 0xf000300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0) 0x300(act=0)
+12:19:01.464 done
