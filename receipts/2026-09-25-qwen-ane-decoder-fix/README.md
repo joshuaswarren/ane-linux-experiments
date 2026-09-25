@@ -197,3 +197,35 @@ The jwm1 Linux gate moved to the runtime whole-bundle path (Route A, Main-assign
   state; no new WARNs since the tile-unit fix.
 - jwm1 staging: /var/tmp/qwen38-staged-jwm1 (e5rt bundles), /var/tmp/qwen38-staged-anec
   (38 h13 ANECs, correct tile units), /var/tmp/qwen38-staged-runner (runner + scripts).
+
+## 9. jwm1 device gate — first pass result and the sharpened blocker (2026-09-25)
+
+State: all 38 h13 ANECs (correct tile units) open and execute on jwm1 via
+libane (ane.ko 9a0ec81); runner completes 10 prompts; correctness gate FAIL
+0/10 — every prompt's generated stream is garbage from the FIRST generated
+token (clock degradation is NOT the cause: outputs are deterministic-wrong,
+not flaky; the T8103 clock regression from the kmod-reload genpd cycle is
+documented separately by Jwm1Parity4 and only affects timing).
+
+Sharpened root cause: libane's channel map. ane_bind_init derives the
+role->channel map from the task stream; these fresh e5rt-compiled streams do
+NOT name every surface, so libane falls back to the POSITIONAL layout
+(dst[i]=FIRST_SURFACE+i, src[i]=FIRST_SURFACE+dst_count+i). The positional
+guess does not match the real banks for these programs -> wrong data in the
+wrong banks from step 0. On macOS the e5rt runtime uses the true binding from
+the e5 bundle's own manifest. Additionally the prior SIGSEGV/free() heap
+corruption came from exact-size I/O buffers against whole-channel
+memcpy/memset (fixed in the backend: I/O padded to tiles[bdx] << 14).
+
+Fix design (Route A, next session of work — blocked only by driver-touching
+scope): extend the worker's bundle parser to derive each program's true
+per-surface channel map from the e5rt bundle, emit it in the loader manifest
+(binding.channel), and have libane accept an explicit bind override (new
+ane_bind_load(nn, bind) alongside the positional fallback — libane is our
+code; default behavior unchanged). Then the gate reruns unchanged.
+
+Evidence trail: /var/tmp/qwen38-staged-runner/{verify-gate.log,dbg2.log} on
+jwm1; core dumps preserved in /var/lib/systemd/coredump/ (59396 SIGSEGV,
+49109 SIGABRT); OOM note: the runner peaked ~9 GB RSS on the 16 GB box
+(GGUF mmap + fp32 lmT + all 38 programs' channel BOs) — drop_host_content_pages
+in the backend releases the per-program content-channel host copies after open.
