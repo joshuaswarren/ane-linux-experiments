@@ -1,19 +1,24 @@
-# M2 early-release hook: VENC fix built, images verified, ESP on hold
+# M2 early-release hook: VENC fix built, dry image fell to recoveryOS
 
-## Hook change (/tmp/m1n1-b9/src/ane_bringup.c, untracked vs upstream)
-- Repaired duplicated table/comment header at lines 434-450 (gcc
-  -fsyntax-only rc=0).
-- Added VENC provider chain (venc_sys 0x2902803e0, pipe4/5 + me0/1 at
-  0x290288008/010/018/020), parent-first TARGET=0xf, ACTUAL=0xf gate,
-  wired via ane_raise_venc() before the ANE island raise.
+## Build
+- Hook file /tmp/m1n1-b9/src/ane_bringup.c parses clean, VENC table +
+  ane_raise_venc() wired before the ANE raise.
+- Dry m1n1 5b8ffd72, dry boot.bin 0d5c2de6 (verified: m1n1-part OK,
+  110 dtbs, gzip magic). Write m1n1 674be9c0, write boot.bin 9fce23c8.
+- No ESP write by this lane beyond Main-ordered dry flash.
 
-## Images (built, verified, staged only at /var/tmp/m2-b9/)
-- dry: m1n1 5b8ffd72 (mode=dry, venc strings present), boot.bin
-  0d5c2de6 (m1n1-part OK 0x110000, 110 dtbs to 0x5a0e15, gzip magic 1f8b).
-- write: m1n1 674be9c0 (mode=write), boot.bin 9fce23c8 (m1n1-part OK
-  0x2b4000, mode string present).
-- Neither installed. ESP untouched.
+## Dry boot result
+- Pre-write backup of live 43ec6090 ESP kept at
+  /var/tmp/m2-b9/boot.bin.live-43ec6090.bak (SHA match).
+- Flashed dry 0d5c2de6 (post-write SHA match), rebooted 02:46:59.
+- Box never returned on SSH (12+ min). Webcam frame via jwm1 shows the
+  macOS Boot Recovery Assistant dialog: "The version of macOS on the
+  selected disk needs to be reinstalled", Startup Disk / Recovery
+  buttons. Same signature as the 2026-09-23 dry fall (recoveryOS route
+  after a stage-2 hang).
+- Fallbacks intact, untouched: live-43ec backup + stock a3f533b9.
 
-## ESP hold
-Live ESP 43ec6090 vs stock-a3f533b9 fallback unresolved. No flash, no
-reboot from this lane.
+## Reads
+- No SCRATCH6 mark, no head words, no HELLO: no Linux boot, no log.
+- Mailbox API state on the prior boot stands as reported (queued,
+  never drained).
