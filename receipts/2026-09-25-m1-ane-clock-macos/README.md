@@ -127,3 +127,25 @@ stdout pipe; 110308 died in pure_prefill because the cellar llama-tokenize was
 a chunk_00 lookup shim; 112040 died in pure_prefill with
 `KeyError: 'gated_deltanet'` (unpatched harness `m.prefill`); 114433-noprefill
 was stopped by Main's order to keep prefill.
+
+
+`decode-t8103-ane-perfstate.txt`, from the same ioreg plist.
+
+- `perf-regs` is 4 records of 16 bytes (`reg` index, offset, size, unk), the
+  same struct as m1n1 `PMGRPerfRegs` (`m1n1/adt.py`).
+- `perf-domains` record 8 (byte offset 112) is `ANE`: byte 1 = perf block 0,
+  byte 3 = voltage group 8. Block 0 is `perf-regs[0]`: pmgr `reg[1]`
+  (0x23d280000, size 0x74000) + 0x34000 = PA **0x23d2b4000**, size 0x100.
+  That span is inside the range the ADT lists for pmgr. It is not the
+  unmapped region that reset the M1 Max.
+- m1n1 `dump_pmgr.py` places a clock at `perf_regs[block].reg + 0x100 +
+  perf_idx * 0x10`. The ANE clock entry in the devices table is perf index 4
+  of block 0, so the word is PA **0x23d2b4140**.
+- Asahi `drivers/soc/apple/apple-pmgr-misc.c` drives the same register shape:
+  desired state in bits 3:0, granted state read back in bits 7:4. The ANE
+  ladder (`voltage-states8`) has 12 steps, so step 11 is 1464 MHz.
+
+Probe: omarchy-ane `agent/ane-clock-m1` `ane/h13/ane_perfstate_probe.c`.
+Default is one read. `request=11` writes the desired field once, waits for
+the granted field, and restores the saved word on unload. Not run yet:
+jwm1 is owned by Jwm1Parity5.
