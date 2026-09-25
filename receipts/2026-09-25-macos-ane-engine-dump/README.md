@@ -93,3 +93,29 @@ SRAM contents.
   model-load-phase states with the firmware running and all islands on.
 - VENC was not sampled at 4.8 W. It read off in the idle, load3, load4 and
   after samples.
+
+## Wrapper map (engine+0x1400000..+0x1414000, load3 vs load4)
+
+Linux's fw_start sequence writes none of the stable words below. They are
+pre-RUN candidates pending kext evidence (asked of M2PreRunRE).
+
+| offset (wrapper) | value | note |
+|---|---|---|
+| +0x0 | 0x00000001 | stable |
+| +0x8 | 0x12345678 | stable test-pattern-shaped word |
+| +0x40 | 0x000a0000 | stable |
+| +0x44 / +0x48 | 0x10 / 0x20->0x28 | CPU_CONTROL RUN / CPU_STATUS |
+| +0x444 | 0x00000010 | second CPU_CONTROL-shaped word, RUN bit 4 |
+| +0xa00..+0xa14 | 0 | Linux's IRQ-unmask test wrote 0xffffffff here |
+| +0xb80..+0xb94, +0xbfc | 0xffffffff | stable; candidate mask/enable bank |
+| +0x1008 | 0x1 at load3, 0 at load4 | transient |
+| +0x4110..+0x4140 | 0x00020001 / 0x00000001 | mailbox-shaped CTRL block, no bit 19 |
+| +0x8110..+0x811c | 0x000a0001 x2, 0x1 x2 | the ANE mailbox A2I/I2A CTRL |
+| +0xc110, +0x10110 | 0x000a0001 | two more mailbox-shaped blocks |
+| +0x481c..+0x497c (stride 0x20), +0x881c, +0x883c, +0xc81c, +0x1081c | 0x000a0000 | per-channel status words carrying bit 19 |
+| +0x4150.., +0x8150.., +0xc150.., +0x10150.. | changes between samples | FIFO SRAM contents |
+
+Bit 19 (0x80000) is set in every mailbox CTRL and per-channel status word
+that macOS's driver polls, and absent from the +0x4110 block it does not
+poll. That fits M2PreRunRE's decode of bit 19 as UNDERFLOW (a read of an
+empty FIFO), a symptom of host reads rather than a configuration value.
