@@ -982,3 +982,40 @@ Next (directed): a map-only vehicle — cached SID-0 TEXT map installed
 WITHOUT release, then hand release + the same timed series. If it runs,
 the driver question reduces to map-then-release ordering. Do not rerun
 hand-release-without-map; series2 stands as the negative control.
+
+## 31. Builder trigger: self-firing from MMU bringup; park is downstream (Main lane)
+
+CORRECTION to §29/§30: "the list-builder never fires" is WRONG. The
+0x6e054 parked function has TWO static callers: (A) MMU-bringup at
+0x65e50 (immediately after msr tcr_el1 + msr ttbr1_el1, unconditional
+during boot mapping setup), and (B) queue-insert at 0x6de64
+(conditional). The live stack's deeper frame holds LR 0x65e54 — the
+return address of caller (A) — PROVING the parked invocation came
+through boot MMU setup, unconditionally. No host write, scheduler
+tick, work item, or mailbox event fires it; it fires itself during
+boot. There is no message for M2FwStart-2 to send. [STATIC-CONFIRMED
+callers + LIVE LR]
+
+The 0x6e3dc list-builder (0x28-stride, BSS head [0x4faa20]) RETURNED
+(saved LR 0x6e0c4 on the live stack top). The park is post-return in
+the caller, on one of two continuations selected by w0 (builder
+return): cbnz w0 -> 0x6e2a4-table-walk (reads [0xc98c0]=0x80020, udiv/
+msub math, one bl to 0x66abc), or fall-through 0x6e0c8 -> b 0x6e350
+(BSS/table math). Neither continuation contains a wfi (scanned
+0x6e2a4..0x6e700: zero wfi; single bl 0x6e300->0x66abc). The dispatch
+head [0x4faa20] stays zero because the builder's output went through
+the 0x6de3c-per-item path whose results never landed, or the head is
+filled by the uncompleted continuations — not because the builder
+never ran. [STATIC-CONFIRMED]
+
+Park candidates in order: (1) silent-fault park in the VBAR capture
+(§9: post-MMU aborts spin register-only; fits a park immediately after
+fresh msr tcr_el1/ttbr1 at 0x65e18-0x65e48 if either continuation
+touches an unmapped VA — ESR/FAR/ELR sit in x28/x29/x30, recoverable
+ONLY via core-register access); (2) an MMIO poll through a
+register-held base (invisible to static imm scans — all firmware MMIO
+goes through the runtime table); (3) a BSS spin (no DATA writes seen,
+consistent). Static cannot distinguish these: the remaining tool is a
+PC read (CoreSight, M2FwStart-2's domain — same ask as T6001AscDebug's)
+or the fault triple via core regs. No further static enumeration will
+narrow it; the next evidence must be a live PC or x28/x29/x30.
