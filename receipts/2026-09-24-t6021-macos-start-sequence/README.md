@@ -1019,3 +1019,42 @@ consistent). Static cannot distinguish these: the remaining tool is a
 PC read (CoreSight, M2FwStart-2's domain — same ask as T6001AscDebug's)
 or the fault triple via core regs. No further static enumeration will
 narrow it; the next evidence must be a live PC or x28/x29/x30.
+
+## 32. MMIO polls between builder-return and HELLO: none; steady state reached by T+200ms (Main lane)
+
+MMIO-poll enumeration (Main ask): between the 0x6e3dc-builder return
+(0x6e0c4) and any HELLO-send, the reachable paths are the 0x6e2a4 item
+loop (bounded table walk, one bl 0x6e300->0x66abc per item, early exits
+at 0x6e304/0x6e314-ret) and the 0x6e350 BSS pre-scan (bounded 8-entry
+scan, redirects to 0x6e2a4 when empty). Scans: zero wfi in
+0x6e2a4..0x6e700; zero static-imm MMIO in either path (all firmware
+MMIO is register-table-indirect, and the per-item callees
+0x66a9c/0x66a04/0x66f80/0x670c0 show no wfi to depth 3). Every loop is
+bounded (item counts, 8-entry scan, udiv math). The paths poll NOTHING:
+no MMIO address, no expected value, no source to compare live. Stated
+plainly as asked. [STATIC-CONFIRMED boundaries + scans]
+
+Steady-state discriminator (Main's fallback ask): series3 T+200ms vs
+T+5s are byte-identical (0 diffs) — the firmware reaches its steady
+state by +200ms and nothing moves after. Against data_venc (older 5 s
+park, different boot): 1,335 diff bytes in 459 runs, ALL in two extra
+dispatch-table regions the older boot never built (SEG1+0x1c200 table
+continuation with 0x0410/0x0411-generation pairs, SEG1+0x24140 second
+table with 0x0a/0x0b/0x0c/0x0d/0x0e-generation words) plus the channel
+cookie (t200 0xcad81bc1438000d2 vs venc 0x000345d23ac51636) and 24 B of
+stack (+0x168e8: canary still intact at T+200ms, overwritten by 5 s in
+the older boot). Direction: the NEWER boot built MORE (extra tables),
+the older boot's extra 24 B of stack overwrite = deeper/later
+execution, not a different state. [MEASURED]
+
+Ranking the remaining two (no MMIO poll to test): (1) silent-fault
+park in the VBAR capture — still consistent (post-fresh-tcr park, no
+fault visible anywhere, ESR/FAR/ELR core-regs-only); (2) BSS spin —
+Disfavored but not excluded: a BSS spin would still be spinning at
+T+200ms identically (steady state either way), so the T+200ms==T+5s
+identity does not split (1) vs (2). The split needs the live PC or the
+fault triple; nothing in DATA/BSS splits them. The extra tables in the
+newer boot do sharpen one thing: table-building (the 0x6e3dc-family
+work) COMPLETES — the park is after table build, in the consumer of
+one of these tables (the 0x6e2a4-path item loop over [0xc98c0]-headed
+entries, or its 0x66abc-per-item callees).
