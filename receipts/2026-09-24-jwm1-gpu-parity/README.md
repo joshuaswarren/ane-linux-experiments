@@ -330,3 +330,34 @@ Corrected budget (real ms/tok): q4-GEMV ~11.8 (roofline floor,
 therein), named swarm ~8 (RMSNorm 8.3%, GatedDeltaUpdate 5.9%,
 Multiply 3.5%, AsType 2.7%). Redirect: the barrier-sink stale-pair
 instrumentation is the next bit-exact lever.
+
+## PAIR-CLASS PROBE RESULT — 5/5 top classes DIVERGE: no safe Vulkan-level skip set exists
+
+AGX_CDM_SKIP_PAIR knob added to the driver (round-3 build): default =
+certified semantics (barrier after EVERY launch, digest bc519c03
+verified on the knob build); the knob skips exactly one
+(prev mod 64K, this mod 64K) pair class via env.
+
+| probed class (occurrences) | digest | decode tok/s | verdict |
+| 0f80:1000 (1561) | dd2c1bee | 36.62 | DIVERGED |
+| 1000:1080 (1561) | c5e6c3ed | 33.82 | DIVERGED |
+| 0f00:0f80 (1560) | e4affe56 | 37.14 | DIVERGED |
+| 0e80:0f00 (1554) | a8cc27e6 | 22.63 | DIVERGED |
+| 0b00:0b80 (1347) | 16af6166 | — | DIVERGED |
+
+**Conclusion (decisive negative): every probed high-frequency pair
+carries a real dependency. The mlx graph relies on submission ordering
+for ALL its dispatches — no inter-dispatch pair is safely skippable
+from the Vulkan driver's visibility.** The dependency information
+exists only at the MLX encoder level (which buffers each dispatch
+reads/writes); the MLX-side GATED_BARRIERS tracker proved 39% of
+consecutive pairs provably disjoint, but exporting that analysis to
+the driver requires a cross-stack feature: mlx-omarchy encoder
+emits per-dispatch buffer sets + mesa consumes them for the skip
+decision. That is the redesigned lever — a cross-stack API change,
+not a driver-only probe.
+
+Probe artifacts: raw/mesa-gate/contract-bisect-*.json + .summary
+(5 probes, ~47-50 s each). Knob build: driver default restored to
+certified semantics (no-env digest bc519c03 verified on the knob
+build, decode 37.42).
