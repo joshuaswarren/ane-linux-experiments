@@ -1,0 +1,145 @@
+18:28:56 armed, waiting up to 40 min for /dev/ttyACM0
+18:29:07 ttyACM0 present: [ 3344.217312] usb 1-1: Product: m1n1 uartproxy v1.6.1-pdtrace
+18:29:07 latching proxy + ident
+TTY> Initialized dockchannel UART at 0x29e528000
+TTY> Device info:
+TTY>   Model: Mac14,5
+TTY>   Target: J414c
+TTY>   Board-ID: 0x4
+TTY>   Chip-ID: 0x6021
+TTY> 
+TTY> CPU init (MIDR: 0x611f0380 smp_id:0x0)...
+TTY>   CPU part: 0x38 rev: 0x10
+TTY>   CPU: M2 Max Blizzard
+TTY> 
+TTY> boot_args at 0x10004ac4000
+TTY>   revision:     2
+TTY>   version:      2
+TTY>   virt_base:    0x11f74000
+TTY>   phys_base:    0x10001f74000
+TTY>   mem_size:     0x17b7748000
+TTY>   top_of_kdata: 0x10004ac8000
+TTY>   video:
+TTY>     base:       0x117c0258000
+TTY>     display:    0x1
+TTY>     stride:     0x2f40
+TTY>     width:      3024
+TTY>     height:     1964
+TTY>     depth:      30bpp
+TTY>     density:    1
+TTY>   machine_type: 0
+TTY>   devtree:      0x13e40000
+TTY>   devtree_size: 0x80000
+TTY>   cmdline:      
+TTY>   boot_flags:   0x0
+TTY>   mem_size_act: 0x1800000000
+TTY> 
+TTY> 
+TTY> 
+TTY> m1n1 v1.6.1-pdtrace
+TTY> Copyright The Asahi Linux Contributors
+TTY> Licensed under the MIT license
+TTY> 
+TTY> Running in EL2
+TTY> 
+TTY> OS FW version: 13.5 (iBoot-8422.141.2)
+TTY> System FW version: unknown (mBoot-20457.1.29)
+TTY> Heap base: 0x10004ac8000
+TTY> MCC: Initializing T6020 MCCs (8 instances)...
+TTY> MCC: Initialized T6020 MCCs (8 instances, 4 planes, 4 channels)
+TTY> MMU: Initializing...
+TTY> MMU: RAM base: 0x10000000000
+TTY> MMU: Top of normal RAM: 0x117b96bc000
+TTY> MMU: Unmapping TZ0 region at 0x117b96bc000..0x117bb354000
+TTY> MMU: Unmapping TZ2 region at 0x117c6fac000..0x117ff3ac000
+TTY> MMU: Adding Device-nGnRE mapping at 0x5a0000000 (0x20000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x5c0000000 (0x40000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x800000000 (0x200000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0xa00000000 (0x80000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0xc00000000 (0x200000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0xe00000000 (0x80000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x1000000000 (0x200000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x1200000000 (0x80000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x1400000000 (0x200000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x1600000000 (0x80000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x1800000000 (0x400000000)
+TTY> MMU: Adding Device-nGnRE mapping at 0x1700000000 (0x100000000)
+TTY> MMU: Adding Normal-NC mapping at 0x117fff18000 (0x40000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffeb8000 (0x20000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffe78000 (0x40000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffe18000 (0x20000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffdd8000 (0x40000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffd78000 (0x20000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffd38000 (0x40000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffcd8000 (0x20000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffc98000 (0x40000)
+TTY> MMU: Adding Normal-NC mapping at 0x117ffc38000 (0x20000)
+TTY> MMU: Adding Normal-NC mapping at 0x117fffb8000 (0x4000)
+TTY> MMU: Adding Normal-NC mapping at 0x117fff70000 (0x4000)
+TTY> MMU: SCTLR_EL1: 30900180 -> 30901085
+TTY> MMU: running with MMU and caches enabled!
+TTY> AIC: Version 2 @ 0x28e100000
+TTY> AIC: AIC2 with 1/8 dies, 1961/4096 IRQs, reg_size:0c004, config:02000, extintrcfg_stride:04a00, intmaskset_stride:04a00, intmaskclear_stride:04a00
+TTY> AIC: Configuring 6 external interrupts
+TTY> Primary WDT register @ 0x29e2c4000
+TTY> Primary WDT disabled
+TTY> Secondary WDT register @ 0x29e2a002c
+TTY> Secondary WDT disabled
+TTY> pmgr: Cleaning up device states...
+TTY> pmgr: initialized, 485 devices on 1 dies found.
+TTY> display: Display is internal
+TTY> display: Display is already initialized (3024x1964)
+TTY> fb init: 3024x1964 (30) [s=3024] @0x117c0258000
+TTY> fb console: max rows 57, max cols 78
+TTY> fb: display logo
+TTY> Initialization complete.
+TTY> Boot policy: sip0 = 127
+TTY> 
+TTY> 
+TTY> ##### PROXY60 4184923 WAIT #####
+TTY> 
+TTY> Bringing up USB for early debug...
+TTY> usbdbg: hpm /arm-io/i2c0/hpmBusManager/hpm0 idx 0 ok
+TTY> usbdbg: hpm /arm-io/i2c0/hpmBusManager/hpm1 idx 1 ok
+TTY> usbdbg: hpm /arm-io/i2c0/hpmBusManager/hpm2 idx 2 ok
+TTY> usbdbg: hpm /arm-io/i2c0/hpmBusManager/hpm5 idx 5 ok
+TTY> usbdbg: phy bringup idx 0 ok
+TTY> usbdbg: phy bringup idx 1 ok
+TTY> usbdbg: phy bringup idx 2 ok
+TTY> dart: dart /arm-io/dart-usb0 at 0x702f80000 is a t8110
+TTY> USB0: initialized at 0x10004af4090
+TTY> dart: dart /arm-io/dart-usb1 at 0xb02f80000 is a t8110
+TTY> USB1: initialized at 0x10004af4560
+TTY> dart: dart /arm-io/dart-usb2 at 0xf02f80000 is a t8110
+TTY> USB2: initialized at 0x10004af4a60
+TTY> i2c: want to read 2 bytes from addr 56 but device wants to send 10
+TTY> i2c: want to read 4 bytes from addr 56 but device wants to send 5
+TTY> i2c: want to read 2 bytes from addr 63 but device wants to send 10
+TTY> i2c: want to read 4 bytes from addr 63 but device wants to send 5
+TTY> i2c: want to read 2 bytes from addr 58 but device wants to send 10
+TTY> i2c: want to read 4 bytes from addr 58 but device wants to send 5
+TTY> 
+TTY> ##### MARKER-BEFORE freq=24000000 t0=405262946 #####
+TTY> Waiting for proxy connection...
+TTY>  Connected!
+TTY> Heap limit: 0x1000f4a0000 (128 MiB)
+m1n1 base: 0x10003f18000
+Fetching ADT (0x00080000 bytes)...
+chipid 0x6021
+TTY> nvme: clock-gates not set
+TTY> nvme: ANS is on die 0
+TTY> sart: SARTv3 /arm-io/sart-ans at 0x34bc50000
+TTY> rtkit(nvme): booting with version 12
+TTY> rtkit(nvme): unknown system endpoint 0x0a
+TTY> nvme: initialized at 0x34bcc0000
+nvme_init 1
+gpt b'EFI PART' entries_lba 2 n 128 size 128
+part1 'iBootSystemContainer' lba 6-128005 (500 MiB) apfs
+part2 'Container' lba 128006-913294505 (3567056 MiB) apfs
+part3 '' lba 913294506-913904809 (2384 MiB) apfs
+part4 '' lba 913904810-914032809 (500 MiB) fat
+part5 '' lba 914032810-914557097 (2048 MiB) ext4
+part6 '' lba 914557098-975794345 (239208 MiB) btrfs
+part7 'RecoveryOSContainer' lba 975794346-977105054 (5119 MiB) apfs
+IDENT DONE
+18:29:07 ident exit 0
