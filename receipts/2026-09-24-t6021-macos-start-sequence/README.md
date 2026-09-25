@@ -872,3 +872,47 @@ stack to 0x17000: if BSS dispatch heads/endpoint objects are populated,
 the firmware is past endpoint-config and the blocker is the HELLO-send
 path; if zeros, endpoint bringup never completed. (3) Boot-args surface
 (G6/Item3) stays second priority behind the BSS read.
+
+## 28. Wake word f7fbdff9 is NOT the blocker; BSS read sharpened (Main lane)
+
+The firmware polls for WAKE 0xf7fbdff9 (payload 0x62c4: build w22=WAKE,
+vtable +0x30 read with arg 0, cmp, spin until equal — the scratch
+backend read). But ANE_Init's order is: (1) poll SCRATCH7==READY
+(0xfffffe00094e1a40); (2) on success build the cmd struct, dsb, publish
+table base to SCRATCH0/1 (0xfffffe00094e1a58-0x94e1a74), log; (3) write
+WAKE f7fbdff9 to SCRATCH7 (0xfffffe00094e1aa8-0x94e1ab8); (4) poll READY
+again ("second interrupt", 0xfffffe00094e1b40). Two-phase: phase-1 READY
+is written by the firmware UNPROMPTED during boot; the wake comes
+after. Our SCRATCH7=0 means pre-phase-1-READY: the wake-wait is
+downstream of the stall, definitively not the blocker.
+[STATIC-CONFIRMED both sides]
+
+Phase-1 READY = the 0x63a8-site boot sequence (subsystem inits w1=0..4,
+then READY via +0x30-path w1=7, then ack-poll via +0x28-path w1=7 for
+the host's SCRATCH3=0x08042006 ack). Its preconditions = the init
+calls' success + the endpoint-config struct ([x19,#0x98]!=0, §27).
+[STATIC-CONFIRMED]
+
+Shadow check (rules out a BSS-shadowed READY the MMIO wouldn't show):
+live data_venc.bin contains ZERO occurrences of 0x08042006 and ZERO of
+0xf7fbdff9 anywhere in the 0x430000 window — no shadowed READY, no
+shadowed WAKE. The firmware genuinely never reached either write.
+[MEASURED]
+
+The park fits the wfi spin at payload 0x71bc (event-wait: notify
+[x0,#0x120] subscribers, arm (0,6,1) via 0x65398, wfi, spin; wakes on
+IRQ only) — entered from the service loop while pre-READY work
+(boot inits / endpoint bringup) is incomplete. The precise stalled
+init (0..4) and the [x19,#0x98] endpoint object both live in the BSS
+blind spot above SEG1+0x430000 (vm 0x4f4000): stack 0x4fa000/0x4fae10,
+dispatch head [0x4faa20], flags, subscriber arrays.
+
+BSS read (to M2FwStart-2): extend the DATA reader to SEG1+0x436000..
+0x438000 (DATA vm 0x4fa000..0x4fc000, 8 KB) + stack to 0x17000.
+Decide on sight: endpoint objects/dispatch heads populated = past
+endpoint-config (blocker = HELLO-send path or an init 0..4 return);
+still zeros = endpoint bringup never completed (blocker = whatever
+[x19,#0x98]'s creator needs — read its creator's inputs next).
+Boot-args surface (G6/Item3) stays behind the BSS read: the kext
+publishes the table only after phase-1 READY, so it cannot be OUR
+blocker either — but its contents may be what init 0..4 validates.
