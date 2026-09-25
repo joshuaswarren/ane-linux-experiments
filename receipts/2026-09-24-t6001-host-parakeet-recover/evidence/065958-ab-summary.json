@@ -1,0 +1,156 @@
+{
+ "schema": "parakeet-decomp-ab/1",
+ "base": "/var/tmp/encwall-decomp/decomp-t6001-20260922T065958",
+ "arms": {
+  "A": {
+   "rows": [
+    {
+     "run": "A-meas-1",
+     "stages": {
+      "audio_load": 80.684,
+      "mel_frontend": 170.903,
+      "encoder_ane": 1814.235,
+      "decoder_load": 70.666,
+      "tdt_decode": 969.967,
+      "detokenize": 54.894
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 3161.349,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "ffmpeg version n9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    {
+     "run": "A-meas-2",
+     "stages": {
+      "audio_load": 77.866,
+      "mel_frontend": 162.289,
+      "encoder_ane": 1831.875,
+      "decoder_load": 69.631,
+      "tdt_decode": 988.472,
+      "detokenize": 57.975
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 3188.108,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "ffmpeg version n9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    {
+     "run": "A-meas-3",
+     "stages": {
+      "audio_load": 75.611,
+      "mel_frontend": 156.857,
+      "encoder_ane": 1710.044,
+      "decoder_load": 70.978,
+      "tdt_decode": 991.936,
+      "detokenize": 7.84
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 3013.266,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "ffmpeg version n9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    {
+     "run": "A-smoke",
+     "stages": {
+      "audio_load": 75.914,
+      "mel_frontend": 157.184,
+      "encoder_ane": 2850.884,
+      "decoder_load": 62.608,
+      "tdt_decode": 987.735,
+      "detokenize": 57.725
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 4192.05,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "ffmpeg version n9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    }
+   ],
+   "all_green": true
+  },
+  "B": {
+   "rows": [
+    {
+     "run": "B-meas-1",
+     "stages": {
+      "audio_load": 7.802,
+      "mel_frontend": 139.028,
+      "encoder_ane": 1859.965,
+      "decoder_load": 70.29,
+      "tdt_decode": 981.628,
+      "detokenize": 57.125
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 3115.838,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    },
+    {
+     "run": "B-meas-2",
+     "stages": {
+      "audio_load": 7.514,
+      "mel_frontend": 139.228,
+      "encoder_ane": 1876.956,
+      "decoder_load": 76.117,
+      "tdt_decode": 980.104,
+      "detokenize": 50.216
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 3130.135,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    },
+    {
+     "run": "B-meas-3",
+     "stages": {
+      "audio_load": 7.495,
+      "mel_frontend": 139.706,
+      "encoder_ane": 1807.397,
+      "decoder_load": 71.969,
+      "tdt_decode": 992.577,
+      "detokenize": 56.353
+     },
+     "decoder_total_ms": 0.0,
+     "joint_total_ms": 0.0,
+     "decoder_calls": null,
+     "joint_calls": null,
+     "total_ms": 3075.496,
+     "gold": true,
+     "status": "match",
+     "p104": true,
+     "audio_decoder": "soundfile 0.14.0"
+    }
+   ],
+   "all_green": true
+  }
+ }
+}
