@@ -173,6 +173,40 @@ The ANE's perf-domain index (8) is not accepted, and neither is 9. On M2 the
 host's only perf-state entry point therefore has no ANE path, and the host
 never sets the ANE clock through pmgr. That fits the ANE firmware setting
 its own operating point after `CH_PROPERTY_WRITE` "FW PERF MODE". The T8103
-equivalent (`AppleT8103PMGR`) is not checked yet. It needs the T8103
 kernelcache, which is on jwm1's ESP (`asahi/kernelcache.release.mac13g`), not
 on PVE.
+
+## 9. ANE perf group PA resolved from the ADT (no device access)
+
+The `PLL_ANE` clocks row is bytes `48 01 03 13`: slot 0x48, block byte 0x03,
+id 0x13. Block 0x03 is `perf-regs[3]`: pmgr `reg[0]` + 0x78000, size 0xa.
+The pmgr node's own `IODeviceMemory[0]` is PA 0x23b700000 (length 0x8c000),
+so the ANE perf group is PA **0x23b778000**, 10 bytes
+(0x23b778000–0x23b778009), inside a range the ADT lists for pmgr.
+
+This is a third object, distinct from the retracted 0x23d2b4140 (inference,
+removed in 38beae6 before any run) and from the ANE_SYS device row's
+perf block 1 (0x23b734000, unsourced layout, no probe).
+
+Kernelcache side (mac13g, sha256 861adca1…): `ApplePMGRNub::requestPerfState`
+(0xfffffe000987b38c) maps enum 2 to internal domain 8 (ANE) and tail-calls
+`ApplePMGR::_handlePerfStateRequest` (0xfffffe000986fb08), which accepts
+domains 8 and 14 only. The apply routine (0xfffffe000986e7bc) writes an
+8-bit state `(old & ~0xf) | (new & 0xf)` through the device register
+accessor. No kext statically imports `requestPerfState`; H11ANEIn reaches
+perf control through its token path (`notifyPerfController`
+0xfffffe0009485234, `submitWorkToPerfController` 0xfffffe0009494190, via
+`IOPerfControlClient` workBegin/workSubmit), and AppleT8103CLPCv3 owns the
+PMGR perf imports (`aneWorkBegin` 0xfffffe0009af2af0, `aneWorkSubmit`
+0xfffffe0009af2138 compute the state from submitted work). The accessor
+base is built at ApplePMGR start from `perf-regs`, so the static PA is not
+independently confirmed.
+
+Next, Main's order: (b) dtrace/fbt first. `ane-perfstate.d` probes
+`_handlePerfStateRequest` and the apply routine entry/return, logging
+domain, state and x1 during an encoder run. It runs in the next jwm1 macOS
+window (after the M2 is up in Linux and the catcher stands down;
+coordinate with Jwm1Parity6 and M2FwStart-2). If dtrace shows macOS writing
+0x23b778000, (a) follows as a read-then-write probe with that exact value.
+No Linux read of pmgr reg[0] until then: jwm1 hosts the armed M2 catcher,
+and a hang would cost the M2 recovery.
