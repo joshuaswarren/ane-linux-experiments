@@ -97,3 +97,14 @@ harness bug, replaced by the direct bundle check above.) Promotion waits
 for RepoReleaseSweep's re-cut tag (42fbbc5f0, wheels rebuilding); the
 official battery rerun on that tag is a formality — only install.sh line
 177 differs from what this run proved.
+
+## Correction (Jwm1Kernels3, mlx-omarchy 2d3a77b99)
+
+The "keep TDT fold/fold_proj/control on one CS" lever above is VOID: the
+production run_tdt_chain already records one CS per 64-slot chunk (1152
+dispatches, 3 submits). The 958783d9 per-kernel table carried ~54us of
+timestamp pollution per kernel (~27us/write); the real in-CS cost is ~25us
+per dependent dispatch (RAW vs WAW: no difference) — mesa-owned, as is the
+~128us CS-boundary hop this addendum measured (reproduced on current jwm1
+mesa). Remaining TDT levers: bandwidth to the 79% ceiling + the two
+mesa-owned dispatch costs. No mlx-omarchy runtime change needed.
