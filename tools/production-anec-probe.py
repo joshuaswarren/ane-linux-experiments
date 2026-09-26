@@ -354,9 +354,15 @@ def main():
     source_size = stage["source_size"]
     output_size = stage["output_size"]
     if stage["src_count"] != 1 or stage["dst_count"] != 1:
-        raise ValueError(
-            f"expected one input and output, got "
-            f"{stage['src_count']}/{stage['dst_count']}"
+        # Staged multi-port programs (e.g. the Qwen split-series) declare
+        # several boundary surfaces, but the ANEC image lays them out
+        # contiguously inside one input and one output section span. The
+        # engine DMAs whole spans, so filling/dumping the spans is faithful;
+        # per-surface routing is the runner's job, not the submit's.
+        print(
+            f"multi-surface program: {stage['src_count']} input surfaces, "
+            f"{stage['dst_count']} output surfaces "
+            f"(contiguous spans: source {source_size} B, output {output_size} B)"
         )
     if td_count < 1 or td_size < 1 or tsk_size < td_size:
         raise ValueError("invalid task geometry")
