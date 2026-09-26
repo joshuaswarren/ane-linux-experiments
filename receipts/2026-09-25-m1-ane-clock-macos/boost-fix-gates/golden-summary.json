@@ -1,0 +1,98 @@
+[
+  {
+    "label": "boost-5ecff86",
+    "run": 1,
+    "rc": 0,
+    "wall_ms": 2356.3,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 1385.222,
+    "stages_ms": {
+      "audio_load": 17.227,
+      "mel_frontend": 234.332,
+      "encoder_ane": 557.985,
+      "decoder_load": 47.822,
+      "tdt_decode": 475.112,
+      "detokenize": 52.745
+    },
+    "ane": {
+      "exec_ms": 140.065,
+      "worker_starts": 1,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 416.205,
+        "close_ms": 0.03,
+        "open_ms": 416.205,
+        "reused": false,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  },
+  {
+    "label": "boost-5ecff86",
+    "run": 2,
+    "rc": 0,
+    "wall_ms": 1293.9,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 694.844,
+    "stages_ms": {
+      "audio_load": 3.208,
+      "mel_frontend": 60.613,
+      "encoder_ane": 142.206,
+      "decoder_load": 44.017,
+      "tdt_decode": 393.155,
+      "detokenize": 51.644
+    },
+    "ane": {
+      "exec_ms": 141.345,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.168,
+        "close_ms": 0.055,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  },
+  {
+    "label": "boost-5ecff86",
+    "run": 3,
+    "rc": 0,
+    "wall_ms": 1277.9,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 694.012,
+    "stages_ms": {
+      "audio_load": 3.103,
+      "mel_frontend": 63.073,
+      "encoder_ane": 140.906,
+      "decoder_load": 42.246,
+      "tdt_decode": 393.694,
+      "detokenize": 50.989
+    },
+    "ane": {
+      "exec_ms": 140.035,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.179,
+        "close_ms": 0.038,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "host"
+  }
+]

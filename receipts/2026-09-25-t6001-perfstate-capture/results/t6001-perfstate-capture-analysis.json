@@ -1,0 +1,149 @@
+{
+ "capture": "/tmp/levers7-raw/ane-perfstate.out (sha256 732fc457ba3b88fd... prefix)",
+ "probe": "AneClockM1 ane-perfstate.d, 25G83 adaptation 3, name-based fbt; WRITE lines logged only inside ApplePMGR::_handlePerfStateRequest domain==8 gate (i.e. every WRITE line is the ANE perf-state apply path)",
+ "summary": {
+  "setPerfState_calls": 36,
+  "domain": 8,
+  "states_requested": [
+   0
+  ],
+  "writes": 913,
+  "distinct_regmap_reg_targets": 10,
+  "bursts_gt_0p5s": 16,
+  "regmap_gate_notes": "map index -> base PA table is inside ApplePMGR (not in the capture); AneClockM1 to decode from the 22G74 ApplePMGR disasm"
+ },
+ "targets": [
+  {
+   "map": 0,
+   "reg": 488,
+   "reg_hex": "0x1e8",
+   "count": 430,
+   "distinct_values": [
+    "0x404004f",
+    "0x4040340",
+    "0xf040000",
+    "0xf04000f",
+    "0xf0403ff",
+    "0xf0f02ff",
+    "0x140f024f",
+    "0x1f04000f",
+    "0x1f0400ff"
+   ]
+  },
+  {
+   "map": 0,
+   "reg": 616,
+   "reg_hex": "0x268",
+   "count": 12,
+   "distinct_values": [
+    "0xf00000f",
+    "0xf0000ff",
+    "0xf0003f0",
+    "0x1f00000f"
+   ]
+  },
+  {
+   "map": 0,
+   "reg": 712,
+   "reg_hex": "0x2c8",
+   "count": 7,
+   "distinct_values": [
+    "0xf",
+    "0x3f0",
+    "0x1000000f"
+   ]
+  },
+  {
+   "map": 0,
+   "reg": 98316,
+   "reg_hex": "0x1800c",
+   "count": 9,
+   "distinct_values": [
+    "0x0",
+    "0xf",
+    "0x2f"
+   ]
+  },
+  {
+   "map": 0,
+   "reg": 98324,
+   "reg_hex": "0x18014",
+   "count": 138,
+   "distinct_values": [
+    "0x0",
+    "0xf",
+    "0x2f"
+   ]
+  },
+  {
+   "map": 2,
+   "reg": 504,
+   "reg_hex": "0x1f8",
+   "count": 3,
+   "distinct_values": [
+    "0xf",
+    "0x3f0",
+    "0x1000000f"
+   ]
+  },
+  {
+   "map": 2,
+   "reg": 960,
+   "reg_hex": "0x3c0",
+   "count": 180,
+   "distinct_values": [
+    "0xf00000f",
+    "0xf0000ff",
+    "0xf0003f0",
+    "0x1f00000f"
+   ]
+  },
+  {
+   "map": 2,
+   "reg": 409600,
+   "reg_hex": "0x64000",
+   "count": 92,
+   "distinct_values": [
+    "0x0",
+    "0x1"
+   ]
+  },
+  {
+   "map": 113,
+   "reg": 2560,
+   "reg_hex": "0xa00",
+   "count": 36,
+   "distinct_values": [
+    "0x80000000",
+    "0x80000001",
+    "0x80000002",
+    "0x80000005",
+    "0x80000010",
+    "0x80000012",
+    "0x80000023",
+    "0x80000030",
+    "0x80000035",
+    "0x80000043",
+    "0x80000045",
+    "0x80000050",
+    "0x80000054"
+   ]
+  },
+  {
+   "map": 113,
+   "reg": 8192,
+   "reg_hex": "0x2000",
+   "count": 6,
+   "distinct_values": [
+    "0x0",
+    "0x1"
+   ]
+  }
+ ],
+ "interpretation_hypotheses": {
+  "map0_0x1e8": "hottest target (430 writes, 9 distinct values) - reads as the ANE PS/PLL ladder steps",
+  "map2_0x64000": "0/1 toggle (92 writes) - power gate",
+  "map113_0xa00": "0x80000000|N ascending tokens (36 writes) - perf-controller work tokens (submitWorkToPerfController)",
+  "map0_0x1800c_18014": "gate open (0xf,0x2f) / close (0x0) around each burst"
+ }
+}
