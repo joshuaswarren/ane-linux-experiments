@@ -32,23 +32,38 @@ The eight m1n1 ANE sequences (`t8103_ane_tunables[]`) identify as follows
 | ane_perf | 0x26b908000 | 4 | 0 |
 | ane_dpe_soc | 0x26b8f4000 | 3 | 0 |
 
-Two material findings:
+Two material findings (corrected 2026-09-25 late, per AneClockM1's
+independent verification — my first pass misattributed the ownership and
+misread the value pattern):
 
-1. **m1n1's published values are normalized, not verbatim.** Every matched
-   table has clear/set diffs vs the raw cache data. Examples (ane_pmgr,
-   copy va 0xfffffe000b8a891c): raw `{0x38, 0xffffffff, 0x50020}` vs m1n1
-   `{0x38, 0xffff, 0x50020}`; raw `{0x900, 0x100, 0x100}` vs m1n1
-   `{0x900, 0x1, 0x101}`; raw `{0x600, 0x1ffffff, 0x1ffffff}` matches. The
-   raw cache values are the authoritative XNU data; the per-entry diff lists
-   are in the JSON.
-2. **m1n1's ane_dart/ane_dapf tables are not in this cache at all.** Their
+1. **The tables belong to `com.apple.ApplePMGR` (1.0.0d1), not the ANE
+   kext.** The __DATA region holding every found table
+   (va 0xfffffe000b8a8460, size 0x20a91) begins with that kmod_info
+   (verified: strings at file 0x48a4470). ApplePMGR applies power/perf state
+   for the ANE PMGR islands — hence ApplePMGR data, ANE-relevant.
+2. **The raw perf/DPE tables are ZERO TEMPLATES, not operational values.**
+   In the raw cache data every perf, dpe_sys and dpe_soc set value is 0
+   (perf 45/45, dpe_sys 16/16, dpe_soc 96/96 — re-verified on the perf
+   table); only ane_pmgr carries set values. macOS fills the perf/DPE
+   values at RUNTIME. Therefore m1n1's published nonzero tables (e.g.
+   perf +0x8 = 0xf8a96, +0x10 = 0x15c4ad) are RUNTIME CAPTURES from some
+   machine — they occur nowhere in the kernelcache, and their origin
+   (which machine, which state) is unexplained; treating one capture as
+   the table's content would be a guess. The static ground truth is: zero
+   templates + runtime fill.
+   Additional diffs vs m1n1 remain real: raw clear masks differ (raw
+   `{0x38, 0xffffffff, 0x50020}` vs m1n1 `{0x38, 0xffff, 0x50020}`), and
+   the raw ane_pmgr copies disagree with each other (copy @
+   0xfffffe000b8ac920 has 2 set diffs vs m1n1, copy @ 0xfffffe000b8a8614
+   has 6 — chip/instance variants).
+3. **m1n1's ane_dart/ane_dapf tables are not in this cache at all.** Their
    distinctive values (0x80016100, 0xf0f0f, 0x2b45c000, 0x3b70c033) occur
-   NOWHERE in the 96 MB image. m1n1's dart/dapf sequences must derive from a
-   different XNU source (older build or hand construction). Also open: no
-   reference to the found table VAs exists in any form scanned (adrp+add,
-   adrp+ldr, movz/movk absolute, u32/u64 pointer words) — the consumer
-   linkage is unresolved (runtime-assembled addresses or an unscored
-   relocation form).
+   NOWHERE in the 96 MB image.
+4. Open: no reference to the found table VAs exists in any form scanned
+   (adrp+add, adrp+ldr, movz/movk absolute, u32/u64 pointer words, chained
+   KC pointers per AneClockM1's low-30-bits + base model, control-passed on
+   the ane-acg-hack string) — the consumer linkage is code-only within
+   ApplePMGR's __TEXT_EXEC or runtime-computed from a record head.
 
 ## T6001 — absent from both containers
 
