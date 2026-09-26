@@ -9,7 +9,19 @@ Every headline number has a matching receipt in `receipts/`.
 
 ## Current status
 
-**2026-09-20:** m1-test-host (T8103) fresh Arch boot reported (user-observed at login); Omarchy provisioning and benchmark recertification pending. Historical T8103 numbers in this tree are dated evidence from prior Linux boots, not a current recert.
+**2026-09-25 (evening fold):** m1-host (T8103) is recertified on the fresh
+Arch boot. The Qwen ANE staged-decode cell passes (decode 1.49x macOS,
+TTFT 0.84x, e2e 0.69x; prefill-512 1.223x — see the parity matrix), the
+Parakeet golden contract is bit-exact on the installed ane module
+(`receipts/2026-09-25-jwm1-parakeet-golden-rerun` on a9a5f60;
+`receipts/2026-09-25-jwm1-kernels2-clean` verifies 5ecff86 installed and
+loaded), and the GPU Qwen pins hold (dbf704971617fdfc / bc519c03c4ef5fd1).
+The m1max-host ANE encoder runs 440.7 ms under the resident ANE worker and
+the whole Parakeet pipeline dropped 1825 -> 892.9 ms
+(`receipts/2026-09-25-jw16-levers6/artifacts/part2/RESULTS.md`). m2-host
+(T6021) is still not live-inference-qualified; the 09-25 early-release dry
+image fell to recoveryOS and both fallbacks held
+(`receipts/2026-09-25-m2-early-release`).
 
 T8103 (M1) has a bound ANE (historical, prior Linux boots). Persistence is a systemd unit that binds the device at boot. Schema-4 add-mul, tiny select, 1x1 conv, and `(1,256,128)` and `(32,256,128)` linear are exact fp16. The exported add family is exact too: re-exported 1x512 and 1x896 both returned exact, status 0, on 2026-09-14 (`receipts/2026-09-14-1x896-export-fix.json`). The earlier 1x896 `-110` was a converter defect chain, fixed on main: hardcoded td_size over-fetching the task (`8e89936`), the task record left unmasked (`a29a395`), the coefficient stream read from byte 0 of the weight blob instead of its declared payload offset, and the nchw header stamped at the 64-byte-padded convention instead of the task's own tile-DMA geometry (`52a3211`). The exported family's task puts its source on channel 4 and its destination on channel 5, the reverse of libane's positional layout, so it needs the derived-channel libane from omarchy-ane `ane-parity` `20d24ad` (`receipts/2026-09-14-1x896-channel-polarity.json`); that commit is not on omarchy-ane `main`.
 
@@ -71,7 +83,8 @@ Notes and honesty rules for this table:
 Measured parity state for the three surfaces (GPU Qwen3.8-2B, ANE whole
 encoder, Parakeet) on m1-host (T8103), m1max-host (T6001), and m2-host
 (T6021), against same-SoC macOS denominators. The bar is >=1.00x macOS
-throughput and <=1.00x latency. No performance cell meets the bar today.
+throughput and <=1.00x latency. The m1-host Qwen ANE staged cells meet the
+bar; every GPU and Parakeet cell is still below macOS.
 Every value is quoted from a committed receipt; a value that exists in no
 receipt is marked `unreceipted` instead of dropped.
 
@@ -81,19 +94,20 @@ receipt is marked `unreceipted` instead of dropped.
 | m1-host | Qwen prefill-512 | 217.59 tok/s (1-pass digest 486872c4 identical) | 343.73 tok/s | 0.63x | FAIL | `receipts/2026-09-25-jwm1-parity3-main-battery` |
 | m1-host | Qwen TTFT | 50.88 / 49.67 tok/s (r1 / p10) | 99.12 tok/s | 0.51x | FAIL | same |
 | m1-host | Qwen e2e (32 new tokens) | 1.0883 s | 0.7898 s | 0.72x | FAIL | same |
-| m1-host | ANE whole encoder | 141.5-141.9 ms | 113.12 ms | 0.79-0.80x | FAIL | `receipts/2026-09-24-m1-boundaries-encoder-anomaly` (cites `receipts/2026-09-22-encoder-whole-program/m1host`) |
+| m1-host | ANE whole encoder | 138.03 ms median with the CPU-cluster boost held (171.04 ms when it lapses mid-submit); 137.95 ms on the installed 5ecff86 battery | 113.12 ms | 0.82x | FAIL | `receipts/2026-09-25-jwm1-ane-dvfs-boost` (5ecff86 install verified in `receipts/2026-09-25-jwm1-kernels2-clean`) |
 | m1-host | ANE gate battery | runtime+primitive+bundle PASS on kmod 9a0ec81 + wheel af737871e (bundle C++ 34/34, 5904/5904; h13 python 15/15 after ce91f5b8e) | n/a | n/a | PASS (correctness) | `receipts/2026-09-25-jwm1-parity3-main-battery` |
-| m1-host | Qwen ANE reference path | not run | n/a | n/a | NOT RUN | - |
-| m1-host | Parakeet warm pipeline | 298.6 ms median (receipt baseline); parity4 re-measures 529 ms median — ANE engine at ~1.8x slow since the 08:55 kmod-reload genpd cycle (engine exec 200-267 vs 141 certified) | 271 ms (rep10) | 0.91x best-certified; currently unmeasurable at baseline | FAIL (fusion and mel-DFT levers falsified by measurement: +12 ms and 2.1x slower; the real lever is the firmware-mediated ANE clock, needs macOS powermetrics correlation) | `receipts/2026-09-25-jwm1-parity4-falsifications-and-ane-regression` |
+| m1-host | Qwen ANE staged decode (max_len 50) | decode 8.23 tok/s (n=100); post-fix re-run: decode 1.4926x, TTFT 0.9677 s, e2e 0.6905x, 100/100 tokens exact, sweeps 3/3 | decode 5.625 tok/s, TTFT 1.189 s, e2e 6.718 s | decode 1.49x, TTFT 0.84x, e2e 0.69x | PASS (all three metrics) | `receipts/2026-09-25-jwm1-qwen-ane-layout-gate`; re-run `receipts/2026-09-25-jwm1-qwen-ane-ttft-rt`; TTFT root cause corrected to CPU-cluster DVFS coupling, durable fix omarchy-ane 5ecff86 (`receipts/2026-09-25-jwm1-ane-dvfs-boost`) |
+| m1-host | Qwen ANE prefill-512 (max_len 513 export) | 14.36 tok/s (median of 3 walls, runner 95fe3fe boundary) | 11.74 tok/s (same staged-decode geometry, max_len 513) | 1.223x | PASS | `receipts/2026-09-25-qwen-ane-export-513` (replay 368/368 byte-identical to the macOS 513 goldens) |
+| m1-host | Parakeet warm pipeline | current-stack whole-pipeline warm median 739.7 ms (TDT host loop on GPU, combined-parakeet lane); older certified boundary baseline 298.6 ms; parity4's 529 ms re-measure was the ~1.8x slow-engine state (ANE clock lever open). Today, bit-exact: mel 22.06 -> 19.36 ms (mel-DFT two-frames-per-workgroup landing), TDT chain 155.5 -> 151.1 ms (rtmod trace hygiene), encoder exec 140.3-141.1 ms (golden PASS on ane a9a5f60/5ecff86); TDT kernel-count fusion falsified 4.7x slower | 271 ms (rep10) | 0.37x current stack; 0.91x best-certified boundary | FAIL (falsified levers: parity4 fusion/mel variants, parity10 TDT fusion; landed levers: mel-DFT two frames per workgroup, rtmod trace gating; open lever: firmware-mediated ANE clock) | `receipts/2026-09-25-jwm1-parity4-falsifications-and-ane-regression`; `receipts/2026-09-25-jwm1-parakeet-golden-rerun`; `receipts/2026-09-25-jwm1-kernels-gpu-breakdown`; `receipts/2026-09-25-jwm1-parity10-parakeet-tdt-mel`; `receipts/2026-09-25-jwm1-kernels2-clean` |
 | m1-host | Parakeet transcript | db501a8c, hidden 554a3d66 x3 on af737871e wheel + 9a0ec81 kmod | match | parity | PASS (correctness) | `receipts/2026-09-25-jwm1-parity3-main-battery` |
-| m1max-host | Qwen decode | 77.33-77.48 tok/s | 180.38 tok/s (earlier protocol: 179.47) | 0.43x | FAIL | `receipts/2026-09-24-launch-sink2/macos-t6001-denominators/qwen38-macos-metal.json` |
+| m1max-host | Qwen decode | 77.33-77.48 tok/s; installed since the measurement: cpufreq-floor.service (+4.3% decode) and the dep-skip barrier trim (+0.8%, +0.65 tok/s) | 180.38 tok/s (earlier protocol: 179.47) | 0.43x | FAIL | `receipts/2026-09-24-launch-sink2/macos-t6001-denominators/qwen38-macos-metal.json`; levers `receipts/2026-09-25-jw16-levers3` |
 | m1max-host | Qwen prefill-512 / TTFT / e2e | not run | 1326.05 tok/s / 359.98 tok/s / 0.2081 s | - | NOT RUN (Linux leg) | same |
-| m1max-host | ANE whole encoder | 1631.7 ms (const-cache knob c59cc91, battery 20260925T030455; landed receipt re-run 1650.1 ms) | 141.18 ms (10 reps, 136.79-141.69; all-arm 146.7) | 0.09x | FAIL | Linux: `receipts/2026-09-24-launch-sink2/parakeet-constcache/summary-final.json` (+ commit c59cc91); macOS: `receipts/2026-09-24-launch-sink2/t6001-macos-denominators.tgz` member `core-20260924T191727/bench_ane.json` (tar sha256 968d5c5b…) |
+| m1max-host | ANE whole encoder | 440.7 ms encoder stage under the resident ANE worker (whole-encoder pipeline 1825 -> 892.9 ms, -65% stage; earlier const-cache knob c59cc91 measured 1631.7 ms) | 140.9 ms (CoreML, bit-exact; 09-24 10-rep window 141.18) | 0.32x | FAIL | `receipts/2026-09-25-jw16-levers6/artifacts/part2/RESULTS.md`; macOS window `receipts/2026-09-25-jw16-levers5` |
 | m1max-host | ANE firmware | release sequence runs, stalls before HELLO | n/a | n/a | NOT RUN (no inference path) | `docs/t6021-ane-bringup-findings.md` in omarchy-ane, sections 4-5 |
-| m1max-host | Parakeet total | 2463.0 ms per commit c59cc91 (landed re-run 2480.4 ms; baseline 2572.3 ms — older 09-21 battery: 4694.5 ms total) | no receipted full-pipeline denominator (macOS per-arm legs in the tgz, golden-matched transcripts) | unreceipted | FAIL (denominator missing) | Linux: `receipts/2026-09-24-launch-sink2/parakeet-constcache/summary-final.json`; macOS: `receipts/2026-09-24-launch-sink2/t6001-macos-denominators.tgz` member `parakeet-20260924T192244/` |
+| m1max-host | Parakeet total | 892.9 ms total, RTF 0.0856 (was 2463.0/2480.4 ms; baseline 2572.3 ms) | 264 ms full pipeline (mel 15, encoder 140.9, tdt+decode 102) | 0.30x | FAIL | `receipts/2026-09-25-jw16-levers6/artifacts/part2/RESULTS.md` (both sides) |
 | m1max-host | Parakeet transcript | 104/104 match, db501a8c pins | match | parity | PASS (correctness) | same |
 | m2-host | Qwen GPU | not run on the main-tip battery; Sep-23 qualified stack measured decode 72.58 / prefill-512 906.84, stale vs mlx-omarchy main | 179.0 / 1109.82 tok/s | 0.40x / 0.82x (stale stack) | FAIL (stale stack); NOT RUN (current) | `receipts/2026-09-24-m2-gpu-parakeet-prep`; `receipts/2026-09-23-m2-gpu-qwen38`; `receipts/2026-09-23-m2-macos-denominator` |
-| m2-host | ANE encoder | no inference path; firmware reaches its service loop, mailbox FIFO never drains, no HELLO | 90.71 ms, bit-exact vs Linux gold | n/a | NOT RUN | omarchy-ane `docs/t6021-ane-bringup-findings.md` sections 12-13; `receipts/2026-09-23-m2-macos-denominator` |
+| m2-host | ANE encoder | no inference path; firmware release sequence proven (status 0x28) on T6021 and T6001; with the VENC power leg up the firmware reaches its service loop; mailbox FIFO queued, never drained, no HELLO; the 09-25 early-release dry image fell to recoveryOS, both fallbacks intact | 90.71 ms, bit-exact vs Linux gold | n/a | NOT RUN | omarchy-ane `docs/t6021-ane-bringup-findings.md` sections 12-13; `receipts/2026-09-25-m2-mailbox-api`; `receipts/2026-09-25-m2-early-release`; `receipts/2026-09-23-m2-macos-denominator` |
 | m2-host | Parakeet | never run (structurally blocked: T6021 ANE unavailable) | rep10 0.167 s, 107 tokens — MISMATCH vs golden 104 | n/a | NOT RUN (Linux); denominator flawed (macOS) | `receipts/2026-09-24-m2-gpu-parakeet-prep`; `receipts/2026-09-23-m2-macos-denominator/m2-macos-window/parakeet-20260923T145525` |
 
 Notes:
@@ -119,6 +133,14 @@ Notes:
   m1max-host macOS ANE denominator (141.18 ms) lives inside the committed
   `t6001-macos-denominators.tgz` (gzip members are invisible to a text
   grep; verified by extraction, tar sha256 `968d5c5b…`).
+- 2026-09-25 evening fold: the m1-host Qwen ANE staged cells (layout gate,
+  TTFT re-run, 513 prefill export) are receipted PASS. The m1max-host
+  encoder and Parakeet totals are re-based on the resident ANE worker
+  (levers6 part 2) against that receipt's own 264 ms macOS denominator.
+  Same-cell macOS denominators differ by measurement window (ANE encoder:
+  140.27 levers3 / 140.9 levers6 / 141.18 launch-sink2 tgz); each ratio
+  quotes the window paired with its Linux value. The 5ecff86 boost module
+  is installed on m1-host (`receipts/2026-09-25-jwm1-kernels2-clean`).
 - The m1-host Parakeet row is the combined-parakeet lane (warm reps
   1588.2/1597.8 ms after a cold rep). The same receipt also holds a faster
   current-stack whole-pipeline warm median of 739.7 ms with the TDT host
