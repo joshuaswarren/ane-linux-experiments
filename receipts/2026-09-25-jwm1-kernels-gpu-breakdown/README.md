@@ -145,3 +145,9 @@ untouched.
 4. `[rtmod]` fprintf-per-submit hygiene is env-set on jwm1
    (`MLX_OMARCHY_TRACE_DISPATCH` in the environment): ~0.1% of wall and
    noisy logs; consider unsetting at the shell level.
+5. Post-window box state (AneClockM1, 2026-09-25): omarchy-ane main
+   `5ecff86` ANE boost module installed and loaded (stock `5a22ee3`
+   backed up at /var/tmp). The contract3/corpus gates above ran on stock
+   `5a22ee3`; the fix moves the ANE encoder from ~141 to ~137.95 ms
+   bit-exact, so this receipt's encoder_ane medians (182.6 ms
+   in-process, evening window) understate the current stack.
