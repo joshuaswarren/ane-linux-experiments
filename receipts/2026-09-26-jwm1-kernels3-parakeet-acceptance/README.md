@@ -88,3 +88,38 @@ Design question to settle first: cross-workgroup visibility of the fold
 result (no global barrier in one dispatch) -> every WG recomputes the
 prologue redundantly (bit-exact: same fp32 ascending order). Pass
 criterion: pins + corpus + contract3 gates + total < 271 ms.
+
+## Absorption experiment: MEASURED FALSIFIED (2026-09-26 late)
+
+Implemented the parakeet-298 §3 absorption (branch
+`agent/jwm1-kernels3-tdt-absorb`, commits through "fix: dead-slot
+passthrough"): chains1 computes the fold in its sh_a prologue (workgroup 0
+publishes h0_out/c0_out), window computes the full fold_proj per
+workgroup (sh_h1/sh_c1/sh_pj16 workgroup-local, workgroup 0 publishes
+h_state/c_state/pj/pj16). 6 -> 4 dispatches/slot. Control left as its own
+dispatch (the risky cross-workgroup piece was deferred).
+
+Measured on jwm1 (chain_bench 64 5, same window discipline, lock held,
+installed wheel unchanged — pure tools-tree A/B):
+
+| arm | chain wall median |
+|---|---:|
+| base (6-dispatch main) | 152.6 ms |
+| absorbed (4-dispatch) | **334.7 ms — 2.2x SLOWER** |
+
+Contract digest on the absorbed path was BIT-EXACT (486872c410629f1d on
+1-pass) — correctness held; the approach fails on speed. The redundant
+per-workgroup fold/fold_proj prologues (strided bsum loads + scattered LUT
+reads on the critical path before each WG's barrier, x100/x33 redundancy)
+cost ~2x more than the two saved ~94 us dispatches. This lands the same
+class as the falsified single-workgroup trio fusion: the grid-1 trio's
+cost is dispatch turnaround, and absorbing their work into the bandwidth
+kernels damages those kernels' streaming.
+
+Disposition: branch stays pushed as the falsified record; main-pin
+installed state (7d3f69ff2) is untouched and remains the verified
+baseline. The 958783d9 conclusion is reinforced and EXTENDED: trio fusion
+falsified, single-workgroup fusion falsified 4.7x, AND prologue/epilogue
+absorption falsified 2.2x — the TDT trio's ~94 us/dispatch is honeykrisp
+dispatch-turnaround (mesa-1 lane), and no kernel-structure change tried so
+far removes it.
