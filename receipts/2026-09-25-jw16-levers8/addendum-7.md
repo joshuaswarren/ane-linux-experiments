@@ -117,3 +117,29 @@ wrapper for the Linux KMD path (per-surface buffers at ANEC tile-slot
 banks, input dicts by port name, KMD-synchronous submit). Draft status:
 needs the probe's load_anec_header API adaptation (header parse from
 mmap) and a device validation run. The chain runner builds on it.
+
+## UPDATE 4 — TD KDMA bank aggregate for prog_003 (numeric comparison prep)
+
+prog_003's task stream (140 task descriptors — note: 140, not 62; the
+earlier 62 was prog_002's) walked: KDMA base addresses + buffer sizes
+aggregated per bank. Full map: jw16 /var/tmp/levers8/qwen/prog_003-banks.json.
+
+Key aggregate: bank 2144 (60,032 B over 28 refs — the recurrent-state
+surface), bank 0 (6,152 B, 31 refs), bank 96 (6,144 B), plus per-DMA
+small banks (56..389). The KDMA base_addresses are IOVA-space word
+addresses (26-bit at bit 6), not simple buffer slot IDs — the
+descriptor→section mapping requires resolving these IOVA addresses
+against the FVMLIB section address ranges (0x30020000..0x30104000+ in
+the hwx's own address space) via the ANE's IOMMU translation, which the
+KMD programs from the bound BO IOVAs at submit time.
+
+The numeric comparison therefore needs: (1) the FVMLIB section address
+ranges for prog_003 (extractable — the section table is in the hwx),
+(2) the TD KDMA word addresses converted to byte addresses (×2) and
+matched to the section ranges, (3) the 6 e5rt input tensors placed at
+their matched ranges in the input span, (4) device execution, (5)
+output comparison vs the e0001 reference tensors.
+
+State preserved: jw16 /var/tmp/levers8/qwen/{e5rt-ref/, prog_003-
+banks.json, hwx/, prog_003-state.anec-geometry-inputs}; the numeric
+comparison is the immediate next action with all data local.
