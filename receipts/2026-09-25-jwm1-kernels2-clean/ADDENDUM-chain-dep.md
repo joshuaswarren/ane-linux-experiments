@@ -55,3 +55,27 @@ from isolated shape benches (q4-bw-bench pattern) with the profile used for
 dispatch structure only. The steady-state submit groups in the profile
 (s=114/115: ~150-172 dispatches/token — dispatch count already reduced by
 the MULTI+fold stack) are the extractable shape set.
+
+## Addendum 2: v0.7.4 installed-from-release gate — FAIL (installer)
+
+Ran the RepoReleaseSweep handoff battery (clean install.sh from the
+published v0.7.4 tag, GPU matmul smoke, ANE smoke, 10-prompt compact
+digest). FAILED at the installer patch stage, before any model ran:
+
+```
+/tmp/v074-install.sh: line 177: ~/.local/share/
+mlx-omarchy/apply-mlx-lm-patches.sh: Permission denied
+FAIL install.sh rc=126
+```
+
+Line 177 executes the curl-fetched patch script directly (`"$PREFIX/
+apply-mlx-lm-patches.sh" "$VENV"`); curl wrote it 0644. This is the same
+defect class af1222e44 fixed for a different callsite (invoke via `bash`) —
+the fix is an ancestor of bb4901a80 but this second direct invocation
+survived. On any machine without a +x leftover from an older installer
+generation, v0.7.4 cannot install. Evidence: raw/v074-gate-fail.log
+(full installer log). No promotion; release stays prerelease for
+RepoReleaseSweep to re-cut with `bash "$PREFIX/apply-mlx-lm-patches.sh"`
+at line 177 (or an explicit chmod). Note the digest control itself was
+pre-verified this same day: my saved pass-1 full digest equals the
+486872c4...aa5c control bit-exact.

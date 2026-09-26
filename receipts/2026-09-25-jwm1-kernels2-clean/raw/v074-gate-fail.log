@@ -1,0 +1,9 @@
+=== v0.7.4 gate start 2026-09-25T21:47:37-05:00 on jwm1-linux ===
+[1;32m==>[0m Installing mlx-omarchy v0.7.4 (pinned by MLX_OMARCHY_VERSION)
+[1;32m==>[0m Installing runtime packages (lapack, blas, openblas)
+[1;32m==>[0m Fetching v0.7.4 checksums
+[1;32m==>[0m Fetching mlx_omarchy-0.32.3.dev202609260237+bb4901a-cp314-cp314-linux_aarch64.whl
+[1;32m==>[0m Creating ~/.local/share/mlx-omarchy/venv
+[1;32m==>[0m Applying mlx-lm serve patches (GDN fast route on; greedy vocab prune on; conv-ring off unless MLX_OMARCHY_CONV_RING=1)
+/tmp/v074-install.sh: line 177: ~/.local/share/mlx-omarchy/apply-mlx-lm-patches.sh: Permission denied
+FAIL install.sh rc=126
