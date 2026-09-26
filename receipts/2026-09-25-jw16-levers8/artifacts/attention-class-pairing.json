@@ -1,0 +1,62 @@
+[
+ {
+  "manifest_index": 6,
+  "hwx_prog": "prog_017",
+  "class": "attention",
+  "order": 0,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "manifest_index": 12,
+  "hwx_prog": "prog_020",
+  "class": "attention",
+  "order": 1,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "manifest_index": 18,
+  "hwx_prog": "prog_026",
+  "class": "attention",
+  "order": 2,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "manifest_index": 25,
+  "hwx_prog": "prog_033",
+  "class": "attention",
+  "order": 3,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
+ },
+ {
+  "manifest_index": 31,
+  "hwx_prog": "prog_039",
+  "class": "attention",
+  "order": 4,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
+ }
+]
