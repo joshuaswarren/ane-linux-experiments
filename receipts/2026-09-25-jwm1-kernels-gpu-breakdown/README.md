@@ -130,7 +130,13 @@ untouched.
    (fold/fold_proj/control 93 us each of pure latency) and
    chains/window bandwidth (77-79% of nominal). The barrier-set A/B ICD
    remains at `/tmp/mesa-ab.icd.json` on jwm1 (base 7faf04c + the three
-   usc-barrier-study commits) for repeat trials.
+   usc-barrier-study commits) for repeat trials. Cross-chip frame
+   (Jw16Levers5): the T6001 barrier-lineage win (+3.2% decode over 10
+   pairs) is consistent with serial-dependency frequency rather than
+   barrier-field cost — T6001 runs ~405 dispatches/token (more
+   turnaround-exposed) while T8103's leaner decode stream hides the same
+   cost and only the serial TDT chain exposes it, which the
+   upstream-of-the-field-set conclusion predicts.
 2. Decode: the qmm sweep at 66% of nominal bandwidth is the whole gap to
    macOS's ~79%; the T6001 Q4-GEMV tiling line (3232b1f5, 1faf7f00) is
    the reference work. The GDN fused kernel is bit-exact and free to
