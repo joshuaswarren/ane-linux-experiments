@@ -1,0 +1,4 @@
+[    0.510224] macsmc-reboot macsmc-reboot: PMU logged 1 boot error(s) and 0 panic(s)
+---
+[    2.900524] ane 26bc04000.ane: loaded ane
+[  263.944786] ane 26bc04000.ane: loaded ane
