@@ -221,3 +221,90 @@ apply routine and the write accessor by function name, logging domain,
 requested state and the written address and value during an encoder run.
 A host-side probe is staged only after the capture names the exact address
 and value macOS writes.
+
+## 10. jwm1 slow state: the CPU cluster boost lapsed mid-submit (2026-09-25 evening)
+
+Host jwm1 (T8103, 7.1.13-3-2-ARCH), slot from Jwm1Kernels, stock driver
+5a22ee3 (srcversion `32DC3F35CA4F4A20CEA9012`). Engine timing: whole-encoder
+bundle through `InProcessAne` (`/var/tmp/encoder-whole-jwm1/bundle`,
+libane-strict), fed the capture's own inputs, one submit per iteration, every
+submit compared word for word against `EncoderParityAne/capture/encoder_hidden.npy`
+(bench script: `aneclock-bench.py` on jwm1 `~/ane-clk-probe/`).
+
+### 10.1 m1n1 tunables survive; they are not the mechanism
+
+m1n1 `power_and_apply` powers the ANE on, applies the eight T8103 tunable
+blocks and powers it off before Linux starts. Five words read back through the
+SET-gated one-word reader (omarchy-ane clock worktree 85c6012, SET+0 = 0x3ff
+before each read, no writes; `tunable-readback.sh`):
+
+| PA | m1n1 entry (mask -> want) | read, this boot (after one reload) | read, after a second reload |
+|---|---|---|---|
+| 0x26a000738 | 0x1ff01ff -> 0x200020 | 0x200020 | 0x200020 |
+| 0x26a000900 | 0x101 -> 0x101 | 0x101 | 0x101 |
+| 0x26b8f003c | 0x262 -> 0x262 | 0x262 | 0x262 |
+| 0x26b8f4028 | 0x6b7 -> 0x6b7 | 0x6b7 | 0x6b7 |
+| 0x26b908008 | 0xf8aff -> 0xf8a96 | 0xf8a96 | 0xf8a96 |
+
+Identical in the slow and the fast state (`ane-tunable-readback-{boot,reload}.txt`).
+In the macOS 13.5 kernelcache the perf/dpe_sys/dpe_soc tables (in
+com.apple.ApplePMGR `__DATA`) carry offsets and masks with every set value
+0: macOS fills them at runtime, and m1n1's values occur neither in the
+kernelcache nor in jwm1's ANE or PMGR ADT.
+
+### 10.2 The boost timer
+
+`ane_boost_kick` ran at submit start and armed the QoS drop `boost_idle_ms`
+(100 ms) after it; the drop work takes only the boost lock. A 140 ms encoder
+submit lost the top-p-state hold 100 ms in. Same stock instance, back to back,
+24 submits each, 24/24 bit-exact in both arms (`ane-bench-boost-ab.txt`):
+
+| boost_idle_ms | clusters (policy0/policy4 MHz at submit edges) | median ms | range ms |
+|---|---|---:|---|
+| 1000 (hold outlasts every submit) | 2064/2988 on every edge | **138.03** | 137.72-138.67 |
+| 100 (stock) | down to 972/600 | 171.04 | 140.11-238.41 |
+
+An earlier run on the same boot (`ane-bench-reload-freq.txt`, median 140.53,
+138.73-141.82) was steady only because schedutil kept policy4 at 2184-2988 MHz
+after the QoS lapsed; the reload is not what fixed it. This is the
+141 -> 200-267 ms swing of receipt 044ee23: CPU cluster p-state (T8103 pairs
+PS2, the memory-side field, with it), not the ANE clock and not tunables.
+
+### 10.3 apple-pmgr-misc cannot hold SOC/DCS
+
+`drivers/soc/apple/apple-pmgr-misc.c` matches only `apple,t6000-pmgr-misc`; the
+T8103 DT has no node and the driver is unbound on jwm1. Where bound (T600x
+fabric-ps 0x28e20c000, dcs-ps 0x28e20c800) probe only reads the DESIRED nibble
+as `active_state`; it writes only in system suspend/resume (noirq), and
+`apple,<dev>-min-ps` is the suspend pstate, not a runtime floor. A runtime hold
+through it would need new fabric/DCS pstate writes.
+
+### 10.4 Fix landed: omarchy-ane main 5ecff86
+
+`ane_boost_begin`/`ane_boost_end` bracket `ane_tm_execute`: begin marks the
+engine busy and raises the QoS, end clears busy and arms the drop from
+completion, and the drop never fires while busy (fast-forward from 62dae21).
+Gates on jwm1 with the fixed build at the stock default `boost_idle_ms=100`
+(logs in `boost-fix-gates/`):
+
+| gate | result |
+|---|---|
+| encoder spread, 32 submits | median **137.95 ms**, 137.71-139.60; policy0/policy4 2064/2988 MHz at 31/32 submit edges (the first is before the boost); 32/32 bit-exact |
+| ANE battery `omarchy_ane_bundle_tests` | 34/34 cases, 5904/5904 assertions, SUCCESS |
+| Parakeet golden (`pk-sess-driver.py`, venv denom-b4757ac, 3 runs) | 3/3 `match`, transcript db501a8c, 104 emissions, 0 failed checks, ANE exec 140.065 / 141.345 / 140.035 ms |
+| installed build (`updates/ane.ko`, sha256 a23ccb58…, srcversion 9109B200A150B27F484F718, loaded via modprobe) | 16 submits median 137.74 ms, 137.65-138.68, 16/16 bit-exact |
+
+Stock 5a22ee3 is backed up on jwm1 at `/var/tmp/ane-stock-5a22ee3-preboost.ko`
+(sha256 57ceaddd…). The single-submit golden path starts its boost at the one
+submit, so its exec (140-141) sits above the steady-state 137.7-138.
+
+T6001: Jw16Levers7's sysfs A/B (`boost_idle_ms=1000`) on jw16 is flat (431.4
+vs 431.6/427.6 ms/iter, bit-exact); the fix is correct there but no speedup is
+expected.
+
+Remaining gap: 137.95 / 113 = 1.22x behind macOS. The discriminating
+measurement, the ANE's own clock/counter pairs (m1n1 hw/ane.py CLK0-3/CTR0-3,
+PA 0x26b160008-0x26b178004) bracketing one submit, is built
+(omarchy-ane clock worktree `ane/h13/ane_ctr_probe.c`, read-only, SET-gated)
+and held: these pages have not been read on T8103, and jwm1 must stay up for
+the M2 cold-reset catch (M2FwStart-2).
