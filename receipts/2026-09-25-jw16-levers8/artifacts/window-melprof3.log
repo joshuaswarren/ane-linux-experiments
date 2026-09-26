@@ -1,0 +1,20 @@
+=== levers8 melprof3 window start 2026-09-26T08:06:26-05:00 ===
+--- proc 1 ---
+constants(build only, no eval): 0.38 ms
+k1+k2 frames(hann window): 22.46 ms
+k3-k4 dft: 29.92 ms
+k5 power: 15.84 ms
+k6 mel_project: 25.81 ms
+k7 statistics: 20.03 ms
+k8 normalize: 2.19 ms
+(noop eval warm: 0.00 ms)
+--- proc 2 (fresh, warm caches) ---
+constants(build only, no eval): 0.37 ms
+k1+k2 frames(hann window): 22.85 ms
+k3-k4 dft: 31.24 ms
+k5 power: 15.80 ms
+k6 mel_project: 22.76 ms
+k7 statistics: 20.75 ms
+k8 normalize: 2.30 ms
+(noop eval warm: 0.00 ms)
+=== melprof3 window end 2026-09-26T08:06:27-05:00 ===

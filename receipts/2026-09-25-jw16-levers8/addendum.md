@@ -131,6 +131,82 @@ Driver source (AsahiLinux/linux asahi branch, drivers/soc/apple/pmp.rs,
 No PMP hardware writes were performed in this lane; every action above
 is either a file read, a sysfs read, or a proposal.
 
+## 3b. Per-pipeline first-use — PROFILED: the omarchy MSL translator (2026-09-26 followup)
+
+perf (4999 Hz, frame pointers, one fresh process running the per-kernel
+split; 1203 samples): the toll is **the backend's MSL→SPIR-V kernel
+translator**, not Mesa. Flat profile: std::regex machinery in
+libmlx.so ≈ 35-40% of samples (`_Executor` 20.8%, `regex_traits`
+4.5+4.1+1.7+0.65%, `vector<sub_match>` 2.3%, `__regex_algo` 0.9%,
+locale/string support ~2%), against Mesa's `blake3_hash_many_neon`
+(cache keying, libvulkan_asahi) at only 0.8%. Call chain:
+`eval → eval_impl → gpu eval → mlx::core::fast::CustomKernel::eval_gpu →
+translate_msl / translate_types / translate_atomic_parameter /
+translate_bfloat_parameter` (symbols confirmed via nm -C; the same
+"shared-memory regex" translator family documented in the
+tdt-speculative-window receipt). Each of the 7 mel kernels pays its
+translation per process; steady state (9.4 ms) skips it.
+
+**Fix that removes the actual cost** (backend change, mlx-omarchy):
+persist the translated SPIR-V per dynamic kernel across processes,
+keyed by source hash, and skip `translate_msl` on hit — the backend
+already has a content-addressed SPIR-V disk cache for its embedded
+kernels; the dynamic `mx.fast.metal_kernel` path evidently bypasses it.
+Provable with the existing fresh-process mel A/B harness (first-call
+110-146 ms → expected ~25-40 if translation is the whole toll). NOT
+implemented in this lane; scoped for the next one.
+
+## 3c. Resident combined path — MEASURED (existing consumer, no new abstraction)
+
+The shipped CLI already supports `--repeat N` (resident ANE session,
+`ANE_ISLAND_MODE=resident-batch` default). One process, --repeat 4,
+all pins green (104/104, transcript match):
+
+| rep | total ms | mel | encoder | tdt | notes |
+|---|---:|---:|---:|---:|---|
+| r1 (startup) | 1249.2 | 115.3 | 870.0 | 197.2 | worker spawn+boot+island load |
+| r2 | 633.1 | **7.8** | **440.8** | 130.8 | resident: exec only |
+| r3 | 634.7 | 7.8 | 440.8 | 130.8 | |
+| r4 | 636.3 | 7.8 | 440.8 | 130.8 | |
+
+Cold-cache reference (separate, receipts §2/§3): first process with
+cold Mesa+pipeline caches = 11387 ms total, mel 10226.
+
+Same-boundary comparison at warm-resident: Linux 634 ms full combined
+vs macOS models-ready median 315 (2.0x) and macOS load+inference 576
+(1.10x, boundary caveat: Linux r2 still pays decoder_load 42.1/call);
+inference-only mel+enc-exec+tdt = 579.4 vs macOS 264 (2.19x). The two
+remaining gaps are ANE encoder exec (440.8 vs 146.5 — the ANE clock
+story; PMP lane) and TDT (130.8 vs 102.5 — Mesa hop/bandwidth per
+Jwm1Kernels3). Mel warm (7.8) is FASTER than macOS (15).
+
+## 3d. PMP firmware/ABI extraction from the committed KC (off-device)
+
+Parsed /var/tmp/jw16-kc/kernelcache.release.mac13j.macho (22G74 boot
+KC, 2 sections: __PRELINK_TEXT 0x96c000 + __PRELINK_INFO 0x320000;
+no LC_FILESET — prelink layout). Extracted from the prelink info dicts:
+
+- ApplePMPFirmware.kext: LoadAddr 0xfffffe00074771f0, **size 7193 B**,
+  dumped (`ApplePMPFirmware.bin`, sha256 434c13873058ab7f…). Sections:
+  __text 0x1208 + __const 0x9d8 — a driver stub, **NO firmware blob**.
+- ApplePMP.kext: LoadAddr 0xfffffe00074755d0, listed size 7193 B but
+  its sections (incl. __text 0xd718, __DATA_CONST __const 0x5140)
+  reference addresses OUTSIDE this macho's __PRELINK_TEXT — the
+  driver's real content lives in the System KC / on-demand collection,
+  not in this boot KC file. Fresh dump written (`ApplePMP.bin`,
+  sha256 1524be24e5f0fa10…, known-incomplete).
+
+Consequence for the prerequisite chain (§3): the firmware payload is
+NOT in the committed boot KC. Verified sources to check before any PMP
+boot: (a) the System KC macho (361 MB, on PVE, complete as of the
+levers7 re-pull), (b) the macOS volume kexts, (c) iBoot NOR provisioning
+— note the ADT has NO pre-loaded for pmp (vs ane0 pre-loaded=1), so
+iBoot parking under Asahi is unproven. This sharpens Main's warning:
+do not boot PMP until the firmware blob is extracted AND its identity
+verified against the RTKit expectations, and tunables are in hand.
+
+
+
 ## 4. macOS denominator receipt
 
 All ten step2 logs parsed by Main: medians inference 264, models-ready

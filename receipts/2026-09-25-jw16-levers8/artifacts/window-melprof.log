@@ -1,0 +1,54 @@
+=== levers8 melprof window start 2026-09-26T07:53:53-05:00 ===
+--- profiler (warm caches) ---
+Traceback (most recent call last):
+  File "/tmp/levers8/melprof.py", line 21, in <module>
+    from mlx.coreml import vulkan_mel as vm  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/coreml/vulkan_mel.py", line 27, in <module>
+    from vulkan_mel_constants import (
+    ...<9 lines>...
+    )
+ModuleNotFoundError: No module named 'vulkan_mel_constants'
+--- profiler (cold Mesa caches, fresh process) ---
+Traceback (most recent call last):
+  File "/tmp/levers8/melprof.py", line 21, in <module>
+    from mlx.coreml import vulkan_mel as vm  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/tmp/v072-venv-fused/lib/python3.14/site-packages/mlx/coreml/vulkan_mel.py", line 27, in <module>
+    from vulkan_mel_constants import (
+    ...<9 lines>...
+    )
+ModuleNotFoundError: No module named 'vulkan_mel_constants'
+=== melprof window end 2026-09-26T07:53:54-05:00 ===
+=== levers8 melprof window start 2026-09-26T07:56:25-05:00 ===
+--- profiler (warm caches) ---
+import mlx+mel: 18.4 ms
+Traceback (most recent call last):
+  File "/tmp/levers8/melprof.py", line 29, in <module>
+    flac = sorted(cache.rglob("1089-134686-0000.flac"))[0]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+--- profiler (cold Mesa caches, fresh process) ---
+import mlx+mel: 18.6 ms
+Traceback (most recent call last):
+  File "/tmp/levers8/melprof.py", line 29, in <module>
+    flac = sorted(cache.rglob("1089-134686-0000.flac"))[0]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+=== melprof window end 2026-09-26T07:56:26-05:00 ===
+=== levers8 melprof window start 2026-09-26T07:58:02-05:00 ===
+--- profiler (warm caches) ---
+import mlx+mel: 18.3 ms
+flac decode: 125.1 ms (ffmpeg, 166960 samples)
+waveform upload+eval: 31.0 ms
+pass1: total=10216.69 ms | constants=0.42 frames_graph=0.05 dft_graph=0.10 power_graph=0.01 melproj_graph=1.35 stats_graph=0.02 norm_graph=0.01 eval_sync=10214.70 host_copy=0.03 | mel_sha_sum=331223.1875
+pass2: total=9.41 ms | constants=0.00 frames_graph=0.03 dft_graph=0.02 power_graph=0.01 melproj_graph=0.01 stats_graph=0.02 norm_graph=0.00 eval_sync=9.33 host_copy=0.00 | mel_sha_sum=331223.1875
+pass3: total=7.41 ms | constants=0.00 frames_graph=0.01 dft_graph=0.01 power_graph=0.00 melproj_graph=0.00 stats_graph=0.00 norm_graph=0.00 eval_sync=7.38 host_copy=0.00 | mel_sha_sum=331223.1875
+--- profiler (cold Mesa caches, fresh process) ---
+import mlx+mel: 19.0 ms
+flac decode: 27.6 ms (ffmpeg, 166960 samples)
+waveform upload+eval: 30.1 ms
+pass1: total=10145.18 ms | constants=0.37 frames_graph=0.04 dft_graph=0.09 power_graph=0.01 melproj_graph=1.36 stats_graph=0.02 norm_graph=0.01 eval_sync=10143.25 host_copy=0.03 | mel_sha_sum=331223.1875
+pass2: total=9.44 ms | constants=0.00 frames_graph=0.04 dft_graph=0.02 power_graph=0.01 melproj_graph=0.01 stats_graph=0.00 norm_graph=0.00 eval_sync=9.35 host_copy=0.00 | mel_sha_sum=331223.1875
+pass3: total=7.39 ms | constants=0.00 frames_graph=0.01 dft_graph=0.01 power_graph=0.00 melproj_graph=0.00 stats_graph=0.00 norm_graph=0.00 eval_sync=7.37 host_copy=0.00 | mel_sha_sum=331223.1875
+=== melprof window end 2026-09-26T07:58:23-05:00 ===

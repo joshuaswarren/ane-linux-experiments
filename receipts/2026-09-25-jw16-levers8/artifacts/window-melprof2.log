@@ -1,0 +1,16 @@
+=== levers8 melprof2 window start 2026-09-26T08:01:29-05:00 ===
+--- proc A (fresh) ---
+proc-A call1: graph+eval=110.83 ms host_copy=0.02 ms sum=331223.188
+proc-A call2: graph+eval=9.72 ms host_copy=0.01 ms sum=331223.188
+--- proc B (immediately after) ---
+proc-B call1: graph+eval=146.35 ms host_copy=0.02 ms sum=331223.188
+proc-B call2: graph+eval=9.42 ms host_copy=0.01 ms sum=331223.188
+--- proc C (after 90 s idle gap) ---
+proc-C call1: graph+eval=110.00 ms host_copy=0.02 ms sum=331223.188
+proc-C call2: graph+eval=9.52 ms host_copy=0.01 ms sum=331223.188
+--- vkpc state ---
+total 1368
+drwx------ 1 joshuawarren joshuawarren      74 Sep 26 08:03 .
+drwxr-xr-x 1 joshuawarren joshuawarren     146 Sep 26 07:58 ..
+-rw-r--r-- 1 joshuawarren joshuawarren 1396872 Sep 26 08:03 2974494d68522c2214e466adf8b61182.vkpc
+=== melprof2 window end 2026-09-26T08:03:01-05:00 ===

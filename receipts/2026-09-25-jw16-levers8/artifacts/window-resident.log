@@ -1,0 +1,87 @@
+=== levers8 resident window start 2026-09-26T08:12:47-05:00 ===
+--- resident combined path: repeat 4 in one process ---
+}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 633.087,
+  "out": "/tmp/levers8/after/resident-r2",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 634.713,
+  "out": "/tmp/levers8/after/resident-r3",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 636.258,
+  "out": "/tmp/levers8/after/resident-r4",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+--- perf: single fresh process, per-kernel first-eval (melprof3) ---
+constants(build only, no eval): 0.38 ms
+k1+k2 frames(hann window): 22.89 ms
+k3-k4 dft: 31.41 ms
+k5 power: 15.85 ms
+k6 mel_project: 23.06 ms
+k7 statistics: 20.55 ms
+k8 normalize: 1.93 ms
+(noop eval warm: 0.00 ms)
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.438 MB /tmp/levers8/perf.data (1203 samples) ]
+--- perf report (top host symbols, first 45 lines) ---
+    20.76%  python           libmlx.so                                           [.] std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::regex_traits<char> >::_M_dfs(std::__detail::_Executor<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::regex_traits<char> >::_Match_mode, long)
+     4.48%  python           libmlx.so                                           [.] std::__cxx11::regex_traits<char>::isctype(char, std::__cxx11::regex_traits<char>::_RegexMask) const [clone .isra.0]
+     4.11%  python           libmlx.so                                           [.] std::__cxx11::regex_traits<char>::_RegexMask std::__cxx11::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const
+     3.74%  python           libpython3.14.so.1.0                                [.] _PyEval_EvalFrameDefault
+     2.39%  ffmpeg           ld-linux-aarch64.so.1                               [.] 0x0000000000008edc
+     2.29%  python           libmlx.so                                           [.] std::vector<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >::operator=(std::vector<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::allocator<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > const&) [clone .isra.0]
+     1.73%  python           libmlx.so                                           [.] std::__cxx11::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const::{lambda()#1}::operator()() const
+     1.47%  python           libstdc++.so.6.0.35                                 [.] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::push_back(char)
+     1.30%  python           [kernel.kallsyms]                                   [k] preempt_count_sub
+     1.27%  python           libmlx.so                                           [.] std::locale::id::_M_id() const@plt
+     0.99%  python           libc.so.6                                           [.] memcpy
+     0.91%  python           libmlx.so                                           [.] bool std::__detail::__regex_algo_impl<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, char, std::__cxx11::regex_traits<char> >(__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__cxx11::match_results<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::sub_match<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > >&, std::__cxx11::basic_regex<char, std::__cxx11::regex_traits<char> > const&, std::regex_constants::match_flag_type, std::__detail::_RegexExecutorPolicy, bool) [clone .constprop.0]
+     0.86%  ffmpeg           [kernel.kallsyms]                                   [k] vma_interval_tree_insert
+     0.81%  python           libvulkan_asahi.so.flush17f-2a9762e                 [.] blake3_hash_many_neon
+     0.71%  python           libstdc++.so.6.0.35                                 [.] std::locale::id::_M_id() const
+     0.70%  ffmpeg           ld-linux-aarch64.so.1                               [.] 0x0000000000008ce4
+     0.65%  python           libmlx.so                                           [.] std::__cxx11::regex_traits<char>::_RegexMask std::__cxx11::regex_traits<char>::lookup_classname<char const*>(char const*, char const*, bool) const@plt
+     0.65%  ffmpeg           ld-linux-aarch64.so.1                               [.] 0x0000000000008f2c
+     0.62%  python           libmlx.so                                           [.] std::__detail::_ExecutorFrame<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, true>& std::vector<std::__detail::_ExecutorFrame<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, true>, std::allocator<std::__detail::_ExecutorFrame<__gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, true> > >::emplace_back<std::__detail::_ExecutorFrameOpcode, long const&>(std::__detail::_ExecutorFrameOpcode&&, long const&) [clone .isra.0]
+     0.61%  python           libpython3.14.so.1.0                                [.] 0x0000000000339ed4
+     0.60%  python           libpython3.14.so.1.0                                [.] _Py_Dealloc
+     0.53%  ffmpeg           ld-linux-aarch64.so.1                               [.] 0x0000000000008cfc
+     0.53%  ffmpeg           ld-linux-aarch64.so.1                               [.] 0x00000000000096b0
+     0.53%  ffmpeg           ld-linux-aarch64.so.1                               [.] 0x0000000000008d3c
+     0.51%  python           libmlx.so                                           [.] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::push_back(char)@plt
+     0.50%  python           [kernel.kallsyms]                                   [k] copy_page
+     0.50%  python           libmlx.so                                           [.] std::back_insert_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > std::__regex_replace<std::back_insert_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__cxx11::regex_traits<char>, char>(std::back_insert_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__cxx11::basic_regex<char, std::__cxx11::regex_traits<char> > const&, char const*, unsigned long, std::regex_constants::match_flag_type) [clone .constprop.0] [clone .isra.0]
+     0.48%  python           [kernel.kallsyms]                                   [k] arch_counter_get_cntpct
+     0.47%  python           libpython3.14.so.1.0                                [.] 0x0000000000339fe0
+     0.47%  ffmpeg           [kernel.kallsyms]                                   [k] ma_free_rcu
+     0.42%  python           libc.so.6                                           [.] 0x0000000000096f98
+     0.42%  python           libpython3.14.so.1.0                                [.] 0x00000000002fb048
+     0.41%  python           libpython3.14.so.1.0                                [.] 0x00000000000946e4
+     0.39%  python           libpython3.14.so.1.0                                [.] PyDict_Contains
+     0.39%  python           [kernel.kallsyms]                                   [k] find_next_res
+     0.38%  python           libpython3.14.so.1.0                                [.] 0x00000000001bac70
+     0.38%  python           [kernel.kallsyms]                                   [k] __arch_copy_to_user
+     0.37%  glslc            ld-linux-aarch64.so.1                               [.] 0x0000000000008edc
+     0.35%  python           libpython3.14.so.1.0                                [.] PyObject_ClearManagedDict
+     0.35%  python           libmlx.so                                           [.] std::_Hashtable<unsigned long, std::pair<unsigned long const, mlx::core::array const*>, std::allocator<std::pair<unsigned long const, mlx::core::array const*> >, std::__detail::_Select1st, std::equal_to<unsigned long>, std::hash<unsigned long>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true> >::~_Hashtable()@plt
+     0.32%  glslc            ld-linux-aarch64.so.1                               [.] 0x00000000000096b0
+     0.32%  python           libpython3.14.so.1.0                                [.] 0x00000000002fb154
+     0.32%  python           libpython3.14.so.1.0                                [.] 0x00000000001cc55c
+     0.31%  ffmpeg           ld-linux-aarch64.so.1                               [.] 0x000000000001db2c
+     0.30%  python           libc.so.6                                           [.] memset
+--- perf report: top mesa/driver frames ---
+     3.95%  python           libvulkan_asahi.so.flush17f-2a9762e  [.] vk_drm_syncobj_get_value
+=== resident window end 2026-09-26T08:12:53-05:00 ===
