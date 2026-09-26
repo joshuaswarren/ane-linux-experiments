@@ -25,6 +25,10 @@ p.add_argument("--passes", type=int, default=3)
 p.add_argument("--threads", type=int, default=0, help="0 = platform default")
 p.add_argument("--label", default="")
 p.add_argument("--out", default="")
+p.add_argument("--check-compat", default="",
+               help="after the run, verify the contract shape (prompt count, "
+                    "warmup, passes, new-tokens, prefill leg, corpus) matches "
+                    "this reference JSON; exit 3 on mismatch")
 a = p.parse_args()
 
 if a.threads:
@@ -35,6 +39,37 @@ from qwen38_bench_lib import sha256_file, ordered_records_hash, summarize
 from mlx_lm import load, generate
 from mlx_lm.models.cache import make_prompt_cache
 from mlx_lm.generate import generate_step
+
+
+def contract_shape(args, corpus_sha):
+    """Frozen contract fingerprint: everything that must match before two
+    run records may be compared. The 2026-09-26 flip incident: a
+    --limit 1 digest (100a61b6) was compared against the --limit 10 pin
+    (486872c4) and read as a machine-state flip. Different shape = different
+    record set = different digest, trivially. Never compare across shapes."""
+    return {
+        "prompts_per_pass": None,  # filled by caller after prompt load
+        "warmup": args.warmup,
+        "passes": args.passes,
+        "new_tokens": args.new_tokens,
+        "prefill_leg_tokens": args.prefill_tokens or None,
+        "prompts_corpus_sha256": corpus_sha,
+    }
+
+
+def shapes_compatible(a, b):
+    """True iff two contract_shape dicts describe the same benchmark shape.
+    Missing keys on either side count as incompatible (unknown != known)."""
+    if not isinstance(a, dict) or not isinstance(b, dict):
+        return False, "shape is not a dict"
+    for key in ("prompts_per_pass", "warmup", "passes", "new_tokens",
+                "prefill_leg_tokens", "prompts_corpus_sha256"):
+        av, bv = a.get(key), b.get(key)
+        if av is None or bv is None:
+            return False, f"missing shape key: {key}"
+        if av != bv:
+            return False, f"{key}: {av} != {bv}"
+    return True, ""
 
 
 def metadata(model_path):
@@ -174,6 +209,8 @@ def main():
     prefill_leg = pure_prefill_leg() if a.prefill_tokens else None
     result = {
         "meta": metadata(model_dir),
+        "contract_shape": dict(contract_shape(a, corpus_sha),
+                               prompts_per_pass=len(prompts)),
         "protocol": {
             "new_tokens": a.new_tokens, "temperature": 0.0, "greedy": True,
             "prompts_file": os.path.basename(a.prompts), "prompts_corpus_sha256": corpus_sha,
@@ -194,6 +231,14 @@ def main():
         open(a.out, "w").write(js)
     else:
         print(js)
+    if a.check_compat:
+        ref = json.load(open(a.check_compat))
+        ok, why = shapes_compatible(result.get("contract_shape"),
+                                    ref.get("contract_shape") or shape_from_protocol(ref.get("protocol", {})))
+        if not ok:
+            print(f"CONTRACT-SHAPE MISMATCH vs {a.check_compat}: {why}", file=sys.stderr)
+            sys.exit(3)
+        print(f"contract-shape compatible with {a.check_compat}", file=sys.stderr)
 
 if __name__ == "__main__":
     main()
