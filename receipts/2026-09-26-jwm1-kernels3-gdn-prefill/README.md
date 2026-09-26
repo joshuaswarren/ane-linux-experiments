@@ -74,3 +74,13 @@ hub handoff; jw16 needs its own T6001 worker build.
    (parakeet-encoder-whole pin; 458 MB, refusal is deliberate).
 4. venv creation must use system python3 (bvenv -m venv yields pip-less
    venvs); bvenv python is for pip wheel invocations.
+
+## Main-pin cutover (post-M2-window, 2026-09-26)
+
+7d3f69ff2 wheel built via build-wheel.sh (recipe in
+`harness/dft_gates_main_pin.sh`, staged to ~/q38-build/out2/). Re-pinned
+harness run (unit gdn-mainpin): Version `0.32.3.dev202609261526+7d3f69ff2`
+installed — NO downgrade; pins 1/3/10 all bit-exact
+(486872c410629f1d / bc519c03c4ef5fd1 / dbf704971617fdfc); decode
+39.18-39.26, prefill512 225.0-227.0, TTFT 67.5-67.8 tok/s (was 56.8-57.3);
+contract3 all_gates TRUE. Harness pin update itself = 774a3499.
