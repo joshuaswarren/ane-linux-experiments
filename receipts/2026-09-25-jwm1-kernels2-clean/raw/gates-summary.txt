@@ -1,0 +1,26 @@
+# gates summary — clean baseline + hygiene A/B (jwm1, 2026-09-25)
+
+== baseline: wheel 7c0bd851, env-guarded (ENV-GUARD-CLEAN: 0) ==
+pass 1  digest 486872c410629f1d  decode=37.34 prefill512=227.59 ttft=50.22
+pass 3  digest bc519c03c4ef5fd1  decode=37.39 prefill512=226.29 ttft=51.14
+pass 10 digest dbf704971617fdfc  decode=37.37 prefill512=237.63 ttft=50.05
+chain wall median 155.5 ms (spc 64)
+mel wall median 19.45 ms
+contract3 all_gates=true; reps 5-9: encoder_ane 156.5/157.1/150.5/156.7/142.3,
+  mel_frontend 20.0/20.1/20.3/20.1/20.0, tdt_decode 167.3/168.8/169.9/168.9/170.9
+corpus 6/6 PASS rc=0, emissions 104/0/0/28/101/104
+
+== post-hygiene A/B: wheel 0abf33e6 (gated SUBMIT/COMMIT-NOOP fprintfs) ==
+pass 1  digest 486872c410629f1d  decode=37.31 prefill512=223.79 ttft=51.38
+pass 3  digest bc519c03c4ef5fd1  decode=37.41 prefill512=226.46 ttft=50.15
+pass 10 digest dbf704971617fdfc  decode=37.36 prefill512=237.60 ttft=50.19
+chain wall median 151.1 ms (was 155.5 on the printing build)
+mel wall median 19.44 ms
+contract3 all_gates=true
+corpus 6/6 PASS rc=0, emissions 104/0/0/28/101/104
+
+== installed state ==
+wheel: 0.32.3.dev202609252026+0abf33e6 in /var/tmp/jwm1-parity3-venv (pip show)
+mlx-omarchy origin/main: ce2851a85 (merge of 0abf33e63)
+icd honeykrisp 7faf04c untouched; ane module 5ecff86 (= omarchy-ane main,
+boost hold-for-whole-submit) installed and loaded; no reboot; M2 catcher untouched

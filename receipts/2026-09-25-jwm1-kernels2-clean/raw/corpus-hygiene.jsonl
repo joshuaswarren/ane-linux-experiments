@@ -1,0 +1,6 @@
+{"clip": "fixture.flac", "frames": 375, "emissions": 104, "path": "gpu-chain", "tok": true, "frm": true, "dur": true, "hidden": true, "cell": true, "host_ms": 743.7, "chain_ms": 145.4, "result": "PASS"}
+{"clip": "fixture_v03.flac", "frames": 375, "emissions": 0, "path": "gpu-chain", "tok": true, "frm": true, "dur": true, "hidden": true, "cell": true, "host_ms": 426.8, "chain_ms": 48.2, "result": "PASS"}
+{"clip": "fixture_v1.flac", "frames": 375, "emissions": 0, "path": "gpu-chain", "tok": true, "frm": true, "dur": true, "hidden": true, "cell": true, "host_ms": 126.7, "chain_ms": 48.3, "result": "PASS"}
+{"clip": "fixture_v5.flac", "frames": 375, "emissions": 28, "path": "gpu-chain", "tok": true, "frm": true, "dur": true, "hidden": true, "cell": true, "host_ms": 534.1, "chain_ms": 121.1, "result": "PASS"}
+{"clip": "fixture_v10.flac", "frames": 375, "emissions": 101, "path": "gpu-chain", "tok": true, "frm": true, "dur": true, "hidden": true, "cell": true, "host_ms": 673.3, "chain_ms": 165.4, "result": "PASS"}
+{"clip": "1089-134686-0000.wav", "frames": 375, "emissions": 104, "path": "gpu-chain", "tok": true, "frm": true, "dur": true, "hidden": true, "cell": true, "host_ms": 713.3, "chain_ms": 177.8, "result": "PASS"}
