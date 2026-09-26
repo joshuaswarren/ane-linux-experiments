@@ -1,0 +1,328 @@
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 316/316   #P:8
+#
+#                                _-----=> irqs-off/BH-disabled
+#                               / _----=> need-resched
+#                              | / _---=> hardirq/softirq
+#                              || / _--=> preempt-depth
+#                              ||| / _-=> migrate-disable
+#                              |||| /     delay
+#           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+#              | |         |   |||||     |         |
+          python-9500    [004] .....  2519.116438: dma_fence_init: driver=stub timeline=stub context=0 seqno=0
+          python-9500    [004] d..1.  2519.116439: dma_fence_signaled: driver=stub timeline=stub context=0 seqno=0
+          python-9500    [004] .....  2519.116443: dma_fence_destroy: driver=detached-driver timeline=signaled-timeline context=0 seqno=0
+          python-9500    [004] ...1.  2519.168705: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5211 seqno=1
+          python-9500    [004] .....  2519.169708: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=0
+          python-9500    [004] .....  2519.169762: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=1
+          python-9500    [004] .....  2519.169763: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=1
+          python-9500    [004] .....  2519.169764: drm_sched_job_queue: dev=206400000.gpu, fence=5209:1, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [004] ...1.  2519.169767: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5212 seqno=1
+          python-9500    [004] ...1.  2519.169767: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=1
+          python-9500    [004] ...1.  2519.169768: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=1
+   kworker/u32:0-12      [001] .....  2519.169778: drm_sched_job_run: dev=206400000.gpu, fence=5209:1, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+          python-9500    [004] d..1.  2519.169783: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5212 seqno=1
+   kworker/u32:0-12      [001] d..1.  2519.169788: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=1
+   kworker/u35:0-90      [004] d..1.  2519.170549: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=0
+   kworker/u35:0-90      [004] d..1.  2519.170550: drm_sched_job_done: fence=5209:1 signaled
+   kworker/u35:0-90      [004] d..2.  2519.170550: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=1
+   kworker/u35:0-90      [004] d.h1.  2519.170554: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5212 seqno=1
+          python-9500    [004] d..1.  2519.170566: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=1
+          python-9500    [004] ...1.  2519.171026: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5215 seqno=1
+          python-9500    [004] d..1.  2519.171028: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5215 seqno=1
+          python-9500    [004] .....  2519.171030: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5215 seqno=1
+          python-9500    [006] .....  2519.276975: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=1
+          python-9500    [006] .....  2519.276990: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=2
+          python-9500    [006] .....  2519.276990: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=2
+          python-9500    [006] .....  2519.276991: drm_sched_job_queue: dev=206400000.gpu, fence=5209:2, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [006] .....  2519.276992: drm_sched_job_add_dep: fence=5209:2 depends on fence=5213:1
+          python-9500    [006] ...1.  2519.276995: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5216 seqno=1
+          python-9500    [006] ...1.  2519.276995: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=2
+          python-9500    [006] ...1.  2519.276996: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=2
+          python-9500    [006] .....  2519.276997: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5211 seqno=1
+          python-9500    [006] d..1.  2519.277013: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5216 seqno=1
+   kworker/u32:0-12      [001] .....  2519.277038: drm_sched_job_run: dev=206400000.gpu, fence=5209:2, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.277051: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=2
+   kworker/u35:0-90      [004] d..1.  2519.309630: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=1
+   kworker/u35:0-90      [004] d..1.  2519.309631: drm_sched_job_done: fence=5209:2 signaled
+   kworker/u35:0-90      [004] d..2.  2519.309631: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=2
+   kworker/u35:0-90      [004] d.h1.  2519.309634: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5216 seqno=1
+   kworker/u32:0-12      [001] .....  2519.309665: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=1
+          python-9500    [005] d..1.  2519.309700: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=2
+          python-9500    [005] .....  2519.309735: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5212 seqno=1
+          python-9500    [005] .....  2519.311406: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=2
+          python-9500    [005] .....  2519.311412: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=3
+          python-9500    [005] .....  2519.311412: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=3
+          python-9500    [005] .....  2519.311412: drm_sched_job_queue: dev=206400000.gpu, fence=5209:3, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [005] .....  2519.311413: drm_sched_job_add_dep: fence=5209:3 depends on fence=5213:2
+          python-9500    [005] ...1.  2519.311415: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5217 seqno=1
+          python-9500    [005] ...1.  2519.311415: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=3
+          python-9500    [005] ...1.  2519.311415: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=3
+          python-9500    [005] .....  2519.311415: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=1
+          python-9500    [005] .....  2519.311415: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=1
+          python-9500    [005] .....  2519.311416: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=1
+          python-9500    [005] .....  2519.311416: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=0
+          python-9500    [005] d..1.  2519.311423: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5217 seqno=1
+   kworker/u32:0-12      [001] .....  2519.311446: drm_sched_job_run: dev=206400000.gpu, fence=5209:3, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.311454: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=3
+   kworker/u35:0-90      [004] d..1.  2519.332434: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=2
+   kworker/u35:0-90      [004] d..1.  2519.332435: drm_sched_job_done: fence=5209:3 signaled
+   kworker/u35:0-90      [004] d..2.  2519.332435: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=3
+   kworker/u35:0-90      [004] d.h1.  2519.332438: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5217 seqno=1
+          python-9500    [005] d..1.  2519.332455: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=3
+          python-9500    [005] .....  2519.332461: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5216 seqno=1
+   kworker/u32:0-12      [001] .....  2519.332467: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=2
+          python-9500    [005] .....  2519.332554: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=3
+          python-9500    [005] .....  2519.332559: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=4
+          python-9500    [005] .....  2519.332559: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=4
+          python-9500    [005] .....  2519.332559: drm_sched_job_queue: dev=206400000.gpu, fence=5209:4, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [005] .....  2519.332559: drm_sched_job_add_dep: fence=5209:4 depends on fence=5213:3
+          python-9500    [005] ...1.  2519.332561: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5218 seqno=1
+          python-9500    [005] ...1.  2519.332561: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=4
+          python-9500    [005] ...1.  2519.332561: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=4
+          python-9500    [005] .....  2519.332561: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=2
+          python-9500    [005] .....  2519.332561: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=2
+          python-9500    [005] .....  2519.332562: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=2
+          python-9500    [005] .....  2519.332562: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=1
+          python-9500    [005] d..1.  2519.332567: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5218 seqno=1
+   kworker/u32:0-12      [001] .....  2519.332574: drm_sched_job_run: dev=206400000.gpu, fence=5209:4, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.332581: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=4
+   kworker/u35:0-90      [004] d..1.  2519.353504: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=3
+   kworker/u35:0-90      [004] d..1.  2519.353505: drm_sched_job_done: fence=5209:4 signaled
+   kworker/u35:0-90      [004] d..2.  2519.353505: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=4
+   kworker/u35:0-90      [004] d.h1.  2519.353508: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5218 seqno=1
+          python-9500    [005] d..1.  2519.353531: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=4
+   kworker/u32:0-12      [001] .....  2519.353537: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=3
+          python-9500    [005] .....  2519.353538: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5217 seqno=1
+          python-9500    [005] .....  2519.353665: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=4
+          python-9500    [005] .....  2519.353669: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=5
+          python-9500    [005] .....  2519.353669: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=5
+          python-9500    [005] .....  2519.353669: drm_sched_job_queue: dev=206400000.gpu, fence=5209:5, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [005] .....  2519.353669: drm_sched_job_add_dep: fence=5209:5 depends on fence=5213:4
+          python-9500    [005] ...1.  2519.353676: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5219 seqno=1
+          python-9500    [005] ...1.  2519.353676: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=5
+          python-9500    [005] ...1.  2519.353676: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=5
+          python-9500    [005] .....  2519.353677: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=3
+          python-9500    [005] .....  2519.353677: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=3
+          python-9500    [005] .....  2519.353677: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=3
+          python-9500    [005] .....  2519.353677: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=2
+          python-9500    [005] d..1.  2519.353683: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5219 seqno=1
+   kworker/u32:0-12      [001] .....  2519.353706: drm_sched_job_run: dev=206400000.gpu, fence=5209:5, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.353713: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=5
+   kworker/u35:0-90      [001] d..1.  2519.375477: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=4
+   kworker/u35:0-90      [001] d..1.  2519.375479: drm_sched_job_done: fence=5209:5 signaled
+   kworker/u35:0-90      [001] d..2.  2519.375480: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=5
+   kworker/u35:0-90      [001] d.h2.  2519.375500: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5219 seqno=1
+   kworker/u32:0-12      [001] .....  2519.375525: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=4
+          python-9500    [005] d..1.  2519.375537: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=5
+          python-9500    [005] .....  2519.375547: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5218 seqno=1
+          python-9500    [005] .....  2519.375659: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=5
+          python-9500    [005] .....  2519.375666: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=6
+          python-9500    [005] .....  2519.375666: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=6
+          python-9500    [005] .....  2519.375666: drm_sched_job_queue: dev=206400000.gpu, fence=5209:6, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [005] .....  2519.375666: drm_sched_job_add_dep: fence=5209:6 depends on fence=5213:5
+          python-9500    [005] ...1.  2519.375669: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5220 seqno=1
+          python-9500    [005] ...1.  2519.375669: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=6
+          python-9500    [005] ...1.  2519.375670: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=6
+          python-9500    [005] .....  2519.375670: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=4
+          python-9500    [005] .....  2519.375670: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=4
+          python-9500    [005] .....  2519.375670: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=4
+          python-9500    [005] .....  2519.375670: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=3
+          python-9500    [005] d..1.  2519.375677: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5220 seqno=1
+   kworker/u32:0-12      [001] .....  2519.375685: drm_sched_job_run: dev=206400000.gpu, fence=5209:6, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.375691: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=6
+   kworker/u35:0-90      [001] d..1.  2519.395929: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=5
+   kworker/u35:0-90      [001] d..1.  2519.395931: drm_sched_job_done: fence=5209:6 signaled
+   kworker/u35:0-90      [001] d..2.  2519.395932: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=6
+   kworker/u35:0-90      [001] d.h2.  2519.395948: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5220 seqno=1
+   kworker/u32:0-12      [001] .....  2519.395972: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=5
+          python-9500    [005] d..1.  2519.395997: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=6
+          python-9500    [005] .....  2519.396015: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5219 seqno=1
+          python-9500    [005] .....  2519.396125: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=6
+          python-9500    [005] .....  2519.396131: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=7
+          python-9500    [005] .....  2519.396131: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=7
+          python-9500    [005] .....  2519.396132: drm_sched_job_queue: dev=206400000.gpu, fence=5209:7, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [005] .....  2519.396132: drm_sched_job_add_dep: fence=5209:7 depends on fence=5213:6
+          python-9500    [005] ...1.  2519.396135: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5221 seqno=1
+          python-9500    [005] ...1.  2519.396135: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=7
+          python-9500    [005] ...1.  2519.396135: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=7
+          python-9500    [005] .....  2519.396135: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=5
+          python-9500    [005] .....  2519.396136: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=5
+          python-9500    [005] .....  2519.396136: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=5
+          python-9500    [005] .....  2519.396136: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=4
+          python-9500    [005] d..1.  2519.396144: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5221 seqno=1
+   kworker/u32:0-12      [001] .....  2519.396149: drm_sched_job_run: dev=206400000.gpu, fence=5209:7, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.396155: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=7
+   kworker/u35:0-90      [001] d..1.  2519.417520: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=6
+   kworker/u35:0-90      [001] d..1.  2519.417521: drm_sched_job_done: fence=5209:7 signaled
+   kworker/u35:0-90      [001] d..2.  2519.417522: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=7
+   kworker/u35:0-90      [001] d.h2.  2519.417536: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5221 seqno=1
+   kworker/u32:0-12      [001] .....  2519.417577: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=6
+          python-9500    [002] d..1.  2519.417606: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=7
+          python-9500    [002] .....  2519.417632: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5220 seqno=1
+          python-9500    [002] .....  2519.418072: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=7
+          python-9500    [002] .....  2519.418104: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=8
+          python-9500    [002] .....  2519.418104: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=8
+          python-9500    [002] .....  2519.418105: drm_sched_job_queue: dev=206400000.gpu, fence=5209:8, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [002] .....  2519.418106: drm_sched_job_add_dep: fence=5209:8 depends on fence=5213:7
+          python-9500    [002] ...1.  2519.418110: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5222 seqno=1
+          python-9500    [002] ...1.  2519.418111: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=8
+          python-9500    [002] ...1.  2519.418112: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=8
+          python-9500    [002] .....  2519.418112: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=6
+          python-9500    [002] .....  2519.418113: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=6
+          python-9500    [002] .....  2519.418113: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=6
+          python-9500    [002] .....  2519.418114: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=5
+   kworker/u32:0-12      [001] .....  2519.418119: drm_sched_job_run: dev=206400000.gpu, fence=5209:8, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.418121: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=8
+          python-9500    [002] d..1.  2519.418131: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5222 seqno=1
+   kworker/u35:0-90      [001] d..1.  2519.439551: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=7
+   kworker/u35:0-90      [001] d..1.  2519.439552: drm_sched_job_done: fence=5209:8 signaled
+   kworker/u35:0-90      [001] d..2.  2519.439553: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=8
+   kworker/u35:0-90      [001] d.h2.  2519.439565: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5222 seqno=1
+          python-9500    [002] .....  2519.439614: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=7
+          python-9500    [002] d..1.  2519.439617: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=8
+          python-9500    [002] .....  2519.439643: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5221 seqno=1
+          python-9500    [002] .....  2519.439868: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=8
+          python-9500    [002] .....  2519.439883: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=9
+          python-9500    [002] .....  2519.439883: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=9
+          python-9500    [002] .....  2519.439883: drm_sched_job_queue: dev=206400000.gpu, fence=5209:9, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [002] .....  2519.439884: drm_sched_job_add_dep: fence=5209:9 depends on fence=5213:8
+          python-9500    [002] ...1.  2519.439888: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5223 seqno=1
+          python-9500    [002] ...1.  2519.439888: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=9
+          python-9500    [002] ...1.  2519.439889: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=9
+          python-9500    [002] .....  2519.439889: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=7
+          python-9500    [002] .....  2519.439890: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=7
+          python-9500    [002] .....  2519.439890: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=7
+          python-9500    [002] .....  2519.439890: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=6
+   kworker/u32:0-12      [001] .....  2519.439898: drm_sched_job_run: dev=206400000.gpu, fence=5209:9, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.439901: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=9
+          python-9500    [002] d..1.  2519.439918: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5223 seqno=1
+   kworker/u35:0-90      [001] d..1.  2519.461760: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=8
+   kworker/u35:0-90      [001] d..1.  2519.461761: drm_sched_job_done: fence=5209:9 signaled
+   kworker/u35:0-90      [001] d..2.  2519.461762: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=9
+   kworker/u35:0-90      [001] d.h2.  2519.461773: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5223 seqno=1
+   kworker/u32:0-12      [001] .....  2519.461807: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=8
+          python-9500    [002] d..1.  2519.461824: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=9
+          python-9500    [002] .....  2519.461846: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5222 seqno=1
+          python-9500    [002] .....  2519.462126: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=9
+          python-9500    [002] .....  2519.462142: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=10
+          python-9500    [002] .....  2519.462142: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=10
+          python-9500    [002] .....  2519.462142: drm_sched_job_queue: dev=206400000.gpu, fence=5209:10, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [002] .....  2519.462143: drm_sched_job_add_dep: fence=5209:10 depends on fence=5213:9
+          python-9500    [002] ...1.  2519.462147: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5224 seqno=1
+          python-9500    [002] ...1.  2519.462148: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=10
+          python-9500    [002] ...1.  2519.462149: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=10
+          python-9500    [002] .....  2519.462149: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=8
+          python-9500    [002] .....  2519.462150: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=8
+          python-9500    [002] .....  2519.462150: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=8
+          python-9500    [002] .....  2519.462151: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=7
+   kworker/u32:0-12      [001] .....  2519.462160: drm_sched_job_run: dev=206400000.gpu, fence=5209:10, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.462164: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=10
+          python-9500    [002] d..1.  2519.462182: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5224 seqno=1
+   kworker/u35:0-90      [001] d..1.  2519.483342: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=9
+   kworker/u35:0-90      [001] d..1.  2519.483343: drm_sched_job_done: fence=5209:10 signaled
+   kworker/u35:0-90      [001] d..2.  2519.483344: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=10
+   kworker/u35:0-90      [001] d.h2.  2519.483355: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5224 seqno=1
+   kworker/u32:0-12      [001] .....  2519.483373: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=9
+          python-9500    [002] d..1.  2519.483403: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=10
+          python-9500    [002] .....  2519.483432: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5223 seqno=1
+          python-9500    [002] .....  2519.483811: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=10
+          python-9500    [002] .....  2519.483829: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=11
+          python-9500    [002] .....  2519.483829: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=11
+          python-9500    [002] .....  2519.483830: drm_sched_job_queue: dev=206400000.gpu, fence=5209:11, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [002] .....  2519.483830: drm_sched_job_add_dep: fence=5209:11 depends on fence=5213:10
+          python-9500    [002] ...1.  2519.483837: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5225 seqno=1
+          python-9500    [002] ...1.  2519.483837: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=11
+          python-9500    [002] ...1.  2519.483838: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=11
+          python-9500    [002] .....  2519.483839: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=9
+          python-9500    [002] .....  2519.483840: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=9
+          python-9500    [002] .....  2519.483840: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=9
+          python-9500    [002] .....  2519.483841: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=8
+   kworker/u32:0-12      [001] .....  2519.483844: drm_sched_job_run: dev=206400000.gpu, fence=5209:11, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.483848: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=11
+          python-9500    [002] d..1.  2519.483888: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5225 seqno=1
+   kworker/u35:0-90      [001] d..1.  2519.505030: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=10
+   kworker/u35:0-90      [001] d..1.  2519.505032: drm_sched_job_done: fence=5209:11 signaled
+   kworker/u35:0-90      [001] d..2.  2519.505033: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=11
+   kworker/u35:0-90      [001] d.h2.  2519.505044: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5225 seqno=1
+   kworker/u32:0-12      [001] .....  2519.505075: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=10
+          python-9500    [002] d..1.  2519.505090: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=11
+          python-9500    [002] .....  2519.505136: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5224 seqno=1
+          python-9500    [002] .....  2519.505704: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=11
+          python-9500    [002] .....  2519.505720: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=12
+          python-9500    [002] .....  2519.505720: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=12
+          python-9500    [002] .....  2519.505721: drm_sched_job_queue: dev=206400000.gpu, fence=5209:12, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [002] .....  2519.505722: drm_sched_job_add_dep: fence=5209:12 depends on fence=5213:11
+          python-9500    [002] ...1.  2519.505728: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5226 seqno=1
+          python-9500    [002] ...1.  2519.505729: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=12
+          python-9500    [002] ...1.  2519.505730: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=12
+          python-9500    [002] .....  2519.505731: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=10
+          python-9500    [002] .....  2519.505731: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=10
+          python-9500    [002] .....  2519.505732: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=10
+          python-9500    [002] .....  2519.505732: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=9
+   kworker/u32:0-12      [001] .....  2519.505747: drm_sched_job_run: dev=206400000.gpu, fence=5209:12, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.505751: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=12
+          python-9500    [002] d..1.  2519.505776: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5226 seqno=1
+   kworker/u35:0-90      [001] d..1.  2519.526785: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=11
+   kworker/u35:0-90      [001] d..1.  2519.526786: drm_sched_job_done: fence=5209:12 signaled
+   kworker/u35:0-90      [001] d..2.  2519.526787: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=12
+   kworker/u35:0-90      [001] d.h2.  2519.526798: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5226 seqno=1
+   kworker/u32:0-12      [001] .....  2519.526819: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=11
+          python-9500    [002] d..1.  2519.526852: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=12
+          python-9500    [002] .....  2519.526907: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5225 seqno=1
+          python-9500    [002] .....  2519.527589: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=12
+          python-9500    [002] .....  2519.527617: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=13
+          python-9500    [002] .....  2519.527618: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=13
+          python-9500    [002] .....  2519.527619: drm_sched_job_queue: dev=206400000.gpu, fence=5209:13, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [002] .....  2519.527620: drm_sched_job_add_dep: fence=5209:13 depends on fence=5213:12
+          python-9500    [002] ...1.  2519.527630: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5227 seqno=1
+          python-9500    [002] ...1.  2519.527631: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=13
+          python-9500    [002] ...1.  2519.527632: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=13
+          python-9500    [002] .....  2519.527634: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=11
+          python-9500    [002] .....  2519.527637: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=11
+          python-9500    [002] .....  2519.527638: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=11
+          python-9500    [002] .....  2519.527639: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=10
+   kworker/u32:0-12      [001] .....  2519.527643: drm_sched_job_run: dev=206400000.gpu, fence=5209:13, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.527648: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=13
+          python-9500    [002] d..1.  2519.527709: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5227 seqno=1
+   kworker/u35:0-90      [001] d..1.  2519.548957: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=12
+   kworker/u35:0-90      [001] d..1.  2519.548958: drm_sched_job_done: fence=5209:13 signaled
+   kworker/u35:0-90      [001] d..2.  2519.548959: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=13
+   kworker/u35:0-90      [001] d.h2.  2519.548971: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5227 seqno=1
+   kworker/u32:0-12      [001] .....  2519.549021: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=12
+          python-9500    [002] d..1.  2519.549034: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=13
+          python-9500    [002] .....  2519.549083: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5226 seqno=1
+          python-9500    [002] .....  2519.549662: dma_fence_init: driver=asahi timeline=queue context=5210 seqno=13
+          python-9500    [002] .....  2519.549686: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5208 seqno=14
+          python-9500    [002] .....  2519.549687: dma_fence_init: driver=drm_sched timeline=asahi_sched context=5209 seqno=14
+          python-9500    [002] .....  2519.549688: drm_sched_job_queue: dev=206400000.gpu, fence=5209:14, ring=asahi_sched, job count:0, hw job count:0, client_id:0
+          python-9500    [002] .....  2519.549689: drm_sched_job_add_dep: fence=5209:14 depends on fence=5213:13
+          python-9500    [002] ...1.  2519.549699: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5228 seqno=1
+          python-9500    [002] ...1.  2519.549700: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5213 seqno=14
+          python-9500    [002] ...1.  2519.549701: dma_fence_init: driver=dma_fence_chain timeline=unbound context=5214 seqno=14
+          python-9500    [002] .....  2519.549703: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=12
+          python-9500    [002] .....  2519.549704: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=12
+          python-9500    [002] .....  2519.549704: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=12
+          python-9500    [002] .....  2519.549706: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=11
+   kworker/u32:0-12      [001] .....  2519.549726: drm_sched_job_run: dev=206400000.gpu, fence=5209:14, ring=asahi_sched, job count:0, hw job count:1, client_id:0
+   kworker/u32:0-12      [001] d..1.  2519.549733: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5208 seqno=14
+          python-9500    [002] d..1.  2519.549777: dma_fence_enable_signal: driver=dma_fence_chain timeline=unbound context=5228 seqno=1
+   kworker/u35:0-90      [001] d..1.  2519.571190: dma_fence_signaled: driver=asahi timeline=queue context=5210 seqno=13
+   kworker/u35:0-90      [001] d..1.  2519.571192: drm_sched_job_done: fence=5209:14 signaled
+   kworker/u35:0-90      [001] d..2.  2519.571192: dma_fence_signaled: driver=drm_sched timeline=asahi_sched context=5209 seqno=14
+   kworker/u35:0-90      [001] d.h2.  2519.571204: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5228 seqno=1
+   kworker/u32:0-12      [001] .....  2519.571223: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=13
+          python-9500    [002] d..1.  2519.571252: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5213 seqno=14
+          python-9500    [002] .....  2519.571300: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5227 seqno=1
+          python-9500    [002] .....  2519.639814: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=13
+          python-9500    [002] .....  2519.639817: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=13
+          python-9500    [002] .....  2519.639817: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=13
+          python-9500    [002] .....  2519.639819: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=12
+          python-9500    [002] d..1.  2519.639822: dma_fence_signaled: driver=dma_fence_chain timeline=unbound context=5214 seqno=14
+          python-9500    [002] .....  2519.639906: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5213 seqno=14
+          python-9500    [002] .....  2519.639967: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5214 seqno=14
+          python-9500    [002] .....  2519.645439: dma_fence_destroy: driver=dma_fence_chain timeline=unbound context=5228 seqno=1
+          python-9500    [002] .....  2519.645440: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5209 seqno=14
+          python-9500    [002] .....  2519.645441: dma_fence_destroy: driver=drm_sched timeline=asahi_sched context=5208 seqno=14
+          python-9500    [002] .....  2519.645441: dma_fence_destroy: driver=asahi timeline=queue context=5210 seqno=13
