@@ -1,0 +1,8 @@
+LOCK-HELD 2026-09-25T20:20:51-05:00
+WHEEL=~/q38-build/out2/mlx_omarchy-0.32.3.dev202609252026+7c0bd851-cp314-cp314-linux_aarch64.whl
+passes_result decode=37.36 prefill512=220.92 ttft=51.12 digest=486872c410629f1d
+passes_result decode=37.42 prefill512=228.42 ttft=50.41 digest=bc519c03c4ef5fd1
+passes_result decode=37.38 prefill512=238.93 ttft=50.19 digest=dbf704971617fdfc
+{"spc": 64, "median_ms": 153.871292, "walls": [221.0, 127.9, 142.7, 153.9, 160.1]}
+{"median_ms": 19.3588165, "min_ms": 18.993717, "walls": [1002.4, 21.0, 19.2, 19.0, 19.2, 19.4, 19.2, 19.9, 19.3, 19.4]}
+DONE 2026-09-25T20:24:00-05:00
