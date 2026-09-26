@@ -109,3 +109,11 @@ indices). Full 38-program pairing requires the e5rt-side instrumentation
 (the staged verify run records which compiled program executes at each
 manifest step) — that dump is the next increment, on macstudio (userspace
 only, pool untouched).
+
+## UPDATE 3b — LinuxProgram class DRAFTED (not yet device-validated)
+
+artifacts/linux_program.DRAFT.py: ANEForge Program.eval-compatible
+wrapper for the Linux KMD path (per-surface buffers at ANEC tile-slot
+banks, input dicts by port name, KMD-synchronous submit). Draft status:
+needs the probe's load_anec_header API adaptation (header parse from
+mmap) and a device validation run. The chain runner builds on it.
