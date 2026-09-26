@@ -1,0 +1,12 @@
+{"k":"meta","dev":"jwm1 G13G B1","note":"full lines as emitted by /tmp/chain-dep-bench, host=jwm1-linux, commit=2d3a77b99 (bench source), stamp=2026-09-26, one GPU window, 31 reps after 7 warm per case, VK_DRIVER_FILES=<default system ICD, mesa jwm1-barrier-ab 160b7af8aeb>"}
+{"k":"case","name":"cs1_none","n":31,"wall_med_us":193.1,"wall_min_us":168.5,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs1_barrier","n":31,"wall_med_us":191.2,"wall_min_us":183.0,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs1_event","n":31,"wall_med_us":191.4,"wall_min_us":189.1,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs1_a_grid1_ts","n":31,"wall_med_us":436.8,"wall_min_us":426.8,"hop01_med_us":35.50,"hop12_med_us":71.17,"span_med_us":234.33}
+{"k":"case","name":"cs1_b_grid20_ts","n":31,"wall_med_us":441.0,"wall_min_us":427.2,"hop01_med_us":37.92,"hop12_med_us":73.58,"span_med_us":232.58}
+{"k":"case","name":"cs1_c_grid20_nots","n":31,"wall_med_us":268.9,"wall_min_us":242.1,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":75.25}
+{"k":"case","name":"cs1_d_grid20_raw","n":31,"wall_med_us":254.4,"wall_min_us":251.5,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":74.33}
+{"k":"case","name":"cs3_1submit_sema","n":31,"wall_med_us":447.4,"wall_min_us":414.4,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs3_3submit_sema","n":31,"wall_med_us":473.2,"wall_min_us":444.7,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs3_fencejoin","n":31,"wall_med_us":596.1,"wall_min_us":576.4,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"end"}

@@ -1,0 +1,29 @@
+[
+ {
+  "rep": 0,
+  "slots": 192,
+  "chunks": 3,
+  "enq_ms": 5.8,
+  "eval_ms": 202.6,
+  "enq_us_per_slot": 30.4,
+  "eval_us_per_slot": 1055.3
+ },
+ {
+  "rep": 1,
+  "slots": 192,
+  "chunks": 3,
+  "enq_ms": 3.4,
+  "eval_ms": 120.4,
+  "enq_us_per_slot": 17.9,
+  "eval_us_per_slot": 627.2
+ },
+ {
+  "rep": 2,
+  "slots": 192,
+  "chunks": 3,
+  "enq_ms": 9.3,
+  "eval_ms": 130.8,
+  "enq_us_per_slot": 48.3,
+  "eval_us_per_slot": 681.2
+ }
+]
