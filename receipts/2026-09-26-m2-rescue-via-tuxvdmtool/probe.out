@@ -1,0 +1,159 @@
+=== HOST
+Linux (none) 7.1.13-3-1-ARCH #1 SMP PREEMPT_DYNAMIC Sun, 13 Sep 2026 17:52:27 +0000 aarch64 GNU/Linux
+root=/dev/ram0 rw init=/init console=tty0 loglevel=7 rescue.host= panic=30
+19.80 235.70
+=== MOUNT ESP RO
+-- ESP identity guard (GPT entry 4 type GUID + size, not cached numbering)
+ESP verified: GPT type C12A7328-F81F-11D2-BA4B-00A0C93EC93B, 1024000 sectors (500MB)
+=== ESP LISTING (all, recursive)
+/esp2/:
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 .
+drwxrwxrwx   16 root     root             0 Sep 26 17:14 ..
+drwxr-xr-x    3 root     root          4096 Sep 26 07:53 .Trashes
+-rwxr-xr-x    1 root     root             0 Sep 23 08:18 .metadata_never_index
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 EFI
+drwxr-xr-x    2 root     root          4096 Sep 18 11:50 asahi
+drwxr-xr-x    2 root     root          4096 Sep 24 19:46 m1n1
+drwxr-xr-x    2 root     root          4096 Sep 22 16:32 rtkit-port
+-rwxr-xr-x    1 root     root           728 Jan  1  2000 ubootefi.var
+-rwxr-xr-x    1 root     root           728 Jan  1  2000 ubootefi.var.bad-20260923
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 vendorfw
+
+/esp2/.Trashes:
+drwxr-xr-x    3 root     root          4096 Sep 26 07:53 .
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 ..
+-rwxr-xr-x    1 root     root          4096 Sep 26 07:53 ._501
+drwxr-xr-x    2 root     root          4096 Sep 26 07:53 501
+
+/esp2/.Trashes/501:
+drwxr-xr-x    2 root     root          4096 Sep 26 07:53 .
+drwxr-xr-x    3 root     root          4096 Sep 26 07:53 ..
+
+/esp2/EFI:
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 .
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 ..
+drwxr-xr-x    2 root     root          4096 Sep 18 11:50 BOOT
+
+/esp2/EFI/BOOT:
+drwxr-xr-x    2 root     root          4096 Sep 18 11:50 .
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 ..
+-rwxr-xr-x    1 root     root        217088 Sep 18 11:50 BOOTAA64.EFI
+
+/esp2/asahi:
+drwxr-xr-x    2 root     root          4096 Sep 18 11:50 .
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 ..
+-rwxr-xr-x    1 root     root           709 Sep 18 11:51 AdminUserRecoveryInfo.plist
+-rwxr-xr-x    1 root     root         75931 Sep 18 11:51 BuildManifest.plist
+-rwxr-xr-x    1 root     root           358 Sep 18 11:51 RestoreVersion.plist
+-rwxr-xr-x    1 root     root           606 Sep 18 11:51 SystemVersion.plist
+-rwxr-xr-x    1 root     root      29787827 Sep 18 11:51 all_firmware.tar.gz
+-rwxr-xr-x    1 root     root        427103 Sep 18 11:51 installer.log
+-rwxr-xr-x    1 root     root      25883676 Sep 18 11:51 kernelcache.release.mac14j
+-rwxr-xr-x    1 root     root           571 Sep 18 11:51 stub_info.json
+
+/esp2/m1n1:
+drwxr-xr-x    2 root     root          4096 Sep 24 19:46 .
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 ..
+-rwxr-xr-x    1 root     root       6279764 Sep 25 10:55 boot.bin
+-rwxr-xr-x    1 root     root       6231126 Sep 22 12:12 boot.bin.dead-hook-65d1e8ae.bak
+-rwxr-xr-x    1 root     root       6214216 Sep 23 01:21 boot.bin.old
+-rwxr-xr-x    1 root     root       1114112 Sep 22 14:22 boot.bin.park-9ad08653.bak
+-rwxr-xr-x    1 root     root       6214228 Sep 23 14:05 boot.bin.pre-dry.bak
+-rwxr-xr-x    1 root     root       6213907 Sep 22 14:53 boot.bin.pre-proxy.on-esp
+-rwxr-xr-x    1 root     root       1114112 Sep 22 08:53 boot.bin.proxy-only.bak
+-rwxr-xr-x    1 root     root        884736 Sep 22 08:53 boot.bin.proxy-swuf
+-rwxr-xr-x    1 root     root        884736 Sep 22 09:42 boot.bin.proxy-swuf.installed
+-rwxr-xr-x    1 root     root       6214228 Sep 23 03:14 boot.bin.stock-a3f533b9.bak
+-rwxr-xr-x    1 root     root       6231126 Sep 22 15:02 boot.bin.v4dry-b0feef2f.bak
+-rwxr-xr-x    1 root     root       7951446 Sep 22 19:19 boot.bin.v6-fd30afea.bak
+-rwxr-xr-x    1 root     root      34812701 Sep 24 12:30 kc.level9.gz
+-rwxr-xr-x    1 root     root      26684146 Sep 24 19:46 kc13.level9.gz
+
+/esp2/rtkit-port:
+drwxr-xr-x    2 root     root          4096 Sep 22 16:32 .
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 ..
+-rwxr-xr-x    1 root     root        118239 Sep 22 16:32 ane-t6021-786c716.tgz
+-rwxr-xr-x    1 root     root         79440 Sep 22 16:32 ane_t6021_rtclient.ko
+
+/esp2/vendorfw:
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 .
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 ..
+-rwxr-xr-x    1 root     root      32530656 Sep 18 11:50 firmware.cpio
+-rwxr-xr-x    1 root     root      32675840 Sep 18 11:50 firmware.tar
+-rwxr-xr-x    1 root     root         38552 Sep 18 11:50 manifest.txt
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 u-boot
+
+/esp2/vendorfw/u-boot:
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 .
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 ..
+drwxr-xr-x    2 root     root          4096 Sep 18 11:50 asmedia
+
+/esp2/vendorfw/u-boot/asmedia:
+drwxr-xr-x    2 root     root          4096 Sep 18 11:50 .
+drwxr-xr-x    3 root     root          4096 Sep 18 11:50 ..
+-rwxr-xr-x    1 root     root         98304 Sep 18 11:50 asm2214a-apple.bin
+=== KEY HASHES (expected: boot.bin a3f533b9…2683b2, BOOTAA64 8028d3b8…, ubootefi.var a6e5ec85…)
+43ec6090516a2fcf38252ccd90394383e1a23df830463fbfe2815e4e072dea86  /esp2/m1n1/boot.bin
+8028d3b82f1797cdddfcaaa0ceb12b9ce5a251514266c7532f3715f69401e5a0  /esp2/EFI/BOOT/BOOTAA64.EFI
+a6e5ec853a23e132d00ff9776dd4fa3919c36529fb301ae6eca731f521ddf0db  /esp2/ubootefi.var
+=== ESP m1n1 dir contents
+drwxr-xr-x    2 root     root          4096 Sep 24 19:46 .
+drwxr-xr-x    8 root     root          4096 Jan  1  1970 ..
+-rwxr-xr-x    1 root     root       6279764 Sep 25 10:55 boot.bin
+-rwxr-xr-x    1 root     root       6231126 Sep 22 12:12 boot.bin.dead-hook-65d1e8ae.bak
+-rwxr-xr-x    1 root     root       6214216 Sep 23 01:21 boot.bin.old
+-rwxr-xr-x    1 root     root       1114112 Sep 22 14:22 boot.bin.park-9ad08653.bak
+-rwxr-xr-x    1 root     root       6214228 Sep 23 14:05 boot.bin.pre-dry.bak
+-rwxr-xr-x    1 root     root       6213907 Sep 22 14:53 boot.bin.pre-proxy.on-esp
+-rwxr-xr-x    1 root     root       1114112 Sep 22 08:53 boot.bin.proxy-only.bak
+-rwxr-xr-x    1 root     root        884736 Sep 22 08:53 boot.bin.proxy-swuf
+-rwxr-xr-x    1 root     root        884736 Sep 22 09:42 boot.bin.proxy-swuf.installed
+-rwxr-xr-x    1 root     root       6214228 Sep 23 03:14 boot.bin.stock-a3f533b9.bak
+-rwxr-xr-x    1 root     root       6231126 Sep 22 15:02 boot.bin.v4dry-b0feef2f.bak
+-rwxr-xr-x    1 root     root       7951446 Sep 22 19:19 boot.bin.v6-fd30afea.bak
+-rwxr-xr-x    1 root     root      34812701 Sep 24 12:30 kc.level9.gz
+-rwxr-xr-x    1 root     root      26684146 Sep 24 19:46 kc13.level9.gz
+=== ubootefi.var xxd head
+00000000: 0000 0000 0000 0000 5562 4566 6956 6101  ........UbEfiVa.
+00000010: d802 0000 d63e 80f0 8c00 0000 0700 0000  .....>..........
+00000020: 0000 0000 0000 0000 61df e48b ca93 d211  ........a.......
+00000030: aa0d 00e0 9803 2b8c 4200 6f00 6f00 7400  ......+.B.o.o.t.
+00000040: 3000 3000 3000 3000 0000 0100 0000 6800  0.0.0.0.......h.
+00000050: 6e00 7600 6d00 6500 2000 3000 0000 0104  n.v.m.e. .0.....
+00000060: 1c00 b973 1de6 84a3 cc4a aeab 82e8 28f3  ...s.....J....(.
+00000070: 628b 0000 0000 0000 0000 0104 1c00 b973  b..............s
+00000080: 1de6 84a3 cc4a aeab 82e8 28f3 628b 7200  .....J....(.b.r.
+00000090: 0000 0000 0000 0104 1c00 b973 1de6 84a3  ...........s....
+000000a0: cc4a aeab 82e8 28f3 628b 5300 0000 0000  .J....(.b.S.....
+000000b0: 0000 0317 1000 0100 0000 0000 0000 0000  ................
+000000c0: 0000 7fff 0400 4eac 0881 119f 594d 850e  ......N.....YM..
+000000d0: e21a 522c 59b2 0000 8c00 0000 0700 0000  ..R,Y...........
+000000e0: 0000 0000 0000 0000 61df e48b ca93 d211  ........a.......
+000000f0: aa0d 00e0 9803 2b8c 4200 6f00 6f00 7400  ......+.B.o.o.t.
+00000100: 3000 3000 3000 3100 0000 0100 0000 6800  0.0.0.1.......h.
+00000110: 6e00 7600 6d00 6500 2000 3100 0000 0104  n.v.m.e. .1.....
+00000120: 1c00 b973 1de6 84a3 cc4a aeab 82e8 28f3  ...s.....J....(.
+00000130: 628b 0000 0000 0000 0000 0104 1c00 b973  b..............s
+00000140: 1de6 84a3 cc4a aeab 82e8 28f3 628b 7200  .....J....(.b.r.
+00000150: 0000 0000 0000 0104 1c00 b973 1de6 84a3  ...........s....
+00000160: cc4a aeab 82e8 28f3 628b 5300 0000 0000  .J....(.b.S.....
+00000170: 0000 0317 1000 0200 0000 0000 0000 0000  ................
+=== FAT dirty bit (byte 0x41 of p4; 00=clean)
+00000000  00                                                |.|
+00000001
+=== NVMe/ANS dmesg lines (hw sanity under Linux)
+[    0.003845] CPU features: detected: ARMv8.4 Translation Table Level
+[    0.003851] CPU features: detected: Common not Private translations
+[    0.029366] iommu: Default domain type: Translated
+[    0.046786] RPC: Registered named UNIX socket transport module.
+[    0.046788] RPC: Registered udp transport module.
+[    0.046790] RPC: Registered tcp transport module.
+[    0.046791] RPC: Registered tcp-with-tls transport module.
+[    0.046792] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.229681] nvme-apple 34bcc0000.nvme: RTKit: Initializing (protocol version 12)
+[    0.231207] rtkit-helper 2a9400000.mtp: RTKit: syslog message: kb_transport.c:278: IPD HIDSPI attached
+[    0.344945] nvme-apple 34bcc0000.nvme: RTKit: syslog message: apcie.c:1110: power up done[0]: PMU=Ocarina, PWR=0
+[    0.351427] nvme-apple 34bcc0000.nvme: RTKit: syslog message: apcie.c:1110: power up done[1]: PMU=Ocarina, PWR=0
+=== ANE-related modules in installed roots (both kernel trees)
+=== modules-load.d + mkinitcpio MODULES
+=== PROBE DONE
