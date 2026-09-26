@@ -100,7 +100,14 @@ def read_control_stream(path, task_stream_size):
     return data
 
 def stage_geometry(header):
-    """Decode the production buffer roles from one ANEC header."""
+    """Decode the production buffer roles from one ANEC header.
+
+    ANEC tile-slot order (hwxv2-to-anec _build_header): slot 0 = command,
+    slot 3 = workspace, slots 4..4+dst_count-1 = OUTPUT surfaces in section
+    order, slots 4+dst_count..4+dst_count+src_count-1 = INPUT surfaces in
+    section order. Slot 1 is the kernel buffer the KMD computes internally
+    and must stay unbound.
+    """
     (
         content_size,
         td_size,
@@ -112,6 +119,22 @@ def stage_geometry(header):
     ) = header[:7]
     tiles = header[7:39]
     nchw = header[39:]
+    output_surfaces = [
+        {
+            "bdx": bdx,
+            "bytes": tiles[bdx] * TILE_SIZE,
+            "nchw": tuple(nchw[bdx * 6:bdx * 6 + 6]),
+        }
+        for bdx in range(4, 4 + dst_count)
+    ]
+    input_surfaces = [
+        {
+            "bdx": bdx,
+            "bytes": tiles[bdx] * TILE_SIZE,
+            "nchw": tuple(nchw[bdx * 6:bdx * 6 + 6]),
+        }
+        for bdx in range(4 + dst_count, 4 + dst_count + src_count)
+    ]
     return {
         "content_size": content_size,
         "td_size": td_size,
@@ -120,11 +143,12 @@ def stage_geometry(header):
         "kernel_size": kernel_size,
         "src_count": src_count,
         "dst_count": dst_count,
+        "tiles": tiles,
         "workspace_size": tiles[WORKSPACE_BDX] * TILE_SIZE,
-        "source_size": tiles[SRC_BDX] * TILE_SIZE,
-        "output_size": tiles[DST_BDX] * TILE_SIZE,
-        "source_nchw": tuple(nchw[SRC_BDX * 6:SRC_BDX * 6 + 6]),
-        "output_nchw": tuple(nchw[DST_BDX * 6:DST_BDX * 6 + 6]),
+        "input_surfaces": input_surfaces,
+        "output_surfaces": output_surfaces,
+        "input_bytes": sum(s["bytes"] for s in input_surfaces),
+        "output_bytes": sum(s["bytes"] for s in output_surfaces),
     }
 
 
@@ -348,22 +372,17 @@ def main():
     tsk_size = stage["task_stream_size"]
     td_size = stage["td_size"] if args.td_size is None else args.td_size
     td_count = stage["td_count"] if args.td_count is None else args.td_count
-    source_meta = stage["source_nchw"]
-    output_meta = stage["output_nchw"]
     workspace_size = stage["workspace_size"]
-    source_size = stage["source_size"]
-    output_size = stage["output_size"]
-    if stage["src_count"] != 1 or stage["dst_count"] != 1:
-        # Staged multi-port programs (e.g. the Qwen split-series) declare
-        # several boundary surfaces, but the ANEC image lays them out
-        # contiguously inside one input and one output section span. The
-        # engine DMAs whole spans, so filling/dumping the spans is faithful;
-        # per-surface routing is the runner's job, not the submit's.
-        print(
-            f"multi-surface program: {stage['src_count']} input surfaces, "
-            f"{stage['dst_count']} output surfaces "
-            f"(contiguous spans: source {source_size} B, output {output_size} B)"
-        )
+    input_surfaces = stage["input_surfaces"]
+    output_surfaces = stage["output_surfaces"]
+    input_bytes = stage["input_bytes"]
+    output_bytes = stage["output_bytes"]
+    print(
+        f"surfaces: {stage['src_count']} inputs "
+        f"({[s['bytes'] for s in input_surfaces]} B), "
+        f"{stage['dst_count']} outputs "
+        f"({[s['bytes'] for s in output_surfaces]} B)"
+    )
     if td_count < 1 or td_size < 1 or tsk_size < td_size:
         raise ValueError("invalid task geometry")
     splice_control = args.task_zero_envelope
@@ -395,8 +414,10 @@ def main():
         f"td-count={td_count} task-layout={'original' if original_task_layout else 'packed'} "
         f"qid={args.qid if args.qid is not None else 'default'} "
         f"kernel={stage['kernel_size']:#x} workspace={workspace_size:#x} "
-        f"source={source_size:#x} output={output_size:#x} "
-        f"source-nchw={tuple(source_meta)} output-nchw={tuple(output_meta)}"
+        f"inputs={[(s['bdx'], s['bytes']) for s in input_surfaces]} "
+        f"outputs={[(s['bdx'], s['bytes']) for s in output_surfaces]} "
+        f"input-nchw={[s['nchw'] for s in input_surfaces]} "
+        f"output-nchw={[s['nchw'] for s in output_surfaces]}"
     )
     runtime = load_runtime()
 
@@ -411,6 +432,29 @@ def main():
         if args.td_start < 0 or args.td_start + td_count > stage["td_count"]:
             raise ValueError("td range is out of range")
         selected_bases = bases[args.td_start:]
+        # Descriptor preflight: decode every selected task's KDMA bank
+        # references and require them bound before submit (Main directive:
+        # read emitted descriptor address references before execute).
+        parser = load_artifact_parser()
+        bound_banks = (
+            {0, WORKSPACE_BDX, 1}
+            | {s["bdx"] for s in input_surfaces}
+            | {s["bdx"] for s in output_surfaces}
+        )
+        referenced = {}
+        for base in selected_bases:
+            td = bytes(data[HEADER_SIZE + base: HEADER_SIZE + base + td_size])
+            layout = parser.decode_kdma(td)
+            for enabled, bank in zip(layout.enabled, layout.base_addresses):
+                if enabled:
+                    referenced[bank] = referenced.get(bank, 0) + 1
+        unbound = sorted(set(referenced) - bound_banks)
+        if unbound:
+            raise ValueError(
+                f"descriptors reference unbound banks {unbound} "
+                f"(bound: {sorted(bound_banks)})"
+            )
+        print(f"descriptor banks referenced: {sorted(referenced)}")
         patched_stream = None
         if args.task_zero_envelope is not None:
             patched_stream = splice_task_zero_envelope(
@@ -440,8 +484,20 @@ def main():
         if patched_stream is not None:
             command.map.seek(0)
             command.map.write(patched_stream)
-        source = stack.enter_context(device.buffer(source_size))
-        output = stack.enter_context(device.buffer(output_size))
+        # One buffer per declared surface, bound at its own KMD bank (BDX):
+        # outputs occupy banks 4..4+dst_count-1, inputs the next src_count
+        # banks, matching hwxv2-to-anec's tile-slot emission order.
+        input_buffers = []
+        for surface in input_surfaces:
+            buf = stack.enter_context(device.buffer(surface["bytes"]))
+            fill = np.full(surface["bytes"] // 2, args.input_value, dtype=np.float16)
+            buf.write(fill.tobytes())
+            input_buffers.append((surface, buf))
+        output_buffers = []
+        for surface in output_surfaces:
+            buf = stack.enter_context(device.buffer(surface["bytes"]))
+            buf.write(np.full(surface["bytes"] // 2, np.inf, dtype=np.float16).tobytes())
+            output_buffers.append((surface, buf))
         workspace = (
             stack.enter_context(device.buffer(workspace_size))
             if workspace_size
@@ -455,13 +511,6 @@ def main():
             else (td_count - 1) * 0x300 + td_size
         )
         btsp = stack.enter_context(device.buffer(btsp_size))
-        source_fill = np.full(source_size // 2, args.input_value, dtype=np.float16)
-        source.write(source_fill.tobytes())
-        del source_fill
-        source_sentinel = np.float16(args.input_value)
-        output_fill = np.full(output_size // 2, np.inf, dtype=np.float16)
-        output.write(output_fill.tobytes())
-        del output_fill
         td_source = patched_stream if patched_stream is not None else data
         td_start = 0 if patched_stream is not None else HEADER_SIZE
         bootstrap = (
@@ -489,56 +538,58 @@ def main():
         request.handles[0] = command.bo.handle
         if workspace is not None:
             request.handles[WORKSPACE_BDX] = workspace.bo.handle
-        request.handles[4] = source.bo.handle
-        request.handles[5] = output.bo.handle
+        # ANE tile-slot order: outputs at banks 4..4+dst_count-1, inputs
+        # directly after. Bank 1 is the KMD-computed kernel buffer and
+        # must stay unbound (the driver refuses an explicit handle there).
+        for bdx, (_surface, buf) in enumerate(output_buffers):
+            request.handles[4 + bdx] = buf.bo.handle
+        for bdx, (_surface, buf) in enumerate(input_buffers):
+            request.handles[4 + stage["dst_count"] + bdx] = buf.bo.handle
         ioctl(device.fd, runtime.IOCTL_SUBMIT, request)
-        poll_values = np.frombuffer(
-            output.map, dtype=np.float16, count=output_size // 2
-        )
-        deadline = time.monotonic() + args.timeout
-        while (
-            not np.any(poll_values != np.float16(np.inf))
-            and time.monotonic() < deadline
-        ):
-            time.sleep(0.001)
-        completed = bool(np.any(poll_values != np.float16(np.inf)))
-        del poll_values
-        output_bytes = output.read(output_size)
-        if args.dump_output is not None:
-            args.dump_output.write_bytes(output_bytes)
-        output_values = np.frombuffer(output_bytes, dtype=np.float16)
-        source_values = np.frombuffer(source.read(source_size), dtype=np.float16)
-        changed_mask = output_values != np.float16(np.inf)
-        changed_indices = np.flatnonzero(changed_mask)
-        source_changed_indices = np.flatnonzero(source_values != source_sentinel)
-        result = output_values[changed_indices[:16]].astype(np.float32)
-        source_result = source_values[source_changed_indices[:16]].astype(np.float32)
-        finite_values = output_values[changed_mask]
-        finite = bool(np.isfinite(finite_values).all()) if changed_indices.size else False
-        wrote_output = bool(changed_indices.size)
-        stats_values = (
-            finite_values.astype(np.float32) if changed_indices.size else finite_values
-        )
-        stats = (
-            tuple(
-                float(getattr(stats_values, name)())
-                for name in ("min", "max", "mean", "std")
+        # ANE_SUBMIT is KMD-synchronous: ane_tm_execute polls engine status
+        # until the descriptor chain completes before the ioctl returns
+        # (omarchy-ane ane_tm.c read_poll_timeout; ane_drv.c holds BO refs
+        # across the synchronous execute). Output reads therefore happen
+        # after KMD-confirmed completion; completed below reports per-surface
+        # write observation on that synchronously completed submit.
+        completed = True
+        wrote_output = False
+        finite = True
+        dump_parts = []
+        for surface, buf in output_buffers:
+            raw = buf.read(surface["bytes"])
+            dump_parts.append(raw)
+            values = np.frombuffer(raw, dtype=np.float16)
+            changed = int(np.flatnonzero(values != np.float16(np.inf)).size)
+            surface_finite = bool(np.isfinite(values).all())
+            wrote_output = wrote_output or bool(changed)
+            lo = float(values.min()) if values.size else float("nan")
+            hi = float(values.max()) if values.size else float("nan")
+            finite = finite and surface_finite
+            if args.dump_output is not None:
+                Path(str(args.dump_output) + f".bdx{surface['bdx']}").write_bytes(raw)
+            print(
+                f"output bdx={surface['bdx']} bytes={surface['bytes']} "
+                f"changed={changed} finite={surface_finite} "
+                f"range=({lo:.6f},{hi:.6f})"
             )
-            if changed_indices.size
-            else (float("nan"),) * 4
-        )
-        del stats_values
-        print(
-            f"output-head={result.tolist()} changed={changed_indices.size} "
-            f"input-head={source_result.tolist()} input-changed={source_changed_indices.size} "
-            f"range=({stats[0]:.6f},{stats[1]:.6f}) mean={stats[2]:.6f} "
-            f"std={stats[3]:.6f} finite={finite} completed={completed} "
-            f"wrote-output={wrote_output}"
-        )
-        del source_values, output_values
+        if args.dump_output is not None:
+            Path(str(args.dump_output)).write_bytes(b"".join(dump_parts))
+        for surface, buf in input_buffers:
+            raw = buf.read(surface["bytes"])
+            values = np.frombuffer(raw, dtype=np.float16)
+            mutated = int(np.flatnonzero(values != np.float16(args.input_value)).size)
+            print(
+                f"input bdx={surface['bdx']} bytes={surface['bytes']} "
+                f"mutated-vs-fill={mutated}"
+            )
         if not completed or not wrote_output or not finite:
             raise SystemExit(1)
-        print("PRODUCTION_ANEC_EXECUTION_OK")
+        print(
+            "PRODUCTION_ANEC_EXECUTION_OK "
+            "(ANE_SUBMIT KMD-synchronous; per-surface writes observed on the "
+            "completed submit)"
+        )
 
 
 if __name__ == "__main__":

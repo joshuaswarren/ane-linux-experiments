@@ -503,8 +503,23 @@ def _build_header(
     # per-surface plane/row in uint16 ELEMENTS for libane's ane_tile/untile:
     # P = 2*H*W and R = 2*W make new_H == H and new_W == W, so tile/untile
     # degrade to a dense memcpy of the caller's fp16 buffer.
-    in_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(input_shapes)}
-    out_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(output_shapes)}
+    # Explicit per-surface shapes drive the plane/row words; when absent,
+    # keep the DMA-derived padding derive_strides reads from the program's
+    # own tile-DMA counts (the single-port path's original behavior).
+    if in_shape_list is not None:
+        in_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(input_shapes)}
+    else:
+        in_plane_row = {
+            i: derive_strides(sh, image.tile_dma.source_total, image.tile_dma.source_run)
+            for i, sh in enumerate(input_shapes)
+        }
+    if out_shape_list is not None:
+        out_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(output_shapes)}
+    else:
+        out_plane_row = {
+            i: derive_strides(sh, image.tile_dma.dest_total, image.tile_dma.dest_run)
+            for i, sh in enumerate(output_shapes)
+        }
     output_sizes = [size for _, size in output_sections]
     input_sizes = [size for _, size in input_sections]
     if len(output_sizes) == 1:
