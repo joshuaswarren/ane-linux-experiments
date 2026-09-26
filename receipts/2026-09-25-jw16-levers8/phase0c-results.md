@@ -1,4 +1,4 @@
-# Phase 0c EXECUTED — first 4 KiB at PMP+0: resident ARM64 firmware (2026-09-26)
+# Phase 0c EXECUTED — first 4 KiB at PMP+0: coherent ARM64 executable head (2026-09-26)
 
 Scope exactly per Main's authorization: PS gate re-passed
 (0x1f0000ff f/f), bootargs ptr/size precheck identical
@@ -12,7 +12,7 @@ STORED. No other offsets, no writes, no CPU_RUN. Module
 sha256 `c3208d232d23a8b038c434de69e88c5c7d9c340893688a42677191d01106fbe9`
 (reconstructed byte-exact from the module's hex dump; dmesg retained).
 
-## Content class: executable ARM64 firmware, not data, not zeros
+## Content class: coherent ARM64 executable HEAD (the whole image is NOT validated by this 4 KiB read)
 
 - Offset 0x0: `14 00 00 95` LE = 0x14000095 — `b +0x254`: a reset-entry
   branch over a parameter/reserved block. Classic firmware entry.
