@@ -51,3 +51,34 @@ reference, installed entrypoint, no CPU fallback.
 Numerics for the staged Qwen programs on T6001 are NOT yet validated.
 What is proven: conversion pipeline, KMD submit/complete/dump, and the
 per-surface geometry extraction from the HWX itself.
+
+## UPDATE — true-geometry execution with structured numerics (same session)
+
+prog_002 reconverted with the TRUE per-surface shapes derived from the
+HWX's own `__FVMLIB` section ranges (4 inputs: 2048/2048/196,608/2048
+fp16 elements; 8 outputs: 2048×4, 512×2, 2048, 196,608) and executed:
+
+- ALL 8 output surfaces: finite on written elements; real structured
+  activations (bdx5 range -0.779..1.302; bdx10 up to 32,224.0; bdx11
+  0..0.563); coverage 0.25 per 16 KiB tile-rounded surface (= exact
+  4096 B / 2048-element true surfaces inside tile-granular BOs).
+- Engine mutations on input-role banks (bdx 12: 512, bdx 13: 2048,
+  bdx 14: 196,607 of 196,608 elements) = state-carrying lanes writing
+  in place, exactly as the stage contract (conv state, DeltaNet
+  recurrent state) requires.
+- Completed wording per Main: ANE_SUBMIT is KMD-SYNCHRONOUS
+  (ane_tm_execute latch-first completion poll, read_poll_timeout 1 µs
+  / 1 s; ane_drv.c holds BO refs across the synchronous execute) —
+  per-surface writes are observed on the KMD-confirmed-completed
+  submit; probe finite/coverage semantics now apply to WRITTEN
+  elements only.
+- Numerical REFERENCE comparison (e5rt-side tensors for identical
+  inputs, captured on the compiler oracle) remains the outstanding
+  validation step; until then these are structured computed outputs,
+  not reference-verified values.
+
+Probe + converter + regression test committed (a967e7da): tools/
+production-anec-probe.py (multi-surface), tools/hwxv2-to-anec.py
+(DMA-derived padding fallback restored when explicit shapes absent),
+tools/test_production_probe_multisurface.py (offline regression for
+the reviewed indexing bug: PASS).
