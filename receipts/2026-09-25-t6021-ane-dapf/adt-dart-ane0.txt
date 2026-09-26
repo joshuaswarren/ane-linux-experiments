@@ -1,0 +1,38 @@
+        dart-ane0:
+          flush-by-dva: 0
+          page-size: 0x4000
+          interrupt-parent: [164]
+          interrupts: [885]
+          clock-gates: [507]
+          device_type: "dart"
+          dart-options: 37
+          vm-size: 0x30000000000
+          bypass-15: <nil>
+          error-reflector: 0x29e09c000
+          AAPL,phandle: 362
+          sid: 0xf00000000
+          vm-base: 0x10000000000
+          power-gates: [507]
+            mapper-ane0:
+              iomd-cache-ttl: 0x7d0
+              iomd-cache-size: 512
+              reg: 0
+              AAPL,phandle: 363
+              device_type: "dart-mapper"
+              compatible: "iommu-mapper"
+          compatible: "dart,t8110"
+            reg: addr=0x85800000 sz=0x4000
+            reg: addr=0x85810000 sz=0x4000
+            reg: addr=0x85820000 sz=0x4000
+            reg: addr=0x85804000 sz=0x4000
+          dapf-instance-0: [start=0x28e084000 end=0x28e084033 r20=0x1 unk1=0x0 r4=0x0 unk2=[0x0 0x0 0x0 0x0 0x0] unk3=0x0 r0h=0x3 r0l=0x1 unk4=0x0 start=0x28e080260 end=0x28e080263 r20=0x1 unk1=0x0 r4=0x0 unk2=[0x0 0x0 0x0 0x0 0x0] unk3=0x0 r0h=0x3 r0l=0x1 unk4=0x0 start=0x38545c000 end=0x38545c003 r20=0x1 unk1=0x0 r4=0x0 unk2=[0x0 0x0 0x0 0x0 0x0] unk3=0x0 r0h=0x3 r0l=0x1 unk4=0x0 start=0x406468000 end=0x406468003 r20=0x1 unk1=0x0 r4=0x0 unk2=[0x0 0x0 0x0 0x0 0x0] unk3=0x0 r0h=0x3 r0l=0x1 unk4=0x0 start=0x228545c000 end=0x228545c003 r20=0x1 unk1=0x0 r4=0x0 unk2=[0x0 0x0 0x0 0x0 0x0] unk3=0x0 r0h=0x3 r0l=0x1 unk4=0x0]
+          instance: VFJBRAAAAABEQVJUTExUAFRSQUQBAAAAREFSVEJSRABUUkFEAgAAAERBUlRCV1IARlBBRAAAAABEQVBGTExUAA== ["TRAD" "DARTLLT" "TRAD" "DARTBRD" "TRAD" "DARTBWR" "FPAD" "DAPFLLT"]
+        sgx:
+          gpu-perf-filter-time-constant: 5
+          gpu-perf-proportional-gain2: 0x40accccd
+          has-kf: 1
+          metal-standard: 256
+          clock-gates: [381 578]
+          gpu-pwr-min-duty-cycle: 40
+          gpu-se-ki: 0xc2480000
+          gpu-avg-power-min-duty-cycle: 40
