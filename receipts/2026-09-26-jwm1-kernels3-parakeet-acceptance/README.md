@@ -1,4 +1,4 @@
-# jwm1 Parakeet installed acceptance — current combined pipeline vs same-laptop macOS rep10: complete, with lifecycle/memory capture
+# jwm1 Parakeet current-pipeline measurement capture complete (vs same-laptop macOS rep10) — performance parity REMAINS FAILED; absorption is prospective only
 
 Owner: Jwm1Kernels3, 2026-09-26. Installed stack: mlx-omarchy
 `0.32.3.dev202609261526+7d3f69ff2` (GDN prefill 4-lane + translator disk
@@ -53,6 +53,26 @@ missing and is now captured: peak memory + lifecycle boundaries (below).
 3. Pass-3 pin `bc519c03c4ef5fd1` verified on the installed wheel in the
    gdn-mainpin battery (journal); not re-run inside the memory pass (same
    wheel, same day — no code change between).
+
+## Corrections (Main review, before any absorption experiment)
+
+1. **The projected pass arithmetic in the earlier chat summary was wrong.**
+   Current installed warm wall is ~341-355 ms (sum-of-stages median ~341,
+   wall incl. inter-stage ~355). Subtracting the projected ~54 ms gives
+   ~287-301 ms — NOT 245-265 ms, and NOT a pass against 271. The 298.6 ms
+   baseline in parakeet-298 was the OLDER stack (ce91f5b8e) and cannot
+   stand in for the current installed pipeline. The absorption fusion is a
+   PROSPECTIVE IMPROVEMENT; performance parity REMAINS FAILED until real
+   measurements say otherwise.
+2. **macOS rep10 point (271 ms) vs Linux 10-rep median is not a paired
+   comparison.** Parity decisions must use the complete existing macOS
+   samples in 2026-09-24-jwm1-macos-baselines (cold/warm1/rep1/rep10 arms
+   plus the per-rep cpuAndNeuralEngine tables), with distribution context,
+   not a single-number point vs a single median.
+3. **"Acceptance complete" was the wrong frame.** This receipt is a
+   MEASUREMENT CAPTURE (boundaries + correctness corpus + memory +
+   lifecycle) for the current installed pipeline; performance parity is
+   failed and the encoder engine-clock bucket stays Main-gated.
 
 ## Next measured gap (source-backed, NOT falsified)
 
