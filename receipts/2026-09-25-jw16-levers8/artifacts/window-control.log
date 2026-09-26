@@ -1,0 +1,35 @@
+=== levers8 control window start 2026-09-25T21:50:13-05:00 ===
+llm-inference: inactive
+--- cache dirs ---
+~/.cache/mesa_shader_cache
+~/.cache/mesa_shader_cache
+~/.cache/qtshadercache-arm64-little_endian-lp64
+~/.cache/mesa_shader_cache
+~/.cache/qtshadercache-arm64-little_endian-lp64
+--- cold-cold pass (Mesa caches + vkpc cleared) ---
+clearing: ~/.cache/mesa_shader_cache
+~/.cache/qtshadercache-arm64-little_endian-lp64
+  "emissions": 104,
+  "total_pipeline_ms": 11387.135,
+  "out": "/tmp/levers8/after/parakeet-coldcold",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+--- warm-again pass ---
+  "emissions": 104,
+  "total_pipeline_ms": 1219.019,
+  "out": "/tmp/levers8/after/parakeet-warm3",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+--- TDT dispatch-count pass ---
+12
+21
+=== control summary ===
+pass-coldcold total=11387.135 mel=10226.334 tdt=200.169 enc=868.61 allpass=True mel_gpu={'commit_calls_noop': 1, 'commit_calls_with_work': 1, 'gpu_primitive_dispatches': 12, 'omarchy_finalize_calls': 1, 'vk_buffer_copies': 0, 'vk_buffer_fills': 0, 'vk_compute_dispatches': 6, 'vk_submissions': 1}
+pass-warm3 total=1219.019 mel=114.177 tdt=174.619 enc=868.518 allpass=True mel_gpu={'commit_calls_noop': 1, 'commit_calls_with_work': 1, 'gpu_primitive_dispatches': 12, 'omarchy_finalize_calls': 1, 'vk_buffer_copies': 0, 'vk_buffer_fills': 0, 'vk_compute_dispatches': 6, 'vk_submissions': 1}
+pass-trace total=1221.96 mel=112.594 tdt=179.712 enc=868.424 allpass=True mel_gpu={'commit_calls_noop': 1, 'commit_calls_with_work': 1, 'gpu_primitive_dispatches': 12, 'omarchy_finalize_calls': 1, 'vk_buffer_copies': 0, 'vk_buffer_fills': 0, 'vk_compute_dispatches': 6, 'vk_submissions': 1}
+pass-trace2 total=1236.675 mel=114.611 tdt=174.79 enc=886.188 allpass=True mel_gpu={'commit_calls_noop': 1, 'commit_calls_with_work': 1, 'gpu_primitive_dispatches': 12, 'omarchy_finalize_calls': 1, 'vk_buffer_copies': 0, 'vk_buffer_fills': 0, 'vk_compute_dispatches': 6, 'vk_submissions': 1}
+=== control window end 2026-09-25T21:50:33-05:00 ===
+llm-inference: active
+{"error":{"message":"Loading model","type":"unavailable_error","code":503}}

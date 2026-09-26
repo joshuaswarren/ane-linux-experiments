@@ -1,0 +1,114 @@
+=== levers8 after window start 2026-09-25T21:46:08-05:00 ===
+--- install ---
+wheel: /var/tmp/mlxo-ab/dist/mlx_omarchy-0.32.3.dev202609260243+f26192bbf-cp314-cp314-linux_aarch64.whl
+2deccdd4dbeafec8b8e18569a42eae6b1341820e727f4653fa8831945acd418e  /var/tmp/mlxo-ab/dist/mlx_omarchy-0.32.3.dev202609260243+f26192bbf-cp314-cp314-linux_aarch64.whl
+Name: mlx-omarchy
+Version: 0.32.3.dev202609260243+f26192bbf
+ERROR: Pipe to stdout was broken
+OK: 12 files verified in ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+OK: audio fixture verified in ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/audio/fixture.flac
+llm-inference: inactive
+--- mel A/B: cold cache, then warm passes ---
+=== transcribe pass 1 2026-09-25T21:46:42-05:00 ===
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1624.483,
+  "out": "/tmp/levers8/after/parakeet-1",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+=== transcribe pass 2 2026-09-25T21:46:45-05:00 ===
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1240.432,
+  "out": "/tmp/levers8/after/parakeet-2",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+=== transcribe pass 3 2026-09-25T21:46:47-05:00 ===
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1235.777,
+  "out": "/tmp/levers8/after/parakeet-3",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+=== transcribe pass 4 2026-09-25T21:46:49-05:00 ===
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1237.63,
+  "out": "/tmp/levers8/after/parakeet-4",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+--- opt-out probe (no cache, must still pass pins) ---
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1238.218,
+  "out": "/tmp/levers8/after/parakeet-optout",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+optout-clean
+--- corruption probe (truncated blob, header valid) ---
+  "emissions": 104,
+  "total_pipeline_ms": 1240.402,
+  "out": "/tmp/levers8/after/parakeet-regen",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1234.537,
+  "out": "/tmp/levers8/after/parakeet-corrupt",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+--- restore warm cache state (2 passes) ---
+  "out": "/tmp/levers8/after/parakeet-warm1",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+  "out": "/tmp/levers8/after/parakeet-warm2",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+--- GPU pin 3-pass ---
+pure_prefill: {'prompt_tokens': 512, 'wall_s': 0.693, 'gpu_busy_percent_samples': [], 'pure_prefill_tok_rate': 738.8}
+ordered_records_sha256: bc519c03c4ef5fd1204a5346a0aefb537bda5a291e8fc970a2d6bd09c4b47d33
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+--- GPU pin 10-pass ---
+pure_prefill: {'prompt_tokens': 512, 'wall_s': 0.6917, 'gpu_busy_percent_samples': [], 'pure_prefill_tok_rate': 740.2}
+ordered_records_sha256: dbf704971617fdfcf693c4287b9f0403ee24a2b2c5d3a9fb4d2a032d613c9596
+[rtmod] COMMIT-NOOP
+[rtmod] COMMIT-NOOP
+=== after results summary ===
+pass-1 total=1624.483 mel=114.478 tdt=177.091 enc=1264.498 dload=44.531 allpass=True
+pass-2 total=1240.432 mel=114.894 tdt=179.739 enc=884.533 dload=44.732 allpass=True
+pass-3 total=1235.777 mel=114.684 tdt=176.729 enc=883.464 dload=44.677 allpass=True
+pass-4 total=1237.63 mel=111.874 tdt=177.31 enc=886.941 dload=44.92 allpass=True
+pass-optout total=1238.218 mel=117.1 tdt=175.972 enc=884.711 dload=44.536 allpass=True
+pass-regen total=1240.402 mel=115.857 tdt=178.857 enc=884.022 dload=45.634 allpass=True
+pass-corrupt total=1234.537 mel=114.212 tdt=174.204 enc=884.662 dload=45.333 allpass=True
+pass-warm1 total=1216.659 mel=113.566 tdt=174.581 enc=867.634 dload=44.994 allpass=True
+pass-warm2 total=1218.366 mel=113.807 tdt=174.625 enc=868.315 dload=45.129 allpass=True
+bench-3p.json digest= bc519c03c4ef5fd1
+bench-10p.json digest= dbf704971617fdfc
+=== after window end 2026-09-25T21:48:23-05:00 ===
+llm-inference: active
+{"error":{"message":"Loading model","type":"unavailable_error","code":503}}

@@ -1,0 +1,17 @@
+=== levers8 trace window start 2026-09-25T21:51:51-05:00 ===
+transcribe rc=0
+SUBMIT lines: 12
+COMMIT lines: 9
+[rtmod] SUBMIT-ENTER tid=8810
+[rtmod] SUBMIT tid=8810 cv=1 waits=0 sigs=2 cmds=1
+[rtmod] SUBMIT-ENTER tid=8810
+[rtmod] SUBMIT tid=8810 cv=2 waits=1 sigs=2 cmds=1
+[rtmod] SUBMIT-ENTER tid=8810
+[rtmod] SUBMIT tid=8810 cv=3 waits=1 sigs=2 cmds=1
+[rtmod] SUBMIT-ENTER tid=8810
+[rtmod] SUBMIT tid=8810 cv=4 waits=1 sigs=2 cmds=1
+[rtmod] SUBMIT-ENTER tid=8810
+[rtmod] SUBMIT tid=8810 cv=5 waits=1 sigs=2 cmds=1
+[rtmod] SUBMIT-ENTER tid=8810
+[rtmod] SUBMIT tid=8810 cv=6 waits=1 sigs=2 cmds=1
+=== trace window end 2026-09-25T21:51:54-05:00 ===

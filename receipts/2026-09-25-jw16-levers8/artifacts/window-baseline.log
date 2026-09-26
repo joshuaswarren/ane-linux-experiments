@@ -1,0 +1,73 @@
+=== levers8 baseline window start 2026-09-25T21:38:13-05:00 ===
+ 21:38:13 up 26 min,  1 user,  load average: 0.04, 0.01, 0.01
+llm-inference: inactive
+--- parakeet verify ---
+OK: 12 files verified in ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+OK: audio fixture verified in ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/audio/fixture.flac
+--- parakeet baseline passes (fresh process each) ---
+=== transcribe pass 1 2026-09-25T21:38:14-05:00 ===
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=3997 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 3564.398,
+  "out": "/tmp/levers8/base/parakeet-1",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+=== transcribe pass 2 2026-09-25T21:38:19-05:00 ===
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=4013 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1211.459,
+  "out": "/tmp/levers8/base/parakeet-2",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+=== transcribe pass 3 2026-09-25T21:38:21-05:00 ===
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=4023 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1206.92,
+  "out": "/tmp/levers8/base/parakeet-3",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+=== transcribe pass 4 2026-09-25T21:38:23-05:00 ===
+[rtmod] COMMIT-NOOP
+[rtmod] SUBMIT tid=4033 cv=6 waits=1 sigs=2 cmds=1
+[rtmod] COMMIT-NOOP
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1215.083,
+  "out": "/tmp/levers8/base/parakeet-4",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+[rtmod] COMMIT-NOOP
+model snapshot: ~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/snapshots/0867d98bfb174b042d88461c0e7c97b86b34b381
+--- GPU pin 3-pass ---
+/var/tmp/v072-venv-fused/bin/python: can't open file '/tmp/levers8/qwen38-mlx-bench.py': [Errno 2] No such file or directory
+--- GPU pin 10-pass ---
+/var/tmp/v072-venv-fused/bin/python: can't open file '/tmp/levers8/qwen38-mlx-bench.py': [Errno 2] No such file or directory
+=== baseline results summary ===
+pass total=3564.398ms mel=2044.337 tdt=198.813 decNS=0.0 jointNS=0.0 enc=1249.753 allpass=True
+pass total=1211.459ms mel=111.769 tdt=176.093 decNS=0.0 jointNS=0.0 enc=863.557 allpass=True
+pass total=1206.92ms mel=110.562 tdt=172.93 decNS=0.0 jointNS=0.0 enc=863.373 allpass=True
+pass total=1215.083ms mel=111.264 tdt=179.661 decNS=0.0 jointNS=0.0 enc=864.159 allpass=True
+/tmp/levers8/base/bench-3p.json ERR [Errno 2] No such file or directory: '/tmp/levers8/base/bench-3p.json'
+/tmp/levers8/base/bench-10p.json ERR [Errno 2] No such file or directory: '/tmp/levers8/base/bench-10p.json'
+=== levers8 baseline window end 2026-09-25T21:38:25-05:00 ===
+llm-inference: active
