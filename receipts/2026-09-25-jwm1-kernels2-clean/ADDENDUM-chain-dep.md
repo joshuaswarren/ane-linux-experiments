@@ -79,3 +79,21 @@ RepoReleaseSweep to re-cut with `bash "$PREFIX/apply-mlx-lm-patches.sh"`
 at line 177 (or an explicit chmod). Note the digest control itself was
 pre-verified this same day: my saved pass-1 full digest equals the
 486872c4...aa5c control bit-exact.
+
+## Addendum 3: v0.7.4 gate — installer fix proven, content green
+
+Re-ran the battery with the published v0.7.4 wheel + the one-line installer
+fix (bash-invoked patch script): install completed
+(0.32.3.dev202609260237+bb4901a), GPU matmul smoke OK, ANE bundles present
+in the installed wheel (mlx/share/mlx-omarchy/parakeet-1/bundles/*.anec),
+and the 10-prompt compact digest (10x1x32, greedy, warmup 2, prefill 512):
+
+- digest 486872c410629f1d4e019beb90c94d60229ec2abe154ae6b04712f9aedb5aa5c
+  — DIGEST-MATCH vs the same-day same-box control, bit-exact
+- decode 39.21 tok/s on the release wheel
+
+(The first attempt's ANE-smoke snippet crashed on mlx.__file__ being None —
+harness bug, replaced by the direct bundle check above.) Promotion waits
+for RepoReleaseSweep's re-cut tag (42fbbc5f0, wheels rebuilding); the
+official battery rerun on that tag is a formality — only install.sh line
+177 differs from what this run proved.
