@@ -1,0 +1,10 @@
+# Step B: `sudo modprobe -r ane; sudo insmod /var/tmp/ane-acg-eb4cf4c.ko acg_hack=1`
+# ssh session died at 58 s (transport timeout, rc 255) with no command output:
+# the box hard-reset during the probe. Facts gathered on the following boot:
+# - macsmc-reboot: PMU logged 1 boot error(s) and 0 panic(s)  (exactly one
+#   unclean reset total; the 18:57 reboot was a clean systemctl reboot)
+# - auto-recovery to stock ane (loaded at t=2.9 s), refcnt 0
+# - no Oops/abort line in the surviving log (reset is machine-level)
+# - the ACG RMW write (0x80000000 -> 0x80001000) is the only access the
+#   acg_hack=1 path adds beyond the proven-clean baseline read path
+# - no filesystem damage: zero btrfs/ext4/IO error lines post-crash

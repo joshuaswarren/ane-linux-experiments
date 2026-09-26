@@ -1,0 +1,4 @@
+# Step A: omarchy-ane agent/t8103-acg (eb4cf4c) insmod, acg_hack defaults 0
+# jwm1 boot B dmesg, module params after load: acg_hack=N map_mode=3 dart_contain=Y boost_idle_ms=100 (all defaults = certified config)
+[   57.959923] ane 26bc04000.ane: ANE-ACG pa=0x26b868a04 va=ffff80008b728a04 val=0x80000000
+[   57.961652] ane 26bc04000.ane: loaded ane
