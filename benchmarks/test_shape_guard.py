@@ -32,12 +32,14 @@ class Args:
 
 
 CORPUS = "9299a3b2fc136a4c0c355f9ad3e211be81823a5fb9eeadbc2e6608fb3e5718a0"
+IDENT = "fedcba9876543210"
 
 
 def shape(warmup, prompts_per_pass, passes=1, new_tokens=32, prefill=512):
     return {"prompts_per_pass": prompts_per_pass, "warmup": warmup,
             "passes": passes, "new_tokens": new_tokens,
-            "prefill_leg_tokens": prefill, "prompts_corpus_sha256": CORPUS}
+            "prefill_leg_tokens": prefill, "prompts_corpus_sha256": CORPUS,
+            "prompts_identity_sha256": IDENT}
 
 
 failures = []
@@ -75,8 +77,10 @@ if ok:
 # 6. The full-arg path: contract_shape with the Args used by main() must
 #    embed prompts_per_pass via the caller (dict merge) and then differ
 #    across prompt counts.
-s_full_10 = dict(contract_shape(a10, CORPUS), prompts_per_pass=10)
-s_full_1 = dict(contract_shape(a1, CORPUS), prompts_per_pass=1)
+s_full_10 = dict(contract_shape(a10, CORPUS), prompts_per_pass=10,
+                 prompts_identity_sha256=IDENT)
+s_full_1 = dict(contract_shape(a1, CORPUS), prompts_per_pass=1,
+                prompts_identity_sha256=IDENT)
 ok, why = shapes_compatible(s_full_10, s_full_1)
 if ok:
     failures.append("full-shape different prompt count was accepted")

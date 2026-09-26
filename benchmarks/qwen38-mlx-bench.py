@@ -63,7 +63,8 @@ def shapes_compatible(a, b):
     if not isinstance(a, dict) or not isinstance(b, dict):
         return False, "shape is not a dict"
     for key in ("prompts_per_pass", "warmup", "passes", "new_tokens",
-                "prefill_leg_tokens", "prompts_corpus_sha256"):
+                "prefill_leg_tokens", "prompts_corpus_sha256",
+                "prompts_identity_sha256"):
         av, bv = a.get(key), b.get(key)
         if av is None or bv is None:
             return False, f"missing shape key: {key}"
@@ -175,6 +176,20 @@ def main():
                 "pure_prefill_tok_rate": round(len(ids) / dt, 2) if dt > 0 else 0.0}
 
     records = []
+    # Prompt identity/order fingerprint: sha256 over the ordered per-prompt
+    # input_ids lists AS the acceptance run tokenizes them (post-limit).
+    # Covers identity AND order, independent of file formatting.
+    import hashlib as _hl
+    ids_per_prompt = [tok.encode(t) for t in prompts]
+    prompts_identity_sha = _hl.sha256(
+        b"".join(
+            str(len(ii)).encode() + b"|"
+            + ",".join(map(str, ii)).encode() + b"|"
+            for ii in ids_per_prompt
+        )
+    ).hexdigest()
+    print("prompts_identity_sha:", prompts_identity_sha, flush=True)
+
     for w in range(a.warmup):
         generate(model, tok, prompt=prompts[0], max_tokens=8, verbose=False)
 
@@ -210,7 +225,8 @@ def main():
     result = {
         "meta": metadata(model_dir),
         "contract_shape": dict(contract_shape(a, corpus_sha),
-                               prompts_per_pass=len(prompts)),
+                               prompts_per_pass=len(prompts),
+                               prompts_identity_sha256=prompts_identity_sha),
         "protocol": {
             "new_tokens": a.new_tokens, "temperature": 0.0, "greedy": True,
             "prompts_file": os.path.basename(a.prompts), "prompts_corpus_sha256": corpus_sha,
