@@ -1,0 +1,70 @@
+# jwm1 Parakeet installed acceptance — current combined pipeline vs same-laptop macOS rep10: complete, with lifecycle/memory capture
+
+Owner: Jwm1Kernels3, 2026-09-26. Installed stack: mlx-omarchy
+`0.32.3.dev202609261526+7d3f69ff2` (GDN prefill 4-lane + translator disk
+cache + whole-encoder bundle + GPU mel + gpu-chain TDT; no CPU tensor
+fallback — decoder_calls=0, joint_calls=0, decode_path=gpu-chain).
+
+## Determination (Main's question)
+
+The full frozen 3-warmups+10-reps same-laptop macOS comparison EXISTS for
+the current combined pipeline; it was NOT rerun for this receipt. What was
+missing and is now captured: peak memory + lifecycle boundaries (below).
+
+## Artifact paths (all on jwm1)
+
+- Installed acceptance run (3w+10r, one process, ANE session amortized):
+  `/var/tmp/gdnpf-ab7/contract3-memory.log` (10 reps + CONTRACT_SUMMARY),
+  stderr `/var/tmp/gdnpf-ab7/contract3-memory.err`; rusage wrapper
+  `/var/tmp/memwrap.py`; run under `flock /tmp/m1-gpu.lock`, unit
+  gdn-mem2, 2026-09-26 11:06.
+- Installed corpus (6 fixtures, tok/frm/dur true x6):
+  `/var/tmp/gdnpf-ab7/corpus-installed.log` (also corpus-cand/base.log for
+  the A/B arms).
+- Pins (installed wheel, passes 1/3/10): unit gdn-mainpin journal —
+  `486872c410629f1d` / `bc519c03c4ef5fd1` / `dbf704971617fdfc`, all
+  bit-exact; contract JSONs under `/tmp/dft-gates-main-pin/`.
+- macOS same-laptop rep10 (reference; do not rerun):
+  `receipts/2026-09-24-jwm1-macos-baselines/` — arm `ane`: cold 0.295 s,
+  rep10 total 0.271 s, rep10 encoder 0.136 s, rep10 decode 0.120 s,
+  transcript match gold 104/104; stdout copies
+  `raw/parakeet/stdout_ane-*.txt`.
+- Prior stage ledger: `receipts/2026-09-25-jwm1-parity3-parakeet-298/`.
+
+## Acceptance table (current installed pipeline vs macOS rep10)
+
+| stage | cold ms | warm median ms | macOS rep10 | gap |
+|---|---:|---:|---:|---|
+| audio_load | 2.0 | 6.9 | ~2 | warm-path corpus read, benign |
+| mel_frontend | 140.5 | 20.16 | 13-15 | +5-7 (DFT kernel, bit-exact levers landed; residual small) |
+| encoder_ane | 139.1 | 143.68 | 136 (engine bench 113.1) | +8 stage; engine clock bucket is NOT software — needs `powermetrics --samplers ane` in a grouped macOS window (Main-gated) |
+| tdt_decode | 202.8 | 170.12 | 120 | +50 = 6 serial kernels/slot x ~27 us in-CS dispatch floor (mesa) + chains/window at 79% BW |
+| total (rep10/cold) | 484.5 cold | ~341 sum-of-stages (wall incl. inter-stage ~355) | 271 | warm gap ~+70 ms |
+| peak RSS | — | **1,095,408 KB (1.07 GB)** | not captured on macOS | captured Linux-side |
+| init/lifecycle | island_construct 477.9 ms; cold first 484.5 ms; then warm | | macOS cold 295 ms | init dominated by ANE session/island construct |
+
+## Incomplete criteria (honest list)
+
+1. macOS side of peak-RSS was never captured (macOS capture scripts did
+   not record rss; adding it needs a macOS window — Main-gated).
+2. `powermetrics --samplers ane` engine-clock attribution (encoder 143.5
+   vs macOS 113.1 engine) — explicitly Main-gated on a grouped macOS
+   window; recorded as the encoder residual owner.
+3. Pass-3 pin `bc519c03c4ef5fd1` verified on the installed wheel in the
+   gdn-mainpin battery (journal); not re-run inside the memory pass (same
+   wheel, same day — no code change between).
+
+## Next measured gap (source-backed, NOT falsified)
+
+`receipts/2026-09-25-jwm1-parity3-parakeet-298/` §3 names the only
+unfalsified TDT lever: prologue/epilogue ABSORPTION — fold computed in
+chains1's prologue, fold_proj in window's prologue, control in window's
+epilogue (6 -> 3 kernels/slot, ~-54 ms -> total ~245-265 < 271 PASS).
+Distinct from the falsified single-workgroup trio fusion (4.7x slower,
+958783d9): absorption keeps the big kernels' parallelism and hides the
+tiny chains in their bandwidth slack, at the cost of redundant per-WG
+fold chains (O(25.6k MACs) x 100 WGs vs chains1's O(6.5M) — within slack).
+Design question to settle first: cross-workgroup visibility of the fold
+result (no global barrier in one dispatch) -> every WG recomputes the
+prologue redundantly (bit-exact: same fp32 ascending order). Pass
+criterion: pins + corpus + contract3 gates + total < 271 ms.
