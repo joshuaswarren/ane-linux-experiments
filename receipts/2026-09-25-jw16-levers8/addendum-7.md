@@ -82,3 +82,17 @@ production-anec-probe.py (multi-surface), tools/hwxv2-to-anec.py
 (DMA-derived padding fallback restored when explicit shapes absent),
 tools/test_production_probe_multisurface.py (offline regression for
 the reviewed indexing bug: PASS).
+
+## UPDATE 2 — HWX↔manifest pairing (offline analysis)
+
+Signature rule validated on 13 of 38 programs: hwx n_in == manifest
+n_srcs, hwx n_out == manifest n_dsts + 1 (the carried state output is
+an extra HWX output surface). Paired: the embed program (2in/7out) +
+12 GDN stage-A' programs (4in/8out, src 49,152 B dst 20,544 B).
+Remaining 25: 18 state blocks (6srcs/1dst), 5 attention (11srcs/7dsts),
+1 readout (3srcs/1dst), 1 lm_head (10srcs/1dst) — these map to the
+(11in,10out)-class hwx programs whose port-level identity needs the
+staged manifest's port names (t1/t5/t16…) cross-referenced with the
+HWX port tables. Artifacts: hwx-manifest-pairing.json (13 paired).
+Device execution milestone stands (prog_002-class: 4in/8out GDN
+stage-A', real activations, KMD-synchronous completion).
