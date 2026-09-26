@@ -1,0 +1,14 @@
+{"k":"eq","shape":"qkv","dim":0,"side":"cand","elements":4096,"bit_mismatches":0}
+{"k":"eq","shape":"qkv","dim":1,"side":"cand","elements":512,"bit_mismatches":0}
+{"k":"eq","shape":"qkv","dim":2,"side":"cand","elements":512,"bit_mismatches":0}
+{"k":"eq","shape":"gate_up","dim":0,"side":"cand","elements":6144,"bit_mismatches":0}
+{"k":"eq","shape":"gate_up","dim":1,"side":"cand","elements":6144,"bit_mismatches":0}
+{"k":"eq","shape":"down","dim":0,"side":"cand","elements":2048,"bit_mismatches":0}
+{"k":"eq","shape":"qkvz","dim":0,"side":"cand","elements":8192,"bit_mismatches":0}
+{"k":"eq","shape":"gate6144","dim":0,"side":"cand","elements":6144,"bit_mismatches":0}
+{"k":"eq","shape":"zout","dim":0,"side":"cand","elements":2048,"bit_mismatches":0}
+{"k":"eq","shape":"q4096","dim":0,"side":"cand","elements":4096,"bit_mismatches":0}
+{"k":"eq","shape":"kv512","dim":0,"side":"cand","elements":512,"bit_mismatches":0}
+{"k":"eq","shape":"ab","dim":0,"side":"cand","elements":16,"bit_mismatches":0}
+{"k":"eq","shape":"ab","dim":1,"side":"cand","elements":16,"bit_mismatches":0}
+{"k":"eq","shape":"lm_head","dim":0,"side":"cand","elements":248320,"bit_mismatches":0}
