@@ -143,3 +143,14 @@ output comparison vs the e0001 reference tensors.
 State preserved: jw16 /var/tmp/levers8/qwen/{e5rt-ref/, prog_003-
 banks.json, hwx/, prog_003-state.anec-geometry-inputs}; the numeric
 comparison is the immediate next action with all data local.
+
+## RETRACTION — "mapping resolved" claim withdrawn (2026-09-26)
+
+The conclusion that the embed program has "no independent section↔output
+mapping" is WITHDRAWN. The perturbation test showed that perturbing
+either input changes all outputs — this establishes DEPENDENCY (all
+outputs depend on all inputs through the fused graph), not STORAGE
+MAPPING (which physical section each logical port reads/writes).
+Dependency and storage mapping are different facts. The section↔port
+mapping remains UNRESOLVED and must be derived from the task descriptor
+offsets/layout, not inferred from perturbation patterns.
