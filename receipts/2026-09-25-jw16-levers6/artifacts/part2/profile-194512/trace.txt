@@ -1,0 +1,13 @@
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 1/1   #P:10
+#
+#                                _-----=> irqs-off/BH-disabled
+#                               / _----=> need-resched
+#                              | / _---=> hardirq/softirq
+#                              || / _--=> preempt-depth
+#                              ||| / _-=> migrate-disable
+#                              |||| /     delay
+#           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+#              | |         |   |||||     |         |
+             tee-3341    [005] ...1.  1924.380730: tracing_mark_write: PROBE_MARK transport

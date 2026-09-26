@@ -1,0 +1,10 @@
+2026-09-25T19:48:01,046655957-05:00
+jw16mbp1-linux
+1000
+c6bc1ef497b896b7575c546b13f9bafe52e2066f184fdd3fec6af4b5b6349947  /var/tmp/v072-venv-fused/bin/python3
+9bf51361dc2baf03d612401862fabd40ae83078fc097932267bb3c5a0b8ee0c6  /var/tmp/parakeet-recover/fused_e2e_trace.py
+7a592a5e0dda9c343b9e5797a273a79a4a4eb2eaeaa3828b4fb132d308742fe9  /var/tmp/parakeet-recover/ane_whole_worker_resident.py
+b9f5ae95d86b1187e5b896fe0089302407abdb9f6513ee965274d7b607480a7a  /var/tmp/parakeet-recover/libane_inproc.so
+84e8cc8f5f1048e168732f7d2afecd8b40dd9fd80c31c2a62f3e054446fe3e0c  /var/tmp/encoder-whole/build/tools/mlx-omarchy-ane-worker/mlx-omarchy-ane-worker
+d06222a86f3bff26aaf1cec1223ade32f27cad84b994dccb1af9cca965a7da8c  /var/tmp/encoder-whole/libane-strict.so
+30885601173f96b0d8ddd020dc959b055c6c1582b85a33e3fcab8c4b08ed94c2  /var/tmp/parakeet-recover/audio/fixture.flac

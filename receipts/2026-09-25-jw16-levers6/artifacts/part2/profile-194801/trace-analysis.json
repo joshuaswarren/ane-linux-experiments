@@ -1,0 +1,71 @@
+{
+ "rows": [
+  {
+   "stage": "audio_load",
+   "wall_ms": 9.396000000151616,
+   "busy_ms": 0.647999999955573,
+   "wait_ms": 8.748000000196043,
+   "jobs": 1,
+   "busy_pct": 6.9,
+   "run_done_p50_ms": 0.648,
+   "run_done_max_ms": 0.648,
+   "queue_run_p50_ms": 0.026
+  },
+  {
+   "stage": "mel_frontend",
+   "wall_ms": 140.24399999993875,
+   "busy_ms": 22.94700000015837,
+   "wait_ms": 117.29699999978038,
+   "jobs": 1,
+   "busy_pct": 16.4,
+   "run_done_p50_ms": 22.947,
+   "run_done_max_ms": 22.947,
+   "queue_run_p50_ms": 0.016
+  },
+  {
+   "stage": "encoder_ane",
+   "wall_ms": 634.796999999935,
+   "busy_ms": 0.0,
+   "wait_ms": 634.796999999935,
+   "jobs": 0,
+   "busy_pct": 0.0,
+   "run_done_p50_ms": null,
+   "run_done_max_ms": null,
+   "queue_run_p50_ms": null
+  },
+  {
+   "stage": "decoder_load",
+   "wall_ms": 43.05999999996857,
+   "busy_ms": 0.0,
+   "wait_ms": 43.05999999996857,
+   "jobs": 0,
+   "busy_pct": 0.0,
+   "run_done_p50_ms": null,
+   "run_done_max_ms": null,
+   "queue_run_p50_ms": null
+  },
+  {
+   "stage": "tdt_decode",
+   "wall_ms": 311.1199999998462,
+   "busy_ms": 253.13899999946443,
+   "wait_ms": 57.981000000381755,
+   "jobs": 278,
+   "busy_pct": 81.4,
+   "run_done_p50_ms": 0.897,
+   "run_done_max_ms": 1.497,
+   "queue_run_p50_ms": 0.007
+  },
+  {
+   "stage": "detokenize",
+   "wall_ms": 19.941999999900872,
+   "busy_ms": 0.0,
+   "wait_ms": 19.941999999900872,
+   "jobs": 0,
+   "busy_pct": 0.0,
+   "run_done_p50_ms": null,
+   "run_done_max_ms": null,
+   "queue_run_p50_ms": null
+  }
+ ],
+ "jobs_total": 280
+}

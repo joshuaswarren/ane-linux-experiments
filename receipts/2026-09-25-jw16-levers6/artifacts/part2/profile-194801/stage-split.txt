@@ -1,0 +1,8 @@
+jobs seen: 280, fence signaled by driver: {'stub': 1, 'drm_sched': 560, 'asahi': 280, 'dma_fence_chain': 561}
+stage            wall_ms   busy_ms   wait_ms   busy%   jobs    rd_p50   rd_max  q_run_p50
+audio_load           9.4       0.6       8.7     6.9      1     0.648    0.648      0.026
+mel_frontend       140.2      22.9     117.3    16.4      1    22.947   22.947      0.016
+encoder_ane        634.8       0.0     634.8     0.0      0      None     None       None
+decoder_load        43.1       0.0      43.1     0.0      0      None     None       None
+tdt_decode         311.1     253.1      58.0    81.4    278     0.897    1.497      0.007
+detokenize          19.9       0.0      19.9     0.0      0      None     None       None
