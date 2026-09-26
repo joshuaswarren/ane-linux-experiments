@@ -1,0 +1,28 @@
+host=jwm1-linux commit=not-git stamp=20260926T130817Z VK_DRIVER_FILES=/tmp/mesa-base.icd.json
+{"k":"meta","dev":"лк","ts_period_ns":1.000,"ts_valid_bits":64,"timeline_semaphore":1,"vk_driver_files":"/tmp/mesa-base.icd.json"}
+MARK modules-created rmw=0xaaab75dbc5e0 raw=0xaaab75dba260
+MARK pipe_rmw ok
+MARK pr0 ok
+MARK pr1 ok
+MARK pr2 ok
+MARK pw0 ok
+MARK pw1 ok
+MARK pw2 ok
+{"k":"meta2","events":1}
+{"k":"bisect","what":"empty","submit":0,"wait":0}
+{"k":"bisect","what":"ts","submit":0,"wait":0}
+{"k":"bisect","what":"ts+pipe","submit":0,"wait":0}
+{"k":"bisect","what":"3pipe-nots","submit":0,"wait":0}
+{"k":"bisect","what":"3pipe-ts","submit":0,"wait":0}
+{"k":"case","name":"cs1_none","n":31,"wall_med_us":203.3,"wall_min_us":191.0,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs1_barrier","n":31,"wall_med_us":202.0,"wall_min_us":190.3,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs1_event","n":31,"wall_med_us":201.3,"wall_min_us":197.8,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs1_a_grid1_ts","n":31,"wall_med_us":445.7,"wall_min_us":430.1,"hop01_med_us":35.38,"hop12_med_us":71.00,"span_med_us":234.38}
+{"k":"case","name":"cs1_b_grid20_ts","n":31,"wall_med_us":452.9,"wall_min_us":421.0,"hop01_med_us":37.75,"hop12_med_us":33.67,"span_med_us":239.58}
+{"k":"case","name":"cs1_c_grid20_nots","n":31,"wall_med_us":279.5,"wall_min_us":247.0,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":78.50}
+{"k":"case","name":"cs1_d_grid20_raw","n":31,"wall_med_us":259.2,"wall_min_us":239.4,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":76.71}
+{"k":"case","name":"cs3_1submit_sema","n":31,"wall_med_us":452.6,"wall_min_us":441.9,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs3_3submit_sema","n":31,"wall_med_us":453.8,"wall_min_us":440.1,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"case","name":"cs3_fencejoin","n":31,"wall_med_us":607.5,"wall_min_us":586.1,"hop01_med_us":0.00,"hop12_med_us":0.00,"span_med_us":0.00}
+{"k":"end"}
+CHAIN_DEP_DONE

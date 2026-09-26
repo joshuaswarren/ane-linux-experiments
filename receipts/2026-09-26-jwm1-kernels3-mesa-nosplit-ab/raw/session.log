@@ -1,0 +1,12 @@
+INSTALL_RC=0
+SETUP_RC=0
+BUILD_RC=0
+13:08:16Z build ok
+ls: cannot access '/tmp/mesa-base-icd/usr/local/lib*/libvulkan_asahi.so.*': No such file or directory
+13:08:16Z icd json written: /tmp/mesa-base-icd/usr/local/lib/libvulkan_asahi.so
+13:08:17Z baseline driver probe ok
+run arm=base pass=1 rc=0 13:08:18Z
+run arm=nosplit pass=1 rc=0 13:08:19Z
+run arm=nosplit pass=2 rc=0 13:08:20Z
+run arm=base pass=2 rc=0 13:08:21Z
+13:08:21Z icd json removed; system default restored
