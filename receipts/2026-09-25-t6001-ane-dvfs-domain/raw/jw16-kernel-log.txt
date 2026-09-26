@@ -1,0 +1,16 @@
+Sep 25 21:14:57 jw16mbp1-linux kernel: ane_clk_probe: SET+0 = 0x3ff
+Sep 25 21:14:57 jw16mbp1-linux kernel: ane_clk_probe: 0x400004a00 = 0x0
+Sep 25 21:15:06 jw16mbp1-linux kernel: ane_clk_probe: SET+0 = 0x3ff
+Sep 25 21:15:06 jw16mbp1-linux kernel: ane_clk_probe: 0x400006000 = 0x0
+Sep 25 21:15:16 jw16mbp1-linux kernel: ane_clk_probe: SET+0 = 0x3ff
+Sep 25 21:15:16 jw16mbp1-linux kernel: ane_clk_probe: 0x28e5e4000 = 0x0
+Sep 25 21:15:17 jw16mbp1-linux kernel: ane_clk_probe: SET+0 = 0x3ff
+Sep 25 21:15:17 jw16mbp1-linux kernel: ane_clk_probe: 0x28e09800c = 0x2f
+Sep 25 21:15:17 jw16mbp1-linux kernel: ane_clk_probe: SET+0 = 0x3ff
+Sep 25 21:15:17 jw16mbp1-linux kernel: ane_clk_probe: 0x28e098014 = 0x2f
+Sep 25 21:20:18 jw16mbp1-linux kernel: ane 285c04000.ane: ANE-DVFS: domain at 0x0000000400004000, top state 5
+Sep 25 21:20:18 jw16mbp1-linux kernel: ane 285c04000.ane: ANE-DVFS online: on 0x0 cmd 0x0
+Sep 25 21:21:26 jw16mbp1-linux kernel: ane_clk_probe: SET+0 = 0x3ff
+Sep 25 21:21:26 jw16mbp1-linux kernel: ane_clk_probe: 0x400004a00 = 0x0
+Sep 25 21:21:26 jw16mbp1-linux kernel: ane_clk_probe: SET+0 = 0x3ff
+Sep 25 21:21:26 jw16mbp1-linux kernel: ane_clk_probe: 0x400006000 = 0x0
