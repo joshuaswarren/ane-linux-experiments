@@ -96,3 +96,16 @@ staged manifest's port names (t1/t5/t16…) cross-referenced with the
 HWX port tables. Artifacts: hwx-manifest-pairing.json (13 paired).
 Device execution milestone stands (prog_002-class: 4in/8out GDN
 stage-A', real activations, KMD-synchronous completion).
+
+## UPDATE 3 — class-order pairing; remaining identity via e5rt dump
+
+Kernel-size classes counted: 112.5 MiB ×11 (= the 11 stage-A' programs;
+the 2 embed programs are a separate 34 MiB/83.9 MiB class), 212.6 MiB
+×27 (18 decode-state + 9 prefill-class from the verify window),
+188.9 MiB ×5 = attention, + readout/lm_head singletons. Attention class
+order-pairs exactly: hwx prog_017/020/026/033/039 <- manifest
+[6]/[12]/[18]/[25]/[31] (the 5 attention programs at their exact
+indices). Full 38-program pairing requires the e5rt-side instrumentation
+(the staged verify run records which compiled program executes at each
+manifest step) — that dump is the next increment, on macstudio (userspace
+only, pool untouched).

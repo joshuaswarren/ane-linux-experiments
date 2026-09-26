@@ -1,106 +1,62 @@
 [
  {
-  "manifest_index": 0,
-  "hwx_prog": "prog_032",
-  "n_in": 2,
-  "n_out": 7,
-  "src_bytes": 40960,
-  "dst_bytes": 16448
+  "manifest_index": 6,
+  "hwx_prog": "prog_017",
+  "class": "attention",
+  "order": 0,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
  },
  {
-  "manifest_index": 2,
-  "hwx_prog": "prog_002",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
+  "manifest_index": 12,
+  "hwx_prog": "prog_020",
+  "class": "attention",
+  "order": 1,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
  },
  {
-  "manifest_index": 4,
-  "hwx_prog": "prog_005",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
+  "manifest_index": 18,
+  "hwx_prog": "prog_026",
+  "class": "attention",
+  "order": 2,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
  },
  {
-  "manifest_index": 8,
-  "hwx_prog": "prog_006",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
+  "manifest_index": 25,
+  "hwx_prog": "prog_033",
+  "class": "attention",
+  "order": 3,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
  },
  {
-  "manifest_index": 10,
-  "hwx_prog": "prog_008",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
- },
- {
-  "manifest_index": 14,
-  "hwx_prog": "prog_011",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
- },
- {
-  "manifest_index": 16,
-  "hwx_prog": "prog_016",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
- },
- {
-  "manifest_index": 21,
-  "hwx_prog": "prog_040",
-  "n_in": 2,
-  "n_out": 7,
-  "src_bytes": 40960,
-  "dst_bytes": 16448
- },
- {
-  "manifest_index": 23,
-  "hwx_prog": "prog_019",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
- },
- {
-  "manifest_index": 27,
-  "hwx_prog": "prog_021",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
- },
- {
-  "manifest_index": 29,
-  "hwx_prog": "prog_029",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
- },
- {
-  "manifest_index": 33,
-  "hwx_prog": "prog_031",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
- },
- {
-  "manifest_index": 35,
-  "hwx_prog": "prog_034",
-  "n_in": 4,
-  "n_out": 8,
-  "src_bytes": 49152,
-  "dst_bytes": 20544
+  "manifest_index": 31,
+  "hwx_prog": "prog_039",
+  "class": "attention",
+  "order": 4,
+  "checks": [
+   false,
+   false,
+   true,
+   true
+  ]
  }
 ]
