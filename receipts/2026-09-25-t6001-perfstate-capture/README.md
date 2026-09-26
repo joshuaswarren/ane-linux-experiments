@@ -43,11 +43,16 @@ perf state on T6001 is captured.
 
 - **RegMap→PA decoded from the T6001 ADT** (pmgr reg[] = 241 IODeviceMemory
   entries; anchored by map0 0x268/0x2c8 = ps_ane_sys/ps_ane_sys_cpu):
-  **map0 = 0x28e080000, map2 = 0x28e580000, map113 = 0x400004000**
-  (independently cross-checked by me for map0/map2: ADT reg[0] = 0x8e080000,
-  reg[2] = 0x8e580000 with the 0x2_00000000 bridge — both confirm; for
-  map113 the ADT reads reg[113] = 0x200004000, one digit off the decode's
-  0x400004000 — flagged, AneClockM1 owns the final PA call).
+  **map0 = 0x28e080000, map2 = 0x28e580000, map113 = 0x400004000.**
+  Independently cross-checked by me for map0/map2 (ADT reg[0] = 0x8e080000,
+  reg[2] = 0x8e580000 with the 0x2_00000000 bridge — both confirm), and the
+  map113 discrepancy I flagged is resolved by AneClockM1 with the ioreg
+  IODeviceMemory list from the same capture: IODeviceMemory[113] address =
+  17179885568 = 0x400004000 length 16384 (absolute); raw ADT reg values are
+  pre-bridge, minus 0x200000000 for this group (reg[111] = 0x400018000,
+  reg[112] = 0x400014000, reg[114] = 0x400008000 likewise). Final registers:
+  **DVFS_CMD = 0x400004A00, DVFS_ON = 0x400006000**; the param does a
+  step-1 read on jw16 before any write.
 - **Correction to my first-pass table read**: map0 0x1e8 (= ps_afr,
   0x28e0801e8) and map2 0x3c0 (= ps_gfx, 0x28e5803c0) are PWRSTATE words
   (AUTO_ENABLE bit 28 / PS_AUTO 27:24 / PS_MIN 19:16 / target 3:0) and
