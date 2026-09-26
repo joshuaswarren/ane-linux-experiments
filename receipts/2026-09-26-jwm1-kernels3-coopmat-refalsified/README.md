@@ -42,3 +42,20 @@ jw16-levers2 lever note stands: decode dispatch COUNT (459 -> 405/token,
 ~2%) and the mesa dispatch floor own the decode gap; prefill-512 remains
 0.66x of macOS with no proven code lever yet — the route A/B is the
 cheapest unmeasured question.
+
+## Prefill-route env A/B closure (same window, installed 7d3f69ff2 wheel)
+
+Interleaved 1-pass contracts, 10 prompts, prefill-512 (tok/s: prefill/ttft):
+
+| route | prefill | ttft | decode |
+|---|---:|---:|---:|
+| A default (coopmat tile+rb) | 237.93 / 226.59 | 71.21 / 72.58 | 39.19 / 39.21 |
+| B NO_COOPMAT | 37.13 / 37.12 | 27.95 / 26.91 | 39.18 / 39.17 |
+| C NO_QMM_FMA | 226.86 | 71.71 | 39.19 |
+| D QMM_TILE=0 | 5.29 | 10.34 | 39.19 |
+
+The default coopmat route is the maximum of every runtime-selectable
+prefill route; the falsified prefetch was the only remaining lever inside
+it. Prefill-512 at 0.66x of macOS has no proven code lever on this stack —
+closing this sub-lane as measured-out. Remaining decode gap (0.83x) is
+mesa-dispatch-floor + GDN-fallback territory per 958783d9.
