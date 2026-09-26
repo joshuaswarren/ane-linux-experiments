@@ -70,7 +70,10 @@ class ChainValidationTests(unittest.TestCase):
             )
             head_stage, tail_stage = MODULE.validate_chain(PROBE, args)
         self.assertEqual(head_stage["workspace_size"], 0x66 * PROBE.TILE_SIZE)
-        self.assertEqual(tail_stage["source_nchw"], head_stage["output_nchw"])
+        self.assertEqual(
+            tail_stage["input_surfaces"][0]["nchw"],
+            head_stage["output_surfaces"][0]["nchw"],
+        )
 
     def test_chain_rejects_digest_mismatch_before_device_open(self):
         with tempfile.TemporaryDirectory() as tmp:

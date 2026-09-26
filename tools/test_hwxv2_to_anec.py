@@ -120,8 +120,15 @@ class FreshHWXParserTests(unittest.TestCase):
     def test_converted_header_matches_payload(self):
         result = MODULE.convert_hwx(self.data, 4, 4)
         fields = struct.unpack_from('<QIIQQII', result, 0)
-        self.assertEqual(fields[:5], (0x4000, 0x274, 1, 0x274, 0x80))
-        self.assertEqual(result[0x1000:0x1000 + 0x4000], self.data[0x4000:0x8000])
+        # Current ABI (post 10d7c1f9 td clamp + 7e55943c tile units):
+        # content tiles in 0x4000-B units, td_size clamped to 0x1f8.
+        self.assertEqual(fields[:5], (0x4000, 504, 1, 628, 0x80))
+        # Task-0's header word carries the re-encoded tile count; compare
+        # the payload past it.
+        self.assertEqual(
+            result[0x1000 + 0x40:0x1000 + 0x4000],
+            self.data[0x4000 + 0x40:0x8000],
+        )
 
     def test_header_tiles_cover_virtual_buffer_spans(self):
         image = replace(
@@ -254,9 +261,16 @@ class DerivedKernelSectionTests(unittest.TestCase):
             image = MODULE.parse_hwx(data)
             self.assertFalse(image.kernel_is_blob, name)
             result = MODULE.convert_hwx(data, channels, channels)
+            # The task stream legitimately carries the current ABI's
+            # re-encoded tile counts (10d7c1f9 td clamp, 7e55943c tile
+            # units); the kernel COEFFICIENTS must still be verbatim.
             self.assertEqual(
-                result[MODULE.ANEC_HEADER_SIZE:],
-                data[image.content_offset:image.content_offset + image.content_size],
+                result[MODULE.ANEC_HEADER_SIZE + image.kernel_offset:
+                       MODULE.ANEC_HEADER_SIZE + image.kernel_offset
+                       + image.kernel_size],
+                data[image.content_offset + image.kernel_offset:
+                     image.content_offset + image.kernel_offset
+                     + image.kernel_size],
                 name,
             )
 

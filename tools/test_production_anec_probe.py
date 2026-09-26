@@ -105,10 +105,10 @@ class ProductionProbeTests(unittest.TestCase):
         )
         stage = MODULE.stage_geometry(MODULE.ANEC_HEADER.unpack(header))
         self.assertEqual(stage["workspace_size"], 0x66 * MODULE.TILE_SIZE)
-        self.assertEqual(stage["output_size"], 5 * MODULE.TILE_SIZE)
-        self.assertEqual(stage["source_size"], 6 * MODULE.TILE_SIZE)
-        self.assertEqual(stage["output_nchw"], (1, 2048, 1, 1, 64, 64))
-        self.assertEqual(stage["source_nchw"], (1, 2048, 1, 1, 64, 64))
+        self.assertEqual(stage["output_surfaces"][0]["bytes"], 5 * MODULE.TILE_SIZE)
+        self.assertEqual(stage["input_surfaces"][0]["bytes"], 6 * MODULE.TILE_SIZE)
+        self.assertEqual(stage["output_surfaces"][0]["nchw"], (1, 2048, 1, 1, 64, 64))
+        self.assertEqual(stage["input_surfaces"][0]["nchw"], (1, 2048, 1, 1, 64, 64))
         self.assertEqual(stage["td_count"], 3)
         self.assertEqual(stage["src_count"], 1)
         self.assertEqual(stage["dst_count"], 1)
@@ -133,26 +133,30 @@ class ProductionProbeTests(unittest.TestCase):
 
     def test_validate_handoff_accepts_matching_contract(self):
         head = {
-            "output_nchw": (1, 2048, 1, 1, 64, 64),
-            "output_size": 0x90C000,
+            "output_surfaces": [
+                {"nchw": (1, 2048, 1, 1, 64, 64), "bytes": 0x90C000}
+            ],
             "workspace_size": 0x68000,
         }
         tail = {
-            "source_nchw": (1, 2048, 1, 1, 64, 64),
-            "source_size": 0x730000,
+            "input_surfaces": [
+                {"nchw": (1, 2048, 1, 1, 64, 64), "bytes": 0x730000}
+            ],
             "workspace_size": 0x68000,
         }
         MODULE.validate_handoff(head, tail)
 
     def test_validate_handoff_rejects_shape_mismatch(self):
         head = {
-            "output_nchw": (1, 2048, 1, 1, 64, 64),
-            "output_size": 0x90C000,
+            "output_surfaces": [
+                {"nchw": (1, 2048, 1, 1, 64, 64), "bytes": 0x90C000}
+            ],
             "workspace_size": 0x68000,
         }
         tail = {
-            "source_nchw": (1, 1024, 1, 1, 64, 64),
-            "source_size": 0x730000,
+            "input_surfaces": [
+                {"nchw": (1, 1024, 1, 1, 64, 64), "bytes": 0x730000}
+            ],
             "workspace_size": 0x68000,
         }
         with self.assertRaises(ValueError):
@@ -160,13 +164,15 @@ class ProductionProbeTests(unittest.TestCase):
 
     def test_validate_handoff_rejects_tail_source_beyond_saved_output(self):
         head = {
-            "output_nchw": (1, 2048, 1, 1, 64, 64),
-            "output_size": 0x1000,
+            "output_surfaces": [
+                {"nchw": (1, 2048, 1, 1, 64, 64), "bytes": 0x1000}
+            ],
             "workspace_size": 0x68000,
         }
         tail = {
-            "source_nchw": (1, 2048, 1, 1, 64, 64),
-            "source_size": 0x730000,
+            "input_surfaces": [
+                {"nchw": (1, 2048, 1, 1, 64, 64), "bytes": 0x730000}
+            ],
             "workspace_size": 0x68000,
         }
         with self.assertRaises(ValueError):
@@ -174,13 +180,15 @@ class ProductionProbeTests(unittest.TestCase):
 
     def test_validate_handoff_rejects_missing_workspace(self):
         head = {
-            "output_nchw": (1, 2048, 1, 1, 64, 64),
-            "output_size": 0x90C000,
+            "output_surfaces": [
+                {"nchw": (1, 2048, 1, 1, 64, 64), "bytes": 0x90C000}
+            ],
             "workspace_size": 0,
         }
         tail = {
-            "source_nchw": (1, 2048, 1, 1, 64, 64),
-            "source_size": 0x730000,
+            "input_surfaces": [
+                {"nchw": (1, 2048, 1, 1, 64, 64), "bytes": 0x730000}
+            ],
             "workspace_size": 0x68000,
         }
         with self.assertRaises(ValueError):

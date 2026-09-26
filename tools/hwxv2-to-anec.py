@@ -491,7 +491,12 @@ def _build_header(
     tiles[0] = (image.content_size + tile_unit - 1) // tile_unit
     tiles[3] = (image.workspace_size + tile_unit - 1) // tile_unit
     dst_count = len(output_sections)
-    # per-surface shapes: broadcast the CLI geometry unless explicit lists are given
+    # per-surface shapes: explicit lists drive shape-based plane/row words;
+    # absent lists keep the DMA-derived padding (derive_strides) — capture
+    # explicitness BEFORE the broadcast normalization or the fallback is
+    # unreachable.
+    explicit_in = in_shape_list is not None
+    explicit_out = out_shape_list is not None
     in_shape_list = in_shape_list or ([(in_n, in_ch, in_h, in_w)] * len(input_sections))
     out_shape_list = out_shape_list or ([(out_n, out_ch, out_h, out_w)] * len(output_sections))
     if len(in_shape_list) != len(input_sections) or len(out_shape_list) != len(output_sections):
@@ -506,14 +511,14 @@ def _build_header(
     # Explicit per-surface shapes drive the plane/row words; when absent,
     # keep the DMA-derived padding derive_strides reads from the program's
     # own tile-DMA counts (the single-port path's original behavior).
-    if in_shape_list is not None:
+    if explicit_in:
         in_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(input_shapes)}
     else:
         in_plane_row = {
             i: derive_strides(sh, image.tile_dma.source_total, image.tile_dma.source_run)
             for i, sh in enumerate(input_shapes)
         }
-    if out_shape_list is not None:
+    if explicit_out:
         out_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(output_shapes)}
     else:
         out_plane_row = {
@@ -667,8 +672,7 @@ def convert_hwx(
     image = parse_hwx(data)
     in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
     out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
-    header = _build_header(image, in_shape, out_shape, in_shape_list,
-                           out_shape_list, tile_unit)
+    header = _build_header(image, in_shape, out_shape)
     content = bytearray(
         data[image.content_offset:image.content_offset + image.content_size]
     )

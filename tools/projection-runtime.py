@@ -62,8 +62,14 @@ class ProjectionRunner:
                     f"truncated artifact: {self.path.name} is {len(self.artifact)} bytes,"
                     f" needs {PROBE.HEADER_SIZE + self.stage['content_size']}"
                 )
-            self.source_shape = tuple(self.stage["source_nchw"][:4])
-            self.output_shape = tuple(self.stage["output_nchw"][:4])
+            self.source_nchw = tuple(
+                self.stage["input_surfaces"][0]["nchw"]
+            )
+            self.output_nchw = tuple(
+                self.stage["output_surfaces"][0]["nchw"]
+            )
+            self.source_shape = self.source_nchw[:4]
+            self.output_shape = self.output_nchw[:4]
             self.command = self.stack.enter_context(
                 self.device.buffer(self.stage["content_size"])
             )
@@ -83,11 +89,11 @@ class ProjectionRunner:
             if self.workspace is not None:
                 self.workspace.write(b"\0" * self.stage["workspace_size"])
             self.source = self.stack.enter_context(
-                self.device.buffer(self.stage["source_size"])
+                self.device.buffer(self.stage["input_surfaces"][0]["bytes"])
             )
-            self.source.write(b"\0" * self.stage["source_size"])
+            self.source.write(b"\0" * self.stage["input_surfaces"][0]["bytes"])
             self.output = self.stack.enter_context(
-                self.device.buffer(self.stage["output_size"])
+                self.device.buffer(self.stage["output_surfaces"][0]["bytes"])
             )
             bases = PROBE.task_bases(
                 self.artifact, PROBE.HEADER_SIZE, self.stage["task_stream_size"]
@@ -125,7 +131,7 @@ class ProjectionRunner:
             self.request.handles[4] = self.output.bo.handle
             self.request.handles[5] = self.source.bo.handle
             self.sentinel = np.full(
-                self.stage["output_size"] // 2, np.inf, dtype=np.float16
+                self.stage["output_surfaces"][0]["bytes"] // 2, np.inf, dtype=np.float16
             ).tobytes()
         except BaseException:
             self.stack.close()
@@ -146,12 +152,12 @@ class ProjectionRunner:
                 f"input shape and dtype must be {self.source_shape} float16, "
                 f"got {source.shape} {source.dtype}"
             )
-        tensor_view(self.source, self.stage["source_nchw"])[...] = source
+        tensor_view(self.source, self.stage["input_surfaces"][0]["nchw"])[...] = source
         self.output.write(self.sentinel)
         self.submit(self.device.fd, RUNTIME.IOCTL_SUBMIT, self.request)
         deadline = time.monotonic() + self.timeout
         while True:
-            values = tensor_view(self.output, self.stage["output_nchw"])
+            values = tensor_view(self.output, self.stage["output_surfaces"][0]["nchw"])
             completed = bool(np.all(values != np.float16(np.inf)))
             del values
             if completed:
@@ -161,7 +167,7 @@ class ProjectionRunner:
                     f"ANE projection did not complete within {self.timeout} seconds"
                 )
             time.sleep(0.001)
-        result = tensor_view(self.output, self.stage["output_nchw"]).copy()
+        result = tensor_view(self.output, self.stage["output_surfaces"][0]["nchw"]).copy()
         if not np.isfinite(result).all():
             raise RuntimeError("ANE projection returned a non-finite output")
         return result.reshape(self.output_shape)

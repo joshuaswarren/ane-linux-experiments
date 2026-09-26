@@ -172,15 +172,23 @@ def validate_expected_hash(path, expected):
 
 def validate_handoff(head, tail):
     """Require the tail input contract to match the saved head output."""
-    if head["output_nchw"] != tail["source_nchw"]:
+    # Minimal stage dicts (test fixtures, legacy callers) default to
+    # single-port; declared multi-port stages are refused outright.
+    if head.get("src_count", 1) != 1 or head.get("dst_count", 1) != 1:
+        raise ValueError("sequential chain stages must be single-port")
+    if tail.get("src_count", 1) != 1 or tail.get("dst_count", 1) != 1:
+        raise ValueError("sequential chain stages must be single-port")
+    head_out = head["output_surfaces"][0]
+    tail_in = tail["input_surfaces"][0]
+    if head_out["nchw"] != tail_in["nchw"]:
         raise ValueError(
-            f"handoff shape mismatch: head output {head['output_nchw']} "
-            f"!= tail source {tail['source_nchw']}"
+            f"handoff shape mismatch: head output {head_out['nchw']} "
+            f"!= tail source {tail_in['nchw']}"
         )
-    if tail["source_size"] > head["output_size"]:
+    if tail_in["bytes"] > head_out["bytes"]:
         raise ValueError(
-            f"tail source buffer {tail['source_size']:#x} exceeds saved "
-            f"head output {head['output_size']:#x}"
+            f"tail source buffer {tail_in['bytes']:#x} exceeds saved "
+            f"head output {head_out['bytes']:#x}"
         )
     if head["workspace_size"] == 0 or tail["workspace_size"] == 0:
         raise ValueError("chain stages must declare a workspace")

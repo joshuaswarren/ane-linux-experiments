@@ -55,17 +55,17 @@ class KvStateRunner(BASE.ProjectionRunner):
         self.completion_row = rows - 1
 
     def initialize(self):
-        source = BASE.tensor_view(self.source, self.stage["source_nchw"])
+        source = BASE.tensor_view(self.source, self.source_nchw)
         source[...] = np.float16(0)
 
     def step(self, key, value):
         key = self._require(key, (self.kv_heads, self.dimension), "key")
         value = self._require(value, (self.kv_heads, self.dimension), "value")
-        source = BASE.tensor_view(self.source, self.stage["source_nchw"])
+        source = BASE.tensor_view(self.source, self.source_nchw)
         source[0, :, 0, :] = np.repeat(key, self.group_size, axis=0)
         source[0, :, 1, :] = np.repeat(value, self.group_size, axis=0)
 
-        output = BASE.tensor_view(self.output, self.stage["output_nchw"])
+        output = BASE.tensor_view(self.output, self.output_nchw)
         output[0, :, self.completion_row, :] = np.float16(np.inf)
         self.submit(self.device.fd, BASE.RUNTIME.IOCTL_SUBMIT, self.request)
         deadline = time.monotonic() + self.timeout
@@ -82,7 +82,7 @@ class KvStateRunner(BASE.ProjectionRunner):
         self.request.handles[5] = self.source.bo.handle
 
     def snapshot_cache(self):
-        source = BASE.tensor_view(self.source, self.stage["source_nchw"])
+        source = BASE.tensor_view(self.source, self.source_nchw)
         return (
             source[0, :, self.key_rows, :].copy(),
             source[0, :, self.value_rows, :].copy(),

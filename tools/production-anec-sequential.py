@@ -88,11 +88,11 @@ def run_chain_stage(device, runtime, probe, args, path, stage, source_fill):
             device.buffer(stage["workspace_size"])
         )
         workspace.write(b"\0" * stage["workspace_size"])
-        source = buffers.enter_context(device.buffer(stage["source_size"]))
+        source = buffers.enter_context(device.buffer(stage["input_surfaces"][0]["bytes"]))
         source.write(source_fill)
-        output = buffers.enter_context(device.buffer(stage["output_size"]))
+        output = buffers.enter_context(device.buffer(stage["output_surfaces"][0]["bytes"]))
         output.write(
-            np.full(stage["output_size"] // 2, np.inf, dtype=np.float16).tobytes()
+            np.full(stage["output_surfaces"][0]["bytes"] // 2, np.inf, dtype=np.float16).tobytes()
         )
         bootstrap = probe.build_original_prefix(
             artifact,
@@ -121,7 +121,7 @@ def run_chain_stage(device, runtime, probe, args, path, stage, source_fill):
         request.handles[5] = output.bo.handle
         ioctl(device.fd, runtime.IOCTL_SUBMIT, request)
         poll_values = np.frombuffer(
-            output.map, dtype=np.float16, count=stage["output_size"] // 2
+            output.map, dtype=np.float16, count=stage["output_surfaces"][0]["bytes"] // 2
         )
         deadline = time.monotonic() + args.timeout
         while (
@@ -131,7 +131,7 @@ def run_chain_stage(device, runtime, probe, args, path, stage, source_fill):
             time.sleep(0.001)
         completed = bool(np.any(poll_values != np.float16(np.inf)))
         del poll_values
-        output_bytes = output.read(stage["output_size"])
+        output_bytes = output.read(stage["output_surfaces"][0]["bytes"])
         values = np.frombuffer(output_bytes, dtype=np.float16)
         changed = values != np.float16(np.inf)
         finite = bool(np.isfinite(values[changed]).all()) if changed.any() else False
@@ -150,7 +150,7 @@ def run_chain(args, probe, runtime):
     """Run the head graph, save its output state, then run the tail graph."""
     head_stage, tail_stage = validate_chain(probe, args)
     head_fill = np.full(
-        head_stage["source_size"] // 2, args.input_value, dtype=np.float16
+        head_stage["input_surfaces"][0]["bytes"] // 2, args.input_value, dtype=np.float16
     ).tobytes()
     with ExitStack() as stack:
         device = stack.enter_context(runtime.Device(qid=args.qid))
@@ -160,7 +160,7 @@ def run_chain(args, probe, runtime):
         del head_fill
         if args.save_state is not None:
             args.save_state.write_bytes(head_output)
-        tail_fill = head_output[: tail_stage["source_size"]]
+        tail_fill = head_output[: tail_stage["input_surfaces"][0]["bytes"]]
         del head_output
         tail_output = run_chain_stage(
             device, runtime, probe, args, args.tail_anec, tail_stage, tail_fill

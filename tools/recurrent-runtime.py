@@ -47,7 +47,7 @@ class RecurrentRunner(BASE.ProjectionRunner):
 
     def initialize(self, state):
         state = self._require(state, (self.heads, self.dimension, self.dimension), "state")
-        source = BASE.tensor_view(self.source, self.stage["source_nchw"])
+        source = BASE.tensor_view(self.source, self.source_nchw)
         source[...] = np.float16(0)
         source[0, :, self.state_rows, :] = state
 
@@ -59,13 +59,13 @@ class RecurrentRunner(BASE.ProjectionRunner):
         v = self._require(v, vector_shape, "v")
         beta = self._require(beta, gate_shape, "beta")
         decay = self._require(decay, gate_shape, "decay")
-        source = BASE.tensor_view(self.source, self.stage["source_nchw"])
+        source = BASE.tensor_view(self.source, self.source_nchw)
         source[0, :, 0, :] = q
         source[0, :, 1, :] = k
         source[0, :, 2, :] = v
         source[0, :, 3, 0] = beta
         source[0, :, 3, 1] = decay
-        output = BASE.tensor_view(self.output, self.stage["output_nchw"])
+        output = BASE.tensor_view(self.output, self.output_nchw)
         output[0, :, self.output_row, :] = np.float16(np.inf)
         self.submit(self.device.fd, BASE.RUNTIME.IOCTL_SUBMIT, self.request)
         deadline = time.monotonic() + self.timeout
@@ -84,7 +84,7 @@ class RecurrentRunner(BASE.ProjectionRunner):
         return result
 
     def snapshot_state(self):
-        source = BASE.tensor_view(self.source, self.stage["source_nchw"])
+        source = BASE.tensor_view(self.source, self.source_nchw)
         return source[0, :, self.state_rows, :].copy()
 
     @staticmethod
