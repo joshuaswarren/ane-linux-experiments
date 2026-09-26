@@ -1,0 +1,2 @@
+# /var/tmp/t6021-kc/kernelcache.t6020.27.0-26A428.macho (125059072 bytes)
+# terminators=106; tables=0
