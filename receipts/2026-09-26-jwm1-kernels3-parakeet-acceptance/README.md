@@ -123,3 +123,43 @@ falsified, single-workgroup fusion falsified 4.7x, AND prologue/epilogue
 absorption falsified 2.2x — the TDT trio's ~94 us/dispatch is honeykrisp
 dispatch-turnaround (mesa-1 lane), and no kernel-structure change tried so
 far removes it.
+
+## Dispatch-count reduction probe CLOSED: mlx compile already fuses the GDN gating flood; unfused residual is custom-kernel boundaries; NEW BUG: profiler x compiled = digest break
+
+Paired decode-window profiles on the installed 7d3f69ff2 stack
+(/var/tmp/prof/ on jwm1): prof-decode3.jsonl (eager,
+MLX_DISABLE_COMPILE=1) vs prof-decode-comp.jsonl (compile enabled). Same
+shape: 1 prompt, 1 pass, 32 new tokens, prefill 512.
+
+| family (eager -> compiled) | count | verdict |
+|---|---|---|
+| AsType/Sigmoid/Multiply gating chains | 2268+1512+756 eager | COLLAPSED into CompiledAsTypeSigmoidBroadcastBroadcastMultiply (3780) + CompiledSigmoid... (1764) + CompiledAsTypeExpNegative... (252) — mlx fusion DOES absorb the GDN gating pointwise adjacency when compilation is enabled |
+| total dispatches | 25902 -> 26802 | flat (fusion trades many small for fewer fused; prefill elementwise flood collapsed massively) |
+
+Findings:
+
+1. **The GDN gating/normalization pointwise adjacency is already fused by
+   mlx's compiled tape** — the Compiled* families ARE the fused GLSL
+   regions. What remains unfused are CUSTOM-KERNEL boundaries: RMSNorm
+   (FastNorm, 2268+2058+504+252), the QMM classes (256/768/640 grids),
+   GatedDeltaUpdate, Convolution, ScaledDotProductAttention. Fusing across
+   those boundaries = new mega-kernel territory adjacent to the falsified
+   absorption/fusion family. No measured candidate there.
+2. **Measured rate win: none.** Compile-on decode 39.25 vs eager 39.20
+   (1-pass, unprofiled, both pin-exact) — fusion is rate-neutral at the
+   contract shape, consistent with the elementwise real cost ~0.1-0.2
+   ms/token vs the QMM+floor ~25 ms/token.
+3. **NEW BUG (diagnostics-only): MLX_OMARCHY_GPU_PROFILE + compiled
+   execution together BREAK generation** — profiled compiled run:
+   digest `100a61b6247096f5` (wrong), decode 21.82 tok/s (halved), while
+   the identical command unprofiled is pin-exact at 39.25. Repro:
+   prof-decode-comp.jsonl + contract-profcomp.json vs
+   /var/tmp/compiletest/contract-on.json. Suspect: the profiler's
+   per-pair timestamp/barrier insertion perturbs the compiled tape's
+   execution. Blocks all profiler use on compiled pipelines; owner:
+   mesa-1/mlx-omarchy runtime (whoever owns gpu_profiler.h).
+
+Main's directive satisfied: profile taken, adjacency assessed, measured
+candidate = none survives the promote bar (fusion already present,
+rate-neutral). The no-unfixed status of MLX_DISABLE_COMPILE is updated by
+the companion receipt e9effe3b.
