@@ -134,6 +134,9 @@ def bitwise(got, ref):
 def report(tag, ob, sb, o_ref, s_ref):
     mo, no = bitwise(ob, o_ref)
     ms, ns = bitwise(sb, s_ref)
+    out = Path("/var/tmp/jw16-first-submit/out"); out.mkdir(exist_ok=True)
+    (out / f"{tag}-o.bin").write_bytes(bytes(ob))
+    (out / f"{tag}-state.bin").write_bytes(bytes(sb))
     print(f"{tag}: o={mo}/{no} state'={ms}/{ns} "
           f"o_sha={hashlib.sha256(ob).hexdigest()[:12]} s_sha={hashlib.sha256(sb).hexdigest()[:12]}",
           flush=True)
@@ -342,6 +345,7 @@ def cmd_set3():
             if mo == no and ms == ns:
                 wins.append("".join(perm))
                 report("set3-{}-qkv={}".format(name, "".join(perm)), outs[8], outs[6], o_ref, s_ref)
+                break
         print(f"SET3 {name}: " + ("PASS " + ",".join(wins) if wins else "FAIL (no bitwise permutation)"),
               flush=True)
 
