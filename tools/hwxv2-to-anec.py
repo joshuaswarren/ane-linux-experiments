@@ -223,6 +223,7 @@ class HWXImage:
     kdma: KDMALayout
     tile_dma: TileDMA
     kernel_is_blob: bool
+    kernel_gap: int = 0
 
 
 
@@ -350,6 +351,22 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
         output_sections = section_ranges["__FVMLIB", "__data"]
     except KeyError as error:
         raise ValueError(f"missing required Mach-O section: {error.args[0]}") from error
+    # Newer ANECompiler containers split the same kernel run across
+    # __TEXT,__const and __KERN_0,__kern_0 with an alignment gap between the
+    # two file ranges. The engine reads one contiguous kernel at
+    # align16(tsk_size), so the converter must splice the parts together and
+    # shrink the content by the gap.
+    kernel_extra = sections.get(("__KERN_0", "__kern_0"))
+    kernel_gap = 0
+    if kernel_extra is not None:
+        gap = kernel_extra.file_offset - (kernel.file_offset + kernel.size)
+        if gap < 0:
+            raise ValueError("overlapping split-kernel sections")
+        kernel = Section(
+            kernel.segment, kernel.name, kernel.vm_address,
+            kernel.size + kernel_extra.size, kernel.file_offset,
+        )
+        kernel_gap = gap
     workspace_sections = section_ranges.get(("__DATA", "__bss"), [])
 
     def span(entries: list[tuple[int, int]]) -> int:
@@ -374,7 +391,9 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     if td_offset + td_size > text_segment_size:
         raise ValueError("task descriptor exceeds the __TEXT payload")
     kernel_offset = kernel.file_offset - text_segment_offset
-    if kernel_offset < 0 or kernel_offset + kernel.size > text_segment_size:
+    if kernel_offset < 0 or (
+        kernel_extra is None and kernel_offset + kernel.size > text_segment_size
+    ):
         raise ValueError("kernel section exceeds the __TEXT payload")
     # libane locates the kernel section at align16(tsk_size); a section that
     # sits anywhere else is read from the wrong bytes no matter what it holds.
@@ -399,7 +418,12 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     return HWXImage(
         sections=sections,
         content_offset=text_segment_offset,
-        content_size=text_segment_size,
+        # split-kernel containers rebuild the content as the task stream
+        # followed by the contiguous spliced kernel
+        content_size=(
+            kernel_offset + kernel.size if kernel_extra is not None
+            else text_segment_size - kernel_gap
+        ),
         task_stream_size=text.size,
         td_offset=td_offset,
         td_count=len(task_offsets),
@@ -417,6 +441,7 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
             text_segment_offset + kernel_offset:
             text_segment_offset + kernel_offset + BLOB_HEADER_SIZE + 4
         ]),
+        kernel_gap=kernel_gap,
     )
 
 
@@ -543,7 +568,12 @@ def _write_content(
     image: HWXImage,
     payload: bytes | None,
 ) -> None:
-    """Copy the __TEXT payload, substituting the kernel section when relocated."""
+    """Copy the __TEXT payload, substituting the kernel section when relocated.
+
+    A split-kernel container (kernel_gap > 0) stores the kernel's tail beyond
+    an alignment gap; the payload splice covers the gap and the tail copy
+    reads from past it.
+    """
     spans = [(0, image.content_size)]
     if payload is not None:
         kernel_end = image.kernel_offset + image.kernel_size
@@ -551,6 +581,7 @@ def _write_content(
     for index, (start, end) in enumerate(spans):
         if index == 1:
             output.write(payload)
+            start += image.kernel_gap
         start += image.content_offset
         end += image.content_offset
         while start < end:
@@ -675,6 +706,14 @@ def convert_hwx_file(
         out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
         header = _build_header(image, in_shape, out_shape, td_size_override)
         payload = kernel_payload(image, blob)
+        if payload is None and image.kernel_gap:
+            extra = image.sections[("__KERN_0", "__kern_0")]
+            part1 = image.kernel_size - extra.size
+            start = image.content_offset + image.kernel_offset
+            payload = (
+                data[start:start + part1]
+                + data[extra.file_offset:extra.file_offset + extra.size]
+            )
         with open(dst_path, "wb") as output:
             output.write(header)
             output.write(b"\0" * (ANEC_HEADER_SIZE - len(header)))

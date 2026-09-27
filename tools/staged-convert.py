@@ -45,8 +45,20 @@ def task_extents(conv, data) -> tuple[int, int]:
     return max(extents), extents[0]
 
 
-def hwx_signature(conv, data) -> dict:
-    image = conv.parse_hwx(data)
+def _kernel_has_weights(conv, data, image) -> bool:
+    """True when the kernel section carries nonzero bytes (real weights)."""
+    if image.kernel_size <= 0:
+        return False
+    start = image.content_offset + image.kernel_offset
+    end = start + image.kernel_size
+    step = max(0x10000, (end - start) // 8)
+    for offset in range(start, min(start + 0x40000, end), step):
+        if any(data[offset:offset + 0x1000]):
+            return True
+    return any(data[max(start, end - 0x10000):end])
+
+
+def hwx_signature(image) -> dict:
     return {
         "input_size": image.input_size,
         "output_size": image.output_size,
@@ -96,7 +108,7 @@ def main(argv=None) -> int:
         with path.open("rb") as stream, __import__("mmap").mmap(
             stream.fileno(), 0, access=__import__("mmap").ACCESS_READ
         ) as data:
-            files[path.parent.name] = hwx_signature(conv, data)
+            files[path.parent.name] = hwx_signature(conv.parse_hwx(data))
     if not files:
         raise SystemExit(f"no model.hwx under {args.hwx_dir}")
 
@@ -124,21 +136,51 @@ def main(argv=None) -> int:
     # share a cluster only when their counts fill it exactly
     unresolved = []
     for cls, indexes in sorted(by_class.items()):
-        candidates = [names for names in clusters.values() if len(names) == len(indexes)]
+        candidates = [key for key, names in clusters.items() if len(names) == len(indexes)]
         if len(candidates) == 1:
-            for index, name in zip(indexes, sorted(candidates[0])):
+            for index, name in zip(indexes, sorted(clusters[candidates[0]])):
                 assignment[index] = name
-                del clusters[tuple(sorted(files[name].items()))]
                 del files[name]
+            del clusters[candidates[0]]
         else:
-            unresolved.append((cls, len(indexes), len(candidates)))
+            unresolved.append((cls, indexes))
     if unresolved:
-        for cls, want, got in unresolved:
+        # same-count ties: order the leftover classes and clusters by their
+        # predicted/actual staged input bytes and match the two orderings
+        def staged_input_bytes(program):
+            total = 0
+            for source in program["srcs"]:
+                shape = source["shape"]
+                rows = 1
+                for dim in shape[:-1]:
+                    rows *= dim
+                columns = shape[-1]
+                total += max(rows * columns * 2, rows * 64)
+            return total
+        if unresolved and all(len(ix) == 1 for _, ix in unresolved):
+            classes = sorted(
+                (staged_input_bytes(programs[ix[0]]), ix[0], cls)
+                for cls, ix in unresolved
+            )
+            free = sorted(
+                (files[names[0]]["input_size"], names[0])
+                for names in clusters.values()
+            )
+            if len(classes) == len(free) and all(
+                len(clusters[tuple(sorted(files[n].items()))]) == 1
+                for _, n in free
+            ):
+                for (want, index, cls), (_, name) in zip(classes, free):
+                    assignment[index] = name
+                    del files[name]
+                unresolved = []
+    if unresolved:
+        for cls, indexes in unresolved:
             sizes = sorted(
                 (len(names), files[names[0]]["kernel_size"]) for names in clusters.values()
             )
-            print(f"class {cls}: {want} programs, {got} exact-size clusters; "
-                  f"free cluster sizes/kernels: {sizes[:8]}", file=sys.stderr)
+            print(f"class {cls}: {len(indexes)} programs, free cluster "
+                  f"sizes/kernels: {sizes[:8]}", file=sys.stderr)
         raise SystemExit("ambiguous HWX pairing; extend the pairing file")
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -150,10 +192,24 @@ def main(argv=None) -> int:
             stream.fileno(), 0, access=__import__("mmap").ACCESS_READ
         ) as data:
             max_extent, first_extent = task_extents(conv, data)
-            sig = hwx_signature(conv, data)
-            override = max_extent if max_extent > 0x1F8 else None
-            if override is not None and override > 0x3FC:
-                raise SystemExit(f"{name}: extent {override:#x} exceeds driver bound")
+            sig = hwx_signature(conv.parse_hwx(data))
+            kernel_live = _kernel_has_weights(
+                conv, data, conv.parse_hwx(data)
+            )
+            # the 0x1f8 header clamp is byte-identical to the proven
+            # conversions and stays for any program whose dropped tail
+            # is harmless; the state block (all-zero kernel) is the
+            # verified case. Programs with real weights whose register
+            # records sit at task offsets >= 0x1f8 need the true
+            # maximum extent.
+            override = None
+            if max_extent > 0x1F8 and kernel_live:
+                if max_extent > 0x3FC:
+                    raise SystemExit(
+                        f"{name}: weight-bearing extent {max_extent:#x} "
+                        "exceeds the 0x400 wedge bound"
+                    )
+                override = max_extent
             blob_path = None
             if sig["kernel_is_blob"]:
                 if args.manifest_progs is None:
