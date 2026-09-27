@@ -227,6 +227,9 @@ The 100-prompt attempt and ten-prompt checksums are in `receipts/`.
 | `tools/` | Convert HWX files and run fresh-format probes. |
 | `tools/aneforge-qwen-graph.py` | Compile and run a Qwen-shaped SwiGLU graph through ANEForge. |
 | `tools/production-anec-sequential.py` | Execute production tasks one at a time. |
+| `tools/staged-convert.py` | Convert the staged 38-program decoder HWX set to Linux `.anec`. |
+| `tools/staged-decode-runtime.py` | Chain the staged 38-program Qwen decoder on the ANE (resident states, generation with the ANE tiled lm_head). |
+| `tools/staged-decode-verify.py` | Verify the staged chain byte-for-byte against the Apple e5rt captures. |
 | `patches/` | Hold the Linux libane patches. |
 | `receipts/` | Hold command output and measured results. |
 

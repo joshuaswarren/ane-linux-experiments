@@ -6,11 +6,9 @@ import struct
 import sys
 from dataclasses import dataclass
 
-# Tile units: libane main (fresh dialect) sizes channel BOs as tiles[i] << 14
-# (0x4000 = the macOS 0x4000-unit container counts, consumed verbatim). The old
-# tile_shift-9 libane wanted 512-B units; pass --tile-unit 512 for that ABI.
+# Apple v10 containers are consumed with libane's tile_shift at 9, so the
 # header's tile counts are 512-B units.
-TILE_UNIT = 0x4000
+TILE_UNIT = 0x200
 TILE_SIZE = 0x4000
 # The first record header of a task is a register write to 0x01f800. Its top
 # byte carries the record's word count, which differs between macOS build
@@ -464,9 +462,7 @@ def _build_header(
     image: HWXImage,
     in_shape: tuple[int, int, int, int],
     out_shape: tuple[int, int, int, int],
-    in_shape_list=None,
-    out_shape_list=None,
-    tile_unit: int = TILE_UNIT,
+    td_size_override: int | None = None,
 ) -> bytes:
     """Build the Linux anec header for one converted HWX.
 
@@ -488,43 +484,11 @@ def _build_header(
     if len(input_sections) + len(output_sections) > 28:
         raise ValueError("ANEC supports at most 28 input and output ports")
     tiles = [0] * 32
-    tiles[0] = (image.content_size + tile_unit - 1) // tile_unit
-    tiles[3] = (image.workspace_size + tile_unit - 1) // tile_unit
+    tiles[0] = (image.content_size + TILE_UNIT - 1) // TILE_UNIT
+    tiles[3] = (image.workspace_size + TILE_UNIT - 1) // TILE_UNIT
     dst_count = len(output_sections)
-    # per-surface shapes: explicit lists drive shape-based plane/row words;
-    # absent lists keep the DMA-derived padding (derive_strides) — capture
-    # explicitness BEFORE the broadcast normalization or the fallback is
-    # unreachable.
-    explicit_in = in_shape_list is not None
-    explicit_out = out_shape_list is not None
-    in_shape_list = in_shape_list or ([(in_n, in_ch, in_h, in_w)] * len(input_sections))
-    out_shape_list = out_shape_list or ([(out_n, out_ch, out_h, out_w)] * len(output_sections))
-    if len(in_shape_list) != len(input_sections) or len(out_shape_list) != len(output_sections):
-        raise ValueError(
-            f"surface shape count mismatch: {len(in_shape_list)} in / {len(out_shape_list)} out "
-            f"vs {len(input_sections)} / {len(output_sections)} sections")
-    input_shapes = [tuple(x) for x in in_shape_list]
-    output_shapes = [tuple(x) for x in out_shape_list]
-    # per-surface plane/row in uint16 ELEMENTS for libane's ane_tile/untile:
-    # P = 2*H*W and R = 2*W make new_H == H and new_W == W, so tile/untile
-    # degrade to a dense memcpy of the caller's fp16 buffer.
-    # Explicit per-surface shapes drive the plane/row words; when absent,
-    # keep the DMA-derived padding derive_strides reads from the program's
-    # own tile-DMA counts (the single-port path's original behavior).
-    if explicit_in:
-        in_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(input_shapes)}
-    else:
-        in_plane_row = {
-            i: derive_strides(sh, image.tile_dma.source_total, image.tile_dma.source_run)
-            for i, sh in enumerate(input_shapes)
-        }
-    if explicit_out:
-        out_plane_row = {i: (2 * sh[2] * sh[3], 2 * sh[3]) for i, sh in enumerate(output_shapes)}
-    else:
-        out_plane_row = {
-            i: derive_strides(sh, image.tile_dma.dest_total, image.tile_dma.dest_run)
-            for i, sh in enumerate(output_shapes)
-        }
+    input_shapes = [(in_n, in_ch, in_h, in_w)] * len(input_sections)
+    output_shapes = [(out_n, out_ch, out_h, out_w)] * len(output_sections)
     output_sizes = [size for _, size in output_sections]
     input_sizes = [size for _, size in input_sections]
     if len(output_sizes) == 1:
@@ -532,24 +496,20 @@ def _build_header(
     if len(input_sizes) == 1:
         input_sizes[0] = max(input_sizes[0], image.input_size)
     for index, size in enumerate(output_sizes):
-        plane, _ = out_plane_row[index]
         shape = output_shapes[index]
-        shape_bytes = shape[0] * shape[1] * plane
+        shape_bytes = shape[0] * shape[1] * out_plane
         required = max(size, shape_bytes)
-        tiles[4 + index] = max(1, (required + tile_unit - 1) // tile_unit)
+        tiles[4 + index] = max(1, (required + TILE_UNIT - 1) // TILE_UNIT)
     for index, size in enumerate(input_sizes):
-        plane, _ = in_plane_row[index]
         shape = input_shapes[index]
-        shape_bytes = shape[0] * shape[1] * plane
+        shape_bytes = shape[0] * shape[1] * in_plane
         required = max(size, shape_bytes)
-        tiles[4 + dst_count + index] = max(1, (required + tile_unit - 1) // tile_unit)
+        tiles[4 + dst_count + index] = max(1, (required + TILE_UNIT - 1) // TILE_UNIT)
     nchw = [0] * (32 * 6)
     for index, shape in enumerate(output_shapes):
-        plane, row = out_plane_row[index] if out_shape_list else (out_plane, out_row)
-        nchw[(4 + index) * 6:(4 + index) * 6 + 6] = [*shape, plane, row]
+        nchw[(4 + index) * 6:(4 + index) * 6 + 6] = [*shape, out_plane, out_row]
     for index, shape in enumerate(input_shapes):
-        plane, row = in_plane_row[index] if in_shape_list else (in_plane, in_row)
-        nchw[(4 + dst_count + index) * 6:(4 + dst_count + index) * 6 + 6] = [*shape, plane, row]
+        nchw[(4 + dst_count + index) * 6:(4 + dst_count + index) * 6 + 6] = [*shape, in_plane, in_row]
     return struct.pack(
         "<QIIQQII32I192Q",
         image.content_size,
@@ -558,7 +518,15 @@ def _build_header(
         # the firmware never dispatches the bootstrap task. The bootstrap
         # only needs the first 0x1f8 bytes of task 0; the firmware walks
         # the rest of the stream by the next pointers.
-        min(image.td_size, 0x1F8),
+        #
+        # td_size_override escapes that clamp for staged decoder programs
+        # whose weight-offset register records sit at task offsets >= 0x1f8
+        # (Jw16FirstSubmit: prog_002-class FFN divergence). The caller owns
+        # the value: the maximum descriptor extent, and the T6001 wedge
+        # bound is one descriptor PAST it (0x400 on prog_002).
+        min(image.td_size, 0x1F8)
+        if td_size_override is None
+        else td_size_override,
         image.td_count,
         image.task_stream_size,
         image.kernel_size,
@@ -693,9 +661,7 @@ def convert_hwx_file(
     in_shape: tuple[int, int, int, int] | None = None,
     out_shape: tuple[int, int, int, int] | None = None,
     blob_path: str | None = None,
-    in_shape_list=None,
-    out_shape_list=None,
-    tile_unit: int = TILE_UNIT,
+    td_size_override: int | None = None,
 ) -> HWXImage:
     blob = None
     if blob_path is not None:
@@ -707,8 +673,7 @@ def convert_hwx_file(
         image = parse_hwx(data)
         in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
         out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
-        header = _build_header(image, in_shape, out_shape, in_shape_list,
-                           out_shape_list, tile_unit)
+        header = _build_header(image, in_shape, out_shape, td_size_override)
         payload = kernel_payload(image, blob)
         with open(dst_path, "wb") as output:
             output.write(header)
@@ -728,31 +693,20 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--output-height", type=int, default=1)
     parser.add_argument("--output-width", type=int, default=1)
     parser.add_argument(
-        "--tile-unit", type=lambda x: int(x, 0), default=0x4000,
-        help="tile count byte-unit for the ANEC header (0x4000 = current omarchy-ane "
-             "main libane TILE_SHIFT 14; 0x200 = old tile_shift-9 libane)")
-    parser.add_argument(
-        "--in-shapes", default=None,
-        help="per-input-surface NCHW list, comma separated (e.g. 1x2048,6144x3); "
-             "3 dims are padded with N=1; order = ANEC input-section order")
-    parser.add_argument(
-        "--out-shapes", default=None,
-        help="per-output-surface NCHW list, comma separated; order = ANEC output-section order")
-    parser.add_argument(
         "--weights",
         help="the bundle's weight blob file, required for a BLOBFILE constant",
     )
+    parser.add_argument(
+        "--td-size",
+        type=lambda v: int(v, 0),
+        default=None,
+        help=(
+            "override the header td_size (max descriptor extent) instead of "
+            "the 0x1f8 clamp; for staged programs with register records at "
+            "task offsets >= 0x1f8"
+        ),
+    )
     args = parser.parse_args(argv[1:])
-    def _shapes(spec):
-        if not spec:
-            return None
-        out = []
-        for part in spec.split(","):
-            dims = part.replace("x", " ").split()
-            while len(dims) < 4:
-                dims.insert(0, "1")
-            out.append(tuple(int(x) for x in dims))
-        return out
     image = convert_hwx_file(
         args.src_path,
         args.dst_path,
@@ -761,9 +715,7 @@ def main(argv: list[str]) -> int:
         (1, args.input_channels, args.input_height, args.input_width),
         (1, args.output_channels, args.output_height, args.output_width),
         args.weights,
-        in_shape_list=_shapes(args.in_shapes),
-        out_shape_list=_shapes(args.out_shapes),
-        tile_unit=args.tile_unit,
+        args.td_size,
     )
     in_strides = derive_strides(
         (1, args.input_channels, args.input_height, args.input_width),

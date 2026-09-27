@@ -1,0 +1,5 @@
+{
+  "source": "qwen38-reference-chunks/chunk_00.json prompts[0]; llama-tokenize -m Qwen3.8-2B-Q4_K_M.gguf --ids (mac-desktop capture run, contract GGUF 4aa0fb13)",
+  "text": "Answer in one clear sentence: why seasons change on Earth.",
+  "ids": [15666, 303, 799, 2708, 11316, 25, 3069, 15127, 2222, 383, 8964, 13]
+}
