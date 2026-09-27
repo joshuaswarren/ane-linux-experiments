@@ -70,6 +70,33 @@ def hwx_signature(image) -> dict:
     }
 
 
+def zero_anec_gaps(anec_path: Path, conv) -> None:
+    """Zero inter-record gaps in the anec task stream (post-conversion).
+
+    The runtime decodes each task at a uniform bound; bytes between a
+    task's record end and its boundary must decode as nothing.
+    """
+    import mmap as _mmap
+    import struct as _struct
+
+    data = bytearray(anec_path.read_bytes())
+    td_count = _struct.unpack_from("<I", data, 0x1008)[0]
+    task_stream = _struct.unpack_from("<I", data, 0x100c)[0]
+    offset = 0x1000
+    chain, seen = [], set()
+    while offset not in seen and len(chain) < td_count:
+        seen.add(offset)
+        chain.append(offset - 0x1000)
+        nxt = _struct.unpack_from("<I", data, offset + 0x1C)[0]
+        if not nxt:
+            break
+        offset = 0x1000 + nxt
+    view = data[0x1000:0x1000 + task_stream]
+    conv.zero_record_gaps(view, chain, task_stream)
+    data[0x1000:0x1000 + task_stream] = view
+    anec_path.write_bytes(bytes(data))
+
+
 def port_class(program: dict) -> str:
     lanes_in = [s["lane"] for s in program["srcs"] if s["kind"] == "lane"]
     lanes_out = [d["lane"] for d in program["dsts"] if d["kind"] == "lane"]
@@ -218,8 +245,17 @@ def main(argv=None) -> int:
             image = conv.convert_hwx_file(
                 str(path), str(args.out_dir / f"prog_{index:03d}.anec"),
                 len(program["srcs"]), len(program["dsts"]),
-                blob_path=blob_path, td_size_override=override,
+                blob_path=blob_path,
+                td_size_override=override,
+                # mixed-extent streams need a uniform decode bound: re-lay
+                # the task stream so every slot matches the max extent
+                uniform_stride=(override if override is not None else None),
             )
+            if override is not None:
+                print(
+                    f"  uniform-stride relayout: td={override:#x} "
+                    "(mixed-extent input normalized; pads short tasks)"
+                )
         receipts.append({
             "manifest_index": index, "hwx_prog": name,
             "class": port_class(program),
