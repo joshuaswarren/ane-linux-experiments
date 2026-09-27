@@ -159,15 +159,21 @@ class StagedProgram:
         self.device = device
         self.stage, channels = decode_channels(self.path)
         self.binding = dict(binding)
+        window_overrides = {
+            int(ch): total
+            for ch, total in self.binding.pop("windows", {}).items()
+        }
         silent = sorted(set(self.binding) - set(channels))
         if silent:
             raise ValueError(f"{self.name}: ports bind silent channels {silent}")
         self.window = {}
         for channel, (read_total, write_total) in channels.items():
-            total = max(read_total, write_total)
+            total = window_overrides.get(channel) or max(read_total, write_total)
             if total <= 0:
                 raise ValueError(f"{self.name}: channel {channel} has no DMA size")
             self.window[channel] = total
+        for channel, total in window_overrides.items():
+            self.window.setdefault(channel, total)
         self.closed = False
         self.stack = ExitStack()
         try:
@@ -256,6 +262,12 @@ class StagedProgram:
     def read_output(self, port, shape):
         bank = self.banks[self.binding[port]]
         raw = bank.read(int(np.prod(shape)) * 2)
+        return np.frombuffer(raw, dtype=np.float16).reshape(shape).copy()
+
+    def read_state(self, in_port, out_port, shape):
+        """Read the freshest state-out buffer (after execute swaps it in)."""
+        pair, flip = self.states[(self.binding[in_port], self.binding[out_port])]
+        raw = pair[flip].read(int(np.prod(shape)) * 2)
         return np.frombuffer(raw, dtype=np.float16).reshape(shape).copy()
 
     def execute(self, output_ports):
