@@ -1,6 +1,7 @@
 """Convert a macOS 26 HWX Mach-O into Linux .anec input for libane."""
 
 import argparse
+import dataclasses
 import mmap
 import struct
 import sys
@@ -224,6 +225,8 @@ class HWXImage:
     tile_dma: TileDMA
     kernel_is_blob: bool
     kernel_gap: int = 0
+    kernel_part1: int = 0
+    kernel_extra_off: int = 0
 
 
 
@@ -358,15 +361,18 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
     # shrink the content by the gap.
     kernel_extra = sections.get(("__KERN_0", "__kern_0"))
     kernel_gap = 0
+    kernel_part1 = kernel.size
+    kernel_extra_off = 0
     if kernel_extra is not None:
         gap = kernel_extra.file_offset - (kernel.file_offset + kernel.size)
         if gap < 0:
             raise ValueError("overlapping split-kernel sections")
+        kernel_gap = gap
+        kernel_extra_off = kernel_extra.file_offset
         kernel = Section(
             kernel.segment, kernel.name, kernel.vm_address,
             kernel.size + kernel_extra.size, kernel.file_offset,
         )
-        kernel_gap = gap
     workspace_sections = section_ranges.get(("__DATA", "__bss"), [])
 
     def span(entries: list[tuple[int, int]]) -> int:
@@ -442,6 +448,8 @@ def parse_hwx(data: bytes | mmap.mmap) -> HWXImage:
             text_segment_offset + kernel_offset + BLOB_HEADER_SIZE + 4
         ]),
         kernel_gap=kernel_gap,
+        kernel_part1=kernel.size - (kernel_extra.size if kernel_extra else 0),
+        kernel_extra_off=(kernel_extra.file_offset if kernel_extra else 0),
     )
 
 
@@ -693,6 +701,7 @@ def convert_hwx_file(
     out_shape: tuple[int, int, int, int] | None = None,
     blob_path: str | None = None,
     td_size_override: int | None = None,
+    uniform_stride: int | None = None,
 ) -> HWXImage:
     blob = None
     if blob_path is not None:
@@ -704,6 +713,46 @@ def convert_hwx_file(
         image = parse_hwx(data)
         in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
         out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
+        if uniform_stride is not None:
+            # re-lay the task stream to uniform slots and place the kernel
+            # at align16(stream); derive the header from the normalized
+            # geometry so every field stays consistent
+            bases = find_task_offsets(
+                data, image.content_offset, image.content_size)
+            rel_bases = [b - image.content_offset for b in bases]
+            stream = bytes(
+                data[image.content_offset:
+                     image.content_offset + image.task_stream_size])
+            new_stream, _ = uniform_task_relayout(
+                stream, rel_bases, image.task_stream_size, uniform_stride)
+            if payload is None:
+                part1 = image.kernel_part1 or image.kernel_size
+                payload = data[
+                    image.content_offset + image.kernel_offset:
+                    image.content_offset + image.kernel_offset + part1
+                ] + (
+                    data[image.kernel_extra_off:
+                         image.kernel_extra_off + image.kernel_size - part1]
+                    if image.kernel_extra_off else b""
+                )
+            kernel_offset = (-len(new_stream)) % 16
+            content_size = len(new_stream) + kernel_offset + len(payload)
+            uniform_image = dataclasses.replace(
+                image,
+                task_stream_size=len(new_stream),
+                td_size=uniform_stride,
+                kernel_offset=kernel_offset,
+                content_size=content_size,
+            )
+            header = _build_header(
+                uniform_image, in_shape, out_shape, uniform_stride)
+            with open(dst_path, "wb") as output:
+                output.write(header)
+                output.write(b"\0" * (ANEC_HEADER_SIZE - len(header)))
+                output.write(new_stream)
+                output.write(b"\0" * kernel_offset)
+                output.write(payload)
+            return uniform_image
         header = _build_header(image, in_shape, out_shape, td_size_override)
         payload = kernel_payload(image, blob)
         if payload is None and image.kernel_gap:
