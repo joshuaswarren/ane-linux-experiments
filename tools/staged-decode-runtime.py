@@ -49,13 +49,15 @@ RUNTIME = load_module("ane_runtime", ROOT / "ane-runtime.py")
 ROW_STRIDE = 64  # staged gate/state rows: values at the row head, 64 B stride
 
 
-def decode_channels(path):
+def decode_channels(path, valid_totals=None):
     """Return (stage, {channel: (read_total, write_total)}) for one .anec.
 
     Selector words sit at +32 in each task descriptor (shifts 0/6/12/18 are
-    channel fields, proven by the m1max-host TD-decode grammar); tile-DMA
-    register records carry each task's own run/total byte counts. Shift 12 is
-    the destination field; all other non-zero channel fields are sources.
+    channel fields, proven by the m1max-host TD-decode grammar; shift 12 is
+    the destination field). DMA byte counts are extracted as adjacent
+    (run, total) dword pairs inside each task's records: newer compilers
+    moved those registers, so when `valid_totals` is given only pairs whose
+    total is a known staged window survive; anything else is float payload.
     """
     header = PROBE.load_anec_header(path)
     stage = PROBE.stage_geometry(header)
@@ -87,18 +89,28 @@ def decode_channels(path):
             extent = extent_of.get(base, stage["td_size"])
             td = data[base:base + max(extent, stage["td_size"])]
             selector = struct.unpack_from("<I", td, 32)[0]
-            registers = walk_registers(td)
-            read = max(registers.get(0x13814, 0), registers.get(0x13810, 0))
-            write = max(registers.get(0x17810, 0), registers.get(0x1780C, 0))
+            # newer compilers moved the tile-DMA size registers: extract the
+            # (run, total) pairs by shape instead of by register address
+            words = [
+                struct.unpack_from("<I", td, o)[0]
+                for o in range(40, len(td) - 3, 4)
+            ]
+            pairs = {
+                (run, total)
+                for run, total in zip(words, words[1:])
+                if total and run and 0x20 <= run <= total and total >= 0x400
+                and (valid_totals is None or total in valid_totals)
+            }
             for shift in (0, 6, 12, 18):
                 channel = (selector >> shift) & 0x1F
                 if not channel:
                     continue
                 totals = channels.setdefault(channel, [0, 0])
-                if shift == 12:
-                    totals[1] = max(totals[1], write)
-                else:
-                    totals[0] = max(totals[0], read)
+                for run, total in pairs:
+                    if shift == 12:
+                        totals[1] = max(totals[1], total)
+                    else:
+                        totals[0] = max(totals[0], total)
     return stage, {ch: tuple(t) for ch, t in channels.items()}
 
 
@@ -149,6 +161,16 @@ def staged_bytes(array, window):
     return payload
 
 
+def mod_staged_window(shape):
+    """Staged window bytes for one logical shape (rows shorter than 64 B
+    sit at the head of 64-byte rows; longer rows are dense)."""
+    rows = 1
+    for dim in tuple(shape)[:-1]:
+        rows *= dim
+    columns = shape[-1]
+    return max(rows * columns * 2, rows * ROW_STRIDE)
+
+
 def logical_bytes(array):
     """The compact fp16 bytes the Apple goldens hash (set_input view)."""
     return np.ascontiguousarray(array, dtype=np.float16).tobytes()
@@ -161,11 +183,11 @@ def _tile(size):
 class StagedProgram:
     """One converted .anec with its own bank buffers and resident states."""
 
-    def __init__(self, anec_path, device, binding, name=""):
+    def __init__(self, anec_path, device, binding, name="", valid_totals=None):
         self.path = Path(anec_path)
         self.name = name or self.path.stem
         self.device = device
-        self.stage, channels = decode_channels(self.path)
+        self.stage, channels = decode_channels(self.path, valid_totals)
         self.binding = dict(binding)
         window_overrides = {
             int(ch): total
@@ -350,9 +372,20 @@ class StagedDecoder:
         try:
             for index, program in enumerate(self.manifest["programs"]):
                 binding = bindings["programs"].get(str(index), bindings["default"])
+                valid_totals = {
+                    mod_staged_window(s["shape"]) for s in program["srcs"]
+                } | {
+                    mod_staged_window(d["shape"]) for d in program["dsts"]
+                } | {
+                    mod_staged_window(st["in_shape"])
+                    for st in program.get("states", [])
+                } | {
+                    mod_staged_window(st["out_shape"])
+                    for st in program.get("states", [])
+                }
                 staged = StagedProgram(
                     self.anec_dir / f"prog_{index:03d}.anec", self.device,
-                    binding, name=f"prog_{index:03d}",
+                    binding, name=f"prog_{index:03d}", valid_totals=valid_totals,
                 )
                 for state in program.get("states", []):
                     staged.add_state(state["in_port"], state["out_port"])
