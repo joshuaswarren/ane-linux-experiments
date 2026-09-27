@@ -163,7 +163,11 @@ class StagedProgram:
             int(ch): total
             for ch, total in self.binding.pop("windows", {}).items()
         }
-        silent = sorted(set(self.binding) - set(channels))
+        # overrides declare channels the DMA decode could not size (known
+        # staged geometry); treat them as first-class before validating ports
+        for channel, total in window_overrides.items():
+            channels.setdefault(channel, (total, total))
+        silent = sorted(set(self.binding.values()) - set(channels))
         if silent:
             raise ValueError(f"{self.name}: ports bind silent channels {silent}")
         self.window = {}
@@ -172,8 +176,6 @@ class StagedProgram:
             if total <= 0:
                 raise ValueError(f"{self.name}: channel {channel} has no DMA size")
             self.window[channel] = total
-        for channel, total in window_overrides.items():
-            self.window.setdefault(channel, total)
         self.closed = False
         self.stack = ExitStack()
         try:
