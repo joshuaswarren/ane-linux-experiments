@@ -53,7 +53,9 @@ import mmap
 import numpy as np
 
 ROOT = Path("/var/tmp/m1max-embed-recovery")
-E0039 = Path.home() / ".local/share/apple-silicon-lab/artifacts/Jw16EmbedRecovery/e0039"
+E0039 = Path("/var/tmp/jw16-first-submit/e0039")
+if not E0039.is_dir():
+    E0039 = Path.home() / ".local/share/apple-silicon-lab/artifacts/Jw16EmbedRecovery/e0039"
 ANEC = ROOT / "prog001/prog001.anec"
 EMBED_ANEC = ROOT / "embed-mapping.anec"
 
@@ -155,12 +157,12 @@ def cmd_set1():
 
 def cmd_set2():
     stage = probe.stage_geometry(probe.load_anec_header(ANEC))
-    beta_c = np.load(str(E0039 / "in-t0.npy")).reshape(16)
-    gt_c = np.load(str(E0039 / "in-t1.npy")).reshape(16)
-    cands = {n: np.load(str(E0039 / f"in-{t}.npy")) for n, t in (("t14", "t14"), ("t4", "t4"), ("t7", "t7"))}
-    state = np.load(str(E0039 / "in-t2.npy"))
-    o_ref = np.load(str(E0039 / "out-t17.npy"))
-    s_ref = np.load(str(E0039 / "out-t13.npy"))
+    beta_c = np.load(str(E0039 / "e0039-in-t0.npy")).reshape(16)
+    gt_c = np.load(str(E0039 / "e0039-in-t1.npy")).reshape(16)
+    cands = {n: np.load(str(E0039 / f"e0039-in-{t}.npy")) for n, t in (("t14", "t14"), ("t4", "t4"), ("t7", "t7"))}
+    state = np.load(str(E0039 / "e0039-in-t2.npy"))
+    o_ref = np.load(str(E0039 / "e0039-out-t17.npy"))
+    s_ref = np.load(str(E0039 / "e0039-out-t13.npy"))
     names = ("t14", "t4", "t7")
     results = []
     import itertools
@@ -271,14 +273,16 @@ def cmd_embed():
             raw38 = t38_buf.read(393216)
             a = np.frombuffer(raw38, dtype=np.float16)[:6144 * 32].reshape(6144, 32)
             exp38 = np.load(str(ROOT / "recheck/probe-ref-t38.npy"))
-            # slot map identity: engine cols (0,1,2) -> logical (0,2,1) per verified unpack
-            got = np.zeros((6144, 3), dtype=np.float16)
-            got[:, 0] = a[:, 0]
-            got[:, 2] = a[:, 1]
-            got[:, 1] = a[:, 2]
-            mo, no = bitwise(got.reshape(-1).tobytes(), exp38.reshape(-1))
-            all_exact &= mo == no
-            print(f"embed-t38: {mo}/{no}", flush=True)
+            # slot map: identity (0,1,2) vs swap (0,2,1); engine slot -> logical column
+            for name, m in (("identity", (0, 1, 2)), ("swap12", (0, 2, 1))):
+                got = np.zeros((6144, 3), dtype=np.float16)
+                got[:, 0] = a[:, m[0]]
+                got[:, 1] = a[:, m[1]]
+                got[:, 2] = a[:, m[2]]
+                mo, no = bitwise(got.reshape(-1).tobytes(), exp38.reshape(-1))
+                if name == "identity":
+                    all_exact &= mo == no
+                print(f"embed-t38[{name}]: {mo}/{no}", flush=True)
             print("EMBED", "PASS" if all_exact else "FAIL")
 
 
