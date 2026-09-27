@@ -73,11 +73,19 @@ def decode_channels(path):
             if not nxt:
                 break
             offset = PROBE.HEADER_SIZE + nxt
+        # the header's td_size is the submission decode bound (0x1f8 clamp);
+        # the software decoder must read each task to its true extent or the
+        # DMA-count records past that bound stay invisible
+        bounds = sorted(bases)
+        extent_of = {}
+        for pos, base in enumerate(bounds):
+            end = bounds[pos + 1] if pos + 1 < len(bounds) else \
+                PROBE.HEADER_SIZE + stage["task_stream_size"]
+            extent_of[base] = min(end - base, 0x40000)
         channels: dict[int, list[int]] = {}
         for base in chain:
-            td = data[base:base + stage["td_size"]]
-            if len(td) < stage["td_size"]:
-                raise ValueError(f"{Path(path).name}: truncated task descriptor")
+            extent = extent_of.get(base, stage["td_size"])
+            td = data[base:base + max(extent, stage["td_size"])]
             selector = struct.unpack_from("<I", td, 32)[0]
             registers = walk_registers(td)
             read = max(registers.get(0x13814, 0), registers.get(0x13810, 0))
@@ -227,6 +235,10 @@ class StagedProgram:
             self.request.handles[0] = self.command.bo.handle
             if self.workspace is not None:
                 self.request.handles[PROBE.WORKSPACE_BDX] = self.workspace.bo.handle
+            # every staged bank is a fixed BO for the program's lifetime:
+            # map them once so execute only swaps resident-state pairs
+            for channel, bank in self.banks.items():
+                self.request.handles[channel] = bank.bo.handle
             self.states: dict[tuple[int, int], list] = {}
         except BaseException:
             self.stack.close()
@@ -234,7 +246,11 @@ class StagedProgram:
             raise
 
     def add_state(self, in_port, out_port):
-        """Register one resident state as an alternating buffer pair."""
+        """Register one resident state as an alternating buffer pair.
+
+        pair[0] is the state the engine reads next, pair[1] the scratch it
+        writes; execute swaps them (RecurrentRunner's proven convention).
+        """
         pair = [
             self.stack.enter_context(
                 self.device.buffer(_tile(self.window[self.binding[in_port]]))
@@ -245,7 +261,7 @@ class StagedProgram:
         ]
         for bank in pair:
             bank.write(b"\0" * bank.size)
-        self.states[(self.binding[in_port], self.binding[out_port])] = [pair, 0]
+        self.states[(self.binding[in_port], self.binding[out_port])] = pair
 
     def write_bank(self, port, array):
         channel = self.binding[port]
@@ -254,12 +270,12 @@ class StagedProgram:
         self.banks[channel].write(payload)
 
     def write_state(self, in_port, out_port, array):
-        pair, flip = self.states[(self.binding[in_port], self.binding[out_port])]
+        pair = self.states[(self.binding[in_port], self.binding[out_port])]
         payload = staged_bytes(
             array, self.window[self.binding[in_port]]
         )
-        pair[flip].map.seek(0)
-        pair[flip].write(payload)
+        pair[0].map.seek(0)
+        pair[0].write(payload)
 
     def read_output(self, port, shape):
         bank = self.banks[self.binding[port]]
@@ -268,31 +284,27 @@ class StagedProgram:
 
     def read_state(self, in_port, out_port, shape):
         """Read the freshest state-out buffer (after execute swaps it in)."""
-        pair, flip = self.states[(self.binding[in_port], self.binding[out_port])]
-        raw = pair[flip].read(int(np.prod(shape)) * 2)
+        pair = self.states[(self.binding[in_port], self.binding[out_port])]
+        raw = pair[0].read(int(np.prod(shape)) * 2)
         return np.frombuffer(raw, dtype=np.float16).reshape(shape).copy()
 
     def execute(self, output_ports):
         """Submit once, poll every staged output to finiteness, swap states."""
-        sentinel = np.float16(np.inf).tobytes()
+        sentinel = np.float16(np.inf).tobytes()  # 2 bytes; scale by half-words
         watched = []
-        for (in_channel, out_channel), (pair, flip) in self.states.items():
-            state_out = pair[1 - flip]
+        for (in_channel, out_channel), pair in self.states.items():
+            state_out = pair[1]
             state_out.map.seek(0)
-            state_out.write(sentinel * state_out.size)
+            state_out.write(sentinel * (state_out.size // 2))
             watched.append(state_out)
         for port in output_ports:
             bank = self.banks[self.binding[port]]
             bank.map.seek(0)
-            bank.write(sentinel * bank.size)
+            bank.write(sentinel * (bank.size // 2))
             watched.append(bank)
-        for (in_channel, out_channel), (pair, flip) in self.states.items():
-            self.request.handles[in_channel] = pair[flip].bo.handle
-            self.request.handles[out_channel] = pair[1 - flip].bo.handle
-        for port in output_ports:
-            self.request.handles[self.binding[port]] = self.banks[
-                self.binding[port]
-            ].bo.handle
+        for (in_channel, out_channel), pair in self.states.items():
+            self.request.handles[in_channel] = pair[0].bo.handle
+            self.request.handles[out_channel] = pair[1].bo.handle
         fcntl.ioctl(self.device.fd, RUNTIME.IOCTL_SUBMIT, self.request)
         deadline = time.monotonic() + 30.0
         while True:
@@ -305,16 +317,14 @@ class StagedProgram:
             if time.monotonic() >= deadline:
                 raise TimeoutError(f"{self.name}: outputs stayed infinite")
             time.sleep(0.001)
-        for key, (pair, flip) in self.states.items():
+        for key, pair in self.states.items():
             pair[0], pair[1] = pair[1], pair[0]
-            self.states[key] = [pair, 1 - flip]
 
     def rewind_states(self):
-        for key, (pair, _) in self.states.items():
+        for pair in self.states.values():
             for bank in pair:
                 bank.map.seek(0)
                 bank.write(b"\0" * bank.size)
-            self.states[key] = [pair, 0]
 
     def close(self):
         if self.closed:
