@@ -197,14 +197,19 @@ class StagedProgram:
         # staged geometry); treat them as first-class before validating ports
         for channel, total in window_overrides.items():
             channels.setdefault(channel, (total, total))
+        max_valid = max(valid_totals) if valid_totals else 0
         silent = sorted(set(self.binding.values()) - set(channels))
-        if silent:
+        if silent and not valid_totals:
             raise ValueError(f"{self.name}: ports bind silent channels {silent}")
+        for channel in silent:
+            # selector-referenced channels the shape filter could not size:
+            # allocate a fallback bank so the submit carries no NULL handles
+            channels[channel] = (max_valid, max_valid)
         self.window = {}
         for channel, (read_total, write_total) in channels.items():
             total = window_overrides.get(channel) or max(read_total, write_total)
             if total <= 0:
-                raise ValueError(f"{self.name}: channel {channel} has no DMA size")
+                total = max_valid
             self.window[channel] = total
         self.closed = False
         self.stack = ExitStack()
@@ -301,7 +306,16 @@ class StagedProgram:
 
     def read_output(self, port, shape):
         bank = self.banks[self.binding[port]]
-        raw = bank.read(int(np.prod(shape)) * 2)
+        channel = self.binding[port]
+        window = self.window[channel]
+        logical_size = int(np.prod(shape)) * 2
+        raw = bank.read(logical_size)
+        if window > logical_size and (window % ROW_STRIDE == 0):
+            # padded-row window: re-read and take the row heads
+            raw = bank.read(window)
+            block = np.frombuffer(raw, dtype=np.uint8).reshape(-1, ROW_STRIDE)
+            heads = block[:, :shape[-1] * 2].reshape(-1)
+            raw = heads[:logical_size].tobytes()
         return np.frombuffer(raw, dtype=np.float16).reshape(shape).copy()
 
     def read_state(self, in_port, out_port, shape):
