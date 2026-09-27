@@ -197,7 +197,15 @@ class StagedProgram:
         # staged geometry); treat them as first-class before validating ports
         for channel, total in window_overrides.items():
             channels.setdefault(channel, (total, total))
+        # channels 0-3 are engine-internal (0=command, 1=kernel+weights
+        # slot the driver computes itself, 3=workspace): the submit
+        # validator rejects any handle in slot 1, so never stage a bank
+        # below the first user surface channel
         max_valid = max(valid_totals) if valid_totals else 0
+        if not max_valid:
+            max_valid = max(window_overrides.values()) if window_overrides else 0
+        if not max_valid:
+            max_valid = 0x100000
         silent = sorted(set(self.binding.values()) - set(channels))
         if silent and not valid_totals:
             raise ValueError(f"{self.name}: ports bind silent channels {silent}")
@@ -207,9 +215,15 @@ class StagedProgram:
             channels[channel] = (max_valid, max_valid)
         self.window = {}
         for channel, (read_total, write_total) in channels.items():
-            total = window_overrides.get(channel) or max(read_total, write_total)
+            if channel < 4:
+                continue  # internal: command, kernel slot, workspace
+            total = window_overrides.get(channel)
+            if total is None:
+                total = max(read_total, write_total)
             if total <= 0:
                 total = max_valid
+            if total > 0x100000:
+                total = 0x100000
             self.window[channel] = total
         self.closed = False
         self.stack = ExitStack()
@@ -248,7 +262,10 @@ class StagedProgram:
                     struct.pack("<I", (first & 0x0F00FFFF) | (0x40 << 16))
                 )
             self.banks = {}
+            import os as _os
             for channel, total in self.window.items():
+                if _os.environ.get("ANE_BANK_DEBUG"):
+                    print(f"  bank ch{channel}: {_tile(total)} B", flush=True)
                 bank = self.stack.enter_context(device.buffer(_tile(total)))
                 bank.write(b"\0" * bank.size)
                 self.banks[channel] = bank
@@ -265,6 +282,8 @@ class StagedProgram:
             # every staged bank is a fixed BO for the program's lifetime:
             # map them once so execute only swaps resident-state pairs
             for channel, bank in self.banks.items():
+                if channel >= len(self.request.handles):
+                    raise ValueError(f"channel {channel} exceeds handle table")
                 self.request.handles[channel] = bank.bo.handle
             self.states: dict[tuple[int, int], list] = {}
         except BaseException:
