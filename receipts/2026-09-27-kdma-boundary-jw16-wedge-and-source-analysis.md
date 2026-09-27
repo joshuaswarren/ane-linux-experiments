@@ -34,15 +34,17 @@ ane 285c04000.ane: wedge pin released (engine state unknown)
    `DART containment armed: 0`. Service restored; /dev/accel/accel0 present.
    Jw16WeightBaseTrace and Main notified; llm-inference (GPU) unaffected.
 
-## Finding (T6001, this incident)
+## Observation (T6001, this incident)
 
-A programmed kernel-DMA transfer size larger than what the task's compute
-consumes does NOT complete on T6001: the engine parks the TM with a latched
-task error and the driver wedges. Kernel DMA here is consumption-paced —
-the article's S(k,x) transfer-size model (eiln 2026-08-10, M3) can only be
-probed with workloads where compute == transfer (their whole-weight compiled
-forms). Size-field patching alone is NOT a valid probe form. This matches the
-frozen t6001 lane receipts' warning class.
+The size-patched experiment form is INVALID on T6001: one submit with a
+programmed kernel-DMA transfer size (0xFF000/core) larger than what the
+task's compute consumes did not reach terminal completion (KMD submit
+ETIMEDOUT) and the driver wedged. Hypothesis (not established by a single
+timeout): kernel DMA may be consumption-paced, so the article's S(k,x)
+transfer-size model can only be probed with workloads where compute ==
+transfer. Establishing the mechanism needs the whole-weight workload below;
+a lone timeout proves only that size-field patching alone is not a valid
+probe form.
 
 ## Source-only applicability analysis (complete; no further hardware writes)
 
@@ -73,8 +75,11 @@ mil-hwx-compiler a8392e6; raw decoded tables retained in
 - mlx-omarchy live bundles: Parakeet islands default `ABC`
   (docs/ane-encoder-placement.md), O/F opt-in; Qwen staged cells hidden=2048
   -> per-core KDMA 512 KiB (q/o) and 1.5 MiB (gate/up/down, not a multiple).
-  NOTHING shipped today is in the erratum class. There is no performance bug
-  in the current stack attributable to this erratum.
+  Every audited shipped/minted task falls short of the article's size
+  condition (per-core KernelDMA of exactly k x 1 MiB), so nothing audited is
+  in the erratum class. Because chip applicability on T8103/T6001/T6021 is
+  UNKNOWN, this is a scope statement about the audited tasks, not a claim
+  that our silicon is free of the throttle.
 
 ## Proposed next step (NOT executed — awaits a separately reviewed workload)
 
