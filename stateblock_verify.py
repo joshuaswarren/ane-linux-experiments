@@ -286,7 +286,67 @@ def cmd_embed():
             print("EMBED", "PASS" if all_exact else "FAIL")
 
 
+def cmd_set2ref():
+    """Second input set from the alias-free macstudio capture (sb0001):
+    token-2 state-block inputs + Apple refs, input snapshots proven
+    pre-execute (mutated={} and state_in bitwise != out-t13)."""
+    stage = probe.stage_geometry(probe.load_anec_header(ANEC))
+    z = np.load(str(Path("/var/tmp/jw16-first-submit/sb0001.npz")))
+    assert not bool((z["state_in__t2"].view(np.uint16) == z["out__t13"].view(np.uint16)).all()), \
+        "state-in aliased to state-out: capture unusable"
+    beta_c = z["in__t0"].reshape(16)
+    gt_c = z["in__t1"].reshape(16)
+    cands = {"t14": z["in__t14"], "t4": z["in__t4"], "t7": z["in__t7"]}
+    state = z["state_in__t2"]
+    o_ref = z["out__t17"]
+    s_ref = z["out__t13"]
+    names = ("t14", "t4", "t7")
+    results = []
+    import itertools
+    for perm in itertools.permutations(names):
+        q, k, v = (cands[n] for n in perm)
+        for j, (b, g) in enumerate(((beta_c, gt_c), (gt_c, beta_c))):
+            outs = submit(stateblock_binds(b, g, q, k, v, state), stage, ANEC)
+            tag = f"set2ref-qkv={''.join(perm)}_bg={j}"
+            ok = report(tag, outs[8], outs[6], o_ref, s_ref)
+            results.append((tag, ok))
+    win = [t for t, okk in results if okk]
+    print("SET2REF", "PASS " + ",".join(win) if win else "FAIL (no bitwise permutation)")
+
+
+def cmd_set3():
+    """Nonzero recurrent-state (decode-phase) verification from the ref3
+    capture: binds the SAME semantic map with the true carried state-in."""
+    import itertools
+    stage = probe.stage_geometry(probe.load_anec_header(ANEC))
+    import os
+    for name in sys.argv[2:] or ["sb0018", "sb0019", "sb0023", "sb0024"]:
+        path = Path("/var/tmp/jw16-first-submit") / f"{name}.npz"
+        if not path.exists():
+            continue
+        z = np.load(str(path))
+        state = z["state_in__t2"]
+        assert state.any(), f"{name}: state-in is zero, not a decode capture"
+        assert not bool((state.view(np.uint16) == z["out__t13"].view(np.uint16)).all()), \
+            f"{name}: state-in aliased"
+        beta_c = z["in__t0"].reshape(16)
+        gt_c = z["in__t1"].reshape(16)
+        cands = {"t14": z["in__t14"], "t4": z["in__t4"], "t7": z["in__t7"]}
+        o_ref, s_ref = z["out__t17"], z["out__t13"]
+        wins = []
+        for perm in itertools.permutations(("t14", "t4", "t7")):
+            q, k, v = (cands[n] for n in perm)
+            outs = submit(stateblock_binds(beta_c, gt_c, q, k, v, state), stage, ANEC)
+            mo, no = bitwise(outs[8], o_ref)
+            ms, ns = bitwise(outs[6], s_ref)
+            if mo == no and ms == ns:
+                wins.append("".join(perm))
+                report("set3-{}-qkv={}".format(name, "".join(perm)), outs[8], outs[6], o_ref, s_ref)
+        print(f"SET3 {name}: " + ("PASS " + ",".join(wins) if wins else "FAIL (no bitwise permutation)"),
+              flush=True)
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "set1"
-    {"set1": cmd_set1, "set2": cmd_set2, "order": cmd_order,
+    {"set1": cmd_set1, "set2": cmd_set2, "set2ref": cmd_set2ref, "set3": cmd_set3, "order": cmd_order,
      "fillneg": cmd_fillneg, "embed": cmd_embed}[cmd]()
