@@ -4,6 +4,8 @@
  * stopping at the first missing file or failed step. Each file names
  * one command, the DMA buffers it needs, and the address patches that
  * bind them, so a new command layout is a file edit, not a rebuild.
+ * Writing anything to /sys/kernel/debug/ane_t6021_seq/run continues at
+ * the next unused index, so later steps can be staged without a reboot.
  *
  * File layout (little-endian):
  *   struct seq_hdr
@@ -12,11 +14,12 @@
  *   u8 command        [cmd_len]
  *   u8 fill           [sum of seq_buf.fill_len, in buffer order]
  *
- * Buffers and the command stay allocated until reboot, like every other
- * legacy allocation, so the firmware never sees a freed address. */
+ * Buffers, the command, and the step table stay allocated until reboot,
+ * like every other legacy allocation, so the firmware never sees a freed
+ * address. */
 
 #define ANE_SEQ_MAGIC		0x51454e41	/* "ANEQ" */
-#define ANE_SEQ_STEPS		16
+#define ANE_SEQ_STEPS		64
 #define ANE_SEQ_BUFS		16
 #define ANE_SEQ_REPLY		SZ_4K
 #define ANE_SEQ_DUMP_MAX	SZ_4K
@@ -122,21 +125,27 @@ static int ane_seq_patch_one(struct ane_rtclient *ane, struct ane_seq_step *step
  * reboot, so the blob never outlives its backing store. */
 static struct dentry *ane_seq_dbg;
 
-static void ane_seq_publish(struct ane_rtclient *ane, unsigned int cur, unsigned int i,
-			    struct ane_legacy_buffer *b)
+static void ane_seq_blob(struct ane_rtclient *ane, const char *name, void *data, size_t size)
 {
 	struct debugfs_blob_wrapper *w;
-	char name[16];
 
 	if (IS_ERR_OR_NULL(ane_seq_dbg))
 		ane_seq_dbg = debugfs_create_dir("ane_t6021_seq", NULL);
 	w = devm_kzalloc(ane->dev, sizeof(*w), GFP_KERNEL);
-	if (IS_ERR_OR_NULL(ane_seq_dbg) || !w)
+	if (IS_ERR_OR_NULL(ane_seq_dbg) || !w || !data || !size)
 		return;
-	w->data = b->cpu;
-	w->size = b->size;
-	snprintf(name, sizeof(name), "s%02ub%02u", cur, i);
+	w->data = data;
+	w->size = size;
 	debugfs_create_blob(name, 0400, ane_seq_dbg, w);
+}
+
+static void ane_seq_publish(struct ane_rtclient *ane, unsigned int cur, unsigned int i,
+			    struct ane_legacy_buffer *b)
+{
+	char name[16];
+
+	snprintf(name, sizeof(name), "s%02ub%02u", cur, i);
+	ane_seq_blob(ane, name, b->cpu, b->size);
 }
 
 /* Print, then (legacy_t2h_ack) hand back, every firmware-owned slot on a
@@ -301,30 +310,66 @@ static int ane_seq_run_step(struct ane_rtclient *ane, struct ane_seq_step *steps
 	return result;
 }
 
-static int ane_rtclient_legacy_sequence(struct ane_rtclient *ane)
+/* One device per boot: the step table and cursor live until reboot. */
+static struct ane_seq_step *ane_seq_steps;
+static unsigned int ane_seq_next;
+static DEFINE_MUTEX(ane_seq_lock);
+
+static int ane_seq_continue(struct ane_rtclient *ane)
 {
-	struct ane_seq_step *steps;
-	unsigned int cur;
 	int result = 0;
 
-	steps = kcalloc(ANE_SEQ_STEPS, sizeof(*steps), GFP_KERNEL);
-	if (!steps)
-		return -ENOMEM;
-	for (cur = 0; cur < ANE_SEQ_STEPS; cur++) {
+	mutex_lock(&ane_seq_lock);
+	for (; ane_seq_next < ANE_SEQ_STEPS; ane_seq_next++) {
 		const struct firmware *fw;
 		char path[40];
 
-		snprintf(path, sizeof(path), "apple/ane/seq/%02u.bin", cur);
+		snprintf(path, sizeof(path), "apple/ane/seq/%02u.bin", ane_seq_next);
 		if (request_firmware_direct(&fw, path, ane->dev))
 			break;
-		result = ane_seq_run_step(ane, steps, cur, fw);
+		result = ane_seq_run_step(ane, ane_seq_steps, ane_seq_next, fw);
 		release_firmware(fw);
 		if (result) {
-			dev_warn(ane->dev, "SEQ stopped at step %u: %d\n", cur, result);
+			dev_warn(ane->dev, "SEQ stopped at step %u: %d\n", ane_seq_next, result);
+			ane_seq_next++;
 			break;
 		}
 	}
-	dev_info(ane->dev, "SEQ done steps=%u result=%d\n", cur, result);
-	kfree(steps);
+	dev_info(ane->dev, "SEQ done next=%u result=%d\n", ane_seq_next, result);
+	mutex_unlock(&ane_seq_lock);
 	return result;
+}
+
+static ssize_t ane_seq_run_write(struct file *file, const char __user *buf, size_t len,
+				 loff_t *ppos)
+{
+	int result = ane_seq_continue(file->private_data);
+
+	return result ? result : len;
+}
+
+static const struct file_operations ane_seq_run_fops = {
+	.owner = THIS_MODULE,
+	.open = simple_open,
+	.write = ane_seq_run_write,
+};
+
+static int ane_rtclient_legacy_sequence(struct ane_rtclient *ane)
+{
+	struct ane_t6021 *a = ane->fw;
+
+	/* ~270 KiB and never freed: the driver is reboot-only. */
+	ane_seq_steps = kvcalloc(ANE_SEQ_STEPS, sizeof(*ane_seq_steps), GFP_KERNEL);
+	if (!ane_seq_steps)
+		return -ENOMEM;
+	/* Read-only views of firmware-visible host memory: the boot heap
+	 * holds the firmware's extra-heap objects (ExeLoop engine, FSMs). */
+	if (a) {
+		ane_seq_blob(ane, "heap", a->boot_heap, a->boot_heap_size);
+		ane_seq_blob(ane, "pool", a->boot_pool, 0x40000);
+		ane_seq_blob(ane, "fwbuf", a->fw_buf, a->fw_size);
+	}
+	if (!IS_ERR_OR_NULL(ane_seq_dbg))
+		debugfs_create_file("run", 0200, ane_seq_dbg, ane, &ane_seq_run_fops);
+	return ane_seq_continue(ane);
 }
