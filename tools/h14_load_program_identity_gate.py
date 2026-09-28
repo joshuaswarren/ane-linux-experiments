@@ -6,8 +6,10 @@ Run on the Linux ANE host:
     sudo python3 tools/h14_load_program_identity_gate.py
 
 Firmware 0x3ed30 reads descriptor offset 8 and skips the section unless
-that word is 1. Offset 4 keeps the section id. This script does not
-unload a held module. It insmods only when no ane_t6021 client is loaded.
+that word is 1. Offset 4 keeps the section id. Command offset 8 must
+already name a program id whose slot is in use; this script does not
+set that word. It does not unload a held module. It insmods only when
+no ane_t6021 client is loaded.
 """
 import pathlib
 import subprocess
