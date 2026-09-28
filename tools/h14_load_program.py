@@ -115,6 +115,19 @@ def write_firmware(path, sections):
     return blob
 
 
+def stage_command():
+    """Command with generic present and dva 0. The driver allocates the
+    section and patches the IOVA. pack() still refuses a zero dva."""
+    blob = blob_header(1)
+    cmd = bytearray(CMD_SIZE)
+    struct.pack_into("<IHH", cmd, 0, 0, LOAD_PROGRAM, 0)
+    rec = bytearray(RECORD)
+    rec[0] = 1
+    struct.pack_into("<QQ", rec, 0x18, 0, len(blob))
+    cmd[0x08:0x08 + RECORD] = rec
+    return bytes(cmd)
+
+
 def _self_check():
     blob = blob_header(1)
     assert fw_accepts_blob(blob, len(blob))
@@ -134,9 +147,19 @@ def _self_check():
     word = submit_word(SUBMIT_CURSOR, CMD_SIZE)
     assert word == 0x1B8000100
     assert struct.unpack_from("<H", cmd, 4)[0] == LOAD_PROGRAM
+    staged = stage_command()
+    assert len(staged) == CMD_SIZE
+    assert staged[0x08] & 1
+    assert struct.unpack_from("<QQ", staged, 0x20) == (0, len(blob))
     print("h14_load_program: ok")
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 3 and sys.argv[1] == "--stage":
+        Path = __import__("pathlib").Path
+        out = Path(sys.argv[2])
+        out.write_bytes(stage_command())
+        print(f"wrote {out} {out.stat().st_size} bytes")
+        sys.exit(0)
     _self_check()
     sys.exit(0)
