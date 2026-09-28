@@ -152,6 +152,29 @@ Notes:
 Nothing in this table is done until every performance cell reads
 >=1.00x macOS throughput and <=1.00x latency.
 
+## jwm1 same-protocol paired GPU cells (2026-09-28)
+
+The Qwen decode/prefill rows above compare a later Linux stack with the 2026-09-23 macOS
+denominators (10 prompts x 32 tokens, one 512-token prefill), which is not the protocol the newer Linux cells use.
+One macOS window on the same M1 re-measured the exact cells (`qwen38-mlx-bench.py`, temp 0 greedy, warmup 2, n=5 per cell;
+model mlx-4Bit 0867d98b). Linux: installed wheel 42fbbc5, honeykrisp. Raw: `receipts/2026-09-28-jwm1-macos-parity-legs/`.
+
+| Cell | Linux | macOS | Linux/macOS | Verdict |
+|---|---:|---:|---:|---|
+| prefill 512 tok/s | 242.14 | 345.31 | 0.701 | FAIL |
+| prefill 1024 tok/s | 240.40 | 345.76 | 0.695 | FAIL |
+| prefill 2048 tok/s | 235.57 | 341.80 | 0.689 | FAIL |
+| decode 64 tok/s | 39.22 | 49.36 | 0.795 | FAIL |
+| decode 128 tok/s | 38.26 | 49.26 | 0.777 | FAIL |
+| decode 256 tok/s | 37.63 | 49.33 | 0.763 | FAIL |
+| whole-encoder ANE ms (bit-exact both) | 138.86 | 113.24 (ane) / 112.85 (all) | 0.815 | FAIL |
+| Parakeet fixture (104 tok, transcript == golden both) | 0.92-1.6 s pipeline | 0.272 s inference, RTFx 38.45 | ~0.17-0.30 | FAIL |
+
+Levers measured against these cells the same day (mlx-omarchy receipts `2026-09-28-jwm1-gdn-qk-scaled.md`):
+q/k `rms_norm_scaled` routing shipped (bit-identical, decode +2.0%); dependency-gated barriers 1.002x (no effect);
+gated-norm fusion fixed from 36% to ~1e-5 deviation but still not bit-identical, so not shipped; 64-row qmm coopmat tile 0.939x and
+wider K step 0.897x/0.880x on prefill-512 (both bit-identical, both slower; not shipped). No cell reached 1.00x.
+
 ## Qwen reference workflow
 
 The locked macOS reference uses the real
