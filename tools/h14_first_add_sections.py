@@ -63,7 +63,7 @@ TENSOR_FP16_BYTES = 0x400        # logicalBytes = 512 * 2
 GENERIC_MAGIC = 1
 GENERIC_VERSION = 0x10           # <= 0x10 (verifyGenericSection 0x48208)
 
-# LOAD cmd section ids (h14_seq_load_probe.py convention, driver-replayed
+# LOAD cmd section ids (h14_seq_first_add.py SECTIONS, driver-replayed
 # bytes): generic=1 kernel=2 text=3 operation=4 procedure=5 tdProp=7.
 # The call checker rejects any io bufferId equal to the kernel/text section id
 # (fw135 0x48ee0-0x48f10), so io ids 4/5/6 must avoid 2 and 3 - they do.
@@ -78,8 +78,7 @@ IO = [("a", 5, 0, 1, ALLOCATION_BYTES),
       ("y", 4, 1, 2, ALLOCATION_BYTES)]
 
 PROCEDURE_ID = 0                 # index into procedure section (tot = 1)
-PRIORITY = 2                     # cmd+0x18, valid range [2,7]; minimum used
-                                 # by the proven h14_seq_conv_exec sequence
+PRIORITY = 2                     # cmd+0x18, valid range [2,7]; minimum
 
 
 def build_generic() -> bytes:

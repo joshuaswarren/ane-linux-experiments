@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
-"""Write seq/00-02 that load, instantiate, and call the first-add program.
+"""Build T6021 legacy-sequencer step files for the first-add program.
 
-Usage: h14_seq_first_add.py <sections dir> <first-add artifact dir> <out dir>
+  h14_seq_first_add.py chain <sections> <artifacts> <out dir>
+      Write 00-04: PRINT_ENABLE, TRACE_ENABLE, LOAD_PROGRAM, CREATE_PROCESS,
+      PROCEDURE_CALL (the chain validated on the M2, boot 874b3bd2).
+  h14_seq_first_add.py call <sections> <artifacts> <out file>
+      One more PROCEDURE_CALL with fresh buffers, bound to chain steps 2/3.
+  h14_seq_first_add.py cmd <opcode> <length> <out file> [off=u32|off=u64:value ...]
+      One plain command, e.g. `cmd 0x29 0x10 05.bin 8=u64:0x28e084000`.
 
-<sections dir> is the output of h14_first_add_sections.py (six section
-files + binding.json). <first-add artifact dir> holds the packed 32 KiB
-input-a.buffer, input-b.buffer, and output-sentinel.buffer. The output
-buffer is step 2 buffer 2, published by the driver as
-/sys/kernel/debug/ane_t6021_seq/s02b02.
+<sections> is h14_first_add_sections.py output (section files +
+binding.json). <artifacts> holds input-a.buffer, input-b.buffer and
+output-sentinel.buffer. The CALL output is its buffer 2, published as
+/sys/kernel/debug/ane_t6021_seq/sNNb02.
+
+Layouts (13.5 firmware, sha256 a9c4b771...): envelope u32 0, u16 opcode
+@+4 (driver-written), u16 result @+6. LOAD 0x200: nine 0x30 records at +8
+(flags +0, id +4, address +0x18, size +0x20), ProgramId out at +0x1b8.
+CREATE 0x202: ProgramId +8, ProcessId out +0xc. CALL 0x204: ProgId +8,
+ProcId +0xc, procedure +0x10, priority +0x18 in [2,7], uuid +0x20, count
++0x28, 0x30-byte records at +0x60 (flags bit0, bufferId, type 0 in/1 out,
+dma +0x18, size +0x20).
 """
 import json
 import struct
@@ -15,19 +28,55 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from h14_seq_conv_exec import create_process_step
-from h14_seq_load_probe import FIRST_ADD_SECTIONS, load_step
 from h14_seq_pack import COMMAND, DMA, REPLY32, Buf, Step, pack
 
+SECTIONS = [("generic.bin", 1), ("kernel.bin", 2), ("descriptor.bin", 3),
+            ("operation.bin", 4), ("procedure.bin", 5), (None, 0),
+            ("tdprop.bin", 7), (None, 0), (None, 0)]
 FILL = {"a": "input-a.buffer", "b": "input-b.buffer", "y": "output-sentinel.buffer"}
+LOAD_STEP, CREATE_STEP = 2, 3
 
 
-def procedure_call_step(binding: dict, artifacts: Path) -> Step:
+def command_step(opcode: int, length: int, fields: dict[int, tuple[str, int]]) -> Step:
+    cmd = bytearray(length)
+    for off, (fmt, value) in fields.items():
+        struct.pack_into(fmt, cmd, off, value)
+    return Step(opcode, bytes(cmd), timeout_ms=3000, dump_reply=length)
+
+
+def load_step(sections: Path) -> Step:
+    cmd = bytearray(0x1C0)
+    struct.pack_into("<I", cmd, 0x1B8, 0xFFFFFFFF)
+    bufs, patches = [], []
+    for slot, (name, ident) in enumerate(SECTIONS):
+        if name is None:
+            continue
+        data = (sections / name).read_bytes()
+        rec = 8 + slot * 0x30
+        struct.pack_into("<II", cmd, rec, 1, ident)
+        struct.pack_into("<Q", cmd, rec + 0x20, len(data))
+        patches.append((DMA, COMMAND, rec + 0x18, len(bufs), 0))
+        bufs.append(Buf(max(0x4000, -(-len(data) // 0x4000) * 0x4000), data))
+    return Step(0x200, bytes(cmd), bufs, patches, timeout_ms=5000, dump_reply=0x1C0)
+
+
+def create_process_step() -> Step:
+    cmd = bytearray(0x10)
+    struct.pack_into("<I", cmd, 0x0C, 0xFFFFFFFF)
+    return Step(0x202, bytes(cmd), patches=[(REPLY32, COMMAND, 0x08, LOAD_STEP, 0x1B8)],
+                timeout_ms=3000, dump_reply=0x10)
+
+
+def procedure_call_step(sections: Path, artifacts: Path) -> Step:
+    binding = json.loads((sections / "binding.json").read_text())
     records = binding["records"]
+    if [r["name"] for r in records] != ["a", "b", "y"]:
+        raise SystemExit("binding record order must be a, b, y")
     cmd = bytearray(0x60 + 0x30 * len(records))
     struct.pack_into("<IIIIIIQI", cmd, 0x08, 0, 0, binding["procedure_id"], 0,
                      binding["stats_type"], 0, 0xADD0, len(records))
-    bufs, patches = [], [(REPLY32, COMMAND, 0x08, 0, 0x1B8), (REPLY32, COMMAND, 0x0C, 1, 0x0C)]
+    bufs = []
+    patches = [(REPLY32, COMMAND, 0x08, LOAD_STEP, 0x1B8), (REPLY32, COMMAND, 0x0C, CREATE_STEP, 0x0C)]
     for i, r in enumerate(records):
         fill = (artifacts / FILL[r["name"]]).read_bytes()
         if len(fill) != r["size"]:
@@ -38,23 +87,34 @@ def procedure_call_step(binding: dict, artifacts: Path) -> Step:
         patches.append((DMA, COMMAND, rec + 0x18, i, 0))
         bufs.append(Buf(r["size"], fill, 64))
     return Step(0x204, bytes(cmd), bufs, patches, timeout_ms=5000,
-                dump_reply=len(cmd), settle_ms=500)
+                dump_reply=len(cmd), settle_ms=1500)
+
+
+def parse_field(text: str) -> tuple[int, tuple[str, int]]:
+    off, _, value = text.partition("=")
+    fmt, _, number = value.rpartition(":")
+    return int(off, 0), ({"": "<I", "u32": "<I", "u64": "<Q"}[fmt], int(number, 0))
 
 
 def main() -> int:
-    sections, artifacts, out = (Path(p) for p in sys.argv[1:4])
-    binding = json.loads((sections / "binding.json").read_text())
-    if [r["name"] for r in binding["records"]] != ["a", "b", "y"]:
-        raise SystemExit("binding record order must be a, b, y")
-    out.mkdir(parents=True, exist_ok=True)
-    for old in out.glob("*.bin"):
-        old.unlink()
-    steps = [load_step(sections, FIRST_ADD_SECTIONS), create_process_step(),
-             procedure_call_step(binding, artifacts)]
-    for i, step in enumerate(steps):
-        (out / f"{i:02d}.bin").write_bytes(pack(step))
-    for p in sorted(out.glob("*.bin")):
-        print(p.name, p.stat().st_size)
+    mode, args = sys.argv[1], sys.argv[2:]
+    if mode == "chain":
+        sections, artifacts, out = (Path(p) for p in args)
+        out.mkdir(parents=True, exist_ok=True)
+        for old in out.glob("*.bin"):
+            old.unlink()
+        steps = [command_step(0x04, 0x0C, {8: ("<I", 1)}), command_step(0x21, 0x0C, {8: ("<I", 0xE)}),
+                 load_step(sections), create_process_step(), procedure_call_step(sections, artifacts)]
+        for i, step in enumerate(steps):
+            (out / f"{i:02d}.bin").write_bytes(pack(step))
+    elif mode == "call":
+        sections, artifacts, out = (Path(p) for p in args)
+        out.write_bytes(pack(procedure_call_step(sections, artifacts)))
+    elif mode == "cmd":
+        opcode, length, out = int(args[0], 0), int(args[1], 0), Path(args[2])
+        out.write_bytes(pack(command_step(opcode, length, dict(map(parse_field, args[3:])))))
+    else:
+        raise SystemExit(__doc__)
     return 0
 
 
