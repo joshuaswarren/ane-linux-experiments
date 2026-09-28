@@ -26,6 +26,12 @@ RECORD = 0x30
 BLOB_COUNT_OFF = 0x204
 BLOB_TABLE_OFF = 0x208
 
+# Kernel submit contract (ane_t6021_rtclient_main.c, csne_load_program=1).
+# The driver copies this file and doorbells cursor|len<<24. It does not
+# rebuild the command.
+FW_NAME = "apple/ane/load_program.bin"
+SUBMIT_CURSOR = 0x100
+
 # Name, command offset. Stride is 0x30. End of the last record is CMD_SIZE.
 SECTIONS = (
     ("generic", 0x08),
@@ -93,6 +99,22 @@ def fw_accepts_blob(blob, size):
     return size >= BLOB_TABLE_OFF + count * RECORD
 
 
+def submit_word(cursor, length):
+    """msg48 word the driver sends: cursor[23:0] | length[47:24]."""
+    if cursor > 0xFFFFFF or length > 0xFFFFFF:
+        raise ValueError("cursor or length does not fit the msg48 fields")
+    return cursor | (length << 24)
+
+
+def write_firmware(path, sections):
+    """Write the blob csne_load_program submits. No device contact."""
+    blob = pack(sections)
+    if len(blob) != CMD_SIZE:
+        raise ValueError(f"packed size {len(blob)} != {CMD_SIZE}")
+    path.write_bytes(blob)
+    return blob
+
+
 def _self_check():
     blob = blob_header(1)
     assert fw_accepts_blob(blob, len(blob))
@@ -109,6 +131,9 @@ def _self_check():
         raise AssertionError("zero dva must fail")
     except ValueError:
         pass
+    word = submit_word(SUBMIT_CURSOR, CMD_SIZE)
+    assert word == 0x1B8000100
+    assert struct.unpack_from("<H", cmd, 4)[0] == LOAD_PROGRAM
     print("h14_load_program: ok")
 
 
