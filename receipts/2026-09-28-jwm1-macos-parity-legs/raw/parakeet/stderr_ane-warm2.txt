@@ -1,0 +1,13 @@
+Loading models from ~/mac-reference-bundle/models (compute: ane)...
+Models ready in 0.12 s
+Transcribing 10.44 s of audio...
+
+----- timing -----
+audio:       10.435 s
+inference:    0.270 s
+  mel:        0.014 s
+  encoder:    0.134 s
+  decode:     0.121 s   (decoder + joint loop)
+  detok:      0.000 s
+RTFx:         38.71x
+tokens:     104

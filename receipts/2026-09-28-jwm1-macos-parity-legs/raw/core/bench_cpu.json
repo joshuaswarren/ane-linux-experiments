@@ -1,0 +1,2 @@
+{"units":"cpu","compile_ms":257.6,"load_ms":2500.6,"placement":{"cpu":1374},"reps":10,"median_ms":272.88,"min_ms":271.27,"max_ms":276.77,"mean_ms":273.22,"hidden_stride_mean":-0.053500,"hidden_count":240000,"mask_sum":375}
+times_ms [271.27, 271.77, 272.19, 272.60, 272.74, 272.88, 273.16, 273.22, 275.62, 276.77]

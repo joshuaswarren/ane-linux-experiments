@@ -1,0 +1,1 @@
+{"file":"/tmp/parity-core/core-20260928T173301/out_all.bin","words":240000,"mismatches":0,"max_delta":0,"first_bad_index":-1,"bit_exact":true}

@@ -1,0 +1,24 @@
+out dir: /tmp/parity-core/core-20260928T173301
+feat_f32.bin: OK
+mask_i32.bin: OK
+gold_f16.bin: OK
+cache hit: ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+model dir: ~/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018
+-- thermals
+Note: No thermal warning level has been recorded
+CFBundleVersion: 3600.25.2
+compiling from source...
+== arm cpu
+{"units":"cpu","compile_ms":257.6,"load_ms":2500.6,"placement":{"cpu":1374},"reps":10,"median_ms":272.88,"min_ms":271.27,"max_ms":276.77,"mean_ms":273.22,"hidden_stride_mean":-0.053500,"hidden_count":240000,"mask_sum":375}
+times_ms [271.27, 271.77, 272.19, 272.60, 272.74, 272.88, 273.16, 273.22, 275.62, 276.77]
+{"file":"/tmp/parity-core/core-20260928T173301/out_cpu.bin","words":240000,"mismatches":237818,"max_delta":0.206299,"first_bad_index":1,"bit_exact":false}
+== arm ane
+{"units":"ane","compile_ms":241.6,"load_ms":23012.1,"placement":{"ane":1345,"cpu":29},"reps":10,"median_ms":113.24,"min_ms":112.76,"max_ms":113.47,"mean_ms":113.16,"hidden_stride_mean":-0.053864,"hidden_count":240000,"mask_sum":375}
+times_ms [112.76, 112.85, 112.99, 113.21, 113.22, 113.24, 113.25, 113.27, 113.33, 113.47]
+{"file":"/tmp/parity-core/core-20260928T173301/out_ane.bin","words":240000,"mismatches":0,"max_delta":0,"first_bad_index":-1,"bit_exact":true}
+== arm all
+{"units":"all","compile_ms":232.5,"load_ms":22988.9,"placement":{"ane":1345,"cpu":29},"reps":10,"median_ms":112.85,"min_ms":112.21,"max_ms":113.24,"mean_ms":112.75,"hidden_stride_mean":-0.053864,"hidden_count":240000,"mask_sum":375}
+times_ms [112.21, 112.27, 112.36, 112.73, 112.79, 112.85, 112.92, 112.98, 113.18, 113.24]
+{"file":"/tmp/parity-core/core-20260928T173301/out_all.bin","words":240000,"mismatches":0,"max_delta":0,"first_bad_index":-1,"bit_exact":true}
+ane power sample: ANE power: none-recorded (check ane_power_*.txt/.err)
+CORE-BUNDLE OK — /tmp/parity-core/core-20260928T173301

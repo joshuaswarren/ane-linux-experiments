@@ -1,0 +1,4 @@
+prompts_identity_sha: 2d463f494dfbf9facd514d0be0d811f79ffa78a7872b408b2c5cf2bcc96e285d
+pass 0 done
+pure_prefill: {'prompt_tokens': 2048, 'wall_s': 6.0145, 'gpu_busy_percent_samples': [], 'pure_prefill_tok_rate': 340.51}
+ordered_records_sha256: ccb601895581d89f751fe0c3d1742ed4118ebd6f32970e5ef5005dda698629ca

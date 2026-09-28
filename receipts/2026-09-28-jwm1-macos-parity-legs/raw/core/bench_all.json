@@ -1,0 +1,2 @@
+{"units":"all","compile_ms":232.5,"load_ms":22988.9,"placement":{"ane":1345,"cpu":29},"reps":10,"median_ms":112.85,"min_ms":112.21,"max_ms":113.24,"mean_ms":112.75,"hidden_stride_mean":-0.053864,"hidden_count":240000,"mask_sum":375}
+times_ms [112.21, 112.27, 112.36, 112.73, 112.79, 112.85, 112.92, 112.98, 113.18, 113.24]
