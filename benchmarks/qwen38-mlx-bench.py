@@ -198,7 +198,7 @@ def main():
             ids = tok.encode(text)
             cache = make_prompt_cache(model)
             t0 = time.perf_counter()
-            it = generate_step(mx.array(ids), model, prompt_cache=cache)
+            it = generate_step(mx.array(ids), model, prompt_cache=cache, max_tokens=a.new_tokens)
             first = next(it)[0]
             mx.eval(first)
             ttft = time.perf_counter() - t0
