@@ -128,6 +128,20 @@ def stage_command():
     return bytes(cmd)
 
 
+def stage_like_driver(iova):
+    """Bytes the driver submits after dma_alloc. iova stands in for the
+    coherent mapping. The filled blob must pass the 0x5d0c8 check."""
+    if not iova:
+        raise ValueError("the driver never submits a zero device address")
+    cmd = bytearray(stage_command())
+    size = struct.unpack_from("<Q", cmd, 0x28)[0]
+    blob = bytearray(size)
+    struct.pack_into("<I", blob, 0, 1)
+    struct.pack_into("<I", blob, BLOB_COUNT_OFF, 1)
+    struct.pack_into("<Q", cmd, 0x20, iova)
+    return bytes(cmd), bytes(blob)
+
+
 def _self_check():
     blob = blob_header(1)
     assert fw_accepts_blob(blob, len(blob))
@@ -151,6 +165,9 @@ def _self_check():
     assert len(staged) == CMD_SIZE
     assert staged[0x08] & 1
     assert struct.unpack_from("<QQ", staged, 0x20) == (0, len(blob))
+    patched, filled = stage_like_driver(0x1000)
+    assert struct.unpack_from("<Q", patched, 0x20)[0] == 0x1000
+    assert fw_accepts_blob(filled, len(filled))
     print("h14_load_program: ok")
 
 
