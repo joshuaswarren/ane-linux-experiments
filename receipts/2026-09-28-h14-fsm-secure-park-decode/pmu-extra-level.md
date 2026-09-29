@@ -171,3 +171,33 @@ The "empty task page" sections also rest on an unproven reading of
 (getPoolIdxAddr) store a pool address at 0x42644. That page may be
 L2 spill scratch, not a task descriptor. Zero there proves nothing
 about the task fetch until that is settled.
+
+## Settled by static decode of fw 13.5 (2026-09-29, live dump of boot 553378f5)
+
+These four results replace the earlier "parked in PAUSE" root cause.
+
+1. Host cmds 0x27 and 0x28 only set the aneSecurePhase flag
+   (ExeLoop+0x1a2) and call powerUpAne/powerDownAne. They never post
+   an ELFSM event. Path: 0x27e88/0x27ef4 -> SendSecureModeRequest
+   0x5197c -> CPipe::Post -> DataProcessor 0x4f74c type 4 (0x4fa44).
+2. ELFSM events come only from hardware IRQ 10 (0x4a93c, key 2) and
+   IRQ 11 (0x4a96c, key 3). The table at 0xc8020 is keyed by event,
+   not target state. State 1 accepts key 1, 2 and 4. Key 3 has no
+   edge from state 1.
+3. Live ELFSM state is 1 (RUN). It never left state 1. A stray IRQ
+   11 at boot dropped its key-3 post and still ran EnableTQs
+   (0x4bb18), so TQEn=1 with counters 0/0. There is no PAUSE park.
+4. Firmware 0xfbc00000 (record word1) is the firmware-MMU address of
+   the per-seq record itself, not the L2 spill pool and not a task
+   descriptor (only writer: 0x3457c inside 0x343f8). The zero page the
+   host read at the DRAM address is an unrelated pool slab. The
+   "empty task page" claims above do not stand.
+
+The TQ gets its work from a 7-word FIFO push at 0x285c20400 (sites
+0x345a8, 0x34630, 0x450a4) and then the doorbell. The loaded
+descriptor at 0xfbedc000 still holds the 0x0000dead placeholders at
++0xd4 and +0xdc, so the buffer-address patch never touched that
+copy. Open: does the TD-build routine (0x44c98) run at all.
+
+Also: `tools/h14_seq_kext_init.py` builds the kext init commands,
+and `tools/m2_collect/` holds a read-only collector.
