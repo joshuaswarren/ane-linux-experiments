@@ -63,3 +63,14 @@ from zero. Against a reference with that rounding all four calls are
 16384/16384 bit-exact. The oracle for any future add check must use
 half-away rounding (or accept 1 ulp on exact ties). Script:
 `drivers/t6021/lab/ref_check.py`.
+
+## Minimal recipe, second fresh boot (3ab812a3, fw_start_dapf=0)
+
+The bare call also passes with DAPF off: y 16384/16384 bit-exact vs the
+half-away reference, all eight TQ status words 0x81 afterwards. The
+minimal sequence is therefore: LOAD_PROGRAM with the 260-byte
+Descriptor (tdprop size 0x104) and the operation-section refs, then
+CREATE_PROCESS, then PROCEDURE_CALL. Not needed: property 0x10A8, cmds
+0x27/0x28/0x29, DAPF, TRACE_ENABLE. All earlier secure-mode and PMU
+findings in this directory describe firmware behavior that this
+program does not depend on.

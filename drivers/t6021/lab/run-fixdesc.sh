@@ -8,7 +8,7 @@ sudo -n insmod /var/tmp/m2-primitive-driver/t6021-v2/ane_t6021_rtclient.ko \
   fw_start_stop_after=0 fw_start_table_mode=2 fw_start_rtb_mode=0 fw_alias_reserved=1 \
   fw_start_venc_gates=0 fw_start_mpm_off=0 fw_start_state_report=0 \
   fw_start_dart_single_stream=0 fw_start_mbox_ctrl_bit19=0 fw_start_core1_run=0 \
-  fw_start_wrapper_b80_unmask=0 fw_start_dapf=1 patch_timer_freq=0 scratch3_ack=1 \
+  fw_start_wrapper_b80_unmask=0 fw_start_dapf=${DAPF:-1} patch_timer_freq=0 scratch3_ack=1 \
   legacy_only=1 legacy_query=1 legacy_load=0 legacy_seq=1 legacy_resource=0 \
   legacy_silent=0 legacy_notify_ack=1 legacy_fast_poll=1 csne_ping=0 poll_rx=1 \
   hello_wait_ms=1000 fw_load_stamp_base=0 boot_prevent_nap=1
