@@ -86,3 +86,23 @@ Inputs were not zero (first fp16 values 0xc800 and 0xb800). y == a+b
 is not met.
 
 
+
+## The doorbell names an empty 2 MiB buffer
+
+Queue config is 0x201 on all 8 queues, so Reset ran. Queue 5
+doorbell is still 0x80010001. The per-seq record word 1 is
+0xfbc00000. That IOVA is the boot malloc tagged 0x45585050,
+2 MiB, and every 16 KiB page is zero. The compiled descriptor
+is intact at 0xfbedc000 (+0x10 = 0x3d0000). The firmware never
+copied it into the buffer the record names. y == a+b is not met.
+
+The 2 MiB buffer is the CExpandablePool slab. Tag 0x45585050 is
+built at 0x1530c (`mov w1, #0x5050; movk w1, #0x4558, lsl #16`)
+in CExpandablePool.cpp:0x88. expandPool records the pointer and
+does not copy a task descriptor into the slab.
+
+A read of every word at 0x285c00000 and 0x285c20000 wedged the
+host. The screen froze on an early-boot frame. Do not scan a
+whole TM page. Recovery is a reboot through the jwm1 USB owner.
+
+
