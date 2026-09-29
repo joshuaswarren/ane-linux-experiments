@@ -266,3 +266,14 @@ never ran and calls it a missing step. That reading is wrong.
 Queue 5 is stuck because its stop doorbell (0x80020001) has bit 30
 clear, so TqStopIsr (0x4a680) cannot consume it. That still does not
 explain why the hardware never ran the TD. Open.
+
+## Correction to the abort-command route
+
+A decode agent said host cmd -> CmdProcessor -> engine vtable+0xe0
+reaches SendAbortRequest. That is wrong. vtable+0xe0 (0x51a8c) is
+SendDynamicPowerGateRequest, reached by host cmd 0x2d (handler 0x28178,
+"enable=%d"). H14 SendAbortRequest (0x51830) sits at vtable+0xd0. No
+CmdProcessor code (0x26000-0x2b000) loads vtable+0xd0, and the symbol
+has no direct caller. No host command that sends an abort is known.
+The proposed "deliver an abort, then read 0x285c20510" experiment has
+no verified host trigger. Do not run it as written.
