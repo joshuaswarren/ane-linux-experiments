@@ -414,3 +414,21 @@ So the TQ arming init landed, the fetch does not fault in the DART,
 and the TQ still ignores the push entry. This is not a power-window
 or an addressing fault on the two IOVAs. The word 0x285874008 was not
 read (register class unknown).
+
+## The TQ took the entry: queue 5 is busy, not idle (boot 17134a4b)
+
+Single reads after the bare call (PS words 0x3ff), the words fw
+waitTQIdle (0x33168, bit 0 = Idle) and GetLastCommittedTDInfo (0x333b4)
+poll:
+
+- per-queue status 0x285c20804 + q*0x2c: q0..q4, q6, q7 = 0x81 (Idle
+  set); q5 = 0x70 (Idle clear).
+- last committed TD 0x285c20458 = 0x00ff0000 (nid 0xff, tdcount 0: no
+  TD has completed).
+
+The earlier reading "the TQ ignores the push" is wrong. Queue 5 left
+the idle state after the push. It has fetched or started the task and
+is stuck. Event FIFO count stays 0. The M1 driver defines only bit 0 of
+the TQ status (ane_tm.c TM_IS_IDLE); bits 4..6 of 0x70 are not
+decoded. Not yet known whether the TQ waits on the TD fetch, on the
+input DMA, or on a kernel/BAR it cannot resolve.
