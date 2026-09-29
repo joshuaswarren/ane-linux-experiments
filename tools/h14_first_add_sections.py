@@ -39,6 +39,7 @@ if ANEC is None:
 #   firstTask=244 used) ... 0x1140 constant region (16384 B, all zero).
 TASK_OFFSET = 0x1000
 FIRST_TASK_BYTES = 244
+FRAME_BYTES = 16
 CONST_OFFSET = 0x1140
 CONST_BYTES = 16384
 
@@ -98,11 +99,25 @@ def build_descriptor() -> bytes:
     first_task = struct.unpack_from("<I", d, 8)[0]
     if first_task != FIRST_TASK_BYTES:
         raise SystemExit(f"anec firstTaskBytes {first_task} != {FIRST_TASK_BYTES}")
-    task = d[TASK_OFFSET:TASK_OFFSET + FIRST_TASK_BYTES]
+    # The task stream at TASK_OFFSET starts with a zero-size 16-byte frame,
+    # then the task itself (header word 4 bits 26:16 = task words). Apple's
+    # own conv Descriptor (/lib/firmware/apple/ane/h14conv/text.bin) is 408 B
+    # = 16 B frame + 98 task words (392 B). Copying only firstTaskBytes from
+    # TASK_OFFSET drops the last 16 B, which is the output address record
+    # (0x1508, header 0x22808542) and one word of the slot-6 record. The TQ
+    # then waits for the rest of the task and never completes.
+    task = d[TASK_OFFSET:TASK_OFFSET + FRAME_BYTES + FIRST_TASK_BYTES]
+    if len(task) != FRAME_BYTES + FIRST_TASK_BYTES:
+        raise SystemExit(f"anec task region truncated: {len(task)}")
     words = struct.unpack_from("<12I", task, 0)
+    if any(words[0:4]):
+        raise SystemExit(f"task frame words 0..3 not zero: {words[0:4]}")
     if words[4:12] != ORACLE_HEADER_WORDS:
         raise SystemExit(f"task words 4..11 {words[4:12]} do not match the "
                          "binary_add_1x512x1x1 oracle header_words")
+    task_words = (words[4] >> 16) & 0x7FF
+    if 4 + task_words != len(task) // 4:
+        raise SystemExit(f"header task_words {task_words} + frame != {len(task) // 4} words")
     return task
 
 
