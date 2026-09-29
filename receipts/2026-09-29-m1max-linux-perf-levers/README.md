@@ -51,3 +51,25 @@ detok 7.9. Every cell is still a loss against macOS; no parity is claimed.
 Encoder 300 ms (ANE clock; needs firmware perf-mode, ASC parked on T6001), GEMM 1.27x slower
 (prefill Δ ~290 ms), SDPA prefill 22.7 vs 5.5 ms per layer (no fused prefill kernel),
 gated_delta_update 9.6 vs 3.7 ms per layer, decode per-dispatch latency (405 tiny dispatches/token).
+
+## Addendum (later 2026-09-29): dependency gating, read/write-split tracker, gated norm; PR to omacom/mesa
+| commit / change | what | evidence |
+|---|---|---|
+| mlx-omarchy 242d4f409 | `MLX_OMARCHY_GATED_BARRIERS` default on | 8 interleaved pairs of the full 10-prompt x 10-pass contract (16 runs), digest `dbf70497` in every run, +2.9% decode; jwm1 (T8103) gated the default too: identical digests, no gain/regression (receipt f54ceb49) |
+| mlx-omarchy ec02d565b | tracker splits read/write bindings via SPIR-V readonly/writeonly reflection | d64 84.46 -> 85.66 (+1.4%), digests identical |
+| mlx-lm gated-norm patch (`patches/mlx-lm-qwen35-gated-norm.patch`, applied to the serving venv) | RMSNormGated 6 dispatches -> 1 (90/token) | with the tracker: 8 interleaved pairs, control 84.6-85.1 vs candidate 88.7-89.4 tok/s (+4.9%), all 16 digests `dbf70497` |
+| mesa (joshuaswarren/mesa-1 `jw16/omacom-pr`) | curated 11-commit set rebased on omacom/mesa main | omacom/mesa PR #3; rebased driver re-validated: digests identical, decode 88.57 vs 88.21, prefill 900.9 vs 895.7, Parakeet contract green |
+Refuted: forcing coherent device loads/stores does not make the USC-only barrier bit-exact (arm C corrupt, 76.5 tok/s) and costs -27% alone (arm D 59.8): the required CDM barrier bits carry kernel-completion ordering, not only cache visibility; the barrier-free ceiling is 135.6 tok/s (corrupt).
+
+Production stack now (no env overrides, digests identical to the 09-28 baseline in all seven cells):
+| cell | 09-28 | now | macOS | now/macOS |
+|---|---:|---:|---:|---:|
+| decode 64 | 80.40 | 88.21 | 180.01 | 0.490 |
+| decode 128 | 79.49 | 87.62 | 179.28 | 0.489 |
+| decode 256 | 78.28 | 86.61 | 178.28 | 0.486 |
+| decode 512 | 76.11 | 84.16 | 177.12 | 0.475 |
+| prefill 512 | 753.9 | 791.3 | 1327.2 | 0.596 |
+| prefill 1024 | 832.6 | 883.0 | 1355.8 | 0.651 |
+| prefill 2048 | 862.7 | 895.7 | 1379.6 | 0.649 |
+| Parakeet warm total | 913.7 ms | ~795 ms | 261 ms | ~3.0x slower |
+Every cell is still a loss against macOS. Remaining decode structure: ~315-370 dependent dispatches/token at ~4.5 us saved per removed dispatch; barrier-free ceiling 135.6 tok/s.
