@@ -41,6 +41,15 @@ genpd holding the domains on does not explain this assert. The firmware
 never observes the host 0x3ff value. A direct host store of 0x3F0 still
 wedges the machine; that test is not a substitute for the firmware's load.
 
+## Assert-site write is refused
+
+The branch at VA 0x62b04 is `b.eq` (`0x54000900`) at PA
+`0x100008aab04`. `ioremap` and `ioremap_np` both oopsed:
+`Unable to handle kernel write to read-only memory`. The word is
+unchanged. Do not map that page for write. The machine stayed up.
+jwm1 was not on Linux, so there was no reboot after the oopses.
+`0x29` was not sent on that boot.
+
 ## Next measurement
 
 The last-level PTE format is not the 16 KiB leaf format. Do not send 0x29
