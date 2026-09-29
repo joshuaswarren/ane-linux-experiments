@@ -50,6 +50,8 @@ for c in $CELLS; do
         B --new-tokens 32 --warmup 1 --passes 1 --prefill-tokens $P --label $TAG-$c-$i --out $OUT/qwen-gpu-$c-$i.json > $OUT/$c-$i.log 2>&1 || echo "$c-$i FAILED"; done ;;
     bd*) T=${c#bd}; echo "--- breakdown $T $(date -u +%FT%TZ)"
         $PY $BD $MODEL $T 5 > $OUT/$c.json 2> $OUT/$c.err || echo "$c FAILED" ;;
+    so*) T=${c#so}; echo "--- subops $T $(date -u +%FT%TZ)"
+        $PY ${BD%/*}/mixer_subops.py $MODEL $T 5 > $OUT/$c.json 2> $OUT/$c.err || echo "$c FAILED" ;;
   esac
 done'
 ( cd "$OUT" && sha256sum ./*.json ./*.log ./*.txt > SHA256SUMS )
