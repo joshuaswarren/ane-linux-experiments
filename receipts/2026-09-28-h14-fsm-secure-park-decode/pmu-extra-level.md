@@ -115,3 +115,11 @@ words were zero. The output buffer was zero. The call does not
 fill the page the doorbell names.
 
 
+## Filling the named page did not run the doorbell
+
+The queue-5 doorbell was still 0x80010001. Copying the loaded
+descriptor (0xf4 bytes, 50 nonzero words) into that page left the
+doorbell unchanged and the output zero. A pending doorbell does
+not fetch the page when the page becomes non-zero.
+
+
