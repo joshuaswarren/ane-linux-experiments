@@ -354,6 +354,8 @@ static const struct file_operations ane_seq_run_fops = {
 	.write = ane_seq_run_write,
 };
 
+static const struct file_operations ane_seq_pmu_fops;
+
 static int ane_rtclient_legacy_sequence(struct ane_rtclient *ane)
 {
 	struct ane_t6021 *a = ane->fw;
@@ -371,5 +373,24 @@ static int ane_rtclient_legacy_sequence(struct ane_rtclient *ane)
 	}
 	if (!IS_ERR_OR_NULL(ane_seq_dbg))
 		debugfs_create_file("run", 0200, ane_seq_dbg, ane, &ane_seq_run_fops);
+	debugfs_create_file("pmu", 0400, ane_seq_dbg, ane, &ane_seq_pmu_fops);
 	return ane_seq_continue(ane);
 }
+
+static ssize_t ane_seq_pmu_read(struct file *file, char __user *buf, size_t len, loff_t *ppos)
+{
+	struct ane_rtclient *ane = file->private_data;
+	struct iommu_domain *dom = iommu_get_domain_for_dev(ane->dev);
+	char out[64];
+	int n;
+
+	n = scnprintf(out, sizeof(out), "pmu_iova_to_phys=%#llx\n",
+		      dom ? iommu_iova_to_phys(dom, 0x28e084000ull) : 0);
+	return simple_read_from_buffer(buf, len, ppos, out, n);
+}
+
+static const struct file_operations ane_seq_pmu_fops = {
+	.owner = THIS_MODULE,
+	.open = simple_open,
+	.read = ane_seq_pmu_read,
+};

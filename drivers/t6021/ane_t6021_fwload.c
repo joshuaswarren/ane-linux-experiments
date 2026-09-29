@@ -170,8 +170,13 @@ bool ane_t6021_fwload_options_ok(bool transport)
 
 static int ane_t6021_pmu_map(struct ane_t6021 *ane, struct iommu_domain *dom)
 {
-	int ret = iommu_map(dom, ANE_T6021_PMU_PA, ANE_T6021_PMU_PA, ANE_T6021_FW_ALIAS_PAGE,
-			    IOMMU_READ | IOMMU_WRITE | IOMMU_MMIO, GFP_KERNEL);
+	int prot = IOMMU_READ | IOMMU_WRITE;
+	int ret;
+
+	if (dev_is_dma_coherent(ane->dev))
+		prot |= IOMMU_CACHE;
+	ret = iommu_map(dom, ANE_T6021_PMU_PA, ANE_T6021_PMU_PA, ANE_T6021_FW_ALIAS_PAGE,
+			prot, GFP_KERNEL);
 
 	if (!ret && iommu_iova_to_phys(dom, ANE_T6021_PMU_PA) != ANE_T6021_PMU_PA)
 		ret = -EIO;
