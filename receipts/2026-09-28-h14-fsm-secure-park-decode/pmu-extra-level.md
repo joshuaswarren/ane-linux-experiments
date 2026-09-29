@@ -213,3 +213,23 @@ so the patch table the TQ reads is empty and the 0x0000dead
 placeholders in the descriptor stay unpatched. Queue 5 doorbell
 0x80010001, TQEn 0x803000, event FIFO count 0, queue cfg 1,2,3,4,5,6,
 0x1e,0x1f, power regs 0x3ff, DART TCR 9. All reads were single words.
+
+## Bare call vs call with tdCount (boot f64ca14e)
+
+Sequence: LOAD, CREATE, then (a) one PROCEDURE_CALL with progMgr+0x9890
+still -1, then (b) property 0x10A8 = 1 and a second call. No 0x27,
+0x28 or 0x29 on this boot. TQEn (0x285c20420) reads 0x803000 right
+after CREATE, before any call, so TQEn=1 is the boot state.
+
+- Call (a): the push FIFO holds the same shape as before
+  (`0xfd68be00 0 0xfbedc000 0 0x97 0x3d 5`). No doorbell (all eight
+  read 0). Output buffer keeps its sentinel (crc 0ce22471).
+- Call (b): q5 doorbell reads 0x80020001, pending. Event FIFO count
+  0. The output buffer is zero over all 32768 bytes (crc 758d6336)
+  before the ack. Inputs are intact. The call-(a) output buffer is
+  still the sentinel.
+
+A compute of 512 fp16 would touch 1 KiB, not all 32 KiB. So the
+firmware clears the output buffer when it submits a call with a valid
+tdCount. The zero output is not a tile result. The tiles still do not
+run: the doorbell stays pending and no event arrives.
