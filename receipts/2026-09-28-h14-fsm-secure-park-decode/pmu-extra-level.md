@@ -245,3 +245,24 @@ for either. Static decode: TM Reset never writes 0x20510, and the
 only caller found so far sits in the ExeLoop event drain
 (0x4ee00-0x4f280). The hardware never acknowledged the queue-5
 doorbell (0x80020001, bit 30 clear).
+
+## Correction: EnableTq is abort recovery, not a missing init step
+
+The section "Queue enable register reads" above says the queue enable
+never ran and calls it a missing step. That reading is wrong.
+
+- 0x201 already has bit 9 (0x200) set, so the queue words cannot show
+  whether EnableTq ran. Reset (0x340f4) writes 0x201 directly.
+- The command register 0x285c20510 is written only by AbortTQE
+  (0x34318) and base AbortTQ (0x332a4). Neither has a direct caller.
+  The only route is the vtable+0xb0 call at 0x4f04c inside
+  handleAbort_abortRaisePriority (0x4ed1c), which only a type-2
+  abort command reaches (host cmd -> CANEController::CmdProcessor ->
+  engine vtable+0xe0 SendAbortRequest -> ExeLoop pipe -> DataProcessor
+  cmd type 2).
+- So 0x285c20510 = 0 is the normal state. It is not evidence of a
+  missing enable. A TD finish or a TqStop IRQ does not run EnableTq.
+
+Queue 5 is stuck because its stop doorbell (0x80020001) has bit 30
+clear, so TqStopIsr (0x4a680) cannot consume it. That still does not
+explain why the hardware never ran the TD. Open.
