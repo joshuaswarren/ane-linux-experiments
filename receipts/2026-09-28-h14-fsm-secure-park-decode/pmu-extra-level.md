@@ -135,3 +135,18 @@ A host write of the doorbell register wedged the machine.
 Do not repeat it.
 
 
+
+## Trace omission clears the CREATE fault, record still empty
+
+TQEn at +0x2420 reads 0 right after insmod. EnableTQs has one
+caller (0x4bb18) and Reset does not touch bit13, so the 1 seen
+on earlier boots came from the event pump after the switches
+ran. Counters 0/0 on this boot too. Omitting TRACE_ENABLE
+removed the "Can't post, Driver has trace shared buffer handle"
+fault at CREATE, but the per-seq record is still the
+constructor stub and the output is zero. The fault is not what
+holds the record fill.
+
+Do not send 0x23 shape A. The program vtable +0x70 is NULL and
+shape A would call it and assert.
+
