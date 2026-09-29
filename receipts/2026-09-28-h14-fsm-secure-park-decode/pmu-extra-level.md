@@ -277,3 +277,14 @@ CmdProcessor code (0x26000-0x2b000) loads vtable+0xd0, and the symbol
 has no direct caller. No host command that sends an abort is known.
 The proposed "deliver an abort, then read 0x285c20510" experiment has
 no verified host trigger. Do not run it as written.
+
+## KIC bank and core-1 state already match macOS (boot 3a9068c1)
+
+Loaded with fw_start_wrapper_b80_unmask=1. The driver logs before and
+after each write. All seven words 0x1400b80..b94 and 0x1400bfc read
+0xffffffff BEFORE the write and after it. Core-1 control +0x1400444
+reads 0x00000010 (RUN) before release. So these two candidates from the
+state comparison do not differ from the macOS working state on this
+hardware. They are not the cause. Still open: ane_sys_mpm form
+(fw_start_mpm_off), DART single-stream, mailbox ctrl bit19, DAPF, and
+the fw PMU window (RAM mirror instead of a real translation).
