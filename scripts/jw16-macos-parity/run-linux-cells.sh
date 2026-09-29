@@ -1,6 +1,10 @@
 #!/bin/bash
 # jw16 Linux GPU cells, same protocol as run-gpu-cells.sh (macOS):
 #   decode 64/128/256/512 (one process, 5 passes), prefill 512/1024/2048 (5 processes).
+# Every pf cell also runs the real-text logits gate (prefill_logits_digest.py at the cell's T over
+# the 100-prompt corpus, full-T logits): any non-finite logit prints "<cell> LOGITS GATE FAILED".
+# The records digest alone covers a 12-token prompt and never reaches the T>=64 GDN chunk route
+# (2026-09-29: that route produced NaN at every position while every pf digest matched).
 # llm-inference discipline: stop, verify inactive + lock free, flock the run, restore
 # via trap, verify health 200 AND a real completion probe.
 # usage: run-linux-cells.sh OUTDIR [cells...]   cells default: d64 d128 d256 d512 pf512 pf1024 pf2048
@@ -47,7 +51,11 @@ for c in $CELLS; do
     d*) N=${c#d}; echo "--- decode $N $(date -u +%FT%TZ)"
         B --new-tokens $N --warmup 1 --passes 5 --prefill-tokens 512 --label $TAG-$c-n5 --out $OUT/qwen-gpu-$c-n5.json > $OUT/$c.log 2>&1 || echo "$c FAILED" ;;
     pf*) P=${c#pf}; for i in 1 2 3 4 5; do echo "--- prefill $P run $i $(date -u +%FT%TZ)"
-        B --new-tokens 32 --warmup 1 --passes 1 --prefill-tokens $P --label $TAG-$c-$i --out $OUT/qwen-gpu-$c-$i.json > $OUT/$c-$i.log 2>&1 || echo "$c-$i FAILED"; done ;;
+        B --new-tokens 32 --warmup 1 --passes 1 --prefill-tokens $P --label $TAG-$c-$i --out $OUT/qwen-gpu-$c-$i.json > $OUT/$c-$i.log 2>&1 || echo "$c-$i FAILED"; done
+        echo "--- prefill $P logits gate $(date -u +%FT%TZ)"
+        $PY ${BD%/*}/prefill_logits_digest.py "$MODEL" - $P > $OUT/ld-$c.json 2> $OUT/ld-$c.err \
+          || echo "$c LOGITS GATE FAILED (non-finite logits or error: $OUT/ld-$c.json, .err)"
+        grep logits_sha256 $OUT/ld-$c.err ;;
     bd*) T=${c#bd}; echo "--- breakdown $T $(date -u +%FT%TZ)"
         $PY $BD $MODEL $T 5 > $OUT/$c.json 2> $OUT/$c.err || echo "$c FAILED" ;;
     so*) T=${c#so}; echo "--- subops $T $(date -u +%FT%TZ)"
