@@ -1,0 +1,5 @@
+d64 n {'a': 4, 'b': 4, 'c': 4} median {'a': 41.59, 'b': 41.63, 'c': 41.64} ratio b/a 1.0011 c/a 1.0012 digest_mismatch [] digests ['7fe6badf4d560e25']
+d128 n {'a': 3, 'b': 3, 'c': 3} median {'a': 40.72, 'b': 40.59, 'c': 40.56} ratio b/a 0.9968 c/a 0.9961 digest_mismatch [] digests ['da5568eeb4b6a1c1']
+d256 n {'a': 3, 'b': 3, 'c': 3} median {'a': 39.83, 'b': 39.88, 'c': 39.78} ratio b/a 1.0013 c/a 0.9987 digest_mismatch [] digests ['828b55d6249d9679']
+pf512 n {'a': 5, 'b': 5, 'c': 5} median {'a': 256.83, 'b': 255.61, 'c': 256.2} ratio b/a 0.9952 c/a 0.9975 digest_mismatch [] digests ['ccb601895581d89f']
+pf2048 n {'a': 3, 'b': 3, 'c': 3} median {'a': 249.35, 'b': 249.61, 'c': 250.55} ratio b/a 1.001 c/a 1.0048 digest_mismatch [] digests ['ccb601895581d89f']
