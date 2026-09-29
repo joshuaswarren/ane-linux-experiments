@@ -75,3 +75,14 @@ of the PMU power register wedges the machine. The missing piece is a
 translation to PA 0x28e084030 that the DART accepts. Do not discover
 it by writing DART or PMU registers.
 
+## Doorbell landed, output did not
+
+Property 0x10A8 value 1 set progMgr+0x9890. The first call after that,
+with no earlier parked job, copied 1 into the shadow frame +0x328.
+The doorbell at 0x285c208F4 read 0x80010001 (tdCount 1, seqno 1).
+TQEn bit 13 at 0x285c20420 was set (register 0x803000). The TM event
+FIFO count at 0x285c20428 was 0. The output buffer stayed all zeros.
+Inputs were not zero (first fp16 values 0xc800 and 0xb800). y == a+b
+is not met.
+
+
