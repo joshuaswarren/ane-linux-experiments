@@ -123,3 +123,15 @@ doorbell unchanged and the output zero. A pending doorbell does
 not fetch the page when the page becomes non-zero.
 
 
+## Fill before the doorbell also failed
+
+The descriptor was copied into 0xfbc00000 before the firmware
+wrote the doorbell. The call returned status 0. The doorbell
+was 0x80010001. The event count was 0. The output was zero.
+Host power registers 0x28e084000 through 0x28e084030 read 0x3ff.
+The domains are on. The tiles did not fetch that page.
+
+A host write of the doorbell register wedged the machine.
+Do not repeat it.
+
+
