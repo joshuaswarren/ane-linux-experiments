@@ -300,3 +300,24 @@ stream:0 code:0x8 (NO PTE FOR IOVA) at 0x28e084008. The software page
 table says mapped and the hardware says no PTE. Earlier receipts saw
 the same split. The staged fix in ane_t6021_fwload.c:171-189 does not
 work on this DART as written. The firmware stalls on it.
+
+## DAPF programmed: cmd 0x29 completes with the real PMU map (boot 020dcc70)
+
+Loaded with fw_start_dapf=1. The driver programmed five DAPF windows
+(r0 0 -> 0x31; starts 0x28e084000, 0x28e080260, 0x38545c000,
+0x406468000, 0x228545c000) and mapped the PMU window (pmu: DART map ...
+0). Cmd 0x29 alone then returned result=0 status=0x0. There was NO
+"NO PTE FOR IOVA" fault and no assert in dmesg. Without DAPF the same
+command faulted at 0x28e084008 and timed out (previous section).
+
+Within 60 s the next host step, a probe module reading the pmgr PS
+words plus TM registers (0x285c20xxx), hung the machine. SSH timed
+out. The screen shows the stuck early-boot frame. [INFERENCE] The
+firmware's 0x29 handler reached its real power sequence, so the
+compute domains changed state, and a host read of a powered-down TM
+window aborted the bus. Not verified: no PS word was read before the
+hang.
+
+Rule from this run: after 0x29 with the real map, read only the pmgr
+PS words first. Read no TM or engine register unless the PS words
+show 0x3ff.
