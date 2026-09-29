@@ -106,3 +106,12 @@ host. The screen froze on an early-boot frame. Do not scan a
 whole TM page. Recovery is a reboot through the jwm1 USB owner.
 
 
+## Fresh boot, same empty page
+
+On the next boot the ordered steps 0x1f, START, 0x29, 0x27, 0x28,
+and 0x204 all returned status 0. The RAM mirror cleared 12. The
+seqno-1 record was again `07a00001 fbc00000`. That page's first 8
+words were zero. The output buffer was zero. The call does not
+fill the page the doorbell names.
+
+
