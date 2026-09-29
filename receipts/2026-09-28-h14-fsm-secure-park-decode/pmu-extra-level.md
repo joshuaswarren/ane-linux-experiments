@@ -321,3 +321,26 @@ hang.
 Rule from this run: after 0x29 with the real map, read only the pmgr
 PS words first. Read no TM or engine register unless the PS words
 show 0x3ff.
+
+## 0x29 really power-cycles the compute domains once DAPF is on (boot a215a0e1)
+
+Script: `drivers/t6021/lab/run-dapf-0x29.sh` (fw_start_dapf=1, then
+cmd 0x29 as step 04, PS words read with a PS-only module).
+
+- PS words 0x28e084000..0x30 before 0x29: all 0x3ff.
+- After 0x29 (result 0, status 0, no fault, no hang): ane_sys_mpm
+  0x3ff, the six compute domains 0x300 (off). The firmware really
+  ran its power-down through the real PMU window.
+- Then a bare PROCEDURE_CALL (step 05, no 0x10A8): result 0, status 0.
+  The PS words went back to 0x3ff on all seven. So the firmware
+  powered the domains up for the call.
+- After the call: TQEn 0x803000, gate 0x285c2048c = 0x6 (was 0x16 on
+  earlier boots: the stop-arm bit 4 is now clear), all eight
+  doorbells 0, event FIFO count 0, push FIFO still
+  0xfd68be00 0 0xfbedc000 0 0x97 0x3d 5. The output buffer still
+  holds the 0x7e00 sentinel (crc 0ce22471), also after 9 s.
+
+So the DAPF fix unblocked 0x29 and the domain power cycle. The tiles
+still did not write. Reads of TM registers are safe only while the PS
+words read 0x3ff (a TM read with the domains off hung the machine
+earlier).
