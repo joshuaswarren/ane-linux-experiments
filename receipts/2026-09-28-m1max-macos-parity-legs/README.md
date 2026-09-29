@@ -27,6 +27,66 @@ producing exactly N tokens), same corpus (sha `9299a3b2…`), same model snapsho
 
 All seven are losses against the pass rule (>=1.00x); run-to-run spread is <1%.
 
+## Window 5 (2026-09-29) — prefill protocol parity, both arms, same window
+
+One macOS boot, 2026-09-29 19:02:36Z–19:13Z, AC power, `powermode 0`, no thermal
+warning in the pre/post `pmset -g therm` samples; cells ran 19:08:35–19:11:00Z.
+macOS venv `mlx 0.32.2` / `mlx-lm 0.31.3` with the SAME vendored
+`mlx-lm-last-logits.patch` as jw16 Linux (`sha256 6fb1685c…`, applied on-box,
+backup `qwen3_5.py.pre-lastlogits` kept). `MLX_OMARCHY_FULL_LOGITS=1` is the
+full-logits control arm in the same window; its three medians reproduce the
+window-4 stock cells within 0.1% (1327.99/1355.94/1379.13 vs 1327.16/1355.77/
+1379.63). Linux pairs are PrefillGap3 W2 (same-boot base/cand, n=5, vec2 ICD +
+last-logits patch). Records gates: ordered_records_sha256 `100a61b62470` in ALL
+30 pf runs of BOTH arms — token identity holds across Metal and Honeykrisp for
+the prefill protocol.
+
+### Prefill (n=5 per cell, prompt 1, warmup 1, greedy)
+
+| cell | macOS last-logits (range) | Linux last-logits | L/M | macOS full-logits (range) | Linux full-logits | L/M |
+|---|---:|---:|---:|---:|---:|---:|
+| prefill 512 | 1742.68 (1739.05–1748.15) | 1089.55 | 0.625 | 1327.99 (1324.74–1336.45) | 894.42 | 0.674 |
+| prefill 1024 | 1793.60 (1793.15–1804.40) | 1234.30 | 0.688 | 1355.94 (1355.63–1357.21) | 988.93 | 0.729 |
+| prefill 2048 | 1826.74 (1826.47–1827.22) | 1307.31 | 0.716 | 1379.13 (1371.97–1380.02) | 1032.61 | 0.749 |
+
+The last-logits lever is now measured on BOTH OSes: macOS gains +31.2/+32.3/+32.5%
+over its own stock protocol (Main's 2026-09-29 unmeasured estimate ~1.7k at 2048
+is confirmed at 1826.74). Like-for-like, Linux is at 0.625/0.688/0.716 of macOS —
+the honest prefill gap under the current serving protocol; reporting only the
+full-logits arms (0.674/0.729/0.749) would understate it.
+
+### Decode baseline, fresh same window (macOS patched venv)
+
+| cell | macOS median (range) | tok identity vs Linux | Linux median (2026-09-28 sweep) | L/M |
+|---|---:|---|---:|---:|
+| decode 64 | 179.72 (179.49–180.41) | MATCH `c84b3e7af640` | 80.54 | 0.448 |
+| decode 128 | 179.08 (178.80–179.51) | DIFFERS macOS `a6199c8c2b21` vs Linux `07c515e0338b` | 79.86 | 0.446 |
+| decode 256 | 178.72 (178.60–179.38) | DIFFERS `d1326cc0e4a4` vs `c6aabbf0a51d` | 78.31 | 0.438 |
+| decode 512 | 177.02 (176.75–177.14) | DIFFERS `7c26830d3b35` vs `5c120987f0e5` | 76.05 | 0.430 |
+
+Every pass generated exactly N tokens (no EOS truncation); at 128+ tokens the
+greedy stream diverges between Metal and Honeykrisp numerics (expected-class,
+kernel-flags contract; the 64-token and all prefill records still match).
+
+### Item B in the same window (eos staged-firmware dump) — NOT captured
+
+`ANERegDump` first-ever load on jw16's macOS was refused: "Extension with
+identifiers com.apple.nke.rvi,com.warren.ANERegDump not approved to load.
+Please approve using System Settings." (kmutil.err retained). No approval click
+or extra reboot was performed, per the one-window ruling, so the live eos
+DATA/patchbay dump has NO hashes from this window. Captured instead: csrutil
+disabled; Xcode present; kext REBUILT on-box (`fef35e2c…`, differs from the
+frozen T6021 binary `932d3b9b…`) and staged in `/Library/Extensions` +
+`~/jw16-macos-window/w5/` with `ranges5-t6001.txt` (T6001 carveouts from the
+launch-sink2 boot log: TEXT `0x10000a5c000`/0xf4000, DATA `0x10001684000`/
+0x5f8000, PS `0x28e080000`/0xc02c), an `aneprobe` rank-3 CoreML burst harness
+(11188 preds/3 s smoke-tested) and `aneregdump`. Next window needs only the
+System Settings Allow (+its reboot) and `bash macos-window5.sh`.
+ADT evidence captured read-only: `ane0` segment-ranges u64 stream
+[0x10000a5c000, 0x0, 0x10000a5c000, 0x3000f4000, 0x10001684000, 0xf4000,
+0x1f0000f4000, 0x5f8000] — confirms the launch-sink2 surfaces from the live ADT;
+ANE device `h13g`, 16 cores, ANEVersion 96; `ane_power` sampler again empty.
+
 ## Parakeet whole encoder (paired)
 
 CoreML, corrected harness (`MLModelConfiguration` applied at load, `MLComputePlan`
