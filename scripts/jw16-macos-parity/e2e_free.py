@@ -37,6 +37,7 @@ p.add_argument("--deadline-ms", type=int, default=20000)
 p.add_argument("--valid-frames", choices=["mask", "full"], default="full")
 p.add_argument("--reps", type=int, default=1)
 p.add_argument("--only", type=str, default="")
+p.add_argument("--tdt-mode", choices=["host", "chain"], default="host")
 args = p.parse_args()
 sys.path.insert(0, str(args.pkg.resolve()))
 sys.path.insert(0, str((args.pkg / "coreml").resolve()))
@@ -108,7 +109,7 @@ def decode_chunk(pcm16):
         c0 = mx.zeros((2, 1, 640), dtype=mx.float32)
     mx.eval(h0, c0)
     tdt = tdt_decode(packed=packed, encoder=hidden, valid_frames=valid, config=lock.tdt, initial_hidden=h0,
-                     initial_cell=c0, run_decoder=dec_cb, run_joint=joint_cb, force_host=True)
+                     initial_cell=c0, run_decoder=dec_cb, run_joint=joint_cb, force_host=(args.tdt_mode == "host"))
     t["tdt_ms"] = (time.monotonic_ns() - t0) / 1e6
     t0 = time.monotonic_ns()
     text = tokenizer.decode(tdt.token_ids)
