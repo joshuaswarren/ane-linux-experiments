@@ -50,3 +50,16 @@ The tdprop segment size follows (0x104).
 Not yet done: which of DAPF and the refs is minimal; repeated submits,
 new inputs, close/reopen, fresh-boot repeat; the installed (no scratch
 module) path; Parakeet encoder and Qwen reference on the M2.
+
+## Repeated calls with new inputs (same boot 8f468602)
+
+Three more PROCEDURE_CALLs on the same program and process, each with
+fresh seeded random fp16 inputs (channel positions) and a sentinel
+output, all status 0, queue 5 back to idle after each, last-committed
+TD nid counting up (1, 2, 3, 4). Output check against numpy
+round-to-nearest-even leaves 57, 60 and 68 mismatches of 16384. All 185
+are exact half-ulp ties: the ANE adds in fp16 with ties rounded away
+from zero. Against a reference with that rounding all four calls are
+16384/16384 bit-exact. The oracle for any future add check must use
+half-away rounding (or accept 1 ulp on exact ties). Script:
+`drivers/t6021/lab/ref_check.py`.
