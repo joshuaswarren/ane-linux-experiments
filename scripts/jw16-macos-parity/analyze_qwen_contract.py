@@ -22,6 +22,11 @@ mac_by = {}
 for r in mac:
     mac_by.setdefault(r["prompt_idx"], []).append(r)
 rng = random.Random(0)
+# per-prompt wall time = spacing between consecutive result files (sequential run); first file of the run has no start time
+files = sorted((f for f in run.glob("*/p*.json")), key=lambda f: f.stat().st_mtime)
+wall = {}
+for prev, cur in zip(files, files[1:]):
+    wall[(cur.parent.name, cur.stem)] = cur.stat().st_mtime - prev.stat().st_mtime
 
 
 def boot_ci(xs):
@@ -45,7 +50,10 @@ for i in range(10):
         continue
     ids0, lg0 = recs[0][1]["generated_ids"], recs[0][2]
     ident = sum(r["generated_ids"] == ids0 and np.array_equal(lg, lg0) for _, r, lg in recs)
-    e2e = [r["step_seconds"] + r["logits_seconds"] for _, r, _ in recs]
+    # e2e wall from result-file mtime spacing (the script's step_seconds counts prompt steps only)
+    e2e = [wall[(p, pid)] for p, _, _ in recs if (p, pid) in wall]
+    if not e2e:
+        continue
     m = mac_by[i][0]["output_ids"]
     div = next((k for k, (a, b) in enumerate(zip(ids0, m)) if a != b), None)
     mac_e2e = [x["e2e_s"] for x in mac_by[i]]
