@@ -150,3 +150,24 @@ holds the record fill.
 Do not send 0x23 shape A. The program vtable +0x70 is NULL and
 shape A would call it and assert.
 
+
+## Correction (2026-09-29): TQEn read used the wrong offset
+
+The section above says TQEn reads 0 at +0x2420. That is wrong.
+`dart_tq.ko` read 0x285c00000 + 0x2420 = 0x285c02420. The firmware
+register is base + 0x20420 = 0x285c20420 (CSneTMDrvH14 0x33270,
+`mov w9, #0x420; movk w9, #2, lsl #16`). `dart_tq4.ko` reads the
+right address. On boot 553378f5 it returned en=0x803000 (bit13 set)
+and queue-5 doorbell 0x80010001, with the switch counters at
+engine+0x61c/0x620 still 0/0.
+
+So TQEn is 1 while the doorbell stays pending. The earlier claim
+that the 1 came only from the event pump after a Sec->NonSec
+switch is not supported. Either bit13 is set by reset or a tunable,
+or the counter offsets are not the ones the switch uses. Open.
+
+The "empty task page" sections also rest on an unproven reading of
+0xfbc00000. 0x42df0 (getL2SpillBufferIndex) and 0x159b0
+(getPoolIdxAddr) store a pool address at 0x42644. That page may be
+L2 spill scratch, not a task descriptor. Zero there proves nothing
+about the task fetch until that is settled.
