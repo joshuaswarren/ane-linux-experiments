@@ -160,6 +160,26 @@ bool ane_t6021_fwload_options_ok(bool transport)
 
 #define ANE_FW_NAME "apple/ane/t602x_ane0_fw_selene_rc4x.macho"
 
+/* ANE sub-block power registers (pmgr 0x28e080000 + 0x4000: ane_sys_mpm,
+ * ane_td, ane_base, ane_set1..4). The firmware's power service programs
+ * them through its DART at IOVA == PA once SET_SNE_PMU_BASE2 (0x29) sets
+ * its base (fw 13.5 SetPMUBaseAddress 0x62694 stores 0x28e084008). macOS
+ * maps the page first; without it the first access faults
+ * (NO PMD FOR IOVA 0x28e084008, 2026-09-29) and the firmware halts. */
+#define ANE_T6021_PMU_PA	0x28e084000ull
+
+static int ane_t6021_pmu_map(struct ane_t6021 *ane, struct iommu_domain *dom)
+{
+	int ret = iommu_map(dom, ANE_T6021_PMU_PA, ANE_T6021_PMU_PA, ANE_T6021_FW_ALIAS_PAGE,
+			    IOMMU_READ | IOMMU_WRITE | IOMMU_MMIO, GFP_KERNEL);
+
+	if (!ret && iommu_iova_to_phys(dom, ANE_T6021_PMU_PA) != ANE_T6021_PMU_PA)
+		ret = -EIO;
+	dev_info(ane->dev, "pmu: DART map %#llx (IOVA == PA, %#x bytes): %d\n",
+		 ANE_T6021_PMU_PA, ANE_T6021_FW_ALIAS_PAGE, ret);
+	return ret;
+}
+
 static int ane_t6021_fw_alias_map(struct ane_t6021 *ane)
 {
 	struct iommu_domain *dom = iommu_get_domain_for_dev(ane->dev);
@@ -347,7 +367,7 @@ static int ane_t6021_fw_alias_map(struct ane_t6021 *ane)
 		if (fw_extra_ram)
 			dev_info(ane->dev, "fwalias: owned heap [%#llx,%#llx) roundtrip verified\n",
 				 win[2].iova, win[2].iova + win[2].len);
-		return 0;
+		return ane_t6021_pmu_map(ane, dom);
 
 err_unmap_mapped:
 		/* Cleanup exactly the per-window bytes we mapped; windows
