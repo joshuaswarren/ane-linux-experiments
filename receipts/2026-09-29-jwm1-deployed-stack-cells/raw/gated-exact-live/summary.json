@@ -1,0 +1,130 @@
+[
+  {
+    "label": "deployed2",
+    "run": 1,
+    "rc": 0,
+    "wall_ms": 1756.5,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 1352.869,
+    "stages_ms": {
+      "audio_load": 7.311,
+      "decoder_load": 45.293,
+      "mel_frontend": 51.588,
+      "encoder_ane": 1046.697,
+      "tdt_decode": 178.63,
+      "detokenize": 23.35
+    },
+    "ane": {
+      "exec_ms": 139.599,
+      "worker_starts": 1,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 905.571,
+        "close_ms": 0.108,
+        "open_ms": 905.571,
+        "reused": false,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "deployed2",
+    "run": 2,
+    "rc": 0,
+    "wall_ms": 710.9,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 390.642,
+    "stages_ms": {
+      "audio_load": 4.114,
+      "decoder_load": 43.653,
+      "mel_frontend": 29.124,
+      "encoder_ane": 140.188,
+      "tdt_decode": 150.719,
+      "detokenize": 22.844
+    },
+    "ane": {
+      "exec_ms": 139.127,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.195,
+        "close_ms": 0.118,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "deployed2",
+    "run": 3,
+    "rc": 0,
+    "wall_ms": 707.0,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 385.045,
+    "stages_ms": {
+      "audio_load": 4.292,
+      "decoder_load": 42.457,
+      "mel_frontend": 27.603,
+      "encoder_ane": 139.595,
+      "tdt_decode": 148.184,
+      "detokenize": 22.914
+    },
+    "ane": {
+      "exec_ms": 138.646,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.184,
+        "close_ms": 0.119,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "deployed2",
+    "run": 4,
+    "rc": 0,
+    "wall_ms": 710.3,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 388.73,
+    "stages_ms": {
+      "audio_load": 4.401,
+      "decoder_load": 42.774,
+      "mel_frontend": 27.634,
+      "encoder_ane": 140.452,
+      "tdt_decode": 149.451,
+      "detokenize": 24.018
+    },
+    "ane": {
+      "exec_ms": 139.511,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.216,
+        "close_ms": 0.13,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  }
+]

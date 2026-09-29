@@ -39,3 +39,25 @@ Rejected levers measured today, all logged in the private notebook and in mlx-om
 CPU-frequency floor 1.0015x decode / -0.7% Parakeet; gated-norm fusion made ~1e-5 inexact (fixed from 36%) and not shipped.
 
 Raw: raw/live (live-venv JSONs incl. Parakeet driver summary), raw/battery (per-phase JSONs and driver summaries), raw/*.sh, raw/h16-battery.log.
+
+## Update (later 2026-09-29): bit-exact fused gated norm shipped, wheel 1daa1ad5d deployed
+
+Change: mlx-omarchy a3be05040 (bit-exact `rms_norm_gated` kernel) + b9efdd92d (`patches/mlx-lm-qwen35-gated-norm.patch`, routed by default). Root cause found by measurement: compiler reassociation of two fmul chains
+(`silu*normed`, and `value*norm*weight` where the reference kernel compiles `value*(norm*weight)`); the exp/sigmoid stage was bit-identical to `mx.exp`/`mx.sigmoid` throughout. Exhaustive gate sweep and rate check: 0 mismatches.
+A/B vs the previous live stack (interleaved, digests identical): decode64 40.70 -> 41.66 (1.024, n=15), decode128 39.90 -> 40.58 (1.017, n=10); raw in `raw/gated-exact-ab`.
+The deployed wheel is main-tip (ef05f2644) plus that change, so it also carries two earlier main prefill commits (`conv_dw1d.comp`, standalone silu chain); the prefill gain below is not from the gated-norm change.
+
+Live verification after deployment (n=5 each, pins re-checked on the live venv; raw in `raw/gated-exact-live`):
+
+| cell | macOS (n=5, 2026-09-28) | Linux live | Linux/macOS | pin |
+|---|---:|---:|---:|---|
+| prefill 512 tok/s | 345.31 | 256.23 | 0.742 | ccb601895581d89f |
+| prefill 1024 tok/s | 345.76 | 256.29 | 0.741 | ccb601895581d89f |
+| prefill 2048 tok/s | 341.80 | 250.27 | 0.732 | ccb601895581d89f |
+| decode 64 tok/s | 49.36 | 40.66 | 0.824 | 7fe6badf4d560e25 |
+| decode 128 tok/s | 49.26 | 40.80 | 0.828 | da5568eeb4b6a1c1 |
+| decode 256 tok/s (5 x limit-1) | 49.33 | 39.86 | 0.808 | 828b55d6249d9679 |
+| TTFT s (decode64 corpus) | 0.1248 | 0.196 | 1.57x latency | - |
+| Parakeet warm pipeline ms (incl. decoder_load), 3 warm runs | ~272 (CLI inference) | 391 / 385 / 389 | ~0.70 | db501a8c0803 match |
+
+Still no cell at 1.00x. Rollback venv on jwm1: /var/tmp/jwm1-venv-560a64424 (previous stack) and /var/tmp/jwm1-venv-42fbbc5 (the original installed wheel).

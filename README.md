@@ -179,6 +179,9 @@ Update 2026-09-29 (`receipts/2026-09-29-jwm1-deployed-stack-cells`): the live jw
 (pins unchanged). Same-protocol Linux/macOS: prefill 0.716 / 0.715 / 0.703 (512 / 1024 / 2048), decode 0.823 / 0.809 / 0.789 (64 / 128 / 256), TTFT 1.54x latency,
 Parakeet fixture ~0.82 at macOS's 'inference' boundary. Still no cell at 1.00x.
 
+Update 2026-09-29 (later, same receipt): bit-exact fused gated norm shipped and wheel 1daa1ad5d deployed on jwm1 (all pins unchanged): prefill 0.742 / 0.741 / 0.732,
+decode 0.824 / 0.828 / 0.808, TTFT 1.57x latency, Parakeet warm pipeline ~0.70 incl. decoder_load. Still no cell at 1.00x.
+
 ## Qwen reference workflow
 
 The locked macOS reference uses the real

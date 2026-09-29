@@ -1,0 +1,4 @@
+rows=32 dim=128: n=81920 mismatches vs composed: fused=0 ref_f32=0 ref_bf16r=29615
+rows=64 dim=128: n=163840 mismatches vs composed: fused=0 ref_f32=0 ref_bf16r=59287
+rows=256 dim=128: n=655360 mismatches vs composed: fused=0 ref_f32=0 ref_bf16r=235824
+max mismatch rate: 0.0 limit: 0.0001
