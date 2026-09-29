@@ -355,6 +355,7 @@ static const struct file_operations ane_seq_run_fops = {
 };
 
 static const struct file_operations ane_seq_pmu_fops;
+static const struct file_operations ane_seq_power_fops;
 
 static int ane_rtclient_legacy_sequence(struct ane_rtclient *ane)
 {
@@ -374,6 +375,7 @@ static int ane_rtclient_legacy_sequence(struct ane_rtclient *ane)
 	if (!IS_ERR_OR_NULL(ane_seq_dbg))
 		debugfs_create_file("run", 0200, ane_seq_dbg, ane, &ane_seq_run_fops);
 	debugfs_create_file("pmu", 0400, ane_seq_dbg, ane, &ane_seq_pmu_fops);
+	debugfs_create_file("power_release", 0200, ane_seq_dbg, ane, &ane_seq_power_fops);
 	return ane_seq_continue(ane);
 }
 
@@ -393,4 +395,22 @@ static const struct file_operations ane_seq_pmu_fops = {
 	.owner = THIS_MODULE,
 	.open = simple_open,
 	.read = ane_seq_pmu_read,
+};
+
+/* Drop the driver's runtime PM hold so genpd can power down the compute
+ * domains. The firmware's power-down poll (0x29) spins forever while genpd
+ * holds them on. ane_cpu stays up: the iommu holds it separately. */
+static ssize_t ane_seq_power_write(struct file *file, const char __user *buf, size_t len,
+				   loff_t *ppos)
+{
+	struct ane_rtclient *ane = file->private_data;
+
+	pm_runtime_put_sync(ane->dev);
+	return len;
+}
+
+static const struct file_operations ane_seq_power_fops = {
+	.owner = THIS_MODULE,
+	.open = simple_open,
+	.write = ane_seq_power_write,
 };
