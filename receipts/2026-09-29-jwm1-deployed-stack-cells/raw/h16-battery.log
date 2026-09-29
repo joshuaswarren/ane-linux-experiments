@@ -1,0 +1,142 @@
+phase decode64 loadwait done load=0.39 1.51 1.03 2026-09-29T01:14:48Z
+round 1 arm ctl py ~/.local/share/mlx-omarchy/venv/bin/python load 0.39 1.51 1.03 thermal 34000 start 2026-09-29T01:14:48Z
+rc=0
+round 1 arm cand py /var/tmp/jwm1-main-venv/bin/python load 0.53 1.48 1.02 thermal 34000 start 2026-09-29T01:15:03Z
+rc=0
+round 2 arm ctl py ~/.local/share/mlx-omarchy/venv/bin/python load 0.63 1.46 1.02 thermal 33900 start 2026-09-29T01:15:17Z
+rc=0
+round 2 arm cand py /var/tmp/jwm1-main-venv/bin/python load 0.61 1.43 1.02 thermal 33900 start 2026-09-29T01:15:32Z
+rc=0
+round 3 arm ctl py ~/.local/share/mlx-omarchy/venv/bin/python load 0.62 1.39 1.01 thermal 33900 start 2026-09-29T01:15:46Z
+rc=0
+round 3 arm cand py /var/tmp/jwm1-main-venv/bin/python load 0.71 1.37 1.01 thermal 33900 start 2026-09-29T01:16:00Z
+rc=0
+AB-DONE
+phase decode128 loadwait done load=0.38 1.19 0.96 2026-09-29T01:16:49Z
+round 1 arm ctl py ~/.local/share/mlx-omarchy/venv/bin/python load 0.38 1.19 0.96 thermal 34100 start 2026-09-29T01:16:49Z
+rc=0
+round 1 arm cand py /var/tmp/jwm1-main-venv/bin/python load 0.35 1.12 0.95 thermal 34100 start 2026-09-29T01:17:12Z
+rc=0
+round 2 arm ctl py ~/.local/share/mlx-omarchy/venv/bin/python load 0.43 1.08 0.94 thermal 34200 start 2026-09-29T01:17:34Z
+rc=0
+round 2 arm cand py /var/tmp/jwm1-main-venv/bin/python load 0.53 1.06 0.93 thermal 34300 start 2026-09-29T01:17:56Z
+rc=0
+AB-DONE
+phase prefill512 loadwait done load=0.39 0.95 0.90 2026-09-29T01:18:39Z
+pair 1 arm ctl load 0.39 0.95 0.90 thermal 34500 start 2026-09-29T01:18:39Z
+rc=0
+pair 1 arm cand load 0.36 0.94 0.90 thermal 34500 start 2026-09-29T01:18:47Z
+rc=0
+pair 2 arm ctl load 0.38 0.92 0.90 thermal 34500 start 2026-09-29T01:18:54Z
+rc=0
+pair 2 arm cand load 0.35 0.91 0.89 thermal 34500 start 2026-09-29T01:19:02Z
+rc=0
+pair 3 arm ctl load 0.37 0.89 0.89 thermal 34500 start 2026-09-29T01:19:10Z
+rc=0
+pair 3 arm cand load 0.39 0.88 0.88 thermal 34600 start 2026-09-29T01:19:18Z
+rc=0
+pair 4 arm ctl load 0.36 0.87 0.88 thermal 34600 start 2026-09-29T01:19:25Z
+rc=0
+pair 4 arm cand load 0.54 0.89 0.89 thermal 34600 start 2026-09-29T01:19:33Z
+rc=0
+pair 5 arm ctl load 0.50 0.87 0.88 thermal 34600 start 2026-09-29T01:19:41Z
+rc=0
+pair 5 arm cand load 0.49 0.86 0.88 thermal 34600 start 2026-09-29T01:19:49Z
+rc=0
+pair 6 arm ctl load 0.45 0.85 0.87 thermal 34700 start 2026-09-29T01:19:56Z
+rc=0
+pair 6 arm cand load 0.62 0.87 0.88 thermal 34700 start 2026-09-29T01:20:04Z
+rc=0
+pair 7 arm ctl load 0.57 0.85 0.87 thermal 34700 start 2026-09-29T01:20:12Z
+rc=0
+pair 7 arm cand load 0.55 0.84 0.87 thermal 34700 start 2026-09-29T01:20:20Z
+rc=0
+pair 8 arm ctl load 0.59 0.85 0.87 thermal 34800 start 2026-09-29T01:20:27Z
+rc=0
+pair 8 arm cand load 0.57 0.83 0.87 thermal 34800 start 2026-09-29T01:20:35Z
+rc=0
+pair 9 arm ctl load 0.64 0.84 0.87 thermal 34800 start 2026-09-29T01:20:43Z
+rc=0
+pair 9 arm cand load 0.67 0.84 0.87 thermal 34800 start 2026-09-29T01:20:51Z
+rc=0
+pair 10 arm ctl load 0.64 0.83 0.87 thermal 34900 start 2026-09-29T01:20:59Z
+rc=0
+pair 10 arm cand load 0.59 0.82 0.86 thermal 34900 start 2026-09-29T01:21:06Z
+rc=0
+pair 11 arm ctl load 0.57 0.81 0.86 thermal 34900 start 2026-09-29T01:21:14Z
+rc=0
+pair 11 arm cand load 0.69 0.83 0.86 thermal 34900 start 2026-09-29T01:21:22Z
+rc=0
+pair 12 arm ctl load 0.73 0.83 0.87 thermal 35000 start 2026-09-29T01:21:30Z
+rc=0
+pair 12 arm cand load 0.70 0.82 0.86 thermal 35000 start 2026-09-29T01:21:37Z
+rc=0
+pair 13 arm ctl load 0.65 0.81 0.86 thermal 35000 start 2026-09-29T01:21:45Z
+rc=0
+pair 13 arm cand load 0.70 0.82 0.86 thermal 35000 start 2026-09-29T01:21:53Z
+rc=0
+pair 14 arm ctl load 0.64 0.80 0.85 thermal 35000 start 2026-09-29T01:22:01Z
+rc=0
+pair 14 arm cand load 0.62 0.79 0.85 thermal 35100 start 2026-09-29T01:22:09Z
+rc=0
+pair 15 arm ctl load 0.73 0.81 0.86 thermal 35100 start 2026-09-29T01:22:16Z
+rc=0
+pair 15 arm cand load 0.69 0.80 0.85 thermal 35100 start 2026-09-29T01:22:24Z
+rc=0
+AB-DONE
+phase prefill1024 loadwait done load=0.38 0.71 0.82 2026-09-29T01:23:02Z
+pair 1 arm ctl load 0.38 0.71 0.82 thermal 35200 start 2026-09-29T01:23:02Z
+rc=0
+pair 1 arm cand load 0.40 0.70 0.81 thermal 35200 start 2026-09-29T01:23:12Z
+rc=0
+pair 2 arm ctl load 0.41 0.70 0.81 thermal 35200 start 2026-09-29T01:23:22Z
+rc=0
+pair 2 arm cand load 0.42 0.69 0.81 thermal 35200 start 2026-09-29T01:23:31Z
+rc=0
+pair 3 arm ctl load 0.43 0.68 0.81 thermal 35200 start 2026-09-29T01:23:41Z
+rc=0
+pair 3 arm cand load 0.44 0.68 0.80 thermal 35200 start 2026-09-29T01:23:51Z
+rc=0
+pair 4 arm ctl load 0.44 0.67 0.80 thermal 35200 start 2026-09-29T01:24:01Z
+rc=0
+pair 4 arm cand load 0.45 0.67 0.80 thermal 35200 start 2026-09-29T01:24:11Z
+rc=0
+pair 5 arm ctl load 0.45 0.66 0.79 thermal 35200 start 2026-09-29T01:24:20Z
+rc=0
+pair 5 arm cand load 0.46 0.66 0.79 thermal 35300 start 2026-09-29T01:24:30Z
+rc=0
+AB-DONE
+phase prefill2048 loadwait done load=0.39 0.63 0.78 2026-09-29T01:24:50Z
+pair 1 arm ctl load 0.39 0.63 0.78 thermal 35300 start 2026-09-29T01:24:50Z
+rc=0
+pair 1 arm cand load 0.38 0.61 0.77 thermal 35300 start 2026-09-29T01:25:04Z
+rc=0
+pair 2 arm ctl load 0.38 0.60 0.76 thermal 35400 start 2026-09-29T01:25:18Z
+rc=0
+pair 2 arm cand load 0.44 0.60 0.76 thermal 35400 start 2026-09-29T01:25:33Z
+rc=0
+pair 3 arm ctl load 0.45 0.60 0.76 thermal 35400 start 2026-09-29T01:25:47Z
+rc=0
+pair 3 arm cand load 0.50 0.60 0.76 thermal 35400 start 2026-09-29T01:26:01Z
+rc=0
+pair 4 arm ctl load 0.45 0.59 0.75 thermal 35500 start 2026-09-29T01:26:15Z
+rc=0
+pair 4 arm cand load 0.50 0.59 0.75 thermal 35500 start 2026-09-29T01:26:30Z
+rc=0
+pair 5 arm ctl load 0.46 0.58 0.74 thermal 35600 start 2026-09-29T01:26:44Z
+rc=0
+pair 5 arm cand load 0.44 0.57 0.74 thermal 35600 start 2026-09-29T01:26:58Z
+rc=0
+AB-DONE
+phase parakeet loadwait done load=0.37 0.55 0.72 2026-09-29T01:27:22Z
+loadwait done load=0.37 0.55 0.72
+block 1 arm ctl venv ~/.local/share/mlx-omarchy/venv load 0.37 0.55 0.72 start 2026-09-29T01:27:22Z
+rc=0
+block 1 arm cand venv /var/tmp/jwm1-main-venv load 0.91 0.66 0.76 start 2026-09-29T01:27:29Z
+rc=0
+block 2 arm ctl venv ~/.local/share/mlx-omarchy/venv load 0.91 0.66 0.76 start 2026-09-29T01:27:34Z
+rc=0
+block 2 arm cand venv /var/tmp/jwm1-main-venv load 0.92 0.67 0.76 start 2026-09-29T01:27:41Z
+rc=0
+AB-DONE
+BATTERY-DONE

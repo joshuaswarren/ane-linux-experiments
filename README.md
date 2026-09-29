@@ -175,6 +175,10 @@ q/k `rms_norm_scaled` routing shipped (bit-identical, decode +2.0%); dependency-
 gated-norm fusion fixed from 36% to ~1e-5 deviation but still not bit-identical, so not shipped; 64-row qmm coopmat tile 0.939x and
 wider K step 0.897x/0.880x on prefill-512 (both bit-identical, both slower; not shipped). No cell reached 1.00x.
 
+Update 2026-09-29 (`receipts/2026-09-29-jwm1-deployed-stack-cells`): the live jwm1 stack now runs mlx-omarchy main 560a64424 plus the shipped mlx-lm patches and soundfile
+(pins unchanged). Same-protocol Linux/macOS: prefill 0.716 / 0.715 / 0.703 (512 / 1024 / 2048), decode 0.823 / 0.809 / 0.789 (64 / 128 / 256), TTFT 1.54x latency,
+Parakeet fixture ~0.82 at macOS's 'inference' boundary. Still no cell at 1.00x.
+
 ## Qwen reference workflow
 
 The locked macOS reference uses the real

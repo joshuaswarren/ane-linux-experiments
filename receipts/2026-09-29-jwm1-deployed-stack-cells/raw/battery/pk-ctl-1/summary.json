@@ -1,0 +1,194 @@
+[
+  {
+    "label": "h16-ctl-1",
+    "run": 1,
+    "rc": 0,
+    "wall_ms": 1649.8,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 989.295,
+    "stages_ms": {
+      "audio_load": 8.015,
+      "mel_frontend": 136.594,
+      "encoder_ane": 588.869,
+      "decoder_load": 45.444,
+      "tdt_decode": 199.674,
+      "detokenize": 10.699
+    },
+    "ane": {
+      "exec_ms": 139.826,
+      "worker_starts": 1,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 447.829,
+        "close_ms": 0.03,
+        "open_ms": 447.829,
+        "reused": false,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "h16-ctl-1",
+    "run": 2,
+    "rc": 0,
+    "wall_ms": 944.2,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 368.538,
+    "stages_ms": {
+      "audio_load": 4.468,
+      "mel_frontend": 28.283,
+      "encoder_ane": 142.028,
+      "decoder_load": 45.745,
+      "tdt_decode": 137.616,
+      "detokenize": 10.398
+    },
+    "ane": {
+      "exec_ms": 141.101,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.164,
+        "close_ms": 0.091,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "h16-ctl-1",
+    "run": 3,
+    "rc": 0,
+    "wall_ms": 936.2,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 362.714,
+    "stages_ms": {
+      "audio_load": 4.684,
+      "mel_frontend": 29.803,
+      "encoder_ane": 140.447,
+      "decoder_load": 41.903,
+      "tdt_decode": 135.469,
+      "detokenize": 10.408
+    },
+    "ane": {
+      "exec_ms": 139.565,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.123,
+        "close_ms": 0.093,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "h16-ctl-1",
+    "run": 4,
+    "rc": 0,
+    "wall_ms": 943.3,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 366.753,
+    "stages_ms": {
+      "audio_load": 4.622,
+      "mel_frontend": 27.178,
+      "encoder_ane": 142.341,
+      "decoder_load": 43.332,
+      "tdt_decode": 138.372,
+      "detokenize": 10.908
+    },
+    "ane": {
+      "exec_ms": 141.415,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.138,
+        "close_ms": 0.035,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "h16-ctl-1",
+    "run": 5,
+    "rc": 0,
+    "wall_ms": 940.3,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 365.09,
+    "stages_ms": {
+      "audio_load": 4.721,
+      "mel_frontend": 29.07,
+      "encoder_ane": 141.245,
+      "decoder_load": 41.439,
+      "tdt_decode": 138.225,
+      "detokenize": 10.389
+    },
+    "ane": {
+      "exec_ms": 140.437,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.154,
+        "close_ms": 0.024,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  },
+  {
+    "label": "h16-ctl-1",
+    "run": 6,
+    "rc": 0,
+    "wall_ms": 947.9,
+    "status": "match",
+    "failed_checks": [],
+    "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790",
+    "emissions": 104,
+    "total_pipeline_ms": 371.229,
+    "stages_ms": {
+      "audio_load": 4.6,
+      "mel_frontend": 30.599,
+      "encoder_ane": 143.634,
+      "decoder_load": 43.234,
+      "tdt_decode": 138.761,
+      "detokenize": 10.4
+    },
+    "ane": {
+      "exec_ms": 142.668,
+      "worker_starts": 0,
+      "submissions": 1,
+      "session": {
+        "batch_open_ms": 0.16,
+        "close_ms": 0.097,
+        "open_ms": 0.0,
+        "reused": true,
+        "shared": true
+      }
+    },
+    "decode_control": "gpu-chain"
+  }
+]
