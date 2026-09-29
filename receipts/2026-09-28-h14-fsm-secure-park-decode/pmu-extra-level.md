@@ -383,3 +383,15 @@ Result after the call (PS words all 0x3ff, so TM reads were safe):
 So the record patch table is right now, and the tiles still do not
 run. The direct path rings no doorbell. Still open: what makes the TQ
 consume the FIFO entry.
+
+## 0x29 then call, with refs (boot 7440b0c2): same outcome
+
+Script `/tmp/run_op_refs2.sh` style. LOAD with refs, DAPF load, cmd 0x29
+(PS words 0x300 on the six compute domains, TM not read), then the
+call. After the call PS words 0x3ff, record slots 4/5/6 = 0xfbbf0000
+(a), 0xfbbe0000 (y), 0xfbbe8000 (b), TQEn 0x803000, gate 0x6,
+doorbells 0, event count 0, output still the 0x7e00 sentinel (live
+DMA view). DART LLT error word 0x285800100 reads 0x10a00000, address
+words 0x7bef4f7e / 0x33f (bit 31 clear; meaning not decoded).
+The TQ does not consume the pushed FIFO entry with or without a prior
+power-down.
