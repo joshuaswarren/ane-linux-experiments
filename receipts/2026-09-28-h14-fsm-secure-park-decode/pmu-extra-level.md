@@ -288,3 +288,15 @@ state comparison do not differ from the macOS working state on this
 hardware. They are not the cause. Still open: ane_sys_mpm form
 (fw_start_mpm_off), DART single-stream, mailbox ctrl bit19, DAPF, and
 the fw PMU window (RAM mirror instead of a real translation).
+
+## The driver's own PMU map does not reach the hardware walk (boot 3a9068c1)
+
+With ane_t6021_pmu_map() applied, `ane_t6021_seq/pmu` reports
+iommu_iova_to_phys(0x28e084000) = 0x28e084000 and the driver logs
+"pmu: DART map ... 0". Cmd 0x29 alone then times out (-110) and
+dmesg shows the same fault as with no map:
+apple-dart 285800000.iommu translation fault status:0x80040008
+stream:0 code:0x8 (NO PTE FOR IOVA) at 0x28e084008. The software page
+table says mapped and the hardware says no PTE. Earlier receipts saw
+the same split. The staged fix in ane_t6021_fwload.c:171-189 does not
+work on this DART as written. The firmware stalls on it.
