@@ -395,3 +395,22 @@ DMA view). DART LLT error word 0x285800100 reads 0x10a00000, address
 words 0x7bef4f7e / 0x33f (bit 31 clear; meaning not decoded).
 The TQ does not consume the pushed FIFO entry with or without a prior
 power-down.
+
+## TQ arming words and DART error: both offline hypotheses falsified (boot 17134a4b)
+
+Single-word reads, PS words all 0x3ff before and after (script
+`/tmp/run_arm_words.sh`, module dart_arm.c). LOAD with refs, DAPF, one
+bare call. Read before the call and after it:
+
+- 0x285c20484 = 0x4000000, 0x285c2048c = 0x6, 0x285c20420 = 0x803000,
+  0x285c20428 = 0. The values fw Reset (0x340f4) writes are present.
+- queue 5 word 0x201, prty 0x6; queue 7 word 0x201, prty 0x1f (table
+  {1,2,3,4,5,6,0x1e,0x1f} confirmed). Queue 5 doorbell 0.
+- DART LLT 0x285800100 = 0x10a00000, 0x285800170 = 0x7bef4f7e,
+  0x285800174 = 0x33f. Identical before and after the call, so the
+  fetch raised no new DART fault.
+
+So the TQ arming init landed, the fetch does not fault in the DART,
+and the TQ still ignores the push entry. This is not a power-window
+or an addressing fault on the two IOVAs. The word 0x285874008 was not
+read (register class unknown).
