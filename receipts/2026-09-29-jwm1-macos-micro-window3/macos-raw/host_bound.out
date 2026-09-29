@@ -1,0 +1,3 @@
+add 2048: build 0.3 us/op, async_eval-return 1.5 us/op, wait-after 1.7 us/op, total 3.3
+rms_norm 2048: build 0.2 us/op, async_eval-return 1.4 us/op, wait-after 4.4 us/op, total 5.8
+qmm 2048x2048: build 0.4 us/op, async_eval-return 3.1 us/op, wait-after 32.1 us/op, total 35.2

@@ -1,0 +1,5 @@
+rms_norm 2048: 6.0 us/op (min 5.9)
+add 2048: 3.7 us/op (min 3.7)
+silu*u 6144: 7.8 us/op (min 7.6)
+qmm M1 2048x2048: 35.6 us/op (min 35.4)
+qmm+rms: 38.9 us/op (min 38.7)

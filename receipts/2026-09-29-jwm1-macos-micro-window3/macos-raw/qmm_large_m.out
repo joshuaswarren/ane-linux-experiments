@@ -1,0 +1,6 @@
+language_model.model.layers.23.mlp.up_proj N=6144 K=2048 wMB=7.08 us_by_M={16: 672.9, 32: 639.7, 64: 1162.8, 128: 2297.9, 256: 4559.8, 512: 9079.3} M64=1162.8
+language_model.model.layers.23.mlp.down_proj N=2048 K=6144 wMB=7.08 us_by_M={16: 697.6, 32: 652.4, 64: 1221.2, 128: 2359.1, 256: 4560.4, 512: 9067.4} M64=1221.2
+language_model.model.layers.23.self_attn.o_proj N=2048 K=2048 wMB=2.36 us_by_M={16: 281.4, 32: 270.0, 64: 460.7, 128: 838.1, 256: 1537.6, 512: 3042.2} M64=460.7
+language_model.model.layers.23.self_attn.v_proj N=512 K=2048 wMB=0.59 us_by_M={16: 122.8, 32: 128.1, 64: 172.8, 128: 270.7, 256: 458.3, 512: 837.3} M64=172.8
+language_model.model.layers.23.self_attn.q_proj N=4096 K=2048 wMB=4.72 us_by_M={16: 484.6, 32: 460.5, 64: 839.5, 128: 1538.7, 256: 3042.6, 512: 6051.0} M64=839.5
+language_model.model.layers.22.linear_attn.in_proj_a N=16 K=2048 wMB=0.02 us_by_M={16: 40.0, 32: 39.6, 64: 43.6, 128: 54.4, 256: 79.2, 512: 124.8} M64=43.6

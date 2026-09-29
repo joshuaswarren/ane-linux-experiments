@@ -1,0 +1,6 @@
+language_model.model.layers.23.mlp.up_proj N=6144 K=2048 wMB=7.08 us_by_M={1: 155.4, 2: 180.7, 4: 347.2, 8: 672.5, 16: 688.1, 32: 644.8, 64: 1161.7} M1_GBps=45.5 M4/M1=2.23
+language_model.model.layers.23.mlp.down_proj N=2048 K=6144 wMB=7.08 us_by_M={1: 105.6, 2: 183.1, 4: 338.0, 8: 682.6, 16: 695.6, 32: 652.2, 64: 1219.0} M1_GBps=67.0 M4/M1=3.20
+language_model.model.layers.23.self_attn.o_proj N=2048 K=2048 wMB=2.36 us_by_M={1: 52.2, 2: 79.0, 4: 135.4, 8: 243.7, 16: 278.6, 32: 270.9, 64: 459.6} M1_GBps=45.2 M4/M1=2.59
+language_model.model.layers.23.self_attn.v_proj N=512 K=2048 wMB=0.59 us_by_M={1: 32.2, 2: 40.4, 4: 51.8, 8: 79.3, 16: 121.4, 32: 129.8, 64: 172.3} M1_GBps=18.3 M4/M1=1.61
+language_model.model.layers.23.self_attn.q_proj N=4096 K=2048 wMB=4.72 us_by_M={1: 79.2, 2: 135.1, 4: 244.1, 8: 465.2, 16: 485.0, 32: 459.8, 64: 839.9} M1_GBps=59.6 M4/M1=3.08
+language_model.model.layers.22.linear_attn.in_proj_a N=16 K=2048 wMB=0.02 us_by_M={1: 23.4, 2: 23.1, 4: 24.3, 8: 25.1, 16: 38.7, 32: 38.2, 64: 43.5} M1_GBps=0.8 M4/M1=1.04

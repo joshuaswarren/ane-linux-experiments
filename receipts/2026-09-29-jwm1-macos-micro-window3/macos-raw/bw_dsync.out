@@ -1,0 +1,2 @@
+BW {"sum_64MB_GBps": 51.5, "add1_64MB_GBps(r+w)": 55.9, "sum_256MB_GBps": 57.2, "add1_256MB_GBps(r+w)": 58.5, "sum_512MB_GBps": 57.7, "add1_512MB_GBps(r+w)": 59.6, "qmm_M1_N248320_K2048_us": 4790.5, "qmm_M1_N248320_K2048_GBps": 59.7, "qmm_M1_N6144_K2048_us": 110.8, "qmm_M1_N6144_K2048_GBps": 63.9, "qmm_M1_N2048_K6144_us": 104.8, "qmm_M1_N2048_K6144_GBps": 67.5}
+DSYNC {"fresh_cache_L1_ms": 22.5, "cont_cache_sync_ms_med": 24.8, "cont_cache_sync_ms_min": 24.1, "pipelined_ms_med": 20.0}
