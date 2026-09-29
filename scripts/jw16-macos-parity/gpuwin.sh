@@ -3,6 +3,8 @@
 # trap, verify health 200 AND a real completion probe (finish_reason). usage: gpuwin.sh 'command string'
 set -u
 CMD="${1:?command}"
+# Maintenance gate: while /var/tmp/JW16_MAINTENANCE exists (kernel work / reboot), no GPU window may start.
+while [ -e /var/tmp/JW16_MAINTENANCE ]; do echo "maintenance: $(cat /var/tmp/JW16_MAINTENANCE 2>/dev/null | head -1) - waiting"; sleep 30; done
 restore () {
   sudo systemctl start llm-inference.service
   local ok="" key rc
