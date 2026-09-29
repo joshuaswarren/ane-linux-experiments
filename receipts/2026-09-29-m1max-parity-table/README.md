@@ -20,7 +20,7 @@ token 117 on longer cells (bf16 near-tie), deterministic on both sides.
 | whole encoder ms (latency) | 440.8-441.1 (n=3 x 5 contract runs) | 138.18 (134.10-141.72), n=10 | 3.19x slower | loss |
 | Parakeet warm total ms, 10.4 s fixture | ~795 | 261 (ane arm inference) | ~3.0x slower | loss |
 | Parakeet 11-clip corpus, transcript match | 9/11 exact, WER 0.76% vs macOS ane | reference | - | functional match on speech, tail differs |
-| Qwen ANE reference | not run (no Linux Qwen-on-ANE runtime) | 6.76 tok/s decode, TTFT 12.36 tok/s, e2e 5.67 s (n=100) | - | UNPAIRED: no parity claim |
+| Qwen ANE reference (reduced n: 1 prompt, 2 tokens) | 0.042 tok/s (24 s/token; 20.4 s/step + 3.4 s logits), ids == macOS for the 2 generated tokens; ANE-only, finite | 6.76 tok/s decode (n=100) | 0.006x | loss; contract cell (10 reps x 10 prompts x 32 tokens, ~24 h) not run: UNPAIRED |
 
 Progress since the 2026-09-28 pairing (same protocol): decode +9.7..+10.6%, prefill +3.8..+6.1%, Parakeet
 warm total 913.7 -> ~795 ms (receipts 2026-09-29-m1max-linux-perf-levers). No cell has reached parity.
