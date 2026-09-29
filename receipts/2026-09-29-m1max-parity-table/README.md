@@ -24,3 +24,6 @@ token 117 on longer cells (bf16 near-tie), deterministic on both sides.
 
 Progress since the 2026-09-28 pairing (same protocol): decode +9.7..+10.6%, prefill +3.8..+6.1%, Parakeet
 warm total 913.7 -> ~795 ms (receipts 2026-09-29-m1max-linux-perf-levers). No cell has reached parity.
+
+## Addendum (later 2026-09-29): fused norms at prefill sizes deployed
+mlx-omarchy cfaca451e removes the decode-only size guards of the bit-exact fused gated-norm and qk-scaled norm routes (0 mismatches vs the composed chain at 16..32768 rows; all 7 cell digests unchanged). Prefill now 804.9 / 896.3 / 919.5 tok/s at 512 / 1024 / 2048 (0.606 / 0.661 / 0.666 of macOS); decode unchanged (88.7 / 87.7 / 86.4 / 84.1 tok/s, 0.49-0.48 of macOS). Still every cell a loss. Largest remaining prefill terms (T=2048, per-layer, Linux vs macOS): SDPA 22.7 vs 5.5 ms (composed QK^T/softmax/PV, no fused causal kernel), gated_delta_update 9.6 vs 3.7 ms, MLP/projection GEMM 1.27x slower, lm_head over all T 464 vs 365 ms.
