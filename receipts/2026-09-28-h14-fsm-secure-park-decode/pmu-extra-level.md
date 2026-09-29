@@ -201,3 +201,15 @@ copy. Open: does the TD-build routine (0x44c98) run at all.
 
 Also: `tools/h14_seq_kext_init.py` builds the kext init commands,
 and `tools/m2_collect/` holds a read-only collector.
+
+## Push FIFO readback (boot 553378f5, seven single reads)
+
+0x285c20400..0x285c20418 read w0=0xfd68be00 w1=0 w2=0xfbedc000 w3=0
+w4=0x97 w5=0x3d w6=0x5. This is the pushToHWDirect push (fw 0x450a4):
+first address is the per-seq record (heap VA 0x20fd68be00, device
+address 0xfd68be00), second is the program descriptor (0xfbedc000),
+size 0x3d words, queue 5. The record is zero except its 16-byte head,
+so the patch table the TQ reads is empty and the 0x0000dead
+placeholders in the descriptor stay unpatched. Queue 5 doorbell
+0x80010001, TQEn 0x803000, event FIFO count 0, queue cfg 1,2,3,4,5,6,
+0x1e,0x1f, power regs 0x3ff, DART TCR 9. All reads were single words.
