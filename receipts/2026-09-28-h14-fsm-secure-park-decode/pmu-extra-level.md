@@ -344,3 +344,22 @@ So the DAPF fix unblocked 0x29 and the domain power cycle. The tiles
 still did not write. Reads of TM registers are safe only while the PS
 words read 0x3ff (a TM read with the domains off hung the machine
 earlier).
+
+## Why the push FIFO record is empty: the operation section carries no patch refs
+
+Static decode plus the Apple program in /tmp/h14conv (two agents agree):
+
+- pushToHWDirect (fw 0x44c98) reads `count = u32@[opSection + row*0x40c
+  + 0xc]` and entries {slot, tag} at +0x10 + 8*i, and writes u64
+  values into record+0xc+8*slot (values from descInfo+0x50/+0x80 or
+  from the PROCEDURE_CALL host entries at cmd+0x64 + 0x30*j: key =
+  bufferId, value = u64@+0x14 = the call buffer IOVA).
+- Our operation.bin is `u32 tot=1` plus a zero record, so count = 0.
+  Apple's conv operation section has refCount 3 with refs
+  {slot 0, src 2}, {slot 1, src 3}, {slot 4, src 0}.
+- The descriptor's two `0x0000dead` words (+0xd4, +0xdc, register
+  0x1524 tile_dma_dst) stay unpatched, and the TQ has no addresses.
+
+The exact refs (slot meaning, value form) are still being decoded.
+Hardware readback so far is unchanged: the domains power on for the
+call, no tile runs.
