@@ -13,8 +13,8 @@ SITE="$("$PY" -c 'import sysconfig;print(sysconfig.get_paths()["purelib"])')"
 Q35="$SITE/mlx_lm/models/qwen3_5.py"
 
 find_first() { local d; for d in "$@"; do [ -e "$d" ] && { printf '%s' "$d"; return 0; }; done; return 1; }
-BENCH=$(find_first "$W/qwen38-mlx-bench.py" "$HOME/jw16-macos-window/w4/qwen38-mlx-bench.py" "$HOME/jw16-macos-window/w1/qwen38-mlx-bench.py") || { echo "no bench script"; exit 1; }
-PROMPTS=$(find_first "$W/qwen38-2b-prompts.jsonl" "$HOME/jw16-macos-window/w4/qwen38-2b-prompts.jsonl" "$HOME/jw16-macos-window/w1/qwen38-2b-prompts.jsonl") || { echo "no prompts"; exit 1; }
+BENCH=$(find_first "$W/qwen38-mlx-bench.py" "$HOME/jw16-macos-window/qwen38-mlx-bench.py" "$HOME/jw16-macos-window/w4/qwen38-mlx-bench.py" "$HOME/jw16-macos-window/w1/qwen38-mlx-bench.py") || { echo "no bench script"; exit 1; }
+PROMPTS=$(find_first "$W/qwen38-2b-prompts.jsonl" "$HOME/jw16-macos-window/qwen38-2b-prompts.jsonl" "$HOME/jw16-macos-window/w4/qwen38-2b-prompts.jsonl" "$HOME/jw16-macos-window/w1/qwen38-2b-prompts.jsonl") || { echo "no prompts"; exit 1; }
 MODEL=$(find_first "$W/model-0867d98b" "$HOME/jw16-macos-window/w4/model-0867d98b" "$HOME/jw16-macos-window/w1/model-0867d98b" "$HOME/jw16-macos-window/model-0867d98b") || { echo "no model snapshot"; exit 1; }
 echo "bench=$BENCH"; echo "prompts=$PROMPTS"; echo "model=$MODEL"
 
