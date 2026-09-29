@@ -1,0 +1,28 @@
+# T6001 (jw16 M1 Max) window-5 regdump request. Read-only: DRAM carveouts + PMGR PS words.
+# Same safety net as T6021 (ane_regdump_filter.h): engine windows gated, CoreSight refused.
+# Surfaces from the T6001 macOS boot-log receipt (launch-sink2 run-205806):
+#   ANE aperture 0x284000000 len 0x2000000 (NOT read); PS 0x28e080000 len 0xc02c;
+#   fw TEXT phys 0x10000a5c000 identity, size 0xf4000; fw DATA phys 0x10001684000,
+#   remap 0x1f0000f4000, size 0x5f8000.
+# AneGap3 offsets: eos DATA segment 0x3e8000 B at 0x10001684000; patchbay span +0x6aa0
+# len 0x160; field tags +0x6c0b/_COS +0x6c17/RCOS +0x6c23/dApC +0x6c33/dArW; text-copy
+# (text_phys+0x7c000, 0x8000) = 0x10000ad8000 (inside fw-text-adt).
+poll_us 0x1e8480
+pmgr 0x28e080000 0x10000
+gate 0xf0 0xf0
+island 0x2e0
+island 0x4000
+island 0x4008
+island 0x4010
+island 0x4018
+island 0x4020
+island 0x4028
+island 0x4030
+range fw-text-head 0x10000a54000 0x8000
+range fw-text-adt 0x10000a5c000 0xf4000
+range fw-data 0x10001684000 0x5f8000
+range patchbay-fine 0x1000168a000 0x1000
+range ps-block 0x28e080000 0xc02c
+range ps-fabric-dcs 0x28e20c000 0x1000
+handoff 1
+adt 1
