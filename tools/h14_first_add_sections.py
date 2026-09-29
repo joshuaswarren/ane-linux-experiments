@@ -116,13 +116,22 @@ def build_kernel() -> bytes:
 
 def build_operation() -> bytes:
     # sCSneCmdProgramOperationSectionListHeader (u32 tot) + 0x40c-byte record.
-    # type 0 (kernel op), tdCount u32@+4 = 0 and kernelNbr u32@+8 = 0:
+    # type 0 (kernel op), tdCount u32@+4 = 0, refCount u32@+0xc = 3.
     #   - verifyOperationSection (0x48384): tot <= 0x80, size >= 4+tot*0x40c,
     #     type <= 3, u16@+4 <= 0x10, u32@+8 <= 0x80, refs <= 0x3c  -> all pass
     #   - checkOperationKernelRefs (0x48834): tdCount == 0 -> returns 1 with
     #     no kernel-ref resolution (an add has no kernel tiles).
     #   - sets opVersion = 2 (nonzero, required by caller 0x3e8a0/0x3e90c).
+    # pushToHWDirect (0x44c98) walks refCount entries {slot, tag} at +0x10
+    # (record base +4): slot = ANE local BAR index, tag = the bufferId of the
+    # PROCEDURE_CALL record whose IOVA it copies into BAR[slot]. The add TD
+    # reads a from BAR4 (0x1110 hdr 0x22008444), writes y to BAR5 (0x1508 hdr
+    # 0x22808542) and reads b from BAR6 (0x1128 hdr 0x2300844a); bufferIds
+    # are a=5, y=4, b=6. The 0x0000dead pairs at descriptor +0xd4/+0xdc are
+    # literal writes to spare register 0x1524, not patch targets.
     rec = bytearray(0x40C)
+    struct.pack_into("<I", rec, 0x08, 3)
+    struct.pack_into("<6I", rec, 0x0C, 4, 5, 5, 4, 6, 6)
     return struct.pack("<I", 1) + bytes(rec)
 
 

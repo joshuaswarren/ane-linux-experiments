@@ -363,3 +363,23 @@ Static decode plus the Apple program in /tmp/h14conv (two agents agree):
 The exact refs (slot meaning, value form) are still being decoded.
 Hardware readback so far is unchanged: the domains power on for the
 call, no tile runs.
+
+## Operation refs make the firmware fill the record patch area (boot a2bc0262)
+
+`build_operation()` now emits refCount 3 with {slot 4, tag 5 (a)},
+{slot 5, tag 4 (y)}, {slot 6, tag 6 (b)}. Only the operation buffer of
+LOAD_PROGRAM changed. Run: load with fw_start_dapf=1 (steps 00-03, LOAD
+status 0), then one bare PROCEDURE_CALL (step 04, no 0x27/0x28/0x29, no
+property write). Script: `/tmp/run_op_refs.sh`-style, PS words first.
+
+Result after the call (PS words all 0x3ff, so TM reads were safe):
+- Per-seq record seq 1: slot 4 = 0xfbbf8000 (a), slot 5 = 0xfbbe8000
+  (y), slot 6 = 0xfbbf0000 (b). The patch area holds the call buffer
+  IOVAs, as decoded. Before this change it was all zero.
+- push FIFO unchanged {0xfd68be00,0,0xfbedc000,0,0x97,0x3d,5}.
+- TQEn 0x803000, gate 0x6, doorbells 0, event FIFO count 0.
+- Output buffer still the 0x7e00 sentinel (crc unchanged) after 9 s.
+
+So the record patch table is right now, and the tiles still do not
+run. The direct path rings no doorbell. Still open: what makes the TQ
+consume the FIFO entry.
