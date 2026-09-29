@@ -1,0 +1,5 @@
+27.0
+26A428
+{ 2.12 2.75 1.50 }
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
