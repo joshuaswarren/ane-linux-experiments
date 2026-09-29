@@ -66,4 +66,15 @@ for dt in (mx.float32, mx.float16, mx.bfloat16):
             rows[f"{dt}.{n}.{name}.vv"] = bits(fn(a, b))
             if n % 64 == 0:
                 rows[f"{dt}.{n}.{name}.row"] = bits(fn(a.reshape(-1, 64), b[:64]))
+# depthwise conv1d (GatedDeltaNet prefill conv) plus non-depthwise / padded controls that must stay on conv.comp
+for dt in (mx.float32, mx.float16, mx.bfloat16):
+    for (nb, length, ch, taps) in ((1, 2051, 6144, 4), (2, 67, 250, 4), (1, 1, 96, 4), (1, 40, 130, 3), (1, 33, 64, 7)):
+        xin = (mx.random.normal((nb, length + taps - 1, ch)) * 2).astype(dt)
+        wgt = (mx.random.normal((ch, taps, 1))).astype(dt)
+        rows[f"{dt}.conv_dw.{nb}.{length}.{ch}.{taps}"] = bits(mx.conv1d(xin, wgt, groups=ch))
+        rows[f"{dt}.conv_dw_silu.{nb}.{length}.{ch}.{taps}"] = bits(nn.silu(mx.conv1d(xin, wgt, groups=ch)))
+    xin = (mx.random.normal((1, 70, 64))).astype(dt)
+    rows[f"{dt}.conv_pad"] = bits(mx.conv1d(xin, mx.random.normal((64, 4, 1)).astype(dt), padding=2, groups=64))
+    rows[f"{dt}.conv_stride"] = bits(mx.conv1d(xin, mx.random.normal((64, 4, 1)).astype(dt), stride=2, groups=64))
+    rows[f"{dt}.conv_dense"] = bits(mx.conv1d(xin, mx.random.normal((32, 4, 64)).astype(dt)))
 print(json.dumps(rows, indent=0, sort_keys=True))
