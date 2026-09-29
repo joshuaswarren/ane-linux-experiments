@@ -233,3 +233,15 @@ A compute of 512 fp16 would touch 1 KiB, not all 32 KiB. So the
 firmware clears the output buffer when it submits a call with a valid
 tdCount. The zero output is not a tile result. The tiles still do not
 run: the doorbell stays pending and no event arrives.
+
+## Queue enable register reads (boot f64ca14e)
+
+Three single-word reads: 0x285c20510 = 0x0, 0x285c20800 = 0x201,
+0x285c208dc = 0x201. Queue words hold Reset's 0x201. The command
+register is idle. fw EnableTq (0x34318, TM vtable slot +0xb0)
+writes 0x10|qid to 0x20510 and sets bit 9 of the queue word.
+Neither queue 0 nor queue 5 shows bit 9, so EnableTq has not run
+for either. Static decode: TM Reset never writes 0x20510, and the
+only caller found so far sits in the ExeLoop event drain
+(0x4ee00-0x4f280). The hardware never acknowledged the queue-5
+doorbell (0x80020001, bit 30 clear).
