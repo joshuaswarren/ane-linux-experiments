@@ -11,6 +11,7 @@ while IFS= read -r line && [ "$i" -lt "$N" ]; do
   i=$((i + 1))
   id=$(printf '%s' "$line" | /var/tmp/qwen-ane-venv/bin/python3 -c "import json,sys; print(json.loads(sys.stdin.read())['id'])")
   text=$(printf '%s' "$line" | /var/tmp/qwen-ane-venv/bin/python3 -c "import json,sys; print(json.loads(sys.stdin.read())['text'])")
+  [ -n "${PROMPT_IDS:-}" ] && case " $PROMPT_IDS " in *" $id "*) ;; *) continue ;; esac
   [ -e "$OUT/$id.json" ] && { echo "skip $id (done)"; continue; }
   echo "=== $id $(date -u +%FT%TZ)"
   LLAMA_TOKENIZE=/var/tmp/qwen-ane-run/llama-tokenize timeout 3600 /var/tmp/qwen-ane-venv/bin/python3 ane-qwen-model.py \
