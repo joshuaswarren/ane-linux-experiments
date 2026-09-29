@@ -11,3 +11,8 @@ Ledger on the installed driver (n=5 each, all digests pinned; macOS paired cells
 |---|---:|---:|---:|
 | decode 64 / 128 / 256 | 41.81 / 41.49 / 41.40 | 49.36 / 49.26 / 49.33 | 0.847 / 0.842 / 0.839 (LOSS) |
 | prefill 512 / 1024 / 2048 | 313.36 / 314.15 / 307.21 | 345.31 / 345.76 / 341.80 | 0.907 / 0.909 / 0.899 (LOSS) |
+
+TTFT on the installed driver (n=5 passes x 5 prompts, medians per pass 0.1477-0.1575 s): 0.1547 s vs macOS 0.1248 s = 1.24x latency (LOSS; was 1.28x).
+
+## H82 (negative): CDM barrier bits and workgroup barriers are not the dependent-dispatch floor
+Variants built from the production lineage with only libagx_dgc.h changed: {4,5,6,8} and {5,6,8} hold every digest (decode64/256, prefill512) but are speed-neutral (d64 41.84 / 41.63 vs 41.53 tok/s base, d256 41.48 / 41.31 vs 41.42, within run noise); {6,8} diverges (decode digests changed) - at least one of the cache-maintenance bits is required for dependent chains. A 1-workgroup norm-like micro-kernel shows the same ~10-12 us per chained dispatch with 9 barriers, 3 barriers, or none, so cheaper kernel bodies cannot close the decode gap: 441 dependent dispatches per token x ~6 us above macOS's 3.7 us floor ~ 2.6 ms of the 3.8 ms/token gap. Remaining decode levers: fewer dispatches (fusion into existing kernels) or a lower launch/dependency floor (driver level; the dependency-tracked CDM barrier was tried on T6001 and failed its rare-race gate).
