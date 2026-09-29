@@ -9,7 +9,7 @@ set -u
 OUT="${1:?outdir}"; shift
 CELLS="${*:-d64 d128 d256 d512 pf512 pf1024 pf2048}"
 TAG="${TAG:-linux}"
-PY=/var/tmp/v072-venv-fused/bin/python3
+PY=${PY:-/var/tmp/v072-venv-fused/bin/python3}
 BENCH=$HOME/bench-scripts/qwen38-mlx-bench.py
 MODEL=$(echo ~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/snapshots/0867d98bfb174b042d88461c0e*)
 grep -q 'max_tokens=a.new_tokens' "$BENCH" || { echo "bench lacks max_tokens fix"; exit 1; }
