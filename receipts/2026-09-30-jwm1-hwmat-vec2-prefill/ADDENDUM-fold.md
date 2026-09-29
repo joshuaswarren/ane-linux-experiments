@@ -28,3 +28,8 @@ Ledger on the installed driver (n=5 each, digests pinned; macOS paired cells):
 | decode 64 / 128 / 256 | 42.43 / 42.10 / 42.05 tok/s | 49.36 / 49.26 / 49.33 | 0.860 / 0.855 / 0.852 (LOSS) |
 | prefill 512 / 1024 / 2048 | 309.67 / 311.69 / 306.06 | 345.31 / 345.76 / 341.80 | 0.897 / 0.901 / 0.895 (LOSS) |
 | TTFT | 0.1495 s | 0.1248 s | 1.20x latency (LOSS) |
+
+## Addendum 3 (2026-10-01): main-tip pickup, GEMV magic conversion, mlx-lm last-logits with a paired macOS window (H86-H91)
+- Landed and live: qmm_vec Q4 exact nibble->float via the 2^23 magic (mlx-omarchy main f505bfa27): bit-equal (0 mismatches on the 2B shapes), in-chain GEMV 49.4 -> 50.9 GB/s, in-model decode +0.85..0.95%, digests pinned. The live venv now runs the main-tip wheel (chip-keyed GDN: jwm1's G13G keeps the legacy per-row paths after the jw16 agent's change; decode neutral vs live) plus the mlx-lm last-logits patch.
+- Closed negatives: scale/bias load hoist in the multi-row GEMV (exact, neutral); wheel-level ALU ablation invalid (garbage tokens); greedy-prune is ACTIVE on jwm1 but neutral on decode (prune on/off 42.93/42.89 at d64), so tier A == tier B for decode: 0.869 / 0.861 / 0.861 x macOS (prune-off, n=3).
+- macOS window 5 (H91): the python-only last-logits patch lifts macOS prefill +32% as well. Paired tiers (n=5): tier A (stock both) Linux 314.5 / 314.8 / 315.7 vs macOS 345.6 / 345.9 / 341.7 = 0.910 / 0.910 / 0.924; tier B (patch both) Linux 395.3 / 401.4 / 398.4 vs macOS 457.6 / 458.7 / 452.0 = 0.864 / 0.875 / 0.881. LOSSES in both tiers. Token-record digests differ between the OSes on jwm1 (prefill 258748718b88 vs ccb60189..., d64 c413776c2c44 vs 7fe6badf...): characterize before any functional-parity claim.
