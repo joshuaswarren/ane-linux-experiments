@@ -39,7 +39,8 @@ echo "service after stop: $(systemctl is-active llm-inference.service); lock hol
   env | grep -E '^(VK_|MLX_OMARCHY|HK_)'; "$PY" -m pip list 2>/dev/null | grep -Ei '^(mlx|mlx-lm|mlx-omarchy|numpy) '
   vulkaninfo --summary 2>/dev/null | grep -E 'deviceName|driverInfo'; } > "$OUT/env.txt" 2>&1
 B() { "$PY" "$BENCH" --model "$MODEL"/ --prompts "$HOME/bench-scripts/qwen38-2b-prompts.jsonl" --limit 1 "$@"; }
-export -f B; export PY BENCH MODEL OUT TAG CELLS
+BD=${BD:-/var/tmp/appbar/prefill_breakdown.py}
+export -f B; export PY BENCH MODEL OUT TAG CELLS BD
 flock -w 900 /tmp/m1-gpu.lock bash -c '
 for c in $CELLS; do
   case $c in
@@ -47,6 +48,8 @@ for c in $CELLS; do
         B --new-tokens $N --warmup 1 --passes 5 --prefill-tokens 512 --label $TAG-$c-n5 --out $OUT/qwen-gpu-$c-n5.json > $OUT/$c.log 2>&1 || echo "$c FAILED" ;;
     pf*) P=${c#pf}; for i in 1 2 3 4 5; do echo "--- prefill $P run $i $(date -u +%FT%TZ)"
         B --new-tokens 32 --warmup 1 --passes 1 --prefill-tokens $P --label $TAG-$c-$i --out $OUT/qwen-gpu-$c-$i.json > $OUT/$c-$i.log 2>&1 || echo "$c-$i FAILED"; done ;;
+    bd*) T=${c#bd}; echo "--- breakdown $T $(date -u +%FT%TZ)"
+        $PY $BD $MODEL $T 5 > $OUT/$c.json 2> $OUT/$c.err || echo "$c FAILED" ;;
   esac
 done'
 ( cd "$OUT" && sha256sum ./*.json ./*.log ./*.txt > SHA256SUMS )
