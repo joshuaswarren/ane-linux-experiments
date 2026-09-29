@@ -3,6 +3,9 @@
 # trap, verify health 200 AND a real completion probe (finish_reason). usage: gpuwin.sh 'command string'
 set -u
 CMD="${1:?command}"
+# Serialize windows: the service holds /tmp/m1-gpu.lock itself, so we must stop it before flocking that lock.
+# Take this outer mutex FIRST so a contending window cannot stop/restart the service under a running one.
+exec 9>/tmp/gpuwin.mutex; flock -w 7200 9 || { echo "gpuwin mutex timeout"; exit 1; }
 # Maintenance gate: while /var/tmp/JW16_MAINTENANCE exists (kernel work / reboot), no GPU window may start.
 while [ -e /var/tmp/JW16_MAINTENANCE ]; do echo "maintenance: $(cat /var/tmp/JW16_MAINTENANCE 2>/dev/null | head -1) - waiting"; sleep 30; done
 restore () {
