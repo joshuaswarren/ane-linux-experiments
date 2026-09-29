@@ -50,10 +50,28 @@ unchanged. Do not map that page for write. The machine stayed up.
 jwm1 was not on Linux, so there was no reboot after the oopses.
 `0x29` was not sent on that boot.
 
+## What completed, and what wedges
+
+A software leaf with SP_END=0xfff aimed at a RAM page filled with 0xFF
+is a terminal translation. Cmd 0x29 wrote 0x3F0 at page offset 0x30.
+The offset is preserved. Clearing each 0x3F0 to 0, and no other word,
+let the six polls finish. 0x29 returned result 0. CPU status stayed
+0x2d. The procedure-call output was still the 0x7e sentinel. The host
+PS registers stayed 0x3ff.
+
+A terminal leaf aimed at PA 0x28e084000, subpage fields clear
+(0x28e08403), still faults NO PTE at 0x28e084008. The DART does not
+accept that MMIO page as a leaf target.
+
+Writing TCR stream 0, and a pmgr-style off/on of 0x28e084030, each
+wedged the machine. Do not repeat either write.
+
+
 ## Next measurement
 
-The last-level PTE format is not the 16 KiB leaf format. Do not send 0x29
-again until a last-level PTE is shown, by a host-side readback of the same
-translation, to return 0x3ff for IOVA 0x28e084008. A macOS DART dump of
-this page is the source for that PTE. Another power cycle without that
-PTE repeats the assert.
+0x29 can complete through a RAM mirror. That does not run the tiles.
+The DART rejects a leaf aimed at the PMU page. A host write of TCR or
+of the PMU power register wedges the machine. The missing piece is a
+translation to PA 0x28e084030 that the DART accepts. Do not discover
+it by writing DART or PMU registers.
+
