@@ -9,7 +9,7 @@ flock -n 9
 [[ $(cat /proc/sys/kernel/random/boot_id) == "$expected_boot" ]]
 [[ ! -d /sys/module/ane_t6021_rtclient && ! -d /sys/module/ane_t6021 ]]
 MODULE=$STAGE/t6021-v2/ane_t6021_rtclient.ko
-printf '%s  %s\n' caa826e08290775db191280c3326ccc650bd64c9f7069c483f9fc1ccc3b9f49c "$MODULE" | sha256sum -c -
+printf '%s  %s\n' 3f53c47056a0a9b1f3b929a3d524ca50c60125019e16050e7f5ae1fbfea8c886 "$MODULE" | sha256sum -c -
 printf '%s  %s\n' a9c4b771294a6b115624d9480a6248d0899a1681a575e865070b87a3248427bc /lib/firmware/apple/ane/t602x_ane0_fw_selene_rc4x.macho | sha256sum -c -
 [[ $(modinfo -F vermagic "$MODULE") == 7.1.13-ARCH-polltx* ]]
 OUT=$STAGE/load-$expected_boot

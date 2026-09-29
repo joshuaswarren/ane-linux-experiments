@@ -170,6 +170,7 @@ bool ane_t6021_fwload_options_ok(bool transport)
 
 static int ane_t6021_pmu_map(struct ane_t6021 *ane, struct iommu_domain *dom)
 {
+	void __iomem *dart = ioremap(0x285800000ull, 0x2000);
 	int prot = IOMMU_READ | IOMMU_WRITE;
 	int ret;
 
@@ -177,9 +178,17 @@ static int ane_t6021_pmu_map(struct ane_t6021 *ane, struct iommu_domain *dom)
 		prot |= IOMMU_CACHE;
 	ret = iommu_map(dom, ANE_T6021_PMU_PA, ANE_T6021_PMU_PA, ANE_T6021_FW_ALIAS_PAGE,
 			prot, GFP_KERNEL);
-
 	if (!ret && iommu_iova_to_phys(dom, ANE_T6021_PMU_PA) != ANE_T6021_PMU_PA)
 		ret = -EIO;
+	/* TCR has FOUR_LEVEL set but this domain's page table is 3 levels,
+	 * so the hardware walk dies at an empty entry for every address
+	 * (NO PTE at 0x28e084008). Firmware code and buffer fetches use a
+	 * different path; its power-register writes hit this DART. Clear the
+	 * bit so the walk matches the table. */
+	if (dart) {
+		writel(1, dart + 0x1000);
+		iounmap(dart);
+	}
 	dev_info(ane->dev, "pmu: DART map %#llx (IOVA == PA, %#x bytes): %d\n",
 		 ANE_T6021_PMU_PA, ANE_T6021_FW_ALIAS_PAGE, ret);
 	return ret;
