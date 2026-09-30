@@ -64,6 +64,12 @@ def main():
         def fmt(e):
             return "absent" if e is None else f"len={e[0]} raw={e[1]} val={e[2]:#x}"
         print(f"{t}: ref[{fmt(r)}]  live[{fmt(l)}]  {mark}")
+    # AneGap3 H3 patched these placeholders with T6021 live-form guesses (tags are stored byte-reversed).
+    print("\n== live vs AneGap3 guesses")
+    for t, want in (("_COS", 0x6001), ("RCOS", 0x11), ("dApC", 0x285000000), ("dArW", 0x285400000)):
+        l = lt.get(t)
+        got = "absent" if l is None else f"{l[2]:#x}"
+        print(f"{t[::-1]}: live={got} guess={want:#x} {'MATCH' if l and l[2] == want else 'DIFF'}")
 
 
 if __name__ == "__main__":
