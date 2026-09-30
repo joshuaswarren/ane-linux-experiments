@@ -9,10 +9,10 @@ Scope: the goal is >= 1.00x macOS per cell on the same M1 laptop (jwm1, T8103) f
 | Qwen decode 64 / 128 / 256 (tok/s) | 44.35 / 44.08 / 43.94 (n=5, digests d64 7fe6badf4d560e25, d128 da5568eeb4b6a1c1, d256 828b55d6249d9679) | 49.36 / 49.26 / 49.33 | 0.898 / 0.895 / 0.891 | LOSS |
 | Qwen prefill 512 / 1024 / 2048, stock software both sides (tier A) | ~315 (last measured at 2cc1175b5-era driver, before later kernel work) | 345.6 / 345.9 / 341.7 | ~0.91-0.92 | LOSS |
 | Qwen prefill 512 / 1024 / 2048, last-logits patch both sides (tier B) | ~394.6 / 399.9 / 398.0 | 457.6 / 458.7 / 452.0 | 0.862 / 0.872 / 0.880 | LOSS |
-| Qwen TTFT (d64 corpus, median) | ~0.148 s | 0.125 s | ~1.19x latency | LOSS |
+| Qwen TTFT (d64 corpus, median of per-prompt ttft_s, 15 prompts, 2026-10-03) | 0.143 s | 0.1250 s | ~1.15x latency | LOSS |
 | ANE encoder (whole-program exec) | 138-140 ms | 113.27 ms | 0.81 | LOSS |
-| Parakeet stage-matched inference (mel + encoder + TDT), fixture / v10 / v5 / v03 (after H142+H143, 2026-10-02) | ~252.2 / ~247.6 / ~226.1 / ~182.1 ms | 268.5 / 264.0 / 239.5 / 205.0 ms | 1.065 / 1.066 / 1.059 / 1.126 | PASS (4 cells; sum of stage medians, n=10 warm) |
-| Parakeet stage-matched inference, fixture_v1 (1 s) (after H142+H143) | ~180.6 ms | 171.5 ms | 0.950 | LOSS |
+| Parakeet stage-matched inference (mel + encoder + TDT), fixture / v10 / v5 / v03 (deployed stack, H153, 2026-10-03) | ~251.3 / ~247.0 / ~225.7 / ~181.2 ms | 268.5 / 264.0 / 239.5 / 205.0 ms | 1.068 / 1.069 / 1.061 / 1.131 | PASS (4 cells; sum of stage medians, n=10 warm, exact on all five clips) |
+| Parakeet stage-matched inference, fixture_v1 (1 s) (deployed stack, H153) | ~180.3 ms | 171.5 ms | 0.951 | LOSS |
 | Functional agreement (d64 tokens vs macOS, 5 prompts) | 3 of 5 identical; the other two flip on bf16 logit ties (1 ulp, exact tie) at indices 14 and 19 | | | qualified, not a defect (H92) |
 
 Parakeet caveats: the stage-matched sum is what macOS's CLI prints as "inference"; Linux's total pipeline (decoder load 40 ms, audio load 3 ms, detokenize 21 ms) is not paired with macOS's separate one-time model load and is not claimed. The encoder stage alone is 3-4% slower than macOS's CLI encoder on every clip (about 140 vs 135 ms).
