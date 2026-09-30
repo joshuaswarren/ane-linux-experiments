@@ -131,6 +131,41 @@ per-clip 2.7x-4.5x slower. 10.4 s fixture split: encoder 441 vs 142 ms (ANE firm
 perf mode never sent on Linux), TDT ~250 vs 103 ms (per-emission submit round trips),
 mel 40 vs 16 ms. **Performance parity: FAIL.**
 
+## Window 6 (2026-09-30) — Parakeet chain TDT certified e2e (paired)
+
+The device-chain TDT (mlx-omarchy `881c09813`: tree-reduce control kernel + chains1
+fusion, 5 dispatches/slot) certified against the host loop in ONE gpuwin window on
+jw16: 11-clip corpus + 10.4 s golden fixture, 3 interleaved reps per arm, both arms.
+Transcripts: fixture 104 tokens both arms, identical to the pinned text; 11/11 clips
+chain == host token-identical; 11/11 == the certified 09-29 corpus transcripts;
+9/11 exact vs macOS window 3 ane with exactly the same two junk-tail mismatches
+(clip04, clip07), mean WER 0.76%. `--tdt-mode chain` is now the e2e contract default
+(`e2e_free.py`), host kept as `--tdt-mode host`.
+
+Paired per-clip, median warm, ms (Linux = chain arm; macOS = window 3 ane arm,
+median of 3 reps; `tdt` vs macOS `decode`, `total` vs macOS `inference`):
+
+| clip | sec | mel L/M | encoder L/M | tdt L/M | total L/M | L/M total |
+|---|---|---:|---:|---:|---:|---:|
+| clip00 | 1.64 | 31.8/15.0 | 441/147 | 39/24 | 513/186 | 2.76x |
+| clip01 | 2.60 | 5.9/15.0 | 442/147 | 152/194 | 600/357 | 1.68x |
+| clip02 | 4.06 | 6.0/15.0 | 442/148 | 151/162 | 601/325 | 1.85x |
+| clip03 | 4.65 | 6.6/15.0 | 443/144 | 97/97 | 551/258 | 2.13x |
+| clip04 | 5.09 | 6.5/14.0 | 443/148 | 119/131 | 572/293 | 1.95x |
+| clip05 | 5.81 | 6.5/15.0 | 443/146 | 79/82 | 532/243 | 2.19x |
+| clip06 | 7.10 | 6.5/15.0 | 443/144 | 80/76 | 533/235 | 2.27x |
+| clip07 | 8.62 | 6.5/15.0 | 443/144 | 84/82 | 537/240 | 2.24x |
+| clip08 | 10.89 | 6.6/14.0 | 443/143 | 113/106 | 566/263 | 2.15x |
+| clip09 | 29.40 | 7.0/14.0 | 443/141 | 113/115 | 567/271 | 2.09x |
+| clip10 | 32.42 | 13.4/28.0 | 885/290 | 215/214 | 1122/406 | 2.76x |
+
+Chain TDT beats the host loop on every clip (fixture 100 vs 236 ms; corpus tdt
+39-215 vs 77-496 ms) and sits at/near macOS decode parity (fixture 100 vs ~103 ms;
+clips within ~±10% except sub-2 s). clip00 (first clip of every invocation) and
+clip10 (2 x 30 s windows) mel/encoder rows carry warm-up/chunking artifacts on both
+sides. The remaining e2e gap is the whole-encoder cell (441 vs ~145 ms), unchanged.
+Raw artifacts + hashes: private notebook `artifacts/ParakeetCert/`.
+
 ## Qwen3.8-2B ANE reference, Linux leg
 
 Linux ANE-only runner (native fixture), first 10 corpus prompts x 32 greedy tokens.
