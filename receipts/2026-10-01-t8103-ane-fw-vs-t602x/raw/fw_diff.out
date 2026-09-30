@@ -1,0 +1,166 @@
+===== h13_135.bin 4969712 0x4bd4f0
+cputype 0x100000c cpusub 0x0 filetype 5 flags 0x1
+SEG __TEXT vm 0x0 0xbc000 file 0x4000 0xbc000 sects [('__text', '0x0', '0x78a68'), ('__data_copy', '0x7c000', '0x2000'), ('__const', '0x7e000', '0x29a10'), ('__cstring', '0xa7a10', '0x112a8'), ('_rtk_mtab', '0xb8cb8', '0x268'), ('__constructor', '0xb8f20', '0x0'), ('__chain_starts', '0xb8f20', '0x0'), ('text_env', '0xb8f20', '0x28')]
+SEG __DATA vm 0xbc000 0x438000 file 0xc0000 0x3e8000 sects [('__const', '0xbc000', '0x4828'), ('_rtk_heap', '0xc0840', '0x1000'), ('__data', '0xc1840', '0xf70'), ('_rtk_patchbay', '0xc27b0', '0x1c8'), ('_rtk_init_stack', '0xc2980', '0x10000'), ('_rtk_irq_stack', '0xd2980', '0x1000'), ('_rtk_exc_stack', '0xd3980', '0x1000'), ('_rtk_power', '0xd4980', '0x368'), ('_rtk_tunables', '0xd4ce8', '0x1e8'), ('_rtk_boot', '0xd8000', '0x8000'), ('_rtk_page_tables', '0xe0000', '0x3c0000'), ('_rtk_threads', '0x4a0000', '0x0'), ('_fwinfo', '0x4a0000', '0x100'), ('__mod_init_func', '0x4a0100', '0x0'), ('__noinit', '0x4a0100', '0x0'), ('__zerofill', '0x4a0100', '0x52ed8')]
+extra [('0x2', 24), ('0x1b', 24), ('unixthread', 6, 68, ['0x0', '0x0', '0x0', '0x0', '0x0', '0x0'])]
+entry 0x0
+  STR   AneIpcVersion : Major 0x%x, Minor 0x%x
+  STR   Chip minor version: %s
+  STR (%s@%s) RTKit Version: %u.%u.%u
+  STR CSNE_CMD_BUILDINFO
+  STR CSNE_CMD_IPC_ENDPOINT_SET
+  STR CSNE_CMD_IPC_ENDPOINT_SET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2 ProgramUnsetup
+  STR CSNE_CMD_LOAD_AFPP is not allowed after IPC endpoint set
+  STR CSNE_CMD_PROGRAM_INTERFACE_VERSION_CHECK
+  STR CSNE_CMD_UNLOAD_AFPP is not allowed after IPC endpoint set
+  STR Cmd %d is not supported through ExeLoop IPC
+  STR Exeloop pIpcRingBufferIn is NULL
+  STR Exeloop pIpcRingBufferIn is not NULL
+  STR Exeloop pIpcRingBufferOut is NULL
+  STR Exeloop pIpcRingBufferOut is not NULL
+  STR IPC Endpoint cmd failed %d
+  STR IPC Writer regAddr 0x%lx regValue 0x%x
+  STR IPC create readRingBufferLen %d with readRingBufferAddr at 0x%lx
+  STR IPC create writeRingBufferLen %d with writeRingBufferAddr at 0x%lx
+  STR IpcRingBufferIn
+  STR IpcRingBufferOut
+  STR Jun 30 2023
+  STR PowerControlGet: Domain: %d status %s
+  STR PowerControlSet: Base %p index %d : 0x%x using %d ms
+  STR PowerControlSet: Delay 1ms, pPMUAddress %p
+  STR PowerControlSet: Domain: %d Off %d times, Used %d
+  STR PowerControlSet: Domain: %d On %d times, Used %d
+  STR PowerControlSet: Pre-set status: 0x%x, Target %s
+  literal READY 0x08042006 hits at []
+  literal WAKE 0xf7fbdff9 hits at []
+  literal 0x01ff01ff hits at []
+  code hits movz/movk #0x2006: [] movk #0x804: [] wake halves: []
+  entry code:
+===== selene_135.bin 5004072 0x4c5b28
+cputype 0x100000c cpusub 0x0 filetype 5 flags 0x1
+SEG __TEXT vm 0x0 0xc4000 file 0x4000 0xc4000 sects [('__text', '0x0', '0x7627c'), ('__data_copy', '0x78000', '0x8000'), ('__const', '0x80000', '0x30350'), ('__cstring', '0xb0350', '0x101e4'), ('_rtk_mtab', '0xc0538', '0x268'), ('__constructor', '0xc07a0', '0x0'), ('__chain_starts', '0xc07a0', '0x0'), ('text_env', '0xc07a0', '0x28')]
+SEG __DATA vm 0xc4000 0x438000 file 0xc8000 0x3e8000 sects [('__const', '0xc4000', '0x48c0'), ('_rtk_heap', '0xc88c0', '0x1000'), ('__data', '0xc98c0', '0xf88'), ('_rtk_patchbay', '0xca848', '0x1c8'), ('_rtk_init_stack', '0xcaa10', '0x10000'), ('_rtk_irq_stack', '0xdaa10', '0x1000'), ('_rtk_exc_stack', '0xdba10', '0x1000'), ('_rtk_power', '0xdca10', '0x368'), ('_rtk_tunables', '0xdcd78', '0x5b0'), ('_rtk_boot', '0xe0000', '0x8000'), ('_rtk_page_tables', '0xe8000', '0x3c0000'), ('_rtk_threads', '0x4a8000', '0x0'), ('_fwinfo', '0x4a8000', '0x100'), ('__mod_init_func', '0x4a8100', '0x0'), ('__noinit', '0x4a8100', '0x0'), ('__zerofill', '0x4a8100', '0x52ed8')]
+extra [('0x2', 24), ('0x1b', 24), ('unixthread', 6, 68, ['0x0', '0x0', '0x0', '0x0', '0x0', '0x0'])]
+entry 0x0
+  STR   AneIpcVersion : Major 0x%x, Minor 0x%x
+  STR   Chip minor version: %s
+  STR (%s@%s) RTKit Version: %u.%u.%u
+  STR CSNE_CMD_BUILDINFO
+  STR CSNE_CMD_IPC_ENDPOINT_SET
+  STR CSNE_CMD_IPC_ENDPOINT_SET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2 ProgramUnsetup
+  STR CSNE_CMD_LOAD_AFPP is not allowed after IPC endpoint set
+  STR CSNE_CMD_PROGRAM_INTERFACE_VERSION_CHECK
+  STR CSNE_CMD_UNLOAD_AFPP is not allowed after IPC endpoint set
+  STR Cmd %d is not supported through ExeLoop IPC
+  STR Exeloop pIpcRingBufferIn is NULL
+  STR Exeloop pIpcRingBufferIn is not NULL
+  STR Exeloop pIpcRingBufferOut is NULL
+  STR Exeloop pIpcRingBufferOut is not NULL
+  STR IPC Endpoint cmd failed %d
+  STR IPC Writer regAddr 0x%lx regValue 0x%x
+  STR IPC create readRingBufferLen %d with readRingBufferAddr at 0x%lx
+  STR IPC create writeRingBufferLen %d with writeRingBufferAddr at 0x%lx
+  STR IpcRingBufferIn
+  STR IpcRingBufferOut
+  STR Jun 30 2023
+  STR PowerControlGet: Domain: %d status %s
+  STR PowerControlSet: Base %p index %d : 0x%x using %d ms
+  STR PowerControlSet: Delay 1ms, pPMUAddress %p
+  STR PowerControlSet: Domain: %d Off %d times, Used %d
+  STR PowerControlSet: Domain: %d On %d times, Used %d
+  STR PowerControlSet: Pre-set status: 0x%x, Target %s
+  literal READY 0x08042006 hits at []
+  literal WAKE 0xf7fbdff9 hits at []
+  literal 0x01ff01ff hits at []
+  code hits movz/movk #0x2006: [] movk #0x804: [] wake halves: []
+  entry code:
+===== /tmp/h131/h13_ane_fw.bin 5079040 0x4d8000
+cputype 0x100000c cpusub 0x80000002 filetype 5 flags 0x200001
+SEG __TEXT vm 0x0 0xe4000 file 0x4000 0xe4000 sects [('__text', '0x0', '0xa111c'), ('__cstring', '0xa111c', '0x15bf4'), ('__const', '0xb6d10', '0x29764'), ('text_env', '0xe0474', '0x28'), ('__constructor', '0xe049c', '0x0'), ('__init_offsets', '0xe049c', '0x0')]
+SEG __DATA vm 0xe4000 0x608000 file 0xe8000 0x3f0000 sects [('__const', '0xe4000', '0x5258'), ('_rtk_heap', '0xe9258', '0x0'), ('__data', '0xe9258', '0xe30'), ('_rtk_power', '0xea090', '0x3b8'), ('_rtk_patchbay', '0xea448', '0x241'), ('_rtk_init_stack', '0xea690', '0x10000'), ('_rtk_irq_stack', '0xfa690', '0x1000'), ('_rtk_exc_stack', '0xfb690', '0x1000'), ('_rtk_tunables', '0xfc690', '0x1e8'), ('_rtk_boot', '0x100000', '0xc000'), ('_rtk_page_tables', '0x10c000', '0x3c0000'), ('_rtk_threads', '0x4cc000', '0x0'), ('_fwinfo', '0x4cc000', '0x100'), ('_rtk_boot_l1', '0x4cc100', '0x8'), ('_rtk_mtab', '0x4cc108', '0x288'), ('__gxf_data', '0x4cc390', '0x10'), ('__data_copy', '0x4d0000', '0x2000'), ('__sysvars', '0x4d2000', '0x10'), ('__mod_init_func', '0x4d2010', '0x0'), ('__chain_starts', '0x4d2010', '0x1c'), ('__zerofill', '0x4d2100', '0x219000')]
+SEG __DATA_CONST vm 0x6ec000 0x0 file 0x4d8000 0x0 sects []
+extra [('0x2', 24), ('0xb', 80), ('0x1b', 24), ('unixthread', 6, 68, ['0x0', '0x0', '0x0', '0x0', '0x0', '0x0'])]
+entry 0x0
+  STR   AneIpcVersion : Major 0x%x, Minor 0x%x
+  STR (%s@%s) RTKit Version: %u.%u.%u
+  STR ((IOP_RINGBUFFER_VERSION == (pBuf->_header._version>>16)) || (IOP_RINGBUFFER_VERSION_V2 == (pBuf->_header._ver
+  STR ((IOP_RINGBUFFER_VERSION_V2 == (pBuf->_header._version>>16)) || (IOP_RINGBUFFER_VERSION == (pBuf->_header._ver
+  STR ANE_DRAM_EVENT_STATS_BUFFER_VERSION not supported
+  STR Aug  8 2026
+  STR CSNE_CMD_BUILDINFO
+  STR CSNE_CMD_IPC_ENDPOINT_SET
+  STR CSNE_CMD_IPC_ENDPOINT_SET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2 ProgramUnsetup
+  STR CSNE_CMD_LOAD_AFPP is not allowed after IPC endpoint set
+  STR CSNE_CMD_PROGRAM_INTERFACE_VERSION_CHECK
+  STR CSNE_CMD_UNLOAD_AFPP is not allowed after IPC endpoint set
+  STR Cmd %d is not supported through ExeLoop IPC
+  STR Exeloop pIpcRingBufferIn is NULL
+  STR Exeloop pIpcRingBufferIn is not NULL
+  STR Exeloop pIpcRingBufferOut is NULL
+  STR Exeloop pIpcRingBufferOut is not NULL
+  STR IPC Endpoint cmd failed %d
+  STR IPC Endpoint cmd failure
+  STR IPC Writer regAddr 0x%lx regValue 0x%x
+  STR IPC create readRingBufferLen %d with readRingBufferAddr at 0x%lx
+  STR IPC create writeRingBufferLen %d with writeRingBufferAddr at 0x%lx
+  STR IpcRingBufferIn
+  STR IpcRingBufferOut
+  STR PowerControlGet: Domain: %d status %s
+  STR PowerControlSet: Base %p index %d : 0x%x using %d ms
+  STR PowerControlSet: Delay 1ms, pPMUAddress %p
+  literal READY 0x08042006 hits at []
+  literal WAKE 0xf7fbdff9 hits at []
+  literal 0x01ff01ff hits at []
+  code hits movz/movk #0x2006: [] movk #0x804: [] wake halves: []
+  entry code:
+===== /tmp/h131/t602x_fw.bin 1720320 0x1a4000
+cputype 0x100000c cpusub 0x80000002 filetype 5 flags 0x200001
+SEG __TEXT vm 0x0 0xe8000 file 0x4000 0xe8000 sects [('__text', '0x0', '0x9c66c'), ('__cstring', '0x9c66c', '0x15094'), ('__const', '0xb4000', '0x30234'), ('text_env', '0xe4234', '0x20'), ('__constructor', '0xe4254', '0x0'), ('__init_offsets', '0xe4254', '0x0')]
+SEG __DATA vm 0xe8000 0x284000 file 0xec000 0xb8000 sects [('__const', '0xe8000', '0x5060'), ('_rtk_heap', '0xed060', '0x0'), ('__data', '0xed060', '0xf28'), ('_rtk_power', '0xedf90', '0x3b8'), ('_rtk_patchbay', '0xee348', '0x241'), ('_rtk_init_stack', '0xee590', '0x10000'), ('_rtk_irq_stack', '0xfe590', '0x1000'), ('_rtk_exc_stack', '0xff590', '0x1000'), ('_rtk_tunables', '0x100590', '0x5b0'), ('_rtk_boot', '0x104000', '0xc000'), ('_rtk_page_tables', '0x110000', '0x80000'), ('_rtk_threads', '0x190000', '0x0'), ('_fwinfo', '0x190000', '0x100'), ('_rtk_boot_l1', '0x190100', '0x80'), ('_rtk_mtab', '0x190180', '0x2a0'), ('__gxf_data', '0x190420', '0x10'), ('__data_copy', '0x194000', '0x8000'), ('__sysvars', '0x19c000', '0x10'), ('__mod_init_func', '0x19c010', '0x0'), ('__chain_starts', '0x19c010', '0x1c'), ('__zerofill', '0x19c100', '0x1cd000')]
+SEG __DATA_CONST vm 0x36c000 0x0 file 0x1a4000 0x0 sects []
+extra [('0x2', 24), ('0xb', 80), ('0x1b', 24), ('unixthread', 6, 68, ['0x0', '0x0', '0x0', '0x0', '0x0', '0x0'])]
+entry 0x0
+  STR   AneIpcVersion : Major 0x%x, Minor 0x%x
+  STR (%s@%s) RTKit Version: %u.%u.%u
+  STR ((IOP_RINGBUFFER_VERSION == (pBuf->_header._version>>16)) || (IOP_RINGBUFFER_VERSION_V2 == (pBuf->_header._ver
+  STR ((IOP_RINGBUFFER_VERSION_V2 == (pBuf->_header._version>>16)) || (IOP_RINGBUFFER_VERSION == (pBuf->_header._ver
+  STR ANE_DRAM_EVENT_STATS_BUFFER_VERSION not supported
+  STR Aug  8 2026
+  STR CSNE_CMD_BUILDINFO
+  STR CSNE_CMD_IPC_ENDPOINT_SET
+  STR CSNE_CMD_IPC_ENDPOINT_SET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2
+  STR CSNE_CMD_IPC_ENDPOINT_UNSET2 ProgramUnsetup
+  STR CSNE_CMD_LOAD_AFPP is not allowed after IPC endpoint set
+  STR CSNE_CMD_PROGRAM_INTERFACE_VERSION_CHECK
+  STR CSNE_CMD_UNLOAD_AFPP is not allowed after IPC endpoint set
+  STR Cmd %d is not supported through ExeLoop IPC
+  STR Exeloop pIpcRingBufferIn is NULL
+  STR Exeloop pIpcRingBufferIn is not NULL
+  STR Exeloop pIpcRingBufferOut is NULL
+  STR Exeloop pIpcRingBufferOut is not NULL
+  STR IPC Endpoint cmd failed %d
+  STR IPC Endpoint cmd failure
+  STR IPC Writer regAddr 0x%lx regValue 0x%x
+  STR IPC create readRingBufferLen %d with readRingBufferAddr at 0x%lx
+  STR IPC create writeRingBufferLen %d with writeRingBufferAddr at 0x%lx
+  STR IpcRingBufferIn
+  STR IpcRingBufferOut
+  STR PowerControlGet: Domain: %d status %s
+  STR PowerControlSet: Base %p index %d : 0x%x using %d ms
+  STR PowerControlSet: Delay 1ms, pPMUAddress %p
+  literal READY 0x08042006 hits at []
+  literal WAKE 0xf7fbdff9 hits at []
+  literal 0x01ff01ff hits at []
+  code hits movz/movk #0x2006: [] movk #0x804: [] wake halves: []
+  entry code:

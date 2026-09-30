@@ -1,0 +1,244 @@
+### h13_135.bin
+===== h13_135.bin
+ READY-value site (0x2006 + movk #0x804): 0x63a4
+     0x638c: mov x2, x22
+     0x6390: blr x8
+     0x6394: ldr x0, [x27]
+     0x6398: ldr x8, [x0]
+     0x639c: ldr x8, [x8, #0x30]
+     0x63a0: mov w1, #7
+  => 0x63a4: mov w2, #0x2006
+     0x63a8: movk w2, #0x804, lsl #16
+     0x63ac: blr x8
+     0x63b0: ldr x0, [x27]
+     0x63b4: ldr x8, [x0]
+     0x63b8: ldr x8, [x8, #0x28]
+     0x63bc: mov w1, #7
+     0x63c0: blr x8
+     0x63c4: cmp x0, x20
+     0x63c8: b.eq #0x63d8
+     0x63cc: nop 
+     0x63d0: nop 
+     0x63d4: b #0x63b0
+     0x63d8: ldr x25, [x29, #0x30]
+ READY-value site (0x2006 + movk #0x804): 0x6650
+     0x6638: mov x2, x19
+     0x663c: blr x8
+     0x6640: ldr x0, [x27]
+     0x6644: ldr x8, [x0]
+     0x6648: ldr x8, [x8, #0x30]
+     0x664c: mov w1, #7
+  => 0x6650: mov w2, #0x2006
+     0x6654: movk w2, #0x804, lsl #16
+     0x6658: blr x8
+     0x665c: ldp x29, x30, [sp, #0xa0]
+     0x6660: ldp x20, x19, [sp, #0x90]
+     0x6664: ldp x22, x21, [sp, #0x80]
+     0x6668: ldp x24, x23, [sp, #0x70]
+     0x666c: ldp x26, x25, [sp, #0x60]
+     0x6670: ldp x28, x27, [sp, #0x50]
+     0x6674: add sp, sp, #0xb0
+     0x6678: ret 
+     0x667c: and x9, x8, #0xfffffff8
+     0x6680: add x10, x24, #0x7c
+     0x6684: add x11, x13, #0x10
+ READY-value site (0x2006 + movk #0x804): 0x6bb0
+     0x6b98: mov x1, x24
+     0x6b9c: bl #0x1a7d4
+     0x6ba0: str x22, [x19, #0x98]
+     0x6ba4: adr x8, #0x1a9b4
+     0x6ba8: nop 
+     0x6bac: b #0x6d7c
+  => 0x6bb0: mov w23, #0x2006
+     0x6bb4: movk w23, #0x804, lsl #16
+     0x6bb8: ldr x2, [x19, #0x160]
+     0x6bbc: add x3, x19, #0x150
+     0x6bc0: add x4, x19, #0x158
+     0x6bc4: add x5, x19, #0x170
+     0x6bc8: add x6, x19, #0x178
+     0x6bcc: add x7, x19, #0x1a0
+     0x6bd0: ldr x8, [x19, #0x1a8]
+     0x6bd4: add x9, x19, #0x1b0
+### selene_135.bin
+===== selene_135.bin
+ READY-value site (0x2006 + movk #0x804): 0x63a8
+     0x6390: mov x2, x20
+     0x6394: blr x8
+     0x6398: ldr x0, [x25]
+     0x639c: ldr x8, [x0]
+     0x63a0: ldr x8, [x8, #0x30]
+     0x63a4: mov w1, #7
+  => 0x63a8: mov w2, #0x2006
+     0x63ac: movk w2, #0x804, lsl #16
+     0x63b0: blr x8
+     0x63b4: ldr x0, [x25]
+     0x63b8: ldr x8, [x0]
+     0x63bc: ldr x8, [x8, #0x28]
+     0x63c0: mov w1, #7
+     0x63c4: blr x8
+     0x63c8: cmp x0, x22
+     0x63cc: b.eq #0x63dc
+     0x63d0: nop 
+     0x63d4: nop 
+     0x63d8: b #0x63b4
+     0x63dc: ldr x28, [x29, #0x30]
+ READY-value site (0x2006 + movk #0x804): 0x66a0
+     0x6688: mov x1, #0
+     0x668c: blr x8
+     0x6690: ldr x0, [x25]
+     0x6694: ldr x8, [x0]
+     0x6698: ldr x8, [x8, #0x30]
+     0x669c: mov w1, #7
+  => 0x66a0: mov w2, #0x2006
+     0x66a4: movk w2, #0x804, lsl #16
+     0x66a8: blr x8
+     0x66ac: ldp x29, x30, [sp, #0xb0]
+     0x66b0: ldp x20, x19, [sp, #0xa0]
+     0x66b4: ldp x22, x21, [sp, #0x90]
+     0x66b8: ldp x24, x23, [sp, #0x80]
+     0x66bc: ldp x26, x25, [sp, #0x70]
+     0x66c0: ldp x28, x27, [sp, #0x60]
+     0x66c4: add sp, sp, #0xc0
+     0x66c8: ret 
+     0x66cc: and x9, x8, #0xfffffff8
+     0x66d0: add x10, x20, #0x7c
+     0x66d4: add x11, x13, #0x10
+ READY-value site (0x2006 + movk #0x804): 0x6c28
+     0x6c10: mov x1, x24
+     0x6c14: bl #0x1b4f0
+     0x6c18: str x22, [x19, #0x98]
+     0x6c1c: adr x8, #0x1b6e0
+     0x6c20: nop 
+     0x6c24: b #0x6df4
+  => 0x6c28: mov w23, #0x2006
+     0x6c2c: movk w23, #0x804, lsl #16
+     0x6c30: ldr x2, [x19, #0x160]
+     0x6c34: add x3, x19, #0x150
+     0x6c38: add x4, x19, #0x158
+     0x6c3c: add x5, x19, #0x170
+     0x6c40: add x6, x19, #0x178
+     0x6c44: add x7, x19, #0x1a0
+     0x6c48: ldr x8, [x19, #0x1a8]
+     0x6c4c: add x9, x19, #0x1b0
+### /tmp/h131/h13_ane_fw.bin
+===== /tmp/h131/h13_ane_fw.bin
+ READY-value site (0x2006 + movk #0x804): 0x7390
+     0x7378: movk x17, #0x17b9, lsl #48
+     0x737c: autda x16, x17
+     0x7380: ldr x8, [x16, #0x30]!
+     0x7384: movk x16, #0x5bdd, lsl #48
+     0x7388: blraa x8, x16
+     0x738c: ldr x0, [x26]
+  => 0x7390: mov w2, #0x2006
+     0x7394: mov w1, #7
+     0x7398: ldr x16, [x0]
+     0x739c: movk w2, #0x804, lsl #16
+     0x73a0: mov x17, x0
+     0x73a4: movk x17, #0x17b9, lsl #48
+     0x73a8: autda x16, x17
+     0x73ac: ldr x8, [x16, #0x30]!
+     0x73b0: movk x16, #0x5bdd, lsl #48
+     0x73b4: blraa x8, x16
+     0x73b8: ldr x0, [x26]
+     0x73bc: mov w1, #7
+     0x73c0: ldr x16, [x0]
+     0x73c4: mov x17, x0
+ READY-value site (0x2006 + movk #0x804): 0x7784
+     0x776c: movk x17, #0x17b9, lsl #48
+     0x7770: autda x16, x17
+     0x7774: ldr x8, [x16, #0x30]!
+     0x7778: movk x16, #0x5bdd, lsl #48
+     0x777c: blraa x8, x16
+     0x7780: ldr x0, [x26]
+  => 0x7784: mov w2, #0x2006
+     0x7788: mov w1, #7
+     0x778c: ldr x16, [x0]
+     0x7790: movk w2, #0x804, lsl #16
+     0x7794: mov x17, x0
+     0x7798: movk x17, #0x17b9, lsl #48
+     0x779c: autda x16, x17
+     0x77a0: ldr x8, [x16, #0x30]!
+     0x77a4: movk x16, #0x5bdd, lsl #48
+     0x77a8: blraa x8, x16
+     0x77ac: ldp x29, x30, [sp, #0xb0]
+     0x77b0: ldp x20, x19, [sp, #0xa0]
+     0x77b4: ldp x22, x21, [sp, #0x90]
+     0x77b8: ldp x24, x23, [sp, #0x80]
+ READY-value site (0x2006 + movk #0x804): 0x7e78
+     0x7e60: add x3, x19, #0x150
+     0x7e64: add x4, x19, #0x158
+     0x7e68: add x5, x19, #0x170
+     0x7e6c: add x6, x19, #0x178
+     0x7e70: add x7, x19, #0x1a0
+     0x7e74: mov w1, #0x20
+  => 0x7e78: mov w22, #0x2006
+     0x7e7c: stp x9, x8, [sp]
+     0x7e80: movk w22, #0x804, lsl #16
+     0x7e84: bl #0x71cc
+     0x7e88: adrp x25, #0x522000
+     0x7e8c: add x25, x25, #0x4f0
+     0x7e90: ldr x0, [x25]
+     0x7e94: mov w1, #3
+     0x7e98: ldr x16, [x0]
+     0x7e9c: mov x17, x0
+### /tmp/h131/t602x_fw.bin
+===== /tmp/h131/t602x_fw.bin
+ READY-value site (0x2006 + movk #0x804): 0x7364
+     0x734c: movk x17, #0x17b9, lsl #48
+     0x7350: autda x16, x17
+     0x7354: ldr x8, [x16, #0x30]!
+     0x7358: movk x16, #0x5bdd, lsl #48
+     0x735c: blraa x8, x16
+     0x7360: ldr x0, [x20]
+  => 0x7364: mov w2, #0x2006
+     0x7368: mov w1, #7
+     0x736c: movk w2, #0x804, lsl #16
+     0x7370: ldr x16, [x0]
+     0x7374: mov x17, x0
+     0x7378: movk x17, #0x17b9, lsl #48
+     0x737c: autda x16, x17
+     0x7380: ldr x8, [x16, #0x30]!
+     0x7384: movk x16, #0x5bdd, lsl #48
+     0x7388: blraa x8, x16
+     0x738c: ldr x0, [x20]
+     0x7390: mov w1, #7
+     0x7394: ldr x16, [x0]
+     0x7398: mov x17, x0
+ READY-value site (0x2006 + movk #0x804): 0x77cc
+     0x77b4: movk x17, #0x17b9, lsl #48
+     0x77b8: autda x16, x17
+     0x77bc: ldr x8, [x16, #0x30]!
+     0x77c0: movk x16, #0x5bdd, lsl #48
+     0x77c4: blraa x8, x16
+     0x77c8: ldr x0, [x20]
+  => 0x77cc: mov w2, #0x2006
+     0x77d0: mov w1, #7
+     0x77d4: movk w2, #0x804, lsl #16
+     0x77d8: ldr x16, [x0]
+     0x77dc: mov x17, x0
+     0x77e0: movk x17, #0x17b9, lsl #48
+     0x77e4: autda x16, x17
+     0x77e8: ldr x8, [x16, #0x30]!
+     0x77ec: movk x16, #0x5bdd, lsl #48
+     0x77f0: blraa x8, x16
+     0x77f4: ldp x29, x30, [sp, #0xa0]
+     0x77f8: ldp x20, x19, [sp, #0x90]
+     0x77fc: ldp x22, x21, [sp, #0x80]
+     0x7800: ldp x24, x23, [sp, #0x70]
+ READY-value site (0x2006 + movk #0x804): 0x7ec0
+     0x7ea8: add x3, x19, #0x150
+     0x7eac: add x4, x19, #0x158
+     0x7eb0: add x5, x19, #0x170
+     0x7eb4: add x6, x19, #0x178
+     0x7eb8: add x7, x19, #0x1a0
+     0x7ebc: mov w1, #0x20
+  => 0x7ec0: mov w22, #0x2006
+     0x7ec4: stp x8, x10, [sp, #8]
+     0x7ec8: movk w22, #0x804, lsl #16
+     0x7ecc: str x11, [sp]
+     0x7ed0: bl #0x71a4
+     0x7ed4: adrp x25, #0x1ec000
+     0x7ed8: add x25, x25, #0x4f8
+     0x7edc: ldr x0, [x25]
+     0x7ee0: mov w1, #3
+     0x7ee4: ldr x16, [x0]

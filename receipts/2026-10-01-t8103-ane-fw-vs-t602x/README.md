@@ -1,0 +1,59 @@
+# 2026-10-01 T8103 ANE firmware vs the T602x (selene) firmware: offline start-sequence comparison, and the T8103 /arm-io/ane ADT nub decoded
+
+Requested by the M2/ANE lane (w73). Offline only: no hardware access, no USB, no boot work, nothing written on jwm1. Inputs: (a) the macOS 27.0 (26A428) IODeviceTree dump taken read-only in window 6 (receipt 2026-10-01-jwm1-t8103-ane-adt); (b) ANE firmware images from Apple's public restores, fetched by range reads (ipsw download --pattern Firmware/ane): build 22G74 (macOS 13.5, the build the Asahi stub preloads) and 26A428 (macOS 27.0). Verified = derived from bytes/disassembly in this receipt. INFERENCE = reasoning from the T6021 lane's notes, not checked on T8103 hardware.
+
+## 0. Corrections to the previous T8103 ADT receipt
+The earlier receipt (2026-10-01-jwm1-t8103-ane-adt) said the ADT engine window is 0x26bc04000 + 32 MiB. Re-decoding `reg` (ADT-relative, base 0x200000000): **engine = 0x26a000000, length 0x2000000 (32 MiB); second region 0x23b700000, length 0x8c000**. The Linux DT node `ane@26bc04000` exposes only 0x26bc04000 + 0x24000 (engine + 0x1c04000, the task-manager block), not the whole window.
+
+## 1. The T8103 /arm-io/ane nub (macOS 27.0 boot ADT), each property and what the firmware start needs
+| Property | Raw | Decoded | Role for a firmware start |
+|---|---|---|---|
+| compatible | `ane,t8020` | H13 ANE | selects the H13 driver/fw; the image is h13_ane_fw_styx_j5x |
+| reg / IODeviceMemory | 0x6a000000+0x2000000, 0x3b700000+0x8c000 | engine 0x26a000000 (32 MiB), pmgr-class block 0x23b700000 (0x8c000) | engine window = where the ASC control/scratch/mailbox live (INFERENCE by analogy: the T6021 start uses engine+0x1050000 RVBAR, +0x1400044 CPU_CONTROL, +0x1400048 CPU_STATUS, +0x1408110/4 I2A mailbox controls, +0x1840048..64 SCRATCH0-7, +0x1160008 tick; on T8103 that would put SCRATCH at 0x26a000000+0x1840048 = 0x26b840048, CPU_CONTROL at 0x26b400044, RVBAR at 0x26b050000; offsets unverified on H13). The 0x23b700000 block is the analogue of the T6021 "pmgr grant" (ANE ps words) |
+| segment-ranges | 64 bytes, see section 2 | {phys, virt, remap, size(+flags)} x2 | the map the ASC sees: what the DART must translate (T6021 note: "the ASC sees the remap address") |
+| segment-names | `__TEXT;__DATA` | 2 segments | matches the image's Mach-O segments |
+| pre-loaded | 1 | iBoot preloads the image | no host copy needed (T6021 alias path applies) |
+| asc-dram-mask | u64 0x0000000f00000000 | remap = mask \| virt for DATA (0xf000e4000) | the ASC DVA prefix (T6021 analogue: 0x10000000000, entry base for RVBAR = mask \| DVA) |
+| uuid | "68E231E3-D63F-3D58-B5CE-9A38FFB032C4" | firmware/boot UUID | not consumed by the M2 start sequence; identifies the preloaded image |
+| iommu-parent | 0xfa | mapper node of dart-ane (dart-ane phandle 0xf9) | DART topology: three DARTs (below) |
+| interrupts | 0x1a0 (=416) | one IRQ (Linux DT: SPI 0x1a0) | the ANE completion/mailbox interrupt |
+| power-gates / clock-gates | 0x12e / 0x12e | one ps id | ANE power island control; Linux DT lists five power domains 0xca-0xce (islands) |
+| clock-ids | 0x140, 0x141, 0x142 | three clock ids | PLL_ANE group (M1 ANE ladder 432..1464 MHz in pmgr voltage-states8) |
+| ane-type | 0x40 | H13 flavour id | the fw carries H13 tunables ("Sicily", section 5) |
+| function-mcc_dataset | phandle 0x73 + 'SD$M' | MCC dataset function hook | memory-controller dataset callback; not needed by the M2 start |
+dart-ane (/arm-io/dart-ane): three DARTs at 0x26b800000, 0x26b810000, 0x26b820000 (+ a fourth 0x4000 window at 0x26b804000), dart-id 0x16, page 0x4000, vm-base 0, vm-size 0xe0000000, sids 0xa001, bypass 0xa000, dart-options 0xd, dart-tunables-instance-0..2, error-reflector 0x2_3cffc000 class. Consistent with the M2 lane's note "T8103 has three ANE DARTs (0x26b800000 / 0x26b810000 / 0x26b820000, 16K pages)".
+
+## 2. segment-ranges decode and the T6021 comparison
+Bytes decode as two 32-byte records {phys, virt, remap, size|flags<<32}:
+- macOS 27.0 boot ADT: rec0 {0x80093c000, 0x0, 0x80093c000, 0x000e4000 | 3<<32}, rec1 {0x8015b4000, 0xe4000, 0xf000e4000, 0x608000}. Sizes 0xe4000 / 0x608000 equal the 26A428 H13 image's __TEXT / __DATA vmsize exactly. Note rec0's remap equals its own phys (T6021's TEXT record has remap = 0x10000000000 = mask|0): unexplained; flagged.
+- The T6021 records (M2 doc): {0x10000848000, ., 0x10000000000, 0xc4000} and {0x10001400000, ., 0x100000c4000, 0x438000} = the 13.5 selene image's TEXT 0xc4000 / DATA 0x438000 (verified below).
+- jwm1 boots Linux through the Asahi 13.5 stub, so iBoot preloads the **13.5 H13 image**, not the 26A428 one: expect records with TEXT 0xbc000 / DATA 0x438000 there. NOT verified: the Linux-boot ADT is not available offline; on this jwm1 the Linux DT reserves only two asc-mem windows (asc-firmware@800b0c000 size 0xa24000, @801b50000 size 0x430000) and no ~0xbc000 or ~0x438000 window, i.e. m1n1 on this machine does not carve out the ANE segments, so the preloaded bytes may already be overwritten by the time Linux runs (verify with an m1n1/ADT read before Linux, or from a dedicated boot).
+
+## 3. The four images side by side (payload after IM4P unwrap; all unencrypted, arm64 Mach-O, entry at vaddr 0 = `b #0x204`)
+| Image | payload bytes | cpusub / flags | __TEXT vmsize | __DATA vmaddr / vmsize / filesize | notes |
+|---|---|---|---|---|---|
+| H13 13.5 (22G74, what the Asahi stub preloads) | 0x4bd4f0 | 0x0 / 0x1 (no PAC) | 0xbc000 | 0xbc000 / 0x438000 / 0x3e8000 | sha256 7f906d11897cb930... |
+| selene t602x 13.5 (22G74) | 0x4c5b28 | 0x0 / 0x1 (no PAC) | 0xc4000 | 0xc4000 / 0x438000 / 0x3e8000 | sha256 a9c4b771294a6b11..., **reproduced from the public restore: it is the M2 lane's pinned image** |
+| H13 27.0 (26A428) | 0x4d8000 | 0x80000002 / 0x200001 (arm64e PAC) | 0xe4000 | 0xe4000 / 0x608000 / 0x3f0000 | sha256 204d4b08b2a109a0...; matches the ADT of the 27.0 boot |
+| selene t602x 27.0 (26A428) | 0x1a4000 | 0x80000002 / 0x200001 (PAC) | 0xe8000 | 0xe8000 / 0x284000 / 0xb8000 | sha256 9f7915c431d288a2... (the file at artifacts/M2MarkerAudit/315e43a/selene.macho is this 27.0 image, not the 13.5 one) |
+The 13.5 pair has identical section structure (__text, __data_copy, __const, __cstring, _rtk_mtab, _rtk_heap 0x1000, _rtk_init_stack 0x10000, _rtk_patchbay), the same 0x438000 DATA vmsize and a 0x8000-byte-different TEXT (0xbc000 vs 0xc4000). The 27.0 images add _rtk_power and text_env sections and use PAC (`autda`, `blraa` with salts 0x17b9/0x5bdd); the 13.5 images call vtable slots with plain `blr`.
+
+## 4. Start-handshake code is the same in all four images (VERIFIED by disassembly)
+- The READY word 0x08042006 (`mov w2,#0x2006` + `movk w2,#0x804,lsl #16`, written to scratch index 7, `mov w1,#7`) and the wake compare word 0xf7fbdff9 (`mov w,#0xdff9` + `movk w,#0xf7fb,lsl #16`) sit at the same code shape in H13 13.5 (wake 0x62c0, READY 0x63a4, poll loop `blr [vtbl+0x28](7)` / `cmp x0, x20`), selene 13.5 (0x62c4 / 0x63a8), H13 27.0 (0x72a0 / 0x7390) and selene 27.0 (0x71f8 / 0x7364, the anchor the M2 lane cites). So the SCRATCH7 READY -> wake -> DONE protocol the M2 start implements is present unchanged in the H13 image: the handshake, the RTKit strings ("RTKit Version", ring-buffer IPC "AneIpcVersion") and the CSNE command names are shared between H13 and H14g. Only the SoC-specific parts differ (next section).
+- Anchor caveat for the M2 lane: the READY-write address 0x7364 cited in ane_t6021_boot.c belongs to the 27.0 (26A428) selene image (READY at 0x7364, wake 0x71f8); the pinned fw that is actually loaded (a9c4b771, 13.5) has READY at 0x63a8 and wake at 0x62c4, and no PAC. Both are the same code, different addresses.
+- Not found as literal MMIO immediates in any image: RVBAR/CPU_CONTROL/SCRATCH/mailbox host addresses (those are host-side offsets; the firmware reaches its scratch registers through a service object, virtual slot 0x30 write / 0x28 read with index 7).
+
+## 5. What is H13-specific (VERIFIED from symbols/strings in the 13.5 pair)
+- Source files: H13 has CPowerControlServiceAneH13, CAneEngineExeLoopH13(+FSMDef), H13TunableManager ("styx", class name SicilyTunableMgr, "[sicily] Tunable manager version"), CAneProgramManagerH13, CSneTDDrvH13, CSneTMDrvH13; selene has the H14 equivalents (RhodesTunableMgr, per-chip tunable tables "Using T6020/T6021/T6022 A0/A1/B0/B1 tunables").
+- Both images contain `writeAscChinook` (ASC tunable write) in their tunable manager; the H13 tunable manager is the T8103 bring-up's equivalent of the T6021 one: tunable values are baked into the image per chip, not passed from the host.
+- Power service: `CPowerControlServiceAneH13::propertyWrite(prop, val)` handles property **0x1701** only: sets a byte in the service object and writes the value to the register at PA **0x26b8f0004** (mov x9,#4; movk #0x6b8f,lsl#16; movk #2,lsl#32); anything else logs at verbosity >= 10. (A register in the 0x26b8xxxxx block next to the DART windows; nature unknown.)
+- Perf mode: `CAneEngineExeLoop::setPerfMode(uint8)` stores the flag at this+0x208 (and a "set previously" latch at +0x209); the flag is read in `CAneEngineExeLoopH13::pushToHW` (+0x1d4) and `setDirectAneRequestInfo` (+0x20c): when set, pushToHW makes a virtual call (vtable slot 0x70) on the object at this+0x640 with the request's id/fields (INFERENCE: the PerfControl/"ANEPerfRequest" client the firmware registers with, so the clock request is issued by the firmware per request, not by a host register write). The property id that reaches setPerfMode is not an immediate in either image (0x10aa and 0x10a8 do not appear as compare/mov operands); the CANEController::propertyWrite dispatcher only handles 1, 2, 3, 0xa0-0xc0 and 0x1603-0x1604 directly, so the CH_PROPERTY_WRITE-to-setPerfMode routing is computed elsewhere (table or range decode) and remains unresolved.
+
+## 6. What this means for a T8103 start (INFERENCE unless marked)
+1. Image: H13 13.5 payload (7f906d11...), preloaded by iBoot for the Asahi stub; the entry is IOVA-relative 0 (`b #0x204`), TEXT 0xbc000 then DATA 0x438000 at +0xbc000; use the boot ADT's own segment-ranges (not the 27.0 numbers) for the DART aliases. Segment layout differs from T6021 by 0x8000 of TEXT only.
+2. Start sequence: the T6021 phases (pre-CPU clock/power gate, entry via RVBAR = asc-dram-mask | DVA, CPU_CONTROL 0 then 0x10, poll SCRATCH7 READY 0x08042006, publish the init structure to SCRATCH0/1, wake 0xf7fbdff9, poll DONE) are the same firmware protocol; what must be re-derived for T8103: the engine-relative offsets (check the analogue windows against the H13 macOS kext, `0x26a000000` window), the pmgr ps words behind power-gates 0x12e / the 0x23b700000 block, the three-DART setup (M2 lane notes already cover the T8103 shape) and the init-structure fields the H13 fw consumes (compare with selene's fn 0x71A4 consumer read-set: the H13 13.5 image has the same READY site at 0x63a4 so the analogous consumer can be located from it).
+3. Ownership: as the M2 lane notes, a running fw owns TM/TD and clock control on both chips; a T8103 fw boot replaces ane_drv.c instead of sharing a boot (no host TM writes after start).
+4. Offline follow-ups this enables (not done): locate the init-structure consumer in the H13 13.5 image next to its READY code and diff its field reads against selene's; resolve the CH_PROPERTY_WRITE routing to setPerfMode in the H13 image; identify what register 0x26b8f0004 is (property 0x1701).
+
+## Raw material
+`raw/` holds the scripts (fw_diff.py, fw_consts.py, fw_ctx.py, fw_sym.py, fw_xref.py, fw_ldr.py, fw_strdiff.py, an_adt6b.py) and their outputs. The firmware images stay in the research notebook (artifacts/jwm1-parity/ane-fw-t8103/), not in any repo.

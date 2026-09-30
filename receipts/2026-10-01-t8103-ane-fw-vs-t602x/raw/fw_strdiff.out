@@ -1,0 +1,43 @@
+h13 (13.5) source files: 39  selene (13.5): 37
+only in H13: ['./sne/Service/PowerControlService/CPowerControlServiceAneH13.cpp', './sne/aneEngine/exeLoop/CAneEngineExeLoopH13.cpp', './sne/aneEngine/exeLoop/CAneEngineExeLoopH13FSMDef.cpp', './sne/aneEngine/progInfo/CAneProgramInfoH13.cpp', './sne/aneEngine/progManager/CAneProgramManagerH11.cpp', './sne/aneEngine/program/CAneProgramCheckerH13.cpp', './sne/aneEngine/program/CAneProgramH13.cpp', './sne/common/misc/tunable/styx/H13TunableManager.cpp', './sne/drivers/td/CSneTDDrvH13.cpp', './sne/drivers/tm/CSneTMDrvH13.cpp']
+only in selene: ['./sne/Service/PowerControlService/CPowerControlServiceAneH14.cpp', './sne/aneEngine/exeLoop/CAneEngineExeLoopH14.cpp', './sne/aneEngine/exeLoop/CAneEngineExeLoopH14FSMDef.cpp', './sne/aneEngine/progManager/CAneProgramManagerH14.cpp', './sne/aneEngine/program/CAneProgramCheckerH14.cpp', './sne/aneEngine/program/CAneProgramH14.cpp', './sne/common/misc/tunable/selene/H14TunableManager.cpp', './sne/drivers/tm/CSneTMDrvH14.cpp']
+H13 ./sne/Service/PowerControlService/CPowerControlServiceAneH13.cpp
+SEL ./sne/Service/PowerControlService/CPowerControlServiceAneH14.cpp
+SEL ./sne/common/misc/tunable/selene/H14TunableManager.cpp
+H13 ./sne/common/misc/tunable/styx/H13TunableManager.cpp
+SEL FIXME: H13TunableManager::%s line:%d
+H13 PowerControl_H13
+SEL PowerControl_H14
+SEL RhodesTunableMgr
+H13 SicilyTunableMgr
+SEL Using T6020 A0 tunables.
+SEL Using T6021 A0 as A1 tunables.
+SEL Using T6021 A0 tunables.
+SEL Using T6021 B0 tunables.
+SEL Using T6021 B1 tunables.
+SEL Using T6022 A0 as A1 tunables.
+SEL Using T6022 A0 tunables.
+SEL Using T6022 B0 tunables.
+SEL Using T6022 B1 tunables.
+SEL Using default A0 tunables.
+SEL Using default A1 tunables.
+SEL Using default B0 tunables.
+SEL Using default B1 tunables.
+SEL [Rhodes] Tunable manager version %d
+H13 [sicily] Tunable manager version %d
+H13 __ZN14CAneProgramH1324BuildAProgramFromScratchEP19sCSneCmdProgramLoadP21sCSneCmdProcedureCallPvjjPN11CAneProgram16_sBufListScratch
+SEL __ZN14CAneProgramH1424BuildAProgramFromScratchEP19sCSneCmdProgramLoadP21sCSneCmdProcedureCallPvjjPN11CAneProgram16_sBufListScratch
+H13 __ZN17H13TunableManager15writeAscChinookEv
+H13 __ZN17H13TunableManager4loadEv
+H13 __ZN17H13TunableManager5ResetEv
+H13 __ZN17H13TunableManagerC2EPKc18tunableVersionTypeP7CObject
+H13 __ZN17H13TunableManagerD0Ev
+H13 __ZN17H13TunableManagerD1Ev
+SEL __ZN17H14TunableManager15writeAscChinookEv
+SEL __ZN17H14TunableManager4loadEv
+SEL __ZN17H14TunableManager5ResetEv
+SEL __ZN17H14TunableManagerC2EPKc18tunableVersionTypeP7CObject
+SEL __ZN17H14TunableManagerD0Ev
+SEL __ZN17H14TunableManagerD1Ev
+H13 __ZN26CPowerControlServiceAneH1312PowerControlENS_14ePowerDomainIdEb
+H13 __ZN26CPowerControlServiceAneH1313propertyWriteEjj
