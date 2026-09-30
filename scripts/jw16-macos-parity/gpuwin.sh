@@ -25,4 +25,4 @@ restore () {
 trap restore EXIT
 sudo systemctl stop llm-inference.service; sleep 2
 echo "STOP svc=$(systemctl is-active llm-inference.service) lock_holders=[$(fuser /tmp/m1-gpu.lock 2>&1 || true)]"
-flock -w 900 /tmp/m1-gpu.lock bash -c "$CMD"
+GPUWIN_HELD=1 flock -w 900 /tmp/m1-gpu.lock bash -c "$CMD"
