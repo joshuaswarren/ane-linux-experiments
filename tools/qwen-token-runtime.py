@@ -184,6 +184,29 @@ class QwenTokenRuntime:
         decay = self._require(decay, gate_shape, "decay")
         return self.recurrent_runners[layer_index].step(query, key, value, beta, decay)
 
+    def reset(self):
+        """Restore every layer's device state to the freshly-constructed state.
+
+        Attention rows beyond ``length`` are masked to float16-min scores, which
+        softmax turns into exactly-zero probabilities, so stale rows contribute
+        exact zeros; resetting cursor to 0 keeps the row assignment identical to
+        a fresh session.
+        """
+        self._ensure_open()
+        for layer_states in self.attention_states:
+            for state in layer_states:
+                state.cursor = 0
+                state.length = 0
+        for convolution in self.convolutions:
+            convolution.history[:] = 0
+            convolution.cursor = 0
+        initial_state = np.zeros(
+            (RECURRENT_HEADS, RECURRENT_DIMENSION, RECURRENT_DIMENSION),
+            dtype=np.float16,
+        )
+        for runner in self.recurrent_runners:
+            runner.initialize(initial_state)
+
     def _ensure_open(self):
         if self.closed:
             raise RuntimeError("Qwen token runtime is closed")

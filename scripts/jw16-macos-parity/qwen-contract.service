@@ -1,0 +1,20 @@
+[Unit]
+Description=Qwen3.8-2B Linux ANE contract run (3 warmup + 10 measured passes, resumable)
+After=jw16-ane.service local-fs.target
+Requires=jw16-ane.service
+StartLimitIntervalSec=86400
+StartLimitBurst=6
+
+[Service]
+Type=simple
+User=joshuawarren
+Environment=HOME=/home/joshuawarren
+ExecStart=/bin/bash /var/tmp/appbar/run-qwen-ane-contract.sh /var/tmp/jw16-parity/qwen-contract2
+StandardOutput=append:/var/tmp/jw16-parity/qwen-contract2-run.log
+StandardError=append:/var/tmp/jw16-parity/qwen-contract2-run.log
+Restart=on-failure
+RestartSec=300
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

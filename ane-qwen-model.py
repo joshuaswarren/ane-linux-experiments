@@ -13,6 +13,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import time
 from pathlib import Path
 
 import numpy as np
@@ -466,10 +467,108 @@ def save_checkpoints(path, checkpoints):
     temporary.replace(path)
 
 
+def _wait_for_pause(pause_file):
+    while pause_file.exists():
+        time.sleep(30)
+
+
+def _run_prompt(model, weights, args, *, prompt_id, category, prompt, token_ids,
+                result_output, logits_output):
+    import time as _time
+
+    step_s = 0.0
+    logits_s = 0.0
+    checkpoints = {} if args.checkpoints_output is not None else None
+    hidden = np.zeros(2048, dtype=np.float16)
+    for position, token_id in enumerate(token_ids):
+        t0 = _time.perf_counter()
+        hidden = model.step(
+            model.embedding_row(token_id), position, checkpoints=checkpoints
+        )
+        step_s += _time.perf_counter() - t0
+    generated_ids = []
+    generated_pieces = []
+    captured_logits = []
+
+    token_field = weights.reader.get_field("tokenizer.ggml.tokens")
+    for offset in range(args.generate):
+        t0 = _time.perf_counter()
+        logits = model.logits(hidden)
+        logits_s += _time.perf_counter() - t0
+        next_id = int(np.argmax(logits))
+        captured_logits.append(np.asarray(logits, dtype=np.float32).copy())
+        generated_ids.append(next_id)
+        generated_pieces.append(
+            token_field.contents(next_id) if token_field else str(next_id)
+        )
+        hidden = model.step(
+            model.embedding_row(next_id),
+            len(token_ids) + offset,
+            checkpoints=checkpoints,
+        )
+    t0 = _time.perf_counter()
+    logits = model.logits(hidden)
+    logits_s += _time.perf_counter() - t0
+    next_id = int(np.argmax(logits))
+    top_ids = np.argsort(logits)[-10:][::-1]
+    print(f"prompt_tokens={token_ids}")
+    print(
+        f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}"
+    )
+    print(f"resident_token_runtime={model.token_runtime is not None}")
+    print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
+    print(f"top10={[(int(i), float(logits[i])) for i in top_ids]}")
+    print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
+    print(f"hidden_head={hidden[:16].tolist()}")
+    print(
+        f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}"
+    )
+    print(
+        f"timing_s: steps={step_s:.3f} logits={logits_s:.3f} "
+        f"(persistent={os.environ.get('ANE_NO_PERSISTENT') != '1'})"
+    )
+    if result_output is not None:
+        model_path = Path(args.model)
+        run = {
+            "generated_ids": generated_ids,
+            "logits_shape": list(np.asarray(captured_logits).shape),
+            "logits_finite": bool(np.isfinite(captured_logits).all()),
+            "step_seconds": step_s,
+            "logits_seconds": logits_s,
+        }
+        result = {
+            "model_bytes": model_path.stat().st_size,
+            "model_sha256": sha256_file(model_path),
+            "max_new_tokens": args.generate,
+            "n_layers": len(model.layers),
+            "prompts": [
+                {
+                    "id": prompt_id,
+                    "category": category,
+                    "prompt": prompt,
+                    "prompt_token_ids": token_ids,
+                    "runs": [run],
+                }
+            ],
+        }
+        save_parity_outputs(
+            result_output, logits_output, result, captured_logits
+        )
+    if args.checkpoints_output is not None:
+        save_checkpoints(args.checkpoints_output, checkpoints)
+    print("ANE_QWEN_FULL_TOKEN_STEP_OK")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--model", required=True)
-    parser.add_argument("-p", "--prompt", required=True)
+    parser.add_argument("-p", "--prompt")
+    parser.add_argument("--prompts-file", type=Path)
+    parser.add_argument("--results-dir", type=Path)
+    parser.add_argument("--limit", type=int)
+    parser.add_argument(
+        "--pause-file", type=Path, default=Path("/var/tmp/qwen-contract.PAUSE")
+    )
     parser.add_argument("--prompt-id", default="single")
     parser.add_argument("--category", default="single")
     parser.add_argument("--gguf-py")
@@ -489,6 +588,19 @@ def main():
         parser.error("--generate cannot be negative")
     if (args.result_output is None) != (args.logits_output is None):
         parser.error("--result-output and --logits-output must be used together")
+    if args.prompts_file is not None:
+        if args.backend != "ane":
+            parser.error("--prompts-file requires --backend ane")
+        if args.prompt is not None:
+            parser.error("--prompts-file and --prompt are mutually exclusive")
+        if args.results_dir is None:
+            parser.error("--prompts-file requires --results-dir")
+        if args.checkpoints_output is not None:
+            parser.error("--checkpoints-output is single-prompt only")
+        if args.limit is not None and args.limit < 1:
+            parser.error("--limit must be positive")
+    elif args.prompt is None:
+        parser.error("one of --prompt or --prompts-file is required")
     if args.result_output is not None and args.generate < 1:
         parser.error("parity output requires --generate greater than zero")
     global _F32_REFERENCE
@@ -507,7 +619,6 @@ def main():
         descriptor_path = os.path.join(os.path.dirname(__file__), "ane-network.py")
         descriptor = runtime.load_descriptor(descriptor_path)
         descriptor_512 = runtime.load_descriptor(descriptor_path, (512, 512))
-    token_ids = tokenizer.encode(args.prompt)
     model = QwenModel(
         args.model, args.gguf_py, runtime, weights, descriptor, descriptor_512, args.qid
     )
@@ -527,89 +638,60 @@ def main():
                 full_layers,
                 len(model.layers) - full_layers,
             )
-        import time as _time
-
-        step_s = 0.0
-        logits_s = 0.0
-        checkpoints = {} if args.checkpoints_output is not None else None
-        hidden = np.zeros(2048, dtype=np.float16)
-        for position, token_id in enumerate(token_ids):
-            t0 = _time.perf_counter()
-            hidden = model.step(
-                model.embedding_row(token_id), position, checkpoints=checkpoints
+        if args.prompts_file is not None:
+            prompts = []
+            with args.prompts_file.open(encoding="utf-8") as stream:
+                for line in stream:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    prompts.append(json.loads(line))
+                    if args.limit is not None and len(prompts) >= args.limit:
+                        break
+            args.results_dir.mkdir(parents=True, exist_ok=True)
+            for index, record in enumerate(prompts):
+                prompt_id = record["id"]
+                result_output = args.results_dir / f"{prompt_id}.json"
+                logits_output = args.results_dir / f"{prompt_id}-logits.npy"
+                if result_output.exists():
+                    print(f"=== skip {prompt_id} (done)", flush=True)
+                    continue
+                _wait_for_pause(args.pause_file)
+                if index and model.token_runtime is not None:
+                    model.token_runtime.reset()
+                started = time.time()
+                print(
+                    f"=== {prompt_id} start "
+                    f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}",
+                    flush=True,
+                )
+                _run_prompt(
+                    model,
+                    weights,
+                    args,
+                    prompt_id=prompt_id,
+                    category=record.get("category", "single"),
+                    prompt=record["text"],
+                    token_ids=tokenizer.encode(record["text"]),
+                    result_output=result_output,
+                    logits_output=logits_output,
+                )
+                print(
+                    f"=== {prompt_id} done rc=0 wall={time.time() - started:.1f}s",
+                    flush=True,
+                )
+        else:
+            _run_prompt(
+                model,
+                weights,
+                args,
+                prompt_id=args.prompt_id,
+                category=args.category,
+                prompt=args.prompt,
+                token_ids=tokenizer.encode(args.prompt),
+                result_output=args.result_output,
+                logits_output=args.logits_output,
             )
-            step_s += _time.perf_counter() - t0
-        generated_ids = []
-        generated_pieces = []
-        captured_logits = []
-        
-        token_field = weights.reader.get_field("tokenizer.ggml.tokens")
-        for offset in range(args.generate):
-            t0 = _time.perf_counter()
-            logits = model.logits(hidden)
-            logits_s += _time.perf_counter() - t0
-            next_id = int(np.argmax(logits))
-            captured_logits.append(np.asarray(logits, dtype=np.float32).copy())
-            generated_ids.append(next_id)
-            generated_pieces.append(
-                token_field.contents(next_id) if token_field else str(next_id)
-            )
-            hidden = model.step(
-                model.embedding_row(next_id),
-                len(token_ids) + offset,
-                checkpoints=checkpoints,
-            )
-        t0 = _time.perf_counter()
-        logits = model.logits(hidden)
-        logits_s += _time.perf_counter() - t0
-        next_id = int(np.argmax(logits))
-        top_ids = np.argsort(logits)[-10:][::-1]
-        print(f"prompt_tokens={token_ids}")
-        print(
-            f"layers={len(model.layers)} full_layers={sum(layer['full'] for layer in model.layers)}"
-        )
-        print(f"resident_token_runtime={model.token_runtime is not None}")
-        print(f"hidden_shape={hidden.shape} logits_shape={logits.shape} next_token={next_id}")
-        print(f"top10={[(int(i), float(logits[i])) for i in top_ids]}")
-        print(f"generated_ids={generated_ids} generated_pieces={generated_pieces}")
-        print(f"hidden_head={hidden[:16].tolist()}")
-        print(
-            f"hidden_finite={np.isfinite(hidden).all()} logits_finite={np.isfinite(logits).all()}"
-        )
-        print(
-            f"timing_s: steps={step_s:.3f} logits={logits_s:.3f} "
-            f"(persistent={os.environ.get('ANE_NO_PERSISTENT') != '1'})"
-        )
-        if args.result_output is not None:
-            model_path = Path(args.model)
-            run = {
-                "generated_ids": generated_ids,
-                "logits_shape": list(np.asarray(captured_logits).shape),
-                "logits_finite": bool(np.isfinite(captured_logits).all()),
-                "step_seconds": step_s,
-                "logits_seconds": logits_s,
-            }
-            result = {
-                "model_bytes": model_path.stat().st_size,
-                "model_sha256": sha256_file(model_path),
-                "max_new_tokens": args.generate,
-                "n_layers": len(model.layers),
-                "prompts": [
-                    {
-                        "id": args.prompt_id,
-                        "category": args.category,
-                        "prompt": args.prompt,
-                        "prompt_token_ids": token_ids,
-                        "runs": [run],
-                    }
-                ],
-            }
-            save_parity_outputs(
-                args.result_output, args.logits_output, result, captured_logits
-            )
-        if args.checkpoints_output is not None:
-            save_checkpoints(args.checkpoints_output, checkpoints)
-        print("ANE_QWEN_FULL_TOKEN_STEP_OK")
     finally:
         model.close()
 
