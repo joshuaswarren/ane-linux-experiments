@@ -10,6 +10,11 @@
 # usage: run-linux-cells.sh OUTDIR [cells...]   cells default: d64 d128 d256 d512 pf512 pf1024 pf2048
 # env: VK_DRIVER_FILES / MLX_OMARCHY_* / HK_* pass through (A/B arms), TAG label prefix.
 set -u
+# Window discipline: this script owns its whole window (stop, flock, restore). Refuse when nested in
+# gpuwin.sh (nested flock on /tmp/m1-gpu.lock deadlocks and our restore would restart the service
+# mid-window); otherwise take the same outer mutex so cell runs serialize with gpuwin windows.
+if [ -n "${GPUWIN_HELD:-}" ]; then echo "refusing: do not run cell scripts inside gpuwin.sh; call them directly" >&2; exit 2; fi
+exec 9>/tmp/gpuwin.mutex; flock -w 7200 9 || { echo "gpuwin mutex timeout" >&2; exit 1; }
 OUT="${1:?outdir}"; shift
 CELLS="${*:-d64 d128 d256 d512 pf512 pf1024 pf2048}"
 TAG="${TAG:-linux}"
