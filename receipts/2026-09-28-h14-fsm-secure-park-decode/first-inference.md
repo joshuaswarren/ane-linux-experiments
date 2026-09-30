@@ -74,3 +74,14 @@ CREATE_PROCESS, then PROCEDURE_CALL. Not needed: property 0x10A8, cmds
 0x27/0x28/0x29, DAPF, TRACE_ENABLE. All earlier secure-mode and PMU
 findings in this directory describe firmware behavior that this
 program does not depend on.
+
+## Correction (2026-09-29, installed-path run)
+
+The "16384/16384 bit-exact" counts above include padding. The add ANEC is
+nchw [1,512,1,1] with a 64-byte plane stride: 512 valid fp16 lanes (index % 32
+== 0). In the lab buffers only those lanes are nonzero (a: 511, b: 482, y: 511
+nonzero halfwords, all at index % 32 == 0), so 15872 of the compared halfwords
+were zero in a, b and y. The proven result is 512 valid lanes exact, plus zero
+padding. Dense random inputs are not a valid test: the engine ignores the
+padding lanes and writes zero there. See
+omarchy-ane `receipts/2026-09-29-t6021-installed-path/README.md`.
