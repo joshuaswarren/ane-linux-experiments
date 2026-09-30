@@ -17,3 +17,9 @@ Reading. Against the >= 1.00x rule the stage-matched sum passes on 4 of 5 paired
 Not claimed: any total-process or cold-start comparison. Linux `total_pipeline` (326.8 ms on the fixture) also includes decoder_load 40.3, audio_load 2.8 and detokenize 21.5 ms that macOS's `inference` figure excludes, while macOS separately spends 0.12 s loading models once; those are not paired here. The 1 s cell is a loss and the Parakeet surface is not closed until it passes or is explicitly scoped out. macOS's own v03 decode (55 ms for 0 tokens, against 22 ms on the 1 s clip with 0 tokens) is taken as measured.
 
 Raw: `raw/pk117.log` (fixture, 11 runs), `raw/pk118-fixture_v*.log` (per-clip, 11 runs each; one JSON row per run with stage table, status, emissions, failed checks), analysis scripts alongside. Notebook: entries/jwm1-parity/20261001T140000Z-jwm1-parakeet-stage-matched-h117.md.
+
+## Follow-up (same day): TDT-stage levers tried on the 1 s clip, all exact, none shipped
+- First-chunk sizing (H119): no effect, because every clip passes valid_frames = 375 (fixed 30 s encoder shape), so short clips walk their padding; a 64-slot chunk is always needed.
+- Wider joint window, `_WINDOW_ROWS` 10/13 (H124): output identical, TDT stage slower (v1 33.5 -> 44.5/42.6 ms; fixture 110.5 -> 140.4/141.8).
+- Narrower window, 3/4/5 rows (H125): output identical; v1 43.2/47.2/29.4, fixture 105.0/105.2/108.1; no setting brings the 1 s cell to parity (best stage-matched sum 181.4 vs macOS 171.5) and each helps one clip class while hurting another.
+The 1 s cell (0.930x) stays a loss. Notebook entries: 20261001T150000Z-jwm1-tdt-first-chunk-h119.md, 20261001T190000Z-jwm1-tdt-window-rows-h124.md.
