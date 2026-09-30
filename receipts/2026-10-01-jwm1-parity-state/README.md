@@ -32,6 +32,6 @@ RMSNorm subgroup tail (H96), fp16 matrix operands (H97), magic-number dequant in
 
 ## Open decisions and blocked levers (nothing is quiescent; each has a named owner or gate)
 1. GDN prefill scan (12.6% of the 11-token forward, 7.9% of prefill 512): an exact version is the serial fp32 chain; a faster one changes fp32 summation order. Needs an explicit numerics decision (not taken).
-2. A Metal-style factorized Q4 GEMV (sum x*q then scale and bias per group, as MLX's Metal qmv does) would cut ~1 of ~4 ALU ops per weight and move numerics toward macOS's; expected +3% GEMV, would change digests and near-tie flips; not attempted, same decision class as 1.
+2. (Withdrawn correction.) An earlier draft listed a Metal-style factorized Q4 GEMV as an untried numerics lever. It is already implemented: shaders/qmm_vec.comp follows MLX's native qmv arithmetic (per block dot = sum x*nibble, result += fma(scale, dot, sum*bias), half-precision x quad sums, magic-number nibble convert), i.e. about 3 ALU ops per weight. Nothing is left to gain from that factorization; the remaining decode gap is small-op count and the 84% streaming efficiency, both listed above.
 3. ANE clock: T8103 firmware boot bring-up (image dump, static start, mailbox transport, host TM ownership) is the only route to the 0.81 cell and to the Parakeet encoder stage; owner = the M2/ANE lane, needs USB time; not started by this lane.
 4. Parakeet 1 s cell (0.952): remaining levers are a two-window shared weight stream (design change) or GPU-side blank-walk redesign; no exact micro-lever left.
