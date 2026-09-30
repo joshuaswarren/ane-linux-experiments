@@ -117,6 +117,34 @@ crash before writing JSON was discarded and re-run (both logs retained privately
 - ANE clock: `powermetrics --samplers ane_power` records no ANE power on this OS
   build, so the macOS ANE clock is not directly observed here (ladder analysis in
   `receipts/2026-09-22-ane-dvfs`).
-- Linux Parakeet e2e and Linux Qwen ANE reference are not yet re-run in this window;
-  no parity claim for those cells.
+- Linux Parakeet e2e and Linux Qwen ANE reference: see the paired sections below.
+
+## Parakeet beyond the golden fixture (Linux vs macOS, same laptop)
+
+11-clip corpus (1.6 s to 32.4 s, including one >30 s concatenation), macOS window 3
+`bin/parakeet` CoreML ane arm vs Linux `e2e_free` (whole-encoder ANE + mel + host-loop TDT).
+Functional: transcripts identical on 9/11 clips; the 2 mismatches differ only in the
+junk tail after speech ends (macOS ane and gpu arms disagree with each other there on
+8/11 clips); mean WER Linux vs macOS 0.76%. **Functional parity: PASS.**
+Performance (median warm): macOS inference 0.185-0.407 s vs Linux 0.641-1.430 s,
+per-clip 2.7x-4.5x slower. 10.4 s fixture split: encoder 441 vs 142 ms (ANE firmware
+perf mode never sent on Linux), TDT ~250 vs 103 ms (per-emission submit round trips),
+mel 40 vs 16 ms. **Performance parity: FAIL.**
+
+## Qwen3.8-2B ANE reference, Linux leg
+
+Linux ANE-only runner (native fixture), first 10 corpus prompts x 32 greedy tokens.
+The path is bit-deterministic: p001 and p008 rerun gave identical ids and all
+32x248,320 logits bit-equal, layer-step time jitter <1%; a single-process runner
+reproduced both bit-exactly again. The contract's 10 reps were therefore not run to
+completion (they re-measure <1% jitter on a deterministic path); the deterministic
+sample is the Linux reference.
+Latency: ~23.7 s per decode step (24 layers) + ~1.7 s logits, ~0.04 tok/s vs macOS
+ANEForge 6.76 tok/s (~160x); e2e per prompt ~19 min vs 5.67 s. **Performance parity: FAIL**
+(same root cause as the encoder: ANE clock/perf mode, plus per-step host overhead).
+Functional: generated ids match macOS ANEForge over 32 tokens on 0/10 prompts, but
+against an fp32 CPU reference of the same model both ANE paths diverge at similar
+token indices (first divergence 6-21 on Linux, 5-27 on macOS; ties on 7/10), so the
+mismatch is shared fp16 near-tie sensitivity, not a Linux defect. **Functional gate
+vs macOS: FAIL as specified**; neither ANE path is fp32-class.
 - Raw artifacts and the pre-registered notebook entries live in the private notebook.
