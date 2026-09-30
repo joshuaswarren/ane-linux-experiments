@@ -154,26 +154,52 @@ def task_records(task: bytes) -> list[tuple[int, int, tuple[int, ...]]]:
 def derive_refs(stream: bytes, anec: dict) -> list[tuple[int, int]]:
     """BAR refs {slot, tag} from dense TD records with bit 29 set.
 
-    fw135 0x44c98 pushToHWDirect reads the pairs at record+0x10 and stores a
-    64-bit value at patch+slot*8 (0x44f20/0x44fcc). The value is the call
-    record IOVA whose bufferId equals the tag (0x44fbc scan), or, for tags 2
-    and 3, the kernel/text section base (0x44f30/0x44f58 compare the tag
-    against [x23+0x3c]/[x23+0x6c]; the call checker forbids io bufferIds 2/3
-    for exactly this reason, 0x48ee0-0x48f10). Apple's load-proven conv
-    section (/tmp/h14conv/operation.bin) carries refs {0,2} {1,3} {4,0}:
-    kernel base, text base, one runtime buffer.
+    fw135 0x44c98 pushToHWDirect picks ONE operation record per call
+    (descbase = opSection + rowIdx[cmd[0x10]] * 0x40C, 0x44ea0), zero-fills
+    the 61-slot BAR patch table at netDesc+0xC (NEON at 0x44e58-0x44ea4),
+    and walks the record's pairs (refCount at +0xC, pairs at +0x10+i*8).
+    Each pair writes a 64-bit IOVA into netDesc+0xC+8*slot; the IOVA is
+    the call record's value when bufferId == tag (cmd+0x64+j*0x30, key
+    at +0 and IOVA at +0x18), or the kernel/text section base for tags 2/3
+    (descInfo+0x50 / descInfo+0x80, 0x44f30 / 0x44f58). The call checker
+    at fw135 0x48df8 forbids io bufferIds 2/3 for this reason
+    (0x48ee0-0x48f10).
 
-    Tag resolution per record register:
+    There is NO per-task BAR walk. pushToHWDirect runs once per
+    PROCEDURE_CALL (cmd[0x10] is the procedure id; one direct-call FIFO
+    push per call). The 61-slot table is GLOBAL per call; pairs that
+    share a slot within one record silently overwrite (last-write-wins
+    at 0x44f00-0x44f14). Multi-task programs that need different BAR
+    bases per task MUST use globally-unique slot numbers across all
+    tasks; otherwise the firmware binds the wrong surface for every task
+    that walks after the conflicting pair. This constraint is the
+    compiler's contract, NOT a firmware-enforced check
+    (validateOpSection 0x48384 bounds per-pair slot<=0x3C but does not
+    cross-check slots across tasks).
+
+    Apple's load-proven conv section (/tmp/h14conv/operation.bin) carries
+    refs {0,2} {1,3} {4,0}: kernel base, text base, one runtime buffer.
+    The 9 stage 1-4 fixtures (add, mul, relu, add-scalar, mul-scalar,
+    real-div-scalar, clip-low, clip-high, matvec) all satisfy
+    global-unique slots under the legacy rule below; matvec has been
+    proven on hardware (boot 8f468602) and add as well.
+
+    Tag resolution per record register (the legacy rule, proven for the 9
+    fixtures; the firmware only reads the resolved IOVA, so any rule that
+    produces globally-unique slots is acceptable):
       0x1900..0x19ff KernelDMA block   -> 2 (constants base)
-      0x1110 / 0x1128 TileDMA src base -> input channel 5 / 6 (add-proven:
-                                          0x1110 reads a, 0x1128 reads b)
-      0x1508 TileDMA dst base          -> output channel 4 (add-proven)
-      src base with slot 0 or 1        -> 2 (constant-row load through the
-                                          kernel base; real-div t0 reads the
-                                          stored 2.0 row, kernel offset 0x400)
+      0x1508 TileDMA dst base          -> 4 (output channel 4)
+      0x1110 / 0x1128 TileDMA src base -> 5 / 6 (input channels) when
+                                          slot >= 4; -> 2 (kernel base)
+                                          when slot <= 1 (the constant-row
+                                          load pattern; real-div t0 reads
+                                          the stored 2.0 row, kernel
+                                          offset 0x400)
     """
     pairs: dict[int, int] = {}
+    per_task: list[dict[int, int]] = []
     for t, task in enumerate(split_h14_tasks(stream)):
+        task_pairs: dict[int, int] = {}
         for header, addr, _payload in task_records(task):
             if header & 0x80000000 or not header & (1 << 29):
                 continue
@@ -209,10 +235,25 @@ def derive_refs(stream: bytes, anec: dict) -> list[tuple[int, int]]:
                 refuse(f"task {t}: BAR-ref record at register {addr:#06x} is "
                        "outside the known roles (src 0x1110/0x1128, dst "
                        "0x1508, KernelDMA 0x1900..0x19ff); no tag is known")
+            # Cross-task slot conflict: the firmware has no per-task BAR
+            # walk (0x44ea0 reads ONE record per call). Two tasks sharing a
+            # slot with different tags will collide in the global BAR
+            # table; refuse rather than emit a miscompiled section.
             if slot in pairs and pairs[slot] != tag:
+                old_task = next(i for i, tp in enumerate(per_task)
+                                if slot in tp and tp[slot] != tag)
+                refuse(f"task {t}: BAR slot {slot} resolves to tag {tag} here "
+                       f"but tag {pairs[slot]} in task {old_task}; fw135 "
+                       "0x44c98 pushToHWDirect has no per-task BAR walk "
+                       "and the 61-slot patch table at netDesc+0xC is "
+                       "global per call (0x44e58-0x44ea4), so this slot "
+                       "must be unique across the whole program")
+            if slot in task_pairs and task_pairs[slot] != tag:
                 refuse(f"task {t}: BAR slot {slot} resolves to both tag "
-                       f"{pairs[slot]} and {tag}")
+                       f"{task_pairs[slot]} and {tag} in this task")
+            task_pairs[slot] = tag
             pairs[slot] = tag
+        per_task.append(task_pairs)
     refs = sorted(pairs.items())
     known = {2} | set(anec["channels"])
     bad = [(s, t) for s, t in refs if t not in known]
