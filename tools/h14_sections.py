@@ -27,6 +27,7 @@ Usage: python3 tools/h14_sections.py <out-dir> <path-to-program-N.anec>
        [--bind <channel>=<name>] ...   name io channels (default a,b,y)
 """
 import json
+import os
 import struct
 import sys
 from pathlib import Path
@@ -151,7 +152,8 @@ def task_records(task: bytes) -> list[tuple[int, int, tuple[int, ...]]]:
     return records
 
 
-def derive_refs(stream: bytes, anec: dict) -> list[tuple[int, int]]:
+def derive_refs(stream: bytes, anec: dict,
+                scratch_bufid: int = 0) -> tuple[list[tuple[int, int]], int]:
     """BAR refs {slot, tag} from dense TD records with bit 29 set.
 
     fw135 0x44c98 pushToHWDirect picks ONE operation record per call
@@ -166,27 +168,25 @@ def derive_refs(stream: bytes, anec: dict) -> list[tuple[int, int]]:
     (0x48ee0-0x48f10).
 
     There is NO per-task BAR walk. pushToHWDirect runs once per
-    PROCEDURE_CALL (cmd[0x10] is the procedure id; one direct-call FIFO
+    PROCEDURE_CALL (cmd+0x10 is the procedure id; one direct-call FIFO
     push per call). The 61-slot table is GLOBAL per call; pairs that
     share a slot within one record silently overwrite (last-write-wins
-    at 0x44f00-0x44f14). Multi-task programs that need different BAR
-    bases per task MUST use globally-unique slot numbers across all
-    tasks; otherwise the firmware binds the wrong surface for every task
-    that walks after the conflicting pair. This constraint is the
-    compiler's contract, NOT a firmware-enforced check
-    (validateOpSection 0x48384 bounds per-pair slot<=0x3C but does not
-    cross-check slots across tasks).
+    at 0x44f00-0x44f14). Multi-task programs MUST use globally-unique
+    slots OR carry every ref of the whole program in the one record
+    with one tag per slot.
 
-    Apple's load-proven conv section (/tmp/h14conv/operation.bin) carries
-    refs {0,2} {1,3} {4,0}: kernel base, text base, one runtime buffer.
-    The 9 stage 1-4 fixtures (add, mul, relu, add-scalar, mul-scalar,
-    real-div-scalar, clip-low, clip-high, matvec) all satisfy
-    global-unique slots under the legacy rule below; matvec has been
-    proven on hardware (boot 8f468602) and add as well.
+    IslandBind (2026-09-30): when scratch_bufid != 0 a cross-task slot
+    conflict whose refs ALL sit at scratch-eligible registers (TileDMA
+    dst 0x1508, KernelDMA 0x1900..0x19ff) is RESOLVED by retagging that
+    slot to scratch_bufid; the caller adds the matching scratch generic
+    entry and returns the used flag. A conflict whose mix includes a
+    TileDMA src base (0x1110/0x1128) refuses — that ref binds a real
+    channel buffer, not scratch.
 
-    Tag resolution per record register (the legacy rule, proven for the 9
-    fixtures; the firmware only reads the resolved IOVA, so any rule that
-    produces globally-unique slots is acceptable):
+    Returns (refs sorted by slot, scratch_used).
+
+    Tag resolution per record register (the legacy rule, proven for the
+    9 stage 1-4 fixtures; matvec proven on hardware boot 8f468602):
       0x1900..0x19ff KernelDMA block   -> 2 (constants base)
       0x1508 TileDMA dst base          -> 4 (output channel 4)
       0x1110 / 0x1128 TileDMA src base -> 5 / 6 (input channels) when
@@ -197,9 +197,12 @@ def derive_refs(stream: bytes, anec: dict) -> list[tuple[int, int]]:
                                           offset 0x400)
     """
     pairs: dict[int, int] = {}
+    addrs: dict[int, int] = {}
     per_task: list[dict[int, int]] = []
+    scratch_used = 0
     for t, task in enumerate(split_h14_tasks(stream)):
         task_pairs: dict[int, int] = {}
+        task_addr: dict[int, int] = {}
         for header, addr, _payload in task_records(task):
             if header & 0x80000000 or not header & (1 << 29):
                 continue
@@ -235,35 +238,66 @@ def derive_refs(stream: bytes, anec: dict) -> list[tuple[int, int]]:
                 refuse(f"task {t}: BAR-ref record at register {addr:#06x} is "
                        "outside the known roles (src 0x1110/0x1128, dst "
                        "0x1508, KernelDMA 0x1900..0x19ff); no tag is known")
-            # Cross-task slot conflict: the firmware has no per-task BAR
-            # walk (0x44ea0 reads ONE record per call). Two tasks sharing a
-            # slot with different tags will collide in the global BAR
-            # table; refuse rather than emit a miscompiled section.
-            if slot in pairs and pairs[slot] != tag:
-                old_task = next(i for i, tp in enumerate(per_task)
-                                if slot in tp and tp[slot] != tag)
-                refuse(f"task {t}: BAR slot {slot} resolves to tag {tag} here "
-                       f"but tag {pairs[slot]} in task {old_task}; fw135 "
-                       "0x44c98 pushToHWDirect has no per-task BAR walk "
-                       "and the 61-slot patch table at netDesc+0xC is "
-                       "global per call (0x44e58-0x44ea4), so this slot "
-                       "must be unique across the whole program")
             if slot in task_pairs and task_pairs[slot] != tag:
                 refuse(f"task {t}: BAR slot {slot} resolves to both tag "
                        f"{task_pairs[slot]} and {tag} in this task")
             task_pairs[slot] = tag
-            pairs[slot] = tag
+            task_addr[slot] = addr
         per_task.append(task_pairs)
+        for slot, tag in task_pairs.items():
+            if slot not in pairs:
+                pairs[slot] = tag
+                addrs[slot] = task_addr[slot]
+                continue
+            if pairs[slot] == tag:
+                continue
+            # Cross-task slot conflict: resolve via the scratch merge when
+            # allowed (every ref at the slot sits at a scratch-eligible
+            # register), otherwise refuse.
+            if scratch_bufid and all(
+                    a == 0x1508 or 0x1900 <= a < 0x1A40
+                    for a in (addrs[slot], task_addr[slot])):
+                pairs[slot] = scratch_bufid
+                scratch_used = 1
+                continue
+            old_task = next(i for i, tp in enumerate(per_task)
+                            if slot in tp and tp[slot] != tag)
+            refuse(f"task {t}: BAR slot {slot} resolves to tag {tag} here "
+                   f"but tag {pairs[slot]} in task {old_task}; fw135 "
+                   "0x44c98 pushToHWDirect has no per-task BAR walk "
+                   "and the 61-slot patch table at netDesc+0xC is "
+                   "global per call (0x44e58-0x44ea4), so this slot "
+                   "must be unique across the whole program")
     refs = sorted(pairs.items())
     known = {2} | set(anec["channels"])
+    if scratch_bufid:
+        known.add(scratch_bufid)
     bad = [(s, t) for s, t in refs if t not in known]
     if bad:
-        refuse(f"refs {bad} name tags outside the kernel section (2) and the "
-               f"bound channels {sorted(anec['channels'])}")
+        refuse(f"refs {bad} name tags outside the kernel section (2), the "
+               f"scratch buffer ({scratch_bufid:#x}) and the bound channels "
+               f"{sorted(anec['channels'])}")
     if not refs:
         refuse("the task stream holds no BAR-ref record; no operation refs "
                "can be derived")
-    return refs
+    return refs, scratch_used
+
+
+def scratch_bytes(stream: bytes, scratch_slot: int, output_size: int) -> int:
+    """Host-derived scratch BO size: max BAR-ref payload[0] at the merged
+    slot across all tasks, plus the output allocation, rounded up to the
+    16 KiB tile unit. The C builder computes the same value
+    (ane_m2.c scratch_size_bytes)."""
+    max_payload = 0
+    for task in split_h14_tasks(stream):
+        for header, _addr, payload in task_records(task):
+            if header & 0x80000000 or not header & (1 << 29):
+                continue
+            slot = (header >> 23) & 0x3F
+            if slot == scratch_slot and payload:
+                max_payload = max(max_payload, payload[0])
+    size = max_payload + output_size
+    return (size + 0x3FFF) & ~0x3FFF
 
 
 def tdprop_walk(desc: bytes, off: int, size: int) -> tuple[int, int]:
@@ -281,18 +315,22 @@ def tdprop_walk(desc: bytes, off: int, size: int) -> tuple[int, int]:
     return walked, (last if last is not None else 0)
 
 
-def build_generic(channels: dict) -> bytes:
-    # inputs 5,6 then output 4: the proven add entry order
+def build_generic(channels: dict, scratch: dict | None = None) -> bytes:
+    # inputs 5,6 then output 4: the proven add entry order; an optional
+    # scratch entry (IslandBind) follows the output.
     entries = [(c, channels[c]) for c in [5, 6] if c in channels]
     entries += [(4, channels[4])]
+    if scratch is not None:
+        entries.append((scratch["buffer_id"], scratch))
     buf = bytearray(0x208 + 0x30 * len(entries))
     struct.pack_into("<II", buf, 0x00, GENERIC_MAGIC, GENERIC_VERSION)
     struct.pack_into("<I", buf, 0x204, len(entries))
     for i, (cid, ch) in enumerate(entries):
         out = cid == 4
+        scratch_entry = scratch is not None and cid == scratch["buffer_id"]
         e = 0x208 + i * 0x30
-        struct.pack_into("<IIII", buf, e, 1, cid, 1 if out else 0, 0)
-        struct.pack_into("<IIII", buf, e + 0x10, 2 if out else 1, 0, 0, 0)
+        struct.pack_into("<IIII", buf, e, 1, cid, 0 if scratch_entry else (1 if out else 0), 0)
+        struct.pack_into("<IIII", buf, e + 0x10, 1 if scratch_entry else (2 if out else 1), 0, 0, 0)
         struct.pack_into("<QII", buf, e + 0x20, ch["allocation_bytes"], 0xFFFF, 0)
     return bytes(buf)
 
@@ -331,8 +369,13 @@ def check(name, ok, why):
     return ok
 
 
-def self_check(anec: dict, sections: dict, refs: list) -> bool:
-    """Re-derive every fw135 constraint the payloads must satisfy."""
+def self_check(anec: dict, sections: dict, refs: list,
+               scratch_tag: int = 0) -> bool:
+    """Re-derive every fw135 constraint the payloads must satisfy.
+
+    scratch_tag is the bufferId the scratch merge retagged (0 = no
+    scratch); it is allowed as a ref tag and must appear exactly once in
+    the generic entries when set."""
     ok = True
     gen, kern, desc = sections["generic"], sections["kernel"], sections["descriptor"]
     oper, proc, tdp = sections["operation"], sections["procedure"], sections["tdprop"]
@@ -409,8 +452,10 @@ def self_check(anec: dict, sections: dict, refs: list) -> bool:
                 if nbr else ()
             pairs = list(zip(flat[0::2], flat[1::2]))
             ok &= check(f"operation.rec[{i}].refs",
-                        all(s <= 0x3C and t <= 0x3C for s, t in pairs),
-                        f"{pairs} slot/tag each <= 0x3c (0x48430)")
+                        all(s <= 0x3C and (t <= 0x3C or t == scratch_tag)
+                            for s, t in pairs),
+                        f"{pairs} slot<=0x3c, tag<=0x3c or scratch "
+                        f"({scratch_tag:#x}) (0x48430)")
             ok &= check(f"operation.rec[{i}].sorted",
                         [s for s, _ in pairs] == sorted(s for s, _ in pairs),
                         "refs ascending by slot, the proven add emission order")
@@ -496,9 +541,10 @@ def self_check(anec: dict, sections: dict, refs: list) -> bool:
                 f"{PRIORITY} in [2,7] (cmd+0x18)")
     tags = sorted(set(t for _, t in refs))
     ok &= check("call.tagsKnown",
-                all(t == 2 or t in ids for t in tags),
-                f"ref tags {tags} name the kernel section (2) or bound call "
-                "channels; pushToHWDirect resolves each tag to an IOVA "
+                all(t == 2 or t == scratch_tag or t in ids for t in tags),
+                f"ref tags {tags} name the kernel section (2), the scratch "
+                f"buffer ({scratch_tag:#x}) or bound call channels; "
+                "pushToHWDirect resolves each tag to an IOVA "
                 "(0x44f30 section path, 0x44fbc call-record scan)")
     if not ok:
         raise SystemExit("self-check FAILED")
@@ -523,17 +569,63 @@ def main() -> int:
         return 2
     out, anec_path = Path(rest[0]), Path(rest[1])
     names = {5: "a", 6: "b", 4: "y"} | binds
+
+    # IslandBind env overrides (mirror the C builder libane/ane_m2.c):
+    #   ANE_M2_SCRATCH=<bytes>  enable the scratch merge and floor the
+    #                           scratch BO at <bytes> (0 disables).
+    #   ANE_M2_OPREFS=s:t,s:t   replace the derived ref pairs outright.
+    scratch_env = os.environ.get("ANE_M2_SCRATCH")
+    scratch_bufid = 0x40
+    scratch_floor = 0
+    if scratch_env is not None:
+        try:
+            scratch_floor = int(scratch_env, 0)
+        except ValueError:
+            scratch_floor = 0
+    if scratch_env is not None and scratch_floor == 0:
+        scratch_bufid = 0
+
     anec = parse_anec(anec_path)
-    refs = derive_refs(anec["stream"], anec)
+    refs, scratch_used = derive_refs(anec["stream"], anec, scratch_bufid)
+
+    oprefs_env = os.environ.get("ANE_M2_OPREFS")
+    if oprefs_env:
+        pairs = []
+        for item in oprefs_env.split(","):
+            s, _, t = item.partition(":")
+            pairs.append((int(s, 0), int(t, 0)))
+        for s, t in pairs:
+            if s > 0x3C or t > 0x3C:
+                refuse(f"ANE_M2_OPREFS pair ({s},{t}) outside the 61-slot "
+                       "BAR range")
+        refs = sorted(pairs)
+        scratch_used = 0
+
+    channels = dict(anec["channels"])
+    scratch_size = 0
+    if scratch_used:
+        out_alloc = channels[4]["allocation_bytes"]
+        scratch_slot = next(s for s, t in refs if t == scratch_bufid)
+        scratch_size = scratch_bytes(anec["stream"], scratch_slot, out_alloc)
+        scratch_size = max(scratch_size, scratch_floor) + 0x4000
+        channels[scratch_bufid] = {
+            "tiles": scratch_size // TILE_BYTES,
+            "allocation_bytes": scratch_size,
+            "nchw": [0, 0, 0, 0, 0, 0],
+        }
+
     sections = {
-        "generic": build_generic(anec["channels"]),
+        "generic": build_generic(channels,
+                                 scratch={"buffer_id": scratch_bufid,
+                                          "allocation_bytes": scratch_size}
+                                 if scratch_used else None),
         "kernel": anec["constants"],
         "descriptor": anec["stream"],
         "operation": build_operation(refs),
         "procedure": build_procedure(),
         "tdprop": build_tdprop(anec["stream"]),
     }
-    self_check(anec, sections, refs)
+    self_check(anec, sections, refs, scratch_bufid if scratch_used else 0)
 
     out.mkdir(parents=True, exist_ok=True)
     for name, data in sections.items():
@@ -550,6 +642,13 @@ def main() -> int:
             "size": anec["channels"][cid]["allocation_bytes"],
             "type": 1 if cid == 4 else 0,
             "buffer_id": cid,
+        })
+    if scratch_used:
+        records.append({
+            "name": "scratch",
+            "size": scratch_size,
+            "type": 0,
+            "buffer_id": scratch_bufid,
         })
     binding = {
         "procedure_id": PROCEDURE_ID,
