@@ -1,0 +1,99 @@
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 1189.282,
+  "out": "/var/tmp/pk118-fixture_v1/run-1",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 1, "rc": 0, "wall_ms": 1570.6, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 1189.282, "stages_ms": {"audio_load": 4.759, "decoder_load": 44.898, "mel_frontend": 31.752, "encoder_ane": 1007.291, "tdt_decode": 80.623, "detokenize": 19.96}, "ane": {"exec_ms": 139.445, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 866.449, "close_ms": 0.14, "open_ms": 866.449, "reused": false, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 235.748,
+  "out": "/var/tmp/pk118-fixture_v1/run-2",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 2, "rc": 0, "wall_ms": 526.9, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 235.748, "stages_ms": {"audio_load": 1.133, "decoder_load": 41.821, "mel_frontend": 10.937, "encoder_ane": 139.601, "tdt_decode": 33.692, "detokenize": 8.564}, "ane": {"exec_ms": 138.791, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.194, "close_ms": 0.062, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 234.025,
+  "out": "/var/tmp/pk118-fixture_v1/run-3",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 3, "rc": 0, "wall_ms": 518.0, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 234.025, "stages_ms": {"audio_load": 1.124, "decoder_load": 40.137, "mel_frontend": 11.087, "encoder_ane": 139.535, "tdt_decode": 34.637, "detokenize": 7.505}, "ane": {"exec_ms": 138.817, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.148, "close_ms": 0.067, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 233.322,
+  "out": "/var/tmp/pk118-fixture_v1/run-4",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 4, "rc": 0, "wall_ms": 521.7, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 233.322, "stages_ms": {"audio_load": 1.07, "decoder_load": 41.138, "mel_frontend": 11.021, "encoder_ane": 139.526, "tdt_decode": 33.015, "detokenize": 7.551}, "ane": {"exec_ms": 138.778, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.146, "close_ms": 0.05, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 232.082,
+  "out": "/var/tmp/pk118-fixture_v1/run-5",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 5, "rc": 0, "wall_ms": 520.1, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 232.082, "stages_ms": {"audio_load": 1.153, "decoder_load": 40.356, "mel_frontend": 10.993, "encoder_ane": 139.461, "tdt_decode": 32.509, "detokenize": 7.61}, "ane": {"exec_ms": 138.748, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.143, "close_ms": 0.044, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 232.775,
+  "out": "/var/tmp/pk118-fixture_v1/run-6",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 6, "rc": 0, "wall_ms": 520.4, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 232.775, "stages_ms": {"audio_load": 1.086, "decoder_load": 40.225, "mel_frontend": 11.055, "encoder_ane": 141.24, "tdt_decode": 31.633, "detokenize": 7.536}, "ane": {"exec_ms": 140.533, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.177, "close_ms": 0.06, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 234.366,
+  "out": "/var/tmp/pk118-fixture_v1/run-7",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 7, "rc": 0, "wall_ms": 519.0, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 234.366, "stages_ms": {"audio_load": 1.775, "decoder_load": 40.455, "mel_frontend": 11.061, "encoder_ane": 139.357, "tdt_decode": 34.123, "detokenize": 7.595}, "ane": {"exec_ms": 138.616, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.144, "close_ms": 0.062, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 233.074,
+  "out": "/var/tmp/pk118-fixture_v1/run-8",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 8, "rc": 0, "wall_ms": 520.9, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 233.074, "stages_ms": {"audio_load": 1.111, "decoder_load": 40.402, "mel_frontend": 11.037, "encoder_ane": 140.515, "tdt_decode": 32.363, "detokenize": 7.647}, "ane": {"exec_ms": 139.735, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.197, "close_ms": 0.048, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 234.426,
+  "out": "/var/tmp/pk118-fixture_v1/run-9",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 9, "rc": 0, "wall_ms": 518.5, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 234.426, "stages_ms": {"audio_load": 1.163, "decoder_load": 39.985, "mel_frontend": 11.048, "encoder_ane": 140.266, "tdt_decode": 34.379, "detokenize": 7.586}, "ane": {"exec_ms": 139.488, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.196, "close_ms": 0.06, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 235.636,
+  "out": "/var/tmp/pk118-fixture_v1/run-10",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 10, "rc": 0, "wall_ms": 519.7, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 235.636, "stages_ms": {"audio_load": 1.099, "decoder_load": 40.702, "mel_frontend": 11.175, "encoder_ane": 140.403, "tdt_decode": 34.711, "detokenize": 7.545}, "ane": {"exec_ms": 139.693, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.158, "close_ms": 0.048, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 0,
+  "total_pipeline_ms": 237.132,
+  "out": "/var/tmp/pk118-fixture_v1/run-11",
+  "transcript": ""
+}
+{"label": "fixture_v1", "run": 11, "rc": 0, "wall_ms": 521.1, "status": "match", "failed_checks": [], "transcript_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "emissions": 0, "total_pipeline_ms": 237.132, "stages_ms": {"audio_load": 1.145, "decoder_load": 40.762, "mel_frontend": 10.919, "encoder_ane": 143.343, "tdt_decode": 33.354, "detokenize": 7.61}, "ane": {"exec_ms": 142.502, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.176, "close_ms": 0.041, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}

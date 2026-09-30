@@ -1,0 +1,99 @@
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 1403.313,
+  "out": "/var/tmp/pk117/run-1",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 1, "rc": 0, "wall_ms": 1895.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 1403.313, "stages_ms": {"audio_load": 13.87, "decoder_load": 45.821, "mel_frontend": 52.534, "encoder_ane": 1063.522, "tdt_decode": 200.568, "detokenize": 26.997}, "ane": {"exec_ms": 139.697, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 921.356, "close_ms": 0.161, "open_ms": 921.356, "reused": false, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 330.292,
+  "out": "/var/tmp/pk117/run-2",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 2, "rc": 0, "wall_ms": 648.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 330.292, "stages_ms": {"audio_load": 2.835, "decoder_load": 42.119, "mel_frontend": 11.931, "encoder_ane": 139.805, "tdt_decode": 110.765, "detokenize": 22.835}, "ane": {"exec_ms": 139.049, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.148, "close_ms": 0.101, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 323.993,
+  "out": "/var/tmp/pk117/run-3",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 3, "rc": 0, "wall_ms": 632.4, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 323.993, "stages_ms": {"audio_load": 2.958, "decoder_load": 40.263, "mel_frontend": 11.791, "encoder_ane": 139.475, "tdt_decode": 110.453, "detokenize": 19.053}, "ane": {"exec_ms": 138.705, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.197, "close_ms": 0.077, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 330.737,
+  "out": "/var/tmp/pk117/run-4",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 4, "rc": 0, "wall_ms": 641.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 330.737, "stages_ms": {"audio_load": 2.82, "decoder_load": 40.287, "mel_frontend": 11.804, "encoder_ane": 140.351, "tdt_decode": 111.362, "detokenize": 24.113}, "ane": {"exec_ms": 139.597, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.197, "close_ms": 0.116, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 324.852,
+  "out": "/var/tmp/pk117/run-5",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 5, "rc": 0, "wall_ms": 633.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 324.852, "stages_ms": {"audio_load": 2.845, "decoder_load": 40.406, "mel_frontend": 11.785, "encoder_ane": 140.369, "tdt_decode": 110.308, "detokenize": 19.139}, "ane": {"exec_ms": 139.631, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.195, "close_ms": 0.09, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 328.722,
+  "out": "/var/tmp/pk117/run-6",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 6, "rc": 0, "wall_ms": 638.4, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 328.722, "stages_ms": {"audio_load": 2.849, "decoder_load": 40.194, "mel_frontend": 11.78, "encoder_ane": 140.201, "tdt_decode": 110.709, "detokenize": 22.989}, "ane": {"exec_ms": 139.51, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.142, "close_ms": 0.141, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 326.37,
+  "out": "/var/tmp/pk117/run-7",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 7, "rc": 0, "wall_ms": 635.1, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 326.37, "stages_ms": {"audio_load": 2.834, "decoder_load": 40.211, "mel_frontend": 11.772, "encoder_ane": 140.6, "tdt_decode": 110.801, "detokenize": 20.152}, "ane": {"exec_ms": 139.889, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.2, "close_ms": 0.075, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 327.66,
+  "out": "/var/tmp/pk117/run-8",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 8, "rc": 0, "wall_ms": 637.8, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 327.66, "stages_ms": {"audio_load": 2.823, "decoder_load": 40.426, "mel_frontend": 11.732, "encoder_ane": 140.586, "tdt_decode": 109.163, "detokenize": 22.931}, "ane": {"exec_ms": 139.894, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.175, "close_ms": 0.169, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 325.664,
+  "out": "/var/tmp/pk117/run-9",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 9, "rc": 0, "wall_ms": 634.2, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 325.664, "stages_ms": {"audio_load": 2.86, "decoder_load": 40.165, "mel_frontend": 11.865, "encoder_ane": 141.033, "tdt_decode": 110.488, "detokenize": 19.254}, "ane": {"exec_ms": 140.331, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.182, "close_ms": 0.087, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 325.533,
+  "out": "/var/tmp/pk117/run-10",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 10, "rc": 0, "wall_ms": 633.3, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 325.533, "stages_ms": {"audio_load": 2.962, "decoder_load": 40.293, "mel_frontend": 11.82, "encoder_ane": 140.747, "tdt_decode": 109.473, "detokenize": 20.239}, "ane": {"exec_ms": 140.019, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.194, "close_ms": 0.101, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 104,
+  "total_pipeline_ms": 327.195,
+  "out": "/var/tmp/pk117/run-11",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered, flour-fattened sauce........................................... Юн Ю"
+}
+{"label": "h117", "run": 11, "rc": 0, "wall_ms": 637.0, "status": "match", "failed_checks": [], "transcript_sha256": "db501a8c080380ea027ffa50a4b4956c39df77cb692c4fb78e556311a11a0790", "emissions": 104, "total_pipeline_ms": 327.195, "stages_ms": {"audio_load": 2.83, "decoder_load": 40.2, "mel_frontend": 11.797, "encoder_ane": 139.967, "tdt_decode": 109.503, "detokenize": 22.899}, "ane": {"exec_ms": 139.22, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.169, "close_ms": 0.094, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}

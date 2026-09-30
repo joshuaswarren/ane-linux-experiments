@@ -1,0 +1,99 @@
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 1219.68,
+  "out": "/var/tmp/pk118-fixture_v5/run-1",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 1, "rc": 0, "wall_ms": 1594.0, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 1219.68, "stages_ms": {"audio_load": 5.527, "decoder_load": 44.859, "mel_frontend": 33.183, "encoder_ane": 1010.503, "tdt_decode": 111.858, "detokenize": 13.748}, "ane": {"exec_ms": 139.545, "worker_starts": 1, "submissions": 1, "session": {"batch_open_ms": 869.46, "close_ms": 0.099, "open_ms": 869.46, "reused": false, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 301.589,
+  "out": "/var/tmp/pk118-fixture_v5/run-2",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 2, "rc": 0, "wall_ms": 613.7, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 301.589, "stages_ms": {"audio_load": 1.842, "decoder_load": 44.363, "mel_frontend": 11.329, "encoder_ane": 139.686, "tdt_decode": 82.224, "detokenize": 22.145}, "ane": {"exec_ms": 138.907, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.185, "close_ms": 0.145, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 293.991,
+  "out": "/var/tmp/pk118-fixture_v5/run-3",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 3, "rc": 0, "wall_ms": 609.4, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 293.991, "stages_ms": {"audio_load": 1.855, "decoder_load": 40.755, "mel_frontend": 11.397, "encoder_ane": 139.509, "tdt_decode": 81.15, "detokenize": 19.325}, "ane": {"exec_ms": 138.781, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.148, "close_ms": 0.084, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 293.352,
+  "out": "/var/tmp/pk118-fixture_v5/run-4",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 4, "rc": 0, "wall_ms": 605.5, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 293.352, "stages_ms": {"audio_load": 1.965, "decoder_load": 40.413, "mel_frontend": 11.343, "encoder_ane": 140.137, "tdt_decode": 80.465, "detokenize": 19.029}, "ane": {"exec_ms": 139.429, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.156, "close_ms": 0.113, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 294.366,
+  "out": "/var/tmp/pk118-fixture_v5/run-5",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 5, "rc": 0, "wall_ms": 610.5, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 294.366, "stages_ms": {"audio_load": 1.824, "decoder_load": 42.595, "mel_frontend": 11.312, "encoder_ane": 140.269, "tdt_decode": 78.725, "detokenize": 19.64}, "ane": {"exec_ms": 139.561, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.154, "close_ms": 0.154, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 294.662,
+  "out": "/var/tmp/pk118-fixture_v5/run-6",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 6, "rc": 0, "wall_ms": 610.3, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 294.662, "stages_ms": {"audio_load": 1.841, "decoder_load": 40.769, "mel_frontend": 11.383, "encoder_ane": 141.255, "tdt_decode": 79.776, "detokenize": 19.639}, "ane": {"exec_ms": 140.495, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.218, "close_ms": 0.157, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 296.326,
+  "out": "/var/tmp/pk118-fixture_v5/run-7",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 7, "rc": 0, "wall_ms": 611.7, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 296.326, "stages_ms": {"audio_load": 1.833, "decoder_load": 40.954, "mel_frontend": 11.345, "encoder_ane": 141.687, "tdt_decode": 80.898, "detokenize": 19.609}, "ane": {"exec_ms": 140.941, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.187, "close_ms": 0.144, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 295.689,
+  "out": "/var/tmp/pk118-fixture_v5/run-8",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 8, "rc": 0, "wall_ms": 608.6, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 295.689, "stages_ms": {"audio_load": 1.834, "decoder_load": 40.696, "mel_frontend": 11.411, "encoder_ane": 140.922, "tdt_decode": 81.027, "detokenize": 19.799}, "ane": {"exec_ms": 140.203, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.2, "close_ms": 0.142, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 295.69,
+  "out": "/var/tmp/pk118-fixture_v5/run-9",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 9, "rc": 0, "wall_ms": 609.0, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 295.69, "stages_ms": {"audio_load": 1.925, "decoder_load": 40.909, "mel_frontend": 11.38, "encoder_ane": 141.305, "tdt_decode": 80.355, "detokenize": 19.816}, "ane": {"exec_ms": 140.55, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.211, "close_ms": 0.141, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 293.814,
+  "out": "/var/tmp/pk118-fixture_v5/run-10",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 10, "rc": 0, "wall_ms": 606.3, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 293.814, "stages_ms": {"audio_load": 1.844, "decoder_load": 40.443, "mel_frontend": 11.499, "encoder_ane": 140.687, "tdt_decode": 80.436, "detokenize": 18.905}, "ane": {"exec_ms": 139.941, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.205, "close_ms": 0.103, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
+{
+  "status": "match",
+  "checks_failed": [],
+  "emissions": 28,
+  "total_pipeline_ms": 295.225,
+  "out": "/var/tmp/pk118-fixture_v5/run-11",
+  "transcript": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes.."
+}
+{"label": "fixture_v5", "run": 11, "rc": 0, "wall_ms": 610.7, "status": "match", "failed_checks": [], "transcript_sha256": "daa5f5bc43a28245d93e0c442cba649fb3b741193bb8b58a39678f018374c1bf", "emissions": 28, "total_pipeline_ms": 295.225, "stages_ms": {"audio_load": 1.845, "decoder_load": 42.379, "mel_frontend": 11.427, "encoder_ane": 140.571, "tdt_decode": 79.185, "detokenize": 19.817}, "ane": {"exec_ms": 139.855, "worker_starts": 0, "submissions": 1, "session": {"batch_open_ms": 0.182, "close_ms": 0.147, "open_ms": 0.0, "reused": true, "shared": true}}, "decode_control": "gpu-chain"}
