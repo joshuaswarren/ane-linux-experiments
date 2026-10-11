@@ -1,0 +1,54 @@
+Sun Oct 11 05:01:51 UTC 2026
+ProductName:		macOS
+ProductVersion:		27.0
+BuildVersion:		26A428
+Darwin <host> 27.0.0 Darwin Kernel Version 27.0.0: Tue Aug 11 21:05:27 PDT 2026; root:xnu-13432.1.9~1/RELEASE_ARM64_T8103 arm64
+Apple M1
+17179869184
+--- pmset
+System-wide power settings:
+ SleepDisabled		1
+Currently in use:
+ standby              1
+ Sleep On Power Button 1
+ SleepServices        0
+ hibernatefile        /var/vm/sleepimage
+ powernap             0
+ networkoversleep     0
+ disksleep            0
+ sleep                0 (sleep prevented by powerd)
+ hibernatemode        3
+ ttyskeepawake        1
+ displaysleep         0
+ tcpkeepalive         1
+ lowpowermode         0
+ womp                 1
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded
+--- load
+{ 2.76 2.91 1.46 }
+ %CPU COMM
+ 76.1 /usr/libexec/audiomxd
+ 40.0 /usr/libexec/configd
+  7.1 /usr/sbin/securityd
+  6.6 /usr/libexec/opendirectoryd
+  3.3 /usr/libexec/logd
+  2.9 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+  2.3 <background VPN daemon>
+--- coreml
+3600.25.2
+--- swift
+Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+Target: arm64-apple-darwin27.0.0
+--- inputs
+ac3c41cb8eb4d159119129e2cbc48151ab7f64a1c4a346d79a479a3d5acc8f32  encoder_bench.swift
+d3af24ac95ed3b734d9d2fb8a80b4227e7b8b9f4694517f7f45cb9fec76fa32e  feat_f32.bin
+e2e1224127a127ab4e3dc00311599c2348364c6d29fdf68cd2de22bfdfc91e37  mask_i32.bin
+fca96f1355485ec3e72f314c9e44f72c968f8eb2b88e101043a818114a752063  gold_f16.bin
+model /Users/<user>/.cache/mlx-omarchy/parakeet-reference/mweinbach1/parakeet-tdt-0.6b-v3-coreml/b650695c2322ee5281dff48d7345b2f3a58ff018/encoder.mlpackage
+joint.mlpackage/Data/com.apple.CoreML/weights/weight.bin: OK
+joint.mlpackage/Manifest.json: OK
+tokenizer.json: OK
+d1fba05d5b6fd9fcd2ed50820486f92f53824771050b0142d5e99598994381ca  encoder_bench
+load_end={ 2.56 2.79 1.81 } 05:06:30
