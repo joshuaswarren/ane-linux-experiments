@@ -1,4 +1,7 @@
+import ast
 import importlib.util
+import hashlib
+import tempfile
 import struct
 import unittest
 from dataclasses import replace
@@ -21,6 +24,159 @@ assert RUNTIME_SPEC is not None
 assert RUNTIME_SPEC.loader is not None
 RUNTIME = importlib.util.module_from_spec(RUNTIME_SPEC)
 RUNTIME_SPEC.loader.exec_module(RUNTIME)
+
+
+class SurfaceChannelMappingTests(unittest.TestCase):
+    # Hand-authored selector words; no model or captured task data.
+    @staticmethod
+    def stream(channels):
+        data = bytearray(0x40)
+        word = 0xA4000000 | sum(channel << shift for channel, shift in zip(channels, (0, 6, 12)))
+        struct.pack_into('<I', data, 0x20, word)
+        return data
+
+    def assert_mapping(self, inputs, outputs, expected):
+        data = self.stream((4, 5, 6))
+        MODULE.rewire_surface_channels(data, len(data), inputs, outputs)
+        word = struct.unpack_from('<I', data, 0x20)[0]
+        self.assertEqual(tuple((word >> shift) & 31 for shift in (0, 6, 12)), expected)
+        self.assertEqual(word & ~0x1F7DF, 0xA4000000 & ~0x1F7DF)
+
+    def test_two_inputs_one_output_contiguous(self):
+        self.assert_mapping(2, 1, (5, 6, 4))
+
+    def test_one_input_two_outputs_contiguous(self):
+        self.assert_mapping(1, 2, (6, 4, 5))
+
+    def test_equal_counts_preserve_existing_selector_bytes(self):
+        data = self.stream((4, 5, 6))
+        expected = self.stream((6, 7, 4))
+        MODULE.rewire_surface_channels(data, len(data), 2, 2)
+        self.assertEqual(data, expected)
+
+    def test_equal_count_complete_conversion_matches_base_bytes(self):
+        expected = {
+            'fresh-w4': (4, '90a1d934fbbcd8c105d83a5aaec9f3768fc9aef8c09496e48dcb18444f6b8a78'),
+            'fresh-64': (64, 'bc73bacd79770d2f8da0b7e919b6039af1663fb2a13eda96c28cb83852f19d07'),
+        }
+        for name, (channels, digest) in expected.items():
+            data = (ROOT / f'tools/{name}.hwx.sample').read_bytes()
+            result = MODULE.convert_hwx(data, channels, channels, contiguous_input_first=True)
+            self.assertEqual(hashlib.sha256(result).hexdigest(), digest, name)
+
+    def test_out_of_range_channel_is_refused_without_mutation(self):
+        data = self.stream((4, 5, 7))
+        before = data[:]
+        with self.assertRaises(ValueError):
+            MODULE.rewire_surface_channels(data, len(data), 2, 1)
+        self.assertEqual(data, before)
+
+    def test_truncated_reachable_task_refuses_without_partial_rewrite(self):
+        data = bytearray(96)
+        struct.pack_into('<I', data, 0x1C, 64)
+        struct.pack_into('<I', data, 0x20, 4 | (5 << 6) | (6 << 12))
+        before = data[:]
+        with self.assertRaises(ValueError):
+            MODULE.rewire_surface_channels(data, len(data), 2, 1)
+        self.assertEqual(data, before)
+
+    def test_fourth_surface_selector_is_refused_without_mutation(self):
+        data = self.stream((4, 5, 6))
+        word = struct.unpack_from('<I', data, 0x20)[0] | (4 << 18)
+        struct.pack_into('<I', data, 0x20, word)
+        before = data[:]
+        with self.assertRaises(ValueError):
+            MODULE.rewire_surface_channels(data, len(data), 2, 1)
+        self.assertEqual(data, before)
+
+    def test_special_channels_and_fourth_special_selector_are_preserved(self):
+        data = self.stream((0, 1, 3))
+        word = struct.unpack_from('<I', data, 0x20)[0] | (3 << 18)
+        struct.pack_into('<I', data, 0x20, word)
+        before = data[:]
+        MODULE.rewire_surface_channels(data, len(data), 2, 1)
+        self.assertEqual(data, before)
+
+    def test_staged_anchor_bindings_remain_interleaved(self):
+        tree = ast.parse((ROOT / 'tools/staged-decode-window-anchor.py').read_text())
+        binding = next(ast.literal_eval(node.value) for node in tree.body
+                       if isinstance(node, ast.Assign)
+                       and any(isinstance(target, ast.Name) and target.id == 'BINDING'
+                               for target in node.targets))
+        self.assertEqual([binding[name] for name in ('beta', 'gt', 'q', 'state', 'k', 'v')],
+                         [4, 5, 7, 9, 10, 11])
+        self.assertEqual([binding[name] for name in ('state_out', 'o')], [6, 8])
+
+    @staticmethod
+    def staged_metadata_template():
+        # Add virtual sections to the existing sample; no model data is copied.
+        data = bytearray((ROOT / 'tools/fresh-w4.hwx.sample').read_bytes())
+        ncmds, sizeofcmds = struct.unpack_from('<II', data, 16)
+        command_offset = 32
+        sections = {}
+        for _ in range(ncmds):
+            command, size = struct.unpack_from('<II', data, command_offset)
+            if command == MODULE.LC_SEGMENT_64 and data[command_offset + 8:command_offset + 24].rstrip(b'\0') == b'__FVMLIB':
+                section = command_offset + 72
+                name = bytes(data[section:section + 16]).rstrip(b'\0')
+                sections[name] = bytes(data[command_offset:command_offset + size])
+            command_offset += size
+        additions = []
+        for name, count in ((b'__const', 5), (b'__data', 1)):
+            for index in range(count):
+                cmd = bytearray(sections[name])
+                address = struct.unpack_from('<Q', cmd, 72 + 32)[0]
+                struct.pack_into('<Q', cmd, 72 + 32, address + (index + 1) * 0x400)
+                additions.append(cmd)
+        new_commands = b''.join(additions)
+        self_end = 32 + sizeofcmds
+        assert self_end + len(new_commands) < MODULE.parse_hwx(data).content_offset
+        data[self_end:self_end + len(new_commands)] = new_commands
+        struct.pack_into('<II', data, 16, ncmds + len(additions), sizeofcmds + len(new_commands))
+        return data
+
+    def test_false_contiguous_attestation_misroutes_synthetic_interleaved_roles(self):
+        source = self.staged_metadata_template()
+        image = MODULE.parse_hwx(source)
+        self.assertEqual((len(image.input_sections), len(image.output_sections)), (6, 2))
+        # Reads 4 and 7, write 6: the staged anchor's interleaved roles.
+        struct.pack_into('<I', source, image.content_offset + 0x20, 4 | (7 << 6) | (6 << 12))
+        with self.assertRaises(ValueError):
+            MODULE.convert_hwx(source, 4, 4)
+        # A false assertion cannot be verified from counts: show the resulting
+        # misclassification rather than treating the assertion as validation.
+        converted = MODULE.convert_hwx(source, 4, 4, contiguous_input_first=True)
+        word = struct.unpack_from('<I', converted, MODULE.ANEC_HEADER_SIZE + 0x20)[0]
+        self.assertEqual(tuple((word >> shift) & 31 for shift in (0, 6, 12)), (6, 9, 8))
+
+    def test_file_conversion_preserves_synthetic_staged_roles_and_base_bytes(self):
+        # Separate synthetic selectors: bits 0/6 read, bit 12 writes. The
+        # template is an upstream sample, not the device-proven state block.
+        cases = {
+            (4, 7, 6): 'abfd0914cb14e5e99168943b6018fe6dc29310b36b9391f32f6bc8d3e41d8e0d',
+            (5, 9, 8): 'b16c553163d8db36516540a17756acb569ce42e984ef2a340f6d6e7e4412fa17',
+            (10, 11, 6): 'de1592b2867ff48762573d005f03778353d45188bdf91f2c27bcf81fb6808add',
+        }
+        template = self.staged_metadata_template()
+        image = MODULE.parse_hwx(template)
+        self.assertEqual((len(image.input_sections), len(image.output_sections)), (6, 2))
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / 'in.hwx'
+            dst = Path(tmp) / 'out.anec'
+            for (read0, read1, write), digest in cases.items():
+                source = bytearray(template)
+                selector = read0 | (read1 << 6) | (write << 12)
+                struct.pack_into('<I', source, image.content_offset + 0x20, selector)
+                src.write_bytes(source)
+                MODULE.convert_hwx_file(str(src), str(dst), 4, 4)
+                result = dst.read_bytes()
+                header = struct.unpack_from('<QIIQQII32I192Q', result, 0)
+                self.assertEqual(header[5:7], (6, 2))
+                self.assertTrue(all(header[7 + bank] > 0 for bank in range(4, 12)))
+                with self.assertRaises(ValueError):
+                    MODULE.convert_hwx(source, 4, 4)
+                self.assertEqual(struct.unpack_from('<I', result, MODULE.ANEC_HEADER_SIZE + 0x20)[0], selector)
+                self.assertEqual(hashlib.sha256(result).hexdigest(), digest)
 
 
 class FreshHWXParserTests(unittest.TestCase):
@@ -118,7 +274,7 @@ class FreshHWXParserTests(unittest.TestCase):
         self.assertEqual(kdma.buffer_sizes, (1,) * 16)
 
     def test_converted_header_matches_payload(self):
-        result = MODULE.convert_hwx(self.data, 4, 4)
+        result = MODULE.convert_hwx(self.data, 4, 4, contiguous_input_first=True)
         fields = struct.unpack_from('<QIIQQII', result, 0)
         # Current ABI (post 10d7c1f9 td clamp + 7e55943c tile units):
         # content tiles in 0x4000-B units, td_size clamped to 0x1f8.
@@ -239,7 +395,7 @@ class DerivedKernelSectionTests(unittest.TestCase):
         data = self.hwx_with_blob_kernel()
         image = MODULE.parse_hwx(data)
         self.assertTrue(image.kernel_is_blob)
-        result = MODULE.convert_hwx(data, 4, 4, blob=self.blob())
+        result = MODULE.convert_hwx(data, 4, 4, blob=self.blob(), contiguous_input_first=True)
         start = MODULE.ANEC_HEADER_SIZE + image.kernel_offset
         # Copying __const through would put 64 header words where the first 64
         # coefficients belong and truncate the real tail.
@@ -253,14 +409,14 @@ class DerivedKernelSectionTests(unittest.TestCase):
         # Emitting the truncated, header-prefixed coefficient stream is the
         # defect; refusing names the missing input instead.
         with self.assertRaises(ValueError):
-            MODULE.convert_hwx(self.hwx_with_blob_kernel(), 4, 4)
+            MODULE.convert_hwx(self.hwx_with_blob_kernel(), 4, 4, contiguous_input_first=True)
 
     def test_a_plain_kernel_section_is_copied_verbatim(self):
         for name, channels in (('fresh-64', 64), ('fresh-w4', 4)):
             data = (ROOT / f'tools/{name}.hwx.sample').read_bytes()
             image = MODULE.parse_hwx(data)
             self.assertFalse(image.kernel_is_blob, name)
-            result = MODULE.convert_hwx(data, channels, channels)
+            result = MODULE.convert_hwx(data, channels, channels, contiguous_input_first=True)
             # The task stream legitimately carries the current ABI's
             # re-encoded tile counts (10d7c1f9 td clamp, 7e55943c tile
             # units); the kernel COEFFICIENTS must still be verbatim.
@@ -345,7 +501,7 @@ class DerivedGeometryTests(unittest.TestCase):
         # (1,64,1,1,64,64) and its one-tile surfaces.
         data = (ROOT / 'tools/fresh-64.hwx.sample').read_bytes()
         header = struct.unpack_from(
-            '<QIIQQII32I192Q', MODULE.convert_hwx(data, 64, 64), 0
+            '<QIIQQII32I192Q', MODULE.convert_hwx(data, 64, 64, contiguous_input_first=True), 0
         )
         nchw = header[39:]
         self.assertEqual(tuple(nchw[4 * 6:4 * 6 + 6]), (1, 64, 1, 1, 64, 64))

@@ -624,48 +624,53 @@ def patch_task_nid(content: bytearray, tsk_size: int, nid: int = 0x40) -> int:
     return patched
 
 
-def _rewire_channel(channel: int, dst_count: int) -> int:
-    """Map a surface channel between Apple's and libane's role layouts.
-
-    Apple binds surface channels by role where they fall in the stream:
-    sources on the first surface channels, destinations after them. The
-    Linux runtime's staging ordinals are the reverse: destinations at
-    channels 4..4+dst_count-1, sources after those. A stream kept on
-    Apple's wiring makes the engine DMA its inputs from buffers sized for
-    outputs and written by nobody, which runs off the end of the bound BO
-    and stalls with no completion event. Surfaces below channel 4
-    (command/workspace) never move.
-    """
-    if 4 <= channel < 4 + dst_count:
+def _rewire_channel(channel: int, src_count: int, dst_count: int) -> int:
+    if channel < 4:
+        return channel
+    if channel < 4 + src_count:
         return channel + dst_count
-    if 4 + dst_count <= channel < 4 + dst_count * 2:
-        return channel - dst_count
-    return channel
+    if channel < 4 + src_count + dst_count:
+        return channel - src_count
+    raise ValueError(f"surface channel {channel} outside declared contiguous layout")
 
 
-def rewire_surface_channels(content: bytearray, tsk_size: int, dst_count: int) -> int:
-    """Rewrite each task's selector word to the runtime's role layout."""
-    rewired = 0
+def rewire_surface_channels(
+    content: bytearray, tsk_size: int, src_count: int, dst_count: int
+) -> int:
+    """Rewire a caller-verified input-first contiguous layout.
+
+    The ANEC header places outputs before inputs; this permutation matches
+    that order only for an input-first contiguous source layout. Section
+    counts do not prove channel roles: the caller must verify them.
+    """
+    if src_count < 1 or dst_count < 1 or src_count + dst_count > 28:
+        raise ValueError("invalid contiguous surface counts")
+    changes = []
     offset = 0
     seen = set()
-    shifts = (0, 6, 12)
-    while offset + 0x20 <= tsk_size and offset not in seen:
+    while offset not in seen:
+        if offset + 0x24 > tsk_size or offset + 0x24 > len(content):
+            raise ValueError("incomplete reachable task header")
         seen.add(offset)
         sel = struct.unpack_from("<I", content, offset + 32)[0]
         new = sel
-        for shift in shifts:
+        # Existing converter does not rewire the fourth selector. Do not
+        # silently leave a surface there bound to its old role.
+        if (sel >> 18) & 0x1F >= 4:
+            raise ValueError("surface in unsupported fourth selector")
+        for shift in (0, 6, 12):
             channel = (sel >> shift) & 0x1F
-            mapped = _rewire_channel(channel, dst_count)
-            if mapped != channel:
-                new = (new & ~(0x1F << shift)) | (mapped << shift)
+            mapped = _rewire_channel(channel, src_count, dst_count)
+            new = (new & ~(0x1F << shift)) | (mapped << shift)
         if new != sel:
-            struct.pack_into("<I", content, offset + 32, new)
-            rewired += 1
+            changes.append((offset + 32, new))
         nxt = struct.unpack_from("<I", content, offset + 0x1C)[0]
-        if not nxt or nxt + 0x20 > tsk_size:
+        if not nxt:
             break
         offset = nxt
-    return rewired
+    for offset, word in changes:
+        struct.pack_into("<I", content, offset, word)
+    return len(changes)
 
 
 def convert_hwx(
@@ -675,7 +680,11 @@ def convert_hwx(
     in_shape: tuple[int, int, int, int] | None = None,
     out_shape: tuple[int, int, int, int] | None = None,
     blob: bytes | None = None,
+    *,
+    contiguous_input_first: bool = False,
 ) -> bytes:
+    if contiguous_input_first is not True:
+        raise ValueError("caller must verify contiguous input-first channel roles")
     image = parse_hwx(data)
     in_shape = (1, in_ch, 1, 1) if in_shape is None else in_shape
     out_shape = (1, out_ch, 1, 1) if out_shape is None else out_shape
@@ -688,6 +697,7 @@ def convert_hwx(
         content[image.kernel_offset:image.kernel_offset + image.kernel_size] = payload
     patched = patch_task_nid(content, image.task_stream_size)
     rewire_surface_channels(content, image.task_stream_size,
+                            len(image.input_sections or (1,)),
                             len(image.output_sections or (1,)))
     return header + b"\0" * (ANEC_HEADER_SIZE - len(header)) + bytes(content)
 
