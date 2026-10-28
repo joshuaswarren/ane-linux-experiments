@@ -1,0 +1,92 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-12.6-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "0.32.4",
+ "engineCommitNote": null,
+ "notes": "quantFileSha256 for MLX models is not a plain file hash: it is the sha256 of the text 'name:sha256' for each .safetensors file in the model folder, sorted by name, one per line; the per-file hashes are in weightFileSha256 of the run.",
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4",
+ "vulkanDevices": "Apple M2 Max (G14C B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-a5b1797446)",
+ "model": "Qwen3.5-9B MLX 4-bit (mlx-community/Qwen3.5-9B-4bit)",
+ "modelFile": "mlx-community/Qwen3.5-9B-4bit",
+ "quantFileSha256": "9b2359436694954fc06a05814846240438b518f3bc58205b0a2ff7752dda253d",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 424.31523167649357,
+    "decodeTokS": 19.56979912144042,
+    "prefillSeconds": 19.306400968998787,
+    "decodeSeconds": 6.489591396002652,
+    "peakMemoryGiB": 5.75,
+    "loadAverageBefore": 0.7763671875,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 396.3628226582546,
+    "decodeTokS": 19.041264999629295,
+    "prefillSeconds": 20.667932338001265,
+    "decodeSeconds": 6.669724936997227,
+    "peakMemoryGiB": 5.75,
+    "loadAverageBefore": 0.2890625,
+    "round": 0,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 424.28175516554245,
+    "decodeTokS": 19.508851657703108,
+    "prefillSeconds": 19.307924274999095,
+    "decodeSeconds": 6.509865482003079,
+    "peakMemoryGiB": 5.75,
+    "loadAverageBefore": 0.28564453125,
+    "round": 0,
+    "interleavePosition": 2
+   },
+   {
+    "prefillTokS": 405.48434858100467,
+    "decodeTokS": 35.15676305277577,
+    "prefillSeconds": 20.202999273999012,
+    "decodeSeconds": 3.6123917270015227,
+    "peakMemoryGiB": 5.75,
+    "loadAverageBefore": 0.537109375,
+    "round": 0,
+    "interleavePosition": 3
+   },
+   {
+    "prefillTokS": 410.8755764984997,
+    "decodeTokS": 35.90665576391849,
+    "prefillSeconds": 19.93790935400102,
+    "decodeSeconds": 3.536948715998733,
+    "peakMemoryGiB": 5.75,
+    "loadAverageBefore": 0.25,
+    "round": 0,
+    "interleavePosition": 4
+   },
+   {
+    "prefillTokS": 427.3241482911133,
+    "decodeTokS": 35.75954048878162,
+    "prefillSeconds": 19.170458849002898,
+    "decodeSeconds": 3.5514997749996837,
+    "peakMemoryGiB": 5.75,
+    "loadAverageBefore": 0.13330078125,
+    "round": 0,
+    "interleavePosition": 5
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T17:46:01+00:00",
+ "finishedAt": "2026-10-28T17:51:00+00:00",
+ "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)"
+}
