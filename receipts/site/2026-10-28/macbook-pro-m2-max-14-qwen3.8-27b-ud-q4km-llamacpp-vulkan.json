@@ -1,0 +1,72 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-12.6-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "version: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M2 Max (G14C B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "mesa": "driverInfo         = Mesa 26.3.0-devel (git-a5b1797446)",
+ "model": "Qwen3.8-27B UD-Q4_K_M (unsloth/Qwen3.8-27B-GGUF UD-Q4_K_M, 15.33 GiB)",
+ "modelFile": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+ "quantFileSha256": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482",
+ "commands": [
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 59.112456,
+    "decodeTokS": 5.770863,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 59.046836,
+    "decodeTokS": 5.771059,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 59.060749,
+    "decodeTokS": 5.774509,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ],
+  "8192": [
+   {
+    "prefillTokS": 66.250184,
+    "decodeTokS": 7.005888,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 66.236448,
+    "decodeTokS": 6.97362,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 66.230083,
+    "decodeTokS": 7.001748,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T02:22:22.171503-05:00",
+ "finishedAt": "2026-10-28T04:09:31.965016-05:00",
+ "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)"
+}
