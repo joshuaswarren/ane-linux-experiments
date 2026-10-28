@@ -1,0 +1,75 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "host": "MacBook Pro 14-inch (M2 Max, 96 GB)",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-12.6-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "5c15fba",
+ "engineCommitNote": null,
+ "notes": " Output text was not checked: a result means 128 tokens completed, not that the text was correct (w7Q).",
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610050725+5c15fba",
+ "vulkanDevices": "Apple M2 Max (G14C B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-a5b1797446)",
+ "driNodeUsers": [
+  "Hyprland",
+  "Xwayland",
+  "herdr",
+  "inotifywait",
+  "omarchy-hyprlan",
+  "omarchy-launch-",
+  "python3",
+  "quickshell",
+  "socat",
+  "udiskie",
+  "wl-paste",
+  "xdg-desktop-por"
+ ],
+ "model": "Qwen3.6-35B-A3B MLX 4-bit (mlx-community/Qwen3.6-35B-A3B-4bit)",
+ "modelFile": "mlx-community/Qwen3.6-35B-A3B-4bit",
+ "quantFileSha256": "f808f71c38f2b60586c762270f7ffc433304e34e9a8315a409e74e05e7f0179d",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<32768 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<2048 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 13.407920745065724,
+    "decodeTokS": 3.077557030631487,
+    "prefillSeconds": 2443.928527251999,
+    "decodeSeconds": 41.2664976590022,
+    "peakMemoryGiB": 21.08,
+    "loadAverageBefore": 0.01220703125,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 13.402139024066429,
+    "decodeTokS": 3.0774862358034825,
+    "prefillSeconds": 2444.9828449889974,
+    "decodeSeconds": 41.26744695800153,
+    "peakMemoryGiB": 21.08,
+    "loadAverageBefore": 0.10986328125,
+    "round": 1,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 13.399389083224364,
+    "decodeTokS": 3.0773650875004868,
+    "prefillSeconds": 2445.484625938996,
+    "decodeSeconds": 41.26907155600202,
+    "peakMemoryGiB": 21.08,
+    "loadAverageBefore": 0.07275390625,
+    "round": 2,
+    "interleavePosition": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T03:15:44+00:00",
+ "finishedAt": "2026-10-28T06:07:56+00:00"
+}
