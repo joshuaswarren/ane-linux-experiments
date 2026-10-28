@@ -1,0 +1,57 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "5c15fba",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610050725+5c15fba",
+ "vulkanDevices": "Apple M1 (G13G B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-69bde15340)",
+ "model": "Qwen3.5-9B MLX 4-bit (mlx-community/Qwen3.5-9B-4bit)",
+ "modelFile": "mlx-community/Qwen3.5-9B-4bit",
+ "quantFileSha256": "9b2359436694954fc06a05814846240438b518f3bc58205b0a2ff7752dda253d",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 91.39496198298687,
+    "decodeTokS": 4.698407137824533,
+    "prefillSeconds": 89.63294936897,
+    "decodeSeconds": 27.030437396024354,
+    "peakMemoryGiB": 5.67,
+    "loadAverageBefore": 0.2470703125,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 91.5084676187405,
+    "decodeTokS": 4.691515152725549,
+    "prefillSeconds": 89.52177009597654,
+    "decodeSeconds": 27.070145968988072,
+    "peakMemoryGiB": 5.67,
+    "loadAverageBefore": 0.23193359375,
+    "round": 1,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 91.65894073838663,
+    "decodeTokS": 4.71317956780883,
+    "prefillSeconds": 89.37480549095199,
+    "decodeSeconds": 26.945716404996347,
+    "peakMemoryGiB": 5.67,
+    "loadAverageBefore": 0.25537109375,
+    "round": 2,
+    "interleavePosition": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T14:08:10+00:00",
+ "finishedAt": "2026-10-28T14:15:00+00:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
