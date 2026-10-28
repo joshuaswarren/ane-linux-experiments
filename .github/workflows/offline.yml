@@ -1,0 +1,32 @@
+name: Offline checks
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts-and-surface-mapping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install numpy==1.26.4
+      - name: Offline contracts and contiguous-layout regression tests
+        run: |
+          python -m unittest -v \
+            tools.test_ane_contract \
+            tools.test_aneforge_qwen_reference \
+            tools.test_compare_qwen_reference \
+            tools.test_production_anec_probe \
+            tools.test_hwxv2_to_anec.SurfaceChannelMappingTests
+      - name: Privacy guard tests
+        run: bash scripts/privacy_check-tests.sh
