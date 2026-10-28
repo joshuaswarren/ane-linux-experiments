@@ -6,7 +6,7 @@
  "engine": "llama.cpp Vulkan",
  "engineCommit": "335916a",
  "engineCommitNote": "short hash from llama-bench --version; the source tree was not recorded",
- "notes": null,
+ "notes": "The graphics driver version was not recorded during the run; no driver override was set, so the machine's installed system driver was used.",
  "llamaBenchVersion": "version: 0.7.0-dev (build 230, commit 335916a)",
  "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M1 (G13G B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.7.0-dev (build 230, commit 335916a)",
  "mesa": "",
