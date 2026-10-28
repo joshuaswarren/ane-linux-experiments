@@ -14,9 +14,33 @@
  "model": "Qwen3.8-9B Q4_K_M (empero-ai/Qwen3.8-9B-Distill-GGUF Q4_K_M, 5.38 GiB)",
  "modelFile": "Qwen3.8-9B-Q4_K_M.gguf",
  "quantFileSha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
- "commands": [],
+ "commands": [
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
  "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
- "rawRunsByPromptTokens": {},
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 46.341428,
+    "decodeTokS": 7.272513,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 46.270885,
+    "decodeTokS": 7.322393,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 46.328105,
+    "decodeTokS": 7.32575,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
  "startedAt": "2026-10-27T20:45:27.381392-05:00",
  "finishedAt": "2026-10-27T21:14:32.404076-05:00"
 }
