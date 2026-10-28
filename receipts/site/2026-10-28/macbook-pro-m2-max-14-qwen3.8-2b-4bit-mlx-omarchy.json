@@ -1,0 +1,160 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-12.6-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "0.32.4",
+ "engineCommitNote": null,
+ "notes": "quantFileSha256 for MLX models is the sha256 of the text 'name:sha256' per .safetensors file, sorted by name; per-file hashes are in weightFileSha256.",
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4",
+ "vulkanDevices": "Apple M2 Max (G14C B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-a5b1797446)",
+ "model": "Qwen3.8-2B-mlx-4Bit (SiddhJagani/Qwen3.8-2B-mlx-4Bit)",
+ "modelFile": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+ "quantFileSha256": "482e4193280b9bc5f0120666c077c6e2d0052cb59cf0c44f917d4b3386f5bbad",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<32768 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<32768 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<32768 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<32768 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<32768 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<32768 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 1077.6681319481322,
+    "decodeTokS": 16.645101013853708,
+    "prefillSeconds": 30.40639231000023,
+    "decodeSeconds": 7.629872590998275,
+    "peakMemoryGiB": 2.69,
+    "loadAverageBefore": 0.1943359375,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 1082.306386963696,
+    "decodeTokS": 16.683077492535723,
+    "prefillSeconds": 30.276084845001606,
+    "decodeSeconds": 7.612504351000098,
+    "peakMemoryGiB": 2.69,
+    "loadAverageBefore": 0.21630859375,
+    "round": 0,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 1081.895806511788,
+    "decodeTokS": 16.573575812362485,
+    "prefillSeconds": 30.28757464699811,
+    "decodeSeconds": 7.6628001970020705,
+    "peakMemoryGiB": 2.69,
+    "loadAverageBefore": 0.33544921875,
+    "round": 0,
+    "interleavePosition": 2
+   },
+   {
+    "prefillTokS": 1083.0632646598829,
+    "decodeTokS": 64.32669604585885,
+    "prefillSeconds": 30.254926991998218,
+    "decodeSeconds": 1.9742969530016126,
+    "peakMemoryGiB": 2.69,
+    "loadAverageBefore": 0.19287109375,
+    "round": 0,
+    "interleavePosition": 3
+   },
+   {
+    "prefillTokS": 1084.1841520908567,
+    "decodeTokS": 64.52151779996336,
+    "prefillSeconds": 30.223647834001895,
+    "decodeSeconds": 1.9683355929992103,
+    "peakMemoryGiB": 2.69,
+    "loadAverageBefore": 0.31787109375,
+    "round": 0,
+    "interleavePosition": 4
+   },
+   {
+    "prefillTokS": 1087.9261753652415,
+    "decodeTokS": 63.61809372670099,
+    "prefillSeconds": 30.119690786003048,
+    "decodeSeconds": 1.9962874169978022,
+    "peakMemoryGiB": 2.69,
+    "loadAverageBefore": 0.53369140625,
+    "round": 0,
+    "interleavePosition": 5
+   }
+  ],
+  "8192": [
+   {
+    "prefillTokS": 1552.1630558303852,
+    "decodeTokS": 43.75460205389871,
+    "prefillSeconds": 5.277796020996902,
+    "decodeSeconds": 2.9025518240014208,
+    "peakMemoryGiB": 1.65,
+    "loadAverageBefore": 0.45068359375,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 1555.2847198337981,
+    "decodeTokS": 43.763167555354904,
+    "prefillSeconds": 5.267202779999934,
+    "decodeSeconds": 2.90198372499799,
+    "peakMemoryGiB": 1.65,
+    "loadAverageBefore": 0.28271484375,
+    "round": 0,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 1551.1155882522587,
+    "decodeTokS": 44.08324093156612,
+    "prefillSeconds": 5.281360114000563,
+    "decodeSeconds": 2.8809134109978913,
+    "peakMemoryGiB": 1.65,
+    "loadAverageBefore": 0.30126953125,
+    "round": 0,
+    "interleavePosition": 2
+   },
+   {
+    "prefillTokS": 1553.6221264691546,
+    "decodeTokS": 94.38860367996935,
+    "prefillSeconds": 5.272839425000711,
+    "decodeSeconds": 1.3455014169994683,
+    "peakMemoryGiB": 1.65,
+    "loadAverageBefore": 0.3466796875,
+    "round": 0,
+    "interleavePosition": 3
+   },
+   {
+    "prefillTokS": 1559.3393802067894,
+    "decodeTokS": 93.76507148932689,
+    "prefillSeconds": 5.253506775999995,
+    "decodeSeconds": 1.3544489220003015,
+    "peakMemoryGiB": 1.65,
+    "loadAverageBefore": 0.244140625,
+    "round": 0,
+    "interleavePosition": 4
+   },
+   {
+    "prefillTokS": 1562.2761078668282,
+    "decodeTokS": 95.50024495020428,
+    "prefillSeconds": 5.243631364999601,
+    "decodeSeconds": 1.3298395210003946,
+    "peakMemoryGiB": 1.65,
+    "loadAverageBefore": 0.18115234375,
+    "round": 0,
+    "interleavePosition": 5
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T17:51:29+00:00",
+ "finishedAt": "2026-10-28T17:59:54+00:00",
+ "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)"
+}
