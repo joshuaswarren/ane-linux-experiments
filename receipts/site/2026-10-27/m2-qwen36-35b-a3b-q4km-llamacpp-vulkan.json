@@ -1,0 +1,46 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-27",
+ "host": "jwm2-linux",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-12.6-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "llamaBenchVersion": "version: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M2 Max (G14C B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "mesa": "driverInfo         = Mesa 26.3.0-devel (git-a5b1797446)",
+ "driNodeUsers": "USER        PID ACCESS COMMAND\n/dev/dri/card2:      joshuawarren   1296 F.... Hyprland\n                     joshuawarren   1436 F.... Xwayland\n/dev/dri/renderD128: joshuawarren   1296 F...m Hyprland\n                     joshuawarren   1381 F.... omarchy-launch-\n                     joshuawarren   1386 F.... omarchy-hyprlan\n                     joshuawarren   1388 F.... udiskie\n                     joshuawarren   1390 F.... herdr\n                     joshuawarren   1406 F...m quickshell\n                     joshuawarren   1436 F...m Xwayland\n                     joshuawarren   1809 F...m xdg-desktop-por\n                     joshuawarren   1959 F.... python3\n                     joshuawarren   1961 F.... inotifywait\n                     joshuawarren   2221 F.... inotifywait\n                     joshuawarren   2593 F.... wl-paste\n                     joshuawarren   2594 F.... wl-paste\n                     joshuawarren   2879 F.... socat",
+ "model": "Qwen3.6-35B-A3B Q4_K_M (unsloth/Qwen3.6-35B-A3B-GGUF UD-Q4_K_M, 20.61 GiB)",
+ "modelFile": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+ "quantFileSha256": "ac0e2c1189e055faa36eff361580e79c5bd6f8e76bffb4ce547f167d53e31a61",
+ "commands": [
+  "/home/joshuawarren/src/llama.cpp/build-w7g-vulkan/bin/llama-bench -m /home/joshuawarren/models/qwen3.6-35b-a3b-gguf/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp/build-w7g-vulkan/bin/llama-bench -m /home/joshuawarren/models/qwen3.6-35b-a3b-gguf/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 235.061009,
+    "decodeTokS": 24.667731,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 235.517643,
+    "decodeTokS": 24.666696,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 235.245877,
+    "decodeTokS": 24.647172,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-27T19:57:09.892040-05:00",
+ "finishedAt": "2026-10-27T20:48:38.424156-05:00"
+}
