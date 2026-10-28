@@ -1,0 +1,51 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "host": "jwm1-linux",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "335916a",
+ "engineCommitNote": "short hash from llama-bench --version; the source tree was not recorded",
+ "notes": null,
+ "llamaBenchVersion": "version: 0.7.0-dev (build 230, commit 335916a)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M1 (G13G B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.7.0-dev (build 230, commit 335916a)",
+ "mesa": "",
+ "driNodeUsers": "USER        PID ACCESS COMMAND\n/dev/dri/card2:      joshuawarren    914 F.... Hyprland\n                     joshuawarren   1017 F.... Xwayland\n/dev/dri/card3:      joshuawarren    914 F.... Hyprland\n                     joshuawarren   1017 F.... Xwayland\n/dev/dri/renderD128: joshuawarren    914 F...m Hyprland\n                     joshuawarren    959 F.... omarchy-launch-\n                     joshuawarren    965 F.... omarchy-hyprlan\n                     joshuawarren    967 F.... udiskie\n                     joshuawarren    970 F...m quickshell\n                     joshuawarren   1017 F...m Xwayland\n                     joshuawarren   1116 F...m xdg-desktop-por\n                     joshuawarren   1202 F.... inotifywait\n                     joshuawarren   1598 F.... wl-paste\n                     joshuawarren   1599 F.... wl-paste\n                     joshuawarren   2007 F.... socat",
+ "model": "Ornith-1.5-9B Q4_K_M (ornith-ai/Ornith-1.5-9B-GGUF Q4_K_M, 5.38 GiB)",
+ "modelFile": "Ornith-1.5-9B-Q4_K_M.gguf",
+ "quantFileSha256": "70c112196e0b7023803c9762752e46d29e612a92c83f995bc3ba1ceb07e8fab6",
+ "commands": [
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Ornith-1.5-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Ornith-1.5-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Ornith-1.5-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Ornith-1.5-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Ornith-1.5-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp-muse/build-muse/bin/llama-bench -m /var/tmp/t7a-models/Ornith-1.5-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 46.319244,
+    "decodeTokS": 7.302441,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 46.339147,
+    "decodeTokS": 7.304537,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 46.334395,
+    "decodeTokS": 7.308882,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T00:49:12.880761-05:00",
+ "finishedAt": "2026-10-28T01:20:42.750142-05:00"
+}
