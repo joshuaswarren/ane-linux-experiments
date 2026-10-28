@@ -1,0 +1,57 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "5c15fba",
+ "engineCommitNote": null,
+ "notes": "quantFileSha256 for MLX models is the sha256 of the text 'name:sha256' per .safetensors file, sorted by name; per-file hashes are in weightFileSha256.",
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610050725+5c15fba",
+ "vulkanDevices": "Apple M1 (G13G B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-69bde15340)",
+ "model": "Qwen3-4B-Instruct-2507 MLX 4-bit (mlx-community/Qwen3-4B-Instruct-2507-4bit)",
+ "modelFile": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+ "quantFileSha256": "4fe66f0e831e1a1c0e72d3b3594f552a327dcc1ba2e68eca1430b11c19d636c4",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 92.85421219955678,
+    "decodeTokS": 1.5155779650873418,
+    "prefillSeconds": 88.22432290302822,
+    "decodeSeconds": 83.79641491599614,
+    "peakMemoryGiB": 4.51,
+    "loadAverageBefore": 0.16455078125,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 93.1339660854521,
+    "decodeTokS": 1.5171270723419785,
+    "prefillSeconds": 87.9593165020342,
+    "decodeSeconds": 83.71085211995523,
+    "peakMemoryGiB": 4.51,
+    "loadAverageBefore": 0.1572265625,
+    "round": 1,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 93.05982657897415,
+    "decodeTokS": 1.5158858528491508,
+    "prefillSeconds": 88.02939250104828,
+    "decodeSeconds": 83.77939523698296,
+    "peakMemoryGiB": 4.51,
+    "loadAverageBefore": 0.27783203125,
+    "round": 2,
+    "interleavePosition": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T15:29:30+00:00",
+ "finishedAt": "2026-10-28T15:39:06+00:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
