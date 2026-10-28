@@ -1,0 +1,57 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "5c15fba",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610050725+5c15fba",
+ "vulkanDevices": "Apple M1 (G13G B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-69bde15340)",
+ "model": "Ornith-1.5-9B MLX 4-bit (ornith-ai/Ornith-1.5-9B-MLX-4bit (4-bit MLX weights))",
+ "modelFile": "ornith-ai/Ornith-1.5-9B-MLX-4bit",
+ "quantFileSha256": "5ac0a8d5789bbab777a30f54549dd29cb832bdda36860b1d3602d8f3dc9c4db7",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 91.41726020875201,
+    "decodeTokS": 4.701143543280792,
+    "prefillSeconds": 89.61108636698918,
+    "decodeSeconds": 27.01470372703625,
+    "peakMemoryGiB": 5.67,
+    "loadAverageBefore": 0.20166015625,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 91.57925576228895,
+    "decodeTokS": 4.716234286133125,
+    "prefillSeconds": 89.45257232995937,
+    "decodeSeconds": 26.928263588051777,
+    "peakMemoryGiB": 5.67,
+    "loadAverageBefore": 0.06689453125,
+    "round": 1,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 91.63219023930087,
+    "decodeTokS": 4.712094402630608,
+    "prefillSeconds": 89.40089698397787,
+    "decodeSeconds": 26.951921831001528,
+    "peakMemoryGiB": 5.67,
+    "loadAverageBefore": 0.25634765625,
+    "round": 2,
+    "interleavePosition": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T07:15:34+00:00",
+ "finishedAt": "2026-10-28T07:22:23+00:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
