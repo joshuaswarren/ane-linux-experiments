@@ -4,11 +4,12 @@
 Generic patterns only; site inventory via optional untracked
 .private-patterns (never published). Scans EVERY commit in range
 (merges via -m, root via --root): added lines, new filenames, commit
-message. Single rev = full history (conservative for new refs).
+message. Single rev = full history; hook tag pushes exclude remote-tracking history.
 
 Usage:
   privacy_check.py <base>..<head>     scan introduced commits
   privacy_check.py <head>             scan full history (new refs)
+  privacy_check.py <head> --not --remotes  scan commits new to remote-tracking refs
   privacy_check.py --hook             pre-push hook mode (reads stdin)
   privacy_check.py --staged           pre-commit mode (scan staged added lines)
 
@@ -125,13 +126,14 @@ def main():
             local_ref, local_sha, remote_ref, remote_sha = parts
             if local_sha == ZERO:
                 continue  # deletion
-            if remote_sha == ZERO:
-                ranges = [local_sha]  # new ref: full history, conservative
+            exclusions = ["--not", "--remotes"] if remote_ref.startswith("refs/tags/") else []
+            if exclusions or remote_sha == ZERO:
+                ranges = [local_sha]  # new branches still scan full history
             else:
                 ranges = ["%s..%s" % (remote_sha, local_sha)]
             for rng in ranges:
                 p = subprocess.run([sys.executable, os.path.abspath(__file__),
-                                    rng],
+                                    rng] + exclusions,
                                    env={**os.environ,
                                         "PRIVACY_REPO": toplevel},
                                    stdout=subprocess.DEVNULL)
@@ -145,6 +147,8 @@ def main():
     if not os.path.isdir(repo):
         die("PRIVACY_REPO '%s' is not a directory" % repo)
     rng = args[0]
+    if args[1:] not in ([], ["--not", "--remotes"]):
+        die("unsupported revision arguments")
     base_part, sep, head_part = rng.partition("..")
     if sep:
         if not base_part or not head_part:
@@ -165,7 +169,7 @@ def main():
         sys.stderr.write("privacy-check DEBUG: repo=%s range=%s patterns=%d site=%s\n" % (
             repo, rng, len(regexes),
             os.path.isfile(os.path.join(repo, os.environ.get("PRIVACY_PATTERNS_NAME", ".private-patterns")))))
-    commits = run(["git", "-C", repo, "rev-list", rng]).decode().split()
+    commits = run(["git", "-C", repo, "rev-list", rng] + args[1:]).decode().split()
     hits = []
     for c in commits:
         msg = run(["git", "-C", repo, "log", "-1", "--format=%B", c])

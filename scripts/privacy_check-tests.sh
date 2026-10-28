@@ -124,5 +124,34 @@ cp "$0" "$R/scripts/privacy_check-tests.sh"
 git -C "$R" add .; git -C "$R" commit -qm guard
 g vbase..main >/dev/null 2>&1; rc=$?; [ $rc -eq 0 ] || { echo "FAIL16 self-trigger rc=$rc"; FAILS=$((FAILS+1)); }
 
+# 17 REAL HOOK tags: synthetic private history already present on the remote
+BR3="$T/tag-remote.git"; git init -q --bare "$BR3"
+C3="$T/tag-clone"; git clone -q "$BR3" "$C3" 2>/dev/null; git -C "$C3" checkout -q -b main
+git -C "$C3" config user.email "$ID"; git -C "$C3" config user.name "t"
+printf '.private-patterns\n' > "$C3/.gitignore"
+printf 'already public\n' > "$C3/${H1}-old.txt"
+git -C "$C3" add .; git -C "$C3" commit -qm public-base
+git -C "$C3" push origin HEAD:main >/dev/null 2>&1 || exit 2
+mkdir -p "$C3/hooks"; cp "$CHECKER" "$C3/hooks/privacy_check.py"; cp "$HOOK" "$C3/hooks/pre-push"
+chmod +x "$C3/hooks/pre-push" "$C3/hooks/privacy_check.py"
+git -C "$C3" config core.hooksPath hooks
+printf '%s|%s|%s\n' "$H1" "$SEC" "$UPATH" > "$C3/.private-patterns"
+git -C "$C3" tag -a public-tag -m release
+git -C "$C3" push origin refs/tags/public-tag >/dev/null 2>&1; rc=$?
+[ $rc -eq 0 ] || { echo "FAIL17 public annotated tag rc=$rc"; FAILS=$((FAILS+1)); }
+git -C "$C3" tag public-lightweight
+git -C "$C3" push origin refs/tags/public-lightweight >/dev/null 2>&1; rc=$?
+[ $rc -eq 0 ] || { echo "FAIL17 public lightweight tag rc=$rc"; FAILS=$((FAILS+1)); }
+
+# 18 REAL HOOK a tag must not introduce a new private path
+printf 'new content\n' > "$C3/${SEC}-new.txt"
+git -C "$C3" add .; git -C "$C3" commit -qm new-path
+git -C "$C3" tag -a private-tag -m release
+git -C "$C3" push origin refs/tags/private-tag >/dev/null 2>&1; rc=$?
+[ $rc -eq 1 ] || { echo "FAIL18 private tag rc=$rc"; FAILS=$((FAILS+1)); }
+if git --git-dir="$BR3" rev-parse --verify refs/tags/private-tag >/dev/null 2>&1; then
+  echo "FAIL18 private tag reached remote"; FAILS=$((FAILS+1))
+fi
+
 rm -rf "$T" "$SITE"
 if [ $FAILS -eq 0 ]; then echo ALL_GUARD_V5_TESTS_PASS; else echo "FAILURES=$FAILS"; exit 1; fi
