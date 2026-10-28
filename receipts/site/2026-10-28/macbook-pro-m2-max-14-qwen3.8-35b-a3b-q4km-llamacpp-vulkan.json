@@ -1,0 +1,50 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-12.6-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "version: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M2 Max (G14C B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "mesa": "driverInfo         = Mesa 26.3.0-devel (git-a5b1797446)",
+ "model": "Qwen3.8-35B-A3B-Distill Q4_K_M (empero-ai/Qwen3.8-35B-A3B-Distill-GGUF Q4_K_M, 20.22 GiB)",
+ "modelFile": "Qwen3.8-35B-A3B-Q4_K_M.gguf",
+ "quantFileSha256": "196103269085bc54c9b8f49ed21e9f53e1b56b465e8b796c6d8e31e06f63cfa5",
+ "commands": [
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json",
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json",
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "65536": [
+   {
+    "prefillTokS": 183.498978,
+    "decodeTokS": 18.813438,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 182.861005,
+    "decodeTokS": 18.77447,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 182.582436,
+    "decodeTokS": 18.80605,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T10:10:08.445463-05:00",
+ "finishedAt": "2026-10-28T11:05:59.555886-05:00",
+ "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)"
+}
