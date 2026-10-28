@@ -1,0 +1,70 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "what": "How much memory one process can allocate through the Honeykrisp Vulkan driver on Omarchy Linux, with HK_SYSMEM unset",
+ "vulkaninfoReadings": [
+  {
+   "hardware": "MacBook Pro 13-inch (M1, 16 GB)",
+   "ramBytes": 16221847552,
+   "driver": "Mesa 26.3.0-devel (git-69bde15340), system package",
+   "hkSysmem": "unset",
+   "heapBytes": 14599323648,
+   "shareOfRam": 0.9
+  },
+  {
+   "hardware": "MacBook Pro 13-inch (M1, 16 GB)",
+   "ramBytes": 16221847552,
+   "driver": "Mesa 26.3.0-devel (git-69bde15340), system package",
+   "hkSysmem": "14000000000",
+   "heapBytes": 14000000000,
+   "shareOfRam": null
+  },
+  {
+   "hardware": "MacBook Pro 13-inch (M1, 16 GB)",
+   "ramBytes": 16221847552,
+   "driver": "Mesa 26.3.0-devel (git-6543eeb7df), separate private lab build selected with a driver-file override",
+   "hkSysmem": "unset",
+   "heapBytes": 8110735360,
+   "shareOfRam": 0.5
+  },
+  {
+   "hardware": "MacBook Pro 16-inch (M1 Max, 64 GB)",
+   "ramBytes": 66966765568,
+   "driver": "Mesa 26.3.0-devel (git-69bde15340), system package",
+   "hkSysmem": "unset",
+   "heapBytes": 60270051328,
+   "shareOfRam": 0.9
+  },
+  {
+   "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)",
+   "ramBytes": 101193302016,
+   "driver": "Mesa 26.3.0-devel (git-a5b1797446), system package",
+   "hkSysmem": "unset",
+   "heapBytes": 91073019904,
+   "shareOfRam": 0.9
+  }
+ ],
+ "vulkaninfoMethod": "vulkaninfo memoryHeaps[0] size, run on each Mac after boot with the variable removed from the environment and no drirc override.",
+ "whyTheTwoBuilds": "Mesa commit 5f3f7e4db52 (2026-10-09, \"hk: default the device heap to 90% of system memory\") changed the Honeykrisp default from 50% to 90%. Build 6543eeb7df is from 2026-10-07, build 69bde15340 from 2026-10-11.",
+ "mlxProbe13inch": {
+  "hardware": "MacBook Pro 13-inch (M1, 16 GB)",
+  "library": "mlx-omarchy 0.32.4.dev202610050725+5c15fba (packaged)",
+  "ramBytes": 16221847552,
+  "method": "allocate 1 GiB GPU blocks through MLX until failure, at most 15",
+  "runs": [
+   {
+    "hkSysmem": "unset",
+    "blocksAllocated": 12,
+    "error": "VK_ERROR_OUT_OF_DEVICE_MEMORY at the 13th block"
+   },
+   {
+    "hkSysmem": "14599323648",
+    "blocksAllocated": 12,
+    "error": "VK_ERROR_OUT_OF_DEVICE_MEMORY at the 13th block"
+   }
+  ],
+  "reading": "Both runs stop at the same 12 GiB. Twelve GiB is 79% of the 16 GB RAM, so the stock heap is not 50%; a 13.6 GiB heap that also holds other allocations is consistent with 12 blocks.",
+  "recordedBy": "the lab MLX owner; output of the probe, run 2026-10-28 05:59 UTC"
+ },
+ "notMeasured": "No reading exists yet for the Mac mini (Apple M6, 32 GB) or for MLX on the 16-inch and 14-inch Macs beyond their vulkaninfo heaps."
+}
