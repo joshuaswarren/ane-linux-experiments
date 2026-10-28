@@ -1,0 +1,16 @@
+{
+ "receipt": "receipt-v1-load-error",
+ "date": "2026-10-28",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan): mlx-omarchy 0.32.4.dev202610050725+5c15fba (packaged) with mlx_lm 0.31.3",
+ "model": "mlx-community/gemma-4-12B-4bit, model_type gemma4_unified, 11,020,122,837 bytes in the hub tree on 2026-10-28, hub last modified 2026-06-03",
+ "attempt": "load the model with mlx_lm.load before any GPU work (the benchmark harness stopped there)",
+ "result": "does not run",
+ "error": "ValueError: Model type gemma4_unified not supported. (cause: ModuleNotFoundError: No module named 'mlx_lm.models.gemma4_unified')",
+ "meaning": "mlx_lm 0.31.3 in the packaged environment has gemma4 and gemma4_text model code but not gemma4_unified. The failure is in model selection, so it does not depend on the memory limit or the GPU driver.",
+ "tried": "one load attempt with the packaged library",
+ "notTried": "a newer mlx_lm; the smaller Gemma 4 E4B 4-bit file",
+ "recordedBy": "the lab MLX owner; the harness log of the attempt on 2026-10-28 (07:29 UTC start)"
+}
