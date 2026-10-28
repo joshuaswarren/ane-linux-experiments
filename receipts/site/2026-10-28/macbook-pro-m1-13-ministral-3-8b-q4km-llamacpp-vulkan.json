@@ -1,0 +1,50 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "335916a",
+ "engineCommitNote": "short hash from llama-bench --version; the source tree was not recorded",
+ "notes": "The graphics driver version was not recorded during the run; no driver override was set, so the machine's installed system driver was used.",
+ "llamaBenchVersion": "version: 0.7.0-dev (build 230, commit 335916a)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M1 (G13G B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.7.0-dev (build 230, commit 335916a)",
+ "mesa": "",
+ "model": "Ministral-3-8B Q4_K_M (mistralai/Ministral-3-8B-Instruct-2512-GGUF Q4_K_M, 4.84 GiB)",
+ "modelFile": "Ministral-3-8B-Instruct-2512-Q4_K_M.gguf",
+ "quantFileSha256": "33e7a72cf5e6e2cfc2f2847075acc013d68bba023e35310cef86b5cf8fdca761",
+ "commands": [
+  "llama-bench -m Ministral-3-8B-Instruct-2512-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m Ministral-3-8B-Instruct-2512-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json",
+  "llama-bench -m Ministral-3-8B-Instruct-2512-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m Ministral-3-8B-Instruct-2512-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json",
+  "llama-bench -m Ministral-3-8B-Instruct-2512-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m Ministral-3-8B-Instruct-2512-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 42.658629,
+    "decodeTokS": 6.889472,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 42.50418,
+    "decodeTokS": 6.936428,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 42.655954,
+    "decodeTokS": 6.946384,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T03:58:55.005893-05:00",
+ "finishedAt": "2026-10-28T04:29:18.037820-05:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
