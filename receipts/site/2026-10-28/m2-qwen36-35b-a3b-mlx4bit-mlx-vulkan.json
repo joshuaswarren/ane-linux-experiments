@@ -28,11 +28,32 @@
  "modelFile": "mlx-community/Qwen3.6-35B-A3B-4bit",
  "quantFileSha256": "f808f71c38f2b60586c762270f7ffc433304e34e9a8315a409e74e05e7f0179d",
  "commands": [
+  "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
   "mlx_lm.generate.generate_step(prompt=<8192 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
  ],
  "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
  "rawRunsByPromptTokens": {
   "8192": [
+   {
+    "prefillTokS": 13.887583730886048,
+    "decodeTokS": 4.006917760267356,
+    "prefillSeconds": 589.8794317819993,
+    "decodeSeconds": 31.695185077001952,
+    "peakMemoryGiB": 19.11,
+    "loadAverageBefore": 0.04443359375,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 13.896835372539835,
+    "decodeTokS": 4.006642634529045,
+    "prefillSeconds": 589.486727042,
+    "decodeSeconds": 31.69736150300014,
+    "peakMemoryGiB": 19.11,
+    "loadAverageBefore": 0.15869140625,
+    "round": 1,
+    "interleavePosition": 1
+   },
    {
     "prefillTokS": 13.891182593377946,
     "decodeTokS": 4.0084872907107645,
@@ -41,7 +62,7 @@
     "peakMemoryGiB": 19.11,
     "loadAverageBefore": 0.11962890625,
     "round": 0,
-    "interleavePosition": 0
+    "interleavePosition": 2
    }
   ]
  },
