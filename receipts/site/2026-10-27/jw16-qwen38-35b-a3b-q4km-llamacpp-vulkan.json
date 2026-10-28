@@ -15,11 +15,33 @@
  "modelFile": "Qwen3.8-35B-A3B-Q4_K_M.gguf",
  "quantFileSha256": "196103269085bc54c9b8f49ed21e9f53e1b56b465e8b796c6d8e31e06f63cfa5",
  "commands": [
+  "/home/joshuawarren/src/llama.cpp/build-w7g-vulkan/bin/llama-bench -m /var/tmp/t7a-models/Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "/home/joshuawarren/src/llama.cpp/build-w7g-vulkan/bin/llama-bench -m /var/tmp/t7a-models/Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json",
   "/home/joshuawarren/src/llama.cpp/build-w7g-vulkan/bin/llama-bench -m /var/tmp/t7a-models/Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
   "/home/joshuawarren/src/llama.cpp/build-w7g-vulkan/bin/llama-bench -m /var/tmp/t7a-models/Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json"
  ],
  "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
  "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 225.018876,
+    "decodeTokS": 27.860821,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 224.995384,
+    "decodeTokS": 27.858356,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 225.046078,
+    "decodeTokS": 27.993374,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ],
   "32768": [
    {
     "prefillTokS": 191.270757,
