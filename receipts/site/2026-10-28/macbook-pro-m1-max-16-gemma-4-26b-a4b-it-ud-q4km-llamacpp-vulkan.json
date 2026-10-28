@@ -1,0 +1,46 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-12.6-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "version: 0.6.0-dev (build 1, commit 65840ed)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M1 Max (G13C C0) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 1, commit 65840ed)",
+ "mesa": "driverInfo         = Mesa 26.3.0-devel (git-69bde15340)",
+ "model": "Gemma 4 26B-A4B UD-Q4_K_M (unsloth/gemma-4-26B-A4B-it-GGUF UD-Q4_K_M, 15.78 GiB)",
+ "modelFile": "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf",
+ "quantFileSha256": "f2c28b3dc4776931ac6f879e11f203dec637ea0f14267a86ec8f6165f63f293f",
+ "commands": [
+  "llama-bench -m gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 188.583633,
+    "decodeTokS": 20.514182,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 188.437474,
+    "decodeTokS": 20.502725,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 188.458861,
+    "decodeTokS": 20.513451,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T14:05:13.129001-05:00",
+ "finishedAt": "2026-10-28T14:49:27.117454-05:00",
+ "hardware": "MacBook Pro 16-inch (M1 Max, 64 GB)"
+}
