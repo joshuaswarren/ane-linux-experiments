@@ -14,37 +14,33 @@
  "modelFile": "Qwen3.8-35B-A3B-Q4_K_M.gguf",
  "quantFileSha256": "196103269085bc54c9b8f49ed21e9f53e1b56b465e8b796c6d8e31e06f63cfa5",
  "commands": [
-  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json",
-  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json",
-  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json"
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 131072 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-35B-A3B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 131072 -r 1 -o json"
  ],
  "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
  "rawRunsByPromptTokens": {
-  "65536": [
+  "131072": [
    {
-    "prefillTokS": 183.498978,
-    "decodeTokS": 18.813438,
+    "prefillTokS": 129.403384,
+    "decodeTokS": 12.656628,
     "interleavePosition": 0,
     "roundOrder": 0
    },
    {
-    "prefillTokS": 182.861005,
-    "decodeTokS": 18.77447,
+    "prefillTokS": 129.361636,
+    "decodeTokS": 12.652918,
     "interleavePosition": 1,
     "roundOrder": 1
    },
    {
-    "prefillTokS": 182.582436,
-    "decodeTokS": 18.80605,
+    "prefillTokS": 129.712539,
+    "decodeTokS": 12.645962,
     "interleavePosition": 2,
     "roundOrder": 2
    }
   ]
  },
- "startedAt": "2026-10-28T10:10:08.445463-05:00",
- "finishedAt": "2026-10-28T11:05:59.555886-05:00",
+ "startedAt": "2026-10-28T22:29:26.440819-05:00",
+ "finishedAt": "2026-10-29T01:03:02.890947-05:00",
  "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)"
 }
