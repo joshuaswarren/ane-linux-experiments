@@ -1,0 +1,72 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-29",
+ "os": "Omarchy Linux",
+ "kernel": "7.2.11-lab-w86-7f91446",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "version: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = AMD Radeon RX 7600 (RADV NAVI33) (radv) | uma: 0 | fp16: dot2 | bf16: 0 | fp4: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 11449, commit 65840ed53)",
+ "mesa": "driverInfo         = Mesa 26.2.6-arch1.1",
+ "model": "Qwen3.8-2B Q4_K_M (Qwen3.8-2B-Q4_K_M.gguf, 1.22 GiB)",
+ "modelFile": "Qwen3.8-2B-Q4_K_M.gguf",
+ "quantFileSha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
+ "commands": [
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 2163.658067,
+    "decodeTokS": 31.77856,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 2164.545887,
+    "decodeTokS": 31.746075,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 2165.735492,
+    "decodeTokS": 31.811641,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ],
+  "8192": [
+   {
+    "prefillTokS": 2917.750031,
+    "decodeTokS": 32.939174,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 2792.57467,
+    "decodeTokS": 33.046149,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 2905.03277,
+    "decodeTokS": 32.998003,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-29T15:01:31.676957-05:00",
+ "finishedAt": "2026-10-29T15:10:26.551647-05:00",
+ "hardware": "AMD RX 7600 (8 GB, eGPU)"
+}
