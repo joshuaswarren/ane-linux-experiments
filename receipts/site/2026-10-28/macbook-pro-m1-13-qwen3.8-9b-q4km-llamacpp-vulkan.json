@@ -1,0 +1,50 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-28",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "335916a",
+ "engineCommitNote": "short hash from llama-bench --version; the source tree was not recorded",
+ "notes": "The graphics driver version was not recorded during the run; no driver override was set, so the machine's installed system driver was used.",
+ "llamaBenchVersion": "version: 0.7.0-dev (build 230, commit 335916a)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M1 (G13G B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.7.0-dev (build 230, commit 335916a)",
+ "mesa": "",
+ "model": "Qwen3.8-9B Q4_K_M (empero-ai/Qwen3.8-9B-Distill-GGUF Q4_K_M, 5.38 GiB)",
+ "modelFile": "Qwen3.8-9B-Q4_K_M.gguf",
+ "quantFileSha256": "df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
+ "commands": [
+  "llama-bench -m Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-9B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 42.129665,
+    "decodeTokS": 6.070713,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 42.203565,
+    "decodeTokS": 6.032979,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 42.169922,
+    "decodeTokS": 6.048165,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-28T16:58:27.880324-05:00",
+ "finishedAt": "2026-10-28T19:57:17.903088-05:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
