@@ -1,0 +1,72 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-29",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.20-egpu-ARCH",
+ "engine": "llama.cpp on CUDA",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "notes": "Measured quiet: no other ticket or Neural Engine row on this machine between 2026-10-29T03:18:43.254159-05:00/2026-10-29T03:24:27.492818-05:00 (guard record).",
+ "llamaBenchVersion": "version: 0.6.0-dev (build 1, commit 65840ed)",
+ "vulkanDevices": "ggml_cuda_init: found 1 CUDA devices (Total VRAM: 15941 MiB):\n  Device 0: NVIDIA GeForce RTX 5060 Ti, compute capability 12.0, VMM: yes, VRAM: 15941 MiB\nversion: 0.6.0-dev (build 1, commit 65840ed)",
+ "mesa": "NVRM version: NVIDIA UNIX Open Kernel Module for aarch64  615.78.08  Release Build  Wed Oct 28 23:18:20 UTC 2026",
+ "model": "Qwen3.8-2B Q4_K_M (Qwen3.8-2B-Q4_K_M.gguf, 1.22 GiB)",
+ "modelFile": "Qwen3.8-2B-Q4_K_M.gguf",
+ "quantFileSha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
+ "commands": [
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 4668.802151,
+    "decodeTokS": 146.313162,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 4674.650724,
+    "decodeTokS": 146.194907,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 4580.848185,
+    "decodeTokS": 146.194402,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ],
+  "8192": [
+   {
+    "prefillTokS": 6168.43191,
+    "decodeTokS": 166.448259,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 6196.139366,
+    "decodeTokS": 166.504968,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 6200.703382,
+    "decodeTokS": 166.594902,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-29T03:18:43.254159-05:00",
+ "finishedAt": "2026-10-29T03:24:27.492818-05:00",
+ "hardware": "NVIDIA RTX 5060 Ti (16 GB, eGPU)"
+}
