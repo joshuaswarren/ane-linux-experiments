@@ -6,7 +6,7 @@
  "engine": "llama.cpp Vulkan",
  "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
  "engineCommitNote": null,
- "notes": null,
+ "notes": "Measured quiet: no other ticket or Neural Engine row on this machine between 2026-10-28T19:01:17.616235-05:00/2026-10-29T04:05:46.650870-05:00 (guard record).",
  "llamaBenchVersion": "version: 0.6.0-dev (build 1, commit 65840ed)",
  "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Intel(R) Arc(tm) Pro B60 Graphics (BMG G21) (Intel open-source Mesa driver) | uma: 0 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 49152 | int dot: 1 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 1, commit 65840ed)",
  "mesa": "driverInfo         = Mesa 26.2.4",
@@ -19,54 +19,32 @@
   "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
   "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
   "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
-  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json"
  ],
  "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
  "rawRunsByPromptTokens": {
   "32768": [
    {
-    "prefillTokS": 143.584648,
-    "decodeTokS": 8.438489,
+    "prefillTokS": 146.568573,
+    "decodeTokS": 8.977268,
     "interleavePosition": 0,
     "roundOrder": 0
    },
    {
-    "prefillTokS": 141.245459,
-    "decodeTokS": 8.446241,
+    "prefillTokS": 146.576633,
+    "decodeTokS": 8.976286,
     "interleavePosition": 1,
     "roundOrder": 1
    },
    {
-    "prefillTokS": 141.118221,
-    "decodeTokS": 8.456972,
-    "interleavePosition": 2,
-    "roundOrder": 2
-   }
-  ],
-  "8192": [
-   {
-    "prefillTokS": 281.175126,
-    "decodeTokS": 9.087908,
-    "interleavePosition": 0,
-    "roundOrder": 0
-   },
-   {
-    "prefillTokS": 280.968484,
-    "decodeTokS": 9.10778,
-    "interleavePosition": 1,
-    "roundOrder": 1
-   },
-   {
-    "prefillTokS": 281.167206,
-    "decodeTokS": 9.087018,
+    "prefillTokS": 146.410792,
+    "decodeTokS": 8.982453,
     "interleavePosition": 2,
     "roundOrder": 2
    }
   ]
  },
  "startedAt": "2026-10-28T19:01:17.616235-05:00",
- "finishedAt": "2026-10-28T19:58:54.871122-05:00",
+ "finishedAt": "2026-10-29T04:05:46.650870-05:00",
  "hardware": "Intel Arc Pro B60 (24 GB, eGPU)"
 }
