@@ -6,7 +6,7 @@
  "engine": "llama.cpp on CUDA",
  "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
  "engineCommitNote": null,
- "notes": "Measured quiet: no other ticket or Neural Engine row on this machine between 2026-10-29T03:35:49.523041-05:00/2026-10-29T03:39:06.060837-05:00 (guard record).",
+ "notes": "Measured quiet: no other ticket or Neural Engine row on this machine between 2026-10-29T03:35:49.523041-05:00/2026-10-29T04:11:44.335308-05:00 (guard record).",
  "llamaBenchVersion": "version: 0.6.0-dev (build 1, commit 65840ed)",
  "vulkanDevices": "ggml_cuda_init: found 1 CUDA devices (Total VRAM: 15941 MiB):\n  Device 0: NVIDIA GeForce RTX 5060 Ti, compute capability 12.0, VMM: yes, VRAM: 15941 MiB\nversion: 0.6.0-dev (build 1, commit 65840ed)",
  "mesa": "NVRM version: NVIDIA UNIX Open Kernel Module for aarch64  615.78.08  Release Build  Wed Oct 28 23:18:20 UTC 2026",
@@ -14,33 +14,37 @@
  "modelFile": "gemma-4-12b-it-Q4_K_M.gguf",
  "quantFileSha256": "0a270ec9fe6b34f4a0d33992b6135117b484ebc4766ab76b51d4ae8c457e4c42",
  "commands": [
-  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
-  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m gemma-4-12b-it-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json"
  ],
  "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
  "rawRunsByPromptTokens": {
-  "8192": [
+  "32768": [
    {
-    "prefillTokS": 1764.182425,
-    "decodeTokS": 45.379875,
+    "prefillTokS": 1422.141639,
+    "decodeTokS": 43.327635,
     "interleavePosition": 0,
     "roundOrder": 0
    },
    {
-    "prefillTokS": 1756.9337,
-    "decodeTokS": 45.376688,
+    "prefillTokS": 1420.459737,
+    "decodeTokS": 43.332082,
     "interleavePosition": 1,
     "roundOrder": 1
    },
    {
-    "prefillTokS": 1756.416273,
-    "decodeTokS": 45.366545,
+    "prefillTokS": 1421.237575,
+    "decodeTokS": 43.329162,
     "interleavePosition": 2,
     "roundOrder": 2
    }
   ]
  },
  "startedAt": "2026-10-29T03:35:49.523041-05:00",
- "finishedAt": "2026-10-29T03:39:06.060837-05:00",
+ "finishedAt": "2026-10-29T04:11:44.335308-05:00",
  "hardware": "NVIDIA RTX 5060 Ti (16 GB, eGPU)"
 }
