@@ -6,7 +6,7 @@
  "engine": "llama.cpp Vulkan",
  "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
  "engineCommitNote": null,
- "notes": "Measured quiet: no other ticket or Neural Engine row on this machine between 2026-10-28T19:01:17.616235-05:00/2026-10-29T04:05:46.650870-05:00 (guard record).",
+ "notes": "At 32768 tokens the runs of this cell were taken in separate sessions whose decode speeds differ: 8.44624 to 8.98245 tokens/s (6.3 percent apart). All clean runs are kept; the cause of the difference is not known. Measured quiet: no other ticket or Neural Engine row on this machine between 2026-10-28T19:01:17.616235-05:00/2026-10-29T04:05:46.650870-05:00 (guard record).",
  "llamaBenchVersion": "version: 0.6.0-dev (build 1, commit 65840ed)",
  "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Intel(R) Arc(tm) Pro B60 Graphics (BMG G21) (Intel open-source Mesa driver) | uma: 0 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 49152 | int dot: 1 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 1, commit 65840ed)",
  "mesa": "driverInfo         = Mesa 26.2.4",
@@ -14,6 +14,10 @@
  "modelFile": "Qwen3.8-27B-UD-Q4_K_M.gguf",
  "quantFileSha256": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482",
  "commands": [
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
   "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
   "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
   "llama-bench -m Qwen3.8-27B-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
@@ -40,6 +44,18 @@
     "prefillTokS": 146.410792,
     "decodeTokS": 8.982453,
     "interleavePosition": 2,
+    "roundOrder": 2
+   },
+   {
+    "prefillTokS": 141.245459,
+    "decodeTokS": 8.446241,
+    "interleavePosition": 3,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 141.118221,
+    "decodeTokS": 8.456972,
+    "interleavePosition": 4,
     "roundOrder": 2
    }
   ]
