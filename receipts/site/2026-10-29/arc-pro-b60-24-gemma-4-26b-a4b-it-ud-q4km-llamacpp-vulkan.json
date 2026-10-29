@@ -1,0 +1,46 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-29",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261029.1-lab-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "version: 0.6.0-dev (build 1, commit 65840ed)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Intel(R) Arc(tm) Pro B60 Graphics (BMG G21) (Intel open-source Mesa driver) | uma: 0 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 49152 | int dot: 1 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 1, commit 65840ed)",
+ "mesa": "driverInfo         = Mesa 26.2.4",
+ "model": "Gemma 4 26B-A4B UD-Q4_K_M (unsloth/gemma-4-26B-A4B-it-GGUF UD-Q4_K_M, 15.78 GiB)",
+ "modelFile": "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf",
+ "quantFileSha256": "f2c28b3dc4776931ac6f879e11f203dec637ea0f14267a86ec8f6165f63f293f",
+ "commands": [
+  "llama-bench -m gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
+  "llama-bench -m gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "8192": [
+   {
+    "prefillTokS": 228.51302,
+    "decodeTokS": 24.941266,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 228.71914,
+    "decodeTokS": 25.034571,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 228.117697,
+    "decodeTokS": 25.047897,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-29T11:00:31.443270-05:00",
+ "finishedAt": "2026-10-29T12:00:56.907424-05:00",
+ "hardware": "Intel Arc Pro B60 (24 GB, eGPU)"
+}
