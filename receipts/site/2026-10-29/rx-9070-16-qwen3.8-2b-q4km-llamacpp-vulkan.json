@@ -14,59 +14,37 @@
  "modelFile": "Qwen3.8-2B-Q4_K_M.gguf",
  "quantFileSha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
  "commands": [
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 8192 -n 0 -r 1 -o json",
-  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 8192 -r 1 -o json"
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 65536 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 65536 -r 1 -o json"
  ],
  "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
  "rawRunsByPromptTokens": {
-  "32768": [
+  "65536": [
    {
-    "prefillTokS": 3404.767693,
-    "decodeTokS": 19.059076,
+    "prefillTokS": 2693.414673,
+    "decodeTokS": 18.883689,
     "interleavePosition": 0,
     "roundOrder": 0
    },
    {
-    "prefillTokS": 3411.122078,
-    "decodeTokS": 19.054983,
+    "prefillTokS": 2679.664887,
+    "decodeTokS": 18.910734,
     "interleavePosition": 1,
     "roundOrder": 1
    },
    {
-    "prefillTokS": 3372.174003,
-    "decodeTokS": 19.113149,
-    "interleavePosition": 2,
-    "roundOrder": 2
-   }
-  ],
-  "8192": [
-   {
-    "prefillTokS": 4353.624113,
-    "decodeTokS": 19.299167,
-    "interleavePosition": 0,
-    "roundOrder": 0
-   },
-   {
-    "prefillTokS": 4246.957314,
-    "decodeTokS": 19.843409,
-    "interleavePosition": 1,
-    "roundOrder": 1
-   },
-   {
-    "prefillTokS": 4372.941503,
-    "decodeTokS": 19.818272,
+    "prefillTokS": 2679.052694,
+    "decodeTokS": 18.940215,
     "interleavePosition": 2,
     "roundOrder": 2
    }
   ]
  },
  "startedAt": "2026-10-29T14:43:17.408747-05:00",
- "finishedAt": "2026-10-29T14:56:48.153085-05:00",
+ "finishedAt": "2026-10-29T19:40:18.534099-05:00",
  "hardware": "AMD RX 9070 (16 GB, eGPU)"
 }
