@@ -1,0 +1,50 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-29",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "335916a",
+ "engineCommitNote": "short hash from llama-bench --version; the source tree was not recorded",
+ "notes": "At 32768 tokens the runs of this cell were taken in separate sessions whose decode speeds differ: 4.82728 to 5.0007 tokens/s (3.6 percent apart). All clean runs are kept; the cause of the difference is not known. The graphics driver version was not recorded during the run; no driver override was set, so the machine's installed system driver was used.",
+ "llamaBenchVersion": "version: 0.7.0-dev (build 230, commit 335916a)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Apple M1 (G13G B1) (Honeykrisp) | uma: 1 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 32768 | int dot: 0 | matrix cores: KHR_coopmat\nversion: 0.7.0-dev (build 230, commit 335916a)",
+ "mesa": "",
+ "model": "Llama 3.1 8B Instruct Q4_K_M (bartowski/Meta-Llama-3.1-8B-Instruct-GGUF Q4_K_M, 4.58 GiB)",
+ "modelFile": "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+ "quantFileSha256": "7b064f5842bf9532c91456deda288a1b672397a54fa729aa665952863033557c",
+ "commands": [
+  "llama-bench -m Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 34.942845,
+    "decodeTokS": 4.989136,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 34.942257,
+    "decodeTokS": 4.827282,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 34.944145,
+    "decodeTokS": 5.000701,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-29T16:05:18.290528-05:00",
+ "finishedAt": "2026-10-29T18:36:42.939055-05:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
