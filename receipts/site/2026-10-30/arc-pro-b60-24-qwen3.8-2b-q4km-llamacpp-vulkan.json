@@ -1,0 +1,50 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-10-30",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261029.2-lab-ARCH",
+ "engine": "llama.cpp Vulkan",
+ "engineCommit": "65840ed53c8653bfbf3e9014d9cbf71ac8c08725",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "version: 0.6.0-dev (build 1, commit 65840ed)",
+ "vulkanDevices": "ggml_vulkan: Found 1 Vulkan devices:\nggml_vulkan: 0 = Intel(R) Arc(tm) Pro B60 Graphics (BMG G21) (Intel open-source Mesa driver) | uma: 0 | fp16: 1 | bf16: 1 | fp4: 0 | warp size: 32 | shared memory: 49152 | int dot: 1 | matrix cores: KHR_coopmat\nversion: 0.6.0-dev (build 1, commit 65840ed)",
+ "mesa": "driverInfo         = Mesa 26.2.4",
+ "model": "Qwen3.8-2B Q4_K_M (Qwen3.8-2B-Q4_K_M.gguf, 1.22 GiB)",
+ "modelFile": "Qwen3.8-2B-Q4_K_M.gguf",
+ "quantFileSha256": "4aa0fb13c431514262f259d420ecc95a8714df58ac2a2384514e20b93983f0ff",
+ "commands": [
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 32768 -n 0 -r 1 -o json",
+  "llama-bench -m Qwen3.8-2B-Q4_K_M.gguf -ngl 99 -fa 1 -t 4 -p 0 -n 128 -d 32768 -r 1 -o json"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "32768": [
+   {
+    "prefillTokS": 932.673052,
+    "decodeTokS": 41.452162,
+    "interleavePosition": 0,
+    "roundOrder": 0
+   },
+   {
+    "prefillTokS": 941.79178,
+    "decodeTokS": 41.777642,
+    "interleavePosition": 1,
+    "roundOrder": 1
+   },
+   {
+    "prefillTokS": 943.532953,
+    "decodeTokS": 41.639065,
+    "interleavePosition": 2,
+    "roundOrder": 2
+   }
+  ]
+ },
+ "startedAt": "2026-10-30T17:22:14.916244-05:00",
+ "finishedAt": "2026-10-30T17:36:49.951405-05:00",
+ "hardware": "Intel Arc Pro B60 (24 GB, eGPU)"
+}
