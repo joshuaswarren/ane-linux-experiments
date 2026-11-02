@@ -291,3 +291,7 @@ If financial support is not an option, you can still make a big difference: [sta
 ## License
 
 MIT
+
+## Contributors
+
+Everyone credited so far: [CONTRIBUTORS.md](CONTRIBUTORS.md).
