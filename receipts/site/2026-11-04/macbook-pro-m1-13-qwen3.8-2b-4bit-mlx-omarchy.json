@@ -1,0 +1,84 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-11-04",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "42b30a2d",
+ "engineCommitNote": null,
+ "notes": null,
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610292155+42b30a2d",
+ "vulkanDevices": "Apple M1 (G13G B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-e7631595df)",
+ "model": "Qwen3.8-2B-mlx-4Bit (SiddhJagani/Qwen3.8-2B-mlx-4Bit)",
+ "modelFile": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+ "quantFileSha256": "482e4193280b9bc5f0120666c077c6e2d0052cb59cf0c44f917d4b3386f5bbad",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<2048 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "3 rounds; per round and size one run: a prompt of N random token ids, prefill in chunks of 512, then exactly 128 decode tokens at depth N, from one pass (prefill rate = N over time to first token; decode rate = 127 tokens over the time from first to last token). One repetition per round, so every run is a raw value. Load average gate under 1.0 before each run, 30 s pause between runs, stock clocks, packaged mlx-omarchy and Honeykrisp driver.",
+ "rawRunsByPromptTokens": {
+  "512": [
+   {
+    "prefillTokS": 228.5258212447987,
+    "decodeTokS": 42.4264606164693,
+    "prefillSeconds": 2.2404470409999817,
+    "decodeSeconds": 2.9934149150000167,
+    "peakMemoryGiB": 1.39,
+    "loadAverageBefore": 0.15380859375,
+    "round": 0
+   },
+   {
+    "prefillTokS": 418.66001130479765,
+    "decodeTokS": 42.311835268095265,
+    "prefillSeconds": 1.2229493769999635,
+    "decodeSeconds": 3.001524259000007,
+    "peakMemoryGiB": 1.35,
+    "loadAverageBefore": 0.13330078125,
+    "round": 1
+   },
+   {
+    "prefillTokS": 418.286742143194,
+    "decodeTokS": 42.43319432571937,
+    "prefillSeconds": 1.224040708000075,
+    "decodeSeconds": 2.992939890999992,
+    "peakMemoryGiB": 1.35,
+    "loadAverageBefore": 0.07958984375,
+    "round": 2
+   }
+  ],
+  "2048": [
+   {
+    "prefillTokS": 349.7652245675424,
+    "decodeTokS": 41.650664284674015,
+    "prefillSeconds": 5.855356268000037,
+    "decodeSeconds": 3.0491710559999774,
+    "peakMemoryGiB": 1.4,
+    "loadAverageBefore": 0.10400390625,
+    "round": 0
+   },
+   {
+    "prefillTokS": 423.05222348651495,
+    "decodeTokS": 41.73270867814997,
+    "prefillSeconds": 4.84100989500007,
+    "decodeSeconds": 3.0431765399999904,
+    "peakMemoryGiB": 1.4,
+    "loadAverageBefore": 0.05615234375,
+    "round": 1
+   },
+   {
+    "prefillTokS": 422.4211222098481,
+    "decodeTokS": 41.74635459556993,
+    "prefillSeconds": 4.848242411000001,
+    "decodeSeconds": 3.042181795999909,
+    "peakMemoryGiB": 1.4,
+    "loadAverageBefore": 0.10791015625,
+    "round": 2
+   }
+  ]
+ },
+ "startedAt": "2026-11-04T23:42:34+00:00",
+ "finishedAt": "2026-11-04T23:45:55+00:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
