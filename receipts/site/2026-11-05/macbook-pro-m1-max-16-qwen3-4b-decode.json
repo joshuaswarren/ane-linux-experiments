@@ -1,0 +1,86 @@
+{
+  "receipt": "receipt-v1",
+  "date": "2026-11-05",
+  "hardware": "MacBook Pro 16-inch (M1 Max, 64 GB)",
+  "os": "Omarchy Linux",
+  "kernel": "7.1.12-2-20261103.6-lab-ARCH",
+  "engine": "MLX on Omarchy Linux (Vulkan)",
+  "engineCommit": "42b30a2d",
+  "runtime": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610292155+42b30a2d",
+  "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+  "driver": "Mesa 26.3.0-devel (git-69bde15340)",
+  "modelSnapshot": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+  "quantFileSha256": "4fe66f0e831e1a1c0e72d3b3594f552a327dcc1ba2e68eca1430b11c19d636c4",
+  "weightFileSha256": {
+    "model.safetensors": "2a73c6c248601ab904e035548abd8e6abb65ea27dcb5f342fb0a8910eb44173f"
+  },
+  "method": "3 rounds; per round and size one run: a prompt of N random token ids, prefill in chunks of 512, then exactly 128 decode tokens at depth N, from one pass (prefill rate = N over time to first token; decode rate = 127 tokens over the time from first to last token). One repetition per round, so every run is a raw value. Load average gate under 1.0 before each run, 30 s pause between runs, stock clocks, packaged mlx-omarchy and Honeykrisp driver.",
+  "sourceCellSha256": {
+    "512": "150295b9da1ce8aef6d7d70a7112254efaec189c48d0ac45259edb8cc09317d7",
+    "2048": "bab194ba3c3b49bbcc13b6968b30288298bb00d0eca1aa7f562e2f88a7ca4014"
+  },
+  "commands": [
+    "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+    "mlx_lm.generate.generate_step(prompt=<2048 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+  ],
+  "rawRunsByPromptTokens": {
+    "512": [
+      {
+        "prefillTokS": 561.6951868572107,
+        "decodeTokS": 68.91603463039293,
+        "prefillSeconds": 0.9115264150022995,
+        "decodeSeconds": 1.8428222209986416,
+        "peakMemoryGiB": 2.34,
+        "loadAverageBefore": 0.2900390625,
+        "round": 0
+      },
+      {
+        "prefillTokS": 570.5405613401101,
+        "decodeTokS": 68.91473537084273,
+        "prefillSeconds": 0.8973945670004468,
+        "decodeSeconds": 1.8428569639945636,
+        "peakMemoryGiB": 2.34,
+        "loadAverageBefore": 0.1748046875,
+        "round": 1
+      },
+      {
+        "prefillTokS": 572.5336015348628,
+        "decodeTokS": 68.92082832516147,
+        "prefillSeconds": 0.8942706570014707,
+        "decodeSeconds": 1.8426940459976322,
+        "peakMemoryGiB": 2.34,
+        "loadAverageBefore": 0.17626953125,
+        "round": 2
+      }
+    ],
+    "2048": [
+      {
+        "prefillTokS": 500.7432687835819,
+        "decodeTokS": 58.241692048723316,
+        "prefillSeconds": 4.08992018000572,
+        "decodeSeconds": 2.1805685159997665,
+        "peakMemoryGiB": 2.76,
+        "loadAverageBefore": 0.279296875,
+        "round": 0
+      },
+      {
+        "prefillTokS": 499.88154430540897,
+        "decodeTokS": 58.8467901658692,
+        "prefillSeconds": 4.0969706190007855,
+        "decodeSeconds": 2.15814659800526,
+        "peakMemoryGiB": 2.76,
+        "loadAverageBefore": 0.154296875,
+        "round": 1
+      },
+      {
+        "prefillTokS": 494.7918457949489,
+        "decodeTokS": 58.96582218883365,
+        "prefillSeconds": 4.139114290999714,
+        "decodeSeconds": 2.1537900309995166,
+        "peakMemoryGiB": 2.76,
+        "loadAverageBefore": 0.08447265625,
+        "round": 2
+      }
+    ]
+  }
+}

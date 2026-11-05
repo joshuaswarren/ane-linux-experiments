@@ -7,6 +7,7 @@
   "engine": "MLX on Omarchy Linux (Vulkan)",
   "engineCommit": "42b30a2d",
   "runtime": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610292155+42b30a2d",
+  "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
   "driver": "Mesa 26.3.0-devel (git-e7631595df)",
   "modelSnapshot": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
   "quantFileSha256": "4fe66f0e831e1a1c0e72d3b3594f552a327dcc1ba2e68eca1430b11c19d636c4",
