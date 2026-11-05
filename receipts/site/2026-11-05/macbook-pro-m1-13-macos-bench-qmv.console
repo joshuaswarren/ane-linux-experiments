@@ -1,0 +1,25 @@
+pilot start 2026-11-05T23:32:52Z
+{"device": "start", "mlx": "0.32.4", "file": "~/scratch/w9c-macos/venv312/lib/python3.12/site-packages/mlx/core.cpython-312-darwin.so", "only": ["proj"]}
+{"case": "independent", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 43.87549411683936, "us_min": 43.87549411683936, "us_max": 43.87549411683936, "gb_s_median": 53.77252262315845, "dispatches": 0, "barriers": 0}
+{"case": "chain", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 51.595588234597344, "us_min": 51.595588234597344, "us_max": 51.595588234597344, "gb_s_median": 45.726700299890716, "dispatches": 0, "barriers": 0}
+BENCH-DONE
+pilot ok 2026-11-05T23:32:53Z
+run 0 start 2026-11-05T23:32:53Z
+{"device": "start", "mlx": "0.32.4", "file": "~/scratch/w9c-macos/venv312/lib/python3.12/site-packages/mlx/core.cpython-312-darwin.so", "only": ["proj"]}
+{"case": "independent", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 44.66176470379972, "us_min": 44.147058823749404, "us_max": 50.33921176404606, "gb_s_median": 52.82585709828158, "dispatches": 0, "barriers": 0}
+{"case": "chain", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 52.1691176452484, "us_min": 50.23479999876787, "us_max": 52.99069411836065, "gb_s_median": 45.223996618905566, "dispatches": 0, "barriers": 0}
+BENCH-DONE
+run 0 done 2026-11-05T23:32:53Z
+run 1 start 2026-11-05T23:32:53Z
+{"device": "start", "mlx": "0.32.4", "file": "~/scratch/w9c-macos/venv312/lib/python3.12/site-packages/mlx/core.cpython-312-darwin.so", "only": ["proj"]}
+{"case": "independent", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 44.627447061215854, "us_min": 44.183823528703, "us_max": 45.025494115607756, "gb_s_median": 52.86647915942253, "dispatches": 0, "barriers": 0}
+{"case": "chain", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 52.348047058651844, "us_min": 50.54951764791707, "us_max": 53.02499999903803, "gb_s_median": 45.069417725490226, "dispatches": 0, "barriers": 0}
+BENCH-DONE
+run 1 done 2026-11-05T23:32:54Z
+run 2 start 2026-11-05T23:32:54Z
+{"device": "start", "mlx": "0.32.4", "file": "~/scratch/w9c-macos/venv312/lib/python3.12/site-packages/mlx/core.cpython-312-darwin.so", "only": ["proj"]}
+{"case": "independent", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 44.46029411690902, "us_min": 43.81078823665602, "us_max": 46.31569411899631, "gb_s_median": 53.0652360012778, "dispatches": 0, "barriers": 0}
+{"case": "chain", "label": "proj 2048x2048", "n": 2048, "k": 2048, "m": 85, "bytes_per_dispatch": 2359296, "us_per_dispatch_median": 52.050988236206805, "us_min": 50.01617647287597, "us_max": 52.34558823705061, "gb_s_median": 45.32663221096861, "dispatches": 0, "barriers": 0}
+BENCH-DONE
+run 2 done 2026-11-05T23:32:54Z
+QMV-DONE 2026-11-05T23:32:54Z
