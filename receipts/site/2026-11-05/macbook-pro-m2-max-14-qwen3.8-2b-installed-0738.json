@@ -1,0 +1,118 @@
+{
+  "receipt": "receipt-v2",
+  "date": "2026-11-05",
+  "hardware": "MacBook Pro 14-inch (M2 Max, 64 GB)",
+  "os": "Omarchy Linux",
+  "engine": "MLX on Omarchy Linux (Vulkan)",
+  "engineCommit": "a39f0251",
+  "runtime": "installed mlx-omarchy v0.7.38 (0.32.4.dev202611040253+a39f0251); mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202611040253+a39f0251",
+  "kernel": "7.1.12-2-7-ARCH",
+  "driverNote": "vulkaninfo and mesa probes returned empty on this host build; driver strings unrecorded, GPU is Apple M2 Max under Honeykrisp Vulkan per the guard cell class",
+  "model": "SiddhJagani/Qwen3.8-2B-mlx-4Bit (local copy at scratch/w71-m2-parity-20261104/pkg/models/2b, file-identical to the 0867d98b snapshot)",
+  "modelRevision": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+  "weightSha256": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863",
+  "quantFileSha256": "482e4193280b9bc5f0120666c077c6e2d0052cb59cf0c44f917d4b3386f5bbad",
+  "installedRuntimePins": {
+    "python": "c6bc1ef497b896b7575c546b13f9bafe52e2066f184fdd3fec6af4b5b6349947",
+    "libmlx": "6236fae222c6c966a0b096638f650671323848d9aba1f3d3fb0c595fdabae77b",
+    "mlxLmGenerate": "e4bb5b57de42e7eb2dfea5591631e771ce887e49f6eeb273a7b9c84f53562bee",
+    "note": "this venv carries a different mlx_lm generate.py than the 13-inch and 16-inch v0.7.38 installs (e4bb5b57 vs 3f393062); pinned as-is"
+  },
+  "method": "Three rounds per size in one runner process, 30 second pause between rounds, load average gate under 1.0 before each round, and the idle guard's full settle (load1 under 0.5) under a quiet window with ANE ticket admissions blocked on the host. A round uses a prompt of N random token ids (seed 292), prefills in chunks of 512, then generates exactly 128 tokens at depth N. Prompt rate is N over time to first token, so it includes the first token. Decode rate is 127 tokens over the time from first to last token. Published values are medians of the three quiet rounds; round 0 of each size is a cold start (first allocation after process launch).",
+  "quietWindow": {
+    "openedAt": "2026-11-05T10:17:57Z",
+    "expiresAt": "2026-11-05T10:57:57Z",
+    "clearedAt": "2026-11-05T10:38:59Z",
+    "settleLoad1BySize": {
+      "512": 0.13,
+      "2048": 0.03
+    },
+    "note": "Plain quiet window (quiet-m2) blocked ANE ticket admissions and the ANE filler on the host; GPU admissions stayed open so the guard could run other GPU work first. The idle guard settled each job before it started."
+  },
+  "readings": [
+    {
+      "promptTokens": 512,
+      "round": 0,
+      "prefillTokS": 651.4166251690725,
+      "decodeTokS": 105.91682624385935,
+      "prefillSeconds": 0.7859793260067818,
+      "decodeSeconds": 1.1990540549959405,
+      "peakMemoryGiB": 1.39,
+      "loadAverageBefore": 0.2021484375
+    },
+    {
+      "promptTokens": 512,
+      "round": 1,
+      "prefillTokS": 1572.5122693293815,
+      "decodeTokS": 105.11702231952366,
+      "prefillSeconds": 0.3255936439963989,
+      "decodeSeconds": 1.2081772980018286,
+      "peakMemoryGiB": 1.35,
+      "loadAverageBefore": 0.11181640625
+    },
+    {
+      "promptTokens": 512,
+      "round": 2,
+      "prefillTokS": 1578.358339640731,
+      "decodeTokS": 105.7987604143145,
+      "prefillSeconds": 0.3243876799970167,
+      "decodeSeconds": 1.2003921360010281,
+      "peakMemoryGiB": 1.35,
+      "loadAverageBefore": 0.13427734375
+    },
+    {
+      "promptTokens": 2048,
+      "round": 0,
+      "prefillTokS": 1303.1374398058178,
+      "decodeTokS": 103.6445208386069,
+      "prefillSeconds": 1.5715917120032827,
+      "decodeSeconds": 1.225342149999051,
+      "peakMemoryGiB": 1.4,
+      "loadAverageBefore": 0.10791015625
+    },
+    {
+      "promptTokens": 2048,
+      "round": 1,
+      "prefillTokS": 1705.1677148337253,
+      "decodeTokS": 103.8758498154772,
+      "prefillSeconds": 1.2010548769976594,
+      "decodeSeconds": 1.222613343001285,
+      "peakMemoryGiB": 1.4,
+      "loadAverageBefore": 0.05908203125
+    },
+    {
+      "promptTokens": 2048,
+      "round": 2,
+      "prefillTokS": 1707.5181832188414,
+      "decodeTokS": 103.98305222964777,
+      "prefillSeconds": 1.199401575999218,
+      "decodeSeconds": 1.2213528770007542,
+      "peakMemoryGiB": 1.4,
+      "loadAverageBefore": 0.115234375
+    }
+  ],
+  "publishedMedians": {
+    "512": {
+      "prefillTokS": 1572.5122693293815,
+      "decodeTokS": 105.7987604143145
+    },
+    "2048": {
+      "prefillTokS": 1705.1677148337253,
+      "decodeTokS": 103.8758498154772
+    }
+  },
+  "runnerArtifacts": {
+    "512": {
+      "runnerResultFileSha256": "5b2c03afb5fbefcf537d6bffcf65248c52ce4ec0c5a07a587a264327822f9185",
+      "runnerLogSha256": "355f203b88de6e737b6763cc3f32d100574d45fd884e2b66efdd08a808b3c73e",
+      "startedAt": "2026-11-05T10:18:07+00:00",
+      "finishedAt": "2026-11-05T10:19:13+00:00"
+    },
+    "2048": {
+      "runnerResultFileSha256": "eb00b6cea8dec0c40a7f5b462d35d7821b20b0514dcd4870c911390970303a43",
+      "runnerLogSha256": "c853f4d662d2f76b4a1476abdec28c2c56b90c098e79e350fc14cf98498658c7",
+      "startedAt": "2026-11-05T10:20:41+00:00",
+      "finishedAt": "2026-11-05T10:21:49+00:00"
+    }
+  }
+}
