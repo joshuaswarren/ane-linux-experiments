@@ -1,0 +1,61 @@
+{
+  "receipt": "receipt-v1",
+  "date": "2026-11-05",
+  "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)",
+  "os": "Omarchy Linux",
+  "kernel": "7.1.12-2-7-ARCH",
+  "engine": "MLX on Omarchy Linux (Vulkan)",
+  "engineCommit": "a39f0251",
+  "runtime": "mlx-omarchy 0.32.4.dev202611040253+a39f0251; mlx-lm 0.31.3",
+  "driver": "omarchy-mlx-vulkan 0.7.28-5; Mesa git-e7631595df",
+  "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+  "modelRevision": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+  "weightSha256": "2a73c6c248601ab904e035548abd8e6abb65ea27dcb5f342fb0a8910eb44173f",
+  "modelPinEvidence": "Model and driver hashes were reported separately by the measurement owner; the source cell does not contain those pins.",
+  "sourceCellSha256": "136d161dd44260274815809c2497fe01068d97f0a5bc9386dab774376861a497",
+  "method": "Five sequential processes, including one pilot; each performs one untimed pure-forward warmup, then a 512-token pure forward with a fresh cache. The timer covers mx.eval(model(ids[None], cache)); the cache is built before timing and a drain follows. No generation or streaming first-token timing. The September macOS baseline used generation warmups, so warmed states differ.",
+  "promptDigest": "99c328ddac7eff08829f8d9e2d347ba2a8c93c7749bc2d6e180e2734952c54f2",
+  "corpusSha256": "9299a3b2fc136a4c0c355f9ad3e211be81823a5fb9eeadbc2e6608fb3e5718a0",
+  "rawRuns": [
+    {
+      "sequencePosition": 0,
+      "prefillSeconds": 0.6349068899999111,
+      "prefillTokS": 806.4174575268379,
+      "parentElapsedSeconds": 3.04,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 1,
+      "prefillSeconds": 0.6337094299997261,
+      "prefillTokS": 807.941267341124,
+      "parentElapsedSeconds": 2.968,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 2,
+      "prefillSeconds": 0.635031475998403,
+      "prefillTokS": 806.2592475357671,
+      "parentElapsedSeconds": 2.97,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 3,
+      "prefillSeconds": 0.6356933909992222,
+      "prefillTokS": 805.4197310360687,
+      "parentElapsedSeconds": 2.942,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 4,
+      "prefillSeconds": 0.6339102940000885,
+      "prefillTokS": 807.685259012261,
+      "parentElapsedSeconds": 3.0,
+      "warmups": 1
+    }
+  ],
+  "medianPrefillTokS": 806.4174575268379,
+  "journalCheck": {
+    "exitCode": 0,
+    "faults": []
+  }
+}

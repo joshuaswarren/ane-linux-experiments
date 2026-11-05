@@ -1,0 +1,66 @@
+{
+  "receipt": "receipt-v1",
+  "date": "2026-11-05",
+  "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)",
+  "os": "Omarchy Linux",
+  "kernel": "7.1.12-2-7-ARCH",
+  "engine": "MLX on Omarchy Linux (Vulkan)",
+  "engineCommit": "a39f0251",
+  "runtime": "mlx-omarchy 0.32.4.dev202611040253+a39f0251; mlx-lm 0.31.3",
+  "driver": "omarchy-mlx-vulkan 0.7.28-5; Mesa git-e7631595df",
+  "model": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+  "modelRevision": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+  "weightSha256": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863",
+  "tokenizerSha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4",
+  "configSha256": "6834d47a6e13a1ac135f27be825abfa0fa54b9e33980599a5575e2f298503a34",
+  "modelPinEvidence": "Model and driver pins were reported separately by the measurement owner; the source cell does not contain those pins.",
+  "sourceCellSha256": "9e7e9efff3ecd5bdd52a8d4a0ded97ac4e217de9fbb81f4090f9e996db94a622",
+  "promptTokens": 512,
+  "promptDigest": "770e72bf61284df37cdd518811dc93e45780abf8eaee364ba35e4ee33ffcadaf",
+  "journalCheck": {
+    "exitCode": 0,
+    "faults": []
+  },
+  "method": "Five sequential processes, including the pilot; each performs one untimed pure-forward warmup, then a 512-token pure forward with a fresh cache. The timer covers mx.eval(model(ids[None], cache)); cache creation precedes timing and a drain follows. No generation or streaming first-token timing. The September macOS baseline used generation warmups, so warmed states differ.",
+  "corpusSha256": "9299a3b2fc136a4c0c355f9ad3e211be81823a5fb9eeadbc2e6608fb3e5718a0",
+  "runnerSha256": "96b3fe295156a93015ca3ebd326d76e0fb1fb23219907a18765395a9fd9eb9c2",
+  "cellRunnerSha256": "e78f69b341ce03cac387cec2e0f46331a202496e34d032b0a1712a865130656e",
+  "rawRuns": [
+    {
+      "sequencePosition": 0,
+      "prefillSeconds": 0.2875465830002213,
+      "prefillTokS": 1780.5810615374482,
+      "parentElapsedSeconds": 2.587,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 1,
+      "prefillSeconds": 0.2873234569997294,
+      "prefillTokS": 1781.9638025602699,
+      "parentElapsedSeconds": 2.582,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 2,
+      "prefillSeconds": 0.293617938999887,
+      "prefillTokS": 1743.762665673493,
+      "parentElapsedSeconds": 2.611,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 3,
+      "prefillSeconds": 0.2877220419995865,
+      "prefillTokS": 1779.4952254674176,
+      "parentElapsedSeconds": 2.544,
+      "warmups": 1
+    },
+    {
+      "sequencePosition": 4,
+      "prefillSeconds": 0.28691858099955425,
+      "prefillTokS": 1784.4783639188408,
+      "parentElapsedSeconds": 2.559,
+      "warmups": 1
+    }
+  ],
+  "medianPrefillTokS": 1780.5810615374482
+}

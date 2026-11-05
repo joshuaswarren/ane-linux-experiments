@@ -1,0 +1,67 @@
+{
+  "receipt": "receipt-v1",
+  "date": "2026-11-05",
+  "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)",
+  "os": "Omarchy Linux",
+  "kernel": "7.1.12-2-7-ARCH",
+  "engine": "MLX on Omarchy Linux (Vulkan)",
+  "engineCommit": "a39f0251",
+  "runtime": "mlx-omarchy 0.32.4.dev202611040253+a39f0251; mlx-lm 0.31.3",
+  "driver": "omarchy-mlx-vulkan 0.7.28-5; Mesa git-e7631595df",
+  "model": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+  "modelRevision": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+  "weightSha256": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863",
+  "tokenizerSha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4",
+  "configSha256": "6834d47a6e13a1ac135f27be825abfa0fa54b9e33980599a5575e2f298503a34",
+  "modelPinEvidence": "Model and driver pins were reported separately by the measurement owner; the source cell does not contain those pins.",
+  "sourceCellSha256": "c6fa7846d9a9778d08178a8b32acf67e9cb36a1f98f4d49c65df767fb1adb54e",
+  "promptTokens": 512,
+  "promptDigest": "77d2d17d470ed5d68604f47386e2f2160c707a967b2e84489a9986d285b6de3d",
+  "journalCheck": {
+    "exitCode": 0,
+    "faults": []
+  },
+  "method": "Five sequential processes, including the pilot; each consumes 512 prompt tokens and generates 64 tokens. Decode rate is 63 divided by the interval from first to last token. Prompt reading rate is 512 divided by time to first token, including first-token work and potentially one lookahead step. These runs are not interleaved.",
+  "generatedDigest": "513cf604ade0187b50075d84764e4fe495ce5adf77e1b54b7ea1380bcd8edc5d",
+  "runnerSha256": "6a010dcac69b329dea3aa6706f5e8745eb5bdabba2b669367f54e63df9ce4455",
+  "cellRunnerSha256": "f9c217b49821818760f8f9bbe52c927a32d4fec716a33f74e354fdeb83f83fec",
+  "rawRuns": [
+    {
+      "sequencePosition": 0,
+      "decodeTokS": 111.5794260991441,
+      "prefillTokS": 1102.0787292751465,
+      "decodeSeconds": 0.5646202190000622,
+      "firstTokenSeconds": 0.464576610000222
+    },
+    {
+      "sequencePosition": 1,
+      "decodeTokS": 112.91301868372184,
+      "prefillTokS": 1086.6944522127626,
+      "decodeSeconds": 0.5579516050001985,
+      "firstTokenSeconds": 0.47115359700001136
+    },
+    {
+      "sequencePosition": 2,
+      "decodeTokS": 112.09019604139743,
+      "prefillTokS": 1081.5831699862117,
+      "decodeSeconds": 0.5620473710005172,
+      "firstTokenSeconds": 0.47338014699926134
+    },
+    {
+      "sequencePosition": 3,
+      "decodeTokS": 113.08890867446684,
+      "prefillTokS": 1077.0498445252604,
+      "decodeSeconds": 0.5570838089997778,
+      "firstTokenSeconds": 0.4753726139997525
+    },
+    {
+      "sequencePosition": 4,
+      "decodeTokS": 111.98443068014828,
+      "prefillTokS": 1115.056518884327,
+      "decodeSeconds": 0.5625782050001362,
+      "firstTokenSeconds": 0.4591695499993875
+    }
+  ],
+  "medianDecodeTokS": 112.09019604139743,
+  "medianFirstTokenInclusivePromptTokS": 1086.6944522127626
+}
