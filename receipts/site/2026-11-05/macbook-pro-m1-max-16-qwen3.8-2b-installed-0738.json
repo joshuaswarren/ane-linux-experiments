@@ -1,13 +1,11 @@
 {
-  "receipt": "receipt-v1",
+  "receipt": "receipt-v2",
   "date": "2026-11-05",
   "hardware": "MacBook Pro 16-inch (M1 Max, 64 GB)",
   "os": "Omarchy Linux",
-  "kernel": "7.1.12-2-20261103.6-lab-ARCH",
   "engine": "MLX on Omarchy Linux (Vulkan)",
   "engineCommit": "a39f0251",
   "runtime": "installed mlx-omarchy v0.7.38 (0.32.4.dev202611040253+a39f0251); mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202611040253+a39f0251",
-  "driver": "Mesa 26.3.0-devel (git-69bde15340)",
   "model": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
   "modelRevision": "0867d98bfb174b042d88461c0e7c97b86b34b381",
   "weightSha256": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863",
@@ -17,98 +15,189 @@
     "libmlx": "6236fae222c6c966a0b096638f650671323848d9aba1f3d3fb0c595fdabae77b",
     "mlxLmGenerate": "3f393062aae7435c4ae37e8914dc509d25405eabe6ddebae58e7469a7a03b1e6"
   },
-  "method": "Each reading is its own process, run after the previous one finished and drained, with a 30 second pause between readings. A process uses a prompt of N random token ids (seed 292), prefills in chunks of 512, then generates exactly 128 tokens at depth N in one pass. Prompt reading rate is N divided by time to first token, so it includes the first token and is not pure prefill. Decode rate is 127 tokens divided by the time from the first to the last token. Each process is capped at 20 seconds. The runner prints the same raw values rounded to 0.1 tokens per second; this record keeps the full-precision values from each process output file.",
-  "caveat": "The 512-token series was resumed after a driver check wrongly rejected an empty kernel interval after the first reading. The first reading remained unaltered; its unit log was regenerated from the system journal during the resume, and the log hash below is of that journal-derived copy.",
+  "driver": "Mesa 26.3.0-devel (git-69bde15340)",
+  "vulkanDevices": "Apple M1 Max (G13C C0); Honeykrisp; api 1.4.362",
+  "method": "Three rounds per size in one runner process, 30 second pause between rounds, load average gate under 1.0 before each round, and the idle guard's full settle (load1 under 0.5) under an exclusive quiet window with ANE ticket admissions blocked on the host. A round uses a prompt of N random token ids (seed 292), prefills in chunks of 512, then generates exactly 128 tokens at depth N. Prompt rate is N over time to first token, so it includes the first token. Decode rate is 127 tokens over the time from first to last token. Published values are medians of the three quiet rounds; round 0 of each size is a cold start (first allocation after process launch).",
+  "quietWindow": {
+    "openedAt": "2026-11-05T08:23:38Z",
+    "expiresAt": "2026-11-05T09:01:06Z",
+    "clearedAt": "2026-11-05T08:53:18Z",
+    "settleLoad1BySize": {
+      "512": 0.18,
+      "2048": 0.2
+    },
+    "note": "Exclusive quiet-window markers (quiet-<host> and quiet-gpu-<host>) blocked ANE ticket admissions and the ANE filler on the host for the whole run; the idle guard settled each job before it started."
+  },
   "readings": [
     {
       "promptTokens": 512,
-      "sequence": "r1",
-      "prefillTokS": 744.066056126142,
-      "decodeTokS": 122.55602360330063,
-      "prefillSeconds": 0.6881109490004746,
-      "decodeSeconds": 1.0362607749993913,
+      "round": 0,
+      "prefillTokS": 736.8004371086238,
+      "decodeTokS": 122.23166677333629,
+      "prefillSeconds": 0.6948964389994217,
+      "decodeSeconds": 1.0390106209997612,
       "peakMemoryGiB": 1.39,
-      "loadAverageBefore": 0.08349609375,
-      "processWallSeconds": 4.323675595,
-      "startedAt": "2026-11-05T06:48:06+00:00",
-      "finishedAt": "2026-11-05T06:48:08+00:00",
-      "outputSha256": "ca462add24dd00cbe2a5a7bffc1778630bab7bd88ffc97177316251f652d4831",
-      "unitLogSha256": "ac780fa3784be75ff3464ca5161465f4151e52bc5baefa05be8bf5002e2530af"
+      "loadAverageBefore": 0.2431640625
     },
     {
       "promptTokens": 512,
-      "sequence": "r2",
-      "prefillTokS": 745.1188616797917,
-      "decodeTokS": 122.08088537886505,
-      "prefillSeconds": 0.6871386920010991,
-      "decodeSeconds": 1.0402938970000832,
-      "peakMemoryGiB": 1.39,
-      "loadAverageBefore": 0.09423828125,
-      "processWallSeconds": 4.363092255,
-      "startedAt": "2026-11-05T06:54:13+00:00",
-      "finishedAt": "2026-11-05T06:54:15+00:00",
-      "outputSha256": "9698b75fecb5b91040f540edc809fab37d56a9ad2acbed6f3bae67c99b17b9c6",
-      "unitLogSha256": "1d6d37b55f7c9697ec9ce467d7285693da6b1d48cc1fbfc40bcb7f0133fa582a"
+      "round": 1,
+      "prefillTokS": 1379.9121902611948,
+      "decodeTokS": 122.16473623230951,
+      "prefillSeconds": 0.37103810199914733,
+      "decodeSeconds": 1.0395798649988137,
+      "peakMemoryGiB": 1.35,
+      "loadAverageBefore": 0.146484375
     },
     {
       "promptTokens": 512,
-      "sequence": "r3",
-      "prefillTokS": 750.4169471176364,
-      "decodeTokS": 122.65081782198102,
-      "prefillSeconds": 0.6822873630007962,
-      "decodeSeconds": 1.0354598710000573,
-      "peakMemoryGiB": 1.39,
-      "loadAverageBefore": 0.1318359375,
-      "processWallSeconds": 4.326129289,
-      "startedAt": "2026-11-05T06:54:48+00:00",
-      "finishedAt": "2026-11-05T06:54:50+00:00",
-      "outputSha256": "02b25ff8bb47563fb53af8c9683e64f7b4092baddc43306508631ecbfa0cef8f",
-      "unitLogSha256": "311357abd4cf82d3e893c8aedf9d098d53d6d6dd3aecc21805b34f40215b18db"
+      "round": 2,
+      "prefillTokS": 1369.8526745650424,
+      "decodeTokS": 122.24166942815533,
+      "prefillSeconds": 0.3737628210001276,
+      "decodeSeconds": 1.0389256019989261,
+      "peakMemoryGiB": 1.35,
+      "loadAverageBefore": 0.08740234375
     },
     {
       "promptTokens": 2048,
-      "sequence": "r1",
-      "prefillTokS": 1168.8994496341857,
-      "decodeTokS": 120.84063259908051,
-      "prefillSeconds": 1.75207542499993,
-      "decodeSeconds": 1.0509709960006148,
+      "round": 0,
+      "prefillTokS": 1166.907621408138,
+      "decodeTokS": 121.40892325202012,
+      "prefillSeconds": 1.7550660930028243,
+      "decodeSeconds": 1.046051612996962,
       "peakMemoryGiB": 1.4,
-      "loadAverageBefore": 0.11474609375,
-      "processWallSeconds": 5.423938436,
-      "startedAt": "2026-11-05T06:56:25+00:00",
-      "finishedAt": "2026-11-05T06:56:28+00:00",
-      "outputSha256": "2d1275192d838c78f0936e1740572e584ce6394de640bf80616b74052f48cc54",
-      "unitLogSha256": "8b35f3e11d86e6296c069a2920e948a1fc9df73efcd126f7bacd70bde0ef2355"
+      "loadAverageBefore": 0.18359375
     },
     {
       "promptTokens": 2048,
-      "sequence": "r2",
-      "prefillTokS": 1166.2139369684724,
-      "decodeTokS": 121.24987004921535,
-      "prefillSeconds": 1.756110037000326,
-      "decodeSeconds": 1.0474238029983098,
+      "round": 1,
+      "prefillTokS": 1421.9826181535814,
+      "decodeTokS": 119.88936635688826,
+      "prefillSeconds": 1.4402426399974502,
+      "decodeSeconds": 1.0593099610014178,
       "peakMemoryGiB": 1.4,
-      "loadAverageBefore": 0.11181640625,
-      "processWallSeconds": 5.408834984,
-      "startedAt": "2026-11-05T06:57:02+00:00",
-      "finishedAt": "2026-11-05T06:57:05+00:00",
-      "outputSha256": "42529f417d9bb1078e17c37b47f6a53e69a3138b3ef8aa035e4c318cc436a675",
-      "unitLogSha256": "1232c7bab9dbe44e1be995979cb45e90f073a284b968c54a772c0125b7552875"
+      "loadAverageBefore": 0.10986328125
     },
     {
       "promptTokens": 2048,
-      "sequence": "r3",
-      "prefillTokS": 1164.0869393604848,
-      "decodeTokS": 121.20530572000794,
-      "prefillSeconds": 1.7593187679995026,
-      "decodeSeconds": 1.0478089160005766,
+      "round": 2,
+      "prefillTokS": 1419.6372432160217,
+      "decodeTokS": 121.36905525220028,
+      "prefillSeconds": 1.4426220569985162,
+      "decodeSeconds": 1.0463952259997313,
       "peakMemoryGiB": 1.4,
-      "loadAverageBefore": 0.31884765625,
-      "processWallSeconds": 5.459865085,
-      "startedAt": "2026-11-05T06:57:39+00:00",
-      "finishedAt": "2026-11-05T06:57:42+00:00",
-      "outputSha256": "545a6106d5a3150804c3b6e2e482219aee1b76513b300cd5903b748d9707f399",
-      "unitLogSha256": "ad7e56f607d44403cb66c8906833a0f6fd94953e3898fc9922c46503208dfea8"
+      "loadAverageBefore": 0.06005859375
     }
-  ]
+  ],
+  "publishedMedians": {
+    "512": {
+      "prefillTokS": 1369.8526745650424,
+      "decodeTokS": 122.23166677333629
+    },
+    "2048": {
+      "prefillTokS": 1419.6372432160217,
+      "decodeTokS": 121.36905525220028
+    }
+  },
+  "runnerArtifacts": {
+    "512": {
+      "runnerResultFileSha256": "10a100e5df0f6f7dc73af3226750cc22e9a15b8d1024f743b26b11275782f289",
+      "runnerLogSha256": "064351cb9b2712e156138616485891cd65c056395679246521ac556981443675",
+      "startedAt": "2026-11-05T08:46:58+00:00",
+      "finishedAt": "2026-11-05T08:48:02+00:00"
+    },
+    "2048": {
+      "runnerResultFileSha256": "42acf9f2a46d34dbd25a13ef37e1d565de2c1883d2d1de5acae81b92db6173be",
+      "runnerLogSha256": "9e978222ed09389d85385f690b2fbb6e333c2598819fb2176ea7b6ddf2e1a61b",
+      "startedAt": "2026-11-05T08:49:32+00:00",
+      "finishedAt": "2026-11-05T08:50:40+00:00"
+    }
+  },
+  "nonFinalReadings": {
+    "unquietFirstQueueRuns": {
+      "note": "These first queue runs (08:00-08:20 UTC) are kept as unquiet readings only. The guard had admitted unrelated ANE DRAM rows on the same host while they ran (load1 up to 7.53 at job start), so their prompt rates may share the memory bus with other work. They are superseded by the quiet rounds above.",
+      "readings": [
+        {
+          "promptTokens": 512,
+          "round": 0,
+          "prefillTokS": 745.6260074779474,
+          "decodeTokS": 122.63914740509583,
+          "prefillSeconds": 0.6866713269992033,
+          "decodeSeconds": 1.0355584059998364,
+          "peakMemoryGiB": 1.39,
+          "loadAverageBefore": 0.8642578125
+        },
+        {
+          "promptTokens": 512,
+          "round": 1,
+          "prefillTokS": 1371.6726115816316,
+          "decodeTokS": 122.34640332930785,
+          "prefillSeconds": 0.37326691199996276,
+          "decodeSeconds": 1.0380362359992432,
+          "peakMemoryGiB": 1.35,
+          "loadAverageBefore": 0.580078125
+        },
+        {
+          "promptTokens": 512,
+          "round": 2,
+          "prefillTokS": 1375.527237300971,
+          "decodeTokS": 127.59415660843878,
+          "prefillSeconds": 0.37222091000148794,
+          "decodeSeconds": 0.9953433869995933,
+          "peakMemoryGiB": 1.35,
+          "loadAverageBefore": 0.5625
+        },
+        {
+          "promptTokens": 2048,
+          "round": 0,
+          "prefillTokS": 1155.0257001982463,
+          "decodeTokS": 121.32082594584719,
+          "prefillSeconds": 1.7731207190008718,
+          "decodeSeconds": 1.0468112050002674,
+          "peakMemoryGiB": 1.4,
+          "loadAverageBefore": 0.97802734375
+        },
+        {
+          "promptTokens": 2048,
+          "round": 1,
+          "prefillTokS": 1422.4224499148193,
+          "decodeTokS": 121.24183856746639,
+          "prefillSeconds": 1.4397972979986662,
+          "decodeSeconds": 1.0474931879998621,
+          "peakMemoryGiB": 1.4,
+          "loadAverageBefore": 0.591796875
+        },
+        {
+          "promptTokens": 2048,
+          "round": 2,
+          "prefillTokS": 1420.0256319065675,
+          "decodeTokS": 121.26780382283278,
+          "prefillSeconds": 1.442227487999844,
+          "decodeSeconds": 1.047268903999793,
+          "peakMemoryGiB": 1.4,
+          "loadAverageBefore": 0.86865234375
+        }
+      ],
+      "runnerArtifacts": {
+        "512": {
+          "runnerResultFileSha256": "f662e0528473e15e067c2bfe9e783bc330a4d3e11923d79339b7182047df5629",
+          "runnerLogSha256": "06d8210347dfee209dd4c279752a8d82abe8c59cf8dea940b6c18c5e527ffdb3",
+          "startedAt": "2026-11-05T08:00:53+00:00",
+          "finishedAt": "2026-11-05T08:05:52+00:00"
+        },
+        "2048": {
+          "runnerResultFileSha256": "e9e78398af2a460a1a12ec6af0087815f837c69e81b84740cabb648c39989d86",
+          "runnerLogSha256": "130049fdc8852b2b678870e090022e86bbdc7b0ca491c3c3bfd27a0bc0e384cd",
+          "startedAt": "2026-11-05T08:09:53+00:00",
+          "finishedAt": "2026-11-05T08:17:16+00:00"
+        }
+      }
+    },
+    "coldStartNote": "Round 0 of each size above is a cold start. The earlier single-process-per-reading series in the v1 record (receipt-v1, commit aa190bea8b6b081e3eb218a82a549235af4afb7d) are cold-start single readings and stay there as history."
+  },
+  "supersedes": {
+    "record": "receipt-v1 at commit aa190bea8b6b081e3eb218a82a549235af4afb7d",
+    "reason": "quiet-window rerun; the unquiet first queue runs and the v1 single-run series remain as labelled non-final readings"
+  }
 }
