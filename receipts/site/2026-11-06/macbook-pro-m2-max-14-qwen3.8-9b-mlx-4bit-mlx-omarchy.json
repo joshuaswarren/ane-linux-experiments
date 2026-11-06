@@ -1,0 +1,90 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-11-06",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-7-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "a39f0251",
+ "engineCommitNote": null,
+ "notes": "quantFileSha256 for MLX models is the sha256 of the text 'name:sha256' per .safetensors file, sorted by name; per-file hashes are in weightFileSha256. The graphics driver version was not recorded during the run; no driver override was set, so the machine's installed system driver was used.",
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202611040253+a39f0251",
+ "vulkanDevices": "; ; api ",
+ "mesa": "",
+ "model": "Qwen3.8-9B MLX 4-bit (nvythong/Qwen3.8-9B-Distill-mlx-4Bit)",
+ "modelFile": "e827c31fbd588828f43180a87ab34415a6d8a4bf",
+ "quantFileSha256": "a4916eb49f352c9c5e911c3aa79270717086cafa3e6da2318d73bdd3e4eb98a1",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<2048 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "2048": [
+   {
+    "prefillTokS": 439.58301781681666,
+    "decodeTokS": 38.03168952917177,
+    "prefillSeconds": 4.658960689999731,
+    "decodeSeconds": 3.33932048700035,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.19091796875,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 439.69294896531505,
+    "decodeTokS": 37.877925254458056,
+    "prefillSeconds": 4.657795866000015,
+    "decodeSeconds": 3.352876355999797,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.10498046875,
+    "round": 1,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 439.25704579746264,
+    "decodeTokS": 37.9041552754018,
+    "prefillSeconds": 4.662418097999762,
+    "decodeSeconds": 3.350556135000261,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.13232421875,
+    "round": 2,
+    "interleavePosition": 2
+   }
+  ],
+  "512": [
+   {
+    "prefillTokS": 424.0340523129418,
+    "decodeTokS": 38.95090831931401,
+    "prefillSeconds": 1.207450197000071,
+    "decodeSeconds": 3.2605144649996873,
+    "peakMemoryGiB": 5.07,
+    "loadAverageBefore": 0.1396484375,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 431.3964462548343,
+    "decodeTokS": 39.16979035926527,
+    "prefillSeconds": 1.1868433419999747,
+    "decodeSeconds": 3.242294606000087,
+    "peakMemoryGiB": 5.07,
+    "loadAverageBefore": 0.37353515625,
+    "round": 1,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 431.07672525829116,
+    "decodeTokS": 38.87740503575114,
+    "prefillSeconds": 1.1877236000000266,
+    "decodeSeconds": 3.266678933000094,
+    "peakMemoryGiB": 5.07,
+    "loadAverageBefore": 0.28759765625,
+    "round": 2,
+    "interleavePosition": 2
+   }
+  ]
+ },
+ "startedAt": "2026-11-06T04:26:33+00:00",
+ "finishedAt": "2026-11-06T04:29:52+00:00",
+ "hardware": "MacBook Pro 14-inch (M2 Max, 96 GB)"
+}
