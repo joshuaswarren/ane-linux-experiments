@@ -1,0 +1,112 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-11-05",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261103.6-lab-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "42b30a2d",
+ "engineCommitNote": null,
+ "notes": "quantFileSha256 for MLX models is the sha256 of the text 'name:sha256' per .safetensors file, sorted by name; per-file hashes are in weightFileSha256.",
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202610292155+42b30a2d",
+ "vulkanDevices": "Apple M1 Max (G13C C0); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-69bde15340)",
+ "model": "Qwen3.8-9B MLX 4-bit (nvythong/Qwen3.8-9B-Distill-mlx-4Bit)",
+ "modelFile": "e827c31fbd588828f43180a87ab34415a6d8a4bf",
+ "quantFileSha256": "a4916eb49f352c9c5e911c3aa79270717086cafa3e6da2318d73bdd3e4eb98a1",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<2048 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<2048 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "2048": [
+   {
+    "prefillTokS": 325.374540575864,
+    "decodeTokS": 42.31056866780233,
+    "prefillSeconds": 6.294284723000601,
+    "decodeSeconds": 3.0016141119995154,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.23779296875,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 325.75648328085555,
+    "decodeTokS": 42.417290512748366,
+    "prefillSeconds": 6.286904805005179,
+    "decodeSeconds": 2.9940620549969026,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.31982421875,
+    "round": 0,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 326.3045403225302,
+    "decodeTokS": 42.26922184335231,
+    "prefillSeconds": 6.276345398000558,
+    "decodeSeconds": 3.004550224999548,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.16259765625,
+    "round": 1,
+    "interleavePosition": 2
+   },
+   {
+    "prefillTokS": 326.2675691088022,
+    "decodeTokS": 42.41277340514296,
+    "prefillSeconds": 6.2770566060062265,
+    "decodeSeconds": 2.994380932999775,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.21533203125,
+    "round": 2,
+    "interleavePosition": 3
+   }
+  ],
+  "512": [
+   {
+    "prefillTokS": 317.35768802293103,
+    "decodeTokS": 42.924516008923874,
+    "prefillSeconds": 1.6133215589943575,
+    "decodeSeconds": 2.958682166005019,
+    "peakMemoryGiB": 5.07,
+    "loadAverageBefore": 0.240234375,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 321.4303011576907,
+    "decodeTokS": 42.909149359158825,
+    "prefillSeconds": 1.5928803169954335,
+    "decodeSeconds": 2.959741730999667,
+    "peakMemoryGiB": 5.07,
+    "loadAverageBefore": 0.3935546875,
+    "round": 0,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 321.8411364747872,
+    "decodeTokS": 42.90051919567773,
+    "prefillSeconds": 1.5908469799978775,
+    "decodeSeconds": 2.9603371330013033,
+    "peakMemoryGiB": 5.07,
+    "loadAverageBefore": 0.2177734375,
+    "round": 1,
+    "interleavePosition": 2
+   },
+   {
+    "prefillTokS": 322.76759535767985,
+    "decodeTokS": 43.11330615728062,
+    "prefillSeconds": 1.5862806779987295,
+    "decodeSeconds": 2.9457263040021644,
+    "peakMemoryGiB": 5.07,
+    "loadAverageBefore": 0.130859375,
+    "round": 2,
+    "interleavePosition": 3
+   }
+  ]
+ },
+ "startedAt": "2026-11-05T02:37:18+00:00",
+ "finishedAt": "2026-11-05T02:50:43+00:00",
+ "hardware": "MacBook Pro 16-inch (M1 Max, 64 GB)"
+}
