@@ -1,0 +1,615 @@
+{
+ "receipt": "receipt-v1",
+ "date": "2026-11-06",
+ "os": "Omarchy Linux",
+ "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+ "engine": "MLX on Omarchy Linux (Vulkan)",
+ "engineCommit": "a39f0251",
+ "engineCommitNote": null,
+ "notes": "quantFileSha256 for MLX models is the sha256 of the text 'name:sha256' per .safetensors file, sorted by name; per-file hashes are in weightFileSha256.",
+ "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202611040253+a39f0251",
+ "vulkanDevices": "Apple M1 (G13G B1); Honeykrisp; api 1.4.362",
+ "mesa": "Mesa 26.3.0-devel (git-e7631595df)",
+ "model": "Qwen3-4B-Instruct-2507 MLX 4-bit (mlx-community/Qwen3-4B-Instruct-2507-4bit)",
+ "modelFile": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+ "quantFileSha256": "4fe66f0e831e1a1c0e72d3b3594f552a327dcc1ba2e68eca1430b11c19d636c4",
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)",
+  "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "Three rounds; per round and size: a prefill run (-p N -n 0) then a decode run at depth N (-p 0 -n 128 -d N); one repetition each, so every run is a raw value. Load gate under 1.0 before each run, 30 s pause between runs, stock clocks.",
+ "rawRunsByPromptTokens": {
+  "512": [
+   {
+    "prefillTokS": 172.04858146146813,
+    "decodeTokS": 20.698663563495906,
+    "prefillSeconds": 2.9759036409996042,
+    "decodeSeconds": 6.13566183200237,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.2001953125,
+    "round": 0,
+    "interleavePosition": 0
+   },
+   {
+    "prefillTokS": 172.05801529847767,
+    "decodeTokS": 20.56868025110725,
+    "prefillSeconds": 2.9757404740012134,
+    "decodeSeconds": 6.174436008997873,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.341796875,
+    "round": 1,
+    "interleavePosition": 1
+   },
+   {
+    "prefillTokS": 172.84645479873632,
+    "decodeTokS": 20.700769267608617,
+    "prefillSeconds": 2.962166626999533,
+    "decodeSeconds": 6.13503770600073,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.173828125,
+    "round": 2,
+    "interleavePosition": 2
+   },
+   {
+    "prefillTokS": 172.89869049686914,
+    "decodeTokS": 20.82838377339231,
+    "prefillSeconds": 2.9612717050003994,
+    "decodeSeconds": 6.097448624997924,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.2890625,
+    "round": 0,
+    "interleavePosition": 3
+   },
+   {
+    "prefillTokS": 172.92973498906915,
+    "decodeTokS": 20.078964502596932,
+    "prefillSeconds": 2.9607400950008014,
+    "decodeSeconds": 6.3250273679987,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.2900390625,
+    "round": 1,
+    "interleavePosition": 4
+   },
+   {
+    "prefillTokS": 173.96883511818717,
+    "decodeTokS": 20.90031935400459,
+    "prefillSeconds": 2.9430558620006195,
+    "decodeSeconds": 6.076462174998596,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.3076171875,
+    "round": 2,
+    "interleavePosition": 5
+   },
+   {
+    "prefillTokS": 171.10661090849888,
+    "decodeTokS": 20.67585096606719,
+    "prefillSeconds": 2.9922864889995253,
+    "decodeSeconds": 6.142431583997677,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1064453125,
+    "round": 0,
+    "interleavePosition": 6
+   },
+   {
+    "prefillTokS": 173.1429848776098,
+    "decodeTokS": 20.561647725050953,
+    "prefillSeconds": 2.95709352799895,
+    "decodeSeconds": 6.176547799001128,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.052734375,
+    "round": 1,
+    "interleavePosition": 7
+   },
+   {
+    "prefillTokS": 171.9879275735311,
+    "decodeTokS": 20.64337450133697,
+    "prefillSeconds": 2.9769531339989044,
+    "decodeSeconds": 6.152094949000457,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.10595703125,
+    "round": 2,
+    "interleavePosition": 8
+   },
+   {
+    "prefillTokS": 173.3123594416331,
+    "decodeTokS": 20.853182094006613,
+    "prefillSeconds": 2.9542036220009322,
+    "decodeSeconds": 6.090197621997504,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.19482421875,
+    "round": 0,
+    "interleavePosition": 9
+   },
+   {
+    "prefillTokS": 173.12742890106892,
+    "decodeTokS": 20.806079318283526,
+    "prefillSeconds": 2.957359231000737,
+    "decodeSeconds": 6.103985189001833,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1796875,
+    "round": 1,
+    "interleavePosition": 10
+   },
+   {
+    "prefillTokS": 172.97886716936233,
+    "decodeTokS": 20.911271394716504,
+    "prefillSeconds": 2.959899139001209,
+    "decodeSeconds": 6.073279697000544,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0908203125,
+    "round": 2,
+    "interleavePosition": 11
+   },
+   {
+    "prefillTokS": 171.9550449999078,
+    "decodeTokS": 20.645121453680265,
+    "prefillSeconds": 2.9775224100012565,
+    "decodeSeconds": 6.151574370000162,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1484375,
+    "round": 0,
+    "interleavePosition": 12
+   },
+   {
+    "prefillTokS": 173.11146647386033,
+    "decodeTokS": 20.573036648845203,
+    "prefillSeconds": 2.9576319260013406,
+    "decodeSeconds": 6.173128554997675,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.2568359375,
+    "round": 1,
+    "interleavePosition": 13
+   },
+   {
+    "prefillTokS": 172.12361937847768,
+    "decodeTokS": 20.667329259391177,
+    "prefillSeconds": 2.9746062849990267,
+    "decodeSeconds": 6.1449642770021455,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1298828125,
+    "round": 2,
+    "interleavePosition": 14
+   },
+   {
+    "prefillTokS": 172.8586646915204,
+    "decodeTokS": 20.919778807906376,
+    "prefillSeconds": 2.96195739399991,
+    "decodeSeconds": 6.070809886001371,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1123046875,
+    "round": 0,
+    "interleavePosition": 15
+   },
+   {
+    "prefillTokS": 173.2001312644955,
+    "decodeTokS": 20.781778091885762,
+    "prefillSeconds": 2.9561178520016256,
+    "decodeSeconds": 6.1111228999980085,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.05615234375,
+    "round": 1,
+    "interleavePosition": 16
+   },
+   {
+    "prefillTokS": 174.1103555763574,
+    "decodeTokS": 20.90864479703772,
+    "prefillSeconds": 2.9406636860003346,
+    "decodeSeconds": 6.07404263799981,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.076171875,
+    "round": 2,
+    "interleavePosition": 17
+   },
+   {
+    "prefillTokS": 171.00735030292356,
+    "decodeTokS": 20.57019389258654,
+    "prefillSeconds": 2.9940233510023972,
+    "decodeSeconds": 6.173981667998305,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1962890625,
+    "round": 0,
+    "interleavePosition": 18
+   },
+   {
+    "prefillTokS": 172.03341948485843,
+    "decodeTokS": 20.64575030324376,
+    "prefillSeconds": 2.9761659190007776,
+    "decodeSeconds": 6.151386999001261,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.09912109375,
+    "round": 1,
+    "interleavePosition": 19
+   },
+   {
+    "prefillTokS": 172.06227016362317,
+    "decodeTokS": 20.66818846234004,
+    "prefillSeconds": 2.975666887999978,
+    "decodeSeconds": 6.144708823001565,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0498046875,
+    "round": 2,
+    "interleavePosition": 20
+   },
+   {
+    "prefillTokS": 172.23609082506738,
+    "decodeTokS": 20.789657383672445,
+    "prefillSeconds": 2.9726638450010796,
+    "decodeSeconds": 6.108806780997838,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.17578125,
+    "round": 0,
+    "interleavePosition": 21
+   },
+   {
+    "prefillTokS": 173.1439346505556,
+    "decodeTokS": 20.895914894827417,
+    "prefillSeconds": 2.9570773070008727,
+    "decodeSeconds": 6.077742976998707,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0888671875,
+    "round": 1,
+    "interleavePosition": 22
+   },
+   {
+    "prefillTokS": 173.06463431771198,
+    "decodeTokS": 20.910730429803174,
+    "prefillSeconds": 2.958432276001986,
+    "decodeSeconds": 6.073436814000161,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.18701171875,
+    "round": 2,
+    "interleavePosition": 23
+   },
+   {
+    "prefillTokS": 171.0637243308514,
+    "decodeTokS": 20.64810079276107,
+    "prefillSeconds": 2.9930366709995724,
+    "decodeSeconds": 6.150686752000183,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.00634765625,
+    "round": 0,
+    "interleavePosition": 24
+   },
+   {
+    "prefillTokS": 172.1145020042163,
+    "decodeTokS": 20.684896382571853,
+    "prefillSeconds": 2.974763858001097,
+    "decodeSeconds": 6.139745525000762,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.001953125,
+    "round": 1,
+    "interleavePosition": 25
+   },
+   {
+    "prefillTokS": 172.0421534323519,
+    "decodeTokS": 20.659746846153897,
+    "prefillSeconds": 2.976014830001077,
+    "decodeSeconds": 6.147219564001716,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0,
+    "round": 2,
+    "interleavePosition": 26
+   },
+   {
+    "prefillTokS": 172.17295314009928,
+    "decodeTokS": 20.881017232507066,
+    "prefillSeconds": 2.9737539529996866,
+    "decodeSeconds": 6.082079171999794,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.16015625,
+    "round": 0,
+    "interleavePosition": 27
+   },
+   {
+    "prefillTokS": 173.4184783062206,
+    "decodeTokS": 20.90325639590942,
+    "prefillSeconds": 2.952395874999638,
+    "decodeSeconds": 6.075608392999129,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.080078125,
+    "round": 1,
+    "interleavePosition": 28
+   },
+   {
+    "prefillTokS": 173.28417589764558,
+    "decodeTokS": 20.91539749610854,
+    "prefillSeconds": 2.9546841040028085,
+    "decodeSeconds": 6.072081586000422,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0390625,
+    "round": 2,
+    "interleavePosition": 29
+   },
+   {
+    "prefillTokS": 172.03410290089462,
+    "decodeTokS": 20.69861791338639,
+    "prefillSeconds": 2.976154095998936,
+    "decodeSeconds": 6.135675363999326,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.01513671875,
+    "round": 0,
+    "interleavePosition": 30
+   },
+   {
+    "prefillTokS": 172.1792912401056,
+    "decodeTokS": 20.68067413007342,
+    "prefillSeconds": 2.9736444860027405,
+    "decodeSeconds": 6.140999040999304,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.005859375,
+    "round": 1,
+    "interleavePosition": 31
+   },
+   {
+    "prefillTokS": 173.03352704946352,
+    "decodeTokS": 20.661962591918527,
+    "prefillSeconds": 2.9589641310012667,
+    "decodeSeconds": 6.146560348999628,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.001953125,
+    "round": 2,
+    "interleavePosition": 32
+   },
+   {
+    "prefillTokS": 172.1579258789996,
+    "decodeTokS": 20.89217631929998,
+    "prefillSeconds": 2.9740135249994637,
+    "decodeSeconds": 6.078830565998942,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1240234375,
+    "round": 0,
+    "interleavePosition": 33
+   },
+   {
+    "prefillTokS": 173.26651202445655,
+    "decodeTokS": 20.908415952349962,
+    "prefillSeconds": 2.9549853230018925,
+    "decodeSeconds": 6.074109118999331,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0615234375,
+    "round": 1,
+    "interleavePosition": 34
+   },
+   {
+    "prefillTokS": 172.99964326433624,
+    "decodeTokS": 20.91297554983245,
+    "prefillSeconds": 2.959543674998713,
+    "decodeSeconds": 6.072784798001521,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1005859375,
+    "round": 2,
+    "interleavePosition": 35
+   },
+   {
+    "prefillTokS": 172.13416070724531,
+    "decodeTokS": 20.683902496706732,
+    "prefillSeconds": 2.9744241230000625,
+    "decodeSeconds": 6.140040547001263,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.03857421875,
+    "round": 0,
+    "interleavePosition": 36
+   },
+   {
+    "prefillTokS": 173.10225965871945,
+    "decodeTokS": 20.661212338281874,
+    "prefillSeconds": 2.957789234002121,
+    "decodeSeconds": 6.146783543998026,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.01806640625,
+    "round": 1,
+    "interleavePosition": 37
+   },
+   {
+    "prefillTokS": 171.9442623424586,
+    "decodeTokS": 20.680267737985655,
+    "prefillSeconds": 2.9777091309988464,
+    "decodeSeconds": 6.141119719002745,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0078125,
+    "round": 2,
+    "interleavePosition": 38
+   },
+   {
+    "prefillTokS": 173.03956432616232,
+    "decodeTokS": 20.892632794287483,
+    "prefillSeconds": 2.95886089400301,
+    "decodeSeconds": 6.078697752000153,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0703125,
+    "round": 0,
+    "interleavePosition": 39
+   },
+   {
+    "prefillTokS": 171.67188446201277,
+    "decodeTokS": 20.90469328019746,
+    "prefillSeconds": 2.982433621000382,
+    "decodeSeconds": 6.075190785999439,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.10888671875,
+    "round": 1,
+    "interleavePosition": 40
+   },
+   {
+    "prefillTokS": 173.15276567928336,
+    "decodeTokS": 20.878361575177905,
+    "prefillSeconds": 2.956926491999184,
+    "decodeSeconds": 6.082852792002086,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.29541015625,
+    "round": 2,
+    "interleavePosition": 41
+   },
+   {
+    "prefillTokS": 172.30782785108119,
+    "decodeTokS": 20.692304146916868,
+    "prefillSeconds": 2.9714262339985,
+    "decodeSeconds": 6.137547520000226,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.01416015625,
+    "round": 0,
+    "interleavePosition": 42
+   },
+   {
+    "prefillTokS": 172.2109598964453,
+    "decodeTokS": 20.69210091581795,
+    "prefillSeconds": 2.973097648999101,
+    "decodeSeconds": 6.137607800999831,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.07373046875,
+    "round": 1,
+    "interleavePosition": 43
+   },
+   {
+    "prefillTokS": 171.8688957222016,
+    "decodeTokS": 20.638010593416702,
+    "prefillSeconds": 2.979014893000567,
+    "decodeSeconds": 6.153693904998363,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.1162109375,
+    "round": 2,
+    "interleavePosition": 44
+   },
+   {
+    "prefillTokS": 172.5255330156686,
+    "decodeTokS": 20.40280326561406,
+    "prefillSeconds": 2.967676673999904,
+    "decodeSeconds": 6.224634837999929,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0107421875,
+    "round": 0,
+    "interleavePosition": 45
+   },
+   {
+    "prefillTokS": 173.21107084201088,
+    "decodeTokS": 20.93365319603745,
+    "prefillSeconds": 2.955931151000186,
+    "decodeSeconds": 6.066786280000088,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.00439453125,
+    "round": 1,
+    "interleavePosition": 46
+   },
+   {
+    "prefillTokS": 173.29259113500373,
+    "decodeTokS": 20.914919428533345,
+    "prefillSeconds": 2.9545406219999677,
+    "decodeSeconds": 6.07222038000009,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0810546875,
+    "round": 2,
+    "interleavePosition": 47
+   },
+   {
+    "prefillTokS": 171.48121185437785,
+    "decodeTokS": 20.88191177491064,
+    "prefillSeconds": 2.9857498350011156,
+    "decodeSeconds": 6.081818626998938,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.5927734375,
+    "round": 0,
+    "interleavePosition": 48
+   },
+   {
+    "prefillTokS": 173.9715102561909,
+    "decodeTokS": 20.909853353294263,
+    "prefillSeconds": 2.94301060700127,
+    "decodeSeconds": 6.073691567999049,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.544921875,
+    "round": 1,
+    "interleavePosition": 49
+   },
+   {
+    "prefillTokS": 173.91239910443358,
+    "decodeTokS": 19.84288063689062,
+    "prefillSeconds": 2.944010908000564,
+    "decodeSeconds": 6.400280399000621,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.62109375,
+    "round": 2,
+    "interleavePosition": 50
+   },
+   {
+    "prefillTokS": 172.22603505918602,
+    "decodeTokS": 20.874027541082352,
+    "prefillSeconds": 2.9728374100004658,
+    "decodeSeconds": 6.084115763000227,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.162109375,
+    "round": 0,
+    "interleavePosition": 51
+   },
+   {
+    "prefillTokS": 173.35681976037253,
+    "decodeTokS": 20.86645681397238,
+    "prefillSeconds": 2.9534459660007997,
+    "decodeSeconds": 6.086323189999348,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.08935546875,
+    "round": 1,
+    "interleavePosition": 52
+   },
+   {
+    "prefillTokS": 171.56332580451135,
+    "decodeTokS": 20.89529761172922,
+    "prefillSeconds": 2.984320790000311,
+    "decodeSeconds": 6.077922523999405,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.04443359375,
+    "round": 2,
+    "interleavePosition": 53
+   },
+   {
+    "prefillTokS": 162.35307576983877,
+    "decodeTokS": 13.194297682485388,
+    "prefillSeconds": 3.1536205740003425,
+    "decodeSeconds": 9.625370220999685,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.3349609375,
+    "round": 0,
+    "interleavePosition": 54
+   },
+   {
+    "prefillTokS": 173.30922964816818,
+    "decodeTokS": 20.881408384739007,
+    "prefillSeconds": 2.954256971999712,
+    "decodeSeconds": 6.081965242000479,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.169921875,
+    "round": 1,
+    "interleavePosition": 55
+   },
+   {
+    "prefillTokS": 173.32492269632792,
+    "decodeTokS": 20.91604125510288,
+    "prefillSeconds": 2.9539894899999126,
+    "decodeSeconds": 6.071894697999596,
+    "peakMemoryGiB": 2.34,
+    "loadAverageBefore": 0.0859375,
+    "round": 2,
+    "interleavePosition": 56
+   }
+  ]
+ },
+ "startedAt": "2026-11-06T01:44:39+00:00",
+ "finishedAt": "2026-11-06T12:43:25+00:00",
+ "hardware": "MacBook Pro 13-inch (M1, 16 GB)"
+}
