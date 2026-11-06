@@ -1,0 +1,10 @@
+IDLE-GUARD-JOB-START 20261106T020323Z lane=w9C bootpin=post-freeze-a39f0251-rel38-equal class=perf quiet-gpu qwen3-4b 512 decode three runs site requeue-v2 of e7ad3819: run 1 overlapped w73 ANE split probe 01:44:36Z-01:44:53Z (decode 13.19 vs 20.88/20.92) so the row is not comparable; this submit requests the ANE hold during the whole run; runs from the first submit are discarded, not published. scorecard drain-bound: one unsynced lookahead per round lands in the 30 s pause outside measured windows; per-round prefill+decode under 20 s is the gate; full-process wall reported as measured
+KERNEL-CMDLINE asahi-words:  kernel=7.1.12-2-20261013.18-sep-ARCH
+PREFLIGHT-RUN
+SETTLE load1=0.12 SETTLE-SKIPPED
+GPU-TIMEOUTS before=0 boot=941860f3-70e3-4d42-b295-79619190aed3
+run round 0 size 512: prefill 172.2 tok/s (3 s), decode 20.87 tok/s, peak 2.34 GiB
+run round 1 size 512: prefill 173.4 tok/s (3 s), decode 20.87 tok/s, peak 2.34 GiB
+run round 2 size 512: prefill 171.6 tok/s (3 s), decode 20.90 tok/s, peak 2.34 GiB
+{"rawRuns": {"512": [[172.2, 20.87], [173.4, 20.87], [171.6, 20.9]]}, "errors": []}
+GPU-TIMEOUTS after=0 delta=0

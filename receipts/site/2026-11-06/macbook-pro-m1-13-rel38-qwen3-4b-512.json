@@ -1,0 +1,70 @@
+{
+  "env": {
+    "date": "2026-11-06",
+    "host": "MacBook Pro 13-inch (M1, 16 GB)",
+    "kernel": "7.1.12-2-20261013.18-sep-ARCH",
+    "engineCommit": "a39f0251",
+    "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202611040253+a39f0251",
+    "vulkanDevices": "Apple M1 (G13G B1); Honeykrisp; api 1.4.362",
+    "mesa": "Mesa 26.3.0-devel (git-e7631595df)",
+    "driNodeUsers": [
+      "Hyprland",
+      "Xwayland",
+      "herdr",
+      "inotifywait",
+      "omarchy-hyprlan",
+      "omarchy-launch-",
+      "python3",
+      "quickshell",
+      "socat",
+      "udiskie",
+      "wl-paste",
+      "xdg-desktop-por"
+    ],
+    "modelFile": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+    "modelSnapshot": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+    "quantFileSha256": "4fe66f0e831e1a1c0e72d3b3594f552a327dcc1ba2e68eca1430b11c19d636c4",
+    "weightFileSha256": {
+      "model.safetensors": "2a73c6c248601ab904e035548abd8e6abb65ea27dcb5f342fb0a8910eb44173f"
+    },
+    "startedAt": "2026-11-06T02:03:26+00:00",
+    "finishedAt": "2026-11-06T02:04:53+00:00"
+  },
+  "commands": [
+    "mlx_lm.generate.generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+  ],
+  "method": "3 rounds; per round and size one run: a prompt of N random token ids, prefill in chunks of 512, then exactly 128 decode tokens at depth N, from one pass (prefill rate = N over time to first token; decode rate = 127 tokens over the time from first to last token). One repetition per round, so every run is a raw value. Load average gate under 1.0 before each run, 30 s pause between runs, stock clocks, packaged mlx-omarchy and Honeykrisp driver.",
+  "rawRuns": {
+    "512": [
+      {
+        "prefillTokS": 172.22603505918602,
+        "decodeTokS": 20.874027541082352,
+        "prefillSeconds": 2.9728374100004658,
+        "decodeSeconds": 6.084115763000227,
+        "peakMemoryGiB": 2.34,
+        "loadAverageBefore": 0.162109375,
+        "round": 0
+      },
+      {
+        "prefillTokS": 173.35681976037253,
+        "decodeTokS": 20.86645681397238,
+        "prefillSeconds": 2.9534459660007997,
+        "decodeSeconds": 6.086323189999348,
+        "peakMemoryGiB": 2.34,
+        "loadAverageBefore": 0.08935546875,
+        "round": 1
+      },
+      {
+        "prefillTokS": 171.56332580451135,
+        "decodeTokS": 20.89529761172922,
+        "prefillSeconds": 2.984320790000311,
+        "decodeSeconds": 6.077922523999405,
+        "peakMemoryGiB": 2.34,
+        "loadAverageBefore": 0.04443359375,
+        "round": 2
+      }
+    ]
+  },
+  "errors": [],
+  "overlapNote": "supersedes first submit 01:44:35Z whose round 1 (decode 13.19) overlapped an ANE probe running 01:44:36Z-01:44:53Z; that submit discarded, this rerun under quiet-gpu ANE hold"
+}

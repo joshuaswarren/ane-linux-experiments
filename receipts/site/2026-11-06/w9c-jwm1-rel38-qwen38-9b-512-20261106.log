@@ -1,0 +1,10 @@
+IDLE-GUARD-JOB-START 20261106T014652Z lane=w9C bootpin=post-freeze-a39f0251-rel38-equal class=perf qwen38-9b-distill 512 decode three runs site scorecard drain-bound: one unsynced lookahead per round lands in the 30 s pause outside measured windows; per-round prefill+decode under 20 s is the gate; full-process wall reported as measured
+KERNEL-CMDLINE asahi-words:  kernel=7.1.12-2-20261013.18-sep-ARCH
+PREFLIGHT-RUN
+SETTLE load1=0.19 SETTLE-SKIPPED
+GPU-TIMEOUTS before=0 boot=941860f3-70e3-4d42-b295-79619190aed3
+run round 0 size 512: prefill 92.2 tok/s (6 s), decode 12.36 tok/s, peak 5.07 GiB
+run round 1 size 512: prefill 92.6 tok/s (6 s), decode 12.27 tok/s, peak 5.07 GiB
+run round 2 size 512: prefill 92.8 tok/s (6 s), decode 12.37 tok/s, peak 5.07 GiB
+{"rawRuns": {"512": [[92.2, 12.36], [92.6, 12.27], [92.8, 12.37]]}, "errors": []}
+GPU-TIMEOUTS after=0 delta=0
