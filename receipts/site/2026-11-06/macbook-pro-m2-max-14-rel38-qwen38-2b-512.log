@@ -1,0 +1,10 @@
+IDLE-GUARD-JOB-START 20261106T041901Z lane=w9C bootpin=m2-live-values-rel38-equal class=perf quiet-gpu qwen3.8-2b-4bit 512 decode three runs site M2 14-inch pairs the upcoming M2 macOS cells (upstream 0.32.4) against the same-lineage Linux fork v0.7.38 rows; generate.py sha e4bb5b57 is the M2 venv local (differs from 13-inch 3f393062, recorded honestly); models freshly downloaded tonight, weight shas pinned in preflight; scorecard pairs on next site ingest
+KERNEL-CMDLINE asahi-words:  kernel=7.1.12-2-7-ARCH
+PREFLIGHT-RUN
+SETTLE load1=0.02 SETTLE-SKIPPED
+GPU-TIMEOUTS before=0 boot=c2696402-0db7-446c-a531-e2a18b7165a3
+run round 0 size 512: prefill 716.9 tok/s (1 s), decode 106.57 tok/s, peak 1.39 GiB
+run round 1 size 512: prefill 1591.0 tok/s (0 s), decode 105.67 tok/s, peak 1.35 GiB
+run round 2 size 512: prefill 1578.6 tok/s (0 s), decode 106.40 tok/s, peak 1.35 GiB
+{"rawRuns": {"512": [[716.9, 106.57], [1591.0, 105.67], [1578.6, 106.4]]}, "errors": []}
+GPU-TIMEOUTS after=0 delta=0
