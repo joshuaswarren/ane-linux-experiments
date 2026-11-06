@@ -1,0 +1,67 @@
+{
+ "env": {
+  "date": "2026-11-06",
+  "host": "MacBook Pro 16-inch (M1 Max, 64 GB)",
+  "kernel": "7.1.12-2-20261103.2-lab-ARCH",
+  "engineCommit": "a39f0251",
+  "llamaBenchVersion": "mlx_lm 0.31.3 generate_step on mlx-omarchy 0.32.4.dev202611040253+a39f0251",
+  "vulkanDevices": "Apple M1 Max (G13C C0); Honeykrisp; api 1.4.362",
+  "mesa": "Mesa 26.3.0-devel (git-69bde15340)",
+  "driNodeUsers": [
+   "Hyprland",
+   "Xwayland",
+   "inotifywait",
+   "omarchy-hyprlan",
+   "omarchy-launch-",
+   "quickshell",
+   "socat",
+   "udiskie",
+   "wl-paste",
+   "xdg-desktop-por"
+  ],
+  "modelFile": "e827c31fbd588828f43180a87ab34415a6d8a4bf",
+  "modelSnapshot": "e827c31fbd588828f43180a87ab34415a6d8a4bf",
+  "quantFileSha256": "a4916eb49f352c9c5e911c3aa79270717086cafa3e6da2318d73bdd3e4eb98a1",
+  "weightFileSha256": {
+   "model.safetensors": "b2c47ca5681b0e641852e5ca2ea5a5fb87d82d6329de7469d3cd42c3ad03ea15"
+  },
+  "startedAt": "2026-11-06T03:45:41+00:00",
+  "finishedAt": "2026-11-06T03:47:12+00:00"
+ },
+ "commands": [
+  "mlx_lm.generate.generate_step(prompt=<2048 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512)"
+ ],
+ "method": "3 rounds; per round and size one run: a prompt of N random token ids, prefill in chunks of 512, then exactly 128 decode tokens at depth N, from one pass (prefill rate = N over time to first token; decode rate = 127 tokens over the time from first to last token). One repetition per round, so every run is a raw value. Load average gate under 1.0 before each run, 30 s pause between runs, stock clocks, packaged mlx-omarchy and Honeykrisp driver.",
+ "rawRuns": {
+  "2048": [
+   {
+    "prefillTokS": 302.58789985679425,
+    "decodeTokS": 34.49583418093713,
+    "prefillSeconds": 6.768281220000063,
+    "decodeSeconds": 3.681603967999763,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.21435546875,
+    "round": 0
+   },
+   {
+    "prefillTokS": 301.76511092069427,
+    "decodeTokS": 34.43175834323622,
+    "prefillSeconds": 6.786735530000442,
+    "decodeSeconds": 3.688455255000008,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.337890625,
+    "round": 1
+   },
+   {
+    "prefillTokS": 300.0054024556804,
+    "decodeTokS": 34.44122183385619,
+    "prefillSeconds": 6.826543733000108,
+    "decodeSeconds": 3.6874417700000777,
+    "peakMemoryGiB": 5.19,
+    "loadAverageBefore": 0.25244140625,
+    "round": 2
+   }
+  ]
+ },
+ "errors": []
+}

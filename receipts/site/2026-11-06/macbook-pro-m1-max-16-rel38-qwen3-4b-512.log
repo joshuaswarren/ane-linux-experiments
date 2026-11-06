@@ -1,0 +1,10 @@
+IDLE-GUARD-JOB-START 20261106T032423Z lane=w9C bootpin=post-freeze-a39f0251-rel38-equal class=perf quiet-gpu qwen3-4b 512 decode three runs site 16-inch a39f0251 refresh per Main: pairs the 16-inch macOS cells (upstream 0.32.4) against the same-build Linux fork rows; quiet-gpu requested while any ANE work is queued. scorecard drain-bound: one unsynced lookahead per round lands in the 30 s pause outside measured windows; per-round prefill+decode under 20 s is the gate; full-process wall reported as measured
+KERNEL-CMDLINE asahi-words:  kernel=7.1.12-2-20261103.2-lab-ARCH
+PREFLIGHT-RUN
+SETTLE load1=0.38 SETTLE-SKIPPED
+GPU-TIMEOUTS before=0 boot=996cf604-5063-4e1a-aff5-2655725ef094
+run round 0 size 512: prefill 526.4 tok/s (1 s), decode 54.26 tok/s, peak 2.34 GiB
+run round 1 size 512: prefill 540.6 tok/s (1 s), decode 54.38 tok/s, peak 2.34 GiB
+run round 2 size 512: prefill 541.3 tok/s (1 s), decode 54.44 tok/s, peak 2.34 GiB
+{"rawRuns": {"512": [[526.4, 54.26], [540.6, 54.38], [541.3, 54.44]]}, "errors": []}
+GPU-TIMEOUTS after=0 delta=0
