@@ -20,38 +20,38 @@
  "rawRunsByPromptTokens": {
   "8192": [
    {
-    "prefillTokS": 1103.4127310795343,
-    "decodeTokS": 36.9014334272932,
-    "prefillSeconds": 7.424239153000599,
-    "decodeSeconds": 3.441600723999727,
+    "prefillTokS": 1205.860589627038,
+    "decodeTokS": 40.63000366693215,
+    "prefillSeconds": 6.793488459999935,
+    "decodeSeconds": 3.1257688539999435,
     "peakMemoryGiB": 1.62,
-    "loadAverageBefore": 0.2001953125,
+    "loadAverageBefore": 0.3017578125,
     "round": 0,
     "interleavePosition": 0
    },
    {
-    "prefillTokS": 1207.2628284506884,
-    "decodeTokS": 36.84781324292419,
-    "prefillSeconds": 6.785597805999714,
-    "decodeSeconds": 3.4466088709996257,
+    "prefillTokS": 1259.8409412025915,
+    "decodeTokS": 40.722901846163246,
+    "prefillSeconds": 6.5024081470000965,
+    "decodeSeconds": 3.1186382659998344,
     "peakMemoryGiB": 1.62,
-    "loadAverageBefore": 0.23974609375,
+    "loadAverageBefore": 0.23388671875,
     "round": 1,
     "interleavePosition": 1
    },
    {
-    "prefillTokS": 1210.623555746147,
-    "decodeTokS": 36.82756476992041,
-    "prefillSeconds": 6.766760783000791,
-    "decodeSeconds": 3.448503879999407,
+    "prefillTokS": 1258.9957373989716,
+    "decodeTokS": 40.462503453325624,
+    "prefillSeconds": 6.506773419999263,
+    "decodeSeconds": 3.1387084130001313,
     "peakMemoryGiB": 1.62,
-    "loadAverageBefore": 0.2021484375,
+    "loadAverageBefore": 0.3466796875,
     "round": 2,
     "interleavePosition": 2
    }
   ]
  },
- "startedAt": "2026-10-28T04:44:36+00:00",
- "finishedAt": "2026-10-28T04:46:08+00:00",
+ "startedAt": "2026-10-28T20:33:09+00:00",
+ "finishedAt": "2026-10-28T20:34:38+00:00",
  "hardware": "MacBook Pro 16-inch (M1 Max, 64 GB)"
 }
