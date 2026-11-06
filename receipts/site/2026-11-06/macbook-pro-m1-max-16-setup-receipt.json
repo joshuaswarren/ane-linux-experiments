@@ -1,0 +1,36 @@
+{
+ "setup": true,
+ "date": "2026-11-05",
+ "os": "26.6.2",
+ "kernel": "25.6.0",
+ "python": "3.12.9",
+ "mlx": "0.32.4",
+ "mlxLm": "0.31.3",
+ "venv": "~/scratch/w9c-macos/venv",
+ "lockPath": "~/scratch/w9c-macos/model.lock",
+ "lockTest": "acquired+released non-blocking",
+ "models": {
+  "qwen3.8-2b-4bit": {
+   "repo": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+   "snapshotDir": "~/.cache/huggingface/hub/models--SiddhJagani--Qwen3.8-2B-mlx-4Bit/snapshots/0867d98bfb174b042d88461c0e7c97b86b34b381",
+   "weightFileSha256": {
+    "model.safetensors": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863"
+   }
+  },
+  "qwen3-4b-instruct-2507-mlx-4bit": {
+   "repo": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+   "snapshotDir": "~/.cache/huggingface/hub/models--mlx-community--Qwen3-4B-Instruct-2507-4bit/snapshots/50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+   "weightFileSha256": {
+    "model.safetensors": "2a73c6c248601ab904e035548abd8e6abb65ea27dcb5f342fb0a8910eb44173f"
+   }
+  },
+  "qwen3.8-9b-distill-mlx-4bit": {
+   "repo": "nvythong/Qwen3.8-9B-Distill-mlx-4Bit",
+   "snapshotDir": "~/.cache/huggingface/hub/models--nvythong--Qwen3.8-9B-Distill-mlx-4Bit/snapshots/e827c31fbd588828f43180a87ab34415a6d8a4bf",
+   "weightFileSha256": {
+    "model.safetensors": "b2c47ca5681b0e641852e5ca2ea5a5fb87d82d6329de7469d3cd42c3ad03ea15"
+   }
+  }
+ },
+ "engine": "mlx on macOS (Metal)"
+}
