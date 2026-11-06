@@ -1,0 +1,41 @@
+{
+ "receipt": true,
+ "date": "2026-11-06",
+ "hardware": "MacBook Pro 14-inch (M2 Max, 64 GB)",
+ "os": "macOS 27.0",
+ "kernel": "27.0.0",
+ "engine": "mlx on macOS (Metal)",
+ "engineCommit": "mlx 0.32.4",
+ "runtime": "mlx_lm 0.31.3 generate_step",
+ "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+ "modelSnapshot": "models--mlx-community--Qwen3-4B-Instruct-2507-4bit/snapshots/50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+ "quantFileSha256": "4fe66f0e831e1a1c0e72d3b3594f552a327dcc1ba2e68eca1430b11c19d636c4",
+ "weightFileSha256": {
+  "model.safetensors": "2a73c6c248601ab904e035548abd8e6abb65ea27dcb5f342fb0a8910eb44173f"
+ },
+ "startedAt": "2026-11-06T06:27:11Z",
+ "finishedAt": "2026-11-06T06:27:16Z",
+ "commands": [
+  "generate_step(prompt=<512 random ids, seed 292>, model, max_tokens=128, prefill_step_size=512), 3 runs"
+ ],
+ "method": "3 rounds; per round one run: a prompt of N random token ids, prefill in chunks of 512, then exactly 128 decode tokens at depth N (prefill rate = N over time to first token; decode rate = 127 tokens over the remaining time)",
+ "decodeTokS_median": 99.867357983758,
+ "prefillTokS_median": 702.9160375718428,
+ "rawRuns": [
+  {
+   "decodeTokS": 115.76377058656419,
+   "prefillTokS": 702.9160375718428,
+   "interleavePosition": 0
+  },
+  {
+   "decodeTokS": 99.867357983758,
+   "prefillTokS": 912.1035196448089,
+   "interleavePosition": 1
+  },
+  {
+   "decodeTokS": 94.17145433353248,
+   "prefillTokS": 610.9333505862885,
+   "interleavePosition": 2
+  }
+ ]
+}

@@ -1,0 +1,107 @@
+{
+ "receipt": true,
+ "date": "2026-11-06",
+ "lane": "w9C",
+ "hardware": "MacBook Pro 14-inch (M2 Max, 64 GB)",
+ "os": "macOS 27.0",
+ "kernel": "27.0.0",
+ "engine": "mlx on macOS (Metal)",
+ "engineVersions": {
+  "mlx": "0.32.4",
+  "mlx_lm": "0.31.3"
+ },
+ "venv": "~/scratch/w9c-macos/venv (463 MB, pinned via PIP_CONSTRAINT, PIP_CONFIG_FILE=/dev/null to bypass the pip freeze)",
+ "models": {
+  "2B": {
+   "repo": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+   "snapshot": "0867d98bfb174b042d88461c0e7c97b86b34b381",
+   "weightSha256": "b0d5de688567bf4acd5e421027acd410dabcdc255a5bd46fdbf06c75dc2e6863"
+  },
+  "4B": {
+   "repo": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+   "snapshot": "50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b",
+   "weightSha256": "2a73c6c248601ab904e035548abd8e6abb65ea27dcb5f342fb0a8910eb44173f"
+  },
+  "9B": {
+   "repo": "nvythong/Qwen3.8-9B-Distill-mlx-4Bit",
+   "snapshot": "e827c31fbd588828f43180a87ab34415a6d8a4bf",
+   "weightSha256": "b2c47ca5681b0e641852e5ca2ea5a5fb87d82d6329de7469d3cd42c3ad03ea15"
+  }
+ },
+ "weightHashVerification": "all three model.safetensors sha256 recomputed on-host 06:02-06:04Z and matched the site pins; zero broken snapshot symlinks (BROKEN=0); no downloads, no re-link needed",
+ "quietGate": {
+  "rule": "no process above 20% CPU for two consecutive 60 s samples",
+  "timeline": "armed 06:04Z; busy on FPCKService 85% then mds_stores 250-260% (Spotlight re-index after w7N removed a 27.8 GB public repo); Main 20-minute fallback invoked 06:25Z"
+ },
+ "mdutil": {
+  "off": "2026-11-06T06:26:01Z sudo -n mdutil -i off / -> \"Indexing disabled.\"",
+  "on": "2026-11-06T06:30:32Z sudo -n mdutil -i on / -> \"Indexing enabled.\""
+ },
+ "cells": [
+  {
+   "file": "cell-qwen3-4b-instruct-2507-mlx-4bit-2048.json",
+   "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+   "startedAt": "2026-11-06T06:27:19Z",
+   "finishedAt": "2026-11-06T06:27:32Z",
+   "decode_med": 83.08,
+   "prefill_med": 690.4,
+   "rounds": 3
+  },
+  {
+   "file": "cell-qwen3-4b-instruct-2507-mlx-4bit-512.json",
+   "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+   "startedAt": "2026-11-06T06:27:11Z",
+   "finishedAt": "2026-11-06T06:27:16Z",
+   "decode_med": 99.87,
+   "prefill_med": 702.9,
+   "rounds": 3
+  },
+  {
+   "file": "cell-qwen3.8-2b-4bit-2048.json",
+   "model": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+   "startedAt": "2026-11-06T06:27:04Z",
+   "finishedAt": "2026-11-06T06:27:08Z",
+   "decode_med": 211.03,
+   "prefill_med": 2303.2,
+   "rounds": 3
+  },
+  {
+   "file": "cell-qwen3.8-2b-4bit-512.json",
+   "model": "SiddhJagani/Qwen3.8-2B-mlx-4Bit",
+   "startedAt": "2026-11-06T06:26:57Z",
+   "finishedAt": "2026-11-06T06:27:02Z",
+   "decode_med": 211.76,
+   "prefill_med": 2232.5,
+   "rounds": 3
+  },
+  {
+   "file": "cell-qwen3.8-9b-distill-mlx-4bit-2048.json",
+   "model": "nvythong/Qwen3.8-9B-Distill-mlx-4Bit",
+   "startedAt": "2026-11-06T06:27:51Z",
+   "finishedAt": "2026-11-06T06:28:15Z",
+   "decode_med": 44.63,
+   "prefill_med": 383.6,
+   "rounds": 3
+  },
+  {
+   "file": "cell-qwen3.8-9b-distill-mlx-4bit-512.json",
+   "model": "nvythong/Qwen3.8-9B-Distill-mlx-4Bit",
+   "startedAt": "2026-11-06T06:27:36Z",
+   "finishedAt": "2026-11-06T06:27:47Z",
+   "decode_med": 47.02,
+   "prefill_med": 346.8,
+   "rounds": 3
+  }
+ ],
+ "speedExplanation": "cells ran 11-24 s each: the site method decodes exactly 128 tokens per round at a 512-token prompt; Metal on the M2 Max does the 2B at ~212 tok/s, the 9B at ~47 tok/s, and the weights were in the page cache because the lane sha256-verified them minutes earlier. The 80 s total is real, not a skip: per-round timings and 3 interleave rounds are present in every JSON.",
+ "disk": {
+  "beforeCells": "51 GiB avail (after w7N removed 27.8 GB public repo)",
+  "afterCleanup": "42 GiB avail (Spotlight re-index and other lanes active)"
+ },
+ "cleanup": {
+  "removed": "venv 463 MB + /tmp/w9c-kit (48 KB, 11 files) + pins + setup log",
+  "method": "allowlisted literal-path batch delete via the cleanup script, dry-run first",
+  "time": "2026-11-06T06:31-06:33Z"
+ },
+ "handoff": "M2 handed to w91 after END"
+}

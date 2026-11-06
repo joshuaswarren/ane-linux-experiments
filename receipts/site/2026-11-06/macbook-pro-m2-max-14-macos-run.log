@@ -1,0 +1,19 @@
+=== cell qwen3.8-2b-4bit 512 06:26:55Z load=19.15 17.66 17.65
+CELL RECEIPT cell-qwen3.8-2b-4bit-512.json | decode med 211.76 | prefill med 2232.5
+=== exit 0 cell qwen3.8-2b-4bit 512 06:27:02Z
+=== cell qwen3.8-2b-4bit 2048 06:27:02Z load=20.11 17.92 17.75
+CELL RECEIPT cell-qwen3.8-2b-4bit-2048.json | decode med 211.03 | prefill med 2303.2
+=== exit 0 cell qwen3.8-2b-4bit 2048 06:27:08Z
+=== cell qwen3-4b-instruct-2507-mlx-4bit 512 06:27:08Z load=20.43 18.02 17.78
+CELL RECEIPT cell-qwen3-4b-instruct-2507-mlx-4bit-512.json | decode med 99.87 | prefill med 702.9
+=== exit 0 cell qwen3-4b-instruct-2507-mlx-4bit 512 06:27:16Z
+=== cell qwen3-4b-instruct-2507-mlx-4bit 2048 06:27:16Z load=18.21 17.62 17.64
+CELL RECEIPT cell-qwen3-4b-instruct-2507-mlx-4bit-2048.json | decode med 83.08 | prefill med 690.4
+=== exit 0 cell qwen3-4b-instruct-2507-mlx-4bit 2048 06:27:32Z
+=== cell qwen3.8-9b-distill-mlx-4bit 512 06:27:32Z load=18.27 17.65 17.65
+CELL RECEIPT cell-qwen3.8-9b-distill-mlx-4bit-512.json | decode med 47.02 | prefill med 346.8
+=== exit 0 cell qwen3.8-9b-distill-mlx-4bit 512 06:27:47Z
+=== cell qwen3.8-9b-distill-mlx-4bit 2048 06:27:47Z load=19.05 17.87 17.73
+CELL RECEIPT cell-qwen3.8-9b-distill-mlx-4bit-2048.json | decode med 44.63 | prefill med 383.6
+=== exit 0 cell qwen3.8-9b-distill-mlx-4bit 2048 06:28:15Z
+ALL-CELLS-DONE 06:28:15Z
