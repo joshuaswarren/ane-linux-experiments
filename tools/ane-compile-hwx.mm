@@ -70,7 +70,23 @@ int main(int argc, char **argv) {
     NSString *artifact = [output stringByAppendingPathComponent:@"model.hwx"];
     for (int attempt = 0; attempt < 600; ++attempt) {
       NSDictionary *attributes = [files attributesOfItemAtPath:artifact error:nil];
-      if ([attributes fileSize] > 0) return 0;
+      if ([attributes fileSize] > 0) {
+        // Normalise ANECCompile's container for the Linux ane driver
+        // (tools/hwx_normalise.cpp). The raw compiler output is refused by
+        // the driver's load validator; a normalised file must pass
+        // tools/hwx_check.py. Fail loudly rather than emit a refused file.
+        NSString *self = [[NSProcessInfo processInfo] arguments][0];
+        NSString *norm = [[self stringByDeletingLastPathComponent]
+            stringByAppendingPathComponent:@"hwx-normalise"];
+        NSString *cmd = [NSString stringWithFormat:@"'%@' '%@'", norm, artifact];
+        int rc = std::system(cmd.UTF8String);
+        if (rc != 0) {
+          std::fprintf(stderr,
+              "hwx-normalise failed (rc=%d); output kept unnormalised\n", rc);
+          return 1;
+        }
+        return 0;
+      }
       usleep(100000);
     }
     std::fprintf(stderr, "compiler did not create model.hwx within 60 seconds\n");
