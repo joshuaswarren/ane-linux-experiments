@@ -1,6 +1,6 @@
+#!/usr/bin/env python3
 # Offline replica of the Linux ane driver H16/H17 HWX load validator.
 # Used to test tools/hwx_normalise output: a normalised container must PASS.
-#!/usr/bin/env python3
 """Offline port of the running kernel's H16/H17 HWX load validator.
 
 Source of truth: drivers/accel/ane/ane_h16_hwx.c + ane_h16_tasks.h at
@@ -511,10 +511,11 @@ def hwx_symbols(p):
            (p.b[s + 4] & ~1) != 0xE:
             raise Rejected(f"symbol {i}: strx/section/type fields",
                            f"strx={strx} sect={p.b[s + 5]} type=0x{p.b[s + 4]:02x}")
-        name = p.b[p.stroff + strx:]
+        name = p.b[p.stroff + strx:p.stroff + p.strsize]
         nul = name.find(b"\0")
-        if nul <= 0 or nul == min(256, p.strsize - strx):
-            raise Rejected(f"symbol {i}: name", f"nul={nul}")
+        if nul < 0 or nul == 0 or nul == min(256, p.strsize - strx):
+            raise Rejected(f"symbol {i}: name not NUL-terminated in string table",
+                           f"nul={nul}")
         name = name[:nul].decode(errors="replace")
         if name in names:
             raise Rejected(f"symbol {i}: duplicate name", f"name={name!r}")
@@ -748,6 +749,9 @@ def validate(path):
             if p.metadata or ln > SZ_4K or ln == 8:
                 raise Rejected(f"command {i}: annotation duplicate or length", f"len={ln}")
             ann = c[pos + 8:pos + ln].find(b"\0")
+            if ann < 0:
+                raise Rejected(f"command {i}: annotation not NUL-terminated",
+                               f"len={ln}")
             if ann == ln - 8 or c[pos + 8 + ann:pos + ln] != b"\0" * (ln - 8 - ann):
                 raise Rejected(f"command {i}: annotation padding", f"ann={ann} len={ln}")
             p.metadata = True
@@ -800,8 +804,14 @@ def validate(path):
     return p.info
 
 
-def main():
-    for path in sys.argv[1:]:
+def main(paths=None):
+    if paths is None:
+        paths = sys.argv[1:]
+    if not paths:
+        print("usage: hwx_check.py FILE.hwx [...]", file=sys.stderr)
+        return 2
+    failures = 0
+    for path in paths:
         try:
             info = validate(path)
             subtype = "H17" if info.subtype == ANE_HWX_SUBTYPE_H17 else "H16"
@@ -809,9 +819,11 @@ def main():
                   f"surfaces={info.surface_count} text=0x{info.text.size:x} "
                   f"regions={len(info.regions)}")
         except Rejected as r:
+            failures += 1
             print(f"FAIL {path}: first failing check -> {r.label}"
                   + (f" [{r.detail}]" if r.detail else ""))
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
