@@ -30,8 +30,21 @@ xcrun clang++ -std=c++17 -fblocks -framework Foundation \
   ane-compile-hwx.mm -o ane-compile-hwx >"$ART/bridge-build.log" 2>&1
 BUILD_RC=$?
 say "bridge_build_rc=$BUILD_RC"
+# hwx-normalise: plain C++, no frameworks. Staged flat by run_capture.sh;
+# when run from the repo kit dir, fall back to tools/.
+NORM_SRC="$KIT/hwx_normalise.cpp"
+[ -f "$NORM_SRC" ] || NORM_SRC="$KIT/../../tools/hwx_normalise.cpp"
+NORM_RC=1
+if [ -f "$NORM_SRC" ]; then
+  xcrun clang++ -std=c++17 -O2 "$NORM_SRC" -o hwx-normalise \
+    >>"$ART/bridge-build.log" 2>&1
+  NORM_RC=$?
+else
+  say "hwx_normalise.cpp NOT STAGED (expected $KIT/hwx_normalise.cpp)"
+fi
+say "hwx_normalise_build_rc=$NORM_RC"
 BUILD_OK=false
-if [ $BUILD_RC -eq 0 ]; then
+if [ $BUILD_RC -eq 0 ] && [ $NORM_RC -eq 0 ]; then
   SHA="$(shasum -a 256 ane-compile-hwx | cut -d ' ' -f1)"
   say "bridge_sha256=$SHA"
   say "bridge_bytes=$(stat -f %z ane-compile-hwx)"
@@ -51,7 +64,7 @@ if $BUILD_OK; then
     say "== refused-route probe oproj $TARGET =="
     WORK="$ART/work-refused-$TARGET"
     rm -rf "$WORK"; mkdir -p "$WORK"
-    cp ane-compile-hwx make_capture.py mint.sh "$WORK/"
+    cp ane-compile-hwx hwx-normalise make_capture.py mint.sh "$WORK/"
     ( cd "$WORK" && bash mint.sh oproj "$TARGET" "$WORK" ) \
       >"$ART/refused-route-$TARGET.log" 2>&1
     say "refused_route_$TARGET bridge_exit=$(grep -o \

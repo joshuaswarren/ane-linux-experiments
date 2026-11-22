@@ -1,7 +1,50 @@
 #import <Foundation/Foundation.h>
 
+#include <cstdint>
 #include <cstdio>
+#include <mach-o/dyld.h>
 #include <unistd.h>
+#include <vector>
+
+// H16 (subtype 7) and H17 (subtype 9) containers need normalisation for the
+// Linux ane driver's load validator; H13/H14 output is already acceptable and
+// the normaliser rejects every other subtype.
+static bool targetNeedsNormalise(NSString *architecture, NSString *artifact) {
+  NSString *arch = architecture.lowercaseString;
+  if ([arch isEqualToString:@"h16"] || [arch isEqualToString:@"h17"]) return true;
+  std::FILE *f = std::fopen(artifact.fileSystemRepresentation, "rb");
+  if (!f) return false;
+  uint8_t hdr[12];
+  size_t n = std::fread(hdr, 1, sizeof(hdr), f);
+  std::fclose(f);
+  if (n != sizeof(hdr)) return false;
+  const uint32_t subtype = uint32_t(hdr[8]) | uint32_t(hdr[9]) << 8 |
+                           uint32_t(hdr[10]) << 16 | uint32_t(hdr[11]) << 24;
+  return subtype == 7 || subtype == 9;
+}
+
+// Resolve the sibling hwx-normalise next to this binary; _NSGetExecutablePath
+// keeps working when the tool is invoked through PATH (argv[0] has no dir).
+static NSString *normaliserPath(void) {
+  uint32_t size = 0;
+  _NSGetExecutablePath(NULL, &size);
+  std::vector<char> buf(size);
+  if (_NSGetExecutablePath(buf.data(), &size) != 0) return nil;
+  NSString *self = [NSString stringWithUTF8String:buf.data()];
+  return [[self stringByDeletingLastPathComponent]
+      stringByAppendingPathComponent:@"hwx-normalise"];
+}
+
+// Launch directly: no shell, so quotes or spaces in paths cannot inject.
+static int runNormaliser(NSString *norm, NSString *artifact) {
+  if (![[NSFileManager defaultManager] isExecutableFileAtPath:norm]) return 127;
+  NSTask *task = [[NSTask alloc] init];
+  task.launchPath = norm;
+  task.arguments = @[artifact];
+  [task launch];
+  [task waitUntilExit];
+  return task.terminationStatus;
+}
 
 typedef unsigned int ANECStatus;
 extern "C" int ANECCompile(NSDictionary *options, NSDictionary *flags,
@@ -75,15 +118,15 @@ int main(int argc, char **argv) {
         // (tools/hwx_normalise.cpp). The raw compiler output is refused by
         // the driver's load validator; a normalised file must pass
         // tools/hwx_check.py. Fail loudly rather than emit a refused file.
-        NSString *self = [[NSProcessInfo processInfo] arguments][0];
-        NSString *norm = [[self stringByDeletingLastPathComponent]
-            stringByAppendingPathComponent:@"hwx-normalise"];
-        NSString *cmd = [NSString stringWithFormat:@"'%@' '%@'", norm, artifact];
-        int rc = std::system(cmd.UTF8String);
-        if (rc != 0) {
-          std::fprintf(stderr,
-              "hwx-normalise failed (rc=%d); output kept unnormalised\n", rc);
-          return 1;
+        // H13/H14 targets skip this: their containers need no rewrite.
+        if (targetNeedsNormalise(architecture, artifact)) {
+          NSString *norm = normaliserPath();
+          int rc = norm ? runNormaliser(norm, artifact) : 127;
+          if (rc != 0) {
+            std::fprintf(stderr,
+                "hwx-normalise failed (rc=%d); output kept unnormalised\n", rc);
+            return 1;
+          }
         }
         return 0;
       }

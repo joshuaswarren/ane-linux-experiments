@@ -13,7 +13,8 @@ ssh -o BatchMode=yes -o ConnectTimeout=8 "$HOST" \
   'rm -rf /tmp/t6021-test-host-macos26-capture && mkdir -p /tmp/t6021-test-host-macos26-capture'
 scp -q -o BatchMode=yes "$KIT"/ane_probe.py "$KIT"/mint_probe.sh \
     "$KIT"/capture.sh "$KIT"/ane-compile-hwx.mm "$KIT"/make_capture.py \
-    "$KIT"/mint_aneforge.py "$KIT"/mint.sh "$HOST:/tmp/t6021-test-host-macos26-capture/"
+    "$KIT"/mint_aneforge.py "$KIT"/mint.sh "$REPO"/tools/hwx_normalise.cpp \
+    "$HOST:/tmp/t6021-test-host-macos26-capture/"
 ssh -o BatchMode=yes "$HOST" 'bash /tmp/t6021-test-host-macos26-capture/capture.sh'
 scp -q -o BatchMode=yes "$HOST:/tmp/t6021-test-host-macos26-capture.tar.gz" /tmp/
 mkdir -p "$OUT"
