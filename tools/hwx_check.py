@@ -793,7 +793,7 @@ def validate(path):
     if text.nreloc:
         relocs = p.b[text.reloff:]
         relocations_validate(p.b[text.offset:text.offset + text.size], text.size,
-                             relocs, text.nreloc, p.info.text.ordinal,
+                             relocs, text.nreloc, p.info.kernel.ordinal,
                              p.info.kernel.vm, p.info.kernel.size, text.size // 4)
         covered = relocations_in_payload(p)
         for i in range(text.nreloc):
