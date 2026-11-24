@@ -42,3 +42,16 @@ Caveats: one model (4B), one prompt length (2048), one part (G13G). The prior
 gate that declined the default (receipts/2026-10-09-causal-flash-gate3)
 measured G13C at pf512 where the gain is small - at 2048 on G13G the composed
 route's quadratic score traffic is what the flash kernel eliminates.
+
+## Extended cells (ordered 02:00, same protocol, prod venv +cf66ff1d0)
+
+| cell | A flash | B composed | delta | per-block |
+|---|---:|---:|---:|---|
+| 2B pf512 prefill | 429.05 | 428.66 | +0.09% | +0.09 +1.21 -0.05 +0.79 -0.03 |
+| 4B pf512 prefill | 182.43 | 176.96 | +3.09% | +3.10 +3.09 +3.02 +3.10 +3.14 |
+| 4B dec2048 decode | 23.71 | 23.66 | +0.21% | -0.10 +0.61 +0.47 +0.15 -0.44 |
+
+No cell regresses on G13G; pf512 also wins (+3.09%). The landed #785
+unscoped flip is validated - a length gate is not needed on this part.
+ids identical across all runs (4B `4f2e744b...`, 2B `5251cdd6...` - same
+shas as the m1max-host arms, cross-host bit-identical).
