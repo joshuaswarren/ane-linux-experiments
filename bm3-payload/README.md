@@ -45,3 +45,22 @@ Produces `payload.bin` (flat image, entry at file offset 0x800).
    `bm3-payload-alive`, and/or check the panel.
 3. Reboot returns to the default boot — nothing is written to the target's
    storage.
+
+## Hardware findings (milestone-0, w70)
+
+- Chainload ABI verified against `aura-proxyclient` sources: raw image at
+  `u.base`, entry `base+0x800`, `x0` = BootArgs pointer. BootArgs video
+  struct at 0x28..0x50, cmdline at 0x70 (all revisions).
+- The target (13-inch M1) boots a stock loader whose `boot.bin` carries
+  the proxy strings; whether it opens a host window on a normal boot is
+  untested - no host-capable port was watching.
+- M6 as chainload host is disqualified: its Type-C controllers are
+  SPMI-attached (no i2c devnode for `tuxvdmtool`, so no VDM/DFU path),
+  and the port facing the target is DT-bound peripheral (`g_ncm` gadget,
+  no runtime role switch) - it cannot be the USB host for the proxy
+  window on this kernel.
+- Recovery partner for the target is currently dark, so any test that
+  can park the machine needs a restart path verified first.
+- Alternate host candidates (USB-host ports, up): the 16-inch M1 Max.
+  Open: which port on the target is its m1n1 proxy port, and whether a
+  cable from a host-capable machine reaches it (physical wiring check).
