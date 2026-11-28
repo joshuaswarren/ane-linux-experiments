@@ -75,4 +75,15 @@ void bm3_main(void)
     for (u64 i = 0; i < sizeof(sig); i++)
         cmd[i] = sig[i];
     __asm__ volatile("dsb sy\n\tisb");
+
+    /* Hold the pattern ~8 s for the KVM, then exit by exception: a data
+     * abort on a deliberately unmapped address returns control to the
+     * loader's exception handler (and the proxy), so the host can read
+     * the signature and continue the normal boot - no parked CPU. */
+    for (volatile u64 i = 0; i < 40000000ULL; i++)
+        __asm__ volatile("nop");
+    volatile u64 *sink = (volatile u64 *)0xdeadbeef0000ULL;
+    (void)*sink;
+    for (;;)
+        __asm__ volatile("wfi");
 }
