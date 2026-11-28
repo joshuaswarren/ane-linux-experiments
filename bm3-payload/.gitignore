@@ -1,0 +1,4 @@
+entry.o
+main.o
+payload.elf
+payload.bin
